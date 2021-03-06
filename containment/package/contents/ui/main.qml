@@ -458,8 +458,10 @@ Item {
                     root.addInternalViewSplittersInMainLayout();
                     root.moveAppletsBasedOnJustifyAlignment();
                 } else {
-                    root.joinLayoutsToMainLayout();
-                    root.destroyInternalViewSplitters();
+                    layouter.appletsInParentChange = true;
+                    console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
+                    fastLayoutManager.joinLayoutsToMainLayout();
+                    layouter.appletsInParentChange = false;
                 }
             }
 
@@ -801,13 +803,6 @@ Item {
         layouter.appletsInParentChange = true;
         console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
         fastLayoutManager.moveAppletsInJustifyAlignment();
-        layouter.appletsInParentChange = false;
-    }
-
-    function joinLayoutsToMainLayout() {
-        layouter.appletsInParentChange = true;
-        console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
-        fastLayoutManager.joinLayoutsToMainLayout();
         layouter.appletsInParentChange = false;
     }
 

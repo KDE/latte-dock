@@ -576,6 +576,28 @@ void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const in
     }
 }
 
+void LayoutManager::destroyJustifySplitters()
+{
+    if (!m_startLayout || !m_mainLayout || !m_endLayout) {
+        return;
+    }
+
+    for (int i=0; i<=2; ++i) {
+        QQuickItem *layout = (i==0 ? m_startLayout : (i==1 ? m_mainLayout : m_endLayout));
+
+        if (layout->childItems().count() > 0) {
+            int size = layout->childItems().count();
+            for (int j=size-1; j>=0; --j) {
+                QQuickItem *item = layout->childItems()[j];
+                bool issplitter = item->property("isInternalViewSplitter").toBool();
+                if (issplitter) {
+                    item->deleteLater();
+                }
+            }
+        }
+    }
+}
+
 void LayoutManager::joinLayoutsToMainLayout()
 {
     if (!m_startLayout || !m_mainLayout || !m_endLayout) {
@@ -610,6 +632,7 @@ void LayoutManager::joinLayoutsToMainLayout()
         }
     }
 
+    destroyJustifySplitters();
 }
 
 void LayoutManager::moveAppletsInJustifyAlignment()

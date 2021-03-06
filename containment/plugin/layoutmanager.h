@@ -108,6 +108,8 @@ signals:
 private slots:
     void onRootItemChanged();
 
+    void destroyJustifySplitters();
+
 private:
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
