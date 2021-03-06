@@ -92,7 +92,44 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
-            text: i18n("Length padding")
+            text: i18n("Size")
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        LatteComponents.Slider {
+            id: sizeSlider
+            Layout.fillWidth: true
+
+            value: Math.round(indicator.configuration.size * 100)
+            from: 3
+            to: 15
+            stepSize: 1
+            wheelEnabled: false
+
+            onPressedChanged: {
+                if (!pressed) {
+                    indicator.configuration.size = Number(value / 100).toFixed(2);
+                }
+            }
+        }
+
+        PlasmaComponents.Label {
+            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+            horizontalAlignment: Text.AlignRight
+            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+            readonly property int currentValue: sizeSlider.value
+        }
+    }
+
+
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: units.smallSpacing
+
+        PlasmaComponents.Label {
+            text: i18n("Padding")
             horizontalAlignment: Text.AlignLeft
         }
 

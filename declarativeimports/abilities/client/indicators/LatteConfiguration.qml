@@ -23,6 +23,7 @@ Item{
     readonly property string styleName: "Latte"
 
     readonly property int activeStyle: 0 //LineIndicator
+    readonly property real size: 0.10
     readonly property bool minimizedTaskColoredDifferently: false
     readonly property bool extraDotOnActive: false
     readonly property bool glowEnabled: false

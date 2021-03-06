@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
-  <group name="General">
+  <group name="General">      
     <entry name="activeStyle" type="Enum">
       <label>Active indicator style</label>
         <choices>
@@ -12,6 +12,9 @@
           <choice name="Dot"/>
         </choices>
       <default>0</default>
+    </entry>
+    <entry name="size" type="Double">
+       <default>0.10</default>
     </entry>
     <entry name="minimizedTaskColoredDifferently" type="Bool">
       <default>false</default>

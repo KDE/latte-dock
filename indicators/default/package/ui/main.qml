@@ -35,7 +35,7 @@ LatteComponents.IndicatorItem{
     enabledForApplets: indicator && indicator.configuration ? indicator.configuration.enabledForApplets : true
     lengthPadding: indicator && indicator.configuration ? indicator.configuration.lengthPadding : 0.08
 
-    readonly property real factor: 0.08
+    readonly property real factor: indicator.configuration.size
     readonly property int size: factor * indicator.currentIconSize
 
     readonly property int screenEdgeMargin: plasmoid.location === PlasmaCore.Types.Floating || reversedEnabled ? 0 : indicator.screenEdgeMargin
@@ -84,238 +84,239 @@ LatteComponents.IndicatorItem{
         return (r * 299 + g * 587 + b * 114) / 1000
     }
 
-    Item{
-        id: mainIndicatorElement
+    Grid{
+        id: grid
+        columns: plasmoid.formFactor === PlasmaCore.Types.Vertical ? 1 : 0
+        rows: plasmoid.formFactor !== PlasmaCore.Types.Vertical ? 1 : 0
+        columnSpacing: 0
+        rowSpacing: 0
 
-        width: flowItem.width
-        height: flowItem.height
-
-        Flow{
-            id: flowItem
-            flow: plasmoid.formFactor === PlasmaCore.Types.Vertical ? Flow.TopToBottom : Flow.LeftToRight
-
-            LatteComponents.GlowPoint{
-                id:firstPoint
-                opacity: {
-                    if (indicator.isEmptySpace) {
-                        return 0;
-                    }
-
-                    if (indicator.isTask) {
-                        return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
-                    }
-
-                    if (indicator.isApplet) {
-                        return (indicator.isActive || activeAndReverseAnimation.running) ? 1 : 0
-                    }
+        LatteComponents.GlowPoint{
+            id:firstPoint
+            opacity: {
+                if (indicator.isEmptySpace) {
+                    return 0;
                 }
 
-                basicColor: indicator.isActive || (indicator.isGroup && indicator.hasShown) ? root.isActiveColor : root.notActiveColor
-
-                size: root.size
-                glow3D: glow3D
-                animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
-                location: plasmoid.location
-                glowOpacity: root.glowOpacity
-                contrastColor: indicator.shadowColor
-                attentionColor: theme.negativeTextColor
-
-                roundCorners: true
-                showAttention: indicator.inAttention
-                showGlow: {
-                    if (glowEnabled && (glowApplyTo === 2 /*All*/ || showAttention ))
-                        return true;
-                    else if (glowEnabled && glowApplyTo === 1 /*OnActive*/ && indicator.hasActive)
-                        return true;
-                    else
-                        return false;
-                }
-                showBorder: glowEnabled && glow3D
-
-                property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
-                property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
-
-                property int animationTime: indicator.durationTime* (0.7*LatteCore.Environment.longDuration)
-
-                property bool isActive: indicator.hasActive || indicator.isActive
-
-                property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
-
-                property real scaleFactor: indicator.scaleFactor
-
-                function updateInitialSizes(){
-                    if(root){
-                        if(vertical)
-                            width = root.size;
-                        else
-                            height = root.size;
-
-                        if(vertical && isActive && activeStyle === 0 /*Line*/)
-                            height = stateHeight;
-                        else
-                            height = root.size;
-
-                        if(!vertical && isActive && activeStyle === 0 /*Line*/)
-                            width = stateWidth;
-                        else
-                            width = root.size;
-                    }
+                if (indicator.isTask) {
+                    return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
                 }
 
-
-                onIsActiveChanged: {
-                    if (activeStyle === 0 /*Line*/)
-                        activeAndReverseAnimation.start();
-                }
-
-                onScaleFactorChanged: {
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/){
-                        width = stateWidth;
-                    }
-                    else if (!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/){
-                        height = stateHeight;
-                    }
-                }
-
-                onStateWidthChanged:{
-                    if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/)
-                        width = stateWidth;
-                }
-
-                onStateHeightChanged:{
-                    if(!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/)
-                        height = stateHeight;
-                }
-
-                onVerticalChanged: updateInitialSizes();
-
-                Component.onCompleted: {
-                    updateInitialSizes();
-
-                    if (indicator) {
-                        indicator.onCurrentIconSizeChanged.connect(updateInitialSizes);
-                    }
-                }
-
-                Component.onDestruction: {
-                    if (indicator) {
-                        indicator.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
-                    }
-                }
-
-                NumberAnimation{
-                    id: activeAndReverseAnimation
-                    target: firstPoint
-                    property: plasmoid.formFactor === PlasmaCore.Types.Vertical ? "height" : "width"
-                    to: indicator.hasActive && activeStyle === 0 /*Line*/
-                        ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : root.size
-                    duration: firstPoint.animationTime
-                    easing.type: Easing.InQuad
-
-                    onStopped: firstPoint.updateInitialSizes()
+                if (indicator.isApplet) {
+                    return (indicator.isActive || activeAndReverseAnimation.running) ? 1 : 0
                 }
             }
 
-            Item{
-                id:spacer
-                width: secondPoint.visible ? 0.5*root.size : 0
-                height: secondPoint.visible ? 0.5*root.size : 0
+            basicColor: indicator.isActive || (indicator.isGroup && indicator.hasShown) ? root.isActiveColor : root.notActiveColor
+
+            size: root.size
+            glow3D: glow3D
+            animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
+            location: plasmoid.location
+            glowOpacity: root.glowOpacity
+            contrastColor: indicator.shadowColor
+            attentionColor: theme.negativeTextColor
+
+            roundCorners: true
+            showAttention: indicator.inAttention
+            showGlow: {
+                if (glowEnabled && (glowApplyTo === 2 /*All*/ || showAttention ))
+                    return true;
+                else if (glowEnabled && glowApplyTo === 1 /*OnActive*/ && indicator.hasActive)
+                    return true;
+                else
+                    return false;
+            }
+            showBorder: glowEnabled && glow3D
+
+            property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
+            property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
+
+            property int animationTime: indicator.durationTime* (0.7*LatteCore.Environment.longDuration)
+
+            property bool isActive: indicator.hasActive || indicator.isActive
+
+            property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+            property real scaleFactor: indicator.scaleFactor
+
+            function updateInitialSizes(){
+                if(root){
+                    if(vertical) {
+                        width = root.size;
+                    } else {
+                        height = root.size;
+                    }
+
+                    if(vertical && isActive && activeStyle === 0 /*Line*/) {
+                        height = stateHeight;
+                    } else {
+                        height = root.size;
+                    }
+
+                    if(!vertical && isActive && activeStyle === 0 /*Line*/) {
+                        width = stateWidth;
+                    } else {
+                        width = root.size;
+                    }
+                }
             }
 
-            LatteComponents.GlowPoint{
-                id:secondPoint
-                width: visible ? root.size : 0
-                height: width
 
-                size: root.size
-                glow3D: glow3D
-                animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
-                location: plasmoid.location
-                glowOpacity: root.glowOpacity
-                contrastColor: indicator.shadowColor
-                showBorder: glowEnabled && glow3D
+            onIsActiveChanged: {
+                if (activeStyle === 0 /*Line*/)
+                    activeAndReverseAnimation.start();
+            }
 
-                basicColor: state2Color
-                roundCorners: true
-                showGlow: glowEnabled  && glowApplyTo === 2 /*All*/
-                visible:  ( indicator.isGroup && ((extraDotOnActive && activeStyle === 0) /*Line*/
-                                                  || activeStyle === 1 /*Dot*/
-                                                  || !indicator.hasActive) ) ? true: false
+            onScaleFactorChanged: {
+                if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/){
+                    width = stateWidth;
+                }
+                else if (!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/){
+                    height = stateHeight;
+                }
+            }
 
-                //when there is no active window
-                property color state1Color: indicator.hasShown ? root.isActiveColor : root.minimizedColor
-                //when there is active window
-                property color state2Color: indicator.hasMinimized ? root.minimizedColor : root.isActiveColor
+            onSizeChanged: updateInitialSizes();
+
+            onStateWidthChanged:{
+                if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/)
+                    width = stateWidth;
+            }
+
+            onStateHeightChanged:{
+                if(!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/)
+                    height = stateHeight;
+            }
+
+            onVerticalChanged: updateInitialSizes();
+
+            Component.onCompleted: {
+                updateInitialSizes();
+
+                if (indicator) {
+                    indicator.onCurrentIconSizeChanged.connect(updateInitialSizes);
+                }
+            }
+
+            Component.onDestruction: {
+                if (indicator) {
+                    indicator.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
+                }
+            }
+
+            NumberAnimation{
+                id: activeAndReverseAnimation
+                target: firstPoint
+                property: plasmoid.formFactor === PlasmaCore.Types.Vertical ? "height" : "width"
+                to: indicator.hasActive && activeStyle === 0 /*Line*/
+                    ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : root.size
+                duration: firstPoint.animationTime
+                easing.type: Easing.InQuad
+
+                onStopped: firstPoint.updateInitialSizes()
             }
         }
 
-        states: [
-            State {
-                name: "left"
-                when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.RightEdge && reversedEnabled))
+        Item{
+            id:spacer
+            width: secondPoint.visible ? 0.5*root.size : 0
+            height: secondPoint.visible ? 0.5*root.size : 0
+        }
 
-                AnchorChanges {
-                    target: mainIndicatorElement
-                    anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
-                        top:undefined; bottom:undefined; left:parent.left; right:undefined;}
-                }
-                PropertyChanges{
-                    target: mainIndicatorElement
-                    anchors.leftMargin: root.screenEdgeMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "bottom"
-                when: (plasmoid.location === PlasmaCore.Types.Floating ||
-                       (plasmoid.location === PlasmaCore.Types.BottomEdge && !reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.TopEdge && reversedEnabled))
+        LatteComponents.GlowPoint{
+            id:secondPoint
+            width: visible ? root.size : 0
+            height: width
 
-                AnchorChanges {
-                    target: mainIndicatorElement
-                    anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
-                        top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
-                }
-                PropertyChanges{
-                    target: mainIndicatorElement
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.screenEdgeMargin;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "top"
-                when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.BottomEdge && reversedEnabled))
+            size: root.size
+            glow3D: glow3D
+            animation: Math.max(1.65*3*LatteCore.Environment.longDuration,indicator.durationTime*3*LatteCore.Environment.longDuration)
+            location: plasmoid.location
+            glowOpacity: root.glowOpacity
+            contrastColor: indicator.shadowColor
+            showBorder: glowEnabled && glow3D
 
-                AnchorChanges {
-                    target: mainIndicatorElement
-                    anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
-                        top:parent.top; bottom:undefined; left:undefined; right:undefined;}
-                }
-                PropertyChanges{
-                    target: mainIndicatorElement
-                    anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.screenEdgeMargin;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            },
-            State {
-                name: "right"
-                when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !reversedEnabled) ||
-                       (plasmoid.location === PlasmaCore.Types.LeftEdge && reversedEnabled))
+            basicColor: state2Color
+            roundCorners: true
+            showGlow: glowEnabled  && glowApplyTo === 2 /*All*/
+            visible:  ( indicator.isGroup && ((extraDotOnActive && activeStyle === 0) /*Line*/
+                                              || activeStyle === 1 /*Dot*/
+                                              || !indicator.hasActive) ) ? true: false
 
-                AnchorChanges {
-                    target: mainIndicatorElement
-                    anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
-                        top:undefined; bottom:undefined; left:undefined; right:parent.right;}
-                }
-                PropertyChanges{
-                    target: mainIndicatorElement
-                    anchors.leftMargin: 0;    anchors.rightMargin: root.screenEdgeMargin;     anchors.topMargin:0;    anchors.bottomMargin:0;
-                    anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
-                }
-            }
-        ]
+            //when there is no active window
+            property color state1Color: indicator.hasShown ? root.isActiveColor : root.minimizedColor
+            //when there is active window
+            property color state2Color: indicator.hasMinimized ? root.minimizedColor : root.isActiveColor
+        }
     }
+
+    states: [
+        State {
+            name: "left"
+            when: ((plasmoid.location === PlasmaCore.Types.LeftEdge && !reversedEnabled) ||
+                   (plasmoid.location === PlasmaCore.Types.RightEdge && reversedEnabled))
+
+            AnchorChanges {
+                target: grid
+                anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
+                    top:undefined; bottom:undefined; left:parent.left; right:undefined;}
+            }
+            PropertyChanges{
+                target: grid
+                anchors.leftMargin: root.screenEdgeMargin + 1;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
+        },
+        State {
+            name: "bottom"
+            when: (plasmoid.location === PlasmaCore.Types.Floating ||
+                   (plasmoid.location === PlasmaCore.Types.BottomEdge && !reversedEnabled) ||
+                   (plasmoid.location === PlasmaCore.Types.TopEdge && reversedEnabled))
+
+            AnchorChanges {
+                target: grid
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:undefined; bottom:parent.bottom; left:undefined; right:undefined;}
+            }
+            PropertyChanges{
+                target: grid
+                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: root.screenEdgeMargin + 1;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
+        },
+        State {
+            name: "top"
+            when: ((plasmoid.location === PlasmaCore.Types.TopEdge && !reversedEnabled) ||
+                   (plasmoid.location === PlasmaCore.Types.BottomEdge && reversedEnabled))
+
+            AnchorChanges {
+                target: grid
+                anchors{ verticalCenter:undefined; horizontalCenter:parent.horizontalCenter;
+                    top:parent.top; bottom:undefined; left:undefined; right:undefined;}
+            }
+            PropertyChanges{
+                target: grid
+                anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: root.screenEdgeMargin + 1;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
+        },
+        State {
+            name: "right"
+            when: ((plasmoid.location === PlasmaCore.Types.RightEdge && !reversedEnabled) ||
+                   (plasmoid.location === PlasmaCore.Types.LeftEdge && reversedEnabled))
+
+            AnchorChanges {
+                target: grid
+                anchors{ verticalCenter:parent.verticalCenter; horizontalCenter:undefined;
+                    top:undefined; bottom:undefined; left:undefined; right:parent.right;}
+            }
+            PropertyChanges{
+                target: grid
+                anchors.leftMargin: 0;    anchors.rightMargin: root.screenEdgeMargin + 1;     anchors.topMargin:0;    anchors.bottomMargin:0;
+                anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
+            }
+        }
+    ]
 }// number of windows indicator
 
