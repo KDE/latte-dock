@@ -52,9 +52,13 @@ Item{
         }
 
         if (appletItem.isAutoFillApplet) {
+            if (appletItem.inConfigureAppletsDragging && root.dragOverlay.currentApplet === appletItem) {
+                return root.dragOverlay.draggedPlaceHolder.length;
+            }
+
             //! dont miss 1pixel gap when the two internal splitters are met inConfigure and Justify mode
             //! a good example is a big vertical right sidebar to observe that gap
-            if (appletItem.layouter.maxMetricsInHigherPriority) {
+            if (appletItem.layouter.maxMetricsInHigherPriority) {                
                 return isInternalViewSplitter ? appletItem.maxAutoFillLength + 1 : appletItem.maxAutoFillLength;
             }
 

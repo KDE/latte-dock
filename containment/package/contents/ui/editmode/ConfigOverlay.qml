@@ -52,6 +52,7 @@ MouseArea {
     property bool isResizingRight: false
     property Item currentApplet
     property Item previousCurrentApplet
+    readonly property alias draggedPlaceHolder: placeHolder
 
     property Item currentHoveredLayout: {
         if (placeHolder.parent !== configurationArea) {
@@ -286,24 +287,9 @@ MouseArea {
     Item {
         id: placeHolder
         visible: configurationArea.pressed
-        Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
-        Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
 
         readonly property bool isPlaceHolder: true
-    }
-
-    Binding {
-        target: placeHolder
-        property: "width"
-        when: currentApplet
-        value: currentApplet ? currentApplet.width : 0
-    }
-
-    Binding {
-        target: placeHolder
-        property: "width"
-        when: currentApplet
-        value: currentApplet ? currentApplet.height : 0
+        readonly property int length: root.isVertical ? height : width
     }
 
     //Because of the animations for the applets the handler can not catch up to
