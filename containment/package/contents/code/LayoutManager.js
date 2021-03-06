@@ -24,7 +24,6 @@ var layoutE;
 var root;
 var metrics;
 var plasmoid;
-var lastSpacer;
 
 var childFoundId = 11;
 var inRestore=false;

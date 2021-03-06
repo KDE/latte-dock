@@ -149,7 +149,7 @@ MouseArea {
         } else {
             var item = hoveredItem(mouse.x, mouse.y);
 
-            if (root.dragOverlay && item && item !== lastSpacer) {
+            if (root.dragOverlay) {
                 root.dragOverlay.currentApplet = item;
             } else {
                 currentApplet = null;

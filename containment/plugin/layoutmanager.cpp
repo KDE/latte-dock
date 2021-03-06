@@ -600,13 +600,19 @@ void LayoutManager::addJustifySplittersInMainLayout()
     splitterItem->setParentItem(m_mainLayout);
 
     if (size>0 && splitterIndex>=0) {
-        int validindex = (splitterIndex < size) ? splitterIndex : size-1;
+        bool atend = (splitterIndex >= size);
+        int validindex = atend ? size-1 : splitterIndex;
         QQuickItem *currentitem = m_mainLayout->childItems()[validindex];
-        splitterItem->stackAfter(currentitem);
+
+        if (atend) {
+            splitterItem->stackAfter(currentitem);
+        } else {
+            splitterItem->stackBefore(currentitem);
+        }
     } else if (size>0) {
         //! add in first position
         QQuickItem *currentitem = m_mainLayout->childItems()[0];
-        splitterItem->stackAfter(currentitem);
+        splitterItem->stackBefore(currentitem);
     }
 
     //! Second Splitter
@@ -619,9 +625,15 @@ void LayoutManager::addJustifySplittersInMainLayout()
     splitterItem2->setParentItem(m_mainLayout);
 
     if (size2>0 && splitterIndex2>=0) {
-        int validindex2 = (splitterIndex2 < size2) ? splitterIndex2 : size2-1;
+        bool atend = (splitterIndex2 >= size2);
+        int validindex2 = atend ? size2-1 : splitterIndex2;
         QQuickItem *currentitem2 = m_mainLayout->childItems()[validindex2];
-        splitterItem2->stackAfter(currentitem2);
+
+        if (atend) {
+            splitterItem2->stackAfter(currentitem2);
+        } else {
+            splitterItem2->stackBefore(currentitem2);
+        }
     } else if (size2>1){
         //! add in last position
         QQuickItem *currentitem2 = m_mainLayout->childItems()[size2-1];

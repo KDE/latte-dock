@@ -369,7 +369,7 @@ Item {
 
         for (var i=tempLength-1; i>=0; --i) {
             var applet = layoutsContainer.mainLayout.children[i];
-            if (applet && (applet === dndSpacer || applet === lastSpacer ||  applet.isInternalViewSplitter))
+            if (applet && (applet === dndSpacer ||  applet.isInternalViewSplitter))
                 count1--;
         }
 
@@ -378,7 +378,7 @@ Item {
 
         for (var i=tempLength-1; i>=0; --i) {
             var applet = layoutsContainer.endLayout.children[i];
-            if (applet && (applet === dndSpacer || applet === lastSpacer  || applet.isInternalViewSplitter))
+            if (applet && (applet === dndSpacer || applet.isInternalViewSplitter))
                 count2--;
         }
 
@@ -545,7 +545,6 @@ Item {
         LayoutManager.layout = layoutsContainer.mainLayout;
         LayoutManager.layoutS = layoutsContainer.startLayout;
         LayoutManager.layoutE = layoutsContainer.endLayout;
-        LayoutManager.lastSpacer = lastSpacer;
         LayoutManager.metrics = metrics;
 
         upgrader_v010_alignment();
@@ -601,9 +600,6 @@ Item {
                 flexibleFound = true;
                 break
             }
-        }
-        if (!flexibleFound) {
-            lastSpacer.parent = layoutsContainer.mainLayout;
         }
 
         fastLayoutManager.save();
@@ -661,10 +657,6 @@ Item {
             // Fall through to adding at the end of main layout.
             appletItem.parent = layoutsContainer.mainLayout;
         }
-
-        //Important, removes the first children of the layoutsContainer.mainLayout after the first applet has been added
-        lastSpacer.parent = root;
-        updateIndexes();
     }
 
     function addInternalViewSplittersInMainLayout(){
@@ -873,22 +865,6 @@ Item {
     Loader{
         active: debug.windowEnabled
         sourceComponent: Debugger.DebugWindow{}
-    }
-
-    Item {
-        id: lastSpacer
-        parent: layoutsContainer.mainLayout
-
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        z:10
-
-        Rectangle{
-            anchors.fill: parent
-            color: "transparent"
-            border.color: "yellow"
-            border.width: 1
-        }
     }
 
     Loader{
