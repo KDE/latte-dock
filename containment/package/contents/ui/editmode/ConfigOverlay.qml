@@ -206,10 +206,10 @@ MouseArea {
 
         lastX = mouse.x;
         lastY = mouse.y;
-        placeHolder.width = currentApplet.width;
-        placeHolder.height = currentApplet.height;
-        handle.width = currentApplet.width;
-        handle.height = currentApplet.height;
+        placeHolder.width = root.isVertical ? currentApplet.width : Math.min(root.maxLength / 2, currentApplet.width);
+        placeHolder.height = !root.isVertical? currentApplet.height : Math.min(root.maxLength / 2, currentApplet.height);
+        handle.width = placeHolder.width;
+        handle.height = placeHolder.height;
         fastLayoutManager.insertBefore(currentApplet, placeHolder);
         currentApplet.parent = root;
         currentApplet.x = root.isHorizontal ? lastX - currentApplet.width/2 : lastX-appletX;
