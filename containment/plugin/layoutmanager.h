@@ -92,6 +92,7 @@ public slots:
     Q_INVOKABLE void save();
     Q_INVOKABLE void saveOptions();
 
+    Q_INVOKABLE void addAppletItem(QObject *applet, int x, int y);
     Q_INVOKABLE void removeAppletItem(QObject *applet);
 
     Q_INVOKABLE void addJustifySplittersInMainLayout();
@@ -118,7 +119,6 @@ signals:
 
 private slots:
     void onRootItemChanged();
-
     void destroyJustifySplitters();
 
 private:
@@ -132,6 +132,9 @@ private:
     void setAppletOrder(const QString &order);
     void setLockedZoomApplets(const QString &applets);
     void setUserBlocksColorizingApplets(const QString &applets);
+
+    void reorderSplitterInStartLayout();
+    void reorderSplitterInEndLayout();
 
     bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);

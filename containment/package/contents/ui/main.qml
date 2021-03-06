@@ -571,17 +571,8 @@ Item {
         }
     }
 
-    Containment.onAppletAdded: {
-        var appletItem = createAppletItem(applet);
-        addAppletItemInLayout(appletItem, x, y);
-        console.log(applet.pluginName);
-        fastLayoutManager.save();
-    }
-
-    Containment.onAppletRemoved: {
-        fastLayoutManager.removeAppletItem(applet);
-        fastLayoutManager.save();
-    }
+    Containment.onAppletAdded: fastLayoutManager.addAppletItem(applet, x, y);
+    Containment.onAppletRemoved: fastLayoutManager.removeAppletItem(applet);
 
     Plasmoid.onUserConfiguringChanged: {
         if (plasmoid.userConfiguring) {
@@ -618,23 +609,6 @@ Item {
         splitter.internalSplitterId = internalViewSplittersCount()+1;
         splitter.visible = true;
         return splitter;
-    }
-
-    function addAppletItemInLayout(appletItem, x, y){
-        if ( (dndSpacer.parent === layoutsContainer.mainLayout)
-                || (dndSpacer.parent === layoutsContainer.startLayout)
-                || (dndSpacer.parent===layoutsContainer.endLayout)) {
-            // Is there a DND placeholder? Replace it!
-            fastLayoutManager.insertBefore(dndSpacer, appletItem);
-            dndSpacer.parent = root;
-            return;
-        } else if (x >= 0 && y >= 0) {
-            // If the provided position is valid, use it.
-            fastLayoutManager.insertAtCoordinates(appletItem, x , y);
-        } else {
-            // Fall through to adding at the end of main layout.
-            appletItem.parent = layoutsContainer.mainLayout;
-        }
     }
 
     //! it is used in order to check the right click position
