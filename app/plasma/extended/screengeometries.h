@@ -25,6 +25,7 @@
 #include <coretypes.h>
 
 // Qt
+#include <QDBusServiceWatcher>
 #include <QHash>
 #include <QObject>
 #include <QTimer>
@@ -77,6 +78,8 @@ private:
 
     QHash<QString, QRect> m_lastAvailableRect;
     QHash<QString, QRegion> m_lastAvailableRegion;
+
+    QDBusServiceWatcher *m_plasmaServiceWatcher{nullptr};
 };
 
 }

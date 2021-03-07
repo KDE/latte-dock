@@ -43,11 +43,12 @@ namespace PlasmaExtended {
 
 ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     : QObject(parent),
-      m_corona(parent)
+      m_corona(parent),
+      m_plasmaServiceWatcher(new QDBusServiceWatcher(this))
 {
     qDBusRegisterMetaType<QList<QRect>>();
 
-    m_startupInitTimer.setInterval(5000);
+    m_startupInitTimer.setInterval(2500);
     m_startupInitTimer.setSingleShot(true);
     connect(&m_startupInitTimer, &QTimer::timeout, this, &ScreenGeometries::init);
 
@@ -56,6 +57,14 @@ ScreenGeometries::ScreenGeometries(Latte::Corona *parent)
     connect(&m_publishTimer, &QTimer::timeout, this, &ScreenGeometries::updateGeometries);
 
     m_startupInitTimer.start();
+
+    m_plasmaServiceWatcher->setConnection(QDBusConnection::sessionBus());
+    m_plasmaServiceWatcher->setWatchedServices(QStringList({PLASMASERVICE}));
+    connect(m_plasmaServiceWatcher, &QDBusServiceWatcher::serviceRegistered, this, [this](const QString & serviceName) {
+        if (serviceName == PLASMASERVICE && !m_plasmaInterfaceAvailable) {
+            init();
+        }
+    });
 }
 
 ScreenGeometries::~ScreenGeometries()
