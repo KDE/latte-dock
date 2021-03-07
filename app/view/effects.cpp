@@ -68,7 +68,13 @@ void Effects::init()
     connect(m_view, &QQuickWindow::widthChanged, this, &Effects::updateMask);
     connect(m_view, &QQuickWindow::heightChanged, this, &Effects::updateMask);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateMask);
-    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, &Effects::updateMask);
+    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, [&]() {
+        if (!KWindowSystem::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
+            setMask(m_rect);
+        }
+
+        updateMask();
+    });
 
     connect(this, &Effects::rectChanged, this, [&]() {
         if (!KWindowSystem::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
