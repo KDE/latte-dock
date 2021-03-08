@@ -664,7 +664,7 @@ Item{
                     inputGeometry.y = latteView.localGeometry.y;
 
                     inputGeometry.width = inputThickness;
-                    inputGeometry.height = latteView.effects.rect.height;
+                    inputGeometry.height = latteView.localGeometry.height;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                     inputGeometry.x = root.width - inputThickness;
                     inputGeometry.y = latteView.localGeometry.y;
