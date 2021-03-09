@@ -369,7 +369,8 @@ Item {
 
             if (freeSpaceAfterStart > 0 && freeSpaceBeforeEnd>0) {
                 if (mainLayout.fillApplets > 0) {
-                    sizePerAppletMain = Math.max(0, (max_length - mainLayout.sizeWithNoFillApplets - startLayout.grid.length - endLayout.grid.length) /mainLayout.fillApplets);
+                    var minimumHalfAppletSizePossible = Math.min(freeSpaceAfterStart, freeSpaceBeforeEnd);
+                    sizePerAppletMain = Math.max(0, (minimumHalfAppletSizePossible * 2)/mainLayout.fillApplets);
                 }
 
                 computeStep2ForLayout(mainLayout.grid, sizePerAppletMain, noMain, inMaxAutoFillCalculations); //default behavior
