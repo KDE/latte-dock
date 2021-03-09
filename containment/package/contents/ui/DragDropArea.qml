@@ -201,8 +201,8 @@ DragDrop.DropArea {
 
         dndSpacer.opacity = 0;
 
-        if (dragInfo.isPlasmoid && root.myView.alignment === LatteCore.Types.Justify) {
-            root.moveAppletsBasedOnJustifyAlignment();
-        }
+       // if (dragInfo.isPlasmoid && root.myView.alignment === LatteCore.Types.Justify) {
+       //     fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
+       // }
     }
 }

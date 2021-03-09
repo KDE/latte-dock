@@ -342,10 +342,6 @@ Item {
 
         // console.log(" S ::: " +startLayout.fillApplets + " _ " + sizePerAppletStart + " _ " + noStart);
 
-        if (mainLayout.fillApplets > 0) {
-            computeStep2ForLayout(mainLayout.grid, sizePerAppletMain, noMain, inMaxAutoFillCalculations); //default behavior
-        }
-
         if (startLayout.fillApplets > 0) {
             if (mainLayout.fillApplets > 0) {
                 //! finally adjust ALL startLayout fill applets size in mainlayouts final length
@@ -364,6 +360,20 @@ Item {
             }
 
             computeStep2ForLayout(endLayout.grid, sizePerAppletEnd, noEnd, inMaxAutoFillCalculations);
+        }
+
+        if (mainLayout.fillApplets > 0) {
+            var halfRemained = (max_length/2) - (mainLayout.grid.length/2);
+            var freeSpaceAfterStart = halfRemained - startLayout.grid.length;
+            var freeSpaceBeforeEnd = halfRemained - endLayout.grid.length;
+
+            if (freeSpaceAfterStart > 0 && freeSpaceBeforeEnd>0) {
+                if (mainLayout.fillApplets > 0) {
+                    sizePerAppletMain = Math.max(0, (max_length - mainLayout.sizeWithNoFillApplets - startLayout.grid.length - endLayout.grid.length) /mainLayout.fillApplets);
+                }
+
+                computeStep2ForLayout(mainLayout.grid, sizePerAppletMain, noMain, inMaxAutoFillCalculations); //default behavior
+            }
         }
     }
 
