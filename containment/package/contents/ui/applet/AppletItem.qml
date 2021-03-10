@@ -52,8 +52,12 @@ Item {
     property bool animationsEnabled: true
     property bool indexerIsSupported: communicator.indexerIsSupported
     property bool parabolicEffectIsSupported: true
-    property bool canShowAppletNumberBadge: !indexerIsSupported && !isSeparator && !isHidden
-                                            && !isSpacer && !isInternalViewSplitter
+    property bool canShowAppletNumberBadge: !indexerIsSupported
+                                            && !isSeparator
+                                            && !isMarginsAreaSeparator
+                                            && !isHidden
+                                            && !isSpacer
+                                            && !isInternalViewSplitter
 
     readonly property bool canFillScreenEdge: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints")

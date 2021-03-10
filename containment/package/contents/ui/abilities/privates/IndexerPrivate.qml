@@ -233,7 +233,9 @@ AbilityDefinition.Indexer {
         for (var i=0; i<layout.children.length; ++i){
             var appletItem = layout.children[i];
             if (appletItem && appletItem.index<actualIndex) {
-                if ((separators.indexOf(appletItem.index) >= 0) || (hidden.indexOf(appletItem.index) >= 0)) {
+                if ((separators.indexOf(appletItem.index) >= 0)
+                        || (marginsAreaSeparators.indexOf(appletItem.index)>=0)
+                        || (hidden.indexOf(appletItem.index) >= 0)) {
                     //! ignore hidden and separators applets
                     continue;
                 } else if (!appletItem.communicator || !appletItem.communicator.indexerIsSupported) {
