@@ -446,6 +446,11 @@ void LayoutManager::save()
             }
 
             QObject *applet = appletVariant.value<QObject *>();
+
+            if (!applet) {
+                continue;
+            }
+
             uint id = applet->property("id").toUInt();
 
             if (id>0) {
@@ -466,6 +471,11 @@ void LayoutManager::save()
             }
 
             QObject *applet = appletVariant.value<QObject *>();
+
+            if (!applet) {
+                continue;
+            }
+
             uint id = applet->property("id").toUInt();
 
             if (id>0) {
@@ -486,6 +496,11 @@ void LayoutManager::save()
             }
 
             QObject *applet = appletVariant.value<QObject *>();
+
+            if (!applet) {
+                continue;
+            }
+
             uint id = applet->property("id").toUInt();
 
             if (id>0) {
