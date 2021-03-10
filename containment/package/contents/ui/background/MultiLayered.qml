@@ -198,8 +198,8 @@ BackgroundProperties{
         }
 
         return plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
-                    (plasmoid.configuration.backgroundRadius/100) * (solidBackground.height/2) :
-                    (plasmoid.configuration.backgroundRadius/100) * (solidBackground.width/2)
+                    (plasmoid.configuration.backgroundRadius/100) * solidBackground.height :
+                    (plasmoid.configuration.backgroundRadius/100) * solidBackground.width
     }
     readonly property int customShadow: {
         if (customDefShadowIsEnabled && themeExtendedBackground) {

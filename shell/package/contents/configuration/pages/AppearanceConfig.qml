@@ -923,7 +923,7 @@ PlasmaComponents.Page {
 
                         value: plasmoid.configuration.backgroundRadius
                         from: -1
-                        to: 100
+                        to: 50
                         stepSize: 1
                         wheelEnabled: false
 
