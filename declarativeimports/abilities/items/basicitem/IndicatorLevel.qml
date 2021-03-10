@@ -39,8 +39,12 @@ AbilityItem.IndicatorLevel {
 
     level.isDrawn: level.indicator && level.indicator.host && level.indicator.host.isEnabled && !abilityItem.isSeparator && !abilityItem.isHidden
 
-    readonly property real length: abilityItem.parabolicItem.length - 2*abilityItem.parabolicItem.zoom*abilityItem.abilities.metrics.margin.length
-    readonly property real thickness: abilityItem.parabolicItem.thickness
+    readonly property real length: abilityItem.preserveIndicatorInInitialPosition ?
+                                       abilityItem.abilities.metrics.iconSize + abilityItem.abilities.metrics.totals.lengthPaddings :
+                                       abilityItem.parabolicItem.length - 2*abilityItem.parabolicItem.zoom*abilityItem.abilities.metrics.margin.length
+    readonly property real thickness: abilityItem.preserveIndicatorInInitialPosition ?
+                                          abilityItem.abilities.metrics.thickness :
+                                          abilityItem.parabolicItem.thickness
 
     Connections {
         target: abilityItem

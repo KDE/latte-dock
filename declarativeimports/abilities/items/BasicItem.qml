@@ -98,6 +98,7 @@ Item{
     property bool isSeparatorInRealLength: false
     property bool isSeparatorHidden: false
     readonly property bool isSeparatorVisible: isSeparator && !isSeparatorHidden && !tailItemIsSeparator
+    property bool preserveIndicatorInInitialPosition: false
 
     property bool containsMouse: false
 

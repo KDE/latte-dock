@@ -63,12 +63,14 @@ AbilityItem.BasicItem {
         return isWindow ? model.display : model.AppName;
     }
 
+    preserveIndicatorInInitialPosition: inBouncingAnimation || inAttentionAnimation || inNewWindowAnimation
+
     parabolicItem.isParabolicEventBlocked: root.dragSource
                                            || !hoverEnabled
                                            || !taskItem.abilities.myView.isShownFully
                                            || inAnimation
                                            || (inBlockingAnimation && !(inAttentionAnimation||inFastRestoreAnimation))
-    parabolicItem.isUpdatingOnlySpacers: inAttentionAnimation || inBouncingAnimation
+    parabolicItem.isUpdatingOnlySpacers: inAttentionAnimation || inBouncingAnimation    
 
     property alias hoverEnabled: taskMouseArea.hoverEnabled
     property alias pressed: taskMouseArea.pressed
