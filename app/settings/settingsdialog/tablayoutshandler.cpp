@@ -343,7 +343,8 @@ void TabLayouts::switchLayout()
         return;
     }
 
-    m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::SingleLayout);
+    m_layoutsController->setOriginalInMultipleMode(false);
+    m_corona->layoutsManager()->switchToLayout(selectedLayoutOriginal.name, MemoryUsage::SingleLayout);    
 
     updatePerLayoutButtonsState();
 }
