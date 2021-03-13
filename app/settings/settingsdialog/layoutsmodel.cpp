@@ -861,7 +861,6 @@ void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
     }
 
     o_inMultipleMode = inmultiple;
-    emit inMultipleModeChanged();
 }
 
 void Layouts::setOriginalData(Latte::Data::LayoutsTable &data)
