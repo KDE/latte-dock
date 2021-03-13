@@ -181,7 +181,7 @@ private:
     QPointer<Latte::View> m_view;
     QPointer<Latte::Corona> m_corona;
 
-    QString m_screenToFollowId;
+    QString m_screenNameToFollow;
     QPointer<QScreen> m_screenToFollow;
     QTimer m_screenSyncTimer;
     QTimer m_syncGeometryTimer;

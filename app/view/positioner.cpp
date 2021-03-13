@@ -252,7 +252,7 @@ int Positioner::currentScreenId() const
     auto *latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
 
     if (latteCorona) {
-        return latteCorona->screenPool()->id(m_screenToFollowId);
+        return latteCorona->screenPool()->id(m_screenNameToFollow);
     }
 
     return -1;
@@ -269,7 +269,7 @@ Latte::WindowSystem::WindowId Positioner::trackedWindowId()
 
 QString Positioner::currentScreenName() const
 {
-    return m_screenToFollowId;
+    return m_screenNameToFollow;
 }
 
 void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
@@ -358,8 +358,8 @@ bool Positioner::setCurrentScreen(const QString id)
 }
 
 //! this function updates the dock's associated screen.
-//! updateScreenId = true, update also the m_screenToFollowId
-//! updateScreenId = false, do not update the m_screenToFollowId
+//! updateScreenId = true, update also the m_screenNameToFollow
+//! updateScreenId = false, do not update the m_screenNameToFollow
 //! that way an explicit dock can be shown in another screen when
 //! there isnt a tasks dock running in the system and for that
 //! dock its first origin screen is stored and that way when
@@ -376,7 +376,7 @@ void Positioner::setScreenToFollow(QScreen *scr, bool updateScreenId)
     m_screenToFollow = scr;
 
     if (updateScreenId) {
-        m_screenToFollowId = scr->name();
+        m_screenNameToFollow = scr->name();
     }
 
     qDebug() << "adapting to screen...";
@@ -412,7 +412,7 @@ void Positioner::reconsiderScreen()
 
     //!check if the associated screen is running
     for (const auto scr : qGuiApp->screens()) {
-        if (m_screenToFollowId == scr->name()
+        if (m_screenNameToFollow == scr->name()
                 || (m_view->onPrimary() && scr == qGuiApp->primaryScreen())) {
             screenExists = true;
         }
@@ -421,7 +421,7 @@ void Positioner::reconsiderScreen()
     qDebug() << "dock screen exists  ::: " << screenExists;
 
     //! 1.a primary dock must be always on the primary screen
-    if (m_view->onPrimary() && (m_screenToFollowId != qGuiApp->primaryScreen()->name()
+    if (m_view->onPrimary() && (m_screenNameToFollow != qGuiApp->primaryScreen()->name()
                                 || m_screenToFollow != qGuiApp->primaryScreen()
                                 || m_view->screen() != qGuiApp->primaryScreen())) {
         //! case 1
@@ -432,7 +432,7 @@ void Positioner::reconsiderScreen()
         //! there are cases that window manager misplaces the dock, this function
         //! ensures that this dock will return at its correct screen
         for (const auto scr : qGuiApp->screens()) {
-            if (scr && scr->name() == m_screenToFollowId) {
+            if (scr && scr->name() == m_screenNameToFollow) {
                 qDebug() << "reached case 2: updating the explicit screen for dock...";
                 setScreenToFollow(scr);
                 break;
