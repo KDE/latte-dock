@@ -226,7 +226,9 @@ void ScreenPool::save()
 
     for (int i=0; i<m_screensTable.rowCount(); ++i) {
         Data::Screen screenRecord = m_screensTable[i];
-        m_configGroup.writeEntry(screenRecord.id, screenRecord.serialize());
+        if (screenRecord.id.toInt() >= 10) {
+            m_configGroup.writeEntry(screenRecord.id, screenRecord.serialize());
+        }
     }
 
     //write to disck every 10 seconds at most
@@ -246,7 +248,7 @@ void ScreenPool::insertScreenMapping(const QString &connector)
     qDebug() << "add connector..." << connector;
 
     Data::Screen screenRecord;
-    screenRecord.id = firstAvailableId();
+    screenRecord.id = QString::number(firstAvailableId());
     screenRecord.name = connector;
 
     //! update screen geometry
