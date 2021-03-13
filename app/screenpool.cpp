@@ -74,6 +74,10 @@ void ScreenPool::load()
 
     //restore the known ids to connector mappings
     for (const QString &key : m_configGroup.keyList()) {
+        if (key.toInt() <= 0) {
+            continue;
+        }
+
         QString serialized = m_configGroup.readEntry(key, QString());
 
         Data::Screen screenRecord(key, serialized);
