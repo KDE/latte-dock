@@ -154,12 +154,12 @@ void TabLayouts::initLayoutMenu()
 
     connect(m_corona->templatesManager(), &Latte::Templates::Manager::layoutTemplatesChanged, this, &TabLayouts::initLayoutTemplatesSubMenu);
 
-    m_copyLayoutAction = m_layoutMenu->addAction(i18nc("copy layout", "&Copy"));
-    m_copyLayoutAction->setToolTip(i18n("Copy selected layout"));
-    m_copyLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));
-    m_copyLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-    connectActionWithButton(m_ui->copyButton, m_copyLayoutAction);
-    connect(m_copyLayoutAction, &QAction::triggered, this, &TabLayouts::copyLayout);
+    m_duplicateLayoutAction = m_layoutMenu->addAction(i18nc("duplicate layout", "&Duplicate"));
+    m_duplicateLayoutAction->setToolTip(i18n("Duplicate selected layout"));
+    m_duplicateLayoutAction->setIcon(QIcon::fromTheme("edit-copy"));
+    m_duplicateLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    connectActionWithButton(m_ui->duplicateButton, m_duplicateLayoutAction);
+    connect(m_duplicateLayoutAction, &QAction::triggered, this, &TabLayouts::duplicateLayout);
 
     m_removeLayoutAction = m_layoutMenu->addAction(i18nc("remove layout", "Remove"));
     m_removeLayoutAction->setToolTip(i18n("Remove selected layout"));
@@ -417,15 +417,15 @@ void TabLayouts::newLayout(const QString &templateName)
     }
 }
 
-void TabLayouts::copyLayout()
+void TabLayouts::duplicateLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!isCurrentTab() || !m_copyLayoutAction->isEnabled()) {
+    if (!isCurrentTab() || !m_duplicateLayoutAction->isEnabled()) {
         return;
     }
 
-    m_layoutsController->copySelectedLayout();
+    m_layoutsController->duplicateSelectedLayout();
 }
 
 void TabLayouts::installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin)

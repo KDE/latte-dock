@@ -549,7 +549,7 @@ const Latte::Data::Layout Layouts::addLayoutByText(QString rawLayoutText)
     return newLayout;
 }
 
-void Layouts::copySelectedLayout()
+void Layouts::duplicateSelectedLayout()
 {
     int row = m_view->currentIndex().row();
 
@@ -562,7 +562,7 @@ void Layouts::copySelectedLayout()
     selectedLayoutOriginal = selectedLayoutOriginal.isEmpty() ? selectedLayoutCurrent : selectedLayoutOriginal;
 
 
-    //! Update original layout before copying if this layout is active
+    //! Update original layout before duplicating if this layout is active
     if (m_handler->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         Latte::CentralLayout *central = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(selectedLayoutOriginal.name);
         if (central) {

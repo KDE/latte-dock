@@ -241,9 +241,9 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="copyButton">
+               <widget class="QPushButton" name="duplicateButton">
                 <property name="text">
-                 <string>Copy</string>
+                 <string>Duplicate</string>
                 </property>
                 <property name="icon">
                  <iconset theme="edit-copy">
@@ -510,7 +510,7 @@
             <x>0</x>
             <y>0</y>
             <width>953</width>
-            <height>375</height>
+            <height>383</height>
            </rect>
           </property>
           <property name="sizePolicy">

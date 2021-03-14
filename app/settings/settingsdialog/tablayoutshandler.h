@@ -97,8 +97,8 @@ private slots:
     void loadConfig();
     void saveConfig();
 
-    void copyLayout();
     void downloadLayout();
+    void duplicateLayout();
     void switchLayout();
     void importLayout();
     void exportLayoutForBackup();
@@ -143,7 +143,7 @@ private:
     QAction *m_switchLayoutAction{nullptr};
     QAction *m_activitiesManagerAction{nullptr};
     QAction *m_newLayoutAction{nullptr};
-    QAction *m_copyLayoutAction{nullptr};
+    QAction *m_duplicateLayoutAction{nullptr};
     QAction *m_enabledLayoutAction{nullptr};
     QAction *m_readOnlyLayoutAction{nullptr};
     QAction *m_removeLayoutAction{nullptr};

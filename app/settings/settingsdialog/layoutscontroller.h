@@ -94,7 +94,7 @@ public:
 
     void setOriginalInMultipleMode(const bool &inmultiple);
 
-    void copySelectedLayout();
+    void duplicateSelectedLayout();
     const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
     const Latte::Data::Layout addLayoutByText(QString rawLayoutText);
 
