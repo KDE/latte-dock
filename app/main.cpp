@@ -34,6 +34,8 @@
 #include <QQuickWindow>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QDBusConnection>
+#include <QDBusInterface>
 #include <QDir>
 #include <QLockFile>
 #include <QSharedMemory>
@@ -233,6 +235,12 @@ int main(int argc, char **argv)
     }
 
     if (!lockFile.tryLock(timeout)) {
+        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+        if (iface.isValid()) {
+            // LayoutPage = 0
+            iface.call("showSettingsWindow", 0);
+        }
+
         qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
         qGuiApp->exit();
         return 0;
