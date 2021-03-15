@@ -52,29 +52,29 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog)
-    : Generic(parentDialog),
-      m_parentDialog(parentDialog),
-      m_ui(m_parentDialog->ui()),
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog)
+    : Generic(dialog),
+      m_dialog(dialog),
+      m_ui(m_dialog->ui()),
       m_appletsModel(new Model::Applets(this))
 {
     init();
 }
 
-ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, const QString &layoutName, const QString &layoutId)
-    : ExportTemplateHandler(parentDialog)
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const QString &layoutName, const QString &layoutId)
+    : ExportTemplateHandler(dialog)
 {
     loadLayoutApplets(layoutName, layoutId);
-    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(layoutName + ".layout.latte");
+    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(layoutName + ".layout.latte");
     setFilepath(o_filepath);
 }
 
-ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view)
-    : ExportTemplateHandler(parentDialog)
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, Latte::View *view)
+    : ExportTemplateHandler(dialog)
 {
     QString type = (view->type() == Latte::Types::PanelView ? i18n("Panel") : i18n("Dock"));
     loadViewApplets(view);
-    o_filepath = parentDialog->corona()->templatesManager()->proposedTemplateAbsolutePath(view->layout()->name() + " " + type + ".view.latte");
+    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(view->layout()->name() + " " + type + ".view.latte");
     setFilepath(o_filepath);
 }
 
@@ -110,7 +110,7 @@ void ExportTemplateHandler::init()
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ExportTemplateHandler::reset);
 
     connect(m_ui->chooseBtn, &QPushButton::clicked, this, &ExportTemplateHandler::chooseFileDialog);
-    connect(m_parentDialog->exportButton(), &QPushButton::clicked, this, &ExportTemplateHandler::onExport);
+    connect(m_dialog->exportButton(), &QPushButton::clicked, this, &ExportTemplateHandler::onExport);
 
     //! Labels
     connect(this, &ExportTemplateHandler::filepathChanged, this, &ExportTemplateHandler::onFilepathChanged);
@@ -131,7 +131,7 @@ void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const Q
     m_originLayoutFilePath = layoutId;
     Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
     m_appletsModel->setData(c_data);
-    m_parentDialog->setWindowTitle(i18n("Export Layout Template"));
+    m_dialog->setWindowTitle(i18n("Export Layout Template"));
 }
 
 void ExportTemplateHandler::loadViewApplets(Latte::View *view)
@@ -139,7 +139,7 @@ void ExportTemplateHandler::loadViewApplets(Latte::View *view)
     m_originView = view;
     Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
     m_appletsModel->setData(c_data);
-    m_parentDialog->setWindowTitle(i18n("Export View Template"));
+    m_dialog->setWindowTitle(i18n("Export View Template"));
 }
 
 void ExportTemplateHandler::chooseFileDialog()
@@ -147,7 +147,7 @@ void ExportTemplateHandler::chooseFileDialog()
     QFileInfo currentFile(c_filepath);
     bool inLayoutState = c_filepath.endsWith("layout.latte");
 
-    QFileDialog *chooseFileDlg = new QFileDialog(m_parentDialog,
+    QFileDialog *chooseFileDlg = new QFileDialog(m_dialog,
                                                  inLayoutState ? i18n("Choose Layout Template file") : i18n("Choose View Template file"),
                                                  currentFile.absoluteFilePath(),
                                                  inLayoutState ? QStringLiteral(".layout.latte") : QStringLiteral(".view.latte"));
@@ -207,11 +207,11 @@ void ExportTemplateHandler::onExport()
     bool result{false};
 
     if (!m_originLayoutFilePath.isEmpty()) {
-        result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
+        result = m_dialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
                                                                               c_filepath,
                                                                               m_appletsModel->selectedApplets());
     } else if (m_originView){
-        result = m_parentDialog->corona()->templatesManager()->exportTemplate(m_originView,
+        result = m_dialog->corona()->templatesManager()->exportTemplate(m_originView,
                                                                               c_filepath,
                                                                               m_appletsModel->selectedApplets());
     }

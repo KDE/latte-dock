@@ -63,9 +63,9 @@ class ExportTemplateHandler : public Generic
 {
     Q_OBJECT
 public:
-    ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog);
-    ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, const QString &layoutName, const QString &layoutId);
-    ExportTemplateHandler(Dialog::ExportTemplateDialog *parentDialog, Latte::View *view);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const QString &layoutName, const QString &layoutId);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, Latte::View *view);
     ~ExportTemplateHandler();
 
     bool hasChangedData() const override;
@@ -106,7 +106,7 @@ private:
     QString  m_originLayoutFilePath;
     Latte::View *m_originView{nullptr};
 
-    Dialog::ExportTemplateDialog *m_parentDialog{nullptr};
+    Dialog::ExportTemplateDialog *m_dialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};
 
     //! current data
