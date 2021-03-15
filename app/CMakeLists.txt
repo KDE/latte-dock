@@ -40,6 +40,7 @@ qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Co
 ki18n_wrap_ui(lattedock-app_SRCS settings/detailsdialog/detailsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/exporttemplatedialog/exporttemplatedialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog/settingsdialog.ui)
+ki18n_wrap_ui(lattedock-app_SRCS settings/viewsdialog/viewsdialog.ui)
 
 add_executable(latte-dock ${lattedock-app_SRCS})
 
