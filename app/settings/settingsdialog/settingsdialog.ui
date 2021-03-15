@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>988</width>
-    <height>750</height>
+    <width>920</width>
+    <height>717</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -157,8 +157,20 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget" native="true">
+            <widget class="QWidget" name="buttonsColumn" native="true">
              <layout class="QVBoxLayout" name="verticalLayout">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QPushButton" name="switchButton">
                 <property name="text">
@@ -488,7 +500,7 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <property name="rightMargin">
-        <number>9</number>
+        <number>6</number>
        </property>
        <item>
         <widget class="QScrollArea" name="preferencesScrollArea">
@@ -509,7 +521,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>953</width>
+            <width>888</width>
             <height>383</height>
            </rect>
           </property>
