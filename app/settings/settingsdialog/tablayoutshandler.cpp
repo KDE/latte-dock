@@ -30,6 +30,7 @@
 #include "../universalsettings.h"
 #include "../detailsdialog/detailsdialog.h"
 #include "../exporttemplatedialog/exporttemplatedialog.h"
+#include "../viewsdialog/viewsdialog.h"
 #include "../../apptypes.h"
 #include "../../lattecorona.h"
 #include "../../layout/centrallayout.h"
@@ -185,6 +186,12 @@ void TabLayouts::initLayoutMenu()
     m_readOnlyLayoutAction->setCheckable(true);
     connectActionWithButton(m_ui->readOnlyButton, m_readOnlyLayoutAction);
     connect(m_readOnlyLayoutAction, &QAction::triggered, this, &TabLayouts::lockLayout);
+
+    m_viewsAction = m_layoutMenu->addAction(i18nc("layout docks / panels", "Docks/&Panels..."));
+    m_viewsAction->setToolTip(i18n("Show selected layouts docks and panels"));
+    m_viewsAction->setIcon(QIcon::fromTheme("window"));
+    m_viewsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_P));
+    connect(m_viewsAction, &QAction::triggered, this, &TabLayouts::viewsLayout);
 
     m_detailsAction = m_layoutMenu->addAction(i18nc("layout details", "De&tails..."));
     m_detailsAction->setToolTip(i18n("Show selected layout details"));
@@ -720,12 +727,29 @@ void TabLayouts::detailsLayout()
     }
 
     Latte::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
-
     auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog, m_layoutsController);
 
     detailsDlg->exec();
-
     detailsDlg->deleteLater();
+}
+
+void TabLayouts::viewsLayout()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!isCurrentTab() || !m_viewsAction->isEnabled()) {
+        return;
+    }
+
+    if (!m_layoutsController->hasSelectedLayout()) {
+        return;
+    }
+
+    Latte::Data::Layout selectedLayout = m_layoutsController->selectedLayoutCurrentData();
+    auto viewsDlg = new Settings::Dialog::ViewsDialog(m_parentDialog, m_layoutsController);
+
+    viewsDlg->exec();
+    viewsDlg->deleteLater();
 }
 
 void TabLayouts::onLayoutFilesDropped(const QStringList &paths)

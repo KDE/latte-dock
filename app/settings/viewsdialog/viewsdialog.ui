@@ -110,10 +110,11 @@
            <item>
             <widget class="QPushButton" name="newBtn">
              <property name="text">
-              <string notr="true">New...</string>
+              <string notr="true">New</string>
              </property>
              <property name="icon">
-              <iconset theme="add"/>
+              <iconset theme="add">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -123,7 +124,8 @@
               <string notr="true">Remove</string>
              </property>
              <property name="icon">
-              <iconset theme="delete"/>
+              <iconset theme="delete">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -149,7 +151,8 @@
               <string notr="true">Cut</string>
              </property>
              <property name="icon">
-              <iconset theme="edit-cut"/>
+              <iconset theme="edit-cut">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -159,7 +162,8 @@
               <string notr="true">Copy</string>
              </property>
              <property name="icon">
-              <iconset theme="edit-copy"/>
+              <iconset theme="edit-copy">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -169,7 +173,8 @@
               <string notr="true">Paste</string>
              </property>
              <property name="icon">
-              <iconset theme="edit-paste"/>
+              <iconset theme="edit-paste">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -195,17 +200,19 @@
               <string notr="true">Import...</string>
              </property>
              <property name="icon">
-              <iconset theme="document-import"/>
+              <iconset theme="document-import">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="exportBtn">
              <property name="text">
-              <string notr="true">Export</string>
+              <string notr="true">Export...</string>
              </property>
              <property name="icon">
-              <iconset theme="document-export"/>
+              <iconset theme="document-export">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>

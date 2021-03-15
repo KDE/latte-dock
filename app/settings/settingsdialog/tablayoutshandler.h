@@ -108,6 +108,7 @@ private slots:
     void toggleActivitiesManager();
     void toggleEnabledLayout();
     void detailsLayout();
+    void viewsLayout();
 
     void onCurrentPageChanged(int page);
     void onLayoutFilesDropped(const QStringList &paths);
@@ -151,6 +152,7 @@ private:
     QAction *m_exportLayoutAction{nullptr};
     QAction *m_downloadLayoutAction{nullptr};
     QAction *m_detailsAction{nullptr};
+    QAction *m_viewsAction{nullptr};
 };
 
 }
