@@ -45,11 +45,11 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-DetailsHandler::DetailsHandler(Dialog::DetailsDialog *parentDialog)
-    : Generic(parentDialog),
-      m_parentDialog(parentDialog),
-      m_ui(m_parentDialog->ui()),
-      m_colorsModel(new Model::Colors(this, parentDialog->corona()))
+DetailsHandler::DetailsHandler(Dialog::DetailsDialog *dialog)
+    : Generic(dialog),
+      m_dialog(dialog),
+      m_ui(m_dialog->ui()),
+      m_colorsModel(new Model::Colors(this, dialog->corona()))
 {
     init();
 }
@@ -62,7 +62,7 @@ void DetailsHandler::init()
 {
     //! Layouts
     m_layoutsProxyModel = new QSortFilterProxyModel(this);
-    m_layoutsProxyModel->setSourceModel(m_parentDialog->layoutsController()->baseModel());
+    m_layoutsProxyModel->setSourceModel(m_dialog->layoutsController()->baseModel());
     m_layoutsProxyModel->setSortRole(Model::Layouts::SORTINGROLE);
     m_layoutsProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     m_layoutsProxyModel->sort(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
@@ -134,7 +134,7 @@ void DetailsHandler::init()
 
 void DetailsHandler::reload()
 {
-    o_data = m_parentDialog->layoutsController()->selectedLayoutCurrentData();
+    o_data = m_dialog->layoutsController()->selectedLayoutCurrentData();
     c_data = o_data;
 
     m_ui->layoutsCmb->setCurrentText(o_data.name);
@@ -225,7 +225,7 @@ void DetailsHandler::resetDefaults()
 
 void DetailsHandler::save()
 {
-    m_parentDialog->layoutsController()->setLayoutProperties(currentData());
+    m_dialog->layoutsController()->setLayoutProperties(currentData());
 }
 
 void DetailsHandler::clearIcon()
@@ -263,7 +263,7 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
 
     if (switchtonewlayout) {
         QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-        m_parentDialog->layoutsController()->selectRow(layoutId);
+        m_dialog->layoutsController()->selectRow(layoutId);
         reload();
 
         emit currentLayoutChanged();
@@ -349,7 +349,7 @@ void DetailsHandler::selectBackground()
     mimeTypeFilters << "image/jpeg" // will show "JPEG image (*.jpeg *.jpg)
                     << "image/png";  // will show "PNG image (*.png)"
 
-    QFileDialog dialog(m_parentDialog);
+    QFileDialog dialog(m_dialog);
     dialog.setMimeTypeFilters(mimeTypeFilters);
 
     QString background =  m_ui->backPatternWidget->background();
@@ -379,7 +379,7 @@ void DetailsHandler::selectIcon()
 
 void DetailsHandler::selectTextColor()
 {
-    QColorDialog dialog(m_parentDialog);
+    QColorDialog dialog(m_dialog);
     dialog.setCurrentColor(QColor(m_ui->backPatternWidget->textColor()));
 
     if (dialog.exec()) {
@@ -390,7 +390,7 @@ void DetailsHandler::selectTextColor()
 
 void DetailsHandler::updateWindowTitle()
 {
-    m_parentDialog->setWindowTitle(m_ui->layoutsCmb->currentText());
+    m_dialog->setWindowTitle(i18nc("<layout name> Details","%0 Details").arg(m_ui->layoutsCmb->currentText()));
 }
 
 int DetailsHandler::saveChanges()
@@ -399,7 +399,7 @@ int DetailsHandler::saveChanges()
         QString layoutName = c_data.name;
         QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
 
-        return m_parentDialog->saveChangesConfirmation(saveChangesText);
+        return m_dialog->saveChangesConfirmation(saveChangesText);
     }
 
     return QMessageBox::Cancel;

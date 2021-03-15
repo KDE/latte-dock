@@ -63,7 +63,7 @@ class DetailsHandler : public Generic
 {
     Q_OBJECT
 public:
-    DetailsHandler(Dialog::DetailsDialog *parentDialog);
+    DetailsHandler(Dialog::DetailsDialog *dialog);
     ~DetailsHandler();
 
     bool hasChangedData() const override;
@@ -109,7 +109,7 @@ private:
     int saveChanges();
 
 private:
-    Dialog::DetailsDialog *m_parentDialog{nullptr};
+    Dialog::DetailsDialog *m_dialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};

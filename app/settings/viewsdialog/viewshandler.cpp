@@ -152,7 +152,7 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
 
 void ViewsHandler::updateWindowTitle()
 {
-    m_dialog->setWindowTitle(m_ui->layoutsCmb->currentText());
+    m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels").arg(m_ui->layoutsCmb->currentText()));
 }
 
 int ViewsHandler::saveChanges()
