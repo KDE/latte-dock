@@ -22,6 +22,7 @@
 
 // local
 #include "ui_viewsdialog.h"
+#include "viewshandler.h"
 #include "../settingsdialog/layoutscontroller.h"
 
 namespace Latte {
@@ -36,6 +37,11 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
 {
     //! first we need to setup the ui
     m_ui->setupUi(this);
+    //! we must create handlers after creating/adjusting the ui
+    m_handler = new Handler::ViewsHandler(this);
+
+    connect(m_handler, &Handler::ViewsHandler::currentLayoutChanged, this, &ViewsDialog::updateApplyButtonsState);
+    connect(m_handler, &Handler::ViewsHandler::dataChanged, this, &ViewsDialog::updateApplyButtonsState);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked,
             this, &ViewsDialog::onOk);

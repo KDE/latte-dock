@@ -38,6 +38,9 @@ namespace Settings {
 namespace Controller {
 class Layouts;
 }
+namespace Handler {
+class ViewsHandler;
+}
 }
 }
 
@@ -72,6 +75,8 @@ private:
     SettingsDialog *m_parentDlg{nullptr};
     Ui::ViewsDialog *m_ui;
     Controller::Layouts *m_layoutsController{nullptr};
+
+    Handler::ViewsHandler *m_handler;
 };
 
 }
