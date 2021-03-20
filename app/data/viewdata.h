@@ -26,10 +26,12 @@
 #include "genericdata.h"
 #include "../screenpool.h"
 
-
-//! Qt
+// Qt
 #include <QMetaType>
 #include <QString>
+
+// Plasma
+#include <Plasma>
 
 
 namespace Latte {
@@ -52,6 +54,7 @@ public:
     bool onPrimary{true};
     int screen{Latte::ScreenPool::FIRSTSCREENID};
     float maxLength{1.0};
+    Plasma::Types::Location edge{Plasma::Types::BottomEdge};
     Latte::Types::Alignment alignment{Latte::Types::Center};
 
     bool hasViewTemplateOrigin() const;

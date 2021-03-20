@@ -35,6 +35,7 @@ View::View(View &&o)
       onPrimary(o.onPrimary),
       screen(o.screen),
       maxLength(o.maxLength),
+      edge(o.edge),
       alignment(o.alignment),
       originType(o.originType),
       originFile(o.originFile),
@@ -45,8 +46,9 @@ View::View(View &&o)
 View::View(const View &o)
     : Generic(o),
       onPrimary(o.onPrimary),
-      screen(o.screen),
+      screen(o.screen),      
       maxLength(o.maxLength),
+      edge(o.edge),
       alignment(o.alignment),
       originType(o.originType),
       originFile(o.originFile),
@@ -61,6 +63,7 @@ View &View::operator=(const View &rhs)
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     maxLength = rhs.maxLength;
+    edge = rhs.edge;
     alignment = rhs.alignment;
     originType = rhs.originType;
     originFile = rhs.originFile;
@@ -76,6 +79,7 @@ View &View::operator=(View &&rhs)
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     maxLength = rhs.maxLength;
+    edge = rhs.edge;
     alignment = rhs.alignment;
     originType = rhs.originType;
     originFile = rhs.originFile;
@@ -91,6 +95,7 @@ bool View::operator==(const View &rhs) const
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (maxLength == rhs.maxLength)
+            && (edge == rhs.edge)
             && (alignment == rhs.alignment)
             && (originType == rhs.originType)
             && (originFile == rhs.originFile)
