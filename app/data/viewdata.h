@@ -38,6 +38,12 @@ namespace Data {
 class View : public Generic
 {
 public:
+    enum OriginType {
+        IsCreated = 0,
+        OriginFromViewTemplate,
+        OriginFromLayout
+    };
+
     View();
     View(View &&o);
     View(const View &o);
@@ -48,9 +54,25 @@ public:
     float maxLength{1.0};
     Latte::Types::Alignment alignment{Latte::Types::Center};
 
+    bool hasViewTemplateOrigin() const;
+    bool hasLayoutOrigin() const;
+
+    QString tempId() const;
+
+    void setOrigin(OriginType origin, QString file = QString(), QString view = QString());
+
     //! Operators
     View &operator=(const View &rhs);
     View &operator=(View &&rhs);
+    bool operator==(const View &rhs) const;
+    bool operator!=(const View &rhs) const;
+
+protected:
+    OriginType originType{IsCreated};
+
+    //! Origin Data
+    QString originFile;
+    QString originView;
 };
 
 }

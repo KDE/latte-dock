@@ -23,6 +23,8 @@
 namespace Latte {
 namespace Data {
 
+const char *TEMPIDPREFIX = "temp:";
+
 View::View()
     : Generic()
 {
@@ -33,7 +35,10 @@ View::View(View &&o)
       onPrimary(o.onPrimary),
       screen(o.screen),
       maxLength(o.maxLength),
-      alignment(o.alignment)
+      alignment(o.alignment),
+      originType(o.originType),
+      originFile(o.originFile),
+      originView(o.originView)
 {
 }
 
@@ -42,7 +47,10 @@ View::View(const View &o)
       onPrimary(o.onPrimary),
       screen(o.screen),
       maxLength(o.maxLength),
-      alignment(o.alignment)
+      alignment(o.alignment),
+      originType(o.originType),
+      originFile(o.originFile),
+      originView(o.originView)
 {
 }
 
@@ -54,6 +62,9 @@ View &View::operator=(const View &rhs)
     screen = rhs.screen;
     maxLength = rhs.maxLength;
     alignment = rhs.alignment;
+    originType = rhs.originType;
+    originFile = rhs.originFile;
+    originView = rhs.originView;
 
     return (*this);
 }
@@ -66,9 +77,60 @@ View &View::operator=(View &&rhs)
     screen = rhs.screen;
     maxLength = rhs.maxLength;
     alignment = rhs.alignment;
+    originType = rhs.originType;
+    originFile = rhs.originFile;
+    originView = rhs.originView;
 
     return (*this);
 }
+
+bool View::operator==(const View &rhs) const
+{
+    return (id == rhs.id)
+            && (name == rhs.name)
+            && (onPrimary == rhs.onPrimary)
+            && (screen == rhs.screen)
+            && (maxLength == rhs.maxLength)
+            && (alignment == rhs.alignment)
+            && (originType == rhs.originType)
+            && (originFile == rhs.originFile)
+            && (originView == rhs.originView);
+}
+
+bool View::operator!=(const View &rhs) const
+{
+    return !(*this == rhs);
+}
+
+bool View::hasViewTemplateOrigin() const
+{
+    return originType == OriginFromViewTemplate;
+}
+
+bool View::hasLayoutOrigin() const
+{
+    return originType == OriginFromLayout;
+}
+
+QString View::tempId() const
+{
+    if (originType == IsCreated) {
+        return id;
+    }
+
+    QString tid = id;
+    tid.remove(0, QString(TEMPIDPREFIX).count());
+    return tid;
+}
+
+void View::setOrigin(OriginType origin, QString file, QString view)
+{
+    originType = origin;
+    originFile = file;
+    originView = view;
+}
+
+
 
 }
 }
