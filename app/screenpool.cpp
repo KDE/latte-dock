@@ -41,6 +41,8 @@
 
 namespace Latte {
 
+const int ScreenPool::FIRSTSCREENID;
+
 ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
       m_configGroup(KConfigGroup(config, QStringLiteral("ScreenConnectors")))
@@ -230,7 +232,7 @@ void ScreenPool::save()
 
     for (int i=0; i<m_screensTable.rowCount(); ++i) {
         Data::Screen screenRecord = m_screensTable[i];
-        if (screenRecord.id.toInt() >= 10) {
+        if (screenRecord.id.toInt() >= FIRSTSCREENID) {
             m_configGroup.writeEntry(screenRecord.id, screenRecord.serialize());
         }
     }
@@ -282,7 +284,7 @@ QString ScreenPool::connector(int id) const
 int ScreenPool::firstAvailableId() const
 {
     //start counting from 10, first numbers will be used for special cases e.g. primaryScreen, id=0
-    int availableId = 10;
+    int availableId = FIRSTSCREENID;
 
     for (int row=0; row<m_screensTable.rowCount(); ++row) {
         if (!m_screensTable.containsId(QString::number(availableId))) {
