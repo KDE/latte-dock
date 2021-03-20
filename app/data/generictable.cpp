@@ -24,6 +24,7 @@
 #include "appletdata.h"
 #include "layoutdata.h"
 #include "screendata.h"
+#include "viewdata.h"
 
 // Qt
 #include <QDebug>
@@ -308,6 +309,7 @@ template class GenericTable<Data::Applet>;
 template class GenericTable<Data::Generic>;
 template class GenericTable<Data::Layout>;
 template class GenericTable<Data::Screen>;
+template class GenericTable<Data::View>;
 
 }
 }

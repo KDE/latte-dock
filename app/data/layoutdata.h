@@ -23,6 +23,7 @@
 
 // local
 #include "genericdata.h"
+#include "viewstable.h"
 #include "../layout/abstractlayout.h"
 
 //Qt
@@ -60,6 +61,8 @@ public:
 
     Latte::Layout::BackgroundStyle backgroundStyle{Latte::Layout::ColorBackgroundStyle};
 
+    ViewsTable views;
+
     //! Functionality
     bool isOnAllActivities() const;
     bool isForFreeActivities() const;
@@ -67,7 +70,6 @@ public:
     bool isNull() const;
     bool isEmpty() const;
     bool isSystemTemplate() const;
-
 
     //! Operators
     Layout &operator=(const Layout &rhs);

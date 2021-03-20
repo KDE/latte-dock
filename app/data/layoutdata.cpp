@@ -45,7 +45,8 @@ Layout::Layout(Layout &&o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      backgroundStyle(o.backgroundStyle)
+      backgroundStyle(o.backgroundStyle),
+      views(o.views)
 {
 }
 
@@ -63,7 +64,8 @@ Layout::Layout(const Layout &o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
-      backgroundStyle(o.backgroundStyle)
+      backgroundStyle(o.backgroundStyle),
+      views(o.views)
 {
 }
 
@@ -84,6 +86,7 @@ Layout &Layout::operator=(Layout &&rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
+    views = rhs.views;
 
     return (*this);
 }
@@ -105,6 +108,7 @@ Layout &Layout::operator=(const Layout &rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
+    views = rhs.views;
 
     return (*this);
 }
@@ -125,7 +129,8 @@ bool Layout::operator==(const Layout &rhs) const
             && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
-            && (backgroundStyle == rhs.backgroundStyle);
+            && (backgroundStyle == rhs.backgroundStyle)
+            && (views == rhs.views);
 }
 
 bool Layout::operator!=(const Layout &rhs) const
