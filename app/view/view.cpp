@@ -1273,6 +1273,27 @@ bool View::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
     return false;
 }
 
+Latte::Data::View View::data() const
+{
+    Latte::Data::View vdata;
+    vdata.id = QString::number(containment()->id());
+    vdata.isActive = true;
+    vdata.onPrimary = onPrimary();
+
+    vdata.screen = containment()->screen();
+    if (!Layouts::Storage::isValid(vdata.screen)) {
+        vdata.screen = containment()->lastScreen();
+    }
+
+    vdata.edge = location();
+    vdata.maxLength = m_maxLength * 100;
+    vdata.alignment = m_alignment;
+    vdata.subcontainments = Layouts::Storage::self()->subcontainments(layout(), containment());
+
+    vdata.setState(Latte::Data::View::IsCreated);
+    return vdata;
+}
+
 QQuickItem *View::colorizer() const
 {
     return m_colorizer;

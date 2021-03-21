@@ -154,17 +154,7 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
 
 bool GenericLayout::isActive() const
 {
-    if (!m_corona) {
-        return false;
-    }
-
-    GenericLayout *generic = m_corona->layoutsManager()->synchronizer()->layout(m_layoutName);
-
-    if (generic) {
-        return true;
-    } else {
-        return false;
-    }
+    return m_corona && (m_corona->layoutsManager()->synchronizer()->layout(m_layoutName) != nullptr);
 }
 
 bool GenericLayout::isCurrent()

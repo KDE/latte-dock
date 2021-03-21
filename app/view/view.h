@@ -32,6 +32,7 @@
 #include "indicator/indicator.h"
 #include "settings/primaryconfigview.h"
 #include "windowstracker/windowstracker.h"
+#include "../data/viewdata.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../layout/genericlayout.h"
 #include "../plasma/quick/containmentview.h"
@@ -236,6 +237,8 @@ public:
     QVariantList containmentActions() const;
 
     QQuickView *configView();
+
+    Latte::Data::View data() const;
 
     ViewPart::Effects *effects() const;   
     ViewPart::ContextMenu *contextMenu() const;

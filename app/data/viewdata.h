@@ -58,7 +58,6 @@ public:
     float maxLength{1.0};
     Plasma::Types::Location edge{Plasma::Types::BottomEdge};
     Latte::Types::Alignment alignment{Latte::Types::Center};
-
     GenericTable<Data::Generic> subcontainments;
 
     bool isValid() const;
