@@ -71,6 +71,16 @@ bool ViewsTable::operator!=(const ViewsTable &rhs) const
     return !(*this == rhs);
 }
 
+void ViewsTable::print()
+{
+    qDebug().noquote() << "Views initialized : " + (isInitialized ? QString("true") : QString("false"));
+    qDebug().noquote() << "aa | id | active | primary | screen | edge | alignment | maxlength | subcontainments";
+
+    for(int i=0; i<rowCount(); ++i) {
+        qDebug().noquote() << QString::number(i+1) << " | " << m_list[i];
+    }
+}
+
 
 }
 }

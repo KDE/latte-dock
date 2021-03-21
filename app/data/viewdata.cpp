@@ -117,6 +117,53 @@ bool View::operator!=(const View &rhs) const
     return !(*this == rhs);
 }
 
+View::operator QString() const
+{
+    QString result;
+
+    result += id;
+    result +=" : ";
+    result += isActive ? "Active" : "Inactive";
+    result += " : ";
+    result += onPrimary ? "Primary" : "Explicit";
+    result += " : ";
+    result += QString::number(screen);
+    result += " : ";
+    if (edge == Plasma::Types::BottomEdge) {
+        result += "BottomEdge";
+    } else if (edge == Plasma::Types::TopEdge) {
+        result += "TopEdge";
+    } else if (edge == Plasma::Types::LeftEdge) {
+        result += "LeftEdge";
+    } else if (edge == Plasma::Types::RightEdge) {
+        result += "RightEdge";
+    }
+
+    result += " : ";
+
+    if (alignment == Latte::Types::Center) {
+        result += "CenterAlignment";
+    } else if (alignment == Latte::Types::Left) {
+        result += "LeftAlignment";
+    } else if (alignment == Latte::Types::Right) {
+        result += "RightAlignment";
+    } else if (alignment == Latte::Types::Top) {
+        result += "TopAlignment";
+    } else if (alignment == Latte::Types::Bottom) {
+        result += "BottomAlignment";
+    } else if (alignment == Latte::Types::Justify) {
+        result += "JustifyAlignment";
+    }
+
+    result += " : ";
+    result += QString::number(maxLength);
+
+    result += " || ";
+    result += subcontainments;
+
+    return result;
+}
+
 bool View::isCreated() const
 {
     return m_state == IsCreated;

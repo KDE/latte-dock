@@ -41,6 +41,8 @@ public:
 
     bool isInitialized{false};
 
+    void print();
+
     //! Operators
     ViewsTable &operator=(const ViewsTable &rhs);
     ViewsTable &operator=(ViewsTable &&rhs);

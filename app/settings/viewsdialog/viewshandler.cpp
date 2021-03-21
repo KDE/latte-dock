@@ -28,6 +28,9 @@
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
 #include "../../data/layoutstable.h"
 #include "../../layout/abstractlayout.h"
+#include "../../layout/centrallayout.h"
+#include "../../layouts/manager.h"
+#include "../../layouts/synchronizer.h"
 
 // Qt
 #include <QMessageBox>
@@ -77,11 +80,34 @@ void ViewsHandler::init()
 void ViewsHandler::reload()
 {
     o_data = m_dialog->layoutsController()->selectedLayoutCurrentData();
+
+    bool islayoutalreadyloaded{o_data == c_data};
+
     c_data = o_data;
 
     m_ui->layoutsCmb->setCurrentText(o_data.name);
 
     loadLayout(c_data);
+
+    if (!islayoutalreadyloaded) {
+        //! Views
+        Data::Layout originalSelectedData = m_dialog->layoutsController()->selectedLayoutOriginalData();
+        CentralLayout *central = m_dialog->corona()->layoutsManager()->synchronizer()->centralLayout(originalSelectedData.name);
+
+        bool islayoutactive{true};
+
+        if (!central) {
+            islayoutactive = false;
+            central = new CentralLayout(this, originalSelectedData.id);
+        }
+
+        qDebug() << "Views For Original Layout :: " << originalSelectedData.name;
+        central->viewsTable().print();
+
+        if (!islayoutactive) {
+            central->deleteLater();
+        }
+    }
 }
 
 void ViewsHandler::loadLayout(const Latte::Data::Layout &data)
@@ -142,6 +168,8 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
         QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
         m_dialog->layoutsController()->selectRow(layoutId);
         reload();
+
+
 
         emit currentLayoutChanged();
     } else {

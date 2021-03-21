@@ -54,6 +54,7 @@ public:
     const T operator[](const QString &id) const;
     T &operator[](const uint &index);
     const T operator[](const uint &index) const;
+    operator QString() const;
 
     bool containsId(const QString &id) const;
     bool containsName(const QString &name) const;

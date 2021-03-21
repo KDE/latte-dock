@@ -1489,5 +1489,10 @@ bool GenericLayout::isBroken() const
     return Layouts::Storage::self()->isBroken(this, errors);
 }
 
+Latte::Data::ViewsTable GenericLayout::viewsTable() const
+{
+    return Layouts::Storage::self()->views(this);
+}
+
 }
 }

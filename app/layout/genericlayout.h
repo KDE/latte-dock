@@ -24,6 +24,7 @@
 #include <coretypes.h>
 #include "abstractlayout.h"
 #include "../data/viewdata.h"
+#include "../data/viewstable.h"
 
 // Qt
 #include <QObject>
@@ -134,6 +135,8 @@ public:
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
     QList<int> viewsScreens();
+
+    Latte::Data::ViewsTable viewsTable() const;
 
 public slots:
     Q_INVOKABLE void newView(const QString &templateFile);

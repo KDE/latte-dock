@@ -76,6 +76,7 @@ public:
     View &operator=(View &&rhs);
     bool operator==(const View &rhs) const;
     bool operator!=(const View &rhs) const;
+    operator QString() const;
 
 protected:
     View::State m_state{IsInvalid};

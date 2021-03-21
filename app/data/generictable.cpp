@@ -174,6 +174,21 @@ const T GenericTable<T>::operator[](const uint &index) const
 }
 
 template <class T>
+GenericTable<T>::operator QString() const
+{
+    QString result;
+
+    for(int i=0; i<m_list.count(); ++i) {
+        result += m_list[i].id;
+        if (i<(m_list.count()-1)) {
+            result += ", ";
+        }
+    }
+
+    return result;
+}
+
+template <class T>
 bool GenericTable<T>::containsId(const QString &id) const
 {
     for(int i=0; i<m_list.count(); ++i) {
