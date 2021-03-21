@@ -156,10 +156,10 @@ View::operator QString() const
     }
 
     result += " : ";
-    result += QString::number(maxLength);
+    result += QString::number(maxLength) + "%";
 
     result += " || ";
-    result += subcontainments;
+    result += "{" + subcontainments + "}";
 
     return result;
 }
