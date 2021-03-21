@@ -40,7 +40,8 @@ namespace Data {
 class View : public Generic
 {
 public:
-    enum OriginType {
+    enum State {
+        IsInvalid = -1,
         IsCreated = 0,
         OriginFromViewTemplate,
         OriginFromLayout
@@ -51,18 +52,24 @@ public:
     View(const View &o);
 
     //! View data
+    bool isActive{false};
     bool onPrimary{true};
     int screen{Latte::ScreenPool::FIRSTSCREENID};
     float maxLength{1.0};
     Plasma::Types::Location edge{Plasma::Types::BottomEdge};
     Latte::Types::Alignment alignment{Latte::Types::Center};
 
+    GenericTable<Data::Generic> subcontainments;
+
+    bool isValid() const;
+    bool isCreated() const;
     bool hasViewTemplateOrigin() const;
     bool hasLayoutOrigin() const;
 
     QString tempId() const;
 
-    void setOrigin(OriginType origin, QString file = QString(), QString view = QString());
+    View::State state() const;
+    void setState(View::State state, QString file = QString(), QString view = QString());
 
     //! Operators
     View &operator=(const View &rhs);
@@ -71,7 +78,7 @@ public:
     bool operator!=(const View &rhs) const;
 
 protected:
-    OriginType originType{IsCreated};
+    View::State m_state{IsInvalid};
 
     //! Origin Data
     QString originFile;

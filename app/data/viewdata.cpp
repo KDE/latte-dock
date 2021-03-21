@@ -32,27 +32,31 @@ View::View()
 
 View::View(View &&o)
     : Generic(o),
+      isActive(o.isActive),
       onPrimary(o.onPrimary),
       screen(o.screen),
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
-      originType(o.originType),
+      m_state(o.m_state),
       originFile(o.originFile),
-      originView(o.originView)
+      originView(o.originView),
+      subcontainments(o.subcontainments)
 {
 }
 
 View::View(const View &o)
     : Generic(o),
+      isActive(o.isActive),
       onPrimary(o.onPrimary),
       screen(o.screen),      
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
-      originType(o.originType),
+      m_state(o.m_state),
       originFile(o.originFile),
-      originView(o.originView)
+      originView(o.originView),
+      subcontainments(o.subcontainments)
 {
 }
 
@@ -60,14 +64,16 @@ View &View::operator=(const View &rhs)
 {
     id = rhs.id;
     name = rhs.name;
+    isActive = rhs.isActive;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
-    originType = rhs.originType;
+    m_state = rhs.m_state;
     originFile = rhs.originFile;
     originView = rhs.originView;
+    subcontainments = rhs.subcontainments;
 
     return (*this);
 }
@@ -76,14 +82,16 @@ View &View::operator=(View &&rhs)
 {
     id = rhs.id;
     name = rhs.name;
+    isActive = rhs.isActive;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
-    originType = rhs.originType;
+    m_state = rhs.m_state;
     originFile = rhs.originFile;
     originView = rhs.originView;
+    subcontainments = rhs.subcontainments;
 
     return (*this);
 }
@@ -92,14 +100,16 @@ bool View::operator==(const View &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
+            && (isActive == rhs.isActive)
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (maxLength == rhs.maxLength)
             && (edge == rhs.edge)
             && (alignment == rhs.alignment)
-            && (originType == rhs.originType)
+            && (m_state == rhs.m_state)
             && (originFile == rhs.originFile)
-            && (originView == rhs.originView);
+            && (originView == rhs.originView)
+            && (subcontainments == rhs.subcontainments);
 }
 
 bool View::operator!=(const View &rhs) const
@@ -107,19 +117,29 @@ bool View::operator!=(const View &rhs) const
     return !(*this == rhs);
 }
 
+bool View::isCreated() const
+{
+    return m_state == IsCreated;
+}
+
+bool View::isValid() const
+{
+    return m_state != IsInvalid;
+}
+
 bool View::hasViewTemplateOrigin() const
 {
-    return originType == OriginFromViewTemplate;
+    return m_state == OriginFromViewTemplate;
 }
 
 bool View::hasLayoutOrigin() const
 {
-    return originType == OriginFromLayout;
+    return m_state == OriginFromLayout;
 }
 
 QString View::tempId() const
 {
-    if (originType == IsCreated) {
+    if (isCreated()) {
         return id;
     }
 
@@ -128,9 +148,14 @@ QString View::tempId() const
     return tid;
 }
 
-void View::setOrigin(OriginType origin, QString file, QString view)
+View::State View::state() const
 {
-    originType = origin;
+    return m_state;
+}
+
+void View::setState(View::State state, QString file, QString view)
+{
+    m_state = state;
     originFile = file;
     originView = view;
 }
