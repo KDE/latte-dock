@@ -1209,41 +1209,71 @@ void Storage::subContainmentsInfo(const QString &file, QHash<int, QList<int>> &s
     }
 }
 
-QList<Layout::ViewData> Storage::viewsData(const QString &file, const QHash<int, QList<int>> &subContainments)
+Data::GenericTable<Data::Generic> Storage::subcontainments(const KConfigGroup &containmentGroup)
 {
-    QList<Layout::ViewData> viewsData;
+    Data::GenericTable<Data::Generic> subs;
+
+    if (!Layouts::Storage::self()->isLatteContainment(containmentGroup)) {
+        return subs;
+    }
+
+    auto applets = containmentGroup.group("Applets");
+
+    for (const auto &applet : applets.groupList()) {
+        if (isSubContainment(applets.group(applet))) {
+            Data::Generic subdata;
+            subdata.id = QString::number(subContainmentId(applets.group(applet)));
+            subs << subdata;
+        }
+    }
+
+    return subs;
+}
+
+Data::View Storage::view(const KConfigGroup &containmentGroup)
+{
+    Data::View vdata;
+
+    if (!Layouts::Storage::self()->isLatteContainment(containmentGroup)) {
+        return vdata;
+    }
+
+    //! id
+    vdata.id = containmentGroup.name();
+
+    //! active
+    vdata.isActive = false;
+
+    //! onPrimary
+    vdata.onPrimary = containmentGroup.readEntry("onPrimary", true);
+
+    //! screen
+    vdata.screen = containmentGroup.readEntry("lastScreen", IDNULL);
+
+    //! edge
+    int location = containmentGroup.readEntry("location", (int)Plasma::Types::BottomEdge);
+    vdata.edge = (Plasma::Types::Location)location;
+
+    //! subcontainments
+    vdata.subcontainments = subcontainments(containmentGroup);
+
+    return vdata;
+}
+
+Data::ViewsTable Storage::views(const QString &file)
+{
+    Data::ViewsTable vtable;
 
     KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
     KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
 
     for (const auto &cId : containmentGroups.groupList()) {
         if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
-            Layout::ViewData vData;
-            int id = cId.toInt();
-
-            //! id
-            vData.id = id;
-
-            //! active
-            vData.active = false;
-
-            //! onPrimary
-            vData.onPrimary = containmentGroups.group(cId).readEntry("onPrimary", true);
-
-            //! Screen
-            vData.screenId = containmentGroups.group(cId).readEntry("lastScreen", IDNULL);
-
-            //! location
-            vData.location = containmentGroups.group(cId).readEntry("location", (int)Plasma::Types::BottomEdge);
-
-            //! subcontainments
-            vData.subContainments = subContainments[id];
-
-            viewsData << vData;
+            vtable << view(containmentGroups.group(cId));
         }
     }
 
-    return viewsData;
+    return vtable;
 }
 
 QList<int> Storage::viewsScreens(const QString &file)

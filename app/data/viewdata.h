@@ -65,6 +65,7 @@ public:
     bool isCreated() const;
     bool hasViewTemplateOrigin() const;
     bool hasLayoutOrigin() const;
+    bool hasSubContainment(const QString &subId) const;
 
     QString tempId() const;
 

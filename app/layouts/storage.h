@@ -22,6 +22,8 @@
 
 // local
 #include "../data/appletdata.h"
+#include "../data/generictable.h"
+#include "../data/viewstable.h"
 
 // Qt
 #include <QTemporaryDir>
@@ -36,7 +38,6 @@
 namespace Latte {
 namespace Layout {
 class GenericLayout;
-struct ViewData;
 }
 }
 
@@ -104,8 +105,8 @@ public:
     void subContainmentsInfo(const QString &file, QHash<int, QList<int>> &subContainments, QList<int> &assignedSubContainments, QList<int> &orphanSubContainments);
     //! list<screens ids>
     QList<int> viewsScreens(const QString &file);
-    //! list<ViewData>
-    QList<Layout::ViewData> viewsData(const QString &file, const QHash<int, QList<int>> &subContainments);
+
+    Data::ViewsTable views(const QString &file);
 
 private:
     Storage();
@@ -123,6 +124,9 @@ private:
     QString newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout, QString file);
     //! imports a layout file and returns the containments for the docks
     QList<Plasma::Containment *> importLayoutFile(const Layout::GenericLayout *layout, QString file);
+
+    Data::View view(const KConfigGroup &containmentGroup);
+    Data::GenericTable<Data::Generic> subcontainments(const KConfigGroup &containmentGroup);
 
 private:
     QTemporaryDir m_storageTmpDir;

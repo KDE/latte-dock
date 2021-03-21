@@ -23,6 +23,7 @@
 // local
 #include <coretypes.h>
 #include "abstractlayout.h"
+#include "../data/viewdata.h"
 
 // Qt
 #include <QObject>
@@ -47,16 +48,6 @@ class View;
 
 namespace Latte {
 namespace Layout {
-
-struct ViewData
-{
-    int id; //view id
-    bool active; //is active
-    bool onPrimary; //on primary
-    int screenId; //explicit screen id
-    int location; //edge location
-    QList<int> subContainments;
-};
 
 //! This is  views map in the following structure:
 //! SCREEN_NAME -> EDGE -> VIEWID
@@ -142,7 +133,6 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
 
-    QString reportHtml(const ScreenPool *screenPool);
     QList<int> viewsScreens();
 
 public slots:
@@ -191,15 +181,15 @@ private:
     bool explicitDockOccupyEdge(int screen, Plasma::Types::Location location) const;
     bool primaryDockOccupyEdge(Plasma::Types::Location location) const;
 
-    bool viewDataAtLowerEdgePriority(const ViewData &test, const ViewData &base) const;
-    bool viewDataAtLowerScreenPriority(const ViewData &test, const ViewData &base) const;
-    bool viewDataAtLowerStatePriority(const ViewData &test, const ViewData &base) const;
+    bool viewDataAtLowerEdgePriority(const Latte::Data::View &test, const Latte::Data::View &base) const;
+    bool viewDataAtLowerScreenPriority(const Latte::Data::View &test, const Latte::Data::View &base) const;
+    bool viewDataAtLowerStatePriority(const Latte::Data::View &test, const Latte::Data::View &base) const;
 
     bool mapContainsId(const ViewsMap *map, uint viewId) const;
 
     QList<int> subContainmentsOf(Plasma::Containment *containment) const;
 
-    QList<ViewData> sortedViewsData(const QList<ViewData> &viewsData);
+    QList<Latte::Data::View> sortedViewsData(const QList<Latte::Data::View> &viewsData);
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};

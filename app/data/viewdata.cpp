@@ -137,6 +137,11 @@ bool View::hasLayoutOrigin() const
     return m_state == OriginFromLayout;
 }
 
+bool View::hasSubContainment(const QString &subId) const
+{
+    return subcontainments.containsId(subId);
+}
+
 QString View::tempId() const
 {
     if (isCreated()) {
