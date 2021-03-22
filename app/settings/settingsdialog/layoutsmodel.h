@@ -143,6 +143,7 @@ public:
     void setOriginalData(Latte::Data::LayoutsTable &data);
 
     void setOriginalActivitiesForLayout(const Latte::Data::Layout &layout);
+    void setOriginalViewsForLayout(const Latte::Data::Layout &layout);
 
 signals:
     void inMultipleModeChanged();

@@ -205,12 +205,46 @@ QString Layouts::iconsPath() const
     return m_iconsPath;
 }
 
+void Layouts::initializeSelectedLayoutViews()
+{
+    int selectedRow = m_view->currentIndex().row();
+    if (selectedRow >= 0) {
+        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+        Latte::Data::Layout selectedCurrentData = m_model->currentData(selectedId);
+
+        if (!selectedCurrentData.views.isInitialized) {
+            Data::Layout originalSelectedData = selectedLayoutOriginalData();
+            CentralLayout *central = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originalSelectedData.name);
+
+            bool islayoutactive{true};
+
+            if (!central) {
+                islayoutactive = false;
+                central = new CentralLayout(this, originalSelectedData.id);
+            }
+
+            selectedCurrentData.views = central->viewsTable();
+            selectedCurrentData.views.isInitialized = true;
+            originalSelectedData.views = selectedCurrentData.views;
+
+            m_model->setOriginalViewsForLayout(originalSelectedData);
+            m_model->setLayoutProperties(selectedCurrentData);
+
+            qDebug() << "Views For Original Layout :: " << originalSelectedData.name;
+            selectedCurrentData.views.print();
+
+            if (!islayoutactive) {
+                central->deleteLater();
+            }
+        }
+    }
+}
+
 const Latte::Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
     if (selectedRow >= 0) {
         QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-
         return m_model->currentData(selectedId);
     } else {
         return Latte::Data::Layout();

@@ -85,6 +85,7 @@ public:
     void removeSelected();
     void toggleEnabledForSelected();
     void toggleLockedForSelected();
+    void initializeSelectedLayoutViews();
 
     QString iconsPath() const;
     QString colorPath(const QString color) const;
