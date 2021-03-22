@@ -79,16 +79,17 @@ void LayoutName::drawHasChangesIndicator(QPainter *painter, const QStyleOptionVi
 {
     //! draw changes circle indicator
     int csize{INDICATORCHANGESLENGTH};
+    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
 
     //! Draw indicator background
     QStandardItemModel *model = (QStandardItemModel *) index.model();
     if (qApp->layoutDirection() == Qt::RightToLeft) {
         QStyleOptionViewItem indicatorOption = option;
-        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), csize + INDICATORCHANGESMARGIN, option.rect.height());
+        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height());
         QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
     } else {
         QStyleOptionViewItem indicatorOption = option;
-        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - csize - INDICATORCHANGESMARGIN, option.rect.y(), csize + INDICATORCHANGESMARGIN, option.rect.height());
+        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height());
         QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
     }
 
@@ -125,6 +126,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     QString name = index.data(Qt::UserRole).toString();
 
     bool isChanged = (isNewLayout || hasChanges);
+    bool drawTwoIcons = isLocked && isActive;
 
     QStyleOptionViewItem adjustedOption = option;
 
@@ -134,13 +136,13 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    int indicatorLength = INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN;
+    int indicatorLength = INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN * 2;
     QRect optionRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + indicatorLength, option.rect.y(), option.rect.width() - indicatorLength, option.rect.height()) :
                                                                       QRect(option.rect.x(), option.rect.y(), option.rect.width() - indicatorLength, option.rect.height());
 
     adjustedOption.rect = optionRect;
 
-    if (isLocked) {
+    if (isLocked || isActive) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
 
         bool active = Latte::isActive(option);
@@ -153,7 +155,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QFontMetrics fm(option.font);
         int textWidth = fm.boundingRect(name).width();
         int thick = optionRect.height();
-        int length = thick;
+        int length = drawTwoIcons ? (2*thick /*+ 2*/) : thick;
 
         int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : 0;
         int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? 0 : length;
@@ -180,15 +182,33 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
         QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
+        //! First Icon
+        QIcon firstIcon = isLocked && !drawTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("favorites");
         QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 
-        if (isLocked) {
-            QIcon lockIcon = QIcon::fromTheme("object-locked");
+        if (qApp->layoutDirection() == Qt::LeftToRight) {
+            int firstIconX = optionRect.x() + optionRect.width() - endWidth;
+            painter->drawPixmap(QRect(firstIconX, optionRect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
 
-            if (qApp->layoutDirection() == Qt::RightToLeft) {
-                painter->drawPixmap(QRect(optionRect.x(), optionRect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
-            } else {
-                painter->drawPixmap(QRect(optionRect.x() + optionRect.width() - endWidth, optionRect.y(), thick, thick), lockIcon.pixmap(thick, thick, mode));
+            //debug
+            //painter->drawLine(firstIconX, optionRect.y(), firstIconX, optionRect.y()+thick);
+            //painter->drawLine(firstIconX+thick - 1, optionRect.y(), firstIconX+thick - 1, optionRect.y()+thick);
+
+            if (drawTwoIcons) {
+                int secondIconX = optionRect.x() + optionRect.width() - thick;
+                QIcon secondIcon = QIcon::fromTheme("object-locked");
+                painter->drawPixmap(QRect(secondIconX, optionRect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
+
+                //debug
+                //painter->drawLine(secondIconX, optionRect.y(), secondIconX, optionRect.y()+thick);
+                //painter->drawLine(secondIconX + thick - 1, optionRect.y(), secondIconX + thick - 1,optionRect.y()+thick);
+            }
+        } else {
+            painter->drawPixmap(QRect(optionRect.x(), optionRect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
+
+            if (drawTwoIcons) {
+                QIcon secondIcon = QIcon::fromTheme("object-locked");
+                painter->drawPixmap(QRect(optionRect.x() + thick, optionRect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
             }
         }
 

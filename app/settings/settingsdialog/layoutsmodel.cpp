@@ -217,6 +217,7 @@ void Layouts::resetData()
     clear();
     setOriginalInMultipleMode(o_inMultipleMode);
     setOriginalData(o_layoutsTable);
+    updateActiveStates();
 }
 
 void Layouts::removeLayout(const QString &id)
@@ -404,6 +405,15 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
 {
     QList<Latte::Data::LayoutIcon> icons;
 
+    if (!m_layoutsTable[row].icon.isEmpty()) {
+        //! if there is specific icon set from the user for this layout we draw only that icon
+        Latte::Data::LayoutIcon icon;
+        icon.name = m_layoutsTable[row].icon;
+        icon.isBackgroundFile = false;
+        icons << icon;
+        return icons;
+    }
+
     if (inMultipleMode()) {
         if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
             Latte::Data::LayoutIcon icon;
@@ -425,29 +435,14 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
                     icon.name = m_activitiesTable[id].icon;
                     icon.isBackgroundFile = false;
                     icons << icon;
+                    //! first activity icon found
+                    return icons;
                 }
             }
         }
-    } else {
-        if (o_layoutsTable.containsId(m_layoutsTable[row].id) && o_layoutsTable[m_layoutsTable[row].id].name == m_corona->universalSettings()->singleModeLayoutName()) {
-            Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
-            icon.isBackgroundFile = false;
-            icons << icon;
-        }
     }
 
-    if (!m_layoutsTable[row].icon.isEmpty()) {
-        //! if there is specific icon set from the user for this layout we draw only that icon
-        icons.clear();
-        Latte::Data::LayoutIcon icon;
-        icon.name = m_layoutsTable[row].icon;
-        icon.isBackgroundFile = false;
-        icons << icon;
-        return icons;
-    }
-
-    //! background image
+    //! fallback icon: background image
     if (icons.count() == 0) {
         QString colorPath;
 
@@ -904,21 +899,21 @@ void Layouts::initActivities()
     Latte::Data::Activity allActivities;
     allActivities.id = Latte::Data::Layout::ALLACTIVITIESID;
     allActivities.name = QString("[ " + i18n("All Activities") + " ]");
-    allActivities.icon = "favorites";
+    allActivities.icon = "activities";
     allActivities.state = KActivities::Info::Stopped;
     m_activitiesTable << allActivities;
 
     Latte::Data::Activity freeActivities;
     freeActivities.id = Latte::Data::Layout::FREEACTIVITIESID;
     freeActivities.name = QString("[ " + i18n("Free Activities") + " ]");
-    freeActivities.icon = "favorites";
+    freeActivities.icon = "activities";
     freeActivities.state = KActivities::Info::Stopped;
     m_activitiesTable << freeActivities;
 
     Latte::Data::Activity currentActivity;
     currentActivity.id = Latte::Data::Layout::CURRENTACTIVITYID;
     currentActivity.name = QString("[ " + i18n("Current Activity") + " ]");
-    currentActivity.icon = "favorites";
+    currentActivity.icon = "dialog-yes";
     currentActivity.state = KActivities::Info::Stopped;
     m_activitiesTable << currentActivity;
 
