@@ -58,8 +58,15 @@ Layouts::Layouts(QObject *parent, Latte::Corona *corona)
         emit dataChanged(index(0, NAMECOLUMN), index(rowCount()-1, ACTIVITYCOLUMN), roles);
     });
 
+    connect(this, &Layouts::activitiesStatesChanged, this, &Layouts::onActivitiesStatesChanged);
+
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::singleModeLayoutNameChanged, this, &Layouts::updateActiveStates); //! sort properly when switching single layouts
     connect(m_corona->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::centralLayoutsChanged, this, &Layouts::updateActiveStates);
-    connect(m_corona->universalSettings(), &Latte::UniversalSettings::singleModeLayoutNameChanged, this, &Layouts::updateActiveStates);
+
+    connect(this, &Layouts::activitiesStatesChanged, this, &Layouts::updateConsideredActiveStates);
+    connect(this, &Layouts::inMultipleModeChanged, this, &Layouts::updateConsideredActiveStates);
+    connect(m_corona->layoutsManager()->synchronizer(), &Latte::Layouts::Synchronizer::centralLayoutsChanged, this, &Layouts::updateConsideredActiveStates);
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::singleModeLayoutNameChanged, this, &Layouts::updateConsideredActiveStates);
 }
 
 Layouts::~Layouts()
@@ -217,7 +224,6 @@ void Layouts::resetData()
     clear();
     setOriginalInMultipleMode(o_inMultipleMode);
     setOriginalData(o_layoutsTable);
-    updateActiveStates();
 }
 
 void Layouts::removeLayout(const QString &id)
@@ -518,6 +524,8 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return m_layoutsTable[row].id;
     } else if (role == ISACTIVEROLE) {
         return m_layoutsTable[row].isActive;
+    } else if (role == ISCONSIDEREDACTIVEROLE) {
+        return m_layoutsTable[row].isConsideredActive;
     } else if (role == ISLOCKEDROLE) {
         return m_layoutsTable[row].isLocked;
     } else if (role == INMULTIPLELAYOUTSROLE) {
@@ -574,8 +582,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         break;
     case NAMECOLUMN:
         if (role == SORTINGROLE) {
-            if ((m_inMultipleMode && m_layoutsTable[row].isActive)
-                || (!m_inMultipleMode && m_corona->universalSettings()->singleModeLayoutName() == m_layoutsTable[row].name)) {
+            if (m_layoutsTable[row].isConsideredActive) {
                 return sortingPriority(HIGHESTPRIORITY, row);
             }
 
@@ -812,9 +819,83 @@ void Layouts::updateActiveStates()
             iActive = true;
         }
 
-        if (m_layoutsTable[i].isActive != iActive || (!m_inMultipleMode && m_corona->universalSettings()->singleModeLayoutName() == m_layoutsTable[i].name)) {
+        if (m_layoutsTable[i].isActive != iActive) {
             m_layoutsTable[i].isActive = iActive;
             emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+        }
+    }
+}
+
+void Layouts::updateConsideredActiveStates()
+{
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ISCONSIDEREDACTIVEROLE;
+    roles << SORTINGROLE;
+
+    if ((m_inMultipleMode && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts))
+            || (!m_inMultipleMode && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout))) {
+        //! current running layouts mode is the same shown in settings
+
+        for(int i=0; i<rowCount(); ++i) {
+            bool iConsideredActive{false};
+
+            if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)) {
+                iConsideredActive = true;
+            }
+
+            if (m_layoutsTable[i].isConsideredActive != iConsideredActive) {
+                m_layoutsTable[i].isConsideredActive = iConsideredActive;
+                emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            }
+        }
+
+        return;
+    }
+
+    if (!m_inMultipleMode) {
+        //! single mode but not the running one
+
+        for(int i=0; i<rowCount(); ++i) {
+            bool iConsideredActive{false};
+
+            if (m_corona->universalSettings()->singleModeLayoutName() == m_layoutsTable[i].name) {
+                iConsideredActive = true;
+            }
+
+            if (m_layoutsTable[i].isConsideredActive != iConsideredActive) {
+                m_layoutsTable[i].isConsideredActive = iConsideredActive;
+                emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            }
+        }
+
+        return;
+    }
+
+    if (m_inMultipleMode) {
+        //! multiple mode but not the running one
+
+        QStringList runningActivities = m_corona->layoutsManager()->synchronizer()->runningActivities();
+        QStringList freeRunningActivities = m_corona->layoutsManager()->synchronizer()->freeRunningActivities();
+
+        for(int i=0; i<rowCount(); ++i) {
+            bool iConsideredActive{false};
+
+            if (m_layoutsTable[i].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
+                iConsideredActive = true;
+            } else if (freeRunningActivities.count()>0 && m_layoutsTable[i].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
+                iConsideredActive = true;
+            } else if (m_layoutsTable[i].activities.count()>0 && containsSpecificRunningActivity(runningActivities, m_layoutsTable[i])) {
+                iConsideredActive = true;
+            } else {
+                iConsideredActive = false;
+            }
+
+            if (m_layoutsTable[i].isConsideredActive != iConsideredActive) {
+                m_layoutsTable[i].isConsideredActive = iConsideredActive;
+                emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
+            }
         }
     }
 }
@@ -875,6 +956,9 @@ void Layouts::setOriginalData(Latte::Data::LayoutsTable &data)
     endInsertRows();
 
     emit rowsInserted();
+
+    updateActiveStates();
+    updateConsideredActiveStates();
 }
 
 QList<Latte::Data::Layout> Layouts::alteredLayouts() const
@@ -931,10 +1015,10 @@ void Layouts::initActivities()
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::activityRemoved, this, &Layouts::onActivityRemoved);
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &Layouts::onRunningActivitiesChanged);
 
-    activitiesStatesChanged();
+    emit activitiesStatesChanged();
 }
 
-void Layouts::activitiesStatesChanged()
+void Layouts::onActivitiesStatesChanged()
 {
     QVector<int> roles;
     roles << Qt::DisplayRole;
@@ -987,7 +1071,7 @@ void Layouts::onActivityRemoved(const QString &id)
         info->deleteLater();
     }
 
-    activitiesStatesChanged();
+    emit activitiesStatesChanged();
 }
 
 void Layouts::onActivityChanged(const QString &id)
@@ -998,21 +1082,34 @@ void Layouts::onActivityChanged(const QString &id)
         m_activitiesTable[id].state = m_activitiesInfo[id]->state();
         m_activitiesTable[id].isCurrent = m_activitiesInfo[id]->isCurrent();
 
-        activitiesStatesChanged();
+        emit activitiesStatesChanged();
     }
 }
 
 void Layouts::onRunningActivitiesChanged(const QStringList &runningIds)
 {
     for (int i = 0; i < m_activitiesTable.rowCount(); ++i) {
-       if (runningIds.contains(m_activitiesTable[i].id)) {
-           m_activitiesTable[i].state = KActivities::Info::Running;
-       } else {
-           m_activitiesTable[i].state = KActivities::Info::Stopped;
-       }
+        if (runningIds.contains(m_activitiesTable[i].id)) {
+            m_activitiesTable[i].state = KActivities::Info::Running;
+        } else {
+            m_activitiesTable[i].state = KActivities::Info::Stopped;
+        }
     }
 
     emit activitiesStatesChanged();
+}
+
+bool Layouts::containsSpecificRunningActivity(const QStringList &runningIds, const Latte::Data::Layout &layout) const
+{
+    if (runningIds.count()>0 && layout.activities.count()>0) {
+        for (int i=0; i<layout.activities.count(); ++i) {
+            if (runningIds.contains(layout.activities[i])) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 }

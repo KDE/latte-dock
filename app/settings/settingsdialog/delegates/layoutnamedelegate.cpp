@@ -119,6 +119,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     bool isLocked = index.data(Model::Layouts::ISLOCKEDROLE).toBool();
     bool isActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
+    bool isConsideredActive = index.data(Model::Layouts::ISCONSIDEREDACTIVEROLE).toBool();
 
     bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
     bool hasChanges = index.data(Model::Layouts::LAYOUTHASCHANGESROLE).toBool();
@@ -126,7 +127,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     QString name = index.data(Qt::UserRole).toString();
 
     bool isChanged = (isNewLayout || hasChanges);
-    bool drawTwoIcons = isLocked && isActive;
+    bool drawTwoIcons = isLocked && isConsideredActive;
 
     QStyleOptionViewItem adjustedOption = option;
 
@@ -142,7 +143,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     adjustedOption.rect = optionRect;
 
-    if (isLocked || isActive) {
+    if (isLocked || isConsideredActive) {
         QStandardItemModel *model = (QStandardItemModel *) index.model();
 
         bool active = Latte::isActive(option);

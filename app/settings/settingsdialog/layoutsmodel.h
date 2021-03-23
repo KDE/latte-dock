@@ -58,6 +58,7 @@ public:
     {
         IDROLE = Qt::UserRole + 1,
         ISACTIVEROLE,
+        ISCONSIDEREDACTIVEROLE,
         ISLOCKEDROLE,
         INMULTIPLELAYOUTSROLE,
         BACKGROUNDUSERROLE,
@@ -146,14 +147,16 @@ public:
     void setOriginalViewsForLayout(const Latte::Data::Layout &layout);
 
 signals:
+    void activitiesStatesChanged();
     void inMultipleModeChanged();
     void nameDuplicated(const QString &provenId, const QString &trialId);
     void rowsInserted();
 
 private slots:
     void updateActiveStates();
+    void updateConsideredActiveStates();
 
-    void activitiesStatesChanged();
+    void onActivitiesStatesChanged();
     void onActivityAdded(const QString &id);
     void onActivityRemoved(const QString &id);
     void onActivityChanged(const QString &id);
@@ -164,6 +167,8 @@ private:
 
     void setActivities(const int &row, const QStringList &activities);
     void setId(const int &row, const QString &newId);
+
+    bool containsSpecificRunningActivity(const QStringList &runningIds, const Latte::Data::Layout &layout) const;
 
     QString sortingPriority(const SortingPriority &priority, const int &row) const;
     QString sortableText(const int &priority, const int &row) const;
