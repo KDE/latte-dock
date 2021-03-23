@@ -52,6 +52,7 @@ public:
     QString textColor;
     QString lastUsedActivity;
     bool isActive{false};
+    bool isConsideredActive{false}; //used from settings window to indicate activeness based on selected layouts mode
     bool isBroken{false};
     bool isLocked{false};
     bool isShownInMenu{false};
