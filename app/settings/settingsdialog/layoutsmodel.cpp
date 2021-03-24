@@ -407,49 +407,43 @@ void Layouts::setIconsPath(QString iconsPath)
     m_iconsPath = iconsPath;
 }
 
-QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) const
+Latte::Data::LayoutIcon Layouts::iconForCentralLayout(const int &row) const
 {
-    QList<Latte::Data::LayoutIcon> icons;
+    Latte::Data::LayoutIcon _icon;
 
     if (!m_layoutsTable[row].icon.isEmpty()) {
         //! if there is specific icon set from the user for this layout we draw only that icon
-        Latte::Data::LayoutIcon icon;
-        icon.name = m_layoutsTable[row].icon;
-        icon.isBackgroundFile = false;
-        icons << icon;
-        return icons;
+        _icon.name = m_layoutsTable[row].icon;
+        _icon.isBackgroundFile = false;
+        return _icon;
     }
 
     if (inMultipleMode()) {
         if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
-            Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
-            icon.isBackgroundFile = false;
-            icons << icon;
+            _icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
+            _icon.isBackgroundFile = false;
+            return _icon;
         } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
-            Latte::Data::LayoutIcon icon;
-            icon.name = m_activitiesTable[Latte::Data::Layout::FREEACTIVITIESID].icon;
-            icon.isBackgroundFile = false;
-            icons << icon;
+            _icon.name = m_activitiesTable[Latte::Data::Layout::FREEACTIVITIESID].icon;
+            _icon.isBackgroundFile = false;
+            return _icon;
         } else {
             QStringList activitiesIds = m_layoutsTable[row].activities;
 
             for(int i=0; i<activitiesIds.count(); ++i) {
                 QString id = activitiesIds[i];
                 if (m_activitiesTable.containsId(id)) {
-                    Latte::Data::LayoutIcon icon;
-                    icon.name = m_activitiesTable[id].icon;
-                    icon.isBackgroundFile = false;
-                    icons << icon;
+                    _icon.name = m_activitiesTable[id].icon;
+                    _icon.isBackgroundFile = false;
                     //! first activity icon found
-                    return icons;
+                    return _icon;
                 }
             }
         }
     }
 
     //! fallback icon: background image
-    if (icons.count() == 0) {
+    if (_icon.isEmpty()) {
         QString colorPath;
 
         if (m_layoutsTable[row].backgroundStyle == Layout::PatternBackgroundStyle && m_layoutsTable[row].background.isEmpty()) {
@@ -459,31 +453,29 @@ QList<Latte::Data::LayoutIcon> Layouts::iconsForCentralLayout(const int &row) co
         }
 
         if (QFileInfo(colorPath).exists()) {
-            Latte::Data::LayoutIcon icon;
-            icon.isBackgroundFile = true;
-            icon.name = colorPath;
-            icons << icon;
+            _icon.isBackgroundFile = true;
+            _icon.name = colorPath;
+            return _icon;
         }
     }
 
-    return icons;
+    return Latte::Data::LayoutIcon();
 }
 
-QList<Latte::Data::LayoutIcon> Layouts::icons(const int &row) const
+Latte::Data::LayoutIcon Layouts::icon(const int &row) const
 {
-    return iconsForCentralLayout(row);
+    return iconForCentralLayout(row);
 }
 
 const Latte::Data::LayoutIcon Layouts::currentLayoutIcon(const QString &id) const
 {
     int row = rowForId(id);
-    QList<Latte::Data::LayoutIcon> iconsList;
 
     if (row >= 0) {
-        iconsList = icons(row);
+        return icon(row);
     }
 
-    return iconsList.count() > 0 ? iconsList[0] : Latte::Data::LayoutIcon();
+    return Latte::Data::LayoutIcon();
 }
 
 QString Layouts::sortableText(const int &priority, const int &row) const
@@ -564,10 +556,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
     } else if (role == LAYOUTHASCHANGESROLE) {
         return isNewLayout ? true : (original != m_layoutsTable[row]);
     } else if (role == BACKGROUNDUSERROLE) {
-        QList<Latte::Data::LayoutIcon> iconsList = icons(row);
-        QVariant iconsVariant;
-        iconsVariant.setValue<QList<Latte::Data::LayoutIcon>>(iconsList);
-        return iconsVariant;
+        Latte::Data::LayoutIcon _icon = icon(row);
+        QVariant iconVariant;
+        iconVariant.setValue<Latte::Data::LayoutIcon>(_icon);
+        return iconVariant;
     }
 
     switch (column) {
@@ -586,10 +578,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         if (role == Qt::DisplayRole) {
             return m_layoutsTable[row].background;
         } else if (role == Qt::UserRole) {
-            QList<Latte::Data::LayoutIcon> iconsList = icons(row);
-            QVariant iconsVariant;
-            iconsVariant.setValue<QList<Latte::Data::LayoutIcon>>(iconsList);
-            return iconsVariant;
+            Latte::Data::LayoutIcon _icon = icon(row);
+            QVariant iconVariant;
+            iconVariant.setValue<Latte::Data::LayoutIcon>(_icon);
+            return iconVariant;
         }
         break;
     case NAMECOLUMN:

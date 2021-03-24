@@ -51,11 +51,11 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
     //! draw underlying background
     QStyledItemDelegate::paint(painter, myOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
 
-    QList<Latte::Data::LayoutIcon> icons = index.data(Model::Layouts::BACKGROUNDUSERROLE).value<QList<Latte::Data::LayoutIcon>>();
+    Latte::Data::LayoutIcon icon = index.data(Model::Layouts::BACKGROUNDUSERROLE).value<Latte::Data::LayoutIcon>();
 
     int iconsLength = (option.rect.height() + 4 * MARGIN);
 
-    if (icons.count() > 0) {
+    if (!icon.isEmpty()) {
         int localMargin = MARGIN-1;
 
         int aY = option.rect.y() + localMargin;
@@ -63,19 +63,15 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
 
         int centerX = option.rect.x() + iconsLength / 2;
         int step = thick;
-        int total_icons_width = (thick-step) + icons.count() * step;
+        int total_icons_width = (thick-step) + step;
 
         if (total_icons_width > option.rect.width()){
             step = thick/2;
-            total_icons_width = (thick-step) + icons.count() * step;
+            total_icons_width = (thick-step) + step;
         }
 
         int startX = centerX - (total_icons_width/2);
-
-        for (int i=0; i<icons.count(); ++i) {
-            int tX = startX + (i * step);
-            Latte::drawLayoutIcon(painter, option, QRect(tX, aY, thick, thick), icons[i]);
-        }
+        Latte::drawLayoutIcon(painter, option, QRect(startX, aY, thick, thick), icon);
     }
 
     myOptions.rect.setWidth(option.rect.width() - iconsLength);

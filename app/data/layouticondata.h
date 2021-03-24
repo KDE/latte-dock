@@ -41,6 +41,8 @@ public:
     //! Layout data
     bool isBackgroundFile{true};
 
+    bool isEmpty() const;
+
     //! Operators
     LayoutIcon &operator=(const LayoutIcon &rhs);
     LayoutIcon &operator=(LayoutIcon &&rhs);

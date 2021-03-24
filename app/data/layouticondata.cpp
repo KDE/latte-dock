@@ -41,6 +41,11 @@ LayoutIcon::LayoutIcon(const LayoutIcon &o)
 {
 }
 
+bool LayoutIcon::isEmpty() const
+{
+    return (id.isEmpty() && name.isEmpty());
+}
+
 LayoutIcon &LayoutIcon::operator=(LayoutIcon &&rhs)
 {
     id = rhs.id;

@@ -177,8 +177,8 @@ private:
 
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 
-    QList<Latte::Data::LayoutIcon> icons(const int &row) const;
-    QList<Latte::Data::LayoutIcon> iconsForCentralLayout(const int &row) const;
+    Latte::Data::LayoutIcon icon(const int &row) const;
+    Latte::Data::LayoutIcon iconForCentralLayout(const int &row) const;
 
 private:
     QString m_iconsPath;
