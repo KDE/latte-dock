@@ -180,9 +180,13 @@ void DetailsHandler::loadLayout(const Latte::Data::Layout &data)
 
     if (data.background.isEmpty()) {
         m_ui->backPatternWidget->setBackground(m_colorsModel->colorPath(Latte::Layout::AbstractLayout::defaultCustomBackground()));
-        m_ui->backPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultCustomTextColor());
     } else {
         m_ui->backPatternWidget->setBackground(data.background);
+    }
+
+    if (data.background.isEmpty() && data.textColor.isEmpty()) {
+        m_ui->backPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultCustomTextColor());
+    } else {
         m_ui->backPatternWidget->setTextColor(data.textColor);
     }
 

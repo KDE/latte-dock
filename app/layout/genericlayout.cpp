@@ -184,7 +184,7 @@ QString GenericLayout::background() const
 
 QString GenericLayout::textColor() const
 {
-    if (backgroundStyle() == Layout::PatternBackgroundStyle && customBackground().isEmpty()) {
+    if (backgroundStyle() == Layout::PatternBackgroundStyle && customBackground().isEmpty() && customTextColor().isEmpty()) {
         return AbstractLayout::defaultCustomTextColor();
     }
 
