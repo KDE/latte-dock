@@ -25,6 +25,8 @@
 
 namespace Latte {
 
+const int MARGIN = 1;
+
 bool isEnabled(const QStyleOptionViewItem &option)
 {
     if (option.state & QStyle::State_Enabled) {
@@ -98,6 +100,39 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
     }
 
     return subtract;
+}
+
+void drawLayoutIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
+{
+    bool active = Latte::isActive(option);
+    bool selected = Latte::isSelected(option);
+    bool focused = Latte::isFocused(option);
+
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    if (icon.isBackgroundFile) {
+        int backImageMargin = qMin(option.rect.height()/4, MARGIN+2);
+        QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
+
+        QPixmap backImage(icon.name);
+        backImage = backImage.copy(backTarget);
+
+        QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
+
+        QBrush imageBrush(backImage);
+        QPen pen; pen.setWidth(1);
+        pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
+
+        painter->setBrush(imageBrush);
+        painter->setPen(pen);
+
+        painter->drawEllipse(backTarget);
+    } else {
+        QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
+
+        painter->drawPixmap(target, QIcon::fromTheme(icon.name).pixmap(target.height(), target.height(), mode));
+    }
+
 }
 
 }

@@ -21,8 +21,13 @@
 #ifndef GENERICSETTINGSTOOLS_H
 #define GENERICSETTINGSTOOLS_H
 
+// local
+#include "../../data/layouticondata.h"
+
 // Qt
+#include <QPainter>
 #include <QPalette>
+#include <QRect>
 #include <QStyleOptionViewItem>
 
 namespace Latte {
@@ -38,6 +43,8 @@ QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option);
 //! strings that even though they were initially at original list
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
+
+void drawLayoutIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 }
 
