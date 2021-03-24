@@ -474,6 +474,18 @@ QList<Latte::Data::LayoutIcon> Layouts::icons(const int &row) const
     return iconsForCentralLayout(row);
 }
 
+const Latte::Data::LayoutIcon Layouts::currentLayoutIcon(const QString &id) const
+{
+    int row = rowForId(id);
+    QList<Latte::Data::LayoutIcon> iconsList;
+
+    if (row >= 0) {
+        iconsList = icons(row);
+    }
+
+    return iconsList.count() > 0 ? iconsList[0] : Latte::Data::LayoutIcon();
+}
+
 QString Layouts::sortableText(const int &priority, const int &row) const
 {
     QString numberPart;

@@ -49,7 +49,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="layoutsCmb">
+            <widget class="Latte::Settings::LayoutsComboBox" name="layoutsCmb">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -242,6 +242,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Latte::Settings::LayoutsComboBox</class>
+   <extends>QComboBox</extends>
+   <header>settings/generic/layoutscombobox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

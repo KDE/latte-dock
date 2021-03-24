@@ -483,7 +483,7 @@
          <item row="1" column="2">
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
-            <widget class="QComboBox" name="layoutsCmb">
+            <widget class="Latte::Settings::LayoutsComboBox" name="layoutsCmb">
              <property name="minimumSize">
               <size>
                <width>358</width>
@@ -580,6 +580,11 @@
    <extends>QWidget</extends>
    <header>settings/detailsdialog/patternwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Latte::Settings::LayoutsComboBox</class>
+   <extends>QComboBox</extends>
+   <header>settings/generic/layoutscombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

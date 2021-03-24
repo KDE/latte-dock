@@ -28,23 +28,23 @@
 #include <QPainter>
 #include <QPalette>
 #include <QRect>
-#include <QStyleOptionViewItem>
+#include <QStyleOption>
 
 namespace Latte {
 
-bool isActive(const QStyleOptionViewItem &option);
-bool isEnabled(const QStyleOptionViewItem &option);
-bool isFocused(const QStyleOptionViewItem &option);
-bool isSelected(const QStyleOptionViewItem &option);
-bool isHovered(const QStyleOptionViewItem &option);
+bool isActive(const QStyleOption &option);
+bool isEnabled(const QStyleOption &option);
+bool isFocused(const QStyleOption &option);
+bool isSelected(const QStyleOption &option);
+bool isHovered(const QStyleOption &option);
 
-QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option);
+QPalette::ColorGroup colorGroup(const QStyleOption &option);
 
 //! strings that even though they were initially at original list
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
-void drawLayoutIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 }
 

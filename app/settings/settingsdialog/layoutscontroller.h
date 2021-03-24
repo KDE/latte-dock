@@ -75,6 +75,7 @@ public:
     bool hasSelectedLayout() const;
     const Latte::Data::Layout selectedLayoutCurrentData() const;
     const Latte::Data::Layout selectedLayoutOriginalData() const;
+    const Latte::Data::LayoutIcon selectedLayoutIcon() const;
 
     void selectRow(const QString &id);
     void setLayoutProperties(const Latte::Data::Layout &layout);

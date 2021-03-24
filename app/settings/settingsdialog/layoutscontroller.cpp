@@ -240,6 +240,19 @@ void Layouts::initializeSelectedLayoutViews()
     }
 }
 
+const Latte::Data::LayoutIcon Layouts::selectedLayoutIcon() const
+{
+    int selectedRow = m_view->currentIndex().row();
+
+    if (selectedRow >= 0) {
+        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+        return m_model->currentLayoutIcon(selectedId);
+    }
+
+    return Latte::Data::LayoutIcon();
+
+}
+
 const Latte::Data::Layout Layouts::selectedLayoutCurrentData() const
 {
     int selectedRow = m_view->currentIndex().row();
@@ -256,7 +269,7 @@ const Latte::Data::Layout Layouts::selectedLayoutOriginalData() const
     int selectedRow = m_view->currentIndex().row();
     QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
 
-    return m_model->originalData(selectedId);;
+    return m_model->originalData(selectedId);
 }
 
 bool Layouts::inMultipleMode() const

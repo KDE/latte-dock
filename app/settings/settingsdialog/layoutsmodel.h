@@ -118,6 +118,8 @@ public:
 
     int rowForId(const QString &id) const;
 
+    const Latte::Data::LayoutIcon currentLayoutIcon(const QString &id) const;
+
     void clear();
     //! all current data will become also original
     void applyData();

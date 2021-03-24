@@ -137,7 +137,10 @@ void DetailsHandler::reload()
     o_data = m_dialog->layoutsController()->selectedLayoutCurrentData();
     c_data = o_data;
 
+    Latte::Data::LayoutIcon icon = m_dialog->layoutsController()->selectedLayoutIcon();
+
     m_ui->layoutsCmb->setCurrentText(o_data.name);
+    m_ui->layoutsCmb->setLayoutIcon(icon);
 
     loadLayout(c_data);
 }

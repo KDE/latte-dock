@@ -27,7 +27,7 @@ namespace Latte {
 
 const int MARGIN = 1;
 
-bool isEnabled(const QStyleOptionViewItem &option)
+bool isEnabled(const QStyleOption &option)
 {
     if (option.state & QStyle::State_Enabled) {
         return true;
@@ -36,7 +36,7 @@ bool isEnabled(const QStyleOptionViewItem &option)
     return false;
 }
 
-bool isActive(const QStyleOptionViewItem &option)
+bool isActive(const QStyleOption &option)
 {
     if (option.state & QStyle::State_Active) {
         return true;
@@ -45,7 +45,7 @@ bool isActive(const QStyleOptionViewItem &option)
     return false;
 }
 
-bool isSelected(const QStyleOptionViewItem &option)
+bool isSelected(const QStyleOption &option)
 {
     if (option.state & QStyle::State_Selected) {
         return true;
@@ -54,7 +54,7 @@ bool isSelected(const QStyleOptionViewItem &option)
     return false;
 }
 
-bool isHovered(const QStyleOptionViewItem &option)
+bool isHovered(const QStyleOption &option)
 {
     if (option.state & QStyle::State_MouseOver) {
         return true;
@@ -63,7 +63,7 @@ bool isHovered(const QStyleOptionViewItem &option)
     return false;
 }
 
-bool isFocused(const QStyleOptionViewItem &option)
+bool isFocused(const QStyleOption &option)
 {
     if (option.state & QStyle::State_HasFocus) {
         return true;
@@ -72,7 +72,7 @@ bool isFocused(const QStyleOptionViewItem &option)
     return false;
 }
 
-QPalette::ColorGroup colorGroup(const QStyleOptionViewItem &option)
+QPalette::ColorGroup colorGroup(const QStyleOption &option)
 {
     if (!isEnabled(option)) {
         return QPalette::Disabled;
@@ -102,7 +102,7 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
     return subtract;
 }
 
-void drawLayoutIcon(QPainter *painter, const QStyleOptionViewItem &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
