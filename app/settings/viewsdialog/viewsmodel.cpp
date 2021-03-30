@@ -84,6 +84,19 @@ void Views::setOriginalData(Latte::Data::ViewsTable &data)
     emit rowsInserted();
 }
 
+QVariant Views::data(const QModelIndex &index, int role) const
+{
+    const int row = index.row();
+    int column = index.column();
+    //bool isNewLayout = !o_layoutsTable.containsId(m_layoutsTable[row].id);
+
+    if (!m_viewsTable.rowExists(row)) {
+        return QVariant{};
+    }
+
+    return QVariant{};
+}
+
 }
 }
 }

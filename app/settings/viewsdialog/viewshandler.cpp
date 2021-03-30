@@ -22,11 +22,13 @@
 
 // local
 #include "ui_viewsdialog.h"
+#include "viewscontroller.h"
 #include "viewsdialog.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../settingsdialog/layoutsmodel.h"
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
 #include "../../data/layoutstable.h"
+#include "../../lattecorona.h"
 #include "../../layout/abstractlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
@@ -44,7 +46,9 @@ ViewsHandler::ViewsHandler(Dialog::ViewsDialog *dialog)
       m_dialog(dialog),
       m_ui(m_dialog->ui())
 {
-    init();
+    m_viewsController = new Settings::Controller::Views(this);
+
+    init();    
 }
 
 ViewsHandler::~ViewsHandler()
@@ -90,6 +94,16 @@ void ViewsHandler::reload()
     m_ui->layoutsCmb->setLayoutIcon(icon);
 
     loadLayout(c_data);
+}
+
+Latte::Corona *ViewsHandler::corona() const
+{
+    return m_dialog->corona();
+}
+
+Ui::ViewsDialog *ViewsHandler::ui() const
+{
+    return m_ui;
 }
 
 void ViewsHandler::loadLayout(const Latte::Data::Layout &data)

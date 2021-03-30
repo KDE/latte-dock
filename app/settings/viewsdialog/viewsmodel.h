@@ -39,7 +39,6 @@ class Views : public QAbstractTableModel
     Q_OBJECT
 
 public:
-
     enum Columns
     {
         SCREENCOLUMN = 0,
@@ -73,6 +72,8 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
 
+    QVariant data(const QModelIndex &index, int role) const override;
+
     const Latte::Data::ViewsTable &currentViewsData();
     const Latte::Data::ViewsTable &originalViewsData();
 
@@ -80,6 +81,7 @@ public:
 
 signals:
     void rowsInserted();
+    void rowsRemoved();
 
 private slots:
     void clear();
@@ -94,7 +96,5 @@ private:
 }
 }
 }
-
-
 
 #endif

@@ -35,7 +35,11 @@ class ViewsDialog;
 }
 
 namespace Latte{
+class Corona;
 namespace Settings{
+namespace Controller{
+class Views;
+}
 namespace Dialog{
 class ViewsDialog;
 }
@@ -63,6 +67,9 @@ public:
 
     Latte::Data::Layout currentData() const;
 
+    Ui::ViewsDialog *ui() const;
+    Latte::Corona *corona() const;
+
 public slots:
     void reset() override;
     void resetDefaults() override;
@@ -86,6 +93,7 @@ private:
 private:
     Dialog::ViewsDialog *m_dialog{nullptr};
     Ui::ViewsDialog *m_ui{nullptr};
+    Settings::Controller::Views *m_viewsController{nullptr};
 
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
 
