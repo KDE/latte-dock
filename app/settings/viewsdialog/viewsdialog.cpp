@@ -33,8 +33,11 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
     : GenericDialog(parent),
       m_parentDlg(parent),
       m_ui(new Ui::ViewsDialog),
-      m_layoutsController(controller)
+      m_layoutsController(controller),
+      m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("ViewsDialog"))
 {
+    loadConfig();
+
     //! first we need to setup the ui
     m_ui->setupUi(this);
     //! we must create handlers after creating/adjusting the ui
@@ -52,11 +55,13 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
             this, &ViewsDialog::onReset);
 
-    updateApplyButtonsState();
+    resize(m_windowSize);
+    updateApplyButtonsState();    
 }
 
 ViewsDialog::~ViewsDialog()
 {
+    saveConfig();
 }
 
 Controller::Layouts *ViewsDialog::layoutsController() const
@@ -107,6 +112,16 @@ void ViewsDialog::onReset()
 {
     qDebug() << Q_FUNC_INFO;
    // m_handler->reset();
+}
+
+void ViewsDialog::loadConfig()
+{
+    m_windowSize = m_storage.readEntry("windowSize", QSize(775, 500));
+}
+
+void ViewsDialog::saveConfig()
+{
+    m_storage.writeEntry("windowSize", size());
 }
 
 }

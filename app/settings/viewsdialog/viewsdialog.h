@@ -65,6 +65,9 @@ protected:
     void accept() override;
 
 private slots:
+    void loadConfig();
+    void saveConfig();
+
     void onOk();
     void onCancel();
     void onReset();
@@ -77,6 +80,12 @@ private:
     Controller::Layouts *m_layoutsController{nullptr};
 
     Handler::ViewsHandler *m_handler;
+
+    //! properties
+    QSize m_windowSize;
+
+    //! storage
+    KConfigGroup m_storage;
 };
 
 }
