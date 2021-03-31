@@ -33,7 +33,7 @@
      </property>
      <widget class="QWidget" name="layoutsTab">
       <attribute name="title">
-       <string>Layouts</string>
+       <string>Layouts Editor</string>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -522,7 +522,7 @@
             <x>0</x>
             <y>0</y>
             <width>888</width>
-            <height>383</height>
+            <height>375</height>
            </rect>
           </property>
           <property name="sizePolicy">

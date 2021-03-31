@@ -394,7 +394,7 @@ void Menu::populateLayouts()
 
     m_switchLayoutsMenu->addSeparator();
 
-    QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Manage &Layouts..."));
+    QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(i18n("Edit &Layouts..."));
     editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
 }
 
