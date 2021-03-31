@@ -355,15 +355,27 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
     }
 
     //! Reassign containment and applet ids to unique ones
-    for (const auto &contId : toInvestigateContainmentIds) {
-        QString newId = availableId(allIds, assignedIds, 12);
+    for (const auto &contId : toInvestigateContainmentIds) {        
+        QString newId;
+
+        if (contId.toInt()>=12 && !allIds.contains(contId) && !assignedIds.contains(contId)) {
+            newId = contId;
+        } else {
+            newId = availableId(allIds, assignedIds, 12);
+        }
 
         assignedIds << newId;
         assigned[contId] = newId;
     }
 
     for (const auto &appId : toInvestigateAppletIds) {
-        QString newId = availableId(allIds, assignedIds, 40);
+        QString newId;
+
+        if (appId.toInt()>=40 && !allIds.contains(appId) && !assignedIds.contains(appId)) {
+            newId = appId;
+        } else {
+            newId = availableId(allIds, assignedIds, 40);
+        }
 
         assignedIds << newId;
         assigned[appId] = newId;
