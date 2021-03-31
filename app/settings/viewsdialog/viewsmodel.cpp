@@ -20,6 +20,8 @@
 
 #include "viewsmodel.h"
 
+// KDE
+#include <KLocalizedString>
 
 namespace Latte {
 namespace Settings {
@@ -83,6 +85,53 @@ void Views::setOriginalData(Latte::Data::ViewsTable &data)
 
     emit rowsInserted();
 }
+
+QVariant Views::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation != Qt::Horizontal) {
+        return QAbstractTableModel::headerData(section, orientation, role);
+    }
+
+    if (role == Qt::FontRole) {
+        QFont font = qvariant_cast<QFont>(QAbstractTableModel::headerData(section, orientation, role));
+        font.setBold(true);
+        return font;
+    }
+
+    switch(section) {
+    case IDCOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString("#");
+        }
+        break;
+    case SCREENCOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString(i18n("Screen"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("desktop");
+        }
+        break;
+    case EDGECOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString(i18nc("screen edge", "Edge"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("transform-move");
+        }
+        break;
+    case ALIGNMENTCOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString(i18n("Alignment"));
+        } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("format-justify-center");
+        }
+        break;
+    default:
+        break;
+    };
+
+    return QAbstractTableModel::headerData(section, orientation, role);
+}
+
 
 QVariant Views::data(const QModelIndex &index, int role) const
 {
