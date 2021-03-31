@@ -48,7 +48,7 @@ Views::Views(Settings::Handler::ViewsHandler *parent)
       m_view(m_handler->ui()->viewsTable),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("ViewsDialog"))
 {
-   // loadConfig();
+    loadConfig();
     m_proxyModel->setSourceModel(m_model);
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &Views::dataChanged);
@@ -60,7 +60,7 @@ Views::Views(Settings::Handler::ViewsHandler *parent)
 
 Views::~Views()
 {
-   // saveConfig();
+    saveConfig();
 }
 
 QAbstractItemModel *Views::proxyModel() const
@@ -95,6 +95,15 @@ void Views::init()
     //m_view->setItemDelegateForColumn(Model::Layouts::MENUCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     //m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     //m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
+
+    applyColumnWidths();
+
+    connect(m_view, &QObject::destroyed, this, &Views::storeColumnWidths);
+
+    connect(m_view->horizontalHeader(), &QObject::destroyed, this, [&]() {
+        m_viewSortColumn = m_view->horizontalHeader()->sortIndicatorSection();
+        m_viewSortOrder = m_view->horizontalHeader()->sortIndicatorOrder();
+    });
 }
 
 bool Views::hasChangedData() const
@@ -112,6 +121,45 @@ bool Views::hasSelectedView() const
 void Views::selectRow(const QString &id)
 {
   //  m_view->selectRow(rowForId(id));
+}
+
+void Views::applyColumnWidths()
+{
+    m_view->horizontalHeader()->setSectionResizeMode(Model::Views::SCREENCOLUMN, QHeaderView::Stretch);
+
+    if (m_viewColumnWidths.count()<3) {
+        return;
+    }
+
+    m_view->setColumnWidth(Model::Views::EDGECOLUMN, m_viewColumnWidths[0].toInt());
+    m_view->setColumnWidth(Model::Views::ALIGNMENTCOLUMN, m_viewColumnWidths[1].toInt());
+    m_view->setColumnWidth(Model::Views::IDCOLUMN, m_viewColumnWidths[2].toInt());
+}
+
+void Views::storeColumnWidths()
+{
+    if (m_viewColumnWidths.isEmpty()) {
+        //! storing three columns
+        m_viewColumnWidths << "" << "" << "";
+    }
+
+    m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Views::EDGECOLUMN));
+    m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Views::ALIGNMENTCOLUMN));
+    m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Views::IDCOLUMN));
+}
+
+void Views::loadConfig()
+{
+    m_viewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
+    m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Layouts::NAMECOLUMN);
+    m_viewSortOrder = static_cast<Qt::SortOrder>(m_storage.readEntry("sortOrder", (int)Qt::AscendingOrder));
+}
+
+void Views::saveConfig()
+{
+    m_storage.writeEntry("columnWidths", m_viewColumnWidths);
+    m_storage.writeEntry("sortColumn", m_viewSortColumn);
+    m_storage.writeEntry("sortOrder", (int)m_viewSortOrder);
 }
 
 }

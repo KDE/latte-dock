@@ -107,23 +107,26 @@ QVariant Views::headerData(int section, Qt::Orientation orientation, int role) c
     case SCREENCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18n("Screen"));
-        } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("desktop");
         }
+      /*  } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("desktop");
+        }*/
         break;
     case EDGECOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18nc("screen edge", "Edge"));
-        } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("transform-move");
         }
+      /*  } else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("transform-move");
+        }*/
         break;
     case ALIGNMENTCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString(i18n("Alignment"));
-        } else if (role == Qt::DecorationRole) {
-            return QIcon::fromTheme("format-justify-center");
         }
+        /*} else if (role == Qt::DecorationRole) {
+            return QIcon::fromTheme("format-justify-center");
+        }*/
         break;
     default:
         break;

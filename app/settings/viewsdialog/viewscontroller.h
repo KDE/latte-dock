@@ -82,12 +82,12 @@ signals:
 
 private:
     void init();
-private slots:
 
-//    void loadConfig();
-//    void saveConfig();
-//    void storeColumnWidths();
-//    void applyColumnWidths();
+private slots:
+    void loadConfig();
+    void saveConfig();
+    void storeColumnWidths();
+    void applyColumnWidths();
 
 private:
     Settings::Handler::ViewsHandler *m_handler{nullptr};
@@ -95,7 +95,7 @@ private:
     QTableView *m_view{nullptr};
 
     //! layoutsView ui settings
-    int m_viewSortColumn;
+    int m_viewSortColumn{Model::Views::SCREENCOLUMN};
     Qt::SortOrder m_viewSortOrder;
     QStringList m_viewColumnWidths;
 
