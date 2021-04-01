@@ -51,6 +51,11 @@ int Views::rowCount() const
     return m_viewsTable.rowCount();
 }
 
+int Views::columnCount()
+{
+    return LASTCOLUMN;
+}
+
 int Views::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
@@ -60,7 +65,7 @@ int Views::rowCount(const QModelIndex &parent) const
 int Views::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return IDCOLUMN+1;
+    return columnCount();
 }
 
 const Latte::Data::ViewsTable &Views::currentViewsData()
@@ -102,6 +107,11 @@ QVariant Views::headerData(int section, Qt::Orientation orientation, int role) c
     case IDCOLUMN:
         if (role == Qt::DisplayRole) {
             return QString("#");
+        }
+        break;
+    case NAMECOLUMN:
+        if (role == Qt::DisplayRole) {
+            return QString(i18n("Name"));
         }
         break;
     case SCREENCOLUMN:

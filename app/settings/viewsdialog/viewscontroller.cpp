@@ -125,33 +125,38 @@ void Views::selectRow(const QString &id)
 
 void Views::applyColumnWidths()
 {
-    m_view->horizontalHeader()->setSectionResizeMode(Model::Views::SCREENCOLUMN, QHeaderView::Stretch);
+    m_view->horizontalHeader()->setSectionResizeMode(Model::Views::NAMECOLUMN, QHeaderView::Stretch);
 
-    if (m_viewColumnWidths.count()<3) {
+    if (m_viewColumnWidths.count()<(Model::Views::columnCount()-1)) {
         return;
     }
 
-    m_view->setColumnWidth(Model::Views::EDGECOLUMN, m_viewColumnWidths[0].toInt());
-    m_view->setColumnWidth(Model::Views::ALIGNMENTCOLUMN, m_viewColumnWidths[1].toInt());
-    m_view->setColumnWidth(Model::Views::IDCOLUMN, m_viewColumnWidths[2].toInt());
+    m_view->setColumnWidth(Model::Views::IDCOLUMN, m_viewColumnWidths[0].toInt());
+    m_view->setColumnWidth(Model::Views::SCREENCOLUMN, m_viewColumnWidths[1].toInt());
+    m_view->setColumnWidth(Model::Views::EDGECOLUMN, m_viewColumnWidths[2].toInt());
+    m_view->setColumnWidth(Model::Views::ALIGNMENTCOLUMN, m_viewColumnWidths[3].toInt());
 }
 
 void Views::storeColumnWidths()
 {
-    if (m_viewColumnWidths.isEmpty()) {
-        //! storing three columns
-        m_viewColumnWidths << "" << "" << "";
+    if (m_viewColumnWidths.isEmpty() || (m_viewColumnWidths.count()<Model::Views::columnCount()-1)) {
+        //! storing four columns
+        m_viewColumnWidths.clear();
+        for (int i=0; i<Model::Views::columnCount(); ++i) {
+            m_viewColumnWidths << "";
+        }
     }
 
-    m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Views::EDGECOLUMN));
-    m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Views::ALIGNMENTCOLUMN));
-    m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Views::IDCOLUMN));
+    m_viewColumnWidths[0] = QString::number(m_view->columnWidth(Model::Views::IDCOLUMN));
+    m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Views::SCREENCOLUMN));
+    m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Views::EDGECOLUMN));
+    m_viewColumnWidths[3] = QString::number(m_view->columnWidth(Model::Views::ALIGNMENTCOLUMN));
 }
 
 void Views::loadConfig()
 {
     m_viewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
-    m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Layouts::NAMECOLUMN);
+    m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Views::SCREENCOLUMN);
     m_viewSortOrder = static_cast<Qt::SortOrder>(m_storage.readEntry("sortOrder", (int)Qt::AscendingOrder));
 }
 

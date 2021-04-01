@@ -41,15 +41,18 @@ class Views : public QAbstractTableModel
 public:
     enum Columns
     {
-        SCREENCOLUMN = 0,
+        IDCOLUMN = 0,
+        NAMECOLUMN,
+        SCREENCOLUMN,
         EDGECOLUMN,
         ALIGNMENTCOLUMN,
-        IDCOLUMN
+        LASTCOLUMN
     };
 
     enum Roles
     {
         IDROLE = Qt::UserRole + 1,
+        NAMEROLE,
         ISACTIVEROLE,
         SCREENSLISTROLE,
         EDGESLISTROLE,
@@ -69,6 +72,7 @@ public:
     ~Views();
 
     int rowCount() const;
+    static int columnCount();
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
 
