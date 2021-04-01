@@ -32,7 +32,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QPainter>
-#include <QProcess>
 
 // KDE
 #include <KDirWatch>
