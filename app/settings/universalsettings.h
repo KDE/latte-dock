@@ -205,6 +205,9 @@ private:
     //! reading kwinrc values is costly; a tracker protects from
     //! reading too many times with no real reason
     QTimer m_kwinrcTrackerTimer;
+    KSharedConfigPtr m_kwinrcPtr;
+    KConfigGroup m_kwinrcModifierOnlyShortcutsGroup;
+    KConfigGroup m_kwinrcWindowsGroup;
 
     friend class Layouts::Manager;
     friend class Latte::Corona;

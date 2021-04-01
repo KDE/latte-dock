@@ -30,7 +30,6 @@
 // Qt
 #include <QDebug>
 #include <QDir>
-#include <QProcess>
 #include <QtDBus>
 
 // KDE
@@ -70,6 +69,10 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
 
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &UniversalSettings::screensCountChanged);
     connect(qGuiApp, &QGuiApplication::screenRemoved, this, &UniversalSettings::screensCountChanged);
+
+    m_kwinrcPtr = KSharedConfig::openConfig(Latte::configPath() + "/" + KWINRC);
+    m_kwinrcModifierOnlyShortcutsGroup = KConfigGroup(m_kwinrcPtr, QStringLiteral("ModifierOnlyShortcuts"));
+    m_kwinrcWindowsGroup = KConfigGroup(m_kwinrcPtr, QStringLiteral("Windows"));
 }
 
 UniversalSettings::~UniversalSettings()
@@ -336,18 +339,9 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
         return;
     }
 
-    QProcess process;
-    QStringList parameters;
-    parameters << "--file" << "kwinrc" << "--group" << "ModifierOnlyShortcuts" << "--key" << "Meta";
-
-    if (forward) {
-        parameters << KWINMETAFORWARDTOLATTESTRING;
-    } else {
-        parameters << KWINMETAFORWARDTOPLASMASTRING;
-    }
-
-    process.start("kwriteconfig5", parameters);
-    process.waitForFinished();
+    QString forwardStr = (forward ? KWINMETAFORWARDTOLATTESTRING : KWINMETAFORWARDTOPLASMASTRING);
+    m_kwinrcModifierOnlyShortcutsGroup.writeEntry("Meta", forwardStr);
+    m_kwinrcModifierOnlyShortcutsGroup.sync();
 
     QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
 
@@ -362,12 +356,8 @@ void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
         return;
     }
 
-    QString disableText = disable ? "true" : "false";
-
-    QProcess process;
-    QString commandStr = "kwriteconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows --type bool " + disableText;
-    process.start(commandStr);
-    process.waitForFinished();
+    m_kwinrcWindowsGroup.writeEntry("BorderlessMaximizedWindows", disable);
+    m_kwinrcWindowsGroup.sync();
 
     QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
 
@@ -382,20 +372,11 @@ void UniversalSettings::recoverKWinOptions()
     qDebug() << "kwinrc: recovering values...";
 
     //! Meta forwarded to Latte option
-    QProcess process;
-    process.start("kreadconfig5 --file kwinrc --group ModifierOnlyShortcuts --key Meta");
-    process.waitForFinished();
-    QString output(process.readAllStandardOutput());
-    output = output.remove("\n");
-
-    m_kwinMetaForwardedToLatte = (output == KWINMETAFORWARDTOLATTESTRING);
+    QString metaforwardedstr = m_kwinrcModifierOnlyShortcutsGroup.readEntry("Meta", KWINMETAFORWARDTOPLASMASTRING);
+    m_kwinMetaForwardedToLatte = (metaforwardedstr == KWINMETAFORWARDTOLATTESTRING);
 
     //! BorderlessMaximizedWindows option
-    process.start("kreadconfig5 --file kwinrc --group Windows --key BorderlessMaximizedWindows");
-    process.waitForFinished();
-    output = process.readAllStandardOutput();
-    output = output.remove("\n");
-    m_kwinBorderlessMaximizedWindows = (output == "true");
+    m_kwinBorderlessMaximizedWindows = m_kwinrcWindowsGroup.readEntry("BorderlessMaximizedWindows", false);
 }
 
 bool UniversalSettings::metaPressAndHoldEnabled() const
