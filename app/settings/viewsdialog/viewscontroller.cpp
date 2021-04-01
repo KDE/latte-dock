@@ -55,6 +55,8 @@ Views::Views(Settings::Handler::ViewsHandler *parent)
     connect(m_model, &Model::Views::rowsInserted, this, &Views::dataChanged);
     connect(m_model, &Model::Views::rowsRemoved, this, &Views::dataChanged);
 
+    connect(m_handler, &Handler::ViewsHandler::currentLayoutChanged, this, &Views::onCurrentLayoutChanged);
+
     init();
 }
 
@@ -121,6 +123,12 @@ bool Views::hasSelectedView() const
 void Views::selectRow(const QString &id)
 {
   //  m_view->selectRow(rowForId(id));
+}
+
+void Views::onCurrentLayoutChanged()
+{
+    Data::Layout layout = m_handler->currentData();
+    m_model->setOriginalData(layout.views);
 }
 
 void Views::applyColumnWidths()

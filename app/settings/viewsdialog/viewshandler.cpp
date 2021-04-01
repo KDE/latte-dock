@@ -76,6 +76,8 @@ void ViewsHandler::init()
 
     reload();
 
+    emit currentLayoutChanged();
+
     //! connect layout combobox after the selected layout has been loaded
     connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ViewsHandler::onCurrentLayoutIndexChanged);
 

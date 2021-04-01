@@ -230,9 +230,6 @@ void Layouts::initializeSelectedLayoutViews()
             m_model->setOriginalViewsForLayout(originalSelectedData);
             m_model->setLayoutProperties(selectedCurrentData);
 
-            qDebug() << "Views For Original Layout :: " << originalSelectedData.name;
-            selectedCurrentData.views.print();
-
             if (!islayoutactive) {
                 central->deleteLater();
             }

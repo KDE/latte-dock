@@ -89,6 +89,8 @@ private slots:
     void storeColumnWidths();
     void applyColumnWidths();
 
+    void onCurrentLayoutChanged();
+
 private:
     Settings::Handler::ViewsHandler *m_handler{nullptr};
 

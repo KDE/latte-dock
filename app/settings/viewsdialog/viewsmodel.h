@@ -46,6 +46,7 @@ public:
         SCREENCOLUMN,
         EDGECOLUMN,
         ALIGNMENTCOLUMN,
+        SUBCONTAINMENTSCOLUMN,
         LASTCOLUMN
     };
 
