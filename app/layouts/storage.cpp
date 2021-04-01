@@ -1264,6 +1264,7 @@ Data::View Storage::view(const KConfigGroup &containmentGroup)
     }
 
     vdata.id = containmentGroup.name();
+    vdata.name = containmentGroup.readEntry("name", QString());
     vdata.isActive = false;
     vdata.onPrimary = containmentGroup.readEntry("onPrimary", true);
     vdata.screen = containmentGroup.readEntry("lastScreen", IDNULL);

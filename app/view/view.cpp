@@ -306,6 +306,7 @@ void View::init(Plasma::Containment *plasma_containment)
 
     connect(this, &View::byPassWMChanged, this, &View::saveConfig);
     connect(this, &View::isPreferredForShortcutsChanged, this, &View::saveConfig);
+    connect(this, &View::nameChanged, this, &View::saveConfig);
     connect(this, &View::onPrimaryChanged, this, &View::saveConfig);
     connect(this, &View::typeChanged, this, &View::saveConfig);
 
@@ -560,6 +561,22 @@ void View::setLocalGeometry(const QRect &geometry)
 
     m_localGeometry = geometry;
     emit localGeometryChanged();
+}
+
+
+QString View::name() const
+{
+    return m_name;
+}
+
+void View::setName(const QString &newname)
+{
+    if (m_name == newname) {
+        return;
+    }
+
+    m_name = newname;
+    emit nameChanged();
 }
 
 QString View::validTitle() const
@@ -1277,6 +1294,7 @@ Latte::Data::View View::data() const
 {
     Latte::Data::View vdata;
     vdata.id = QString::number(containment()->id());
+    vdata.name = name();
     vdata.isActive = true;
     vdata.onPrimary = onPrimary();
 
@@ -1623,6 +1641,7 @@ void View::saveConfig()
     config.writeEntry("onPrimary", onPrimary());
     config.writeEntry("byPassWM", byPassWM());
     config.writeEntry("isPreferredForShortcuts", isPreferredForShortcuts());
+    config.writeEntry("name", m_name);
     config.writeEntry("viewType", (int)m_type);
 }
 
@@ -1635,6 +1654,7 @@ void View::restoreConfig()
     m_onPrimary = config.readEntry("onPrimary", true);
     m_byPassWM = config.readEntry("byPassWM", false);
     m_isPreferredForShortcuts = config.readEntry("isPreferredForShortcuts", false);
+    m_name = config.readEntry("name", QString());
 
     //! Send changed signals at the end in order to be sure that saveConfig
     //! wont rewrite default/invalid values

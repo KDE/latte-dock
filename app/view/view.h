@@ -118,6 +118,8 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(float maxLength READ maxLength WRITE setMaxLength NOTIFY maxLengthChanged)
     Q_PROPERTY(float offset READ offset WRITE setOffset NOTIFY offsetChanged)
 
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+
     Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
 
     Q_PROPERTY(QVariantList containmentActions READ containmentActions NOTIFY containmentActionsChanged)
@@ -221,6 +223,9 @@ public:
     void setLocalGeometry(const QRect &geometry);
 
     QString validTitle() const;
+
+    QString name() const;
+    void setName(const QString &newname);
 
     bool isOnActivity(const QString &activity) const;
     bool isOnAllActivities() const;
@@ -331,6 +336,7 @@ signals:
     void maxThicknessChanged();
     void normalThicknessChanged();
     void maxNormalThicknessChanged();
+    void nameChanged();
     void offsetChanged();
     void onPrimaryChanged();
     void parabolicChanged();
@@ -416,6 +422,8 @@ private:
 
     QRect m_localGeometry;
     QRect m_absoluteGeometry;
+
+    QString m_name;
 
     QStringList m_activities;
 
