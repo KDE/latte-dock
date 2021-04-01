@@ -210,7 +210,7 @@ void Layouts::initializeSelectedLayoutViews()
     int selectedRow = m_view->currentIndex().row();
     if (selectedRow >= 0) {
         QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-        Latte::Data::Layout selectedCurrentData = m_model->currentData(selectedId);
+        Data::Layout selectedCurrentData = m_model->currentData(selectedId);
 
         if (!selectedCurrentData.views.isInitialized) {
             Data::Layout originalSelectedData = selectedLayoutOriginalData();
@@ -220,7 +220,7 @@ void Layouts::initializeSelectedLayoutViews()
 
             if (!central) {
                 islayoutactive = false;
-                central = new CentralLayout(this, originalSelectedData.id);
+                central = new CentralLayout(this, selectedCurrentData.id);
             }
 
             selectedCurrentData.views = central->viewsTable();
