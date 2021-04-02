@@ -45,8 +45,6 @@ QtQuickControlStyle.SwitchStyle {
 
         PlasmaCore.FrameSvgItem {
             anchors.fill: parent
-            implicitHeight: parent.implicitHeight
-            implicitWidth: parent.implicitWidth
             imagePath: "widgets/slider"
             prefix: "groove"
             opacity: control.checked ? 0 : 1
@@ -59,8 +57,6 @@ QtQuickControlStyle.SwitchStyle {
         PlasmaCore.FrameSvgItem {
             id: highlight
             anchors.fill: parent
-            implicitHeight: parent.implicitHeight
-            implicitWidth: parent.implicitWidth
             imagePath: "widgets/slider"
             prefix: "groove-highlight"
 
