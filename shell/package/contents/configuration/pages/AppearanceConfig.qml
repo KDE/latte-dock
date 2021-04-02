@@ -797,7 +797,7 @@ PlasmaComponents.Page {
                 tooltip: i18n("Enable/disable background")
 
                 onPressed: {
-                    plasmoid.configuration.useThemePanel = checked;
+                    plasmoid.configuration.useThemePanel = !plasmoid.configuration.useThemePanel;
                 }
             }
 
