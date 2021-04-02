@@ -33,25 +33,40 @@ QtQuickControlStyle.SwitchStyle {
 
         PlasmaCore.FrameSvgItem {
             id: button
+            anchors.fill: parent
             imagePath: "widgets/button"
             prefix: "normal"
-            anchors.fill: parent
         }
     }
 
-    groove: PlasmaCore.FrameSvgItem {
-        imagePath: "widgets/slider"
-        prefix: "groove"
+    groove: Item {
         implicitHeight: theme.mSize(theme.defaultFont).height
         implicitWidth: height * 2
 
         PlasmaCore.FrameSvgItem {
+            anchors.fill: parent
+            implicitHeight: parent.implicitHeight
+            implicitWidth: parent.implicitWidth
+            imagePath: "widgets/slider"
+            prefix: "groove"
+            opacity: control.checked ? 0 : 1
+            visible: opacity > 0
+            Behavior on opacity {
+                PropertyAnimation { duration: units.shortDuration * 2 }
+            }
+        }
+
+        PlasmaCore.FrameSvgItem {
             id: highlight
+            anchors.fill: parent
+            implicitHeight: parent.implicitHeight
+            implicitWidth: parent.implicitWidth
             imagePath: "widgets/slider"
             prefix: "groove-highlight"
-            anchors.fill: parent
 
             opacity: control.checked ? 1 : 0
+            visible: opacity > 0
+
             Behavior on opacity {
                 PropertyAnimation { duration: units.shortDuration * 2 }
             }
