@@ -24,47 +24,144 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 QtQuickControlStyle.SwitchStyle {
     id: styleRoot
+    padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 
-    handle: PlasmaCore.FrameSvgItem {
-        opacity: control.enabled ? 1.0 : 0.6
-        width: height
-        imagePath: "widgets/button"
-        prefix: "shadow"
+    PlasmaCore.Svg {
+        id: switchSvg
+        imagePath: "widgets/switch"
+        colorGroup: PlasmaCore.ColorScope.colorGroup
+    }
 
-        PlasmaCore.FrameSvgItem {
-            id: button
+    property bool themeHasSwitch: false
+
+    handle: Item {
+        implicitWidth: {
+            if (fallbackHandle.visible) {
+                return height;
+            }
+
+            return switchSvg.hasElement("hint-handle-size") ? switchSvg.elementSize("hint-handle-size").width : themeHandleItem.width;
+        }
+        implicitHeight: {
+            if (fallbackHandle.visible) {
+                return theme.mSize(theme.defaultFont).height
+            }
+
+            return switchSvg.hasElement("hint-handle-size") ? switchSvg.elementSize("hint-handle-size").height : themeHandleItem.height
+        }
+
+        Item {
+            id: fallbackHandle
             anchors.fill: parent
-            imagePath: "widgets/button"
-            prefix: "normal"
+            visible: !themeHandleItem.visible
+
+            PlasmaCore.FrameSvgItem {
+                anchors.fill: parent
+                opacity: control.enabled ? 1.0 : 0.6
+                imagePath: "widgets/button"
+                prefix: "shadow"
+            }
+
+            PlasmaCore.FrameSvgItem {
+                id: button
+                anchors.fill: parent
+                imagePath: "widgets/button"
+                prefix: "normal"
+            }
+        }
+
+        PlasmaCore.SvgItem {
+            id: themeHandleShadow
+            anchors.fill: themeHandleItem
+            opacity: control.enabled ? 1.0 : 0.6
+            svg: switchSvg
+            elementId: control.activeFocus ? "handle-focus" : (control.hovered ? "handle-hover" : "handle-shadow")
+            visible: styleRoot.themeHasSwitch
+        }
+
+        PlasmaCore.SvgItem {
+            id: themeHandleItem
+            anchors.centerIn: parent
+            width: naturalSize.width
+            height: naturalSize.height
+            svg: switchSvg
+            elementId: "handle"
+            visible: styleRoot.themeHasSwitch
         }
     }
 
     groove: Item {
-        implicitHeight: theme.mSize(theme.defaultFont).height
-        implicitWidth: height * 2
+        width: theme.mSize(theme.defaultFont).height * 2
+        height: themeGroove.visible ? themeGrooveItem.implicitHeight : theme.mSize(theme.defaultFont).height
 
-        PlasmaCore.FrameSvgItem {
+        Item{
+            id: fallbackGroove
             anchors.fill: parent
-            imagePath: "widgets/slider"
-            prefix: "groove"
-            opacity: control.checked ? 0 : 1
-            visible: opacity > 0
-            Behavior on opacity {
-                PropertyAnimation { duration: units.shortDuration * 2 }
+            visible: !themeGroove.visible
+
+            PlasmaCore.FrameSvgItem {
+                id: fallbackGrooveItem
+                anchors.fill: parent
+                imagePath: "widgets/slider"
+                prefix: "groove"
+                opacity: control.checked ? 0 : 1
+                colorGroup: PlasmaCore.ColorScope.colorGroup
+                visible: opacity > 0                
+
+                Behavior on opacity {
+                    PropertyAnimation { duration: units.shortDuration * 2 }
+                }
+            }
+
+            PlasmaCore.FrameSvgItem {
+                id: fallbackHighlight
+                anchors.fill: fallbackGrooveItem
+                imagePath: "widgets/slider"
+                prefix: "groove-highlight"
+                opacity: control.checked ? 1 : 0
+                colorGroup: PlasmaCore.ColorScope.colorGroup
+                visible: opacity > 0
+
+                Behavior on opacity {
+                    PropertyAnimation { duration: units.shortDuration * 2 }
+                }
             }
         }
 
-        PlasmaCore.FrameSvgItem {
-            id: highlight
+        Item {
+            id: themeGroove
             anchors.fill: parent
-            imagePath: "widgets/slider"
-            prefix: "groove-highlight"
+            visible: styleRoot.themeHasSwitch
 
-            opacity: control.checked ? 1 : 0
-            visible: opacity > 0
+            PlasmaCore.FrameSvgItem {
+                id: themeGrooveItem
+                anchors.fill: parent
+                imagePath: "widgets/switch"
+                prefix: "groove"
+                opacity: control.checked ? 0 : 1
+                colorGroup: PlasmaCore.ColorScope.colorGroup
+                visible: opacity > 0
 
-            Behavior on opacity {
-                PropertyAnimation { duration: units.shortDuration * 2 }
+                Component.onCompleted: styleRoot.themeHasSwitch = fromCurrentTheme;
+                onFromCurrentThemeChanged: styleRoot.themeHasSwitch = fromCurrentTheme;
+
+                Behavior on opacity {
+                    PropertyAnimation { duration: units.shortDuration * 2 }
+                }
+            }
+
+            PlasmaCore.FrameSvgItem {
+                id: themeGrooveHighlight
+                anchors.fill: parent
+                imagePath: "widgets/switch"
+                prefix: "groove-highlight"
+                opacity: control.checked ? 1 : 0
+                colorGroup: PlasmaCore.ColorScope.colorGroup
+                visible: opacity > 0
+
+                Behavior on opacity {
+                    PropertyAnimation { duration: units.shortDuration * 2 }
+                }
             }
         }
     }
