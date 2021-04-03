@@ -143,12 +143,12 @@ void Views::applyColumnWidths()
     m_view->setColumnWidth(Model::Views::SCREENCOLUMN, m_viewColumnWidths[1].toInt());
     m_view->setColumnWidth(Model::Views::EDGECOLUMN, m_viewColumnWidths[2].toInt());
     m_view->setColumnWidth(Model::Views::ALIGNMENTCOLUMN, m_viewColumnWidths[3].toInt());
+    m_view->setColumnWidth(Model::Views::SUBCONTAINMENTSCOLUMN, m_viewColumnWidths[4].toInt());
 }
 
 void Views::storeColumnWidths()
 {
     if (m_viewColumnWidths.isEmpty() || (m_viewColumnWidths.count()<Model::Views::columnCount()-1)) {
-        //! storing four columns
         m_viewColumnWidths.clear();
         for (int i=0; i<Model::Views::columnCount(); ++i) {
             m_viewColumnWidths << "";
@@ -159,6 +159,7 @@ void Views::storeColumnWidths()
     m_viewColumnWidths[1] = QString::number(m_view->columnWidth(Model::Views::SCREENCOLUMN));
     m_viewColumnWidths[2] = QString::number(m_view->columnWidth(Model::Views::EDGECOLUMN));
     m_viewColumnWidths[3] = QString::number(m_view->columnWidth(Model::Views::ALIGNMENTCOLUMN));
+    m_viewColumnWidths[4] = QString::number(m_view->columnWidth(Model::Views::SUBCONTAINMENTSCOLUMN));
 }
 
 void Views::loadConfig()

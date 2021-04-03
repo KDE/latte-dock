@@ -87,7 +87,14 @@
           <number>6</number>
          </property>
          <item row="1" column="0">
-          <widget class="QTableView" name="viewsTable"/>
+          <widget class="QTableView" name="viewsTable">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
          <item row="1" column="2">
           <layout class="QVBoxLayout" name="buttonsLayout">
