@@ -217,22 +217,12 @@ Loader {
                 ColumnLayout {
                     PlasmaComponents3.ToolButton {
                         id: pinButton
-
-                        Layout.fillWidth: false
-                        Layout.fillHeight: false
-                        Layout.preferredWidth: width
-                        Layout.preferredHeight: height
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                         Layout.bottomMargin: units.smallSpacing * 1.5
-                        //!avoid editMode box shadow
                         Layout.topMargin: units.smallSpacing * 3
                         Layout.rightMargin: units.smallSpacing * 2
-
                         icon.name: "window-pin"
                         checkable: true
-
-                        width: 7 * units.smallSpacing
-                        height: width
 
                         property bool inStartup: true
 
