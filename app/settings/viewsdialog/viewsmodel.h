@@ -24,6 +24,7 @@
 // local
 #include "../../lattecorona.h"
 #include "../../data/genericbasictable.h"
+#include "../../data/screendata.h"
 #include "../../data/viewdata.h"
 #include "../../data/viewstable.h"
 
@@ -106,7 +107,7 @@ private:
     QVariant s_edges;
     QVariant s_horizontalAlignments;
     QVariant s_verticalAlignments;
-    Latte::Data::GenericBasicTable s_screens;
+    Latte::Data::ScreensTable s_screens;
 };
 
 }

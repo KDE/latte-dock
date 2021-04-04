@@ -63,6 +63,8 @@ public:
 
     QScreen *screenForId(int id);
 
+    Latte::Data::ScreensTable screensTable();
+
 signals:
     void primaryPoolChanged();
 

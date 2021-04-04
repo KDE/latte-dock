@@ -145,6 +145,11 @@ void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGe
 }
 
 
+Latte::Data::ScreensTable ScreenPool::screensTable()
+{
+    return m_screensTable;
+}
+
 QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
 {
     QString report;

@@ -22,6 +22,7 @@
 // local
 #include "../viewsmodel.h"
 #include "../../../data/genericbasictable.h"
+#include "../../../data/screendata.h"
 
 // Qt
 #include <QMenu>
@@ -39,6 +40,9 @@ SingleOption::SingleOption(QObject *parent)
 
 QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+    const int row = index.row();
+    const int column = index.column();
+
     QPushButton *button = new QPushButton(parent);
 
     QMenu *menu = new QMenu(button);
@@ -48,7 +52,18 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
     bool isViewActive = index.data(Model::Views::ISACTIVEROLE).toBool();
 
     QString currentChoice = index.data(Qt::UserRole).toString();
-    Latte::Data::GenericBasicTable choices = index.data(Model::Views::CHOICESROLE).value<Latte::Data::GenericBasicTable>();
+
+    Latte::Data::GenericBasicTable choices;
+
+    if (column == Model::Views::SCREENCOLUMN) {
+        Latte::Data::ScreensTable screens = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ScreensTable>();
+
+        for (int i=0; i<screens.rowCount(); ++i) {
+            choices << Latte::Data::Generic(screens[i].id, screens[i].name);
+        }
+    } else {
+        choices << index.data(Model::Views::CHOICESROLE).value<Latte::Data::GenericBasicTable>();
+    }
 
     for (int i=0; i<choices.rowCount(); ++i) {
         QAction *action = new QAction(choices[i].name);
@@ -79,7 +94,7 @@ void SingleOption::setEditorData(QWidget *editor, const QModelIndex &index) cons
 }
 
 bool SingleOption::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-                             const QModelIndex &index)
+                               const QModelIndex &index)
 {
     Q_ASSERT(event);
     Q_ASSERT(model);

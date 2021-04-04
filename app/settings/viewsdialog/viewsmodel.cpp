@@ -22,6 +22,7 @@
 
 // local
 #include <coretypes.h>
+#include "../../screenpool.h"
 #include "../../data/genericdata.h"
 #include "../../data/screendata.h"
 
@@ -121,6 +122,11 @@ void Views::initAlignments()
 
 void Views::populateScreens()
 {
+    s_screens.clear();
+    Data::Screen primary("0", i18nc("primary screen", " - Follow Primary Screen - "));
+
+    s_screens << primary;
+    s_screens << m_corona->screenPool()->screensTable();
 }
 
 void Views::setOriginalData(Latte::Data::ViewsTable &data)
@@ -225,7 +231,20 @@ QVariant Views::data(const QModelIndex &index, int role) const
     } else if (role == ISACTIVEROLE) {
         return m_viewsTable[row].isActive;
     } else if (role == CHOICESROLE) {
-        if (column == EDGECOLUMN) {
+        if (column == SCREENCOLUMN) {
+            QVariant screensVariant;
+
+            Latte::Data::ScreensTable currentScreens = s_screens;
+
+            if (!m_viewsTable[row].onPrimary && !currentScreens.containsId(QString::number(m_viewsTable[row].screen))) {
+                Data::Screen explicitScr(QString::number(m_viewsTable[row].screen),
+                                         i18nc("unknown screen", "Unknown : [%0]").arg(explicitScr.id));
+                currentScreens.insertBasedOnId(explicitScr);
+            }
+
+            screensVariant.setValue<Latte::Data::ScreensTable>(currentScreens);
+            return screensVariant;
+        } else if (column == EDGECOLUMN) {
             return s_edges;
         } else if (column == ALIGNMENTCOLUMN) {
             bool isVertical = (m_viewsTable[row].edge == Plasma::Types::LeftEdge || m_viewsTable[row].edge == Plasma::Types::RightEdge);
