@@ -35,6 +35,12 @@ Generic::Generic(const Generic &o)
 {
 }
 
+Generic::Generic(const QString &newid, const QString &newname)
+    : id(newid),
+      name(newname)
+{
+}
+
 Generic &Generic::operator=(const Generic &rhs)
 {
     id = rhs.id;

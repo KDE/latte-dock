@@ -23,6 +23,7 @@
 
 // local
 #include "../../lattecorona.h"
+#include "../../data/genericbasictable.h"
 #include "../../data/viewdata.h"
 #include "../../data/viewstable.h"
 
@@ -77,6 +78,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     const Latte::Data::ViewsTable &currentViewsData();
     const Latte::Data::ViewsTable &originalViewsData();
@@ -90,11 +92,21 @@ signals:
 private slots:
     void clear();
 
+    void initEdges();
+    void initAlignments();
+    void populateScreens();
+
+
 private:
     Latte::Data::ViewsTable m_viewsTable;
     Latte::Data::ViewsTable o_viewsTable;
 
     Latte::Corona *m_corona{nullptr};
+
+    QVariant s_edges;
+    QVariant s_horizontalAlignments;
+    QVariant s_verticalAlignments;
+    Latte::Data::GenericBasicTable s_screens;
 };
 
 }

@@ -61,7 +61,30 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
         menu->addAction(action);
     }
 
+    connect(menu, &QMenu::aboutToHide, button, &QWidget::clearFocus);
     return button;
+}
+
+void SingleOption::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    editor->setGeometry(option.rect);
+}
+
+void SingleOption::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    QString currentText = index.data(Qt::DisplayRole).toString();
+    QPushButton *button = static_cast<QPushButton *>(editor);
+
+    button->setText(currentText);
+}
+
+bool SingleOption::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+                             const QModelIndex &index)
+{
+    Q_ASSERT(event);
+    Q_ASSERT(model);
+
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
 }

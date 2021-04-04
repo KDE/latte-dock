@@ -36,6 +36,7 @@ public:
     Generic() = default;
     Generic(Generic &&o);
     Generic(const Generic &o);
+    Generic(const QString &newid, const QString &newname);
 
     //! Layout data
     QString id;

@@ -22,6 +22,8 @@
 
 // local
 #include <coretypes.h>
+#include "../../data/genericdata.h"
+#include "../../data/screendata.h"
 
 // KDE
 #include <KLocalizedString>
@@ -34,6 +36,9 @@ Views::Views(QObject *parent, Latte::Corona *corona)
     : QAbstractTableModel(parent),
       m_corona(corona)
 {
+    initEdges();
+    initAlignments();
+    populateScreens();
 }
 
 Views::~Views()
@@ -81,6 +86,42 @@ const Latte::Data::ViewsTable &Views::originalViewsData()
     return o_viewsTable;
 }
 
+void Views::initEdges()
+{
+    Latte::Data::GenericBasicTable edges;
+    edges << Data::Generic(QString::number(Plasma::Types::TopEdge), i18nc("top edge", "Top"));
+    edges << Data::Generic(QString::number(Plasma::Types::LeftEdge), i18nc("left edge", "Left"));
+    edges << Data::Generic(QString::number(Plasma::Types::BottomEdge), i18nc("bottom edge", "Bottom"));
+    edges << Data::Generic(QString::number(Plasma::Types::RightEdge), i18nc("right edge", "Right"));
+
+    s_edges.setValue<Latte::Data::GenericBasicTable>(edges);
+}
+
+void Views::initAlignments()
+{
+    Latte::Data::GenericBasicTable horizontals;
+    Latte::Data::GenericBasicTable verticals;
+
+    horizontals << Data::Generic(QString::number(Latte::Types::Left), i18nc("left alignment", "Left"));
+    verticals << Data::Generic(QString::number(Latte::Types::Left), i18nc("top alignment", "Top"));
+
+
+    horizontals << Data::Generic(QString::number(Latte::Types::Center), i18nc("center alignment", "Center"));
+    verticals << horizontals[1];
+
+    horizontals << Data::Generic(QString::number(Latte::Types::Right), i18nc("right alignment", "Right"));
+    verticals << Data::Generic(QString::number(Latte::Types::Left), i18nc("bottom alignment", "Bottom"));
+
+    horizontals << Data::Generic(QString::number(Latte::Types::Right), i18nc("justify alignment", "Justify"));
+    verticals << horizontals[3];
+
+    s_horizontalAlignments.setValue<Latte::Data::GenericBasicTable>(horizontals);
+    s_verticalAlignments.setValue<Latte::Data::GenericBasicTable>(verticals);
+}
+
+void Views::populateScreens()
+{
+}
 
 void Views::setOriginalData(Latte::Data::ViewsTable &data)
 {
@@ -152,6 +193,22 @@ QVariant Views::headerData(int section, Qt::Orientation orientation, int role) c
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
+Qt::ItemFlags Views::flags(const QModelIndex &index) const
+{
+    const int column = index.column();
+    const int row = index.row();
+
+    auto flags = QAbstractTableModel::flags(index);
+
+    if (column == SCREENCOLUMN
+            || column == EDGECOLUMN
+            || column == ALIGNMENTCOLUMN) {
+        flags |= Qt::ItemIsEditable;
+    }
+
+    return flags;
+}
+
 
 QVariant Views::data(const QModelIndex &index, int role) const
 {
@@ -167,7 +224,15 @@ QVariant Views::data(const QModelIndex &index, int role) const
         return m_viewsTable[row].id;
     } else if (role == ISACTIVEROLE) {
         return m_viewsTable[row].isActive;
+    } else if (role == CHOICESROLE) {
+        if (column == EDGECOLUMN) {
+            return s_edges;
+        } else if (column == ALIGNMENTCOLUMN) {
+            bool isVertical = (m_viewsTable[row].edge == Plasma::Types::LeftEdge || m_viewsTable[row].edge == Plasma::Types::RightEdge);
+            return isVertical ? s_verticalAlignments : s_horizontalAlignments;
+        }
     }
+
 
     if (role == Qt::TextAlignmentRole){
         return static_cast<Qt::Alignment::Int>(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -185,12 +250,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
         }
         break;
     case SCREENCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
+        if (role == Qt::DisplayRole){
             return (m_viewsTable[row].onPrimary ? QString("Primary") : QString::number(m_viewsTable[row].screen));
+        } else if (role == Qt::UserRole) {
+            return m_viewsTable[row].onPrimary ? QString::number(Data::Screen::ONPRIMARYID) : QString::number(m_viewsTable[row].screen);
         }
         break;
     case EDGECOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
+        if (role == Qt::DisplayRole){
             if (m_viewsTable[row].edge == Plasma::Types::BottomEdge) {
                 return QString("Bottom");
             } else if (m_viewsTable[row].edge == Plasma::Types::TopEdge) {
@@ -202,10 +269,12 @@ QVariant Views::data(const QModelIndex &index, int role) const
             }
 
             return QString("Unknown");
+        } else if (role == Qt::UserRole) {
+            return QString::number(m_viewsTable[row].edge);
         }
         break;
     case ALIGNMENTCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
+        if (role == Qt::DisplayRole){
             if (m_viewsTable[row].alignment == Latte::Types::Center) {
                 return QString("Center");
             } else if (m_viewsTable[row].alignment == Latte::Types::Left) {
@@ -221,6 +290,8 @@ QVariant Views::data(const QModelIndex &index, int role) const
             }
 
             return QString("Unknown");
+        } else if (role == Qt::UserRole) {
+            return QString::number(m_viewsTable[row].alignment);
         }
         break;
     case SUBCONTAINMENTSCOLUMN:
