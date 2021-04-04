@@ -30,7 +30,7 @@
 namespace Latte {
 namespace Data {
 
-template <class T = Generic>
+template <class T>
 class GenericTable
 {
 

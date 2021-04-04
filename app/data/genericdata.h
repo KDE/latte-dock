@@ -21,7 +21,10 @@
 #ifndef GENERICDATA_H
 #define GENERICDATA_H
 
-//! Qt
+// local
+#include "generictable.h"
+
+// Qt
 #include <QString>
 
 namespace Latte {
@@ -30,7 +33,7 @@ namespace Data {
 class Generic
 {
 public:
-    Generic();
+    Generic() = default;
     Generic(Generic &&o);
     Generic(const Generic &o);
 
@@ -47,5 +50,7 @@ public:
 
 }
 }
+
+
 
 #endif

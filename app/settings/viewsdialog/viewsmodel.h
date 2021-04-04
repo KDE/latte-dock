@@ -55,9 +55,7 @@ public:
         IDROLE = Qt::UserRole + 1,
         NAMEROLE,
         ISACTIVEROLE,
-        SCREENSLISTROLE,
-        EDGESLISTROLE,
-        SUBCONTAINMENTSIDSROLE,
+        CHOICESROLE,
         SORTINGROLE
     };
 

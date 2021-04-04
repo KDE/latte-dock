@@ -64,5 +64,6 @@ typedef GenericTable<Screen> ScreensTable;
 }
 
 Q_DECLARE_METATYPE(Latte::Data::Screen)
+Q_DECLARE_METATYPE(Latte::Data::ScreensTable)
 
 #endif

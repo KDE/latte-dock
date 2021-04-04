@@ -1,5 +1,5 @@
 /*
- * Copyright 2020  Michail Vourlakos <mvourlakos@gmail.com>
+ * Copyright 2021  Michail Vourlakos <mvourlakos@gmail.com>
  *
  * This file is part of Latte-Dock
  *
@@ -18,48 +18,24 @@
  *
  */
 
-#include "genericdata.h"
+#include "genericbasictable.h"
 
 namespace Latte {
 namespace Data {
 
-Generic::Generic(Generic &&o)
-    : id(o.id),
-      name(o.name)
+GenericBasicTable::GenericBasicTable()
+    : GenericTable<Generic>()
 {
 }
 
-Generic::Generic(const Generic &o)
-    : id(o.id),
-      name(o.name)
+GenericBasicTable::GenericBasicTable(GenericBasicTable &&o)
+    : GenericTable<Generic>(o)
 {
 }
 
-Generic &Generic::operator=(const Generic &rhs)
+GenericBasicTable::GenericBasicTable(const GenericBasicTable &o)
+    : GenericTable<Generic>(o)
 {
-    id = rhs.id;
-    name = rhs.name;
-
-    return (*this);
-}
-
-Generic &Generic::operator=(Generic &&rhs)
-{
-    id = rhs.id;
-    name = rhs.name;
-
-    return (*this);
-}
-
-bool Generic::operator==(const Generic &rhs) const
-{
-    return (id == rhs.id)
-            && (name == rhs.name);
-}
-
-bool Generic::operator!=(const Generic &rhs) const
-{
-    return !(*this == rhs);
 }
 
 }
