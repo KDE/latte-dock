@@ -39,8 +39,8 @@ public:
   void setMasterIndex(const int &index);
 
 protected:
-  void setVisible (bool visible) override;
-  void mouseReleaseEvent (QMouseEvent *e) override;
+  void setVisible(bool visible) override;
+  void mouseReleaseEvent(QMouseEvent *e) override;
 
 signals:
   void masterIndexChanged(const int &masterRow);

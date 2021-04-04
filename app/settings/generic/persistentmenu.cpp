@@ -37,7 +37,7 @@ void PersistentMenu::setVisible (bool visible)
       return;
   }
 
-  QMenu::setVisible (visible);
+  QMenu::setVisible(visible);
 }
 
 int PersistentMenu::masterIndex() const
@@ -57,7 +57,7 @@ void PersistentMenu::setMasterIndex(const int &index)
 
 void PersistentMenu::mouseReleaseEvent (QMouseEvent *e)
 {
-  const QAction *action = actionAt (e->pos ());
+  const QAction *action = actionAt(e->pos());
   if (action) {
       m_blockHide = true;
   }

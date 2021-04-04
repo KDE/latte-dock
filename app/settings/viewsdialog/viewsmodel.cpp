@@ -104,26 +104,32 @@ void Views::initAlignments()
     Latte::Data::GenericBasicTable verticals;
 
     horizontals << Data::Generic(QString::number(Latte::Types::Left), i18nc("left alignment", "Left"));
-    verticals << Data::Generic(QString::number(Latte::Types::Left), i18nc("top alignment", "Top"));
+    verticals << Data::Generic(QString::number(Latte::Types::Top), i18nc("top alignment", "Top"));
 
 
     horizontals << Data::Generic(QString::number(Latte::Types::Center), i18nc("center alignment", "Center"));
     verticals << horizontals[1];
 
     horizontals << Data::Generic(QString::number(Latte::Types::Right), i18nc("right alignment", "Right"));
-    verticals << Data::Generic(QString::number(Latte::Types::Left), i18nc("bottom alignment", "Bottom"));
+    verticals << Data::Generic(QString::number(Latte::Types::Bottom), i18nc("bottom alignment", "Bottom"));
 
-    horizontals << Data::Generic(QString::number(Latte::Types::Right), i18nc("justify alignment", "Justify"));
+    horizontals << Data::Generic(QString::number(Latte::Types::Justify), i18nc("justify alignment", "Justify"));
     verticals << horizontals[3];
 
     s_horizontalAlignments.setValue<Latte::Data::GenericBasicTable>(horizontals);
     s_verticalAlignments.setValue<Latte::Data::GenericBasicTable>(verticals);
 }
 
+bool Views::isVertical(const Plasma::Types::Location &location) const
+{
+    return (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge);
+}
+
 void Views::populateScreens()
 {
     s_screens.clear();
-    Data::Screen primary("0", i18nc("primary screen", " - Follow Primary Screen - "));
+    Data::Screen primary(QString::number(Data::Screen::ONPRIMARYID),
+                         i18nc("primary screen", " - Follow Primary Screen - "));
 
     s_screens << primary;
     s_screens << m_corona->screenPool()->screensTable();
@@ -215,6 +221,93 @@ Qt::ItemFlags Views::flags(const QModelIndex &index) const
     return flags;
 }
 
+bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    const int row = index.row();
+    const int column = index.column();
+
+    if (!m_viewsTable.rowExists(row) || column<0 || column >= SUBCONTAINMENTSCOLUMN) {
+        return false;
+    }
+
+    QVector<int> roles;
+    roles << role;
+    if (role != Qt::DisplayRole) {
+        roles << Qt::DisplayRole;
+    }
+
+    //! specific roles to each independent cell
+    switch (column) {
+    case SCREENCOLUMN:
+        if (role == Qt::UserRole) {
+            int screen = value.toString().toInt();
+
+            bool onPrimary = (screen == Latte::Data::Screen::ONPRIMARYID);
+
+            if (onPrimary == m_viewsTable[row].onPrimary && screen == m_viewsTable[row].screen) {
+                return false;
+            }
+
+            if (onPrimary) {
+                m_viewsTable[row].onPrimary = true;
+            } else {
+                m_viewsTable[row].onPrimary = false;
+                m_viewsTable[row].screen = screen;
+            }
+
+            emit dataChanged(index, index, roles);
+        }
+        break;
+    case EDGECOLUMN:
+        if (role == Qt::UserRole) {
+            Plasma::Types::Location edge = static_cast<Plasma::Types::Location>(value.toString().toInt());
+
+            if (m_viewsTable[row].edge == edge) {
+                return false;
+            }
+
+            Plasma::Types::Location previousEdge = m_viewsTable[row].edge;
+            m_viewsTable[row].edge = edge;
+            emit dataChanged(index, index, roles);
+
+            bool previousFactor = isVertical(previousEdge);
+            bool currentFactor = isVertical(edge);
+
+            if (previousFactor != currentFactor) {
+                if (m_viewsTable[row].alignment == Latte::Types::Left) {
+                    m_viewsTable[row].alignment = Latte::Types::Top;
+                } else if (m_viewsTable[row].alignment == Latte::Types::Right) {
+                    m_viewsTable[row].alignment = Latte::Types::Bottom;
+                } else if (m_viewsTable[row].alignment == Latte::Types::Top) {
+                    m_viewsTable[row].alignment = Latte::Types::Left;
+                } else if (m_viewsTable[row].alignment == Latte::Types::Bottom) {
+                    m_viewsTable[row].alignment = Latte::Types::Right;
+                }
+
+                emit dataChanged(this->index(row, ALIGNMENTCOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
+            }
+
+            return true;
+        }
+        break;
+    case ALIGNMENTCOLUMN:
+        if (role == Qt::UserRole)  {
+            int alignment = value.toString().toInt();
+
+            if (m_viewsTable[row].alignment == alignment) {
+                return false;
+            }
+
+            m_viewsTable[row].alignment = static_cast<Latte::Types::Alignment>(alignment);
+            emit dataChanged(index, index, roles);
+            return true;
+        }
+        break;
+    };
+
+    return false;
+}
+
 
 QVariant Views::data(const QModelIndex &index, int role) const
 {
@@ -247,8 +340,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
         } else if (column == EDGECOLUMN) {
             return s_edges;
         } else if (column == ALIGNMENTCOLUMN) {
-            bool isVertical = (m_viewsTable[row].edge == Plasma::Types::LeftEdge || m_viewsTable[row].edge == Plasma::Types::RightEdge);
-            return isVertical ? s_verticalAlignments : s_horizontalAlignments;
+            return isVertical(m_viewsTable[row].edge) ? s_verticalAlignments : s_horizontalAlignments;
         }
     }
 
@@ -270,7 +362,16 @@ QVariant Views::data(const QModelIndex &index, int role) const
         break;
     case SCREENCOLUMN:
         if (role == Qt::DisplayRole){
-            return (m_viewsTable[row].onPrimary ? QString("Primary") : QString::number(m_viewsTable[row].screen));
+            if (m_viewsTable[row].onPrimary) {
+                return QString("Primary");
+            } else {
+                QString scrId = QString::number(m_viewsTable[row].screen);
+                if (s_screens.containsId(scrId)) {
+                    return s_screens[scrId].name;
+                } else {
+                    return i18nc("unknown screen", "Unknown : [%0]").arg(scrId);
+                }
+            }
         } else if (role == Qt::UserRole) {
             return m_viewsTable[row].onPrimary ? QString::number(Data::Screen::ONPRIMARYID) : QString::number(m_viewsTable[row].screen);
         }

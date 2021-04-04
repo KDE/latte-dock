@@ -28,6 +28,8 @@
 #include <QMenu>
 #include <QPushButton>
 
+#define PRESSEDPROPERTY "PRESSED"
+
 namespace Latte {
 namespace Settings {
 namespace View {
@@ -73,10 +75,14 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
             action->setIcon(QIcon::fromTheme("dialog-yes"));
         }
 
+        connect(action, &QAction::triggered, this, [this, button, menu, action](bool checked) {
+            menu->setProperty(PRESSEDPROPERTY, action->data());
+            button->clearFocus();
+        });
+
         menu->addAction(action);
     }
 
-    connect(menu, &QMenu::aboutToHide, button, &QWidget::clearFocus);
     return button;
 }
 
@@ -87,10 +93,7 @@ void SingleOption::updateEditorGeometry(QWidget *editor, const QStyleOptionViewI
 
 void SingleOption::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    QString currentText = index.data(Qt::DisplayRole).toString();
-    QPushButton *button = static_cast<QPushButton *>(editor);
-
-    button->setText(currentText);
+    updateButton(editor, index.data(Qt::DisplayRole).toString());
 }
 
 bool SingleOption::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
@@ -102,6 +105,25 @@ bool SingleOption::editorEvent(QEvent *event, QAbstractItemModel *model, const Q
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
+void SingleOption::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    QPushButton *button = static_cast<QPushButton *>(editor);
+    QMenu *menu = button->menu();
+
+    if (menu->property(PRESSEDPROPERTY).toString().isEmpty()) {
+        return;
+    }
+
+    model->setData(index, menu->property(PRESSEDPROPERTY), Qt::UserRole);
+    updateButton(editor, index.data(Qt::DisplayRole).toString());
+}
+
+
+void SingleOption::updateButton(QWidget *editor, const QString &text) const
+{
+    QPushButton *button = static_cast<QPushButton *>(editor);
+    button->setText(text);
+}
 }
 }
 }
