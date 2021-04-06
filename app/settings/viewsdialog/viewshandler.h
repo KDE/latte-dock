@@ -97,9 +97,7 @@ private:
 
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
 
-    //! current data
     Latte::Data::Layout o_data;
-    Latte::Data::Layout c_data;
 };
 
 }

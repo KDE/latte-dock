@@ -107,9 +107,14 @@ void Views::init()
     });
 }
 
+void Views::reset()
+{
+    m_model->resetData();
+}
+
 bool Views::hasChangedData() const
 {
-    return true;// m_model->hasChangedData();
+    return m_model->hasChangedData();
 }
 
 bool Views::hasSelectedView() const
@@ -125,7 +130,7 @@ void Views::selectRow(const QString &id)
 }
 
 void Views::onCurrentLayoutChanged()
-{
+{   
     Data::Layout layout = m_handler->currentData();
     m_model->setOriginalData(layout.views);
 }

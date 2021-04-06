@@ -46,13 +46,9 @@ Views::~Views()
 {
 }
 
-void Views::clear()
+bool Views::hasChangedData() const
 {
-    if (m_viewsTable.rowCount() > 0) {
-        beginRemoveRows(QModelIndex(), 0, m_viewsTable.rowCount() - 1);
-        m_viewsTable.clear();
-        endRemoveRows();
-    }
+    return o_viewsTable != m_viewsTable;
 }
 
 int Views::rowCount() const
@@ -87,6 +83,15 @@ const Latte::Data::ViewsTable &Views::originalViewsData()
     return o_viewsTable;
 }
 
+void Views::clear()
+{
+    if (m_viewsTable.rowCount() > 0) {
+        beginRemoveRows(QModelIndex(), 0, m_viewsTable.rowCount() - 1);
+        m_viewsTable.clear();
+        endRemoveRows();
+    }
+}
+
 void Views::initEdges()
 {
     Latte::Data::GenericBasicTable edges;
@@ -118,6 +123,12 @@ void Views::initAlignments()
 
     s_horizontalAlignments.setValue<Latte::Data::GenericBasicTable>(horizontals);
     s_verticalAlignments.setValue<Latte::Data::GenericBasicTable>(verticals);
+}
+
+void Views::resetData()
+{
+    clear();
+    setOriginalData(o_viewsTable);
 }
 
 bool Views::isVertical(const Plasma::Types::Location &location) const

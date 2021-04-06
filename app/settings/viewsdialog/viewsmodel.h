@@ -72,6 +72,11 @@ public:
     explicit Views(QObject *parent, Latte::Corona *corona);
     ~Views();
 
+    bool hasChangedData() const;
+
+    //! all original data will become also current
+    void resetData();
+
     int rowCount() const;
     static int columnCount();
     int rowCount(const QModelIndex &parent) const override;

@@ -81,10 +81,8 @@ void ViewsHandler::init()
     //! connect layout combobox after the selected layout has been loaded
     connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ViewsHandler::onCurrentLayoutIndexChanged);
 
-    //! data were changed
-    connect(this, &ViewsHandler::dataChanged, this, [&]() {
-        loadLayout(c_data);
-    });
+    //!
+    connect(m_viewsController, &Settings::Controller::Views::dataChanged, this, &ViewsHandler::dataChanged);
 }
 
 void ViewsHandler::reload()
@@ -92,14 +90,13 @@ void ViewsHandler::reload()
     m_dialog->layoutsController()->initializeSelectedLayoutViews();
 
     o_data = m_dialog->layoutsController()->selectedLayoutCurrentData();
-    c_data = o_data;
 
     Latte::Data::LayoutIcon icon = m_dialog->layoutsController()->selectedLayoutIcon();
 
     m_ui->layoutsCmb->setCurrentText(o_data.name);
     m_ui->layoutsCmb->setLayoutIcon(icon);
 
-    loadLayout(c_data);
+    loadLayout(o_data);
 }
 
 Latte::Corona *ViewsHandler::corona() const
@@ -119,12 +116,12 @@ void ViewsHandler::loadLayout(const Latte::Data::Layout &data)
 
 Latte::Data::Layout ViewsHandler::currentData() const
 {
-    return c_data;
+    return o_data;
 }
 
 bool ViewsHandler::hasChangedData() const
 {
-    return o_data != c_data;
+    return m_viewsController->hasChangedData();
 }
 
 bool ViewsHandler::inDefaultValues() const
@@ -136,8 +133,7 @@ bool ViewsHandler::inDefaultValues() const
 
 void ViewsHandler::reset()
 {
-    c_data = o_data;
-    emit currentLayoutChanged();
+    m_viewsController->reset();
 }
 
 void ViewsHandler::resetDefaults()
@@ -147,7 +143,7 @@ void ViewsHandler::resetDefaults()
 
 void ViewsHandler::save()
 {
-    m_dialog->layoutsController()->setLayoutProperties(currentData());
+  //  m_dialog->layoutsController()->setLayoutProperties(currentData());
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)
@@ -170,13 +166,10 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
         QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
         m_dialog->layoutsController()->selectRow(layoutId);
         reload();
-
-
-
         emit currentLayoutChanged();
     } else {
         //! reset combobox index
-        m_ui->layoutsCmb->setCurrentText(c_data.name);
+        m_ui->layoutsCmb->setCurrentText(o_data.name);
     }
 }
 
@@ -188,7 +181,7 @@ void ViewsHandler::updateWindowTitle()
 int ViewsHandler::saveChanges()
 {
     if (hasChangedData()) {
-        QString layoutName = c_data.name;
+        QString layoutName = o_data.name;
         QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
 
         return m_dialog->saveChangesConfirmation(saveChangesText);

@@ -73,7 +73,7 @@ public:
     void selectRow(const QString &id);
 
     //! actions
-  //  void reset();
+    void reset();
  //   void save();
   //  void removeSelected();
 

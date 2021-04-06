@@ -43,11 +43,14 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
     //! we must create handlers after creating/adjusting the ui
     m_handler = new Handler::ViewsHandler(this);
 
+    //! Button Group
+    m_applyNowBtn = new QPushButton(QIcon::fromTheme("dialog-yes"), i18n("Apply Now"), m_ui->buttonBox);
+    m_applyNowBtn->setToolTip(i18n("Apply all dock, panels changes now"));
+    m_ui->buttonBox->addButton(m_applyNowBtn, QDialogButtonBox::ApplyRole);
+
+    //! Signals/Slots
     connect(m_handler, &Handler::ViewsHandler::currentLayoutChanged, this, &ViewsDialog::updateApplyButtonsState);
     connect(m_handler, &Handler::ViewsHandler::dataChanged, this, &ViewsDialog::updateApplyButtonsState);
-
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked,
-            this, &ViewsDialog::onOk);
 
     connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
             this, &ViewsDialog::onCancel);
@@ -81,13 +84,10 @@ Latte::Corona *ViewsDialog::corona() const
 
 void ViewsDialog::updateApplyButtonsState()
 {
-  /*  if (m_handler->hasChangedData()) {
-        m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(true);
-    } else {
-        m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-        m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
-    }*/
+    bool changed = m_handler->hasChangedData();
+
+    m_applyNowBtn->setEnabled(changed);
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(changed);
 }
 
 void ViewsDialog::accept()
@@ -111,7 +111,7 @@ void ViewsDialog::onCancel()
 void ViewsDialog::onReset()
 {
     qDebug() << Q_FUNC_INFO;
-   // m_handler->reset();
+    m_handler->reset();
 }
 
 void ViewsDialog::loadConfig()
