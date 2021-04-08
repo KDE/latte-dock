@@ -263,7 +263,8 @@ Qt::ItemFlags Views::flags(const QModelIndex &index) const
 
     auto flags = QAbstractTableModel::flags(index);
 
-    if (column == SCREENCOLUMN
+    if (column == NAMECOLUMN
+            || column == SCREENCOLUMN
             || column == EDGECOLUMN
             || column == ALIGNMENTCOLUMN) {
         flags |= Qt::ItemIsEditable;
@@ -289,6 +290,16 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
 
     //! specific roles to each independent cell
     switch (column) {
+    case NAMECOLUMN:
+        if (role == Qt::UserRole || role == Qt::EditRole ) {
+            if (m_viewsTable[row].name == value.toString()) {
+                return false;
+            }
+
+            m_viewsTable[row].name = value.toString();
+            emit dataChanged(index, index, roles);
+        }
+        break;
     case SCREENCOLUMN:
         if (role == Qt::UserRole) {
             int screen = value.toString().toInt();
@@ -396,7 +407,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
     }
 
 
-    if (role == Qt::TextAlignmentRole){
+    if (role == Qt::TextAlignmentRole && column != NAMECOLUMN){
         return static_cast<Qt::Alignment::Int>(Qt::AlignHCenter | Qt::AlignVCenter);
     }
 
