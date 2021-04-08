@@ -28,14 +28,21 @@
 #include "../settingsdialog/layoutsmodel.h"
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
 #include "../../data/layoutstable.h"
+#include "../../data/genericbasictable.h"
 #include "../../lattecorona.h"
 #include "../../layout/abstractlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
+#include "../../templates/templatesmanager.h"
+#include "../../tools/commontools.h"
 
 // Qt
 #include <QMessageBox>
+
+//! KDE
+#include <KLocalizedString>
+#include <KIO/OpenFileManagerWindowJob>
 
 namespace Latte {
 namespace Settings {
@@ -72,6 +79,21 @@ void ViewsHandler::init()
     m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
     m_ui->layoutsCmb->setItemDelegate(new Settings::Layout::Delegate::LayoutCmbItemDelegate(this));
 
+    //! New Button
+    m_newViewAction = new QAction(i18nc("new view", "&New"), this);
+    m_newViewAction->setToolTip(i18n("New dock or panel"));
+    m_newViewAction->setIcon(QIcon::fromTheme("add"));
+    m_newViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+    connectActionWithButton(m_ui->newBtn, m_newViewAction);
+    connect(m_newViewAction, &QAction::triggered, m_ui->newBtn, &QPushButton::showMenu);
+
+    initViewTemplatesSubMenu();
+    m_newViewAction->setMenu(m_viewTemplatesSubMenu);
+    m_ui->newBtn->setMenu(m_viewTemplatesSubMenu);
+
+    connect(corona()->templatesManager(), &Latte::Templates::Manager::viewTemplatesChanged, this, &ViewsHandler::initViewTemplatesSubMenu);
+
+    //! signals
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
 
     reload();
@@ -83,6 +105,48 @@ void ViewsHandler::init()
 
     //!
     connect(m_viewsController, &Settings::Controller::Views::dataChanged, this, &ViewsHandler::dataChanged);
+}
+
+void ViewsHandler::initViewTemplatesSubMenu()
+{
+
+
+    if (!m_viewTemplatesSubMenu) {
+        m_viewTemplatesSubMenu = new QMenu(m_ui->newBtn);
+        m_viewTemplatesSubMenu->setMinimumWidth(m_ui->newBtn->width() * 2);
+    } else {
+        m_viewTemplatesSubMenu->clear();
+    }
+
+    /*Add View Templates for New Action*/
+    Data::GenericBasicTable templates = corona()->templatesManager()->viewTemplates();
+
+    bool customtemplateseparatoradded{false};
+
+    for (int i=0; i<templates.rowCount(); ++i) {
+        if (!customtemplateseparatoradded && templates[i].id.startsWith(QDir::homePath())) {
+            m_viewTemplatesSubMenu->addSeparator();
+            customtemplateseparatoradded = true;
+        }
+
+        QAction *newview = m_viewTemplatesSubMenu->addAction(templates[i].name);
+        newview->setIcon(QIcon::fromTheme("document-new"));
+        QString templateid = templates[i].id;
+
+        connect(newview, &QAction::triggered, this, [&, templateid]() {
+            newView(templateid);
+        });
+    }
+
+    if (templates.rowCount() > 0) {
+        QAction *openTemplatesDirectory = m_viewTemplatesSubMenu->addAction(i18n("Templates..."));
+        openTemplatesDirectory->setToolTip(i18n("Open templates directory"));
+        openTemplatesDirectory->setIcon(QIcon::fromTheme("edit"));
+
+        connect(openTemplatesDirectory, &QAction::triggered, this, [&]() {
+            KIO::highlightInFileManager({QString(Latte::configPath() + "/latte/templates/Dock.view.latte")});
+        });
+    }
 }
 
 void ViewsHandler::reload()
@@ -144,6 +208,12 @@ void ViewsHandler::resetDefaults()
 void ViewsHandler::save()
 {
   //  m_dialog->layoutsController()->setLayoutProperties(currentData());
+}
+
+
+void ViewsHandler::newView(const QString &templateId)
+{
+    qDebug() << "new view from template :: " << templateId;
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)

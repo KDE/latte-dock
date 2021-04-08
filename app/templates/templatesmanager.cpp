@@ -151,7 +151,7 @@ Data::LayoutsTable Manager::layoutTemplates()
     return templates;
 }
 
-Data::GenericTable<Data::Generic> Manager::viewTemplates()
+Data::GenericBasicTable Manager::viewTemplates()
 {
     return m_viewTemplates;
 }

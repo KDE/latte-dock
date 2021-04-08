@@ -27,7 +27,9 @@
 #include "../../layout/abstractlayout.h"
 
 // Qt
+#include <QAction>
 #include <QButtonGroup>
+#include <QMenu>
 #include <QSortFilterProxyModel>
 
 namespace Ui {
@@ -79,11 +81,16 @@ signals:
     void currentLayoutChanged();
 
 private slots:
-    void onCurrentLayoutIndexChanged(int row);
+    void initViewTemplatesSubMenu();
     void updateWindowTitle();
+
+    void onCurrentLayoutIndexChanged(int row);
+
+    void newView(const QString &templateId);
 
 private:
     void init();
+
     void reload();
 
     void loadLayout(const Latte::Data::Layout &data);
@@ -98,6 +105,12 @@ private:
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
 
     Latte::Data::Layout o_data;
+
+    //! Actions
+    QAction *m_newViewAction{nullptr};
+
+    //! Menus
+    QMenu *m_viewTemplatesSubMenu{nullptr};
 };
 
 }
