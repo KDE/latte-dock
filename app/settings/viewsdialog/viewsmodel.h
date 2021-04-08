@@ -77,6 +77,9 @@ public:
     //! all original data will become also current
     void resetData();
 
+    void appendView(const Latte::Data::View &view);
+    void removeView(const QString &id);
+
     int rowCount() const;
     static int columnCount();
     int rowCount(const QModelIndex &parent) const override;
@@ -86,6 +89,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     const Latte::Data::ViewsTable &currentViewsData();
     const Latte::Data::ViewsTable &originalViewsData();

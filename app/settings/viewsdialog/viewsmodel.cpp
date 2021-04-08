@@ -131,6 +131,52 @@ void Views::resetData()
     setOriginalData(o_viewsTable);
 }
 
+void Views::appendView(const Latte::Data::View &view)
+{
+    //int newRow = m_layoutsTable.sortedPosForName(layout.name);
+
+    Data::View newview = view;
+
+    if (!newview.isCreated()) {
+
+    }
+
+    beginInsertRows(QModelIndex(), m_viewsTable.rowCount(), m_viewsTable.rowCount());
+    m_viewsTable << view;
+    endInsertRows();
+
+    emit rowsInserted();
+}
+
+void Views::removeView(const QString &id)
+{
+    int index = m_viewsTable.indexOf(id);
+
+    if (index >= 0) {
+        removeRows(index, 1);
+    }
+}
+
+bool Views::removeRows(int row, int count, const QModelIndex &parent)
+{
+    Q_UNUSED(parent)
+
+    int firstRow = row;
+    int lastRow = row+count-1;
+
+    if (count > 0 && m_viewsTable.rowExists(firstRow) && (m_viewsTable.rowExists(lastRow))) {
+        beginRemoveRows(QModelIndex(), firstRow, lastRow);
+        for(int i=0; i<count; ++i) {
+            m_viewsTable.remove(firstRow);
+        }
+        endRemoveRows();
+
+        return true;
+    }
+
+    return false;
+}
+
 bool Views::isVertical(const Plasma::Types::Location &location) const
 {
     return (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge);
