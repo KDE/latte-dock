@@ -57,9 +57,7 @@ KMessageWidget *GenericDialog::initMessageWidget()
     }
 
     auto messagewidget = new KMessageWidget(this);
-    messagewidget->setVisible(false);
     vLayout->insertWidget(vLayout->count()-1, messagewidget);
-
     connect(messagewidget, &KMessageWidget::hideAnimationFinished, messagewidget, &QObject::deleteLater);
 
     return messagewidget;
@@ -127,7 +125,8 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
     const int unwrappedWidth = messagewidget->sizeHint().width();
     messagewidget->setWordWrap(unwrappedWidth > size().width());
 
-    messagewidget->animatedShow();
+    // for some reason this is not smoooth so it is disabled
+    //messagewidget->animatedShow();
 
     if (hideInterval > 0) {
         QTimer *hidetimer = new QTimer(messagewidget);
