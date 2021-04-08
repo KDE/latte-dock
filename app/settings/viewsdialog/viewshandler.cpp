@@ -95,6 +95,14 @@ void ViewsHandler::init()
 
     connect(corona()->templatesManager(), &Latte::Templates::Manager::viewTemplatesChanged, this, &ViewsHandler::initViewTemplatesSubMenu);
 
+    //! Remove Button
+    m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), this);
+    m_removeViewAction->setToolTip(i18n("Remove selected view"));
+    m_removeViewAction->setIcon(QIcon::fromTheme("delete"));
+    m_removeViewAction->setShortcut(QKeySequence(Qt::Key_Delete));
+    connectActionWithButton(m_ui->removeBtn, m_removeViewAction);
+    connect(m_removeViewAction, &QAction::triggered, this, &ViewsHandler::removeSelectedView);
+
     //! signals
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
 
@@ -227,6 +235,22 @@ void ViewsHandler::newView(const Data::Generic &templateData)
         showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...").arg(newview.name),
                           KMessageWidget::Information);
     }
+}
+
+void ViewsHandler::removeSelectedView()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_removeViewAction->isEnabled()) {
+        return;
+    }
+
+    if (!m_viewsController->hasSelectedView()) {
+        return;
+    }
+
+    Latte::Data::View selectedView = m_viewsController->selectedViewCurrentData();
+    m_viewsController->removeSelected();
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)

@@ -67,8 +67,8 @@ public:
     void sortByColumn(int column, Qt::SortOrder order);
 
     bool hasSelectedView() const;
-   // const Latte::Data::Layout selectedViewCurrentData() const;
-   // const Latte::Data::Layout selectedViewOriginalData() const;
+    const Latte::Data::View selectedViewCurrentData() const;
+    const Latte::Data::View selectedViewOriginalData() const;
 
     const Latte::Data::View appendViewFromViewTemplate(const Data::View &view);
 
@@ -77,7 +77,7 @@ public:
     //! actions
     void reset();
  //   void save();
-  //  void removeSelected();
+    void removeSelected();
 
 signals:
     void dataChanged();
@@ -85,6 +85,7 @@ signals:
 private:
     void init();
 
+    int rowForId(QString id) const;
     QString uniqueViewName(QString name);
 
 private slots:

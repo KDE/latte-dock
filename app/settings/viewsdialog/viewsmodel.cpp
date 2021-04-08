@@ -73,6 +73,31 @@ int Views::columnCount(const QModelIndex &parent) const
     return columnCount();
 }
 
+int Views::rowForId(const QString &id) const
+{
+    return m_viewsTable.indexOf(id);
+}
+
+const Latte::Data::View &Views::at(const int &row)
+{
+    return m_viewsTable[row];
+}
+
+const Latte::Data::View &Views::currentData(const QString &id)
+{
+    return m_viewsTable[id];
+}
+
+
+const Latte::Data::View Views::originalData(const QString &id)
+{
+    if (o_viewsTable.containsId(id)){
+        return o_viewsTable[id];
+    }
+
+    return Latte::Data::View();
+}
+
 const Latte::Data::ViewsTable &Views::currentViewsData()
 {
     return m_viewsTable;

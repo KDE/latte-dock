@@ -92,6 +92,12 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    int rowForId(const QString &id) const;
+
+    const Latte::Data::View &at(const int &row);
+    const Latte::Data::View &currentData(const QString &id);
+    const Latte::Data::View originalData(const QString &id);
+
     const Latte::Data::ViewsTable &currentViewsData();
     const Latte::Data::ViewsTable &originalViewsData();
 

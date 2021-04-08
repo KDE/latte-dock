@@ -124,6 +124,38 @@ bool Views::hasSelectedView() const
     return (selectedRow >= 0);
 }
 
+int Views::rowForId(QString id) const
+{
+    for (int i = 0; i < m_proxyModel->rowCount(); ++i) {
+        QString rowId = m_proxyModel->data(m_proxyModel->index(i, Model::Views::IDCOLUMN), Qt::UserRole).toString();
+
+        if (rowId == id) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+const Latte::Data::View Views::selectedViewCurrentData() const
+{
+    int selectedRow = m_view->currentIndex().row();
+    if (selectedRow >= 0) {
+        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Views::IDCOLUMN), Qt::UserRole).toString();
+        return m_model->currentData(selectedId);
+    } else {
+        return Latte::Data::View();
+    }
+}
+
+const Latte::Data::View Views::selectedViewOriginalData() const
+{
+    int selectedRow = m_view->currentIndex().row();
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+
+    return m_model->originalData(selectedId);
+}
+
 const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view)
 {
     Data::View newview = view;
@@ -132,9 +164,24 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     return newview;
 }
 
+void Views::removeSelected()
+{
+    int row = m_view->currentIndex().row();
+
+    if (row < 0) {
+        return;
+    }
+
+    row = qMin(row, m_proxyModel->rowCount() - 1);
+    m_view->selectRow(row);
+
+    Latte::Data::View selected = selectedViewCurrentData();
+    m_model->removeView(selected.id);
+}
+
 void Views::selectRow(const QString &id)
 {
-  //  m_view->selectRow(rowForId(id));
+    m_view->selectRow(rowForId(id));
 }
 
 void Views::onCurrentLayoutChanged()

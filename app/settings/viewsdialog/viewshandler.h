@@ -82,6 +82,7 @@ signals:
 
 private slots:
     void initViewTemplatesSubMenu();
+    void removeSelectedView();
     void updateWindowTitle();
 
     void onCurrentLayoutIndexChanged(int row);
@@ -108,6 +109,7 @@ private:
 
     //! Actions
     QAction *m_newViewAction{nullptr};
+    QAction *m_removeViewAction{nullptr};
 
     //! Menus
     QMenu *m_viewTemplatesSubMenu{nullptr};
