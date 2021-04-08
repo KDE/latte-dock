@@ -131,18 +131,12 @@ void Views::resetData()
     setOriginalData(o_viewsTable);
 }
 
-void Views::appendView(const Latte::Data::View &view)
+void Views::appendTemporaryView(const Latte::Data::View &view)
 {
     //int newRow = m_layoutsTable.sortedPosForName(layout.name);
 
-    Data::View newview = view;
-
-    if (!newview.isCreated()) {
-
-    }
-
     beginInsertRows(QModelIndex(), m_viewsTable.rowCount(), m_viewsTable.rowCount());
-    m_viewsTable << view;
+    m_viewsTable.appendTemporaryView(view);
     endInsertRows();
 
     emit rowsInserted();

@@ -43,6 +43,8 @@ public:
 
     void print();
 
+    void appendTemporaryView(const Data::View &view);
+
     //! Operators
     ViewsTable &operator=(const ViewsTable &rhs);
     ViewsTable &operator=(ViewsTable &&rhs);

@@ -124,6 +124,11 @@ bool Views::hasSelectedView() const
     return (selectedRow >= 0);
 }
 
+void Views::appendViewFromViewTemplate(const Data::View &view)
+{
+    m_model->appendTemporaryView(view);
+}
+
 void Views::selectRow(const QString &id)
 {
   //  m_view->selectRow(rowForId(id));

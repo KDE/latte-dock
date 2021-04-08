@@ -29,10 +29,12 @@
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
 #include "../../data/layoutstable.h"
 #include "../../data/genericbasictable.h"
+#include "../../data/viewstable.h"
 #include "../../lattecorona.h"
 #include "../../layout/abstractlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
+#include "../../layouts/storage.h"
 #include "../../layouts/synchronizer.h"
 #include "../../templates/templatesmanager.h"
 #include "../../tools/commontools.h"
@@ -214,6 +216,14 @@ void ViewsHandler::save()
 void ViewsHandler::newView(const QString &templateId)
 {
     qDebug() << "new view from template :: " << templateId;
+
+    Data::ViewsTable views = Latte::Layouts::Storage::self()->views(templateId);
+
+    if (views.rowCount() > 0) {
+        Data::View viewfromtemplate = views[0];
+        viewfromtemplate.setState(Data::View::OriginFromViewTemplate, templateId);
+        m_viewsController->appendViewFromViewTemplate(views[0]);
+    }
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)

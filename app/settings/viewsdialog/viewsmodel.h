@@ -77,7 +77,7 @@ public:
     //! all original data will become also current
     void resetData();
 
-    void appendView(const Latte::Data::View &view);
+    void appendTemporaryView(const Latte::Data::View &view);
     void removeView(const QString &id);
 
     int rowCount() const;

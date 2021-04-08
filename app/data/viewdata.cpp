@@ -23,8 +23,6 @@
 namespace Latte {
 namespace Data {
 
-const char *TEMPIDPREFIX = "temp:";
-
 View::View()
     : Generic()
 {
@@ -187,17 +185,6 @@ bool View::hasLayoutOrigin() const
 bool View::hasSubContainment(const QString &subId) const
 {
     return subcontainments.containsId(subId);
-}
-
-QString View::tempId() const
-{
-    if (isCreated()) {
-        return id;
-    }
-
-    QString tid = id;
-    tid.remove(0, QString(TEMPIDPREFIX).count());
-    return tid;
 }
 
 View::State View::state() const

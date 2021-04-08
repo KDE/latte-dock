@@ -70,6 +70,8 @@ public:
    // const Latte::Data::Layout selectedViewCurrentData() const;
    // const Latte::Data::Layout selectedViewOriginalData() const;
 
+    void appendViewFromViewTemplate(const Data::View &view);
+
     void selectRow(const QString &id);
 
     //! actions

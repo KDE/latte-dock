@@ -25,6 +25,8 @@
 namespace Latte {
 namespace Data {
 
+const char *TEMPIDPREFIX = "temp:";
+
 ViewsTable::ViewsTable()
     : GenericTable<View>()
 {
@@ -71,6 +73,25 @@ bool ViewsTable::operator!=(const ViewsTable &rhs) const
     return !(*this == rhs);
 }
 
+void ViewsTable::appendTemporaryView(const Data::View &view)
+{
+    int maxTempId = 0;
+
+    for(int i=0; i<rowCount(); ++i) {
+        if ((*this)[i].id.startsWith(TEMPIDPREFIX)) {
+            QString tid = (*this)[i].id;
+            tid.remove(0, QString(TEMPIDPREFIX).count());
+            if (tid.toInt() > maxTempId) {
+                maxTempId = tid.toInt();
+            }
+        }
+    }
+
+    Data::View newview = view;
+    newview.id =  QString(TEMPIDPREFIX + QString::number(maxTempId+1));
+    m_list << newview;
+}
+
 void ViewsTable::print()
 {
     qDebug().noquote() << "Views initialized : " + (isInitialized ? QString("true") : QString("false"));
@@ -80,7 +101,6 @@ void ViewsTable::print()
         qDebug().noquote() << QString::number(i+1) << " | " << m_list[i];
     }
 }
-
 
 }
 }
