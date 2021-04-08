@@ -124,9 +124,12 @@ bool Views::hasSelectedView() const
     return (selectedRow >= 0);
 }
 
-void Views::appendViewFromViewTemplate(const Data::View &view)
+const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view)
 {
-    m_model->appendTemporaryView(view);
+    Data::View newview = view;
+    newview.name = uniqueViewName(view.name);
+    m_model->appendTemporaryView(newview);
+    return newview;
 }
 
 void Views::selectRow(const QString &id)
@@ -138,6 +141,31 @@ void Views::onCurrentLayoutChanged()
 {   
     Data::Layout layout = m_handler->currentData();
     m_model->setOriginalData(layout.views);
+}
+
+
+QString Views::uniqueViewName(QString name)
+{
+    if (name.isEmpty()) {
+            return name;
+    }
+
+    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
+
+    if (m_model->containsCurrentName(name) && pos_ > 0) {
+        name = name.left(pos_);
+    }
+
+    int i = 2;
+
+    QString namePart = name;
+
+    while (m_model->containsCurrentName(name)) {
+        name = namePart + " - " + QString::number(i);
+        i++;
+    }
+
+    return name;
 }
 
 void Views::applyColumnWidths()

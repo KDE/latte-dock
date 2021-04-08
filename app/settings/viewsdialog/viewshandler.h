@@ -86,7 +86,7 @@ private slots:
 
     void onCurrentLayoutIndexChanged(int row);
 
-    void newView(const QString &templateId);
+    void newView(const Data::Generic &templateData);
 
 private:
     void init();

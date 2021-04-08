@@ -73,6 +73,7 @@ public:
     ~Views();
 
     bool hasChangedData() const;
+    bool containsCurrentName(const QString &name) const;
 
     //! all original data will become also current
     void resetData();

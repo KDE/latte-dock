@@ -125,6 +125,11 @@ void Views::initAlignments()
     s_verticalAlignments.setValue<Latte::Data::GenericBasicTable>(verticals);
 }
 
+bool Views::containsCurrentName(const QString &name) const
+{
+    return m_viewsTable.containsName(name);
+}
+
 void Views::resetData()
 {
     clear();
@@ -418,7 +423,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
         }
         break;
     case NAMECOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
+        if (role == Qt::DisplayRole || role == Qt::UserRole || role == Qt::EditRole){
             return m_viewsTable[row].name;
         }
         break;

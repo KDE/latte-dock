@@ -133,10 +133,11 @@ void ViewsHandler::initViewTemplatesSubMenu()
 
         QAction *newview = m_viewTemplatesSubMenu->addAction(templates[i].name);
         newview->setIcon(QIcon::fromTheme("document-new"));
-        QString templateid = templates[i].id;
 
-        connect(newview, &QAction::triggered, this, [&, templateid]() {
-            newView(templateid);
+        Data::Generic templateData = templates[i];
+
+        connect(newview, &QAction::triggered, this, [&, templateData]() {
+            newView(templateData);
         });
     }
 
@@ -213,16 +214,18 @@ void ViewsHandler::save()
 }
 
 
-void ViewsHandler::newView(const QString &templateId)
+void ViewsHandler::newView(const Data::Generic &templateData)
 {
-    qDebug() << "new view from template :: " << templateId;
-
-    Data::ViewsTable views = Latte::Layouts::Storage::self()->views(templateId);
+    Data::ViewsTable views = Latte::Layouts::Storage::self()->views(templateData.id);
 
     if (views.rowCount() > 0) {
         Data::View viewfromtemplate = views[0];
-        viewfromtemplate.setState(Data::View::OriginFromViewTemplate, templateId);
-        m_viewsController->appendViewFromViewTemplate(views[0]);
+        viewfromtemplate.setState(Data::View::OriginFromViewTemplate, templateData.id);
+        viewfromtemplate.name = templateData.name;
+        Data::View newview = m_viewsController->appendViewFromViewTemplate(viewfromtemplate);
+
+        showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...").arg(newview.name),
+                          KMessageWidget::Information);
     }
 }
 

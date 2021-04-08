@@ -70,7 +70,7 @@ public:
    // const Latte::Data::Layout selectedViewCurrentData() const;
    // const Latte::Data::Layout selectedViewOriginalData() const;
 
-    void appendViewFromViewTemplate(const Data::View &view);
+    const Latte::Data::View appendViewFromViewTemplate(const Data::View &view);
 
     void selectRow(const QString &id);
 
@@ -84,6 +84,8 @@ signals:
 
 private:
     void init();
+
+    QString uniqueViewName(QString name);
 
 private slots:
     void loadConfig();
