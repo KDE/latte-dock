@@ -42,59 +42,27 @@ namespace Dialog {
 GenericDialog::GenericDialog(QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
 {
-    m_hideInlineMessageTimer.setSingleShot(true);
-    m_hideInlineMessageTimer.setInterval(2000);
-
 }
 
 GenericDialog::~GenericDialog()
 {
 }
 
-void GenericDialog::initMessageWidget()
+KMessageWidget *GenericDialog::initMessageWidget()
 {
-    if (m_messageWidget) {
-        return;
-    }
-
     QVBoxLayout *vLayout = qobject_cast<QVBoxLayout *>(layout());
 
     if (!vLayout) {
-        return;
-    }
-    m_messageWidget = new KMessageWidget(this);
-    vLayout->insertWidget(vLayout->count()-1, m_messageWidget);
-
-    connect(&m_hideInlineMessageTimer, &QTimer::timeout, this, [&]() {
-        m_messageWidget->animatedHide();
-    });
-
-    connect(m_messageWidget, &KMessageWidget::hideAnimationFinished, this, [&]() {
-        clearCurrentMessageActions();
-    });
-}
-
-void GenericDialog::keyPressEvent(QKeyEvent *event)
-{
-    if (event && event->key() == Qt::Key_Escape) {
-        if (m_messageWidget && m_messageWidget->isVisible()) {
-            m_hideInlineMessageTimer.stop();
-            m_messageWidget->animatedHide();
-            clearCurrentMessageActions();
-            return;
-        }
+        return nullptr;
     }
 
-    QDialog::keyPressEvent(event);
-}
+    auto messagewidget = new KMessageWidget(this);
+    messagewidget->setVisible(false);
+    vLayout->insertWidget(vLayout->count()-1, messagewidget);
 
-void GenericDialog::clearCurrentMessageActions()
-{
-    while(m_currentMessageActions.count() > 0) {
-        QAction *action = m_currentMessageActions.takeAt(0);
-        m_messageWidget->removeAction(action);
-        action->deleteLater();
-    }
+    connect(messagewidget, &KMessageWidget::hideAnimationFinished, messagewidget, &QObject::deleteLater);
+
+    return messagewidget;
 }
 
 int GenericDialog::saveChangesConfirmation(const QString &text)
@@ -122,8 +90,10 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
         return;
     }
 
-    if (!m_messageWidget) {
-        initMessageWidget();
+    auto messagewidget = initMessageWidget();
+
+    if (!messagewidget) {
+        return;
     }
 
     int hideInterval = 0;
@@ -139,47 +109,35 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
         }
     }
 
-    if (!m_currentMessageActions.isEmpty()) {
-        clearCurrentMessageActions();
-    }
-
-    m_messageWidget->setCloseButtonVisible(!isPersistent || actions.count()==0);
-
-    m_currentMessageActions = actions;
+    messagewidget->setCloseButtonVisible(!isPersistent || actions.count()==0);
 
     for (int i=0; i<actions.count(); ++i) {
-        m_messageWidget->addAction(actions[i]);
+        connect(actions[i], &QAction::triggered, messagewidget, &KMessageWidget::animatedHide);
+        messagewidget->addAction(actions[i]);
     }
 
-    m_hideInlineMessageTimer.stop();
-
-    if (m_messageWidget->isVisible()) {
-        m_messageWidget->animatedHide();
-    }
-
-    m_messageWidget->setText(msg);
+    messagewidget->setText(msg);
 
     // TODO: wrap at arbitrary character positions once QLabel can do this
     // https://bugreports.qt.io/browse/QTBUG-1276
-    m_messageWidget->setWordWrap(true);
-    m_messageWidget->setMessageType(type);
-    m_messageWidget->setWordWrap(false);
+    messagewidget->setWordWrap(true);
+    messagewidget->setMessageType(type);
+    messagewidget->setWordWrap(false);
 
-    const int unwrappedWidth = m_messageWidget->sizeHint().width();
-    m_messageWidget->setWordWrap(unwrappedWidth > size().width());
+    const int unwrappedWidth = messagewidget->sizeHint().width();
+    messagewidget->setWordWrap(unwrappedWidth > size().width());
 
-    m_messageWidget->animatedShow();
+    messagewidget->animatedShow();
 
     if (hideInterval > 0) {
-        m_hideInlineMessageTimer.setInterval(hideInterval);
-        m_hideInlineMessageTimer.start();
-    }
-}
+        QTimer *hidetimer = new QTimer(messagewidget);
+        hidetimer->setInterval(hideInterval);
 
-void GenericDialog::hideInlineMessage()
-{
-    if (m_messageWidget) {
-        m_messageWidget->animatedHide();
+        connect(hidetimer, &QTimer::timeout, this, [&, messagewidget]() {
+                messagewidget->animatedHide();
+        });
+
+        hidetimer->start();
     }
 }
 

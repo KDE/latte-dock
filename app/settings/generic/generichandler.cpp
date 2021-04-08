@@ -77,12 +77,6 @@ void Generic::showInlineMessage(const QString &msg, const KMessageWidget::Messag
     m_dialog->showInlineMessage(msg, type, isPersistent, actions);
 }
 
-void Generic::hideInlineMessage()
-{
-    m_dialog->hideInlineMessage();
 }
-
-}
-
 }
 }

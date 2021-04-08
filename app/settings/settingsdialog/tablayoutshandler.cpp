@@ -456,10 +456,8 @@ void TabLayouts::installLayoutTemplate(Latte::Data::Layout importedLayout, QStri
     actions << yesAction;
     actions << noAction;
 
-    connect(noAction, &QAction::triggered, this, &Generic::hideInlineMessage);
     connect(yesAction, &QAction::triggered, this, [&, templateFilePath]() {
         m_corona->templatesManager()->installCustomLayoutTemplate(templateFilePath);
-        hideInlineMessage();
     });
 
     showInlineMessage(informationText,

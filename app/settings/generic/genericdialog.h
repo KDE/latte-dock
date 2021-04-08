@@ -48,25 +48,8 @@ public:
 
     int saveChangesConfirmation(const QString &text);
 
-protected:
-    void keyPressEvent(QKeyEvent *event) override;
-
 private slots:
-    void initMessageWidget();
-
-private:
-    void clearCurrentMessageActions();
-
-private:
-    KMessageWidget *m_messageWidget{nullptr};
-
-    //! Current shown KMessageActions
-    QList<QAction *> m_currentMessageActions;
-
-    //! Timer to hide the inline message widget
-    QTimer m_hideInlineMessageTimer;
-
-
+    KMessageWidget *initMessageWidget();
 };
 
 }
