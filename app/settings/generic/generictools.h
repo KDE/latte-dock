@@ -29,6 +29,7 @@
 #include <QPalette>
 #include <QRect>
 #include <QStyleOption>
+#include <QStyleOptionViewItem>
 
 namespace Latte {
 
@@ -37,6 +38,7 @@ bool isEnabled(const QStyleOption &option);
 bool isFocused(const QStyleOption &option);
 bool isSelected(const QStyleOption &option);
 bool isHovered(const QStyleOption &option);
+bool isTextCentered(const QStyleOptionViewItem &option);
 
 QPalette::ColorGroup colorGroup(const QStyleOption &option);
 
@@ -44,6 +46,7 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const bool &isActive, const bool &isCentered);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 }

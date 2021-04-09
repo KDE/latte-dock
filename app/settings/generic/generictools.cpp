@@ -21,7 +21,9 @@
 #include "generictools.h"
 
 // Qt
+#include <QApplication>
 #include <QStyle>
+#include <QTextDocument>
 
 namespace Latte {
 
@@ -72,6 +74,15 @@ bool isFocused(const QStyleOption &option)
     return false;
 }
 
+bool isTextCentered(const QStyleOptionViewItem &option)
+{
+    if (option.displayAlignment & Qt::AlignHCenter) {
+        return true;
+    }
+
+    return false;
+}
+
 QPalette::ColorGroup colorGroup(const QStyleOption &option)
 {
     if (!isEnabled(option)) {
@@ -100,6 +111,47 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
     }
 
     return subtract;
+}
+
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const bool &isActive, const bool &isCentered)
+{
+    painter->save();
+
+    if (isActive) {
+        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
+        QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
+
+        QString css = QString("body { color : %1; }").arg(nBrush.color().name());
+
+        QTextDocument doc;
+        doc.setDefaultStyleSheet(css);
+        doc.setHtml("<body><b>" + option.text + "</b></body>");
+
+        QStyleOptionViewItem tempOptions = option;
+        tempOptions.text = "";
+        option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &tempOptions, painter);
+
+        //we need an offset to be in the same vertical center of TextEdit
+        int offsetY = ((option.rect.height() - doc.size().height()) / 2);
+        int textWidth = doc.size().width();
+        int textY = option.rect.top() + offsetY + 1;
+
+        if (isCentered) {
+            int textX = qMax(0, (option.rect.width() / 2) - (textWidth/2));
+            painter->translate(option.rect.left() + textX, textY);
+        } else if (qApp->layoutDirection() == Qt::RightToLeft) {
+            painter->translate(qMax(option.rect.left(), option.rect.right() - textWidth), textY);
+        } else {
+            painter->translate(option.rect.left(), textY);
+        }
+
+        QRect clip(0, 0, option.rect.width(), option.rect.height());
+        doc.drawContents(painter, clip);
+    } else {
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &option, painter);
+    }
+
+    painter->restore();
 }
 
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon)

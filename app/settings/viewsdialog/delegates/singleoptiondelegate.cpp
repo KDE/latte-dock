@@ -21,12 +21,15 @@
 
 // local
 #include "../viewsmodel.h"
+#include "../../generic/generictools.h"
 #include "../../../data/genericbasictable.h"
 #include "../../../data/screendata.h"
 
 // Qt
+#include <QApplication>
 #include <QMenu>
 #include <QPushButton>
+#include <QTextDocument>
 
 #define PRESSEDPROPERTY "PRESSED"
 
@@ -124,6 +127,21 @@ void SingleOption::updateButton(QWidget *editor, const QString &text) const
     QPushButton *button = static_cast<QPushButton *>(editor);
     button->setText(text);
 }
+
+void SingleOption::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem myOptions = option;
+    //! Remove the focus dotted lines
+    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
+    myOptions.text = index.model()->data(index, Qt::DisplayRole).toString();
+    myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());
+
+    bool isViewActive = index.data(Model::Views::ISACTIVEROLE).toBool();
+    bool isTextCentered = Latte::isTextCentered(myOptions);
+
+    Latte::drawFormattedText(painter, myOptions, isViewActive, isTextCentered);
+}
+
 }
 }
 }
