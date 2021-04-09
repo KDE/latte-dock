@@ -845,14 +845,37 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        readonly property bool isDndSpacer: true
-        readonly property int length: metrics.totals.length
+        property int length: opacity > 0 ? metrics.totals.length : 0
+
+        readonly property bool isDndSpacer: true        
         readonly property int thickness: metrics.totals.thickness + metrics.margin.screenEdge
 
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
+        Layout.minimumWidth: width
+        Layout.minimumHeight: height
+        Layout.preferredWidth: Layout.minimumWidth
+        Layout.preferredHeight: Layout.minimumHeight
+        Layout.maximumWidth: Layout.minimumWidth
+        Layout.maximumHeight: Layout.minimumHeight
         opacity: 0
+        visible: parent === layoutsContainer.startLayout
+                 || parent === layoutsContainer.mainLayout
+                 || parent === layoutsContainer.endLayout
+
         z:1500
+
+        Behavior on length {
+            NumberAnimation {
+                duration: animations.duration.large
+                easing.type: Easing.InQuad
+            }
+        }
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: animations.duration.large
+                easing.type: Easing.InQuad
+            }
+        }
 
         LatteComponents.AddItem{
             id: dndSpacerAddItem
