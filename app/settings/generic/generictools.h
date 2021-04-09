@@ -46,7 +46,7 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
-void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const bool &isActive, const bool &isCentered);
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 }

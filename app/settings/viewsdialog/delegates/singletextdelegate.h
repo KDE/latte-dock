@@ -17,15 +17,10 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SINGLEOPTIONDELEGATE_H
-#define SINGLEOPTIONDELEGATE_H
-
-// local
-#include "singletextdelegate.h"
-#include "../../../data/genericdata.h"
+#ifndef SINGLETEXTDELEGATE_H
+#define SINGLETEXTDELEGATE_H
 
 // Qt
-#include <QMenu>
 #include <QPainter>
 #include <QStyledItemDelegate>
 
@@ -38,21 +33,13 @@ namespace Settings {
 namespace View {
 namespace Delegate {
 
-class SingleOption : public SingleText
+class SingleText : public QStyledItemDelegate
 {
     Q_OBJECT
+
 public:
-    SingleOption(QObject *parent);
-
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-    virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
-
-private:
-    void updateButton(QWidget *editor, const QString &text) const;
-
+    SingleText(QObject *parent);
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 }

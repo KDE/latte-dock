@@ -315,8 +315,6 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     bool isLayoutActive = index.data(Model::Layouts::ISACTIVEROLE).toBool();
 
-    painter->save();
-
     QList<Latte::Data::Activity> assignedActivities;
     QStringList assignedIds = index.model()->data(index, Qt::UserRole).toStringList();
     QStringList assignedOriginalIds = index.model()->data(index, Model::Layouts::ORIGINALASSIGNEDACTIVITIESROLE).toStringList();
@@ -329,40 +327,11 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (assignedActivities.count() > 0) {
         myOptions.text = joinedActivities(assignedActivities, assignedOriginalIds, isLayoutActive);
-
-        QTextDocument doc;
-        QString css;
-        QString activitiesText = myOptions.text;
-
-        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
-        QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
-
-        css = QString("body { color : %1; }").arg(nBrush.color().name());
-
-        doc.setDefaultStyleSheet(css);
-        doc.setHtml("<body>" + myOptions.text + "</body>");
-
-        myOptions.text = "";
-        myOptions.widget->style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
-
-        //we need an offset to be in the same vertical center of TextEdit
-        int offsetY = ((myOptions.rect.height() - doc.size().height()) / 2);
-
-        if ((qApp->layoutDirection() == Qt::RightToLeft) && !activitiesText.isEmpty()) {
-            int textWidth = doc.size().width();
-
-            painter->translate(qMax(myOptions.rect.left(), myOptions.rect.right() - textWidth), myOptions.rect.top() + offsetY + 1);
-        } else {
-            painter->translate(myOptions.rect.left(), myOptions.rect.top() + offsetY + 1);
-        }
-
-        QRect clip(0, 0, myOptions.rect.width(), myOptions.rect.height());
-        doc.drawContents(painter, clip);
     } else {
-        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOptions, painter);
+        myOptions.text = "";
     }
 
-    painter->restore();
+    Latte::drawFormattedText(painter, myOptions);
 }
 
 QString Activities::joinedActivities(const QList<Latte::Data::Activity> &activities, const QStringList &originalIds, bool isActive, bool formatText) const

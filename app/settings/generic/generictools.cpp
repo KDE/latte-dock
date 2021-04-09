@@ -113,43 +113,41 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
     return subtract;
 }
 
-void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const bool &isActive, const bool &isCentered)
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option)
 {
     painter->save();
 
-    if (isActive) {
-        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
-        QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
+    bool isTextCentered = Latte::isTextCentered(option);
 
-        QString css = QString("body { color : %1; }").arg(nBrush.color().name());
+    QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
+    QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
 
-        QTextDocument doc;
-        doc.setDefaultStyleSheet(css);
-        doc.setHtml("<body><b>" + option.text + "</b></body>");
+    QString css = QString("body { color : %1; }").arg(nBrush.color().name());
 
-        QStyleOptionViewItem tempOptions = option;
-        tempOptions.text = "";
-        option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &tempOptions, painter);
+    QTextDocument doc;
+    doc.setDefaultStyleSheet(css);
+    doc.setHtml("<body>" + option.text + "</body>");
 
-        //we need an offset to be in the same vertical center of TextEdit
-        int offsetY = ((option.rect.height() - doc.size().height()) / 2);
-        int textWidth = doc.size().width();
-        int textY = option.rect.top() + offsetY + 1;
+    QStyleOptionViewItem tempOptions = option;
+    tempOptions.text = "";
+    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &tempOptions, painter);
 
-        if (isCentered) {
-            int textX = qMax(0, (option.rect.width() / 2) - (textWidth/2));
-            painter->translate(option.rect.left() + textX, textY);
-        } else if (qApp->layoutDirection() == Qt::RightToLeft) {
-            painter->translate(qMax(option.rect.left(), option.rect.right() - textWidth), textY);
-        } else {
-            painter->translate(option.rect.left(), textY);
-        }
+    //we need an offset to be in the same vertical center of TextEdit
+    int offsetY = ((option.rect.height() - doc.size().height()) / 2);
+    int textWidth = doc.size().width();
+    int textY = option.rect.top() + offsetY + 1;
 
-        QRect clip(0, 0, option.rect.width(), option.rect.height());
-        doc.drawContents(painter, clip);
+    if (isTextCentered) {
+        int textX = qMax(0, (option.rect.width() / 2) - (textWidth/2));
+        painter->translate(option.rect.left() + textX, textY);
+    } else if (qApp->layoutDirection() == Qt::RightToLeft) {
+        painter->translate(qMax(option.rect.left(), option.rect.right() - textWidth), textY);
     } else {
-        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &option, painter);
+        painter->translate(option.rect.left(), textY);
     }
+
+    QRect clip(0, 0, option.rect.width(), option.rect.height());
+    doc.drawContents(painter, clip);
 
     painter->restore();
 }
