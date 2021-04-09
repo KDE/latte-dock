@@ -35,6 +35,7 @@
 // KDE
 #include <KActivities/Consumer>
 #include <KDirWatch>
+#include <KWindowSystem>
 
 #define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
 #define KWINMETAFORWARDTOPLASMASTRING "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
@@ -339,6 +340,12 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
         return;
     }
 
+    if (KWindowSystem::isPlatformWayland()) {
+        // BUG: https://bugs.kde.org/show_bug.cgi?id=428202
+        // KWin::reconfigure() function blocks/freezes Latte under wayland
+        return;
+    }
+
     QString forwardStr = (forward ? KWINMETAFORWARDTOLATTESTRING : KWINMETAFORWARDTOPLASMASTRING);
     m_kwinrcModifierOnlyShortcutsGroup.writeEntry("Meta", forwardStr);
     m_kwinrcModifierOnlyShortcutsGroup.sync();
@@ -353,6 +360,12 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
 void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
 {
     if (m_kwinBorderlessMaximizedWindows == disable) {
+        return;
+    }
+
+    if (KWindowSystem::isPlatformWayland()) {
+        // BUG: https://bugs.kde.org/show_bug.cgi?id=428202
+        // KWin::reconfigure() function blocks/freezes Latte under wayland
         return;
     }
 

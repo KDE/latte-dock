@@ -972,6 +972,12 @@ void Synchronizer::unloadLayouts(const QStringList &layoutNames)
 
 void Synchronizer::updateKWinDisabledBorders()
 {
+    if (KWindowSystem::isPlatformWayland()) {
+        // BUG: https://bugs.kde.org/show_bug.cgi?id=428202
+        // KWin::reconfigure() function blocks/freezes Latte under wayland
+        return;
+    }
+
     if (!m_manager->corona()->universalSettings()->canDisableBorders()) {
         m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(false);
     } else {
