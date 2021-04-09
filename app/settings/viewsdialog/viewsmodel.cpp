@@ -29,6 +29,8 @@
 // KDE
 #include <KLocalizedString>
 
+#define TEMPIDDISPLAY "#"
+
 namespace Latte {
 namespace Settings {
 namespace Model {
@@ -412,7 +414,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
     }
 
     if (role == IDROLE) {
-        return m_viewsTable[row].id;
+        return (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].id : "#");
     } else if (role == ISACTIVEROLE) {
         return m_viewsTable[row].isActive;
     } else if (role == CHOICESROLE) {
@@ -443,7 +445,9 @@ QVariant Views::data(const QModelIndex &index, int role) const
 
     switch (column) {
     case IDCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
+        if (role == Qt::DisplayRole){
+            return (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].id : "#");
+        } else if (role == Qt::UserRole) {
             return m_viewsTable[row].id;
         }
         break;
@@ -507,8 +511,26 @@ QVariant Views::data(const QModelIndex &index, int role) const
         }
         break;
     case SUBCONTAINMENTSCOLUMN:
-        if (role == Qt::DisplayRole || role == Qt::UserRole){
-            return m_viewsTable[row].subcontainments.rowCount()>0 ? QString("{" + m_viewsTable[row].subcontainments + "}") : QString();
+        if (role == Qt::DisplayRole){
+            if (m_viewsTable[row].subcontainments.rowCount()>0) {
+                QString result = "{";
+
+                for (int i=0; i<m_viewsTable[row].subcontainments.rowCount(); ++i) {
+                    if (i>0) {
+                        result += " ";
+                    }
+                    result += (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].subcontainments[i].id : TEMPIDDISPLAY);
+
+                    if (i<m_viewsTable[row].subcontainments.rowCount()-1) {
+                        result += ",";
+                    }
+                }
+
+                result += "}";
+                return result;
+            }
+
+            return QString();
         }
     };
 

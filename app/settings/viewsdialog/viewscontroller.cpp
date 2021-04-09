@@ -26,6 +26,7 @@
 #include "viewshandler.h"
 #include "viewsmodel.h"
 #include "delegates/singleoptiondelegate.h"
+#include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
 
 // Qt
@@ -93,9 +94,11 @@ void Views::init()
 
     m_view->sortByColumn(m_viewSortColumn, m_viewSortOrder);
 
+    m_view->setItemDelegateForColumn(Model::Views::IDCOLUMN, new Settings::View::Delegate::SingleText(this));
     m_view->setItemDelegateForColumn(Model::Views::SCREENCOLUMN, new Settings::View::Delegate::SingleOption(this));
     m_view->setItemDelegateForColumn(Model::Views::EDGECOLUMN, new Settings::View::Delegate::SingleOption(this));
     m_view->setItemDelegateForColumn(Model::Views::ALIGNMENTCOLUMN, new Settings::View::Delegate::SingleOption(this));
+    m_view->setItemDelegateForColumn(Model::Views::SUBCONTAINMENTSCOLUMN, new Settings::View::Delegate::SingleText(this));
 
     applyColumnWidths();
 
