@@ -51,8 +51,10 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 //! changes indicator
+QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
+void drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
-QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
+
 
 //! screen icon
 QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option);

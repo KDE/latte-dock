@@ -188,7 +188,17 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
     }
 }
 
-QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option)
+QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option)
+{
+    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
+
+    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + tsize, option.rect.y(), option.rect.width() - tsize, option.rect.height()) :
+                                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
+
+    return optionRemainedRect;
+}
+
+void drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option)
 {
     int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
 
@@ -204,11 +214,6 @@ QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewIt
     }
 
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &indicatorOption, painter);
-
-    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + tsize, option.rect.y(), option.rect.width() - tsize, option.rect.height()) :
-                                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
-
-    return optionRemainedRect;
 }
 
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)

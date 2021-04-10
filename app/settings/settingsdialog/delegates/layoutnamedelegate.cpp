@@ -99,7 +99,8 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    QRect optionRect = Latte::drawChangesIndicatorBackground(painter, option);
+    QRect optionRect = Latte::remainedFromChangesIndicator(option);
+    Latte::drawChangesIndicatorBackground(painter, option);
     adjustedOption.rect = optionRect;
 
     if (isLocked || isConsideredActive) {

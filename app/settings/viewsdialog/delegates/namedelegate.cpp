@@ -81,8 +81,8 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     }
 
     // draw changes indicator
-    QRect availableTextRect = Latte::drawChangesIndicatorBackground(painter, option);
-
+    QRect availableTextRect = Latte::remainedFromChangesIndicator(option);
+    Latte::drawChangesIndicatorBackground(painter, option);
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
