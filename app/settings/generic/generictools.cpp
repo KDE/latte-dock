@@ -22,6 +22,7 @@
 
 // Qt
 #include <QApplication>
+#include <QDebug>
 #include <QStyle>
 #include <QTextDocument>
 
@@ -276,7 +277,18 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
     int leftScreenMargin = (screenMaximumRect.width() - scr_width) / 2;
 
     QRect screenRect(screenMaximumRect.x() + leftScreenMargin, screenMaximumRect.y() + topScreenMargin, scr_width, scr_height);
-    QRect screenAvailableRect(screenRect.x() + MARGIN, screenRect.y() + MARGIN, screenRect.width() - 2*MARGIN, screenRect.height() - 2*MARGIN);
+
+    //! provide even screen width and height
+    if (screenRect.width() % 2 == 1) {
+        screenRect.setWidth(screenRect.width() + 1);
+    }
+
+    //! provide even screen width and height
+    if (screenRect.height() % 2 == 0) {
+        screenRect.setHeight(screenRect.height() + 1);
+    }
+
+    QRect screenAvailableRect(screenRect.x() + pen_width - 1, screenRect.y() + pen_width - 1, screenRect.width() - pen_width - 1, screenRect.height() - pen_width - 1);
 
     bool selected = Latte::isSelected(option);
     QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
@@ -284,9 +296,17 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
     QPen pen; pen.setWidth(pen_width);
     pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
 
-    //painter->setBrush(imageBrush);
     painter->setPen(pen);
     painter->drawRect(screenRect);
+
+    pen.setWidth(1);
+    painter->setPen(pen);
+
+    int basex = screenRect.x() + (screenRect.width()/2) - 4;
+    int basey = screenRect.y() + screenRect.height() + 2;
+
+    painter->setRenderHint(QPainter::Antialiasing, false);
+    painter->drawLine(basex , basey, basex + 8, basey);
 
     painter->restore();
 
@@ -295,19 +315,69 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
 
 void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect)
 {
-    int pen_width = 3;
+    int thick = 4;
     painter->save();
 
     bool selected = Latte::isSelected(option);
     QPalette::ColorRole viewColorRole = !selected ? QPalette::Highlight : QPalette::Text;
-    QPen pen; pen.setWidth(pen_width);
+    QPen pen; pen.setWidth(thick);
     pen.setColor(option.palette.color(Latte::colorGroup(option), viewColorRole));
     painter->setPen(pen);
 
     int x = availableScreenRect.x();
-    int y = availableScreenRect.bottom();
+    int y = availableScreenRect.y();
 
-    painter->drawLine(x, y, x + availableScreenRect.width() - 1, y);
+    int length = view.isVertical() ? availableScreenRect.height() - thick + 1 : availableScreenRect.width() - thick + 1;
+    int max_length = length;
+
+    if (view.alignment != Latte::Types::Justify) {
+        length = 0.5 * length;
+    }
+
+    //! provide even screen length
+    if (length % 2 == 1) {
+        length = qMin(max_length, length + 1);
+    }
+
+    if (view.edge == Plasma::Types::TopEdge) {
+        y = availableScreenRect.y() + thick/2;
+    } else if (view.edge == Plasma::Types::BottomEdge) {
+        y = availableScreenRect.y() + availableScreenRect.height() - 1;
+    } else if (view.edge == Plasma::Types::LeftEdge) {
+        x = availableScreenRect.x() + thick/2;
+    } else if (view.edge == Plasma::Types::RightEdge) {
+        x = availableScreenRect.x() + availableScreenRect.width() - 1;
+    }
+
+    if (view.isHorizontal()) {
+        if (view.alignment == Latte::Types::Left) {
+            x = availableScreenRect.x() + thick / 2;
+        } else if (view.alignment == Latte::Types::Right) {
+            x = availableScreenRect.x() + availableScreenRect.width() - length - 1;
+        } else if (view.alignment == Latte::Types::Center) {
+            int leftmargin = (availableScreenRect.width()/2) - (length/2);
+            x = availableScreenRect.x() + leftmargin + 1;
+        } else if (view.alignment == Latte::Types::Justify) {
+            x = availableScreenRect.x() + thick / 2;
+        }
+    } else if (view.isVertical()) {
+        if (view.alignment == Latte::Types::Top) {
+            y = availableScreenRect.y() + thick / 2;
+        } else if (view.alignment == Latte::Types::Bottom) {
+            y = availableScreenRect.y() + availableScreenRect.height() - length - 1;
+        } else if (view.alignment == Latte::Types::Center) {
+            int topmargin = (availableScreenRect.height()/2) - (length/2);
+            y = availableScreenRect.y() + topmargin + 1;
+        } else if (view.alignment == Latte::Types::Justify) {
+            y = availableScreenRect.y() + thick / 2;
+        }
+    }
+
+    if (view.isHorizontal()) {
+        painter->drawLine(x, y, x + length, y);
+    } else if (view.isVertical()) {
+        painter->drawLine(x, y, x, y + length);
+    }
 
     painter->restore();
 }
