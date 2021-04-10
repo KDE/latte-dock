@@ -23,6 +23,9 @@
 #include "../viewsmodel.h"
 #include "../../generic/generictools.h"
 
+// KDE
+#include <KLocalizedString>
+
 namespace Latte {
 namespace Settings {
 namespace View {
@@ -41,8 +44,31 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     myOptions.text = index.model()->data(index, Qt::DisplayRole).toString();
     myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());
 
+    bool isEmpty = myOptions.text.isEmpty();
     bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
+
+    if (isEmpty) {
+        myOptions.displayAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
+        myOptions.text = " &lt;" + i18n("optional") + "&gt; ";
+       // QBrush placeholderBrush = option.palette.placeholderText();
+        //style="color:blue;"
+        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
+        QBrush placeholderBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
+        QColor placeholderColor = placeholderBrush.color();
+
+        placeholderColor.setAlpha(125);
+
+        QString cssplaceholdercolor = "rgba(";
+        cssplaceholdercolor += QString::number(placeholderColor.red()) + ",";
+        cssplaceholdercolor += QString::number(placeholderColor.green()) + ", ";
+        cssplaceholdercolor += QString::number(placeholderColor.blue()) + ", ";
+        cssplaceholdercolor += "110)";
+
+        myOptions.text = "<label style='color:" + cssplaceholdercolor + ";'>" + myOptions.text + "</label>";
+
+        qDebug() << "org.kde.latte ::  " <<myOptions.text;
+    }
 
     if (isActive) {
         myOptions.text = "<b>" + myOptions.text + "</b>";
