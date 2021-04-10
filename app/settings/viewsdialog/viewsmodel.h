@@ -60,6 +60,7 @@ public:
         ISCHANGEDROLE,
         HASCHANGEDVIEWROLE,
         CHOICESROLE,
+        VIEWROLE,
         SORTINGROLE
     };
 

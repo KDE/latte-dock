@@ -22,6 +22,7 @@
 // local
 #include "../viewsmodel.h"
 #include "../../generic/generictools.h"
+#include "../../../data/viewdata.h"
 
 // KDE
 #include <KLocalizedString>
@@ -47,6 +48,8 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     bool isEmpty = myOptions.text.isEmpty();
     bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
+
+    Latte::Data::View view = index.data(Model::Views::VIEWROLE).value<Latte::Data::View>();
 
     if (isEmpty) {
         myOptions.text = "&lt; " + i18n("optional") + " &gt;";
@@ -83,7 +86,7 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // draw screen icon
     availableTextRect = Latte::drawScreenBackground(painter, myOptions);
     QRect availableScreenRect = Latte::drawScreen(painter, myOptions);
-    Latte::drawView(painter, myOptions, availableScreenRect);
+    Latte::drawView(painter, myOptions, view, availableScreenRect);
 
     myOptions.rect = availableTextRect;
     Latte::drawFormattedText(painter, myOptions);

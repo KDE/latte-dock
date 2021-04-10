@@ -450,6 +450,10 @@ QVariant Views::data(const QModelIndex &index, int role) const
         }
     } else if (role == HASCHANGEDVIEWROLE) {
         return (isNewView || (m_viewsTable[row] != o_viewsTable[origviewid]));
+    } else if (role == VIEWROLE) {
+        QVariant viewVariant;
+        viewVariant.setValue<Latte::Data::View>(m_viewsTable[row]);
+        return viewVariant;
     }
 
     if (role == Qt::TextAlignmentRole && column != NAMECOLUMN){

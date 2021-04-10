@@ -23,6 +23,7 @@
 
 // local
 #include "../../data/layouticondata.h"
+#include "../../data/viewdata.h"
 
 // Qt
 #include <QPainter>
@@ -54,7 +55,7 @@ QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewIt
 
 QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option); // returns screen available rect
 QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
-void drawView(QPainter *painter, const QStyleOptionViewItem &option, const QRect &availableScreenRect);
+void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect);
 
 }
 

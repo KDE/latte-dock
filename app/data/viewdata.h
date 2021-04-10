@@ -66,6 +66,9 @@ public:
     bool hasLayoutOrigin() const;
     bool hasSubContainment(const QString &subId) const;
 
+    bool isHorizontal() const;
+    bool isVertical() const;
+
     View::State state() const;
     void setState(View::State state, QString file = QString(), QString view = QString());
 

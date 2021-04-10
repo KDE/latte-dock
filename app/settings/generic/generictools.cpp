@@ -293,7 +293,7 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
     return screenAvailableRect;
 }
 
-void drawView(QPainter *painter, const QStyleOptionViewItem &option, const QRect &availableScreenRect)
+void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect)
 {
     int pen_width = 3;
     painter->save();

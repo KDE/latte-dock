@@ -172,6 +172,16 @@ bool View::isValid() const
     return m_state != IsInvalid;
 }
 
+bool View::isHorizontal() const
+{
+    return !isVertical();
+}
+
+bool View::isVertical() const
+{
+    return (edge == Plasma::Types::LeftEdge || edge == Plasma::Types::RightEdge);
+}
+
 bool View::hasViewTemplateOrigin() const
 {
     return m_state == OriginFromViewTemplate;
