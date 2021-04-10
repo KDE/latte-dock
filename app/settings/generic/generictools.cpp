@@ -204,10 +204,10 @@ QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewIt
 
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &indicatorOption, painter);
 
-    QRect availableRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + tsize, option.rect.y(), option.rect.width() - tsize, option.rect.height()) :
-                                                                         QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
+    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + tsize, option.rect.y(), option.rect.width() - tsize, option.rect.height()) :
+                                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
 
-    return availableRect;
+    return optionRemainedRect;
 }
 
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
@@ -233,4 +233,87 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
     painter->restore();
 }
 
+QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
+{
+    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+
+    QStyleOptionViewItem screenOption = option;
+    screenOption.text = "";
+    //! Remove the focus dotted lines
+    screenOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        screenOption.rect = QRect(option.rect.x() + option.rect.width() - total_length, option.rect.y(), total_length, option.rect.height());
+    } else {
+        screenOption.rect = QRect(option.rect.x(), option.rect.y(), total_length, option.rect.height());
+    }
+
+    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
+
+    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
+                                                                              QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
+
+    return optionRemainedRect;
 }
+
+QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
+{
+    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+    int pen_width = 2;
+
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+
+    //! horizontal layout scenario
+    int scr_height = option.rect.height() - MARGIN * 6;
+    int scr_width = 1.6 * scr_height;
+
+    QRect screenMaximumRect = (qApp->layoutDirection() == Qt::RightToLeft) ?
+                QRect(option.rect.x() + option.rect.width() - total_length + MARGIN, option.rect.y() + MARGIN, total_length, option.rect.height() - MARGIN*2) :
+                QRect(option.rect.x() + MARGIN , option.rect.y() + MARGIN, total_length, option.rect.height() - MARGIN*2);
+
+    int topScreenMargin = (screenMaximumRect.height() - scr_height) / 2;
+    int leftScreenMargin = (screenMaximumRect.width() - scr_width) / 2;
+
+    QRect screenRect(screenMaximumRect.x() + leftScreenMargin, screenMaximumRect.y() + topScreenMargin, scr_width, scr_height);
+    QRect screenAvailableRect(screenRect.x() + MARGIN, screenRect.y() + MARGIN, screenRect.width() - 2*MARGIN, screenRect.height() - 2*MARGIN);
+
+    bool selected = Latte::isSelected(option);
+    QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
+
+    QPen pen; pen.setWidth(pen_width);
+    pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
+
+    //painter->setBrush(imageBrush);
+    painter->setPen(pen);
+    painter->drawRect(screenRect);
+
+    painter->restore();
+
+    return screenAvailableRect;
+}
+
+void drawView(QPainter *painter, const QStyleOptionViewItem &option, const QRect &availableScreenRect)
+{
+    int pen_width = 3;
+    painter->save();
+
+    bool selected = Latte::isSelected(option);
+    QPalette::ColorRole viewColorRole = !selected ? QPalette::Highlight : QPalette::Text;
+    QPen pen; pen.setWidth(pen_width);
+    pen.setColor(option.palette.color(Latte::colorGroup(option), viewColorRole));
+    painter->setPen(pen);
+
+    int x = availableScreenRect.x();
+    int y = availableScreenRect.bottom();
+
+    painter->drawLine(x, y, x + availableScreenRect.width() - 1, y);
+
+    painter->restore();
+}
+
+
+
+
+}
+

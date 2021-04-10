@@ -72,11 +72,18 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         myOptions.text = "<i>" + myOptions.text + "</i>";
     }
 
+    // draw changes indicator
     QRect availableTextRect = Latte::drawChangesIndicatorBackground(painter, option);
 
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
+    myOptions.rect = availableTextRect;
+
+    // draw screen icon
+    availableTextRect = Latte::drawScreenBackground(painter, myOptions);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions);
+    Latte::drawView(painter, myOptions, availableScreenRect);
 
     myOptions.rect = availableTextRect;
     Latte::drawFormattedText(painter, myOptions);

@@ -52,6 +52,9 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
 QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
 
+QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option); // returns screen available rect
+QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
+void drawView(QPainter *painter, const QStyleOptionViewItem &option, const QRect &availableScreenRect);
 
 }
 
