@@ -234,7 +234,17 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
     painter->restore();
 }
 
-QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
+QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
+{
+    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+
+    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
+                                                                              QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
+
+    return optionRemainedRect;
+}
+
+void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
 {
     int total_length = option.rect.height() * 1.8 + MARGIN * 2;
 
@@ -250,11 +260,6 @@ QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option
     }
 
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
-
-    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
-                                                                              QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
-
-    return optionRemainedRect;
 }
 
 QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)

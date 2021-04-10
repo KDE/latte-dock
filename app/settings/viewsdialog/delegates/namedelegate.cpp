@@ -37,6 +37,11 @@ NameDelegate::NameDelegate(QObject *parent)
 {
 }
 
+void NameDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    editor->setGeometry(Latte::remainedFromScreenDrawing(option));
+}
+
 void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
@@ -81,10 +86,13 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
+
     myOptions.rect = availableTextRect;
 
     // draw screen icon
-    availableTextRect = Latte::drawScreenBackground(painter, myOptions);
+    availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
+
+    Latte::drawScreenBackground(painter, myOptions);
     QRect availableScreenRect = Latte::drawScreen(painter, myOptions);
     Latte::drawView(painter, myOptions, view, availableScreenRect);
 

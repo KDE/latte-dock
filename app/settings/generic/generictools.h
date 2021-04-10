@@ -50,11 +50,14 @@ QStringList subtracted(const QStringList &original, const QStringList &current);
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
+//! changes indicator
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
 QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
 
+//! screen icon
+QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option);
 QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option); // returns screen available rect
-QRect drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
+void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
 void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect);
 
 }
