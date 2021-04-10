@@ -25,6 +25,7 @@
 #include "viewsdialog.h"
 #include "viewshandler.h"
 #include "viewsmodel.h"
+#include "delegates/namedelegate.h"
 #include "delegates/singleoptiondelegate.h"
 #include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
@@ -95,6 +96,7 @@ void Views::init()
     m_view->sortByColumn(m_viewSortColumn, m_viewSortOrder);
 
     m_view->setItemDelegateForColumn(Model::Views::IDCOLUMN, new Settings::View::Delegate::SingleText(this));
+    m_view->setItemDelegateForColumn(Model::Views::NAMECOLUMN, new Settings::View::Delegate::NameDelegate(this));
     m_view->setItemDelegateForColumn(Model::Views::SCREENCOLUMN, new Settings::View::Delegate::SingleOption(this));
     m_view->setItemDelegateForColumn(Model::Views::EDGECOLUMN, new Settings::View::Delegate::SingleOption(this));
     m_view->setItemDelegateForColumn(Model::Views::ALIGNMENTCOLUMN, new Settings::View::Delegate::SingleOption(this));
