@@ -27,7 +27,10 @@
 
 namespace Latte {
 
-const int MARGIN = 1;
+const int ICONMARGIN = 1;
+const int INDICATORCHANGESLENGTH = 6;
+const int INDICATORCHANGESMARGIN = 2;
+const int MARGIN = 2;
 
 bool isEnabled(const QStyleOption &option)
 {
@@ -153,7 +156,7 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option)
 }
 
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
-{
+{   
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
     bool focused = Latte::isFocused(option);
@@ -161,7 +164,7 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     if (icon.isBackgroundFile) {
-        int backImageMargin = qMin(option.rect.height()/4, MARGIN+2);
+        int backImageMargin = qMin(option.rect.height()/4, ICONMARGIN+2);
         QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
 
         QPixmap backImage(icon.name);
@@ -182,7 +185,50 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
 
         painter->drawPixmap(target, QIcon::fromTheme(icon.name).pixmap(target.height(), target.height(), mode));
     }
+}
 
+QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option)
+{
+    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
+
+    QStyleOptionViewItem indicatorOption = option;
+    indicatorOption.text = "";
+
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height() + 1);
+    } else {
+        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height() + 1);
+    }
+
+    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &indicatorOption, painter);
+
+    QRect availableRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + tsize, option.rect.y(), option.rect.width() - tsize, option.rect.height()) :
+                                                                         QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
+
+    return availableRect;
+}
+
+void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
+{
+    //! draw changes circle indicator
+    int csize{INDICATORCHANGESLENGTH};
+    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
+
+    painter->save();
+
+    QRect changesRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize) :
+                                                                       QRect(option.rect.x() + option.rect.width() - csize - INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize);
+
+    QColor plasmaOrange(246, 116, 0); //orangish color used from plasma systemsettings #f67400
+    QBrush backBrush(plasmaOrange);
+    QPen pen; pen.setWidth(1);
+    pen.setColor(plasmaOrange);
+
+    painter->setBrush(backBrush);
+    painter->setPen(pen);
+    painter->drawEllipse(changesRect);
+
+    painter->restore();
 }
 
 }

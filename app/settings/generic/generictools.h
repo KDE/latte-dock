@@ -49,6 +49,10 @@ QStringList subtracted(const QStringList &original, const QStringList &current);
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
+void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
+QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
+
+
 }
 
 #endif

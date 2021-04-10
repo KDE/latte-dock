@@ -66,8 +66,6 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         cssplaceholdercolor += "110)";
 
         myOptions.text = "<label style='color:" + cssplaceholdercolor + ";'>" + myOptions.text + "</label>";
-
-        qDebug() << "org.kde.latte ::  " <<myOptions.text;
     }
 
     if (isActive) {
@@ -78,6 +76,13 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         myOptions.text = "<i>" + myOptions.text + "</i>";
     }
 
+    QRect availableTextRect = Latte::drawChangesIndicatorBackground(painter, option);
+
+    if (isChanged) {
+        Latte::drawChangesIndicator(painter, option);
+    }
+
+    myOptions.rect = availableTextRect;
     Latte::drawFormattedText(painter, myOptions);
 }
 
