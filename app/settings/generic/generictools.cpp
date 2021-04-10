@@ -193,11 +193,13 @@ QRect drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewIt
 
     QStyleOptionViewItem indicatorOption = option;
     indicatorOption.text = "";
+    //! Remove the focus dotted lines
+    indicatorOption.state = (option.state & ~QStyle::State_HasFocus);
 
     if (qApp->layoutDirection() == Qt::RightToLeft) {
-        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height() + 1);
+        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height());
     } else {
-        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height() + 1);
+        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height());
     }
 
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &indicatorOption, painter);

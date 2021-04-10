@@ -49,21 +49,17 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
 
     if (isEmpty) {
-        myOptions.displayAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
-        myOptions.text = " &lt;" + i18n("optional") + "&gt; ";
-       // QBrush placeholderBrush = option.palette.placeholderText();
-        //style="color:blue;"
+        myOptions.text = "&lt; " + i18n("optional") + " &gt;";
+
         QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
         QBrush placeholderBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
         QColor placeholderColor = placeholderBrush.color();
-
-        placeholderColor.setAlpha(125);
 
         QString cssplaceholdercolor = "rgba(";
         cssplaceholdercolor += QString::number(placeholderColor.red()) + ",";
         cssplaceholdercolor += QString::number(placeholderColor.green()) + ", ";
         cssplaceholdercolor += QString::number(placeholderColor.blue()) + ", ";
-        cssplaceholdercolor += "110)";
+        cssplaceholdercolor += "128)";
 
         myOptions.text = "<label style='color:" + cssplaceholdercolor + ";'>" + myOptions.text + "</label>";
     }

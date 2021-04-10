@@ -75,44 +75,6 @@ void LayoutName::setModelData(QWidget *editor, QAbstractItemModel *model, const 
     }
 }
 
-void LayoutName::drawHasChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    //! draw changes circle indicator
-    int csize{INDICATORCHANGESLENGTH};
-    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
-
-    //! Draw indicator background
-    QStandardItemModel *model = (QStandardItemModel *) index.model();
-    if (qApp->layoutDirection() == Qt::RightToLeft) {
-        QStyleOptionViewItem indicatorOption = option;
-        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height());
-        QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-    } else {
-        QStyleOptionViewItem indicatorOption = option;
-        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height());
-        QStyledItemDelegate::paint(painter, indicatorOption, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-    }
-
-    bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
-    bool hasChanges = index.data(Model::Layouts::LAYOUTHASCHANGESROLE).toBool();
-    bool isChanged = (isNewLayout || hasChanges);
-
-    if (isChanged) {
-        QRect changesRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize) :
-                                                                           QRect(option.rect.x() + option.rect.width() - csize - INDICATORCHANGESMARGIN, option.rect.y() + option.rect.height()/2 - csize/2, csize, csize);
-
-        QColor plasmaOrange(246, 116, 0); //orangish color used from plasma systemsettings #f67400
-        QBrush backBrush(plasmaOrange);
-        QPen pen; pen.setWidth(1);
-        pen.setColor(plasmaOrange);
-
-        painter->setBrush(backBrush);
-        painter->setPen(pen);
-        painter->drawEllipse(changesRect);
-    }
-}
-
-
 void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     bool inMultiple = index.data(Model::Layouts::INMULTIPLELAYOUTSROLE).toBool();
@@ -137,10 +99,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    int indicatorLength = INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN * 2;
-    QRect optionRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x() + indicatorLength, option.rect.y(), option.rect.width() - indicatorLength, option.rect.height()) :
-                                                                      QRect(option.rect.x(), option.rect.y(), option.rect.width() - indicatorLength, option.rect.height());
-
+    QRect optionRect = Latte::drawChangesIndicatorBackground(painter, option);
     adjustedOption.rect = optionRect;
 
     if (isLocked || isConsideredActive) {
@@ -213,23 +172,21 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
             }
         }
 
-        //! in order to paint also the background
-        QStyleOptionViewItem indicatorOption = adjustedOption;
-        indicatorOption.rect = option.rect;
-        drawHasChangesIndicator(painter, indicatorOption, index);
+        if (isChanged) {
+            Latte::drawChangesIndicator(painter, option);
+        }
         return;
     }
-
-    //! in order to paint also the background
-    QStyleOptionViewItem indicatorOption = adjustedOption;
-    indicatorOption.rect = option.rect;
-    drawHasChangesIndicator(painter, indicatorOption, index);
 
     //! Draw valid text area
     adjustedOption.font.setBold(isActive);
     adjustedOption.font.setItalic(isChanged);
 
     QStyledItemDelegate::paint(painter, adjustedOption, index);
+
+    if (isChanged) {
+        Latte::drawChangesIndicator(painter, option);
+    }
 }
 
 }
