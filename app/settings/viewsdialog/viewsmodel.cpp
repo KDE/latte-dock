@@ -316,6 +316,9 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
 
     QVector<int> roles;
     roles << role;
+    roles << ISCHANGEDROLE;
+    roles << HASCHANGEDVIEWROLE;
+
     if (role != Qt::DisplayRole) {
         roles << Qt::DisplayRole;
     }
@@ -413,6 +416,10 @@ QVariant Views::data(const QModelIndex &index, int role) const
         return QVariant{};
     }
 
+    bool isNewView = !o_viewsTable.containsId(m_viewsTable[row].id);
+    QString origviewid = !isNewView ? m_viewsTable[row].id : "";
+
+
     if (role == IDROLE) {
         return (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].id : "#");
     } else if (role == ISACTIVEROLE) {
@@ -436,8 +443,9 @@ QVariant Views::data(const QModelIndex &index, int role) const
         } else if (column == ALIGNMENTCOLUMN) {
             return isVertical(m_viewsTable[row].edge) ? s_verticalAlignments : s_horizontalAlignments;
         }
+    } else if (role == HASCHANGEDVIEWROLE) {
+        return (isNewView || (m_viewsTable[row] != o_viewsTable[origviewid]));
     }
-
 
     if (role == Qt::TextAlignmentRole && column != NAMECOLUMN){
         return static_cast<Qt::Alignment::Int>(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -449,11 +457,15 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].id : "#");
         } else if (role == Qt::UserRole) {
             return m_viewsTable[row].id;
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView || (m_viewsTable[row].id != o_viewsTable[origviewid].id));
         }
         break;
     case NAMECOLUMN:
         if (role == Qt::DisplayRole || role == Qt::UserRole || role == Qt::EditRole){
             return m_viewsTable[row].name;
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView || (m_viewsTable[row].name != o_viewsTable[origviewid].name));
         }
         break;
     case SCREENCOLUMN:
@@ -470,6 +482,10 @@ QVariant Views::data(const QModelIndex &index, int role) const
             }
         } else if (role == Qt::UserRole) {
             return m_viewsTable[row].onPrimary ? QString::number(Data::Screen::ONPRIMARYID) : QString::number(m_viewsTable[row].screen);
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView
+                    || (m_viewsTable[row].onPrimary != o_viewsTable[origviewid].onPrimary)
+                    || (!m_viewsTable[row].onPrimary && m_viewsTable[row].screen != o_viewsTable[origviewid].screen));
         }
         break;
     case EDGECOLUMN:
@@ -487,6 +503,8 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return QString("Unknown");
         } else if (role == Qt::UserRole) {
             return QString::number(m_viewsTable[row].edge);
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView || (m_viewsTable[row].edge != o_viewsTable[origviewid].edge));
         }
         break;
     case ALIGNMENTCOLUMN:
@@ -508,6 +526,8 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return QString("Unknown");
         } else if (role == Qt::UserRole) {
             return QString::number(m_viewsTable[row].alignment);
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView || (m_viewsTable[row].alignment != o_viewsTable[origviewid].alignment));
         }
         break;
     case SUBCONTAINMENTSCOLUMN:
@@ -531,6 +551,8 @@ QVariant Views::data(const QModelIndex &index, int role) const
             }
 
             return QString();
+        } else if (role == ISCHANGEDROLE) {
+            return (isNewView || (m_viewsTable[row].subcontainments != o_viewsTable[origviewid].subcontainments));
         }
     };
 
