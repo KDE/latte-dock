@@ -59,12 +59,17 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
     QString currentChoice = index.data(Qt::UserRole).toString();
 
     Latte::Data::GenericBasicTable choices;
+    QStringList activeChoices;
 
     if (column == Model::Views::SCREENCOLUMN) {
         Latte::Data::ScreensTable screens = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ScreensTable>();
 
         for (int i=0; i<screens.rowCount(); ++i) {
             choices << Latte::Data::Generic(screens[i].id, screens[i].name);
+
+            if (screens[i].isActive) {
+                activeChoices << screens[i].id;
+            }
         }
     } else {
         choices << index.data(Model::Views::CHOICESROLE).value<Latte::Data::GenericBasicTable>();
@@ -76,6 +81,12 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
         if (choices[i].id == currentChoice) {
             action->setIcon(QIcon::fromTheme("dialog-yes"));
+        }
+
+        if (activeChoices.contains(choices[i].id)) {
+            QFont font = action->font();
+            font.setBold(true);
+            action->setFont(font);
         }
 
         connect(action, &QAction::triggered, this, [this, button, menu, action](bool checked) {

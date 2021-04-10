@@ -28,6 +28,7 @@ namespace Data {
 Screen::Screen()
     : Generic(),
       hasExplicitViews(false),
+      isActive(false),
       geometry(QRect(0, 0, 1920, 1080))
 {
 }
@@ -35,6 +36,7 @@ Screen::Screen()
 Screen::Screen(Screen &&o)
     : Generic(o),
       hasExplicitViews(o.hasExplicitViews),
+      isActive(o.isActive),
       geometry(o.geometry)
 {
 }
@@ -42,6 +44,7 @@ Screen::Screen(Screen &&o)
 Screen::Screen(const Screen &o)
     : Generic(o),
       hasExplicitViews(o.hasExplicitViews),
+      isActive(o.isActive),
       geometry(o.geometry)
 {
 }
@@ -57,6 +60,7 @@ Screen &Screen::operator=(const Screen &rhs)
     id = rhs.id;
     name = rhs.name;
     hasExplicitViews = rhs.hasExplicitViews;
+    isActive = rhs.isActive;
     geometry = rhs.geometry;
 
     return (*this);
@@ -67,6 +71,7 @@ Screen &Screen::operator=(Screen &&rhs)
     id = rhs.id;
     name = rhs.name;
     hasExplicitViews = rhs.hasExplicitViews;
+    isActive = rhs.isActive;
     geometry = rhs.geometry;
 
     return (*this);
@@ -77,6 +82,7 @@ bool Screen::operator==(const Screen &rhs) const
     return (id == rhs.id)
             && (name == rhs.name)
             && (hasExplicitViews == rhs.hasExplicitViews)
+            //&& (isActive == rhs.isActive) /*Disabled because this is not a data but a screen state*/
             && (geometry == rhs.geometry);
 }
 
@@ -91,6 +97,7 @@ void Screen::init(const QString &screenId, const QString &serialized)
 
     id = screenId;
     name = parts[0];
+    isActive = false;
 
     if (parts.count() > 1) {
         geometry = Latte::stringToRect(parts[1]);

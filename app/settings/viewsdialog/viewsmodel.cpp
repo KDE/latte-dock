@@ -214,8 +214,13 @@ void Views::populateScreens()
     Data::Screen primary(QString::number(Data::Screen::ONPRIMARYID),
                          i18nc("primary screen", " - Follow Primary Screen - "));
 
+    primary.isActive = true;
     s_screens << primary;
     s_screens << m_corona->screenPool()->screensTable();
+
+    for (int i=1; i<s_screens.rowCount(); ++i) {
+        s_screens[i].isActive = m_corona->screenPool()->isScreenActive(s_screens[i].id.toInt());
+    }
 }
 
 void Views::setOriginalData(Latte::Data::ViewsTable &data)

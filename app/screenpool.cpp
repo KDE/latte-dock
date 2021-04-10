@@ -146,7 +146,7 @@ void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGe
 
 
 Latte::Data::ScreensTable ScreenPool::screensTable()
-{
+{   
     return m_screensTable;
 }
 
