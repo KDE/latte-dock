@@ -239,9 +239,21 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
     painter->restore();
 }
 
+int screenMaxLength(const QStyleOptionViewItem &option)
+{
+    int scr_maxlength = option.rect.height() * 1.7;
+
+    //! provide odd screen_maxlength
+    if (scr_maxlength % 2 == 0) {
+        scr_maxlength--;
+    }
+
+    return scr_maxlength;
+}
+
 QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
 {
-    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
+    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
 
     QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
                                                                               QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
@@ -251,7 +263,7 @@ QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
 
 void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
 {
-    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
+    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
 
     QStyleOptionViewItem screenOption = option;
     screenOption.text = "";
@@ -269,7 +281,10 @@ void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
 
 QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isVertical)
 {
-    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
+    int scr_maxlength = screenMaxLength(option);
+    int scr_maxthickness = option.rect.height() - MARGIN * 2;
+
+    int total_length = scr_maxlength + MARGIN * 2;
     int pen_width = 2;
 
     painter->save();
@@ -277,26 +292,26 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isV
 
     //! horizontal layout scenario
     int scr_height = (!isVertical ? option.rect.height() - MARGIN * 6 : option.rect.height() - MARGIN * 4);
-    int scr_width = (!isVertical ? 1.7 * scr_height : 0.8 * scr_height);
+    int scr_width = (!isVertical ? scr_height * 1.6 : 0.8 * scr_height);
+
+    //! provide even screen width and height
+    if (scr_width % 2 == 1) {
+        scr_width++;
+    }
+
+    //! provide even screen width and height
+    if (scr_height % 2 == 0) {
+        scr_height++;
+    }
 
     QRect screenMaximumRect = (qApp->layoutDirection() == Qt::RightToLeft) ?
-                QRect(option.rect.x() + option.rect.width() - total_length + MARGIN, option.rect.y() + MARGIN, total_length, option.rect.height() - MARGIN*2) :
-                QRect(option.rect.x() + MARGIN , option.rect.y() + MARGIN, total_length, option.rect.height() - MARGIN*2);
+                QRect(option.rect.x() + option.rect.width() - scr_maxlength - MARGIN, option.rect.y() + MARGIN, scr_maxlength, scr_maxthickness - 1) :
+                QRect(option.rect.x() + MARGIN , option.rect.y() + MARGIN, scr_maxlength, scr_maxthickness - 1);
 
     int topScreenMargin = (screenMaximumRect.height() - scr_height) / 2;
     int leftScreenMargin = (screenMaximumRect.width() - scr_width) / 2;
 
-    QRect screenRect(screenMaximumRect.x() + leftScreenMargin, screenMaximumRect.y() + topScreenMargin, scr_width, scr_height);
-
-    //! provide even screen width and height
-    if (screenRect.width() % 2 == 1) {
-        screenRect.setWidth(screenRect.width() + 1);
-    }
-
-    //! provide even screen width and height
-    if (screenRect.height() % 2 == 0) {
-        screenRect.setHeight(screenRect.height() + 1);
-    }
+    QRect screenRect(screenMaximumRect.x() + leftScreenMargin + MARGIN/2, screenMaximumRect.y() + topScreenMargin, scr_width, scr_height);
 
     QRect screenAvailableRect(screenRect.x() + pen_width - 1, screenRect.y() + pen_width - 1, screenRect.width() - pen_width - 1, screenRect.height() - pen_width - 1);
 
@@ -317,6 +332,9 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isV
 
     painter->setRenderHint(QPainter::Antialiasing, false);
     painter->drawLine(basex , basey, basex + 8, basey);
+
+    // debug screen maximum available rect
+    //painter->drawRect(screenMaximumRect);
 
     painter->restore();
 
