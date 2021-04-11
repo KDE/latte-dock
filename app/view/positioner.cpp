@@ -1107,8 +1107,9 @@ void Positioner::setNextLocation(const QString layoutName, const QString screenI
 
     if (animated) {
         emit hidingForRelocationStarted();
+    } else {
+        emit hidingForRelocationFinished();
     }
-
 }
 
 }
