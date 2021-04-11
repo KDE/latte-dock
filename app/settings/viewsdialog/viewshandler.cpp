@@ -160,9 +160,8 @@ void ViewsHandler::initViewTemplatesSubMenu()
 
 void ViewsHandler::reload()
 {
-    m_dialog->layoutsController()->initializeSelectedLayoutViews();
-
     o_data = m_dialog->layoutsController()->selectedLayoutCurrentData();
+    o_data.views = m_dialog->layoutsController()->selectedLayoutViews();
 
     Latte::Data::LayoutIcon icon = m_dialog->layoutsController()->selectedLayoutIcon();
 

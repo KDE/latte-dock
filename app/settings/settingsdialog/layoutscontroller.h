@@ -77,6 +77,7 @@ public:
     const Latte::Data::Layout selectedLayoutCurrentData() const;
     const Latte::Data::Layout selectedLayoutOriginalData() const;
     const Latte::Data::LayoutIcon selectedLayoutIcon() const;
+    const Latte::Data::ViewsTable selectedLayoutViews();
 
     void selectRow(const QString &id);
     void setLayoutProperties(const Latte::Data::Layout &layout);
@@ -86,8 +87,7 @@ public:
     void save();
     void removeSelected();
     void toggleEnabledForSelected();
-    void toggleLockedForSelected();
-    void initializeSelectedLayoutViews();
+    void toggleLockedForSelected();    
 
     QString iconsPath() const;
     QString colorPath(const QString color) const;

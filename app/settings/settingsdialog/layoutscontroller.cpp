@@ -216,36 +216,36 @@ QString Layouts::iconsPath() const
     return m_iconsPath;
 }
 
-void Layouts::initializeSelectedLayoutViews()
+const Latte::Data::ViewsTable Layouts::selectedLayoutViews()
 {
+    Latte::Data::ViewsTable views;
     int selectedRow = m_view->currentIndex().row();
-    if (selectedRow >= 0) {
-        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-        Data::Layout selectedCurrentData = m_model->currentData(selectedId);
 
-        if (!selectedCurrentData.views.isInitialized) {
-            Data::Layout originalSelectedData = selectedLayoutOriginalData();
-            CentralLayout *central = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originalSelectedData.name);
-
-            bool islayoutactive{true};
-
-            if (!central) {
-                islayoutactive = false;
-                central = new CentralLayout(this, selectedCurrentData.id);
-            }
-
-            selectedCurrentData.views = central->viewsTable();
-            selectedCurrentData.views.isInitialized = true;
-            originalSelectedData.views = selectedCurrentData.views;
-
-            m_model->setOriginalViewsForLayout(originalSelectedData);
-            m_model->setLayoutProperties(selectedCurrentData);
-
-            if (!islayoutactive) {
-                central->deleteLater();
-            }
-        }
+    if (selectedRow < 0) {
+        return views;
     }
+
+    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
+    Data::Layout selectedCurrentData = m_model->currentData(selectedId);
+
+    Data::Layout originalSelectedData = selectedLayoutOriginalData();
+    CentralLayout *central = m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originalSelectedData.name);
+
+    bool islayoutactive{true};
+
+    if (!central) {
+        islayoutactive = false;
+        central = new CentralLayout(this, selectedCurrentData.id);
+    }
+
+    selectedCurrentData.views = central->viewsTable();
+    selectedCurrentData.views.isInitialized = true;
+
+    if (!islayoutactive) {
+        central->deleteLater();
+    }
+
+    return selectedCurrentData.views;
 }
 
 const Latte::Data::LayoutIcon Layouts::selectedLayoutIcon() const
