@@ -58,6 +58,8 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked,
             this, &ViewsDialog::onReset);
 
+    connect(m_applyNowBtn, &QPushButton::clicked, this, &ViewsDialog::onApply);
+
     resize(m_windowSize);
     updateApplyButtonsState();    
 }
@@ -100,6 +102,12 @@ void ViewsDialog::onOk()
     qDebug() << Q_FUNC_INFO;
 //    m_handler->save();
     close();
+}
+
+void ViewsDialog::onApply()
+{
+    qDebug() << Q_FUNC_INFO;
+    m_handler->save();
 }
 
 void ViewsDialog::onCancel()

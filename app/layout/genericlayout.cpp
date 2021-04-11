@@ -1478,6 +1478,21 @@ void GenericLayout::newView(const QString &templateFile)
     emit viewEdgeChanged();
 }
 
+void GenericLayout::updateView(const Latte::Data::View &viewData)
+{
+    if (!isActive()) {
+        return;
+    }
+
+    auto view = viewForContainment(viewData.id.toUInt());
+
+    if (view) {
+        //const QString layoutName, const QString screenId, int edge, int alignment
+        view->positioner()->setNextLocation("", "", viewData.edge, Latte::Types::NoneAlignment);
+    }
+
+}
+
 void GenericLayout::importToCorona()
 {
     Layouts::Storage::self()->importToCorona(this);

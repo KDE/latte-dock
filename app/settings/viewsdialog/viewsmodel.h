@@ -107,6 +107,8 @@ public:
 
     void setOriginalData(Latte::Data::ViewsTable &data);
 
+    Latte::Data::ViewsTable alteredViews() const;
+
 signals:
     void rowsInserted();
     void rowsRemoved();

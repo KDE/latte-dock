@@ -120,6 +120,8 @@ public:
     void recreateView(Plasma::Containment *containment, bool delayed = true);
     bool latteViewExists(Plasma::Containment *containment);
 
+    void updateView(const Latte::Data::View &viewData);
+
     //! Available edges for specific view in that screen
     virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
     //! All free edges in that screen

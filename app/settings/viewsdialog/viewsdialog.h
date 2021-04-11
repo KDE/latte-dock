@@ -70,6 +70,7 @@ private slots:
     void saveConfig();
 
     void onOk();
+    void onApply();
     void onCancel();
     void onReset();
 

@@ -67,7 +67,10 @@ public:
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
+    bool isSelectedLayoutOriginal() const;
+
     Latte::Data::Layout currentData() const;
+    Latte::Data::Layout originalData() const;
 
     Ui::ViewsDialog *ui() const;
     Latte::Corona *corona() const;

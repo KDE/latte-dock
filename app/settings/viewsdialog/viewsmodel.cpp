@@ -228,6 +228,21 @@ Latte::Data::Screen Views::screenData(const QString &viewId) const
     return Latte::Data::Screen();
 }
 
+Latte::Data::ViewsTable Views::alteredViews() const
+{
+    Latte::Data::ViewsTable views;
+
+    for(int i=0; i<rowCount(); ++i) {
+        QString currentId = m_viewsTable[i].id;
+
+        if (!o_viewsTable.containsId(currentId)
+            || m_viewsTable[currentId] != o_viewsTable[currentId]) {
+            views << m_viewsTable[i];
+        }
+    }
+
+    return views;
+}
 
 void Views::populateScreens()
 {

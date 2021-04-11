@@ -189,6 +189,17 @@ bool Layouts::hasSelectedLayout() const
     return (selectedRow >= 0);
 }
 
+bool Layouts::isSelectedLayoutOriginal() const
+{
+    if (!hasSelectedLayout()) {
+        return false;
+    }
+
+    Data::Layout currentData = selectedLayoutCurrentData();
+
+    return m_model->originalLayoutsData().containsId(currentData.id);
+}
+
 QString Layouts::colorPath(const QString color) const
 {
     QString path = m_iconsPath + color + "print.jpg";

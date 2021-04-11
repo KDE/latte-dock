@@ -76,7 +76,7 @@ public:
 
     //! actions
     void reset();
- //   void save();
+    void save();
     void removeSelected();
 
 signals:

@@ -29,6 +29,9 @@
 #include "delegates/singleoptiondelegate.h"
 #include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
+#include "../../layout/centrallayout.h"
+#include "../../layouts/manager.h"
+#include "../../layouts/synchronizer.h"
 
 // Qt
 #include <QHeaderView>
@@ -195,6 +198,27 @@ void Views::onCurrentLayoutChanged()
     m_model->setOriginalData(layout.views);
 }
 
+void Views::save()
+{
+    Latte::Data::Layout originallayout = m_handler->originalData();
+    Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
+
+    if (!centralActive) {
+        return;
+    }
+
+    Latte::Data::ViewsTable alteredViews = m_model->alteredViews();
+
+    for (int i=0; i<alteredViews.rowCount(); ++i) {
+        if (alteredViews[i].state() == Data::View::IsCreated) {
+            qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
+            centralActive->updateView(alteredViews[i]);
+        }
+    }
+
+    Latte::Data::ViewsTable currentViews = m_model->currentViewsData();
+    m_model->setOriginalData(currentViews);
+}
 
 QString Views::uniqueViewName(QString name)
 {

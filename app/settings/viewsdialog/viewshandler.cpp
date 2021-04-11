@@ -119,8 +119,6 @@ void ViewsHandler::init()
 
 void ViewsHandler::initViewTemplatesSubMenu()
 {
-
-
     if (!m_viewTemplatesSubMenu) {
         m_viewTemplatesSubMenu = new QMenu(m_ui->newBtn);
         m_viewTemplatesSubMenu->setMinimumWidth(m_ui->newBtn->width() * 2);
@@ -194,6 +192,11 @@ Latte::Data::Layout ViewsHandler::currentData() const
     return o_data;
 }
 
+Latte::Data::Layout ViewsHandler::originalData() const
+{
+    return m_dialog->layoutsController()->selectedLayoutOriginalData();
+}
+
 bool ViewsHandler::hasChangedData() const
 {
     return m_viewsController->hasChangedData();
@@ -205,6 +208,10 @@ bool ViewsHandler::inDefaultValues() const
     return true;
 }
 
+bool ViewsHandler::isSelectedLayoutOriginal() const
+{
+    return m_dialog->layoutsController()->isSelectedLayoutOriginal();
+}
 
 void ViewsHandler::reset()
 {
@@ -218,6 +225,7 @@ void ViewsHandler::resetDefaults()
 
 void ViewsHandler::save()
 {
+    m_viewsController->save();
   //  m_dialog->layoutsController()->setLayoutProperties(currentData());
 }
 
