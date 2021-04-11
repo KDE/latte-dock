@@ -22,6 +22,7 @@
 // local
 #include "../viewsmodel.h"
 #include "../../generic/generictools.h"
+#include "../../../data/screendata.h"
 #include "../../../data/viewdata.h"
 
 // KDE
@@ -54,6 +55,7 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
 
+    Latte::Data::Screen screen = index.data(Model::Views::SCREENROLE).value<Latte::Data::Screen>();
     Latte::Data::View view = index.data(Model::Views::VIEWROLE).value<Latte::Data::View>();
 
     if (isEmpty) {
@@ -90,10 +92,17 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     myOptions.rect = availableTextRect;
 
     // draw screen icon
+    bool viewisvertical{false};
+
+    if (!screen.geometry.isEmpty()) {
+        float scrratio = screen.geometry.width() / screen.geometry.height();
+        viewisvertical = (scrratio < 1.0);
+    }
+
     availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
 
     Latte::drawScreenBackground(painter, myOptions);
-    QRect availableScreenRect = Latte::drawScreen(painter, myOptions);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, viewisvertical);
     Latte::drawView(painter, myOptions, view, availableScreenRect);
 
     myOptions.rect = availableTextRect;

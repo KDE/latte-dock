@@ -208,6 +208,27 @@ bool Views::isVertical(const Plasma::Types::Location &location) const
     return (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge);
 }
 
+Latte::Data::Screen Views::screenData(const QString &viewId) const
+{
+    int row = rowForId(viewId);
+
+    if (row < 0) {
+        return Latte::Data::Screen();
+    }
+
+    QString primaryid = QString::number(m_corona->screenPool()->primaryScreenId());
+    QString explicitid = QString::number(m_viewsTable[row].screen);
+
+    if (m_viewsTable[row].onPrimary && s_screens.containsId(primaryid)) {
+        return s_screens[primaryid];
+    } else if (!m_viewsTable[row].onPrimary && s_screens.containsId(explicitid)) {
+        return s_screens[explicitid];
+    }
+
+    return Latte::Data::Screen();
+}
+
+
 void Views::populateScreens()
 {
     s_screens.clear();
@@ -450,6 +471,11 @@ QVariant Views::data(const QModelIndex &index, int role) const
         }
     } else if (role == HASCHANGEDVIEWROLE) {
         return (isNewView || (m_viewsTable[row] != o_viewsTable[origviewid]));
+    } else if (role == SCREENROLE) {
+        QVariant scrVariant;
+        Latte::Data::Screen scrdata = screenData(m_viewsTable[row].id);
+        scrVariant.setValue<Latte::Data::Screen>(scrdata);
+        return scrVariant;
     } else if (role == VIEWROLE) {
         QVariant viewVariant;
         viewVariant.setValue<Latte::Data::View>(m_viewsTable[row]);

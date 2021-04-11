@@ -241,7 +241,7 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
 
 QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
 {
-    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
 
     QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
                                                                               QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
@@ -251,7 +251,7 @@ QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
 
 void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
 {
-    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
 
     QStyleOptionViewItem screenOption = option;
     screenOption.text = "";
@@ -267,17 +267,17 @@ void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option)
+QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isVertical)
 {
-    int total_length = option.rect.height() * 1.8 + MARGIN * 2;
+    int total_length = option.rect.height() * 1.7 + MARGIN * 2;
     int pen_width = 2;
 
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     //! horizontal layout scenario
-    int scr_height = option.rect.height() - MARGIN * 6;
-    int scr_width = 1.6 * scr_height;
+    int scr_height = (!isVertical ? option.rect.height() - MARGIN * 6 : option.rect.height() - MARGIN * 4);
+    int scr_width = (!isVertical ? 1.7 * scr_height : 0.8 * scr_height);
 
     QRect screenMaximumRect = (qApp->layoutDirection() == Qt::RightToLeft) ?
                 QRect(option.rect.x() + option.rect.width() - total_length + MARGIN, option.rect.y() + MARGIN, total_length, option.rect.height() - MARGIN*2) :

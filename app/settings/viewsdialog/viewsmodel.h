@@ -60,6 +60,7 @@ public:
         ISCHANGEDROLE,
         HASCHANGEDVIEWROLE,
         CHOICESROLE,
+        SCREENROLE,
         VIEWROLE,
         SORTINGROLE
     };
@@ -119,6 +120,8 @@ private slots:
 
 private:
     bool isVertical(const Plasma::Types::Location &location) const;
+
+    Latte::Data::Screen screenData(const QString &viewId) const;
 
 private:
     Latte::Data::ViewsTable m_viewsTable;
