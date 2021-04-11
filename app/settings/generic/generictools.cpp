@@ -293,7 +293,8 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, QRect sc
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    scr_ratio = qMin(qMax((float)0.75, scr_ratio), (float)1.7);
+    float scr_maxratio = ((float)scr_maxlength) / (float)(scr_maxthickness - 2*MARGIN);
+    scr_ratio = qMin(qMax((float)0.75, scr_ratio), (float)scr_maxratio);
     int scr_height = (!isVertical ? option.rect.height() - MARGIN * 6 : option.rect.height() - MARGIN * 4);
     int scr_width = scr_ratio * scr_height;
 
