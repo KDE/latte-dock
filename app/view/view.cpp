@@ -1303,6 +1303,8 @@ Latte::Data::View View::data() const
         vdata.screen = containment()->lastScreen();
     }
 
+    vdata.screenEdgeMargin = m_screenEdgeMargin;
+
     vdata.edge = location();
     vdata.maxLength = m_maxLength * 100;
     vdata.alignment = m_alignment;

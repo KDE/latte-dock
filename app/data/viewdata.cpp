@@ -33,6 +33,7 @@ View::View(View &&o)
       isActive(o.isActive),
       onPrimary(o.onPrimary),
       screen(o.screen),
+      screenEdgeMargin(o.screenEdgeMargin),
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
@@ -47,7 +48,8 @@ View::View(const View &o)
     : Generic(o),
       isActive(o.isActive),
       onPrimary(o.onPrimary),
-      screen(o.screen),      
+      screen(o.screen),
+      screenEdgeMargin(o.screenEdgeMargin),
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
@@ -65,6 +67,7 @@ View &View::operator=(const View &rhs)
     isActive = rhs.isActive;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
+    screenEdgeMargin = rhs.screenEdgeMargin,
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
@@ -83,6 +86,7 @@ View &View::operator=(View &&rhs)
     isActive = rhs.isActive;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
+    screenEdgeMargin = rhs.screenEdgeMargin,
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
@@ -101,6 +105,7 @@ bool View::operator==(const View &rhs) const
             && (isActive == rhs.isActive)
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
+            && (screenEdgeMargin == rhs.screenEdgeMargin)
             && (maxLength == rhs.maxLength)
             && (edge == rhs.edge)
             && (alignment == rhs.alignment)

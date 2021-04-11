@@ -55,6 +55,7 @@ public:
     bool isActive{false};
     bool onPrimary{true};
     int screen{Latte::ScreenPool::FIRSTSCREENID};
+    int screenEdgeMargin{0};
     float maxLength{1.0};
     Plasma::Types::Location edge{Plasma::Types::BottomEdge};
     Latte::Types::Alignment alignment{Latte::Types::Center};

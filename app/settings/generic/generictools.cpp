@@ -371,14 +371,16 @@ void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte
         length = qMin(max_length, length + 1);
     }
 
+    int screen_edge = (view.screenEdgeMargin > 0) ? 2 : 0;
+
     if (view.edge == Plasma::Types::TopEdge) {
-        y = availableScreenRect.y() + thick/2;
+        y = availableScreenRect.y() + thick/2 + screen_edge;
     } else if (view.edge == Plasma::Types::BottomEdge) {
-        y = availableScreenRect.y() + availableScreenRect.height() - 1;
+        y = availableScreenRect.y() + availableScreenRect.height() - 1 - screen_edge;
     } else if (view.edge == Plasma::Types::LeftEdge) {
-        x = availableScreenRect.x() + thick/2;
+        x = availableScreenRect.x() + thick/2 + screen_edge;
     } else if (view.edge == Plasma::Types::RightEdge) {
-        x = availableScreenRect.x() + availableScreenRect.width() - 1;
+        x = availableScreenRect.x() + availableScreenRect.width() - 1 - screen_edge;
     }
 
     if (view.isHorizontal()) {

@@ -1268,6 +1268,7 @@ Data::View Storage::view(const KConfigGroup &containmentGroup)
     vdata.isActive = false;
     vdata.onPrimary = containmentGroup.readEntry("onPrimary", true);
     vdata.screen = containmentGroup.readEntry("lastScreen", IDNULL);
+    vdata.screenEdgeMargin = containmentGroup.group("General").readEntry("screenEdgeMargin", (int)0);
 
     int location = containmentGroup.readEntry("location", (int)Plasma::Types::BottomEdge);
     vdata.edge = (Plasma::Types::Location)location;
