@@ -21,6 +21,7 @@
 #define POSITIONER_H
 
 //local
+#include <coretypes.h>
 #include "../wm/windowinfowrap.h"
 
 // Qt
@@ -97,8 +98,9 @@ public:
 public slots:
     Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
     Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
-
     Q_INVOKABLE bool setCurrentScreen(const QString id);
+
+  //  Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
 
     void syncGeometry();
 
@@ -120,6 +122,11 @@ signals:
     //! these two signals are used from config ui and containment ui
     //! in order to orchestrate an animated hiding/showing of dock
     //! during changing location
+    void hidingForRelocationStarted();
+    void hidingForRelocationFinished();
+    void showingAfterRelocationFinished();
+
+    //! Deprecated
     void hideDockDuringLocationChangeStarted();
     void hideDockDuringLocationChangeFinished();
     void hideDockDuringScreenChangeStarted();
@@ -187,10 +194,11 @@ private:
     QTimer m_syncGeometryTimer;
     QTimer m_validateGeometryTimer;
 
-    //!used at sliding out/in animation
-    QString m_moveToLayout;
-    Plasma::Types::Location m_goToLocation{Plasma::Types::Floating};
-    QScreen *m_goToScreen{nullptr};
+    //!used for relocation properties group
+    QString m_nextLayout;
+    Plasma::Types::Location m_nextScreenEdge{Plasma::Types::Floating};
+    QScreen *m_nextScreen{nullptr};
+    Latte::Types::Alignment m_nextAlignment{Latte::Types::NoneAlignment};
 
     Latte::WindowSystem::WindowId m_trackedWindowId;
 };

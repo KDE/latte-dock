@@ -61,6 +61,7 @@ public:
 
     enum Alignment
     {
+        NoneAlignment = -1,
         Center = 0,
         Left,
         Right,
