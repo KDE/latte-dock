@@ -91,18 +91,10 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     myOptions.rect = availableTextRect;
 
-    // draw screen icon
-    bool viewisvertical{false};
-
-    if (!screen.geometry.isEmpty()) {
-        float scrratio = screen.geometry.width() / screen.geometry.height();
-        viewisvertical = (scrratio < 1.0);
-    }
-
     availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
 
     Latte::drawScreenBackground(painter, myOptions);
-    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, viewisvertical);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry);
     Latte::drawView(painter, myOptions, view, availableScreenRect);
 
     myOptions.rect = availableTextRect;

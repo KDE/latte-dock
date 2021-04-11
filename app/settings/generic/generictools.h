@@ -58,7 +58,7 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
 
 //! screen icon
 QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option);
-QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isVertical = false); // returns screen available rect
+QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, QRect screenGeometry); // returns screen available rect
 void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
 void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect);
 

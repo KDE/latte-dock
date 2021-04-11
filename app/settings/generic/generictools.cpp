@@ -279,8 +279,11 @@ void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
     option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isVertical)
+QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, QRect screenGeometry)
 {
+    float scr_ratio = (float)screenGeometry.width() / (float)screenGeometry.height();
+    bool isVertical = (scr_ratio < 1.0);
+
     int scr_maxlength = screenMaxLength(option);
     int scr_maxthickness = option.rect.height() - MARGIN * 2;
 
@@ -290,9 +293,9 @@ QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, bool isV
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    //! horizontal layout scenario
+    scr_ratio = qMin(qMax((float)0.75, scr_ratio), (float)1.7);
     int scr_height = (!isVertical ? option.rect.height() - MARGIN * 6 : option.rect.height() - MARGIN * 4);
-    int scr_width = (!isVertical ? scr_height * 1.6 : 0.8 * scr_height);
+    int scr_width = scr_ratio * scr_height;
 
     //! provide even screen width and height
     if (scr_width % 2 == 1) {
