@@ -96,11 +96,10 @@ public:
     Latte::WindowSystem::WindowId trackedWindowId();
 
 public slots:
-    Q_INVOKABLE void hideDockDuringLocationChange(int goToLocation);
     Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
     Q_INVOKABLE bool setCurrentScreen(const QString id);
 
-  //  Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
+    Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
 
     void syncGeometry();
 
@@ -127,13 +126,10 @@ signals:
     void showingAfterRelocationFinished();
 
     //! Deprecated
-    void hideDockDuringLocationChangeStarted();
-    void hideDockDuringLocationChangeFinished();
     void hideDockDuringScreenChangeStarted();
     void hideDockDuringScreenChangeFinished();
     void hideDockDuringMovingToLayoutStarted();
     void hideDockDuringMovingToLayoutFinished();
-    void showDockAfterLocationChangeFinished();
     void showDockAfterScreenChangeFinished();
     void showDockAfterMovingToLayoutFinished();
 
@@ -165,6 +161,8 @@ private:
 
     void setCanvasGeometry(const QRect &geometry);
 
+    bool isLastHidingRelocationEvent() const;
+
     QRect maximumNormalGeometry();
 
 private:
@@ -195,6 +193,8 @@ private:
     QTimer m_validateGeometryTimer;
 
     //!used for relocation properties group
+    bool m_repositionFromViewSettingsWindow{false};
+
     QString m_nextLayout;
     Plasma::Types::Location m_nextScreenEdge{Plasma::Types::Floating};
     QScreen *m_nextScreen{nullptr};

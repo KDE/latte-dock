@@ -217,7 +217,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.hideDockDuringLocationChange(edge);
+                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -236,7 +236,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.hideDockDuringLocationChange(edge);
+                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -255,7 +255,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.hideDockDuringLocationChange(edge);
+                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -274,7 +274,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.hideDockDuringLocationChange(edge);
+                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }

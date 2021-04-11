@@ -482,8 +482,10 @@ Item {
     onLatteViewChanged: {
         if (latteView) {
             if (latteView.positioner) {
-                latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hidingForRelocationStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showingAfterRelocationFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+
+                //! Deprecated
                 latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
                 latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
@@ -502,8 +504,10 @@ Item {
         target: latteView
         onPositionerChanged: {
             if (latteView.positioner) {
-                latteView.positioner.hideDockDuringLocationChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterLocationChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hidingForRelocationStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showingAfterRelocationFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
+
+                //! Deprecated
                 latteView.positioner.hideDockDuringScreenChangeStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showDockAfterScreenChangeFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
                 latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
@@ -563,8 +567,10 @@ Item {
 
         if (latteView) {
             if (latteView.positioner) {
-                latteView.positioner.hideDockDuringLocationChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterLocationChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+                latteView.positioner.hidingForRelocationStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
+                latteView.positioner.showingAfterRelocationFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
+
+                // Deprecated
                 latteView.positioner.hideDockDuringScreenChangeStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showDockAfterScreenChangeFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
                 latteView.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);

@@ -115,14 +115,15 @@ void Positioner::init()
     //! connections
     connect(this, &Positioner::screenGeometryChanged, this, &Positioner::syncGeometry);
 
-    connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::hidingForRelocationStarted, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::updateInRelocationAnimation);
+    connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::syncLatteViews);
+
     connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::updateInRelocationAnimation);
-    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInRelocationAnimation);
 
-    connect(this, &Positioner::showDockAfterLocationChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);
     connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
@@ -890,21 +891,29 @@ void Positioner::updateFormFactor()
 
 void Positioner::initSignalingForLocationChangeSliding()
 {
+    connect(this, &Positioner::hidingForRelocationStarted, this, &Positioner::onHideWindowsForSlidingOut);
+
     //! signals to handle the sliding-in/out during location changes
-    connect(this, &Positioner::hideDockDuringLocationChangeStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
     connect(m_view, &View::locationChanged, this, [&]() {
         if (m_nextScreenEdge != Plasma::Types::Floating) {
-            immediateSyncGeometry();
+            bool isrelocationlastevent = isLastHidingRelocationEvent();
 
+            immediateSyncGeometry();
             m_nextScreenEdge = Plasma::Types::Floating;
 
-            QTimer::singleShot(100, [this]() {
-                m_view->effects()->setAnimationsBlocked(false);
-                emit showDockAfterLocationChangeFinished();
-                m_view->showSettingsWindow();
-                emit edgeChanged();
-            });
+            if (isrelocationlastevent) {
+                QTimer::singleShot(100, [this]() {
+                    m_view->effects()->setAnimationsBlocked(false);
+                    emit showingAfterRelocationFinished();
+                    emit edgeChanged();
+
+                    if (m_repositionFromViewSettingsWindow) {
+                        m_repositionFromViewSettingsWindow = false;
+                        m_view->showSettingsWindow();
+                    }
+                });
+            }
         }
     });
 
@@ -947,7 +956,7 @@ void Positioner::initSignalingForLocationChangeSliding()
     //!    ----  both cases   ----  !//
     //! this is used for both location and screen change cases, this signal
     //! is send when the sliding-out animation has finished
-    connect(this, &Positioner::hideDockDuringLocationChangeFinished, this, [&]() {
+  /*  connect(this, &Positioner::hideDockDuringLocationChangeFinished, this, [&]() {
         m_view->effects()->setAnimationsBlocked(true);
 
         if (m_nextScreenEdge != Plasma::Types::Floating) {
@@ -956,6 +965,14 @@ void Positioner::initSignalingForLocationChangeSliding()
             setScreenToFollow(m_nextScreen);
         } else if (!m_nextLayout.isEmpty()) {
             m_view->moveToLayout(m_nextLayout);
+        }
+    });*/
+
+    connect(this, &Positioner::hidingForRelocationFinished, this, [&]() {
+        m_view->effects()->setAnimationsBlocked(true);
+
+        if (m_nextScreenEdge != Plasma::Types::Floating) {
+            m_view->setLocation(m_nextScreenEdge);
         }
     });
 }
@@ -1022,7 +1039,7 @@ void Positioner::setIsStickedOnBottomEdge(bool sticked)
 
 void Positioner::updateInRelocationAnimation()
 {
-    bool inRelocationAnimation = ((m_nextScreenEdge != Plasma::Types::Floating) || (m_nextLayout != "") || m_nextScreen);
+    bool inRelocationAnimation = ((m_nextScreenEdge != Plasma::Types::Floating) || (!m_nextLayout.isEmpty()) || m_nextScreen);
 
     if (m_inRelocationAnimation == inRelocationAnimation) {
         return;
@@ -1032,10 +1049,23 @@ void Positioner::updateInRelocationAnimation()
     emit inRelocationAnimationChanged();
 }
 
-void Positioner::hideDockDuringLocationChange(int goToLocation)
+bool Positioner::isLastHidingRelocationEvent() const
 {
-    m_nextScreenEdge = static_cast<Plasma::Types::Location>(goToLocation);
-    emit hideDockDuringLocationChangeStarted();
+    int events{0};
+
+    if (!m_nextLayout.isEmpty()) {
+        events++;
+    }
+
+    if (m_nextScreen != nullptr){
+        events++;
+    }
+
+    if (m_nextScreenEdge != Plasma::Types::Floating) {
+        events++;
+    }
+
+    return (events <= 1);
 }
 
 void Positioner::hideDockDuringMovingToLayout(QString layoutName)
@@ -1062,6 +1092,23 @@ void Positioner::hideDockDuringMovingToLayout(QString layoutName)
         m_nextLayout = layoutName;
         emit hideDockDuringMovingToLayoutStarted();
     }
+}
+
+void Positioner::setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment)
+{
+    bool animated{false};
+
+    if (edge != m_view->location()) {
+        m_nextScreenEdge = static_cast<Plasma::Types::Location>(edge);
+        animated = true;
+    }
+
+    m_repositionFromViewSettingsWindow = m_view->settingsWindowIsShown();
+
+    if (animated) {
+        emit hidingForRelocationStarted();
+    }
+
 }
 
 }

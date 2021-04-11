@@ -540,7 +540,7 @@ Item{
     }
 
     function sendHideDockDuringLocationChangeFinished(){
-        latteView.positioner.hideDockDuringLocationChangeFinished();
+        latteView.positioner.hidingForRelocationFinished();
     }
 
     function sendSlidingOutAnimationEnded() {
