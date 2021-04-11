@@ -1488,7 +1488,17 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
 
     if (view) {
         //const QString layoutName, const QString screenId, int edge, int alignment
-        view->positioner()->setNextLocation("", "", viewData.edge, Latte::Types::NoneAlignment);
+        QString scrName = Latte::Data::Screen::ONPRIMARYNAME;
+
+        if (!viewData.onPrimary) {
+            if (m_corona->screenPool()->hasScreenId(viewData.screen)) {
+                scrName = m_corona->screenPool()->connector(viewData.screen);
+            } else {
+                scrName = "";
+            }
+        }
+
+        view->positioner()->setNextLocation("", scrName, viewData.edge, Latte::Types::NoneAlignment);
     }
 
 }

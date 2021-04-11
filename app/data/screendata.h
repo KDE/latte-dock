@@ -38,6 +38,7 @@ class Screen : public Generic
 public:
     static constexpr const char* SERIALIZESPLITTER = ":::";
     static const int ONPRIMARYID = 0;
+    static constexpr const char* ONPRIMARYNAME = "{primary-screen}";
 
     Screen();
     Screen(Screen &&o);

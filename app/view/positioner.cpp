@@ -26,6 +26,7 @@
 #include "visibilitymanager.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
+#include "../data/screendata.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
@@ -119,12 +120,8 @@ void Positioner::init()
     connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::syncLatteViews);
 
-    connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::hideDockDuringMovingToLayoutStarted, this, &Positioner::updateInRelocationAnimation);
-    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::updateInRelocationAnimation);
-
-    connect(this, &Positioner::showDockAfterScreenChangeFinished, this, &Positioner::syncLatteViews);
     connect(this, &Positioner::showDockAfterMovingToLayoutFinished, this, &Positioner::syncLatteViews);
     connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
 
@@ -323,34 +320,6 @@ void Positioner::updateContainmentScreen()
     if (m_view->containment()) {
         m_view->containment()->reactToScreenChange();
     }
-}
-
-bool Positioner::setCurrentScreen(const QString id)
-{
-    QScreen *nextScreen{qGuiApp->primaryScreen()};
-
-    if (id != "primary") {
-        for (const auto scr : qGuiApp->screens()) {
-            if (scr && scr->name() == id) {
-                nextScreen = scr;
-                break;
-            }
-        }
-    }
-
-    if (m_screenToFollow == nextScreen) {
-        updateContainmentScreen();
-        return true;
-    }
-
-    if (nextScreen) {
-        if (m_view->layout()) {
-            m_nextScreen = nextScreen;
-            emit hideDockDuringScreenChangeStarted();
-        }
-    }
-
-    return true;
 }
 
 //! this function updates the dock's associated screen.
@@ -894,7 +863,6 @@ void Positioner::initSignalingForLocationChangeSliding()
     connect(this, &Positioner::hidingForRelocationStarted, this, &Positioner::onHideWindowsForSlidingOut);
 
     //! signals to handle the sliding-in/out during location changes
-
     connect(m_view, &View::locationChanged, this, [&]() {
         if (m_nextScreenEdge != Plasma::Types::Floating) {
             bool isrelocationlastevent = isLastHidingRelocationEvent();
@@ -918,18 +886,28 @@ void Positioner::initSignalingForLocationChangeSliding()
     });
 
     //! signals to handle the sliding-in/out during screen changes
-    connect(this, &Positioner::hideDockDuringScreenChangeStarted, this, &Positioner::onHideWindowsForSlidingOut);
-
     connect(m_view, &QQuickView::screenChanged, this, [&]() {
         if (m_nextScreen
                 && m_nextScreen == m_view->screen()
                 && m_nextScreen->geometry().contains(m_view->geometry().center())) {
+
+            bool isrelocationlastevent = isLastHidingRelocationEvent();
             //! make sure that View has been repositioned properly in next screen and show view afterwards
             m_nextScreen = nullptr;
-            m_view->effects()->setAnimationsBlocked(false);
-            emit showDockAfterScreenChangeFinished();
-            m_view->showSettingsWindow();
-            emit edgeChanged();
+            m_nextScreenName = "";
+
+            if (isrelocationlastevent) {
+                QTimer::singleShot(100, [this]() {
+                    m_view->effects()->setAnimationsBlocked(false);
+                    emit showingAfterRelocationFinished();
+                    emit edgeChanged();
+
+                    if (m_repositionFromViewSettingsWindow) {
+                        m_repositionFromViewSettingsWindow = false;
+                        m_view->showSettingsWindow();
+                    }
+                });
+            }
         }
     });
 
@@ -971,8 +949,27 @@ void Positioner::initSignalingForLocationChangeSliding()
     connect(this, &Positioner::hidingForRelocationFinished, this, [&]() {
         m_view->effects()->setAnimationsBlocked(true);
 
+        //! SCREEN_EDGE
         if (m_nextScreenEdge != Plasma::Types::Floating) {
             m_view->setLocation(m_nextScreenEdge);
+        }
+
+        //! SCREEN
+        if (!m_nextScreenName.isEmpty()) {
+            bool nextonprimary = (m_nextScreenName == Latte::Data::Screen::ONPRIMARYNAME);
+            m_nextScreen = qGuiApp->primaryScreen();
+
+            if (!nextonprimary) {
+                for (const auto scr : qGuiApp->screens()) {
+                    if (scr && scr->name() == m_nextScreenName) {
+                        m_nextScreen = scr;
+                        break;
+                    }
+                }
+            }
+
+            m_view->setOnPrimary(nextonprimary);
+            setScreenToFollow(m_nextScreen);
         }
     });
 }
@@ -1057,7 +1054,7 @@ bool Positioner::isLastHidingRelocationEvent() const
         events++;
     }
 
-    if (m_nextScreen != nullptr){
+    if (!m_nextScreenName.isEmpty()){
         events++;
     }
 
@@ -1094,20 +1091,46 @@ void Positioner::hideDockDuringMovingToLayout(QString layoutName)
     }
 }
 
-void Positioner::setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment)
+void Positioner::setNextLocation(const QString layoutName, const QString screenName, int edge, int alignment)
 {
     bool animated{false};
+    bool haschanges{false};
 
-    if (edge != m_view->location()) {
-        m_nextScreenEdge = static_cast<Plasma::Types::Location>(edge);
-        animated = true;
+    //! SCREEN_EDGE
+    if (edge != Plasma::Types::Floating) {
+        if (edge != m_view->location()) {
+            m_nextScreenEdge = static_cast<Plasma::Types::Location>(edge);
+            animated = true;
+            haschanges = true;
+        }
+    }
+
+    //! SCREEN
+    if (!screenName.isEmpty()) {
+        bool nextonprimary = (screenName == Latte::Data::Screen::ONPRIMARYNAME);
+
+        if ( (m_view->onPrimary() && !nextonprimary) /*primary -> explicit*/
+             || (!m_view->onPrimary() && nextonprimary) /*explicit -> primary*/
+             || (!m_view->onPrimary() && !nextonprimary && screenName != currentScreenName()) ) { /*explicit -> new_explicit*/
+
+            QString nextscreenname = nextonprimary ? qGuiApp->primaryScreen()->name() : screenName;
+
+            if (currentScreenName() == nextscreenname) {
+                m_view->setOnPrimary(nextonprimary);
+                updateContainmentScreen();
+            } else {
+                m_nextScreenName = screenName;
+                animated = true;
+                haschanges = true;
+            }
+        }
     }
 
     m_repositionFromViewSettingsWindow = m_view->settingsWindowIsShown();
 
     if (animated) {
         emit hidingForRelocationStarted();
-    } else {
+    } else if (haschanges){
         emit hidingForRelocationFinished();
     }
 }
