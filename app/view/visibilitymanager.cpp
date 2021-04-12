@@ -744,11 +744,11 @@ void VisibilityManager::toggleHiddenState()
                 emit mustBeHide();
             }
         } else {
-            if (!m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+        /*    if (!m_isHidden && !m_blockHidingEvents.contains(Q_FUNC_INFO)) {
                 addBlockHidingEvent(Q_FUNC_INFO);
-            } else {
+            } else if (m_isHidden) {
                 removeBlockHidingEvent(Q_FUNC_INFO);
-            }
+            }*/
         }
     }
 }
