@@ -398,7 +398,7 @@ Item{
         onXChanged: updateMaskArea();
         onYChanged: updateMaskArea()
         onWidthChanged: updateMaskArea();
-        onHeightChanged: updateMaskArea();
+        onHeightChanged: updateMaskArea();        
     }
 
     Connections{

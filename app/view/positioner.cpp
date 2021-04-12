@@ -971,6 +971,12 @@ void Positioner::initSignalingForLocationChangeSliding()
         if (m_nextScreenEdge != Plasma::Types::Floating) {
             m_view->setLocation(m_nextScreenEdge);
         }
+
+        //! ALIGNMENT
+        if (m_nextAlignment != Latte::Types::NoneAlignment && m_nextAlignment != m_view->alignment()) {
+            m_view->setAlignment(m_nextAlignment);
+            m_nextAlignment = Latte::Types::NoneAlignment;
+        }
     });
 }
 
@@ -1118,6 +1124,12 @@ void Positioner::setNextLocation(const QString layoutName, const QString screenN
             isanimated = true;
             haschanges = true;
         }
+    }
+
+    //! ALIGNMENT
+    if (alignment != Latte::Types::NoneAlignment && m_view->alignment() != alignment) {
+        m_nextAlignment = static_cast<Latte::Types::Alignment>(alignment);
+        haschanges = true;
     }
 
     m_repositionIsAnimated = isanimated;

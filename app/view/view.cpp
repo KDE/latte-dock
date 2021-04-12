@@ -1654,6 +1654,7 @@ void View::restoreConfig()
 
     auto config = this->containment()->config();
     m_onPrimary = config.readEntry("onPrimary", true);
+    m_alignment = static_cast<Latte::Types::Alignment>(config.group("General").readEntry("alignment", (int)Latte::Types::Center));
     m_byPassWM = config.readEntry("byPassWM", false);
     m_isPreferredForShortcuts = config.readEntry("isPreferredForShortcuts", false);
     m_name = config.readEntry("name", QString());

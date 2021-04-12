@@ -300,7 +300,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            plasmoid.configuration.alignment = alignment
+                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -317,7 +317,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            plasmoid.configuration.alignment = alignment
+                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -334,7 +334,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            plasmoid.configuration.alignment = alignment
+                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -352,7 +352,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            plasmoid.configuration.alignment = alignment
+                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }

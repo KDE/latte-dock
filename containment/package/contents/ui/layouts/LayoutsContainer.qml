@@ -334,7 +334,7 @@ Item{
         }
 
         transitions: Transition {
-            enabled: root.editMode
+            enabled: !visibilityManager.inRelocationAnimation && !root.inStartup
             AnchorAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic

@@ -451,30 +451,30 @@ Item {
         updateIndexes();
     }
 
-    //! It is used only when the user chooses different alignment types
-    //! and not during startup
+    //! It is used only when the user chooses different alignment types and not during startup
     Connections {
-        target: myView
+        target: latteView ? latteView : null
         onAlignmentChanged: {
-            if (!root.editMode) {
+            if (latteView.alignment === LatteCore.Types.NoneAlignment) {
                 return;
             }
 
-            if (root.editMode){
-                if (root.myView.alignment===LatteCore.Types.Justify) {
-                    layouter.appletsInParentChange = true;
-                    fastLayoutManager.addJustifySplittersInMainLayout();
-                    console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
-                    fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
-                    layouter.appletsInParentChange = false;
-                } else {
-                    layouter.appletsInParentChange = true;
-                    console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
-                    fastLayoutManager.joinLayoutsToMainLayout();
-                    layouter.appletsInParentChange = false;
-                }
+            var previousalignment = plasmoid.configuration.alignment;
+
+            if (latteView.alignment===LatteCore.Types.Justify && previousalignment!==LatteCore.Types.Justify) { // main -> justify
+                layouter.appletsInParentChange = true;
+                fastLayoutManager.addJustifySplittersInMainLayout();
+                console.log("LAYOUTS: Moving applets from MAIN to THREE Layouts mode...");
+                fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
+                layouter.appletsInParentChange = false;
+            } else if (latteView.alignment!==LatteCore.Types.Justify && previousalignment===LatteCore.Types.Justify ) { // justify ->main
+                layouter.appletsInParentChange = true;
+                console.log("LAYOUTS: Moving applets from THREE to MAIN Layout mode...");
+                fastLayoutManager.joinLayoutsToMainLayout();
+                layouter.appletsInParentChange = false;
             }
 
+            plasmoid.configuration.alignment = latteView.alignment;
             fastLayoutManager.save();
         }
     }

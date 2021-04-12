@@ -92,7 +92,6 @@ AbilityHost.MyView {
         }
     }
 
-
     function decimalToHex(d, padding) {
         var hex = Number(d).toString(16);
         padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
