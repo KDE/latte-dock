@@ -92,6 +92,7 @@ public:
     Latte::View *highestPriorityView();
     Latte::View *viewForContainment(uint id) const;
     Latte::View *viewForContainment(Plasma::Containment *containment) const;
+    Plasma::Containment *containmentForId(uint id) const;
 
     static bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     static bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);

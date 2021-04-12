@@ -382,6 +382,17 @@ Latte::View *GenericLayout::viewForContainment(uint id) const
     return nullptr;
 }
 
+Plasma::Containment *GenericLayout::containmentForId(uint id) const
+{
+    for(auto containment : m_containments) {
+        if (containment->id() == id) {
+            return containment;
+        }
+    }
+
+    return nullptr;
+}
+
 Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment) const
 {
     if (m_containments.contains(containment) && m_latteViews.contains(containment)) {

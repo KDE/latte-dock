@@ -1081,7 +1081,7 @@ Data::AppletsTable Storage::plugins(const Layout::GenericLayout *layout, const i
 
         //! searching for specific containment and subcontainments and ignore all other containments
         for(auto containment : *layout->containments()) {
-            if (containment->id() != containmentid) {
+            if (((int)containment->id()) != containmentid) {
                 //! ignore irrelevant containments
                 continue;
             }
@@ -1282,6 +1282,53 @@ Data::View Storage::view(const KConfigGroup &containmentGroup)
     vdata.setState(Data::View::IsCreated);
 
     return vdata;
+}
+
+void Storage::updateView(KConfigGroup viewGroup, const Data::View &viewData)
+{
+    if (!Layouts::Storage::self()->isLatteContainment(viewGroup)) {
+        return;
+    }
+
+    viewGroup.writeEntry("name", viewData.name);
+    viewGroup.writeEntry("onPrimary", viewData.onPrimary);
+    viewGroup.writeEntry("lastScreen", viewData.screen);
+    viewGroup.group("General").writeEntry("screenEdgeMargin", viewData.screenEdgeMargin);
+    viewGroup.writeEntry("location", (int)viewData.edge);
+    viewGroup.writeEntry("maxLength", viewData.maxLength);
+    viewGroup.group("General").writeEntry("alignment", (int)viewData.alignment);
+    viewGroup.sync();
+}
+
+void Storage::updateView(const Layout::GenericLayout *layout, const Data::View &viewData)
+{
+    if (!layout) {
+        return;
+    }
+
+    auto view = layout->viewForContainment(viewData.id.toUInt());
+
+    if (view) {
+        qDebug() << "Storage::updateView should not be called because view is active and present...";
+        return;
+    }
+
+    if (layout->isActive()) {
+        //! active view but is not present in active screens;
+        auto containment = layout->containmentForId(viewData.id.toUInt());
+        if (containment) {
+            updateView(containment->config(), viewData);
+        }
+    } else {
+        //! inactive view and in layout storage
+        KSharedConfigPtr lFile = KSharedConfig::openConfig(layout->file());
+        KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+        KConfigGroup viewContainment = containmentGroups.group(viewData.id);
+
+        if (viewContainment.exists() && Layouts::Storage::self()->isLatteContainment(viewContainment)) {
+            updateView(viewContainment, viewData);
+        }
+    }
 }
 
 Data::ViewsTable Storage::views(const Layout::GenericLayout *layout)
