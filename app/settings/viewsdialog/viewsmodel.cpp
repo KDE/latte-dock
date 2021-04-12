@@ -379,15 +379,20 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
     case SCREENCOLUMN:
         if (role == Qt::UserRole) {
             int screen = value.toString().toInt();
+            bool onprimary = (screen == Latte::Data::Screen::ONPRIMARYID);
 
-            bool onPrimary = (screen == Latte::Data::Screen::ONPRIMARYID);
-
-            if (onPrimary == m_viewsTable[row].onPrimary && screen == m_viewsTable[row].screen) {
+            if ((m_viewsTable[row].onPrimary == onprimary) && (m_viewsTable[row].screen == screen)) {
                 return false;
             }
 
-            if (onPrimary) {
+            if (onprimary) {
                 m_viewsTable[row].onPrimary = true;
+
+                if (o_viewsTable.containsId(m_viewsTable[row].id)) {
+                    //! we need to update screen also in order to not show that there are changes even though
+                    //! they are not any
+                    m_viewsTable[row].screen = o_viewsTable[m_viewsTable[row].id].screen;
+                }
             } else {
                 m_viewsTable[row].onPrimary = false;
                 m_viewsTable[row].screen = screen;
