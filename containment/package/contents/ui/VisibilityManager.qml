@@ -521,7 +521,7 @@ Item{
         //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenOut.running
                 && !latteView.visibility.blockHiding
-                && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand)) {
+                && (!latteView.visibility.containsMouse)) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
