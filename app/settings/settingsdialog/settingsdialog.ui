@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>920</width>
-    <height>717</height>
+    <height>761</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -351,6 +351,16 @@
                </spacer>
               </item>
               <item>
+               <widget class="QPushButton" name="viewsBtn">
+                <property name="text">
+                 <string notr="true">Docks, Panels...</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="window"/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QPushButton" name="detailsButton">
                 <property name="text">
                  <string>Details...</string>
@@ -521,7 +531,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>888</width>
+            <width>867</width>
             <height>375</height>
            </rect>
           </property>
