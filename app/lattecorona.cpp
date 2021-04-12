@@ -1206,7 +1206,7 @@ void Corona::moveViewToLayout(const uint &containmentId, const QString &layoutNa
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
     if (view && !layoutName.isEmpty() && view->layout()->name() != layoutName) {
-        view->positioner()->hideDockDuringMovingToLayout(layoutName);
+        view->positioner()->setNextLocation(layoutName, "", Plasma::Types::Floating, Latte::Types::NoneAlignment);
     }
 }
 

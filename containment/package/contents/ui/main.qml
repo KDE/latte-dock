@@ -484,10 +484,6 @@ Item {
             if (latteView.positioner) {
                 latteView.positioner.hidingForRelocationStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showingAfterRelocationFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-
-                //! Deprecated
-                latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
             }
 
             if (latteView.visibility) {
@@ -504,10 +500,6 @@ Item {
             if (latteView.positioner) {
                 latteView.positioner.hidingForRelocationStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showingAfterRelocationFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
-
-                //! Deprecated
-                latteView.positioner.hideDockDuringMovingToLayoutStarted.connect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterMovingToLayoutFinished.connect(visibilityManager.slotShowDockAfterLocationChange);
             }
         }
 
@@ -565,10 +557,6 @@ Item {
             if (latteView.positioner) {
                 latteView.positioner.hidingForRelocationStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
                 latteView.positioner.showingAfterRelocationFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
-
-                // Deprecated
-                latteView.positioner.hideDockDuringMovingToLayoutStarted.disconnect(visibilityManager.slotHideDockDuringLocationChange);
-                latteView.positioner.showDockAfterMovingToLayoutFinished.disconnect(visibilityManager.slotShowDockAfterLocationChange);
             }
 
             if (latteView.visibility) {

@@ -96,8 +96,6 @@ public:
     Latte::WindowSystem::WindowId trackedWindowId();
 
 public slots:
-    Q_INVOKABLE void hideDockDuringMovingToLayout(QString layoutName);
-
     Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
 
     void syncGeometry();
@@ -123,11 +121,6 @@ signals:
     void hidingForRelocationStarted();
     void hidingForRelocationFinished();
     void showingAfterRelocationFinished();
-
-    //! Deprecated
-    void hideDockDuringMovingToLayoutStarted();
-    void hideDockDuringMovingToLayoutFinished();
-    void showDockAfterMovingToLayoutFinished();
 
     void onHideWindowsForSlidingOut();
     void inRelocationAnimationChanged();
@@ -190,8 +183,9 @@ private:
 
     //!used for relocation properties group
     bool m_repositionFromViewSettingsWindow{false};
+    bool m_repositionIsAnimated{false};
 
-    QString m_nextLayout;
+    QString m_nextLayoutName;
     QString m_nextScreenName;
     QScreen *m_nextScreen{nullptr};
     Plasma::Types::Location m_nextScreenEdge{Plasma::Types::Floating};

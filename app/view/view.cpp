@@ -1255,10 +1255,10 @@ void View::moveToLayout(QString layoutName)
     Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (latteCorona && containments.size() > 0) {
-        Layout::GenericLayout *newLayout = latteCorona->layoutsManager()->synchronizer()->layout(layoutName);
+        Layout::GenericLayout *newlayout = latteCorona->layoutsManager()->synchronizer()->layout(layoutName);
 
-        if (newLayout) {
-            newLayout->assignToLayout(this, containments);
+        if (newlayout && newlayout != m_layout) {
+            newlayout->assignToLayout(this, containments);
         }
     }
 }
