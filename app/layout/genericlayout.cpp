@@ -1498,6 +1498,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             }
         }
 
+        view->setName(viewData.name);
         view->positioner()->setNextLocation("", scrName, viewData.edge, Latte::Types::NoneAlignment);
     }
 
