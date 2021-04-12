@@ -40,6 +40,7 @@
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
+#define RELOCATIONSHOWINGEVENT "viewInRelocationShowing"
 
 namespace Latte {
 namespace ViewPart {
@@ -245,6 +246,26 @@ void Positioner::updateWaylandId()
 
         m_trackedWindowId = newId;
         m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+    }
+}
+
+bool Positioner::inRelocationShowing() const
+{
+    return m_inRelocationShowing;
+}
+
+void Positioner::setInRelocationShowing(bool active)
+{
+    if (m_inRelocationShowing == active) {
+        return;
+    }
+
+    m_inRelocationShowing = active;
+
+    if (m_inRelocationShowing) {
+        m_view->visibility()->addBlockHidingEvent(RELOCATIONSHOWINGEVENT);
+    } else {
+        m_view->visibility()->removeBlockHidingEvent(RELOCATIONSHOWINGEVENT);
     }
 }
 
@@ -861,6 +882,19 @@ void Positioner::updateFormFactor()
     }
 }
 
+void Positioner::onLastRepositionApplyEvent()
+{
+    m_view->effects()->setAnimationsBlocked(false);
+    setInRelocationShowing(true);
+    emit showingAfterRelocationFinished();
+    emit edgeChanged();
+
+    if (m_repositionFromViewSettingsWindow) {
+        m_repositionFromViewSettingsWindow = false;
+        m_view->showSettingsWindow();
+    }
+}
+
 void Positioner::initSignalingForLocationChangeSliding()
 {
     connect(this, &Positioner::hidingForRelocationStarted, this, &Positioner::onHideWindowsForSlidingOut);
@@ -875,14 +909,7 @@ void Positioner::initSignalingForLocationChangeSliding()
             //! make sure that View has been repositioned properly in next screen edge and show view afterwards
             if (isrelocationlastevent) {
                 QTimer::singleShot(100, [this]() {
-                    m_view->effects()->setAnimationsBlocked(false);
-                    emit showingAfterRelocationFinished();
-                    emit edgeChanged();
-
-                    if (m_repositionFromViewSettingsWindow) {
-                        m_repositionFromViewSettingsWindow = false;
-                        m_view->showSettingsWindow();
-                    }
+                    onLastRepositionApplyEvent();
                 });
             }
         }
@@ -901,14 +928,7 @@ void Positioner::initSignalingForLocationChangeSliding()
             //! make sure that View has been repositioned properly in next screen and show view afterwards
             if (isrelocationlastevent) {
                 QTimer::singleShot(100, [this]() {
-                    m_view->effects()->setAnimationsBlocked(false);
-                    emit showingAfterRelocationFinished();
-                    emit edgeChanged();
-
-                    if (m_repositionFromViewSettingsWindow) {
-                        m_repositionFromViewSettingsWindow = false;
-                        m_view->showSettingsWindow();
-                    }
+                    onLastRepositionApplyEvent();
                 });
             }
         }
@@ -923,14 +943,7 @@ void Positioner::initSignalingForLocationChangeSliding()
             //! make sure that View has been repositioned properly in next layout and show view afterwards
             if (isrelocationlastevent) {
                 QTimer::singleShot(100, [this]() {
-                    m_view->effects()->setAnimationsBlocked(false);
-                    emit showingAfterRelocationFinished();
-                    emit edgeChanged();
-
-                    if (m_repositionFromViewSettingsWindow) {
-                        m_repositionFromViewSettingsWindow = false;
-                        m_view->showSettingsWindow();
-                    }
+                    onLastRepositionApplyEvent();
                 });
             }
         }

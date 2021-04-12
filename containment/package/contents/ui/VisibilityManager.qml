@@ -464,6 +464,12 @@ Item{
         }
     }
 
+    onInSlidingInChanged: {
+        if (latteView && !inSlidingIn && latteView.positioner.inRelocationShowing) {
+            latteView.positioner.inRelocationShowing = false;
+        }
+    }
+
     onUpdateIsEnabledChanged: {
         if (updateIsEnabled) {
             updateMaskArea();
