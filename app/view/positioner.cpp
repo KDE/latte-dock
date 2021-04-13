@@ -294,11 +294,15 @@ QString Positioner::currentScreenName() const
     return m_screenNameToFollow;
 }
 
-void Positioner::hideOnExit()
+void Positioner::hideOnExit(Plasma::Types::Location location)
 {
     auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
 
-    switch (m_view->containment()->location()) {
+    if (location == Plasma::Types::Floating && m_view->containment()) {
+        location = m_view->containment()->location();
+    }
+
+    switch (location) {
     case Plasma::Types::TopEdge:
         slideLocation = WindowSystem::AbstractWindowInterface::Slide::Top;
         break;
@@ -322,6 +326,12 @@ void Positioner::hideOnExit()
 
     m_corona->wm()->slideWindow(*m_view, slideLocation);
     m_view->setVisible(false);
+}
+
+void Positioner::showInStartup()
+{
+    hideOnExit();
+    m_view->setVisible(true);
 }
 
 void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)

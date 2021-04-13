@@ -108,7 +108,8 @@ public slots:
     //! that might prevent them. It must be called with care.
     void immediateSyncGeometry();
 
-    void hideOnExit();
+    void showInStartup();
+    void hideOnExit(Plasma::Types::Location location = Plasma::Types::Floating);
 
     void initDelayedSignals();
     void updateWaylandId();

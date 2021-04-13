@@ -758,7 +758,7 @@ void GenericLayout::containmentDestroyed(QObject *cont)
 
         if (view) {
             view->disconnectSensitiveSignals();
-            view->positioner()->hideOnExit();
+            view->positioner()->hideOnExit(containment->location());
             view->deleteLater();
 
             emit viewEdgeChanged();

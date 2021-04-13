@@ -83,7 +83,9 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_interface(new ViewPart::ContainmentInterface(this)),
       m_parabolic(new ViewPart::Parabolic(this)),
       m_sink(new ViewPart::EventsSink(this))
-{      
+{
+    setVisible(false);
+
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
     m_positioner = new ViewPart::Positioner(this);
@@ -177,6 +179,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         if (m_positioner) {
             //! immediateSyncGeometry helps avoiding binding loops from containment qml side
             m_positioner->immediateSyncGeometry();
+            if (m_inStartup) {
+                m_inStartup = false;
+                m_positioner->showInStartup();
+            }
         }
 
         connect(this->containment(), SIGNAL(statusChanged(Plasma::Types::ItemStatus)), SLOT(statusChanged(Plasma::Types::ItemStatus)));
