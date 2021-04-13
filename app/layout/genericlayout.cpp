@@ -393,6 +393,45 @@ Plasma::Containment *GenericLayout::containmentForId(uint id) const
     return nullptr;
 }
 
+bool GenericLayout::contains(Plasma::Containment *containment) const
+{
+    return m_containments.contains(containment);
+}
+
+int GenericLayout::screenForContainment(Plasma::Containment *containment)
+{
+    if (!containment) {
+        return -1;
+    }
+
+    //! there is a pending update
+    QString containmentid = QString::number(containment->id());
+    if (m_pendingContainmentUpdates.containsId(containmentid)) {
+        if (m_corona && m_pendingContainmentUpdates[containmentid].onPrimary) {
+            return m_corona->screenPool()->primaryScreenId();
+        } else {
+            return m_pendingContainmentUpdates[containmentid].screen;
+        }
+    }
+
+    //! there is a view present
+    Latte::View *view{nullptr};
+
+    if (m_latteViews.contains(containment)) {
+        view = m_latteViews[containment];
+    } else if (m_waitingLatteViews.contains(containment)) {
+        view = m_waitingLatteViews[containment];
+    }
+
+    if (view && view->screen()) {
+        return m_corona->screenPool()->id(view->screen()->name());
+    }
+
+    //! fallback scenario
+    return containment->lastScreen();
+}
+
+
 Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment) const
 {
     if (m_containments.contains(containment) && m_latteViews.contains(containment)) {
@@ -1322,6 +1361,25 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     qDebug() << "LAYOUT ::: " << name();
     qDebug() << "screen count changed -+-+ " << qGuiApp->screens().size();
 
+    //! Clear up pendingContainmentUpdates when no-needed any more
+    QStringList clearpendings;
+    for(int i=0; i<m_pendingContainmentUpdates.rowCount(); ++i) {
+        auto viewdata = m_pendingContainmentUpdates[i];
+        auto containment = containmentForId(viewdata.id.toUInt());
+
+        if (containment) {
+            if ((viewdata.onPrimary && containment->lastScreen() == m_corona->screenPool()->primaryScreenId())
+                    || (!viewdata.onPrimary && containment->lastScreen() == viewdata.screen)) {
+                clearpendings << viewdata.id;
+            }
+        }
+    }
+
+    for(auto pendingid : clearpendings) {
+        m_pendingContainmentUpdates.remove(pendingid);
+    }
+
+    //! use valid views map based on active screens
     Layout::ViewsMap viewsMap = validViewsMap(occupiedMap);
 
     if (occupiedMap != nullptr) {
@@ -1528,9 +1586,16 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
     //! active -> inactiveinmemory                  [viewscenario]
     auto containment = containmentForId(viewData.id.toUInt());
     if (containment) {
-        qDebug() << " #$%#$%#%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
         Layouts::Storage::self()->updateView(containment->config(), viewData);
-        qDebug() << " #22222222222222222222222%%%%%2222222222222%%%%";
+
+        //! by using pendingContainmentUpdates we make sure that when containment->screen() will be
+        //! called though reactToScreenChange() the proper screen will be returned
+        if (!m_pendingContainmentUpdates.containsId(viewData.id)) {
+            m_pendingContainmentUpdates << viewData;
+        } else {
+            m_pendingContainmentUpdates[viewData.id] = viewData;
+        }
+        containment->reactToScreenChange();
     }
 
     //! complete update circle and inform the others about the changes

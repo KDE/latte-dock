@@ -925,7 +925,6 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
     // screen:0 and primaryScreen
 
     //case in which this containment is child of an applet, hello systray :)
-
     if (Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent())) {
         if (Plasma::Containment *cont = parentApplet->containment()) {
             return screenForContainment(cont);
@@ -935,29 +934,13 @@ int Corona::screenForContainment(const Plasma::Containment *containment) const
     }
 
     Plasma::Containment *c = const_cast<Plasma::Containment *>(containment);
-    Latte::View *view =  m_layoutsManager->synchronizer()->viewForContainment(c);
+    int scrId = m_layoutsManager->synchronizer()->screenForContainment(c);
 
-    if (view && view->screen()) {
-        return m_screenPool->id(view->screen()->name());
+    if (scrId >= 0) {
+        return scrId;
     }
 
-    //Failed? fallback on lastScreen()
-    //lastScreen() is the correct screen for panels
-    //It is also correct for desktops *that have the correct activity()*
-    //a containment with lastScreen() == 0 but another activity,
-    //won't be associated to a screen
-    //     qDebug() << "ShellCorona screenForContainment: " << containment << " Last screen is " << containment->lastScreen();
-
-    for (auto screen : qGuiApp->screens()) {
-        // containment->lastScreen() == m_screenPool->id(screen->name()) to check if the lastScreen refers to a screen that exists/it's known
-        if (containment->lastScreen() == m_screenPool->id(screen->name()) &&
-                (containment->activity() == m_activitiesConsumer->currentActivity() ||
-                 containment->containmentType() == Plasma::Types::PanelContainment || containment->containmentType() == Plasma::Types::CustomPanelContainment)) {
-            return containment->lastScreen();
-        }
-    }
-
-    return -1;
+    return containment->lastScreen();
 }
 
 void Corona::showAlternativesForApplet(Plasma::Applet *applet)

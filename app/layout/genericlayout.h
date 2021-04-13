@@ -89,6 +89,9 @@ public:
     virtual Types::ViewType latteViewType(uint containmentId) const;
     const QList<Plasma::Containment *> *containments() const;
 
+    bool contains(Plasma::Containment *containment) const;
+    int screenForContainment(Plasma::Containment *containment);
+
     Latte::View *highestPriorityView();
     Latte::View *viewForContainment(uint id) const;
     Latte::View *viewForContainment(Plasma::Containment *containment) const;
@@ -206,6 +209,9 @@ private:
 
     //! try to avoid crashes from recreating the same views all the time
     QList<const Plasma::Containment *> m_viewsToRecreate;
+
+    //! Containments that are pending screen/state updates
+    Latte::Data::ViewsTable m_pendingContainmentUpdates;
 
     friend class Latte::View;
 };
