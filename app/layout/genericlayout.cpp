@@ -758,7 +758,7 @@ void GenericLayout::containmentDestroyed(QObject *cont)
 
         if (view) {
             view->disconnectSensitiveSignals();
-
+            view->positioner()->hideOnExit();
             view->deleteLater();
 
             emit viewEdgeChanged();
@@ -904,6 +904,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
                 qDebug() << "Rejected explicit latteView and removing it in order add an onPrimary with higher priority at screen: " << connector;
                 auto viewToDelete = m_latteViews.take(testContainment);
                 viewToDelete->disconnectSensitiveSignals();
+                viewToDelete->positioner()->hideOnExit();
                 viewToDelete->deleteLater();
             }
         }
@@ -1425,6 +1426,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
         auto view = m_latteViews.take(containment);
         qDebug() << "syncLatteViewsToScreens: view must be deleted... for containment:" << containment->id() << " at screen:" << view->positioner()->currentScreenName();
         view->disconnectSensitiveSignals();
+        view->positioner()->hideOnExit();
         view->deleteLater();
     }
 
@@ -1583,6 +1585,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             //! viewMustBeDeleted
             m_latteViews.remove(view->containment());
             view->disconnectSensitiveSignals();
+            view->positioner()->hideOnExit();
             delete view;
         }
     }

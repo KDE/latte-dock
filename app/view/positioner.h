@@ -108,6 +108,8 @@ public slots:
     //! that might prevent them. It must be called with care.
     void immediateSyncGeometry();
 
+    void hideOnExit();
+
     void initDelayedSignals();
     void updateWaylandId();
 

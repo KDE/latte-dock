@@ -294,14 +294,8 @@ QString Positioner::currentScreenName() const
     return m_screenNameToFollow;
 }
 
-void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
+void Positioner::hideOnExit()
 {
-    if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName || !m_view->isVisible()) {
-        return;
-    }
-
-    m_inLayoutUnloading = true;
-
     auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
 
     switch (m_view->containment()->location()) {
@@ -328,6 +322,17 @@ void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
 
     m_corona->wm()->slideWindow(*m_view, slideLocation);
     m_view->setVisible(false);
+}
+
+void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
+{
+    if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName || !m_view->isVisible()) {
+        return;
+    }
+
+    m_inLayoutUnloading = true;
+
+    hideOnExit();
 }
 
 void Positioner::syncLatteViews()
