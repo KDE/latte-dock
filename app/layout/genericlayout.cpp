@@ -1379,6 +1379,11 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
         m_pendingContainmentUpdates.remove(pendingid);
     }
 
+    if (m_pendingContainmentUpdates.rowCount() > 0) {
+        qDebug () << "  Pending View updates still valid : ";
+        m_pendingContainmentUpdates.print();
+    }
+
     //! use valid views map based on active screens
     Layout::ViewsMap viewsMap = validViewsMap(occupiedMap);
 
@@ -1586,7 +1591,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
     //! active -> inactiveinmemory                  [viewscenario]
     auto containment = containmentForId(viewData.id.toUInt());
     if (containment) {
-        Layouts::Storage::self()->updateView(containment->config(), viewData);
+        Layouts::Storage::self()->updateView(this, viewData);
 
         //! by using pendingContainmentUpdates we make sure that when containment->screen() will be
         //! called though reactToScreenChange() the proper screen will be returned

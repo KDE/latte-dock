@@ -1317,6 +1317,8 @@ void Storage::updateView(const Layout::GenericLayout *layout, const Data::View &
         //! active view but is not present in active screens;
         auto containment = layout->containmentForId(viewData.id.toUInt());
         if (containment) {
+            //! update containment
+            containment->setLocation(viewData.edge);
             updateView(containment->config(), viewData);
         }
     } else {
