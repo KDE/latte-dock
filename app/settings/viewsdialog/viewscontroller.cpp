@@ -201,18 +201,16 @@ void Views::onCurrentLayoutChanged()
 void Views::save()
 {
     Latte::Data::Layout originallayout = m_handler->originalData();
+    Latte::Data::Layout currentlayout = m_handler->currentData();
     Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
-
-    if (!centralActive) {
-        return;
-    }
+    Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
 
     Latte::Data::ViewsTable alteredViews = m_model->alteredViews();
 
     for (int i=0; i<alteredViews.rowCount(); ++i) {
         if (alteredViews[i].state() == Data::View::IsCreated) {
             qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
-            centralActive->updateView(alteredViews[i]);
+            central->updateView(alteredViews[i]);
         }
     }
 

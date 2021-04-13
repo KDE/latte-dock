@@ -799,7 +799,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     int id = containment->screen();
 
     if (!Layouts::Storage::isValid(id) && !Layouts::Storage::isValid(explicitScreen)) {
-        id = containment->lastScreen();
+      id = containment->lastScreen();
     }
 
     if (onPrimary) {
@@ -845,7 +845,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         //if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
         //    qDebug() << "Rejected : adding explicit view, primary dock occupies edge at screen ! : " << connector;
         //    return;
-       // }
+        // }
     }
 
     if (Layouts::Storage::isValid(id) && onPrimary) {
@@ -1338,7 +1338,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
         int screenId = containment->screen();
 
         if (!Layouts::Storage::isValid(screenId)) {
-            screenId = containment->lastScreen();
+           screenId = containment->lastScreen();
         }
 
         if (!latteViewExists(containment) && mapContainsId(&viewsMap, containment->id())) {
@@ -1491,28 +1491,55 @@ void GenericLayout::newView(const QString &templateFile)
 
 void GenericLayout::updateView(const Latte::Data::View &viewData)
 {
+    //! storage -> storage [view scenario]
     if (!isActive()) {
+        Layouts::Storage::self()->updateView(this, viewData);
         return;
     }
 
-    auto view = viewForContainment(viewData.id.toUInt());
+    //! active -> active [view scenario]
+    Latte::View *view = viewForContainment(viewData.id.toUInt());
+    bool viewMustBeDeleted = (view && !viewData.onPrimary && !m_corona->screenPool()->isScreenActive(viewData.screen));
 
     if (view) {
-        //const QString layoutName, const QString screenId, int edge, int alignment
-        QString scrName = Latte::Data::Screen::ONPRIMARYNAME;
+        if (!viewMustBeDeleted) {
+            QString scrName = Latte::Data::Screen::ONPRIMARYNAME;
 
-        if (!viewData.onPrimary) {
-            if (m_corona->screenPool()->hasScreenId(viewData.screen)) {
-                scrName = m_corona->screenPool()->connector(viewData.screen);
-            } else {
-                scrName = "";
+            if (!viewData.onPrimary) {
+                if (m_corona->screenPool()->hasScreenId(viewData.screen)) {
+                    scrName = m_corona->screenPool()->connector(viewData.screen);
+                } else {
+                    scrName = "";
+                }
             }
-        }
 
-        view->setName(viewData.name);
-        view->positioner()->setNextLocation("", scrName, viewData.edge, viewData.alignment);
+            view->setName(viewData.name);
+            view->positioner()->setNextLocation("", scrName, viewData.edge, viewData.alignment);
+            return;
+        } else {
+            //! viewMustBeDeleted
+            m_latteViews.remove(view->containment());
+            view->disconnectSensitiveSignals();
+            delete view;
+        }
     }
 
+    //! inactiveinmemory -> active/inactiveinmemory [viewscenario]
+    //! active -> inactiveinmemory                  [viewscenario]
+    auto containment = containmentForId(viewData.id.toUInt());
+    if (containment) {
+        qDebug() << " #$%#$%#%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%";
+        Layouts::Storage::self()->updateView(containment->config(), viewData);
+        qDebug() << " #22222222222222222222222%%%%%2222222222222%%%%";
+    }
+
+    //! complete update circle and inform the others about the changes
+    if (viewMustBeDeleted) {
+        emit viewEdgeChanged();
+        emit viewsCountChanged();
+    }
+
+    syncLatteViewsToScreens();
 }
 
 void GenericLayout::importToCorona()
