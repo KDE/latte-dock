@@ -142,6 +142,8 @@
             <choice name="PlasmaThemeColors"/>
             <choice name="ReverseThemeColors"/>
             <choice name="SmartThemeColors"/>
+            <choice name="DarkThemeColors"/>
+            <choice name="LightThemeColors"/>
       </choices>
       <default>0</default>
       <label>which theme color palette is going to be used</label>

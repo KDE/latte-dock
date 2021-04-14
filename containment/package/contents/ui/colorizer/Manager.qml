@@ -104,7 +104,11 @@ Loader{
                 return theme;
             }
 
-            if (root.themeColors === LatteContainment.Types.ReverseThemeColors) {
+            if (root.themeColors === LatteContainment.Types.DarkThemeColors) {
+                return themeExtended.darkTheme;
+            } else if (root.themeColors === LatteContainment.Types.LightThemeColors) {
+                return themeExtended.lightTheme;
+            } else if (root.themeColors === LatteContainment.Types.ReverseThemeColors) {
                 return themeExtended.isLightTheme ? themeExtended.darkTheme : themeExtended.lightTheme;
             }
 

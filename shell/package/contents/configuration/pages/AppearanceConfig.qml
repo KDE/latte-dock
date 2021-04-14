@@ -491,7 +491,7 @@ PlasmaComponents.Page {
                                 } else {
                                     value = Math.min(Math.max(from, plasmoid.configuration.offset), to);
                                     plasmoid.configuration.offset = value;
-                                }                                
+                                }
 
                                 var newTotal = Math.abs(value) + plasmoid.configuration.maxLength;
 
@@ -731,12 +731,42 @@ PlasmaComponents.Page {
 
                 LatteComponents.ComboBox {
                     Layout.fillWidth: true
-                    model: [i18nc("plasma theme colors", "Plasma"),
-                        i18nc("reverse plasma theme colors", "Reverse"),
-                        i18nc("smart theme colors", "Smart")]
+                    model: [
+                        {
+                            name: i18nc("plasma theme colors", "Plasma"),
+                            value: LatteContainment.Types.PlasmaThemeColors
+                        },{
+                            name: i18nc("dark theme colors", "Dark"),
+                            value: LatteContainment.Types.DarkThemeColors
+                        },{
+                            name: i18nc("light theme colors", "Light"),
+                            value: LatteContainment.Types.LightThemeColors
+                        },{
+                            name: i18nc("reverse plasma theme colors", "Reverse"),
+                            value: LatteContainment.Types.ReverseThemeColors
+                        },{
+                            name: i18nc("smart theme colors", "Smart"),
+                            value: LatteContainment.Types.SmartThemeColors
+                        }
+                    ]
 
-                    currentIndex: plasmoid.configuration.themeColors
-                    onCurrentIndexChanged: plasmoid.configuration.themeColors = currentIndex
+                    currentIndex: colorsToIndex(plasmoid.configuration.themeColors)
+                    textRole: "name"
+                    onCurrentIndexChanged: plasmoid.configuration.themeColors = model[currentIndex].value
+
+                    function colorsToIndex(colors) {
+                        if (colors === LatteContainment.Types.PlasmaThemeColors) {
+                            return 0;
+                        } else if (colors === LatteContainment.Types.DarkThemeColors) {
+                            return 1;
+                        } else if (colors === LatteContainment.Types.LightThemeColors) {
+                            return 2;
+                        } else if (colors === LatteContainment.Types.ReverseThemeColors) {
+                            return 3;
+                        } else if (colors === LatteContainment.Types.SmartThemeColors) {
+                            return 4;
+                        }
+                    }
                 }
 
                 PlasmaComponents.Label {
@@ -754,14 +784,14 @@ PlasmaComponents.Page {
                             name:i18n("Current Active Window"),
                             icon: !colorsGridLayout.colorsScriptIsPresent ? "state-warning" : "",
                             toolTip: colorsGridLayout.colorsScriptIsPresent ?
-                                             i18n("Colors are going to be based on the active window") :
-                                             i18n("Colors are going to be based on the active window.\nWarning: You need to install Colors KWin Script from KDE Store")
+                                         i18n("Colors are going to be based on the active window") :
+                                         i18n("Colors are going to be based on the active window.\nWarning: You need to install Colors KWin Script from KDE Store")
                         },{
                             name: i18n("Any Touching Window"),
                             icon: !colorsGridLayout.colorsScriptIsPresent ? "state-warning" : "",
                             toolTip: colorsGridLayout.colorsScriptIsPresent ?
-                                             i18n("Colors are going to be based on windows that are touching the view") :
-                                             i18n("Colors are going to be based on windows that are touching the view.\nWarning: You need to install Colors KWin Script from KDE Store")
+                                         i18n("Colors are going to be based on windows that are touching the view") :
+                                         i18n("Colors are going to be based on windows that are touching the view.\nWarning: You need to install Colors KWin Script from KDE Store")
                         }
                     ]
 
@@ -1036,7 +1066,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Button {
-                        id: solidBackground                     
+                        id: solidBackground
                         Layout.minimumWidth: parent.buttonSize
                         Layout.maximumWidth: Layout.minimumWidth
                         text: i18n("Outline")
