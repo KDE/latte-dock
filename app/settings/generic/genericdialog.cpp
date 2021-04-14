@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QVBoxLayout>
 
 // KDE
@@ -63,7 +64,7 @@ KMessageWidget *GenericDialog::initMessageWidget()
     return messagewidget;
 }
 
-int GenericDialog::saveChangesConfirmation(const QString &text)
+int GenericDialog::saveChangesConfirmation(const QString &text, QString applyBtnText)
 {
     auto msg = new QMessageBox(this);
     msg->setIcon(QMessageBox::Warning);
@@ -75,8 +76,17 @@ int GenericDialog::saveChangesConfirmation(const QString &text)
         msg->setText(text);
     }
 
-    msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
-    msg->setDefaultButton(QMessageBox::Apply);
+    if (applyBtnText.isEmpty()) {
+        msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
+        msg->setDefaultButton(QMessageBox::Apply);
+    } else if (!applyBtnText.isEmpty()) {
+        msg->setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel);
+        QPushButton *applyCustomBtn = new QPushButton(msg);
+        applyCustomBtn->setText(applyBtnText);
+        applyCustomBtn->setIcon(QIcon::fromTheme("dialog-yes"));
+        msg->addButton(applyCustomBtn, QMessageBox::AcceptRole);
+        msg->setDefaultButton(applyCustomBtn);
+    }
 
     connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
     return msg->exec();

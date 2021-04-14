@@ -107,6 +107,7 @@ void ViewsHandler::init()
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
 
     reload();
+    m_lastConfirmedLayoutIndex =m_ui->layoutsCmb->currentIndex();
 
     emit currentLayoutChanged();
 
@@ -262,17 +263,25 @@ void ViewsHandler::removeSelectedView()
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)
 {
-    bool switchtonewlayout{true};
+    bool switchtonewlayout{false};
 
-    if (hasChangedData()) {
-        int result = saveChanges();
+    if (m_lastConfirmedLayoutIndex != row) {
+        if (hasChangedData()) { //new layout was chosen but there are changes
+            int result = saveChangesConfirmation();
 
-        if (result == QMessageBox::Apply) {
-            save();
-        } else if (result == QMessageBox::Discard) {
-            //do nothing
-        } else if (result == QMessageBox::Cancel) {
-            switchtonewlayout = false;
+            if (result == QMessageBox::Apply) {
+                switchtonewlayout = true;
+                m_lastConfirmedLayoutIndex = row;
+                save();
+            } else if (result == QMessageBox::Discard) {
+                switchtonewlayout = true;
+                m_lastConfirmedLayoutIndex = row;
+            } else if (result == QMessageBox::Cancel) {
+                //do nothing
+            }
+        } else { //new layout was chosen and there are no changes
+            switchtonewlayout = true;
+            m_lastConfirmedLayoutIndex = row;
         }
     }
 
@@ -292,13 +301,13 @@ void ViewsHandler::updateWindowTitle()
     m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels").arg(m_ui->layoutsCmb->currentText()));
 }
 
-int ViewsHandler::saveChanges()
+int ViewsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = o_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes now or discard them?").arg(layoutName);
 
-        return m_dialog->saveChangesConfirmation(saveChangesText);
+        return m_dialog->saveChangesConfirmation(saveChangesText, i18n("Apply Now"));
     }
 
     return QMessageBox::Cancel;

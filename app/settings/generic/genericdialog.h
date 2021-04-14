@@ -46,7 +46,7 @@ public:
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
     void hideInlineMessage();
 
-    int saveChangesConfirmation(const QString &text);
+    int saveChangesConfirmation(const QString &text, QString applyBtnText = "");
 
 private slots:
     KMessageWidget *initMessageWidget();

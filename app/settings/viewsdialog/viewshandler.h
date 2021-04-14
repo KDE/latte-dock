@@ -99,7 +99,7 @@ private:
 
     void loadLayout(const Latte::Data::Layout &data);
 
-    int saveChanges();
+    int saveChangesConfirmation();
 
 private:
     Dialog::ViewsDialog *m_dialog{nullptr};
@@ -109,6 +109,8 @@ private:
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
 
     Latte::Data::Layout o_data;
+
+    int m_lastConfirmedLayoutIndex{-1};
 
     //! Actions
     QAction *m_newViewAction{nullptr};
