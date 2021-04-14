@@ -106,13 +106,15 @@ private:
 
     void loadLayout(const Latte::Data::Layout &data);
 
-    int saveChanges();
+    int saveChangesConfirmation();
 
 private:
     Dialog::DetailsDialog *m_dialog{nullptr};
     Ui::DetailsDialog *m_ui{nullptr};
 
     QSortFilterProxyModel *m_layoutsProxyModel{nullptr};
+
+    int m_lastConfirmedLayoutIndex{-1};
 
     //! current data
     Model::Colors *m_colorsModel{nullptr};

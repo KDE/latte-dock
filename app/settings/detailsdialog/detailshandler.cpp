@@ -109,6 +109,7 @@ void DetailsHandler::init()
     connect(this, &DetailsHandler::currentLayoutChanged, this, &DetailsHandler::reload);
 
     reload();
+    m_lastConfirmedLayoutIndex = m_ui->colorsCmb->currentIndex();
 
     //! connect layout combobox after the selected layout has been loaded
     connect(m_ui->layoutsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::onCurrentLayoutIndexChanged);
@@ -254,17 +255,25 @@ void DetailsHandler::onCurrentColorIndexChanged(int row)
 
 void DetailsHandler::onCurrentLayoutIndexChanged(int row)
 {
-    bool switchtonewlayout{true};
+    bool switchtonewlayout{false};
 
-    if (hasChangedData()) {
-        int result = saveChanges();
+    if (m_lastConfirmedLayoutIndex != row) {
+        if (hasChangedData()) { //new layout was chosen but there are changes
+            int result = saveChangesConfirmation();
 
-        if (result == QMessageBox::Apply) {
-            save();
-        } else if (result == QMessageBox::Discard) {
-            //do nothing
-        } else if (result == QMessageBox::Cancel) {
-            switchtonewlayout = false;
+            if (result == QMessageBox::Apply) {
+                switchtonewlayout = true;
+                m_lastConfirmedLayoutIndex = row;
+                save();
+            } else if (result == QMessageBox::Discard) {
+                switchtonewlayout = true;
+                m_lastConfirmedLayoutIndex = row;
+            } else if (result == QMessageBox::Cancel) {
+                //do nothing
+            }
+        } else { //new layout was chosen and there are no changes
+            switchtonewlayout = true;
+            m_lastConfirmedLayoutIndex = row;
         }
     }
 
@@ -272,7 +281,6 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
         QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
         m_dialog->layoutsController()->selectRow(layoutId);
         reload();
-
         emit currentLayoutChanged();
     } else {
         //! reset combobox index
@@ -400,7 +408,7 @@ void DetailsHandler::updateWindowTitle()
     m_dialog->setWindowTitle(i18nc("<layout name> Details","%0 Details").arg(m_ui->layoutsCmb->currentText()));
 }
 
-int DetailsHandler::saveChanges()
+int DetailsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = c_data.name;
