@@ -64,6 +64,8 @@ public:
 
     bool hasChangedData() const;
 
+    int viewsForRemovalCount() const;
+
     void sortByColumn(int column, Qt::SortOrder order);
 
     bool hasSelectedView() const;

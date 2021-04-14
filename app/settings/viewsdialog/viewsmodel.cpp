@@ -180,6 +180,7 @@ void Views::removeView(const QString &id)
 
     if (index >= 0) {
         removeRows(index, 1);
+        emit rowsRemoved();
     }
 }
 
@@ -196,7 +197,6 @@ bool Views::removeRows(int row, int count, const QModelIndex &parent)
             m_viewsTable.remove(firstRow);
         }
         endRemoveRows();
-
         return true;
     }
 

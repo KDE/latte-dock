@@ -198,8 +198,23 @@ void Views::onCurrentLayoutChanged()
     m_model->setOriginalData(layout.views);
 }
 
+int Views::viewsForRemovalCount() const
+{
+    if (!hasChangedData()) {
+        return 0;
+    }
+
+    Latte::Data::ViewsTable originalViews = m_model->originalViewsData();
+    Latte::Data::ViewsTable currentViews = m_model->currentViewsData();
+    Latte::Data::ViewsTable removedViews = originalViews.subtracted(currentViews);
+
+    return removedViews.rowCount();
+}
+
 void Views::save()
 {
+    //! when this function is called we consider that removal has already been approved
+
     Latte::Data::Layout originallayout = m_handler->originalData();
     Latte::Data::Layout currentlayout = m_handler->currentData();
     Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;

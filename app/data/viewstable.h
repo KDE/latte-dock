@@ -50,6 +50,7 @@ public:
     ViewsTable &operator=(ViewsTable &&rhs);
     bool operator==(const ViewsTable &rhs) const;
     bool operator!=(const ViewsTable &rhs) const;
+    ViewsTable subtracted(const ViewsTable &rhs) const;
 };
 
 }

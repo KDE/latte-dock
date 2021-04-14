@@ -100,6 +100,7 @@ private:
     void loadLayout(const Latte::Data::Layout &data);
 
     int saveChangesConfirmation();
+    int removalConfirmation(const int &count);
 
 private:
     Dialog::ViewsDialog *m_dialog{nullptr};

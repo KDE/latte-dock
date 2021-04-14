@@ -73,6 +73,23 @@ bool ViewsTable::operator!=(const ViewsTable &rhs) const
     return !(*this == rhs);
 }
 
+ViewsTable ViewsTable::subtracted(const ViewsTable &rhs) const
+{
+    ViewsTable subtract;
+
+    if ((*this) == rhs) {
+        return subtract;
+    }
+
+    for(int i=0; i<m_list.count(); ++i) {
+        if (!rhs.containsId(m_list[i].id)) {
+            subtract << m_list[i];
+        }
+    }
+
+    return subtract;
+}
+
 void ViewsTable::appendTemporaryView(const Data::View &view)
 {
     int maxTempId = 0;

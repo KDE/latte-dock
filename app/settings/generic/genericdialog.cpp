@@ -21,9 +21,9 @@
 #include "genericdialog.h"
 
 // Qt
+#include <QDebug>
 #include <QFileDialog>
 #include <QKeyEvent>
-#include <QMessageBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
@@ -64,11 +64,12 @@ KMessageWidget *GenericDialog::initMessageWidget()
     return messagewidget;
 }
 
-int GenericDialog::saveChangesConfirmation(const QString &text, QString applyBtnText)
+int GenericDialog::saveChangesConfirmation(const QString &text, QString applyBtnText, QMessageBox::StandardButton defaultButton)
 {
     auto msg = new QMessageBox(this);
     msg->setIcon(QMessageBox::Warning);
     msg->setWindowTitle(i18n("Apply Settings"));
+    msg->setAttribute(Qt::WA_DeleteOnClose, true);
 
     if (text.isEmpty()) {
         msg->setText(i18n("The settings have changed. Do you want to apply the changes or discard them?"));
@@ -78,18 +79,26 @@ int GenericDialog::saveChangesConfirmation(const QString &text, QString applyBtn
 
     if (applyBtnText.isEmpty()) {
         msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
-        msg->setDefaultButton(QMessageBox::Apply);
-    } else if (!applyBtnText.isEmpty()) {
+        msg->setDefaultButton(defaultButton == QMessageBox::NoButton ? QMessageBox::Apply : defaultButton);
+        return msg->exec();
+    } else {
         msg->setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel);
         QPushButton *applyCustomBtn = new QPushButton(msg);
         applyCustomBtn->setText(applyBtnText);
         applyCustomBtn->setIcon(QIcon::fromTheme("dialog-yes"));
-        msg->addButton(applyCustomBtn, QMessageBox::AcceptRole);
-        msg->setDefaultButton(applyCustomBtn);
-    }
+        msg->addButton(applyCustomBtn, QMessageBox::ApplyRole);
+        msg->setDefaultButton(defaultButton == QMessageBox::NoButton ? QMessageBox::Apply : defaultButton);
 
-    connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
-    return msg->exec();
+        if (defaultButton == QMessageBox::NoButton || defaultButton == QMessageBox::Apply) {
+            msg->setDefaultButton(applyCustomBtn);
+        } else {
+            msg->setDefaultButton(defaultButton);
+        }
+
+        int result = msg->exec();
+
+        return (msg->clickedButton() == applyCustomBtn ? QMessageBox::Apply : result);
+    }
 }
 
 void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent, QList<QAction *> actions)
