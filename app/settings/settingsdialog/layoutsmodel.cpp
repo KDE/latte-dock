@@ -799,6 +799,7 @@ bool Layouts::setData(const QModelIndex &index, const QVariant &value, int role)
     case ACTIVITYCOLUMN:
         if (role == Qt::UserRole)  {
             setActivities(row, value.toStringList());
+            updateConsideredActiveStates();
             emit dataChanged(this->index(row, NAMECOLUMN), this->index(row,NAMECOLUMN), roles);
             return true;
         }
@@ -838,26 +839,6 @@ void Layouts::updateConsideredActiveStates()
     roles << ISCONSIDEREDACTIVEROLE;
     roles << SORTINGROLE;
 
-    if ((m_inMultipleMode && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts))
-            || (!m_inMultipleMode && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout))) {
-        //! current running layouts mode is the same shown in settings
-
-        for(int i=0; i<rowCount(); ++i) {
-            bool iConsideredActive{false};
-
-            if (m_corona->layoutsManager()->synchronizer()->layout(m_layoutsTable[i].name)) {
-                iConsideredActive = true;
-            }
-
-            if (m_layoutsTable[i].isConsideredActive != iConsideredActive) {
-                m_layoutsTable[i].isConsideredActive = iConsideredActive;
-                emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
-            }
-        }
-
-        return;
-    }
-
     if (!m_inMultipleMode) {
         //! single mode but not the running one
 
@@ -873,11 +854,7 @@ void Layouts::updateConsideredActiveStates()
                 emit dataChanged(index(i, BACKGROUNDCOLUMN), index(i,ACTIVITYCOLUMN), roles);
             }
         }
-
-        return;
-    }
-
-    if (m_inMultipleMode) {
+    } else if (m_inMultipleMode) {
         //! multiple mode but not the running one
 
         QStringList runningActivities = m_corona->layoutsManager()->synchronizer()->runningActivities();
