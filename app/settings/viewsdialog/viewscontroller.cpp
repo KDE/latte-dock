@@ -220,6 +220,7 @@ void Views::save()
     Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
     Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
 
+    //! update altered views
     Latte::Data::ViewsTable alteredViews = m_model->alteredViews();
 
     for (int i=0; i<alteredViews.rowCount(); ++i) {
@@ -229,7 +230,20 @@ void Views::save()
         }
     }
 
+    //! remove deprecated views
+    Latte::Data::ViewsTable originalViews = m_model->originalViewsData();
     Latte::Data::ViewsTable currentViews = m_model->currentViewsData();
+    Latte::Data::ViewsTable removedViews = originalViews.subtracted(currentViews);
+
+    for (int i=0; i<removedViews.rowCount(); ++i) {
+        central->removeView(removedViews[i]);
+    }
+
+    if (removedViews.rowCount() > 0) {
+        m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
+    }
+
+    //! update model original data
     m_model->setOriginalData(currentViews);
 }
 

@@ -1188,6 +1188,14 @@ Data::AppletsTable Storage::plugins(const QString &layoutfile, const int contain
 
 //! Views Data
 
+bool Storage::containsView(const QString &filepath, const int &viewId)
+{
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(filepath);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+    KConfigGroup viewGroup = containmentGroups.group(QString::number(viewId));
+    return viewGroup.exists() && isLatteContainment(viewGroup);
+}
+
 Data::GenericTable<Data::Generic> Storage::subcontainments(const Layout::GenericLayout *layout, const Plasma::Containment *lattecontainment) const
 {
     Data::GenericTable<Data::Generic> subs;
@@ -1331,6 +1339,24 @@ void Storage::updateView(const Layout::GenericLayout *layout, const Data::View &
             updateView(viewContainment, viewData);
         }
     }
+}
+
+void Storage::removeView(const QString &filepath, const Data::View &viewData)
+{
+    if (!viewData.isValid()) {
+        return;
+    }
+
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(filepath);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    containmentGroups.group(viewData.id).deleteGroup();
+
+    for (int i=0; i<viewData.subcontainments.rowCount(); ++i) {
+        containmentGroups.group(viewData.subcontainments[i].id).deleteGroup();
+    }
+
+    containmentGroups.sync();
 }
 
 Data::ViewsTable Storage::views(const Layout::GenericLayout *layout)

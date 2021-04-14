@@ -90,6 +90,7 @@ public:
     const QList<Plasma::Containment *> *containments() const;
 
     bool contains(Plasma::Containment *containment) const;
+    bool containsView(const int &containmentId) const;
     int screenForContainment(Plasma::Containment *containment);
 
     Latte::View *highestPriorityView();
@@ -125,6 +126,7 @@ public:
     bool latteViewExists(Plasma::Containment *containment);
 
     void updateView(const Latte::Data::View &viewData);
+    void removeView(const Latte::Data::View &viewData);
 
     //! Available edges for specific view in that screen
     virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;

@@ -74,6 +74,8 @@ public:
     bool isBroken(const Layout::GenericLayout *layout, QStringList &errors) const;
     bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
 
+    bool containsView(const QString &filepath, const int &viewId);
+
     int subContainmentId(const KConfigGroup &appletGroup) const;
 
     Plasma::Containment *subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet);
@@ -88,6 +90,7 @@ public:
 
     void updateView(const Layout::GenericLayout *layout, const Data::View &viewData);
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
+    void removeView(const QString &filepath, const Data::View &viewData);
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
     bool exportTemplate(const Layout::GenericLayout *layout, Plasma::Containment *containment, const QString &destinationFile, const Data::AppletsTable &approvedApplets);

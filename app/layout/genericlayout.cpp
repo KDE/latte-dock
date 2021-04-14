@@ -431,6 +431,20 @@ int GenericLayout::screenForContainment(Plasma::Containment *containment)
     return containment->lastScreen();
 }
 
+bool GenericLayout::containsView(const int &containmentId) const
+{
+    if (!isActive()) {
+        return Layouts::Storage::self()->containsView(file(), containmentId);
+    }
+
+    for(auto containment : m_containments) {
+        if ((int)containment->id() == containmentId && Layouts::Storage::self()->isLatteContainment(containment)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment) const
 {
@@ -1613,6 +1627,53 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
     }
 
     syncLatteViewsToScreens();
+}
+
+void GenericLayout::removeView(const Latte::Data::View &viewData)
+{
+    if (!containsView(viewData.id.toInt())) {
+        return;
+    }
+
+    if (!isActive()) {
+        Layouts::Storage::self()->removeView(file(), viewData);
+        return;
+    }
+
+    Latte::View *view = viewForContainment(viewData.id.toUInt());
+
+    if (view) {
+        //! viewMustBeDeleted
+        m_latteViews.remove(view->containment());
+        view->disconnectSensitiveSignals();
+        view->positioner()->hideOnExit();
+        delete view;
+    }
+
+    //! delete also the relevant containments
+    Plasma::Containment *viewcontainment = containmentForId(viewData.id.toUInt());
+
+    if (viewcontainment) {
+        m_containments.removeAll(viewcontainment);
+        delete viewcontainment;
+    }
+
+    for (int i=0; i<viewData.subcontainments.rowCount(); ++i) {
+        Plasma::Containment *subcontainment = containmentForId(viewData.subcontainments[i].id.toUInt());
+
+        if (subcontainment) {
+            m_containments.removeAll(subcontainment);
+            delete subcontainment;
+        }
+    }
+
+    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+        QString multiplelayoutfile = Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+        Layouts::Storage::self()->removeView(multiplelayoutfile, viewData);
+    } else {
+        //! remove from storage
+        Layouts::Storage::self()->removeView(file(), viewData);
+    }
 }
 
 void GenericLayout::importToCorona()
