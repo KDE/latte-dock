@@ -30,7 +30,7 @@ namespace Latte {
 
 const int ICONMARGIN = 1;
 const int INDICATORCHANGESLENGTH = 6;
-const int INDICATORCHANGESMARGIN = 2;
+const int INDICATORCHANGESMARGIN = 5;
 const int MARGIN = 2;
 
 bool isEnabled(const QStyleOption &option)
