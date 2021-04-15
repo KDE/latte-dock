@@ -833,10 +833,11 @@ Item {
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
 
-        property int length: opacity > 0 ? metrics.totals.length : 0
+        property int length: opacity > 0 ? (dndSpacerAddItem.length + metrics.totals.lengthEdges + metrics.totals.lengthPaddings) : 0
 
-        readonly property bool isDndSpacer: true        
+        readonly property bool isDndSpacer: true
         readonly property int thickness: metrics.totals.thickness + metrics.margin.screenEdge
+        readonly property int maxLength: 96
 
         Layout.minimumWidth: width
         Layout.minimumHeight: height
@@ -865,12 +866,21 @@ Item {
             }
         }
 
-        LatteComponents.AddItem{
-            id: dndSpacerAddItem
-            width: metrics.iconSize
-            height: metrics.iconSize
+        Item {
+            id: dndSpacerAddItemContainer
+            width: root.isHorizontal ? parent.length : parent.thickness - metrics.margin.screenEdge
+            height: root.isHorizontal ? parent.thickness - metrics.margin.screenEdge : parent.length
 
-            property int thickMargin: metrics.margin.screenEdge + metrics.margin.thickness
+            property int thickMargin: metrics.margin.screenEdge //+ metrics.margin.thickness
+
+            LatteComponents.AddItem{
+                id: dndSpacerAddItem
+                anchors.centerIn: parent
+                width: length
+                height: width
+
+                readonly property int length: Math.min(metrics.iconSize, 96)
+            }
 
             states:[
                 State{
