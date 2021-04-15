@@ -126,6 +126,9 @@ private:
     void restoreOption(const char *option);
     void saveOption(const char *option);
 
+    void insertAtLayoutTail(QQuickItem *layout, QQuickItem *item);
+    void insertAtLayoutHead(QQuickItem *layout, QQuickItem *item);
+
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
 
@@ -138,6 +141,9 @@ private:
 
     bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
+
+    int distanceFromTail(QQuickItem *layout, QPointF pos) const;
+    int distanceFromHead(QQuickItem *layout, QPointF pos) const;
 
 private:
     int m_splitterPosition{-1};

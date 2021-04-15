@@ -23,6 +23,9 @@
 // local
 #include <plugin/lattetypes.h>
 
+// Qt
+#include <QtMath>
+
 // KDE
 #include <KDeclarative/ConfigPropertyMap>
 
@@ -583,7 +586,7 @@ void LayoutManager::saveOption(const char *option)
 
 void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)
 {
-    if (!hoveredItem || !item) {
+    if (!hoveredItem || !item || hoveredItem == item) {
         return;
     }
 
@@ -594,7 +597,7 @@ void LayoutManager::insertBefore(QQuickItem *hoveredItem, QQuickItem *item)
 
 void LayoutManager::insertAfter(QQuickItem *hoveredItem, QQuickItem *item)
 {
-    if (!hoveredItem || !item) {
+    if (!hoveredItem || !item || hoveredItem == item) {
         return;
     }
 
@@ -602,10 +605,39 @@ void LayoutManager::insertAfter(QQuickItem *hoveredItem, QQuickItem *item)
     item->stackAfter(hoveredItem);
 }
 
+void LayoutManager::insertAtLayoutTail(QQuickItem *layout, QQuickItem *item)
+{
+    if (!layout || !item) {
+        return;
+    }
+
+    if (layout->childItems().count() > 0) {
+        insertBefore(layout->childItems()[0], item);
+        return;
+    }
+
+    item->setParentItem(layout);
+}
+
+void LayoutManager::insertAtLayoutHead(QQuickItem *layout, QQuickItem *item)
+{
+    if (!layout || !item) {
+        return;
+    }
+
+    int count = layout->childItems().count();
+
+    if (count > 0) {
+        insertAfter(layout->childItems()[count-1], item);
+        return;
+    }
+
+    item->setParentItem(layout);
+}
 
 bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y)
 {
-    if (!layout || !item || !m_plasmoid) {
+    if (!layout || !item || !m_plasmoid || !layout->contains(QPointF(x,y))) {
         return false;
     }
 
@@ -628,6 +660,10 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
         int size = layout->childItems().count();
         if (horizontal) {
             for (int i = 0; i < size; ++i) {
+                if (i>=layout->childItems().count()) {
+                    break;
+                }
+
                 QQuickItem *candidate = layout->childItems()[i];
                 int right = candidate->x() + candidate->width() + rowspacing;
                 if (x>=candidate->x() && x<right) {
@@ -637,6 +673,10 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
             }
         } else {
             for (int i = 0; i < size; ++i) {
+                if (i>=layout->childItems().count()) {
+                    break;
+                }
+
                 QQuickItem *candidate = layout->childItems()[i];
                 int bottom = candidate->y() + candidate->height() + columnspacing;
                 if (y>=candidate->y() && y<bottom) {
@@ -645,7 +685,6 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
                 }
             }
         }
-
     }
 
     if (hovered == item && item->parentItem() == layout) {
@@ -653,38 +692,35 @@ bool LayoutManager::insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *it
         return true;
     }
 
-    if (!hovered) {
-        QQuickItem *totals = m_metrics->property("totals").value<QQuickItem *>();
-        float neededspace = 1.5 * (m_metrics->property("iconSize").toFloat() + totals->property("lengthEdge").toFloat());
-
-        if ( ((vertical && ((y-neededspace) <= layout->height()) && (y>=0))
-              || (horizontal && ((x-neededspace) <= layout->width()) && (x>=0)))
-             && layout->childItems().count()>0) {
-            //! last item
-            hovered = layout->childItems()[layout->childItems().count()-1];
-        } else if ( ((vertical && (y >= -neededspace) && (y<=neededspace)))
-                    || (horizontal && (x >= -neededspace) && (x<=neededspace))
-                    && layout->childItems().count()>0) {
-            //! first item
-            hovered = layout->childItems()[0];
+    if (hovered) {
+        if ((vertical && y < (hovered->y() + hovered->height()/2)) ||
+                (horizontal && x < hovered->x() + hovered->width()/2)) {
+            insertBefore(hovered, item);
         } else {
-            return false;
+            insertAfter(hovered, item);
         }
+
+        return true;
     }
 
-    if ((vertical && y < (hovered->y() + hovered->height()/2)) ||
-            (horizontal && x < hovered->x() + hovered->width()/2)) {
-        insertBefore(hovered, item);
-    } else {
-        insertAfter(hovered, item);
-    }
+    return false;
+}
 
-    return true;
+int LayoutManager::distanceFromTail(QQuickItem *layout, QPointF pos) const
+{
+    return (int)qSqrt(qPow(pos.x() - 0, 2) + qPow(pos.y() - 0, 2));
+}
+
+int LayoutManager::distanceFromHead(QQuickItem *layout, QPointF pos) const
+{
+    float rightX = layout->width() - 1;
+    float rightY = layout->height() - 1;
+    return  (int)qSqrt(qPow(pos.x() - rightX, 2) + qPow(pos.y() - rightY, 2));
 }
 
 void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const int &y)
 {
-    if (!m_configuration) {
+    if (!m_configuration || !item) {
         return;
     }
 
@@ -706,6 +742,48 @@ void LayoutManager::insertAtCoordinates(QQuickItem *item, const int &x, const in
         QPointF mainPos = m_mainLayout->mapFromItem(m_rootItem, QPointF(x, y));
         //! in javascript direct insertAtCoordinates was usedd ???
         result = insertAtLayoutCoordinates(m_mainLayout, item, mainPos.x(), mainPos.y());
+    }
+
+    if (result) {
+        return;
+    }
+
+    //! item was not added because it does not hover any of the layouts and layout items
+    //! so the place that will be added is specified by the distance of the item from the layouts
+
+    QPointF startrelpos = m_startLayout->mapFromItem(m_rootItem, QPointF(x, y));
+    QPointF endrelpos = m_endLayout->mapFromItem(m_rootItem, QPointF(x, y));
+    QPointF mainrelpos = m_mainLayout->mapFromItem(m_rootItem, QPointF(x, y));
+
+    int starttaildistance = distanceFromTail(m_startLayout, startrelpos);
+    int startheaddistance = distanceFromHead(m_startLayout, startrelpos);
+    int maintaildistance = distanceFromTail(m_mainLayout, mainrelpos);
+    int mainheaddistance = distanceFromHead(m_mainLayout, mainrelpos);
+    int endtaildistance = distanceFromTail(m_endLayout, endrelpos);
+    int endheaddistance = distanceFromHead(m_endLayout, endrelpos);
+
+    int startdistance = qMin(starttaildistance, startheaddistance);
+    int maindistance = qMin(maintaildistance, mainheaddistance);
+    int enddistance = qMin(endtaildistance, endheaddistance);
+
+    if (alignment != Latte::Types::Justify || (maindistance < startdistance && maindistance < enddistance)) {
+        if (maintaildistance <= mainheaddistance) {
+            insertAtLayoutTail(m_mainLayout, item);
+        } else {
+            insertAtLayoutHead(m_mainLayout, item);
+        }
+    } else if (startdistance < maindistance && startdistance < enddistance) {
+        if (maintaildistance <= mainheaddistance) {
+            insertAtLayoutTail(m_startLayout, item);
+        } else {
+            insertAtLayoutHead(m_startLayout, item);
+        }
+    } else {
+        if (endtaildistance <= endheaddistance) {
+            insertAtLayoutTail(m_endLayout, item);
+        } else {
+            insertAtLayoutHead(m_endLayout, item);
+        }
     }
 }
 
