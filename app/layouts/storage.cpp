@@ -260,7 +260,7 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
     copyGroup.sync();
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1FilePath);
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1FilePath, layout);
 
     //! Finally import the configuration
     importLayoutFile(layout, temp2File);
@@ -295,13 +295,13 @@ bool Storage::appletGroupIsValid(const KConfigGroup &appletGroup)
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }
 
-QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout, QString file)
+QString Storage::newUniqueIdsLayoutFromFile(QString originFile, const Layout::GenericLayout *destinationLayout, QString destinationFile)
 {
-    if (!layout->corona()) {
+    if (!destinationLayout || !destinationLayout->corona()) {
         return QString();
     }
 
-    QString tempFile = m_storageTmpDir.path() + "/" + layout->name() + ".views.newids";
+    QString tempFile = m_storageTmpDir.path() + "/" + destinationLayout->name() + ".views.newids";
 
     QFile copyFile(tempFile);
 
@@ -311,8 +311,8 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
 
     //! BEGIN updating the ids in the temp file
     QStringList allIds;
-    allIds << layout->corona()->containmentsIds();
-    allIds << layout->corona()->appletsIds();
+    allIds << destinationLayout->corona()->containmentsIds();
+    allIds << destinationLayout->corona()->appletsIds();
 
     QStringList toInvestigateContainmentIds;
     QStringList toInvestigateAppletIds;
@@ -330,7 +330,7 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
     QStringList assignedIds;
     QHash<QString, QString> assigned;
 
-    KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(originFile);
     KConfigGroup investigate_conts = KConfigGroup(filePtr, "Containments");
 
     //! Record the containment and applet ids
@@ -437,8 +437,8 @@ QString Storage::newUniqueIdsLayoutFromFile(const Layout::GenericLayout *layout,
             }
         }
 
-        if (layout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            investigate_conts.group(cId).writeEntry("layoutId", layout->name());
+        if (destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            investigate_conts.group(cId).writeEntry("layoutId", destinationLayout->name());
         }
     }
 
@@ -558,7 +558,7 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     QFile(templateFile).copy(templateTmpAbsolutePath);
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(destination, templateTmpAbsolutePath);
+    QString temp2File = newUniqueIdsLayoutFromFile(templateTmpAbsolutePath, destination);
 
     //! Finally import the configuration
     QList<Plasma::Containment *> importedViews = importLayoutFile(destination, temp2File);
@@ -821,7 +821,7 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
     //! end of subcontainments specific code
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(layout, temp1File);
+    QString temp2File = newUniqueIdsLayoutFromFile(temp1File, layout);
 
     //! Finally import the configuration
     QList<Plasma::Containment *> importedDocks = importLayoutFile(layout, temp2File);
