@@ -208,6 +208,32 @@ bool Views::isVertical(const Plasma::Types::Location &location) const
     return (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge);
 }
 
+void Views::updateActiveStatesBasedOn(const CentralLayout *layout)
+{
+    if (!layout) {
+        return;
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ISCHANGEDROLE;
+    roles << ISACTIVEROLE;
+    roles << HASCHANGEDVIEWROLE;
+
+    for (int i=0; i<m_viewsTable.rowCount(); ++i) {
+        uint viewid = m_viewsTable[i].id.toUInt();
+        auto view = layout->viewForContainment(viewid);
+
+        bool currentactivestate = (view != nullptr);
+
+        if (currentactivestate != m_viewsTable[i].isActive) {
+            m_viewsTable[i].isActive = currentactivestate;
+            emit dataChanged(this->index(i, IDCOLUMN), this->index(i, SUBCONTAINMENTSCOLUMN), roles);
+        }
+    }
+}
+
 Latte::Data::Screen Views::screenData(const QString &viewId) const
 {
     int row = rowForId(viewId);

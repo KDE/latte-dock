@@ -265,6 +265,10 @@ void Views::save()
 
     //! update model original data
     m_model->setOriginalData(currentViews);
+
+    if (central->isActive()) {
+        m_model->updateActiveStatesBasedOn(central);
+    }
 }
 
 QString Views::uniqueViewName(QString name)

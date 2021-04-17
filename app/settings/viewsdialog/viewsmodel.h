@@ -27,6 +27,7 @@
 #include "../../data/screendata.h"
 #include "../../data/viewdata.h"
 #include "../../data/viewstable.h"
+#include "../../layout/centrallayout.h"
 
 // Qt
 #include <QAbstractTableModel>
@@ -107,6 +108,8 @@ public:
 
     void setOriginalData(Latte::Data::ViewsTable &data);
     void setOriginalView(QString currentViewId, Latte::Data::View &view);
+
+    void updateActiveStatesBasedOn(const CentralLayout *layout);
 
     Latte::Data::ViewsTable alteredViews() const;
     Latte::Data::ViewsTable newViews() const;

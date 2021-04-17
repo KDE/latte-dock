@@ -102,7 +102,7 @@ bool View::operator==(const View &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
-            && (isActive == rhs.isActive)
+            //&& (isActive == rhs.isActive) /*activeness is a state and is not considered*/
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)
@@ -127,6 +127,18 @@ View::operator QString() const
     result += id;
     result +=" : ";
     result += isActive ? "Active" : "Inactive";
+    result += " : ";
+
+    if (m_state == IsInvalid) {
+        result += "IsInvalid";
+    } else if (m_state == IsCreated) {
+        result += "IsCreated";
+    } else if (m_state == OriginFromViewTemplate) {
+        result += "OriginFromViewTemplate";
+    } else if (m_state == OriginFromLayout) {
+        result += "OriginFromLayout";
+    }
+
     result += " : ";
     result += onPrimary ? "Primary" : "Explicit";
     result += " : ";
