@@ -295,13 +295,50 @@ bool Storage::appletGroupIsValid(const KConfigGroup &appletGroup)
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }
 
-QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayout *destinationLayout, QString destinationFile)
+QStringList Storage::containmentsIds(const QString &filepath)
 {
-    if (destinationFile.isEmpty() && (!destinationLayout || !destinationLayout->corona())) {
+    QStringList ids;
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(filepath);
+    KConfigGroup containments = KConfigGroup(filePtr, "Containments");
+
+    for(const auto &cId : containments.groupList()) {
+        ids << cId;
+    }
+
+    return ids;
+}
+
+QStringList Storage::appletsIds(const QString &filepath)
+{
+    QStringList ids;
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(filepath);
+    KConfigGroup containments = KConfigGroup(filePtr, "Containments");
+
+    for(const auto &cId : containments.groupList()) {
+        for(const auto &aId : containments.group(cId).group("Applets").groupList()) {
+            ids << aId;
+        }
+    }
+
+    return ids;
+}
+
+QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayout *destinationLayout)
+{
+    if (!destinationLayout) {
         return QString();
     }
 
-    QString tempFile = m_storageTmpDir.path() + "/" + destinationLayout->name() + ".views.newids";
+    QString currentdestinationname = destinationLayout->name();
+    QString currentdestinationfile = "";
+
+    if (!destinationLayout->isActive()) {
+        currentdestinationfile = destinationLayout->file();
+    }
+
+    QString tempFile = m_storageTmpDir.path() + "/" + currentdestinationname + ".views.newids";
 
     QFile copyFile(tempFile);
 
@@ -311,8 +348,14 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
 
     //! BEGIN updating the ids in the temp file
     QStringList allIds;
-    allIds << destinationLayout->corona()->containmentsIds();
-    allIds << destinationLayout->corona()->appletsIds();
+
+    if (destinationLayout->isActive()) {
+        allIds << destinationLayout->corona()->containmentsIds();
+        allIds << destinationLayout->corona()->appletsIds();
+    } else {
+        allIds << containmentsIds(currentdestinationfile);
+        allIds << appletsIds(currentdestinationfile);
+    }
 
     QStringList toInvestigateContainmentIds;
     QStringList toInvestigateAppletIds;
@@ -437,7 +480,7 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
             }
         }
 
-        if (destinationFile.isEmpty() && destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+        if (destinationLayout->isActive() && destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             //! will be added in main corona multiple layouts file
             investigate_conts.group(cId).writeEntry("layoutId", destinationLayout->name());
         } else {

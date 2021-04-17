@@ -129,9 +129,12 @@ private:
     //! provides a new file path based the provided file. The new file
     //! has updated ids for containments and applets based on the corona
     //! loaded ones
-    QString newUniqueIdsFile(QString originFile, const Layout::GenericLayout *destinationLayout = nullptr, QString destinationFile = QString());
+    QString newUniqueIdsFile(QString originFile, const Layout::GenericLayout *destinationLayout);
     //! imports a layout file and returns the containments for the docks
     QList<Plasma::Containment *> importLayoutFile(const Layout::GenericLayout *layout, QString file);
+
+    QStringList containmentsIds(const QString &filepath);
+    QStringList appletsIds(const QString &filepath);
 
 private:
     QTemporaryDir m_storageTmpDir;
