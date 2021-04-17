@@ -1164,8 +1164,8 @@ QStringList Corona::viewTemplatesData()
 void Corona::addView(const uint &containmentId, const QString &templateId)
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
-    if (view && view->layout() && !templateId.isEmpty()) {
-        view->layout()->newView(templateId);
+    if (view) {
+        view->newView(templateId);
     }
 }
 

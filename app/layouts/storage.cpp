@@ -573,27 +573,50 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
 
     qDebug() << " imported containments ::: " << newContainments.length();
 
-    QList<Plasma::Containment *> importedDocks;
+    QList<Plasma::Containment *> importedViews;
 
     for (const auto containment : newContainments) {
         if (isLatteContainment(containment)) {
             qDebug() << "new latte containment id: " << containment->id();
-            importedDocks << containment;
+            importedViews << containment;
         }
     }
 
-    return importedDocks;
+    return importedViews;
 }
 
-ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destination, const QString &templateFile)
+void Storage::importContainments(const QString &originFile, const QString &destinationFile)
 {
-    if (!destination || !destination->corona()) {
-        return ViewDelayedCreationData();
+    if (originFile.isEmpty() || destinationFile.isEmpty()) {
+        return;
+    }
+
+    KSharedConfigPtr originPtr = KSharedConfig::openConfig(originFile);
+    KSharedConfigPtr destinationPtr = KSharedConfig::openConfig(destinationFile);
+
+    KConfigGroup originContainments = KConfigGroup(originPtr, "Containments");
+    KConfigGroup destinationContainments = KConfigGroup(destinationPtr, "Containments");
+
+    for (const auto originContId : originContainments.groupList()) {
+        KConfigGroup destinationContainment(&destinationContainments, originContId);
+        originContainments.group(originContId).copyTo(&destinationContainment);
+    }
+
+    destinationContainments.sync();
+}
+
+Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, const QString &templateFile, const Data::View &nextViewData)
+{
+    if (!destinationLayout) {
+        return Data::View();
     }
 
     qDebug() << "new view for layout";
-    //! Setting mutable for create a containment
-    destination->corona()->setImmutability(Plasma::Types::Mutable);
+
+    if (destinationLayout->isActive()) {
+        //! Setting mutable for create a containment
+        destinationLayout->corona()->setImmutability(Plasma::Types::Mutable);
+    }
 
     //! copy view template path in temp file
     QString templateTmpAbsolutePath = m_storageTmpDir.path() + "/" + QFileInfo(templateFile).fileName() + ".newids";
@@ -605,18 +628,46 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     QFile(templateFile).copy(templateTmpAbsolutePath);
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsFile(templateTmpAbsolutePath, destination);
+    QString temp2File = newUniqueIdsFile(templateTmpAbsolutePath, destinationLayout);
 
-    //! Finally import the configuration
-    QList<Plasma::Containment *> importedViews = importLayoutFile(destination, temp2File);
+    //! update view containment data in case next data are provided
+    if (nextViewData.state() != Data::View::IsInvalid) {
 
-    Plasma::Containment *newContainment = (importedViews.size() == 1 ? importedViews[0] : nullptr);
+        KSharedConfigPtr lFile = KSharedConfig::openConfig(temp2File);
+        KConfigGroup containments = KConfigGroup(lFile, "Containments");
 
-    if (!newContainment || !newContainment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded from:" << templateFile;
-        return ViewDelayedCreationData();
+        for (const auto cId : containments.groupList()) {
+            if (Layouts::Storage::self()->isLatteContainment(containments.group(cId))) {
+                //! first view we will find, we update its value
+                updateView(containments.group(cId), nextViewData);
+                break;
+            }
+        }
     }
 
+    Data::ViewsTable updatedNextViews = views(temp2File);
+
+    if (updatedNextViews.rowCount() <= 0) {
+        return Data::View();
+    }
+
+    if (destinationLayout->isActive()) {
+        //! import views for active layout
+        QList<Plasma::Containment *> importedViews = importLayoutFile(destinationLayout, temp2File);
+
+        Plasma::Containment *newContainment = (importedViews.size() == 1 ? importedViews[0] : nullptr);
+
+        if (!newContainment || !newContainment->kPackage().isValid()) {
+            qWarning() << "the requested containment plugin can not be located or loaded from:" << templateFile;
+            return Data::View();
+        }
+    } else {
+        //! import views for inactive layout
+        importContainments(temp2File, destinationLayout->file());
+    }
+
+    return updatedNextViews[0];
+    /*
     auto config = newContainment->config();
     int primaryScrId = destination->corona()->screenPool()->primaryScreenId();
 
@@ -644,7 +695,7 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     result.explicitScreen = primaryScrId;
     result.reactToScreenChange = false;
 
-    return result;
+    return result;*/
 }
 
 void Storage::clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup)

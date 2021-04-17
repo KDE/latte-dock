@@ -276,9 +276,11 @@ public:
     void releaseConfigView();
 
 public slots:
+    Q_INVOKABLE void newView(const QString &templateFile);
+    Q_INVOKABLE void removeView();
     Q_INVOKABLE void duplicateView();
     Q_INVOKABLE void exportTemplate();
-    Q_INVOKABLE void removeView();
+
 
     Q_INVOKABLE void moveToLayout(QString layoutName);
 

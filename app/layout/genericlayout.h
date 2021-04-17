@@ -125,8 +125,9 @@ public:
     void recreateView(Plasma::Containment *containment, bool delayed = true);
     bool latteViewExists(Plasma::Containment *containment);
 
-    void updateView(const Latte::Data::View &viewData);
+    void newView(const QString &templateFile, const Latte::Data::View &nextViewData);
     void removeView(const Latte::Data::View &viewData);
+    void updateView(const Latte::Data::View &viewData);    
 
     //! Available edges for specific view in that screen
     virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
@@ -147,7 +148,6 @@ public:
     Latte::Data::ViewsTable viewsTable() const;
 
 public slots:
-    Q_INVOKABLE void newView(const QString &templateFile);
     Q_INVOKABLE int viewsWithTasks() const;
     virtual Q_INVOKABLE QList<int> qmlFreeEdges(int screen) const;  //change <Plasma::Types::Location> to <int> types
 

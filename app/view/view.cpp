@@ -32,10 +32,12 @@
 #include "../apptypes.h"
 #include "../lattecorona.h"
 #include "../data/layoutdata.h"
+#include "../data/viewstable.h"
 #include "../declarativeimports/interfaces.h"
 #include "../indicator/factory.h"
 #include "../layout/genericlayout.h"
 #include "../layouts/manager.h"
+#include "../layouts/storage.h"
 #include "../plasma/extended/theme.h"
 #include "../screenpool.h"
 #include "../settings/universalsettings.h"
@@ -322,7 +324,7 @@ void View::init(Plasma::Containment *plasma_containment)
 
     connect(m_effects, &ViewPart::Effects::innerShadowChanged, this, [&]() {
         emit availableScreenRectChangedFrom(this);
-    });        
+    });
     connect(m_positioner, &ViewPart::Positioner::onHideWindowsForSlidingOut, this, &View::hideWindowsForSlidingOut);
     connect(m_positioner, &ViewPart::Positioner::screenGeometryChanged, this, &View::screenGeometryChanged);
     connect(m_positioner, &ViewPart::Positioner::windowSizeChanged, this, [&]() {
@@ -470,6 +472,32 @@ void View::exportTemplate()
 {
     Latte::Settings::Dialog::ExportTemplateDialog *exportDlg = new Latte::Settings::Dialog::ExportTemplateDialog(this);
     exportDlg->show();
+}
+
+void View::newView(const QString &templateFile)
+{
+    if (templateFile.isEmpty() || !m_layout) {
+        return;
+    }
+
+    Data::ViewsTable templateviews = Layouts::Storage::self()->views(templateFile);
+
+    if (templateviews.rowCount() <= 0) {
+        return;
+    }
+
+    Data::View nextdata = templateviews[0];
+    int scrId = onPrimary() ? m_corona->screenPool()->primaryScreenId() : m_positioner->currentScreenId();
+
+    QList<Plasma::Types::Location> freeedges = m_layout->freeEdges(scrId);
+
+    if (!freeedges.contains(nextdata.edge)) {
+        nextdata.edge = (freeedges.count() > 0 ? freeedges[0] : Plasma::Types::BottomEdge);
+    }
+
+    nextdata.setState(Data::View::OriginFromViewTemplate, templateFile);
+
+    m_layout->newView(templateFile, nextdata);
 }
 
 void View::removeView()

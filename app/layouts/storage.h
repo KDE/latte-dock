@@ -86,7 +86,7 @@ public:
     void importToCorona(const Layout::GenericLayout *layout);
     void syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId);
     ViewDelayedCreationData copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment);
-    ViewDelayedCreationData newView(const Layout::GenericLayout *destination, const QString &templateFile);
+    Data::View newView(const Layout::GenericLayout *destination, const QString &templateFile, const Data::View &nextViewData);
 
     void updateView(const Layout::GenericLayout *layout, const Data::View &viewData);
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
@@ -120,6 +120,7 @@ private:
     Storage();
 
     void clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup);
+    void importContainments(const QString &originFile, const QString &destinationFile);
 
     bool isSubContainment(const KConfigGroup &appletGroup) const;
     int subIdentityIndex(const KConfigGroup &appletGroup) const;

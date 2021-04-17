@@ -1550,21 +1550,14 @@ void GenericLayout::duplicateView(Plasma::Containment *containment)
     emit viewEdgeChanged();
 }
 
-void GenericLayout::newView(const QString &templateFile)
+void GenericLayout::newView(const QString &templateFile, const Latte::Data::View &nextViewData)
 {
-    //! Don't create LatteView when the containment is created because we must update its screen settings first
-    setBlockAutomaticLatteViewCreation(true);
-
-    Layouts::ViewDelayedCreationData result = Layouts::Storage::self()->newView(this, templateFile);
-    if (result.containment) {
-        addView(result.containment, result.forceOnPrimary, result.explicitScreen);
-
-        if (result.reactToScreenChange) {
-            result.containment->reactToScreenChange();
-        }
+    if (nextViewData.state() == Data::View::IsInvalid) {
+        return;
     }
 
-    setBlockAutomaticLatteViewCreation(false);
+    Data::View result = Layouts::Storage::self()->newView(this, templateFile, nextViewData);
+
     emit viewEdgeChanged();
 }
 

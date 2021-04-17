@@ -541,7 +541,7 @@ Loader {
                             var item = actionsModel.get(index);
 
                             if (item && item.actionId === "add:") {
-                                latteView.layout.newView(item.templateId);
+                                latteView.newView(item.templateId);
                             } else if (item && item.actionId === "duplicate:") {
                                 latteView.duplicateView();
                             }
