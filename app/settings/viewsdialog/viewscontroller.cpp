@@ -220,9 +220,23 @@ void Views::save()
     Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
     Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
 
-    //! update altered views
+    //! views in model
+    Latte::Data::ViewsTable originalViews = m_model->originalViewsData();
+    Latte::Data::ViewsTable currentViews = m_model->currentViewsData();
     Latte::Data::ViewsTable alteredViews = m_model->alteredViews();
+    Latte::Data::ViewsTable newViews = m_model->newViews();
 
+    QHash<QString, Data::View> newviewsresponses;
+
+    //! add new views
+    for(int i=0; i<newViews.rowCount(); ++i){
+        if (newViews[i].state() == Data::View::OriginFromViewTemplate) {
+            Data::View addedview = central->newView(newViews[i].originFile(), newViews[i]);
+            newviewsresponses[newViews[i].id] = addedview;
+        }
+    }
+
+    //! update altered views
     for (int i=0; i<alteredViews.rowCount(); ++i) {
         if (alteredViews[i].state() == Data::View::IsCreated) {
             qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
@@ -231,17 +245,23 @@ void Views::save()
     }
 
     //! remove deprecated views
-    Latte::Data::ViewsTable originalViews = m_model->originalViewsData();
-    Latte::Data::ViewsTable currentViews = m_model->currentViewsData();
     Latte::Data::ViewsTable removedViews = originalViews.subtracted(currentViews);
 
     for (int i=0; i<removedViews.rowCount(); ++i) {
         central->removeView(removedViews[i]);
     }
 
-    if (removedViews.rowCount() > 0) {
+    if ((removedViews.rowCount() > 0) || (newViews.rowCount() > 0)) {
         m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
+
+    //! update model for newly added views
+    for (const auto vid: newviewsresponses.keys()) {
+        m_model->setOriginalView(vid, newviewsresponses[vid]);
+    }
+
+    //! update all table with latest data
+    currentViews = m_model->currentViewsData();
 
     //! update model original data
     m_model->setOriginalData(currentViews);

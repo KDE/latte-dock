@@ -70,6 +70,9 @@ public:
     bool isHorizontal() const;
     bool isVertical() const;
 
+    QString originFile() const;
+    QString originView() const;
+
     View::State state() const;
     void setState(View::State state, QString file = QString(), QString view = QString());
 
@@ -84,8 +87,8 @@ protected:
     View::State m_state{IsInvalid};
 
     //! Origin Data
-    QString originFile;
-    QString originView;
+    QString m_originFile;
+    QString m_originView;
 };
 
 }

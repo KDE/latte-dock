@@ -38,8 +38,8 @@ View::View(View &&o)
       edge(o.edge),
       alignment(o.alignment),
       m_state(o.m_state),
-      originFile(o.originFile),
-      originView(o.originView),
+      m_originFile(o.m_originFile),
+      m_originView(o.m_originView),
       subcontainments(o.subcontainments)
 {
 }
@@ -54,8 +54,8 @@ View::View(const View &o)
       edge(o.edge),
       alignment(o.alignment),
       m_state(o.m_state),
-      originFile(o.originFile),
-      originView(o.originView),
+      m_originFile(o.m_originFile),
+      m_originView(o.m_originView),
       subcontainments(o.subcontainments)
 {
 }
@@ -72,8 +72,8 @@ View &View::operator=(const View &rhs)
     edge = rhs.edge;
     alignment = rhs.alignment;
     m_state = rhs.m_state;
-    originFile = rhs.originFile;
-    originView = rhs.originView;
+    m_originFile = rhs.m_originFile;
+    m_originView = rhs.m_originView;
     subcontainments = rhs.subcontainments;
 
     return (*this);
@@ -91,8 +91,8 @@ View &View::operator=(View &&rhs)
     edge = rhs.edge;
     alignment = rhs.alignment;
     m_state = rhs.m_state;
-    originFile = rhs.originFile;
-    originView = rhs.originView;
+    m_originFile = rhs.m_originFile;
+    m_originView = rhs.m_originView;
     subcontainments = rhs.subcontainments;
 
     return (*this);
@@ -110,8 +110,8 @@ bool View::operator==(const View &rhs) const
             && (edge == rhs.edge)
             && (alignment == rhs.alignment)
             && (m_state == rhs.m_state)
-            && (originFile == rhs.originFile)
-            && (originView == rhs.originView)
+            && (m_originFile == rhs.m_originFile)
+            && (m_originView == rhs.m_originView)
             && (subcontainments == rhs.subcontainments);
 }
 
@@ -202,6 +202,16 @@ bool View::hasSubContainment(const QString &subId) const
     return subcontainments.containsId(subId);
 }
 
+QString View::originFile() const
+{
+    return m_originFile;
+}
+
+QString View::originView() const
+{
+    return m_originView;
+}
+
 View::State View::state() const
 {
     return m_state;
@@ -210,11 +220,9 @@ View::State View::state() const
 void View::setState(View::State state, QString file, QString view)
 {
     m_state = state;
-    originFile = file;
-    originView = view;
+    m_originFile = file;
+    m_originView = view;
 }
-
-
 
 }
 }

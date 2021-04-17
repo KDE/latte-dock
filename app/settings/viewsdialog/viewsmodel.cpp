@@ -244,6 +244,21 @@ Latte::Data::ViewsTable Views::alteredViews() const
     return views;
 }
 
+Latte::Data::ViewsTable Views::newViews() const
+{
+    Latte::Data::ViewsTable views;
+
+    for(int i=0; i<rowCount(); ++i) {
+        QString currentId = m_viewsTable[i].id;
+
+        if (!o_viewsTable.containsId(currentId)) {
+            views << m_viewsTable[i];
+        }
+    }
+
+    return views;
+}
+
 void Views::populateScreens()
 {
     s_screens.clear();
@@ -257,6 +272,26 @@ void Views::populateScreens()
     for (int i=1; i<s_screens.rowCount(); ++i) {
         s_screens[i].isActive = m_corona->screenPool()->isScreenActive(s_screens[i].id.toInt());
     }
+}
+
+void Views::setOriginalView(QString currentViewId, Latte::Data::View &view)
+{
+    if (!m_viewsTable.containsId(currentViewId)) {
+        return;
+    }
+
+    int currentrow = m_viewsTable.indexOf(currentViewId);
+    o_viewsTable << view;
+    m_viewsTable[currentrow] = view;
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ISCHANGEDROLE;
+    roles << ISACTIVEROLE;
+    roles << HASCHANGEDVIEWROLE;
+
+    emit dataChanged(this->index(currentrow, IDCOLUMN), this->index(currentrow, SUBCONTAINMENTSCOLUMN), roles);
 }
 
 void Views::setOriginalData(Latte::Data::ViewsTable &data)
@@ -367,7 +402,7 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
     //! specific roles to each independent cell
     switch (column) {
     case NAMECOLUMN:
-        if (role == Qt::UserRole || role == Qt::EditRole ) {
+        if (role == Qt::UserRole || role == Qt::EditRole) {
             if (m_viewsTable[row].name == value.toString()) {
                 return false;
             }

@@ -106,8 +106,10 @@ public:
     const Latte::Data::ViewsTable &originalViewsData();
 
     void setOriginalData(Latte::Data::ViewsTable &data);
+    void setOriginalView(QString currentViewId, Latte::Data::View &view);
 
     Latte::Data::ViewsTable alteredViews() const;
+    Latte::Data::ViewsTable newViews() const;
 
 signals:
     void rowsInserted();
