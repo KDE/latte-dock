@@ -260,7 +260,7 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
     copyGroup.sync();
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1FilePath, layout);
+    QString temp2File = newUniqueIdsFile(temp1FilePath, layout);
 
     //! Finally import the configuration
     importLayoutFile(layout, temp2File);
@@ -295,9 +295,9 @@ bool Storage::appletGroupIsValid(const KConfigGroup &appletGroup)
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }
 
-QString Storage::newUniqueIdsLayoutFromFile(QString originFile, const Layout::GenericLayout *destinationLayout, QString destinationFile)
+QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayout *destinationLayout, QString destinationFile)
 {
-    if (!destinationLayout || !destinationLayout->corona()) {
+    if (destinationFile.isEmpty() && (!destinationLayout || !destinationLayout->corona())) {
         return QString();
     }
 
@@ -437,8 +437,12 @@ QString Storage::newUniqueIdsLayoutFromFile(QString originFile, const Layout::Ge
             }
         }
 
-        if (destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+        if (destinationFile.isEmpty() && destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            //! will be added in main corona multiple layouts file
             investigate_conts.group(cId).writeEntry("layoutId", destinationLayout->name());
+        } else {
+            //! will be added in inactive layout
+            investigate_conts.group(cId).writeEntry("layoutId", QString());
         }
     }
 
@@ -558,7 +562,7 @@ ViewDelayedCreationData Storage::newView(const Layout::GenericLayout *destinatio
     QFile(templateFile).copy(templateTmpAbsolutePath);
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(templateTmpAbsolutePath, destination);
+    QString temp2File = newUniqueIdsFile(templateTmpAbsolutePath, destination);
 
     //! Finally import the configuration
     QList<Plasma::Containment *> importedViews = importLayoutFile(destination, temp2File);
@@ -821,7 +825,7 @@ ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, P
     //! end of subcontainments specific code
 
     //! update ids to unique ones
-    QString temp2File = newUniqueIdsLayoutFromFile(temp1File, layout);
+    QString temp2File = newUniqueIdsFile(temp1File, layout);
 
     //! Finally import the configuration
     QList<Plasma::Containment *> importedDocks = importLayoutFile(layout, temp2File);
