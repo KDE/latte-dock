@@ -122,7 +122,6 @@ public:
 
     //! this function needs the layout to have first set the corona through initToCorona() function
     virtual void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
-    void duplicateView(Plasma::Containment *containment);
     void recreateView(Plasma::Containment *containment, bool delayed = true);
     bool latteViewExists(Plasma::Containment *containment);
 

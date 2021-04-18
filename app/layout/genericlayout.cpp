@@ -1559,24 +1559,6 @@ void GenericLayout::syncToLayoutFile(bool removeLayoutId)
     Layouts::Storage::self()->syncToLayoutFile(this, removeLayoutId);
 }
 
-void GenericLayout::duplicateView(Plasma::Containment *containment)
-{
-    //! Don't create LatteView when the containment is created because we must update its screen settings first
-    setBlockAutomaticLatteViewCreation(true);
-
-    Layouts::ViewDelayedCreationData result = Layouts::Storage::self()->copyView(this, containment);
-    if (result.containment) {
-        addView(result.containment, result.forceOnPrimary, result.explicitScreen);
-
-        if (result.reactToScreenChange) {
-            result.containment->reactToScreenChange();
-        }
-    }
-
-    setBlockAutomaticLatteViewCreation(false);
-    emit viewEdgeChanged();
-}
-
 Data::View GenericLayout::newView(const Latte::Data::View &nextViewData)
 {
     if (nextViewData.state() == Data::View::IsInvalid) {

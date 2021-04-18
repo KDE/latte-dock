@@ -465,7 +465,8 @@ void View::reconsiderScreen()
 
 void View::duplicateView()
 {
-    m_layout->duplicateView(containment());
+    QString storedTmpViewFilepath = m_layout->storedView(containment()->id());
+    newView(storedTmpViewFilepath);
 }
 
 void View::exportTemplate()

@@ -830,156 +830,6 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
     return true;
 }
 
-ViewDelayedCreationData Storage::copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment)
-{
-    if (!containment || !layout->corona()) {
-        return ViewDelayedCreationData();
-    }
-
-    qDebug() << "copying containment layout";
-    //! Setting mutable for create a containment
-    layout->corona()->setImmutability(Plasma::Types::Mutable);
-
-    QString temp1File = m_storageTmpDir.path() +  "/" + layout->name() + ".copy.view";
-
-    //! WE NEED A WAY TO COPY A CONTAINMENT!!!!
-    QFile copyFile(temp1File);
-
-    if (copyFile.exists()) {
-        copyFile.remove();
-    }
-
-    KSharedConfigPtr newFile = KSharedConfig::openConfig(temp1File);
-    KConfigGroup copied_conts = KConfigGroup(newFile, "Containments");
-    KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
-
-    containment->config().copyTo(&copied_c1);
-
-    //!investigate if there are subcontainments in the containment to copy also
-
-    //! subId, subAppletId
-    QHash<uint, QString> subInfo;
-    auto applets = containment->config().group("Applets");
-
-    for (const auto &applet : applets.groupList()) {
-        int tSubId = subContainmentId(applets.group(applet));
-
-        //! It is a subcontainment !!!
-        if (isValid(tSubId)) {
-            subInfo[tSubId] = applet;
-            qDebug() << "subcontainment with id "<< tSubId << " was found in the containment... ::: " << containment->id();
-        }
-    }
-
-    if (subInfo.count() > 0) {
-        for(const auto subId : subInfo.keys()) {
-            Plasma::Containment *subcontainment{nullptr};
-
-            for (const auto containment : layout->corona()->containments()) {
-                if (containment->id() == subId) {
-                    subcontainment = containment;
-                    break;
-                }
-            }
-
-            if (subcontainment) {
-                KConfigGroup copied_sub = KConfigGroup(&copied_conts, QString::number(subcontainment->id()));
-                subcontainment->config().copyTo(&copied_sub);
-            }
-        }
-    }
-    //! end of subcontainments specific code
-
-    //! update ids to unique ones
-    QString temp2File = newUniqueIdsFile(temp1File, layout);
-
-    //! Finally import the configuration
-    QList<Plasma::Containment *> importedDocks = importLayoutFile(layout, temp2File);
-
-    Plasma::Containment *newContainment{nullptr};
-
-    if (importedDocks.size() == 1) {
-        newContainment = importedDocks[0];
-    }
-
-    if (!newContainment || !newContainment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded";
-        return ViewDelayedCreationData();
-    }
-
-    auto config = newContainment->config();
-
-    //in multi-screen environment the copied dock is moved to alternative screens first
-    const auto screens = qGuiApp->screens();
-    auto dock =  layout->viewForContainment(containment);
-
-    bool setOnExplicitScreen = false;
-
-    int dockScrId = IDNULL;
-    int copyScrId = IDNULL;
-
-    if (dock) {
-        dockScrId = dock->positioner()->currentScreenId();
-        qDebug() << "COPY DOCK SCREEN ::: " << dockScrId;
-
-        if (isValid(dockScrId) && screens.count() > 1) {
-            for (const auto scr : screens) {
-                copyScrId = layout->corona()->screenPool()->id(scr->name());
-
-                //the screen must exist and not be the same with the original dock
-                if (isValid(copyScrId) && copyScrId != dockScrId) {
-                    QList<Plasma::Types::Location> fEdges = layout->freeEdges(copyScrId);
-
-                    if (fEdges.contains((Plasma::Types::Location)containment->location())) {
-                        ///set this containment to an explicit screen
-                        config.writeEntry("onPrimary", false);
-                        config.writeEntry("lastScreen", copyScrId);
-                        newContainment->setLocation(containment->location());
-
-                        qDebug() << "COPY DOCK SCREEN NEW SCREEN ::: " << copyScrId;
-
-                        setOnExplicitScreen = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    if (!setOnExplicitScreen) {
-        QList<Plasma::Types::Location> edges = layout->freeEdges(newContainment->screen());
-
-        if (edges.count() > 0) {
-            newContainment->setLocation(edges.at(0));
-        } else {
-            newContainment->setLocation(Plasma::Types::BottomEdge);
-        }
-
-        config.writeEntry("onPrimary", true);
-        config.writeEntry("lastScreen", dockScrId);
-    }
-
-    newContainment->config().sync();
-
-    ViewDelayedCreationData result;
-
-    if (setOnExplicitScreen && isValid(copyScrId)) {
-        qDebug() << "Copy Dock in explicit screen ::: " << copyScrId;
-        result.containment = newContainment;
-        result.forceOnPrimary = false;
-        result.explicitScreen = copyScrId;
-        result.reactToScreenChange = true;
-    } else {
-        qDebug() << "Copy Dock in current screen...";
-        result.containment = newContainment;
-        result.forceOnPrimary = false;
-        result.explicitScreen = dockScrId;
-        result.reactToScreenChange = false;
-    }
-
-    return result;
-}
-
 bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors) const
 {
     if (layout->file().isEmpty() || !QFile(layout->file()).exists()) {
@@ -1450,9 +1300,14 @@ QString Storage::storedView(const Layout::GenericLayout *layout, const int &cont
     //! at this point we are sure that both layout and containmentId are acceptable
     QString nextTmpStoredViewAbsolutePath = m_storageTmpDir.path() + "/" + QFileInfo(layout->name()).fileName() + "." + QString::number(containmentId) + ".stored.tmp";
 
+    QFile tempStoredViewFile(nextTmpStoredViewAbsolutePath);
+
+    if (tempStoredViewFile.exists()) {
+        tempStoredViewFile.remove();
+    }
+
     KSharedConfigPtr destinationPtr = KSharedConfig::openConfig(nextTmpStoredViewAbsolutePath);
     KConfigGroup destinationContainments = KConfigGroup(destinationPtr, "Containments");
-
 
     if (layout->isActive()) {
         //! update and copy containments

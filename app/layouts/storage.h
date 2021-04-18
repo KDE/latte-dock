@@ -50,14 +50,6 @@ struct SubContaimentIdentityData
     QString cfgProperty;
 };
 
-struct ViewDelayedCreationData
-{
-    Plasma::Containment *containment{nullptr};
-    bool forceOnPrimary{false};
-    int explicitScreen{-1};
-    bool reactToScreenChange{false};
-};
-
 class Storage
 {
 
@@ -85,12 +77,11 @@ public:
 
     void importToCorona(const Layout::GenericLayout *layout);
     void syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId);
-    ViewDelayedCreationData copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment);
-    Data::View newView(const Layout::GenericLayout *destination, const Data::View &nextViewData);
 
+    Data::View newView(const Layout::GenericLayout *destination, const Data::View &nextViewData);
+    void removeView(const QString &filepath, const Data::View &viewData);
     void updateView(const Layout::GenericLayout *layout, const Data::View &viewData);
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
-    void removeView(const QString &filepath, const Data::View &viewData);
     QString storedView(const Layout::GenericLayout *layout, const int &containmentId); //returns temp filepath containing all view data
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
