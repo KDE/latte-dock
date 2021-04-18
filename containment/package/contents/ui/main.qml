@@ -894,7 +894,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: thickMargin;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: dndSpacerAddItemContainer.thickMargin;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -909,7 +909,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: thickMargin;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: dndSpacerAddItemContainer.thickMargin;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -924,7 +924,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: thickMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: dndSpacerAddItemContainer.thickMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 },
@@ -939,7 +939,7 @@ Item {
                     }
                     PropertyChanges{
                         target: dndSpacerAddItem;
-                        anchors.leftMargin: 0;    anchors.rightMargin: metrics.margin.screenEdge;     anchors.topMargin:0;    anchors.bottomMargin: 0;
+                        anchors.leftMargin: 0;    anchors.rightMargin: dndSpacerAddItemContainer.thickMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
                 }
