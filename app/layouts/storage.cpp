@@ -668,35 +668,6 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
     }
 
     return updatedNextViews[0];
-    /*
-    auto config = newContainment->config();
-    int primaryScrId = destination->corona()->screenPool()->primaryScreenId();
-
-    QList<Plasma::Types::Location> edges = destination->freeEdges(primaryScrId);
-    qDebug() << "org.kde.latte current template edge : " << newContainment->location() << " free edges :: " << edges;
-
-    //! if selected template screen edge is not free
-    if (!edges.contains(newContainment->location())) {
-        if (edges.count() > 0) {
-            newContainment->setLocation(edges.at(0));
-        } else {
-            newContainment->setLocation(Plasma::Types::BottomEdge);
-        }
-    }
-
-    config.writeEntry("onPrimary", true);
-    config.writeEntry("lastScreen", primaryScrId);
-
-    newContainment->config().sync();
-
-    ViewDelayedCreationData result;
-
-    result.containment = newContainment;
-    result.forceOnPrimary = false;
-    result.explicitScreen = primaryScrId;
-    result.reactToScreenChange = false;
-
-    return result;*/
 }
 
 void Storage::clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup)
@@ -1456,6 +1427,76 @@ void Storage::removeView(const QString &filepath, const Data::View &viewData)
     }
 
     containmentGroups.sync();
+}
+
+QString Storage::storedView(const Layout::GenericLayout *layout, const int &containmentId)
+{
+    //! make sure that layout and containmentId are valid
+    if (!layout) {
+        return QString();
+    }
+
+    if (layout->isActive()) {
+        auto containment = layout->containmentForId((uint)containmentId);
+        if (!containment || !isLatteContainment(containment)) {
+            return QString();
+        }
+    } else {
+        if (!containsView(layout->file(), containmentId)) {
+            return QString();
+        }
+    }
+
+    //! at this point we are sure that both layout and containmentId are acceptable
+    QString nextTmpStoredViewAbsolutePath = m_storageTmpDir.path() + "/" + QFileInfo(layout->name()).fileName() + "." + QString::number(containmentId) + ".stored.tmp";
+
+    KSharedConfigPtr destinationPtr = KSharedConfig::openConfig(nextTmpStoredViewAbsolutePath);
+    KConfigGroup destinationContainments = KConfigGroup(destinationPtr, "Containments");
+
+
+    if (layout->isActive()) {
+        //! update and copy containments
+        auto containment = layout->containmentForId((uint)containmentId);
+        containment->config().sync();
+
+        KConfigGroup destinationViewContainment(&destinationContainments, QString::number(containment->id()));
+        containment->config().copyTo(&destinationViewContainment);
+
+        QList<Plasma::Containment *> subconts = layout->subContainmentsOf(containment->id());
+
+        for(const auto subcont : subconts) {
+            subcont->config().sync();
+            KConfigGroup destinationsubcontainment(&destinationContainments, QString::number(subcont->id()));
+            subcont->config().copyTo(&destinationsubcontainment);
+        }
+
+        //! update with latest view data if active view is present
+        auto view = layout->viewForContainment(containment);
+
+        if (view) {
+            Data::View currentviewdata = view->data();
+            updateView(destinationViewContainment, currentviewdata);
+        }
+    } else {
+        QString containmentid = QString::number(containmentId);
+        KConfigGroup destinationViewContainment(&destinationContainments, containmentid);
+
+        KSharedConfigPtr originPtr = KSharedConfig::openConfig(layout->file());
+        KConfigGroup originContainments = KConfigGroup(originPtr, "Containments");
+
+        originContainments.group(containmentid).copyTo(&destinationViewContainment);
+
+        Data::GenericTable<Data::Generic> subconts = subcontainments(originContainments.group(containmentid));
+
+        for(int i=0; i<subconts.rowCount(); ++i) {
+            QString subid = subconts[i].id;
+            KConfigGroup destinationsubcontainment(&destinationContainments, subid);
+            originContainments.group(subid).copyTo(&destinationsubcontainment);
+        }
+    }
+
+    destinationContainments.sync();
+    return nextTmpStoredViewAbsolutePath;
 }
 
 Data::ViewsTable Storage::views(const Layout::GenericLayout *layout)

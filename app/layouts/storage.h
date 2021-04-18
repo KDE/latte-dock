@@ -91,6 +91,7 @@ public:
     void updateView(const Layout::GenericLayout *layout, const Data::View &viewData);
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
     void removeView(const QString &filepath, const Data::View &viewData);
+    QString storedView(const Layout::GenericLayout *layout, const int &containmentId); //returns temp filepath containing all view data
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
     bool exportTemplate(const Layout::GenericLayout *layout, Plasma::Containment *containment, const QString &destinationFile, const Data::AppletsTable &approvedApplets);

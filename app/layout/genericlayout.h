@@ -97,6 +97,7 @@ public:
     Latte::View *viewForContainment(uint id) const;
     Latte::View *viewForContainment(Plasma::Containment *containment) const;
     Plasma::Containment *containmentForId(uint id) const;
+    QList<Plasma::Containment *> subContainmentsOf(uint id) const;
 
     static bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
     static bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
@@ -128,6 +129,7 @@ public:
     Data::View newView(const Latte::Data::View &nextViewData);
     void removeView(const Latte::Data::View &viewData);
     void updateView(const Latte::Data::View &viewData);    
+    QString storedView(const int &containmentId); //returns temp filepath containing all view data
 
     //! Available edges for specific view in that screen
     virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;

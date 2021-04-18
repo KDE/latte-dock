@@ -1457,6 +1457,33 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     qDebug() << "end of, syncLatteViewsToScreens ....";
 }
 
+QList<Plasma::Containment *> GenericLayout::subContainmentsOf(uint id) const
+{
+    QList<Plasma::Containment *> subs;
+
+    auto containment = containmentForId(id);
+
+    if (!containment || !Layouts::Storage::self()->isLatteContainment(containment)) {
+        return subs;
+    }
+
+    auto applets = containment->config().group("Applets");
+
+    for (const auto &applet : applets.groupList()) {
+        int tSubId = Layouts::Storage::self()->subContainmentId(applets.group(applet));
+
+        if (Layouts::Storage::isValid(tSubId)) {
+            auto subcontainment = containmentForId(tSubId);
+
+            if (subcontainment) {
+                subs << subcontainment;
+            }
+        }
+    }
+
+    return subs;
+}
+
 QList<int> GenericLayout::subContainmentsOf(Plasma::Containment *containment) const
 {
     QList<int> subs;
@@ -1668,6 +1695,11 @@ void GenericLayout::removeView(const Latte::Data::View &viewData)
         //! remove from storage
         Layouts::Storage::self()->removeView(file(), viewData);
     }
+}
+
+QString GenericLayout::storedView(const int &containmentId)
+{
+    return Layouts::Storage::self()->storedView(this, containmentId);
 }
 
 void GenericLayout::importToCorona()
