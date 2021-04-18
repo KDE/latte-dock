@@ -39,6 +39,7 @@ View::View(View &&o)
       alignment(o.alignment),
       m_state(o.m_state),
       m_originFile(o.m_originFile),
+      m_originLayout(o.m_originLayout),
       m_originView(o.m_originView),
       subcontainments(o.subcontainments)
 {
@@ -55,6 +56,7 @@ View::View(const View &o)
       alignment(o.alignment),
       m_state(o.m_state),
       m_originFile(o.m_originFile),
+      m_originLayout(o.m_originLayout),
       m_originView(o.m_originView),
       subcontainments(o.subcontainments)
 {
@@ -73,6 +75,7 @@ View &View::operator=(const View &rhs)
     alignment = rhs.alignment;
     m_state = rhs.m_state;
     m_originFile = rhs.m_originFile;
+    m_originLayout == rhs.m_originLayout;
     m_originView = rhs.m_originView;
     subcontainments = rhs.subcontainments;
 
@@ -92,6 +95,7 @@ View &View::operator=(View &&rhs)
     alignment = rhs.alignment;
     m_state = rhs.m_state;
     m_originFile = rhs.m_originFile;
+    m_originLayout = rhs.m_originLayout;
     m_originView = rhs.m_originView;
     subcontainments = rhs.subcontainments;
 
@@ -111,6 +115,7 @@ bool View::operator==(const View &rhs) const
             && (alignment == rhs.alignment)
             && (m_state == rhs.m_state)
             && (m_originFile == rhs.m_originFile)
+            && (m_originLayout == rhs.m_originLayout)
             && (m_originView == rhs.m_originView)
             && (subcontainments == rhs.subcontainments);
 }
@@ -219,6 +224,11 @@ QString View::originFile() const
     return m_originFile;
 }
 
+QString View::originLayout() const
+{
+    return m_originLayout;
+}
+
 QString View::originView() const
 {
     return m_originView;
@@ -229,10 +239,11 @@ View::State View::state() const
     return m_state;
 }
 
-void View::setState(View::State state, QString file, QString view)
+void View::setState(View::State state, QString file, QString layout, QString view)
 {
     m_state = state;
     m_originFile = file;
+    m_originLayout = layout;
     m_originView = view;
 }
 

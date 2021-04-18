@@ -605,9 +605,9 @@ void Storage::importContainments(const QString &originFile, const QString &desti
     destinationContainments.sync();
 }
 
-Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, const QString &templateFile, const Data::View &nextViewData)
+Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, const Data::View &nextViewData)
 {
-    if (!destinationLayout) {
+    if (!destinationLayout || nextViewData.originFile().isEmpty()) {
         return Data::View();
     }
 
@@ -618,6 +618,7 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
         destinationLayout->corona()->setImmutability(Plasma::Types::Mutable);
     }
 
+    QString templateFile = nextViewData.originFile();
     //! copy view template path in temp file
     QString templateTmpAbsolutePath = m_storageTmpDir.path() + "/" + QFileInfo(templateFile).fileName() + ".newids";
 

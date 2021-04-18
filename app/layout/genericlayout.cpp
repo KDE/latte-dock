@@ -1550,13 +1550,13 @@ void GenericLayout::duplicateView(Plasma::Containment *containment)
     emit viewEdgeChanged();
 }
 
-Data::View GenericLayout::newView(const QString &templateFile, const Latte::Data::View &nextViewData)
+Data::View GenericLayout::newView(const Latte::Data::View &nextViewData)
 {
     if (nextViewData.state() == Data::View::IsInvalid) {
         return Data::View();
     }
 
-    Data::View result = Layouts::Storage::self()->newView(this, templateFile, nextViewData);
+    Data::View result = Layouts::Storage::self()->newView(this, nextViewData);
     emit viewEdgeChanged();
 
     return result;

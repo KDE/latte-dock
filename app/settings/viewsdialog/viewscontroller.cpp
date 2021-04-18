@@ -231,7 +231,7 @@ void Views::save()
     //! add new views
     for(int i=0; i<newViews.rowCount(); ++i){
         if (newViews[i].state() == Data::View::OriginFromViewTemplate) {
-            Data::View addedview = central->newView(newViews[i].originFile(), newViews[i]);
+            Data::View addedview = central->newView(newViews[i]);
             newviewsresponses[newViews[i].id] = addedview;
         }
     }

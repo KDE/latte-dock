@@ -497,7 +497,7 @@ void View::newView(const QString &templateFile)
 
     nextdata.setState(Data::View::OriginFromViewTemplate, templateFile);
 
-    m_layout->newView(templateFile, nextdata);
+    m_layout->newView(nextdata);
 }
 
 void View::removeView()

@@ -43,8 +43,8 @@ public:
     enum State {
         IsInvalid = -1,
         IsCreated = 0,
-        OriginFromViewTemplate,
-        OriginFromLayout
+        OriginFromViewTemplate, /*used for view templates files*/
+        OriginFromLayout /*used from duplicate, copy, move view functions*/
     };
 
     View();
@@ -71,10 +71,11 @@ public:
     bool isVertical() const;
 
     QString originFile() const;
-    QString originView() const;
+    QString originLayout() const;
+    QString originView() const;    
 
     View::State state() const;
-    void setState(View::State state, QString file = QString(), QString view = QString());
+    void setState(View::State state, QString file = QString(), QString layout = QString(), QString view = QString());
 
     //! Operators
     View &operator=(const View &rhs);
@@ -88,6 +89,7 @@ protected:
 
     //! Origin Data
     QString m_originFile;
+    QString m_originLayout;
     QString m_originView;
 };
 

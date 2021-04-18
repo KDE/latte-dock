@@ -86,7 +86,7 @@ public:
     void importToCorona(const Layout::GenericLayout *layout);
     void syncToLayoutFile(const Layout::GenericLayout *layout, bool removeLayoutId);
     ViewDelayedCreationData copyView(const Layout::GenericLayout *layout, Plasma::Containment *containment);
-    Data::View newView(const Layout::GenericLayout *destination, const QString &templateFile, const Data::View &nextViewData);
+    Data::View newView(const Layout::GenericLayout *destination, const Data::View &nextViewData);
 
     void updateView(const Layout::GenericLayout *layout, const Data::View &viewData);
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
