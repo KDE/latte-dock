@@ -981,6 +981,11 @@ Data::Applet Storage::metadata(const QString &pluginId)
         }
     }
 
+    if (data.name.isEmpty()) {
+        //! this is also a way to identify if a package is installed or not in current system
+        data.name = data.id;
+    }
+
     return data;
 }
 
@@ -1026,10 +1031,10 @@ Data::AppletsTable Storage::plugins(const Layout::GenericLayout *layout, const i
             if (!knownapplets.containsId(pluginId) && !unknownapplets.containsId(pluginId)) {
                 Data::Applet appletdata = metadata(pluginId);
 
-                if (appletdata.isValid()) {
+                if (appletdata.isInstalled()) {
                     knownapplets.insertBasedOnName(appletdata);
-                } else {
-                    unknownapplets.insertBasedOnId(appletdata);
+                } else if (appletdata.isValid()) {
+                    unknownapplets.insertBasedOnName(appletdata);
                 }
             }
         }
@@ -1095,7 +1100,7 @@ Data::AppletsTable Storage::plugins(const QString &layoutfile, const int contain
                 if (appletdata.isInstalled()) {
                     knownapplets.insertBasedOnName(appletdata);
                 } else if (appletdata.isValid()) {
-                    unknownapplets.insertBasedOnId(appletdata);
+                    unknownapplets.insertBasedOnName(appletdata);
                 }
             }
         }
