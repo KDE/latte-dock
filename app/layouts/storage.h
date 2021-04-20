@@ -113,6 +113,7 @@ private:
 
     void clearExportedLayoutSettings(KConfigGroup &layoutSettingsGroup);
     void importContainments(const QString &originFile, const QString &destinationFile);
+    void syncContainmentConfig(Plasma::Containment *containment);
 
     bool isSubContainment(const KConfigGroup &appletGroup) const;
     int subIdentityIndex(const KConfigGroup &appletGroup) const;

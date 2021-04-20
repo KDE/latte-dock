@@ -1113,6 +1113,25 @@ Data::AppletsTable Storage::plugins(const QString &layoutfile, const int contain
 
 //! Views Data
 
+void Storage::syncContainmentConfig(Plasma::Containment *containment)
+{
+    if (!containment) {
+        return;
+    }
+
+    for(auto applet: containment->applets()) {
+        KConfigGroup appletGeneralConfig = applet->config().group("General");
+
+        if (appletGeneralConfig.exists()) {
+            appletGeneralConfig.sync();
+        }
+
+        applet->config().sync();
+    }
+
+    containment->config().sync();
+}
+
 bool Storage::containsView(const QString &filepath, const int &viewId)
 {
     KSharedConfigPtr lFile = KSharedConfig::openConfig(filepath);
@@ -1317,7 +1336,7 @@ QString Storage::storedView(const Layout::GenericLayout *layout, const int &cont
     if (layout->isActive()) {
         //! update and copy containments
         auto containment = layout->containmentForId((uint)containmentId);
-        containment->config().sync();
+        syncContainmentConfig(containment);
 
         KConfigGroup destinationViewContainment(&destinationContainments, QString::number(containment->id()));
         containment->config().copyTo(&destinationViewContainment);
@@ -1325,7 +1344,7 @@ QString Storage::storedView(const Layout::GenericLayout *layout, const int &cont
         QList<Plasma::Containment *> subconts = layout->subContainmentsOf(containment->id());
 
         for(const auto subcont : subconts) {
-            subcont->config().sync();
+            syncContainmentConfig(subcont);
             KConfigGroup destinationsubcontainment(&destinationContainments, QString::number(subcont->id()));
             subcont->config().copyTo(&destinationsubcontainment);
         }
