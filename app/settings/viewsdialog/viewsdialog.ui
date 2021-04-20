@@ -133,55 +133,6 @@
             </widget>
            </item>
            <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="cutBtn">
-             <property name="text">
-              <string notr="true">Cut</string>
-             </property>
-             <property name="icon">
-              <iconset theme="edit-cut">
-               <normaloff>.</normaloff>.</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="copyBtn">
-             <property name="text">
-              <string notr="true">Copy</string>
-             </property>
-             <property name="icon">
-              <iconset theme="edit-copy">
-               <normaloff>.</normaloff>.</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pasteBtn">
-             <property name="text">
-              <string notr="true">Paste</string>
-             </property>
-             <property name="icon">
-              <iconset theme="edit-paste">
-               <normaloff>.</normaloff>.</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
             <spacer name="verticalSpacer_2">
              <property name="orientation">
               <enum>Qt::Vertical</enum>

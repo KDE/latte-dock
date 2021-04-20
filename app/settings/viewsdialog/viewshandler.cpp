@@ -58,10 +58,6 @@ ViewsHandler::ViewsHandler(Dialog::ViewsDialog *dialog)
     m_viewsController = new Settings::Controller::Views(this);
 
     init();
-
-    m_ui->cutBtn->setVisible(false);
-    m_ui->copyBtn->setVisible(false);
-    m_ui->pasteBtn->setVisible(false);
 }
 
 ViewsHandler::~ViewsHandler()
