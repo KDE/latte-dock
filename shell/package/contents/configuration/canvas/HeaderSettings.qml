@@ -35,8 +35,6 @@ Item {
     readonly property bool containsMouse: rearrangeBtn.containsMouse || stickOnBottomBtn.containsMouse || stickOnTopBtn.containsMouse
     readonly property int thickness: rearrangeBtn.implicitHeight
 
-    readonly property bool inSettingsAdvancedMode: latteView && latteView.inSettingsAdvancedMode
-
     readonly property int headMargin: spacing * 2
 
     rotation: {
@@ -78,7 +76,7 @@ Item {
 
     SettingsControls.Button{
         id: stickOnTopBtn
-        visible: root.isVertical && inSettingsAdvancedMode
+        visible: root.isVertical
 
         text: i18n("Stick On Top");
         tooltip: i18n("Stick maximum available space at top screen edge and ignore any top docks or panels")
@@ -137,7 +135,7 @@ Item {
 
     SettingsControls.Button{
         id: stickOnBottomBtn
-        visible: root.isVertical && inSettingsAdvancedMode
+        visible: root.isVertical
 
         text: i18n("Stick On Bottom");
         tooltip: i18n("Stick maximum available space at bottom screen edge and ignore any bottom docks or panels")
