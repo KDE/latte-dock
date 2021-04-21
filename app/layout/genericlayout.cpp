@@ -42,6 +42,7 @@
 #include <Plasma/Containment>
 
 // KDE
+#include <KActionCollection>
 #include <KConfigGroup>
 
 namespace Latte {
@@ -1643,39 +1644,13 @@ void GenericLayout::removeView(const Latte::Data::View &viewData)
         return;
     }
 
-    Latte::View *view = viewForContainment(viewData.id.toUInt());
-
-    if (view) {
-        //! viewMustBeDeleted
-        m_latteViews.remove(view->containment());
-        view->disconnectSensitiveSignals();
-        view->positioner()->hideOnExit();
-        delete view;
-    }
-
-    //! delete also the relevant containments
     Plasma::Containment *viewcontainment = containmentForId(viewData.id.toUInt());
 
     if (viewcontainment) {
-        m_containments.removeAll(viewcontainment);
-        delete viewcontainment;
-    }
-
-    for (int i=0; i<viewData.subcontainments.rowCount(); ++i) {
-        Plasma::Containment *subcontainment = containmentForId(viewData.subcontainments[i].id.toUInt());
-
-        if (subcontainment) {
-            m_containments.removeAll(subcontainment);
-            delete subcontainment;
+        QAction *removeaction = viewcontainment->actions()->action("remove");
+        if (removeaction) {
+            removeaction->trigger();
         }
-    }
-
-    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        QString multiplelayoutfile = Layouts::Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
-        Layouts::Storage::self()->removeView(multiplelayoutfile, viewData);
-    } else {
-        //! remove from storage
-        Layouts::Storage::self()->removeView(file(), viewData);
     }
 }
 
