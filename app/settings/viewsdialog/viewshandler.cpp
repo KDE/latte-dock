@@ -91,6 +91,14 @@ void ViewsHandler::init()
 
     connect(corona()->templatesManager(), &Latte::Templates::Manager::viewTemplatesChanged, this, &ViewsHandler::initViewTemplatesSubMenu);
 
+    //! Duplicate Button
+    m_duplicateViewAction = new QAction(i18nc("duplicate dock or panel", "&Duplicate"), this);
+    m_duplicateViewAction->setToolTip(i18n("Duplicate selected dock or panel"));
+    m_duplicateViewAction->setIcon(QIcon::fromTheme("edit-copy"));
+    m_duplicateViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    connectActionWithButton(m_ui->duplicateBtn, m_duplicateViewAction);
+    connect(m_duplicateViewAction, &QAction::triggered, this, &ViewsHandler::duplicateSelectedView);
+
     //! Remove Button
     m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), this);
     m_removeViewAction->setToolTip(i18n("Remove selected view"));
@@ -242,15 +250,37 @@ void ViewsHandler::newView(const Data::Generic &templateData)
     }
 }
 
+void ViewsHandler::duplicateSelectedView()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!m_duplicateViewAction->isEnabled() || !m_viewsController->hasSelectedView()) {
+        return;
+    }
+
+    Latte::Data::View selectedview = m_viewsController->selectedViewCurrentData();
+
+    if (selectedview.state() == Data::View::IsCreated) {
+        Latte::Data::Layout originallayout = originalData();
+        Latte::Data::Layout currentlayout = currentData();
+        Latte::CentralLayout *centralActive = isSelectedLayoutOriginal() ? m_dialog->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
+        Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
+
+        QString storedviewpath = central->storedView(selectedview.id.toInt());
+        Latte::Data::View duplicatedview = selectedview;
+        duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
+        m_viewsController->appendViewFromViewTemplate(duplicatedview);
+    } else if (selectedview.state() == Data::View::OriginFromViewTemplate) {
+        Latte::Data::View duplicatedview = selectedview;
+        m_viewsController->appendViewFromViewTemplate(duplicatedview);
+    }
+}
+
 void ViewsHandler::removeSelectedView()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!m_removeViewAction->isEnabled()) {
-        return;
-    }
-
-    if (!m_viewsController->hasSelectedView()) {
+    if (!m_removeViewAction->isEnabled() || !m_viewsController->hasSelectedView()) {
         return;
     }
 

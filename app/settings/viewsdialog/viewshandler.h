@@ -85,6 +85,7 @@ signals:
 
 private slots:
     void initViewTemplatesSubMenu();
+    void duplicateSelectedView();
     void removeSelectedView();
     void updateWindowTitle();
 
@@ -115,6 +116,7 @@ private:
 
     //! Actions
     QAction *m_newViewAction{nullptr};
+    QAction *m_duplicateViewAction{nullptr};
     QAction *m_removeViewAction{nullptr};
 
     //! Menus

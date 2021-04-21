@@ -122,6 +122,16 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="duplicateBtn">
+             <property name="text">
+              <string>Duplicate</string>
+             </property>
+             <property name="icon">
+              <iconset theme="edit-copy"/>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="removeBtn">
              <property name="text">
               <string notr="true">Remove</string>
