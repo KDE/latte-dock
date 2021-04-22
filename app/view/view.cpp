@@ -86,7 +86,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
       m_parabolic(new ViewPart::Parabolic(this)),
       m_sink(new ViewPart::EventsSink(this))
 {
-    setVisible(false);
+    //this is disabled because under wayland breaks Views positioning
+    //setVisible(false);
 
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -183,7 +184,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             m_positioner->immediateSyncGeometry();
             if (m_inStartup) {
                 m_inStartup = false;
-                m_positioner->showInStartup();
+                m_positioner->slideInDuringStartup();
             }
         }
 

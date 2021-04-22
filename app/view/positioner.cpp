@@ -106,6 +106,7 @@ Positioner::Positioner(Latte::View *parent)
 Positioner::~Positioner()
 {
     m_inDelete = true;
+    slideOutDuringExit();
     m_corona->wm()->unregisterIgnoredWindow(m_trackedWindowId);
 
     m_screenSyncTimer.stop();
@@ -294,9 +295,9 @@ QString Positioner::currentScreenName() const
     return m_screenNameToFollow;
 }
 
-void Positioner::hideOnExit(Plasma::Types::Location location)
+WindowSystem::AbstractWindowInterface::Slide Positioner::slideLocation(Plasma::Types::Location location)
 {
-    auto slideLocation = WindowSystem::AbstractWindowInterface::Slide::None;
+    auto slideedge = WindowSystem::AbstractWindowInterface::Slide::None;
 
     if (location == Plasma::Types::Floating && m_view->containment()) {
         location = m_view->containment()->location();
@@ -304,19 +305,19 @@ void Positioner::hideOnExit(Plasma::Types::Location location)
 
     switch (location) {
     case Plasma::Types::TopEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Top;
+        slideedge = WindowSystem::AbstractWindowInterface::Slide::Top;
         break;
 
     case Plasma::Types::RightEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Right;
+        slideedge = WindowSystem::AbstractWindowInterface::Slide::Right;
         break;
 
     case Plasma::Types::BottomEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Bottom;
+        slideedge = WindowSystem::AbstractWindowInterface::Slide::Bottom;
         break;
 
     case Plasma::Types::LeftEdge:
-        slideLocation = WindowSystem::AbstractWindowInterface::Slide::Left;
+        slideedge = WindowSystem::AbstractWindowInterface::Slide::Left;
         break;
 
     default:
@@ -324,14 +325,20 @@ void Positioner::hideOnExit(Plasma::Types::Location location)
         break;
     }
 
-    m_corona->wm()->slideWindow(*m_view, slideLocation);
-    m_view->setVisible(false);
+    return slideedge;
 }
 
-void Positioner::showInStartup()
+void Positioner::slideOutDuringExit(Plasma::Types::Location location)
 {
-    hideOnExit();
-    m_view->setVisible(true);
+    if (m_view->isVisible()) {
+        m_corona->wm()->slideWindow(*m_view, slideLocation(location));
+        m_view->setVisible(false);
+    }
+}
+
+void Positioner::slideInDuringStartup()
+{
+    m_corona->wm()->slideWindow(*m_view, slideLocation(m_view->containment()->location()));
 }
 
 void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
@@ -341,8 +348,7 @@ void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
     }
 
     m_inLayoutUnloading = true;
-
-    hideOnExit();
+    slideOutDuringExit();
 }
 
 void Positioner::syncLatteViews()

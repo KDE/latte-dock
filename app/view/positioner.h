@@ -22,6 +22,7 @@
 
 //local
 #include <coretypes.h>
+#include "../wm/abstractwindowinterface.h"
 #include "../wm/windowinfowrap.h"
 
 // Qt
@@ -108,8 +109,8 @@ public slots:
     //! that might prevent them. It must be called with care.
     void immediateSyncGeometry();
 
-    void showInStartup();
-    void hideOnExit(Plasma::Types::Location location = Plasma::Types::Floating);
+    void slideInDuringStartup();
+    void slideOutDuringExit(Plasma::Types::Location location = Plasma::Types::Floating);
 
     void initDelayedSignals();
     void updateWaylandId();
@@ -162,6 +163,8 @@ private:
     bool isLastHidingRelocationEvent() const;
 
     QRect maximumNormalGeometry();
+
+    WindowSystem::AbstractWindowInterface::Slide slideLocation(Plasma::Types::Location location);
 
 private:
     bool m_inDelete{false};
