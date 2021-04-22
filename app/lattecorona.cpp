@@ -168,21 +168,6 @@ Corona::~Corona()
     m_layoutsManager->synchronizer()->hideAllViews();
     m_viewSettingsFactory->deleteLater();
 
-    //! Don't delay the destruction under wayland in any case
-    //! because it creates a crash with kwin effects
-    //! https://bugs.kde.org/show_bug.cgi?id=392890
-    if (!KWindowSystem::isPlatformWayland()) {
-        QTimer::singleShot(400, [this]() {
-            m_quitTimedEnded = true;
-        });
-
-        while (!m_quitTimedEnded) {
-            QGuiApplication::processEvents(QEventLoop::AllEvents, 50);
-        }
-    }
-
-    //! END: slide-out views when closing
-
     m_viewsScreenSyncTimer.stop();
 
     if (m_layoutsManager->memoryUsage() == MemoryUsage::SingleLayout) {
@@ -190,8 +175,8 @@ Corona::~Corona()
     }
 
     qDebug() << "Latte Corona - unload: containments ...";
-
     m_layoutsManager->unload();
+
     m_plasmaGeometries->deleteLater();
     m_wm->deleteLater();
     m_dialogShadows->deleteLater();

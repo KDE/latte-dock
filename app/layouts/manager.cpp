@@ -319,6 +319,7 @@ void Manager::clearUnloadedContainmentsFromLinkedFile(QStringList containmentsId
         qDebug() << "unloads ::: " << conId;
         KConfigGroup containment = containments.group(conId);
         containment.deleteGroup();
+        containment.sync();
     }
 
     containments.sync();

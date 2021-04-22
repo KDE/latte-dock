@@ -559,8 +559,9 @@ void Storage::syncToLayoutFile(const Layout::GenericLayout *layout, bool removeL
 
         if (!removeLayoutId) {
             newGroup.writeEntry("layoutId", "");
-            newGroup.sync();
         }
+
+        newGroup.sync();
     }
 
     oldContainments.sync();
