@@ -184,9 +184,7 @@ void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
 
 bool Layouts::hasSelectedLayout() const
 {
-    int selectedRow = m_view->currentIndex().row();
-
-    return (selectedRow >= 0);
+    return m_view->selectionModel()->hasSelection();
 }
 
 bool Layouts::isSelectedLayoutOriginal() const

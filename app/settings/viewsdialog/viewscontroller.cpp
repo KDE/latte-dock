@@ -25,6 +25,7 @@
 #include "viewsdialog.h"
 #include "viewshandler.h"
 #include "viewsmodel.h"
+#include "viewstableview.h"
 #include "delegates/namedelegate.h"
 #include "delegates/singleoptiondelegate.h"
 #include "delegates/singletextdelegate.h"
@@ -107,8 +108,6 @@ void Views::init()
 
     applyColumnWidths();
 
-    m_view->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     m_cutAction = new QAction(QIcon::fromTheme("edit-cut"), i18n("Cut"), m_view);
     m_cutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
 
@@ -127,6 +126,7 @@ void Views::init()
     m_view->addAction(m_pasteAction);
     m_view->addAction(m_duplicateAction);
 
+    connect(m_view, &View::ViewsTableView::selectionsChanged, this, &Views::onSelectionsChanged);
     connect(m_view, &QObject::destroyed, this, &Views::storeColumnWidths);
 
     connect(m_view->horizontalHeader(), &QObject::destroyed, this, [&]() {
@@ -147,9 +147,7 @@ bool Views::hasChangedData() const
 
 bool Views::hasSelectedView() const
 {
-    int selectedRow = m_view->currentIndex().row();
-
-    return (selectedRow >= 0);
+    return m_view->selectionModel()->hasSelection();
 }
 
 int Views::rowForId(QString id) const
@@ -242,6 +240,16 @@ void Views::onCurrentLayoutChanged()
 {   
     Data::Layout layout = m_handler->currentData();
     m_model->setOriginalData(layout.views);
+}
+
+void Views::onSelectionsChanged()
+{
+    bool hasselectedview = hasSelectedView();
+
+    m_cutAction->setVisible(hasselectedview);
+    m_copyAction->setVisible(hasselectedview);
+    m_duplicateAction->setVisible(hasselectedview);
+    m_pasteAction->setVisible(!hasselectedview);
 }
 
 int Views::viewsForRemovalCount() const

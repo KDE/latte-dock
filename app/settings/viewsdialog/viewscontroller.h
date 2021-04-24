@@ -31,6 +31,7 @@
 // Qt
 #include <QAbstractItemModel>
 #include <QHash>
+#include <QItemSelection>
 #include <QSortFilterProxyModel>
 #include <QTableView>
 
@@ -42,6 +43,9 @@ class ViewsDialog;
 namespace Settings {
 namespace Handler {
 class ViewsHandler;
+}
+namespace View {
+class ViewsTableView;
 }
 }
 }
@@ -100,11 +104,12 @@ private slots:
     void applyColumnWidths();
 
     void onCurrentLayoutChanged();
+    void onSelectionsChanged();
 
 private:
     Settings::Handler::ViewsHandler *m_handler{nullptr};
 
-    QTableView *m_view{nullptr};
+    Settings::View::ViewsTableView *m_view{nullptr};
 
     //! layoutsView ui settings
     int m_viewSortColumn{Model::Views::SCREENCOLUMN};

@@ -87,7 +87,10 @@
           <number>6</number>
          </property>
          <item row="1" column="0">
-          <widget class="QTableView" name="viewsTable">
+          <widget class="Latte::Settings::View::ViewsTableView" name="viewsTable">
+           <property name="contextMenuPolicy">
+            <enum>Qt::ActionsContextMenu</enum>
+           </property>
            <property name="alternatingRowColors">
             <bool>true</bool>
            </property>
@@ -127,7 +130,8 @@
               <string>Duplicate</string>
              </property>
              <property name="icon">
-              <iconset theme="edit-copy"/>
+              <iconset theme="edit-copy">
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
@@ -221,6 +225,11 @@
    <class>Latte::Settings::LayoutsComboBox</class>
    <extends>QComboBox</extends>
    <header>settings/generic/layoutscombobox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Latte::Settings::View::ViewsTableView</class>
+   <extends>QTableView</extends>
+   <header>settings/viewsdialog/viewstableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
