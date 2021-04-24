@@ -1365,6 +1365,21 @@ void View::setColorizer(QQuickItem *colorizer)
     emit colorizerChanged();
 }
 
+QQuickItem *View::metrics() const
+{
+    return m_metrics;
+}
+
+void View::setMetrics(QQuickItem *metrics)
+{
+    if (m_metrics == metrics) {
+        return;
+    }
+
+    m_metrics = metrics;
+    emit metricsChanged();
+}
+
 ViewPart::Effects *View::effects() const
 {
     return m_effects;

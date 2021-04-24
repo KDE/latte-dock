@@ -212,6 +212,13 @@ Item{
         value: colorizerManager
     }
 
+    Binding{
+        target: latteView
+        property: "metrics"
+        when: latteView
+        value: metrics
+    }
+
     //! View::Effects bindings
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null

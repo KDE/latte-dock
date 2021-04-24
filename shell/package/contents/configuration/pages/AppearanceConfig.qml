@@ -164,12 +164,23 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: proportionSizeSlider.value !== proportionSizeSlider.from ?
-                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(proportionSizeSlider.value.toFixed(1)) : i18nc("no value in percentage","--- %")
-                        horizontalAlignment: Text.AlignRight
+                        id: absoluteSizeLbl
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        text: proportionSizeSlider.value !== proportionSizeSlider.from ?
+                                  (absoluteSizeLblMouseArea.containsMouse ?
+                                       i18nc("number in pixels, e.g. 64 px.","%0 px.").arg(latteView.metrics.maxIconSize) :
+                                       i18nc("number in percentage, e.g. 85 %","%0 %").arg(proportionSizeSlider.value.toFixed(1))) :
+                                  i18nc("no value in percentage","--- %")
+                        horizontalAlignment: Text.AlignRight
                         enabled: proportionSizeSlider.value !== proportionSizeSlider.from
+
+                        MouseArea {
+                            id: absoluteSizeLblMouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
                     }
                 }
 
@@ -617,10 +628,20 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(lengthExtMarginSlider.value)
+                        text: lengthMarginLblMouseArea.containsMouse ?
+                                  i18nc("number in pixels, e.g. 8 px.","%0 px.").arg(currentValueInPixels) :
+                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(lengthExtMarginSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+                        readonly property int currentValueInPixels: (lengthExtMarginSlider.value/100) * latteView.metrics.maxIconSize
+
+                        MouseArea {
+                            id: lengthMarginLblMouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
                     }
                 }
 
@@ -653,12 +674,21 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+                        text: thickMarginLblMouseArea.containsMouse ?
+                                  i18nc("number in pixels, e.g. 8 px.","%0 px.").arg(currentValueInPixels) :
+                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
 
                         readonly property int currentValue: Math.max(thickMarginSlider.minimumInternalValue, thickMarginSlider.value)
+                        readonly property int currentValueInPixels: (currentValue/100) * latteView.metrics.maxIconSize
+
+                        MouseArea {
+                            id: thickMarginLblMouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                        }
                     }
                 }
 

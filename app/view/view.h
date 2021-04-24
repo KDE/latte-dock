@@ -121,6 +121,7 @@ class View : public PlasmaQuick::ContainmentView
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
 
     Q_PROPERTY(QQuickItem *colorizer READ colorizer WRITE setColorizer NOTIFY colorizerChanged)
+    Q_PROPERTY(QQuickItem *metrics READ metrics WRITE setMetrics NOTIFY metricsChanged)
 
     Q_PROPERTY(QVariantList containmentActions READ containmentActions NOTIFY containmentActionsChanged)
 
@@ -239,6 +240,9 @@ public:
     QQuickItem *colorizer() const;
     void setColorizer(QQuickItem *colorizer);
 
+    QQuickItem *metrics() const;
+    void setMetrics(QQuickItem *metrics);
+
     QVariantList containmentActions() const;
 
     QQuickView *configView();
@@ -336,6 +340,7 @@ signals:
     void localGeometryChanged();
     void maxLengthChanged();
     void maxThicknessChanged();
+    void metricsChanged();
     void normalThicknessChanged();
     void maxNormalThicknessChanged();
     void nameChanged();
@@ -447,6 +452,7 @@ private:
     Layout::GenericLayout *m_layout{nullptr};
 
     QQuickItem *m_colorizer{nullptr};
+    QQuickItem *m_metrics{nullptr};
 
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
