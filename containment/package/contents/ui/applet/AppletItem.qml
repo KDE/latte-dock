@@ -62,6 +62,7 @@ Item {
     readonly property bool canFillScreenEdge: communicator.requires.screenEdgeMarginSupported || communicator.indexerIsSupported
     readonly property bool canFillThickness: applet && applet.hasOwnProperty("constraintHints")
                                              && ((applet.constraintHints & PlasmaCore.Types.CanFillArea) === PlasmaCore.Types.CanFillArea);
+
     readonly property bool isMarginsAreaSeparator: applet && applet.hasOwnProperty("constraintHints")
                                                    && ((applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) === PlasmaCore.Types.MarginAreasSeparator);
 

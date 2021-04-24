@@ -196,6 +196,8 @@ private slots:
     void alternativesVisibilityChanged(bool visible);
     void load();
 
+    void onAboutToQuit();
+
     void addOutput(QScreen *screen);
     void primaryOutputChanged();
     void screenRemoved(QScreen *screen);

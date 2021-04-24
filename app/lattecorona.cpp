@@ -111,8 +111,9 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
       m_plasmaGeometries(new PlasmaExtended::ScreenGeometries(this)),
       m_dialogShadows(new PanelShadows(this, QStringLiteral("dialogs/background")))
 {
-    //! create the window manager
+    connect(qApp, &QApplication::aboutToQuit, this, &Corona::onAboutToQuit);
 
+    //! create the window manager
     if (KWindowSystem::isPlatformWayland()) {
         m_wm = new WindowSystem::WaylandInterface(this);
     } else {
@@ -162,7 +163,7 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int use
 
 Corona::~Corona()
 {
-    m_inQuit = true;
+    /*m_inQuit = true;
 
     //! BEGIN: Give the time to slide-out views when closing
     m_layoutsManager->synchronizer()->hideAllViews();
@@ -175,7 +176,7 @@ Corona::~Corona()
     }
 
     qDebug() << "Latte Corona - unload: containments ...";
-    m_layoutsManager->unload();
+    m_layoutsManager->unload();*/
 
     m_plasmaGeometries->deleteLater();
     m_wm->deleteLater();
@@ -200,6 +201,24 @@ Corona::~Corona()
 
         QProcess::startDetached(importCommand);
     }
+}
+
+void Corona::onAboutToQuit()
+{
+    m_inQuit = true;
+
+    //! BEGIN: Give the time to slide-out views when closing
+    m_layoutsManager->synchronizer()->hideAllViews();
+    m_viewSettingsFactory->deleteLater();
+
+    m_viewsScreenSyncTimer.stop();
+
+    if (m_layoutsManager->memoryUsage() == MemoryUsage::SingleLayout) {
+        cleanConfig();
+    }
+
+    qDebug() << "Latte Corona - unload: containments ...";
+    m_layoutsManager->unload();
 }
 
 void Corona::load()

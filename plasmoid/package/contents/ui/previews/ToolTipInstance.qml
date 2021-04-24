@@ -202,10 +202,22 @@ Column {
             Loader{
                 id:previewThumbLoader
                 anchors.fill: parent
-                anchors.margins: 2
+                anchors.margins: Math.max(2, previewShadow.radius)
                 active: LatteCore.WindowSystem.isPlatformX11 || (root.plasma520 && LatteCore.WindowSystem.isPlatformWayland)
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
                 source: root.plasma520 && LatteCore.WindowSystem.isPlatformWayland ? "PipeWireThumbnail.qml" : "PlasmaCoreThumbnail.qml"
+
+                DropShadow {
+                    id: previewShadow
+                    anchors.fill:  previewThumbLoader.item
+                    visible: previewThumbLoader.item.visible
+                    horizontalOffset: 0
+                    verticalOffset: Math.round(3 * PlasmaCore.Units.devicePixelRatio)
+                    radius: Math.round(8.0 * PlasmaCore.Units.devicePixelRatio)
+                    samples: Math.round(radius * 1.5)
+                    color: "Black"
+                    source: previewThumbLoader.item
+                }
             }
 
             ToolTipWindowMouseArea {
