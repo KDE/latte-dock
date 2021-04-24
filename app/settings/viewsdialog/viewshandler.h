@@ -85,7 +85,6 @@ signals:
 
 private slots:
     void initViewTemplatesSubMenu();
-    void duplicateSelectedView();
     void removeSelectedView();
     void updateWindowTitle();
 

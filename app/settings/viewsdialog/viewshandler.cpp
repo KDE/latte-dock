@@ -97,7 +97,7 @@ void ViewsHandler::init()
     m_duplicateViewAction->setIcon(QIcon::fromTheme("edit-copy"));
     m_duplicateViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
     connectActionWithButton(m_ui->duplicateBtn, m_duplicateViewAction);
-    connect(m_duplicateViewAction, &QAction::triggered, this, &ViewsHandler::duplicateSelectedView);
+    connect(m_duplicateViewAction, &QAction::triggered, m_viewsController, &Controller::Views::duplicateSelectedView);
 
     //! Remove Button
     m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), this);
@@ -247,32 +247,6 @@ void ViewsHandler::newView(const Data::Generic &templateData)
 
         showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...").arg(newview.name),
                           KMessageWidget::Information);
-    }
-}
-
-void ViewsHandler::duplicateSelectedView()
-{
-    qDebug() << Q_FUNC_INFO;
-
-    if (!m_duplicateViewAction->isEnabled() || !m_viewsController->hasSelectedView()) {
-        return;
-    }
-
-    Latte::Data::View selectedview = m_viewsController->selectedViewCurrentData();
-
-    if (selectedview.state() == Data::View::IsCreated) {
-        Latte::Data::Layout originallayout = originalData();
-        Latte::Data::Layout currentlayout = currentData();
-        Latte::CentralLayout *centralActive = isSelectedLayoutOriginal() ? m_dialog->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
-        Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
-
-        QString storedviewpath = central->storedView(selectedview.id.toInt());
-        Latte::Data::View duplicatedview = selectedview;
-        duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
-        m_viewsController->appendViewFromViewTemplate(duplicatedview);
-    } else if (selectedview.state() == Data::View::OriginFromViewTemplate) {
-        Latte::Data::View duplicatedview = selectedview;
-        m_viewsController->appendViewFromViewTemplate(duplicatedview);
     }
 }
 

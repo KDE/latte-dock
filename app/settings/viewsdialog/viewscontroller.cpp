@@ -107,6 +107,26 @@ void Views::init()
 
     applyColumnWidths();
 
+    m_view->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    m_cutAction = new QAction(QIcon::fromTheme("edit-cut"), i18n("Cut"), m_view);
+    m_cutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+
+    m_copyAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Copy"), m_view);
+    m_copyAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+
+    m_pasteAction = new QAction(QIcon::fromTheme("edit-paste"), i18n("Paste"), m_view);
+    m_pasteAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+
+    m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Duplicate Here"), m_view);
+    m_duplicateAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    connect(m_duplicateAction, &QAction::triggered, this, &Views::duplicateSelectedView);
+
+    m_view->addAction(m_cutAction);
+    m_view->addAction(m_copyAction);
+    m_view->addAction(m_pasteAction);
+    m_view->addAction(m_duplicateAction);
+
     connect(m_view, &QObject::destroyed, this, &Views::storeColumnWidths);
 
     connect(m_view->horizontalHeader(), &QObject::destroyed, this, [&]() {
@@ -170,6 +190,32 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     newview.name = uniqueViewName(view.name);
     m_model->appendTemporaryView(newview);
     return newview;
+}
+
+void Views::duplicateSelectedView()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!hasSelectedView()) {
+        return;
+    }
+
+    Latte::Data::View selectedview = selectedViewCurrentData();
+
+    if (selectedview.state() == Data::View::IsCreated) {
+        Latte::Data::Layout originallayout = m_handler->originalData();
+        Latte::Data::Layout currentlayout = m_handler->currentData();
+        Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
+        Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
+
+        QString storedviewpath = central->storedView(selectedview.id.toInt());
+        Latte::Data::View duplicatedview = selectedview;
+        duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
+        appendViewFromViewTemplate(duplicatedview);
+    } else if (selectedview.state() == Data::View::OriginFromViewTemplate) {
+        Latte::Data::View duplicatedview = selectedview;
+        appendViewFromViewTemplate(duplicatedview);
+    }
 }
 
 void Views::removeSelected()

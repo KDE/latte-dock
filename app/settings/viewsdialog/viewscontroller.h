@@ -81,6 +81,9 @@ public:
     void save();
     void removeSelected();
 
+public slots:
+    void duplicateSelectedView();
+
 signals:
     void dataChanged();
 
@@ -109,6 +112,12 @@ private:
     QStringList m_viewColumnWidths;
 
     KConfigGroup m_storage;
+
+    //! context menu actions for docks panels
+    QAction *m_cutAction;
+    QAction *m_copyAction;
+    QAction *m_duplicateAction;
+    QAction *m_pasteAction;
 
     //! current data
     Model::Views *m_model{nullptr};
