@@ -97,7 +97,7 @@ void ViewsHandler::init()
     m_duplicateViewAction->setIcon(QIcon::fromTheme("edit-copy"));
     m_duplicateViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
     connectActionWithButton(m_ui->duplicateBtn, m_duplicateViewAction);
-    connect(m_duplicateViewAction, &QAction::triggered, m_viewsController, &Controller::Views::duplicateSelectedView);
+    connect(m_duplicateViewAction, &QAction::triggered, m_viewsController, &Controller::Views::duplicateSelectedViews);
 
     //! Remove Button
     m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), this);
@@ -105,7 +105,7 @@ void ViewsHandler::init()
     m_removeViewAction->setIcon(QIcon::fromTheme("delete"));
     m_removeViewAction->setShortcut(QKeySequence(Qt::Key_Delete));
     connectActionWithButton(m_ui->removeBtn, m_removeViewAction);
-    connect(m_removeViewAction, &QAction::triggered, this, &ViewsHandler::removeSelectedView);
+    connect(m_removeViewAction, &QAction::triggered, this, &ViewsHandler::removeSelectedViews);
 
     //! signals
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
@@ -250,7 +250,7 @@ void ViewsHandler::newView(const Data::Generic &templateData)
     }
 }
 
-void ViewsHandler::removeSelectedView()
+void ViewsHandler::removeSelectedViews()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -258,7 +258,7 @@ void ViewsHandler::removeSelectedView()
         return;
     }
 
-    m_viewsController->removeSelected();
+    m_viewsController->removeSelectedViews();
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)

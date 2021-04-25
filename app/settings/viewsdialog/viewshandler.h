@@ -85,7 +85,7 @@ signals:
 
 private slots:
     void initViewTemplatesSubMenu();
-    void removeSelectedView();
+    void removeSelectedViews();
     void updateWindowTitle();
 
     void onCurrentLayoutIndexChanged(int row);

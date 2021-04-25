@@ -119,7 +119,7 @@ void Views::init()
 
     m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Duplicate Here"), m_view);
     m_duplicateAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
-    connect(m_duplicateAction, &QAction::triggered, this, &Views::duplicateSelectedView);
+    connect(m_duplicateAction, &QAction::triggered, this, &Views::duplicateSelectedViews);
 
     m_view->addAction(m_cutAction);
     m_view->addAction(m_copyAction);
@@ -163,17 +163,6 @@ int Views::rowForId(QString id) const
     return -1;
 }
 
-const Latte::Data::View Views::selectedViewCurrentData() const
-{
-    int selectedRow = m_view->currentIndex().row();
-    if (selectedRow >= 0) {
-        QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Views::IDCOLUMN), Qt::UserRole).toString();
-        return m_model->currentData(selectedId);
-    } else {
-        return Latte::Data::View();
-    }
-}
-
 const Data::ViewsTable Views::selectedViewsCurrentData() const
 {
     Data::ViewsTable selectedviews;
@@ -192,14 +181,6 @@ const Data::ViewsTable Views::selectedViewsCurrentData() const
     return selectedviews;
 }
 
-const Latte::Data::View Views::selectedViewOriginalData() const
-{
-    int selectedRow = m_view->currentIndex().row();
-    QString selectedId = m_proxyModel->data(m_proxyModel->index(selectedRow, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
-
-    return m_model->originalData(selectedId);
-}
-
 const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view)
 {
     Data::View newview = view;
@@ -208,7 +189,7 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     return newview;
 }
 
-void Views::duplicateSelectedView()
+void Views::duplicateSelectedViews()
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -216,25 +197,29 @@ void Views::duplicateSelectedView()
         return;
     }
 
-    Latte::Data::View selectedview = selectedViewCurrentData();
+    Data::ViewsTable selectedviews = selectedViewsCurrentData();
 
-    if (selectedview.state() == Data::View::IsCreated) {
-        Latte::Data::Layout originallayout = m_handler->originalData();
-        Latte::Data::Layout currentlayout = m_handler->currentData();
-        Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
-        Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
+    Latte::Data::Layout originallayout = m_handler->originalData();
+    Latte::Data::Layout currentlayout = m_handler->currentData();
+    Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
+    Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
 
-        QString storedviewpath = central->storedView(selectedview.id.toInt());
-        Latte::Data::View duplicatedview = selectedview;
-        duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
-        appendViewFromViewTemplate(duplicatedview);
-    } else if (selectedview.state() == Data::View::OriginFromViewTemplate) {
-        Latte::Data::View duplicatedview = selectedview;
-        appendViewFromViewTemplate(duplicatedview);
+    for(int i=0; i<selectedviews.rowCount(); ++i) {
+        if (selectedviews[i].state() == Data::View::IsCreated) {
+            QString storedviewpath = central->storedView(selectedviews[i].id.toInt());
+            Latte::Data::View duplicatedview = selectedviews[i];
+            duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
+            duplicatedview.isActive = false;
+            appendViewFromViewTemplate(duplicatedview);
+        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate) {
+            Latte::Data::View duplicatedview = selectedviews[i];
+            duplicatedview.isActive = false;
+            appendViewFromViewTemplate(duplicatedview);
+        }
     }
 }
 
-void Views::removeSelected()
+void Views::removeSelectedViews()
 {
     if (!hasSelectedView()) {
         return;
