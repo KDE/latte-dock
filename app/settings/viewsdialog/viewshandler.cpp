@@ -258,7 +258,6 @@ void ViewsHandler::removeSelectedView()
         return;
     }
 
-    Latte::Data::View selectedView = m_viewsController->selectedViewCurrentData();
     m_viewsController->removeSelected();
 }
 

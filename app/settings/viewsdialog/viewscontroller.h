@@ -76,6 +76,8 @@ public:
     const Latte::Data::View selectedViewCurrentData() const;
     const Latte::Data::View selectedViewOriginalData() const;
 
+    const Data::ViewsTable selectedViewsCurrentData() const;
+
     const Latte::Data::View appendViewFromViewTemplate(const Data::View &view);
 
     void selectRow(const QString &id);

@@ -174,6 +174,24 @@ const Latte::Data::View Views::selectedViewCurrentData() const
     }
 }
 
+const Data::ViewsTable Views::selectedViewsCurrentData() const
+{
+    Data::ViewsTable selectedviews;
+
+    if (!hasSelectedView()) {
+        return selectedviews;
+    }
+
+    QModelIndexList layoutidindexes = m_view->selectionModel()->selectedRows(Model::Views::IDCOLUMN);
+
+    for(int i=0; i<layoutidindexes.count(); ++i) {
+        QString selectedid = layoutidindexes[i].data(Qt::UserRole).toString();
+        selectedviews <<  m_model->currentData(selectedid);
+    }
+
+    return selectedviews;
+}
+
 const Latte::Data::View Views::selectedViewOriginalData() const
 {
     int selectedRow = m_view->currentIndex().row();
@@ -218,17 +236,19 @@ void Views::duplicateSelectedView()
 
 void Views::removeSelected()
 {
-    int row = m_view->currentIndex().row();
-
-    if (row < 0) {
+    if (!hasSelectedView()) {
         return;
     }
 
-    row = qMin(row, m_proxyModel->rowCount() - 1);
-    m_view->selectRow(row);
+    Data::ViewsTable selectedviews = selectedViewsCurrentData();;
 
-    Latte::Data::View selected = selectedViewCurrentData();
-    m_model->removeView(selected.id);
+    int selectionheadrow = m_model->rowForId(selectedviews[0].id);
+
+    for (int i=0; i<selectedviews.rowCount(); ++i) {
+        m_model->removeView(selectedviews[i].id);
+    }
+
+    m_view->selectRow(qMax(0, selectionheadrow-1));
 }
 
 void Views::selectRow(const QString &id)
