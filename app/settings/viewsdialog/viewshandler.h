@@ -40,6 +40,7 @@ namespace Latte{
 class Corona;
 namespace Settings{
 namespace Controller{
+class Layouts;
 class Views;
 }
 namespace Dialog{
@@ -74,6 +75,7 @@ public:
 
     Ui::ViewsDialog *ui() const;
     Latte::Corona *corona() const;
+    Settings::Controller::Layouts *layoutsController() const;
 
 public slots:
     void reset() override;

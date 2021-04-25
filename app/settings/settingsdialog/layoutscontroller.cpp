@@ -24,6 +24,7 @@
 #include "ui_settingsdialog.h"
 #include "settingsdialog.h"
 #include "tablayoutshandler.h"
+#include "templateskeeper.h"
 #include "delegates/activitiesdelegate.h"
 #include "delegates/backgrounddelegate.h"
 #include "delegates/checkboxdelegate.h"
@@ -65,6 +66,8 @@ Layouts::Layouts(Settings::Handler::TabLayouts *parent)
       m_headerView(new Settings::Layouts::HeaderView(Qt::Horizontal, m_handler->dialog())),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("TabLayouts"))
 {   
+    m_templatesKeeper = new Settings::Part::TemplatesKeeper(this, m_handler->corona());
+
     loadConfig();
     m_proxyModel->setSourceModel(m_model);
 
@@ -121,6 +124,11 @@ QAbstractItemModel *Layouts::baseModel() const
 QTableView *Layouts::view() const
 {
     return m_view;
+}
+
+Settings::Part::TemplatesKeeper *Layouts::templatesKeeper() const
+{
+    return m_templatesKeeper;
 }
 
 void Layouts::initView()
@@ -185,6 +193,11 @@ void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
 bool Layouts::hasSelectedLayout() const
 {
     return m_view->selectionModel()->hasSelection();
+}
+
+bool Layouts::isLayoutOriginal(const QString &currentLayoutId) const
+{
+    return m_model->originalLayoutsData().containsId(currentLayoutId);
 }
 
 bool Layouts::isSelectedLayoutOriginal() const
@@ -277,6 +290,17 @@ const Latte::Data::Layout Layouts::selectedLayoutOriginalData() const
 
     return m_model->originalData(selectedId);
 }
+
+const Latte::Data::Layout Layouts::currentData(const QString &currentLayoutId) const
+{
+    return m_model->currentData(currentLayoutId);
+}
+
+const Latte::Data::Layout Layouts::originalData(const QString &currentLayoutId) const
+{
+    return m_model->originalData(currentLayoutId);
+}
+
 
 bool Layouts::inMultipleMode() const
 {
@@ -706,6 +730,9 @@ void Layouts::reset()
     if (currentLayoutNames.count() > 0) {
         m_view->selectRow(rowForName(currentLayoutNames[0]));
     }
+
+    //! Clear any templates keeper data
+    m_templatesKeeper->clear();
 }
 
 void Layouts::save()
@@ -854,6 +881,9 @@ void Layouts::save()
     }
 
     m_model->applyData();
+
+    //! Clear any templates keeper data
+    m_templatesKeeper->clear();
 
     emit dataChanged();
 }

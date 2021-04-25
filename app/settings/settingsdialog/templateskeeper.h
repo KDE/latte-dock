@@ -29,6 +29,7 @@
 #include <QObject>
 
 namespace Latte {
+class CentralLayout;
 class Corona;
 namespace Settings {
 namespace Controller {
@@ -46,15 +47,25 @@ class TemplatesKeeper : public QObject
     Q_OBJECT
 
 public:
-    explicit TemplatesKeeper(QObject *parent, Latte::Corona *corona, Settings::Controller::Layouts *layoutsController);
+    explicit TemplatesKeeper(Settings::Controller::Layouts *parent, Latte::Corona *corona);
     ~TemplatesKeeper();
 
+    QString storedView(const QString &layoutCurrentId, const QString &viewId);
+
+
+public slots:
+    void clear();
+
+private:
+    QString viewKeeperId(const QString &layoutCurrentId, const QString &viewId);
 
 private:
     Latte::Data::ViewsTable m_storedViews;
 
     Latte::Corona *m_corona{nullptr};
     Settings::Controller::Layouts *m_layoutsController{nullptr};
+
+    QList<CentralLayout *> m_garbageLayouts;
 };
 
 }

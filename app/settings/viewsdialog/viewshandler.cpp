@@ -186,6 +186,11 @@ Ui::ViewsDialog *ViewsHandler::ui() const
     return m_ui;
 }
 
+Settings::Controller::Layouts *ViewsHandler::layoutsController() const
+{
+    return m_dialog->layoutsController();
+}
+
 void ViewsHandler::loadLayout(const Latte::Data::Layout &data)
 {
     updateWindowTitle();

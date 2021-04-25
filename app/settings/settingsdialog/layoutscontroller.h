@@ -45,6 +45,9 @@ namespace Settings {
 namespace Handler {
 class TabLayouts;
 }
+namespace Part{
+class TemplatesKeeper;
+}
 }
 }
 
@@ -63,6 +66,7 @@ public:
     QAbstractItemModel *proxyModel() const;
     QAbstractItemModel *baseModel() const;
     QTableView *view() const;
+    Settings::Part::TemplatesKeeper *templatesKeeper() const;
 
     bool hasChangedData() const;
     bool layoutsAreChanged() const;
@@ -74,10 +78,14 @@ public:
 
     bool hasSelectedLayout() const;
     bool isSelectedLayoutOriginal() const;
+    bool isLayoutOriginal(const QString &currentLayoutId) const;
     const Latte::Data::Layout selectedLayoutCurrentData() const;
     const Latte::Data::Layout selectedLayoutOriginalData() const;
     const Latte::Data::LayoutIcon selectedLayoutIcon() const;
     const Latte::Data::ViewsTable selectedLayoutViews();
+
+    const Latte::Data::Layout currentData(const QString &currentLayoutId) const;
+    const Latte::Data::Layout originalData(const QString &currentLayoutId) const;
 
     void selectRow(const QString &id);
     void setLayoutProperties(const Latte::Data::Layout &layout);
@@ -129,6 +137,7 @@ private:
 
 private:
     Settings::Handler::TabLayouts *m_handler{nullptr};
+    Settings::Part::TemplatesKeeper *m_templatesKeeper{nullptr};
 
     QString m_iconsPath;
 

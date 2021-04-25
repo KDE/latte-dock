@@ -30,6 +30,7 @@
 #include "delegates/singleoptiondelegate.h"
 #include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
+#include "../settingsdialog/templateskeeper.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
@@ -138,6 +139,9 @@ void Views::init()
 void Views::reset()
 {
     m_model->resetData();
+
+    //! Clear any templates keeper data in order to produce reupdates if needed
+    m_handler->layoutsController()->templatesKeeper()->clear();
 }
 
 bool Views::hasChangedData() const
@@ -198,15 +202,11 @@ void Views::duplicateSelectedViews()
     }
 
     Data::ViewsTable selectedviews = selectedViewsCurrentData();
-
-    Latte::Data::Layout originallayout = m_handler->originalData();
     Latte::Data::Layout currentlayout = m_handler->currentData();
-    Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
-    Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
 
     for(int i=0; i<selectedviews.rowCount(); ++i) {
         if (selectedviews[i].state() == Data::View::IsCreated) {
-            QString storedviewpath = central->storedView(selectedviews[i].id.toInt());
+            QString storedviewpath = m_handler->layoutsController()->templatesKeeper()->storedView(currentlayout.id, selectedviews[i].id);
             Latte::Data::View duplicatedview = selectedviews[i];
             duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
             duplicatedview.isActive = false;
@@ -328,6 +328,9 @@ void Views::save()
     if (central->isActive()) {
         m_model->updateActiveStatesBasedOn(central);
     }
+
+    //! Clear any templates keeper data in order to produce reupdates if needed
+    m_handler->layoutsController()->templatesKeeper()->clear();
 }
 
 QString Views::uniqueViewName(QString name)
