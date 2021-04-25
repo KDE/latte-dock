@@ -27,6 +27,7 @@
 #include "layoutscontroller.h"
 #include "layoutsmodel.h"
 #include "layoutstableview.h"
+#include "templateskeeper.h"
 #include "../universalsettings.h"
 #include "../detailsdialog/detailsdialog.h"
 #include "../exporttemplatedialog/exporttemplatedialog.h"

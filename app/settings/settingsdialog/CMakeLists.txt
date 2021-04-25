@@ -7,6 +7,7 @@ set(lattedock-app_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/settingsdialog.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/tablayoutshandler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/tabpreferenceshandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/templateskeeper.cpp    
     PARENT_SCOPE
 )
 

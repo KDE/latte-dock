@@ -48,6 +48,10 @@ class Layouts;
 namespace Dialog{
 class SettingsDialog;
 }
+
+namespace Part{
+class TemplatesKeeper;
+}
 }
 }
 
@@ -131,6 +135,7 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     Settings::Controller::Layouts *m_layoutsController{nullptr};
+    Settings::Part::TemplatesKeeper *m_templatesKeeper{nullptr};
 
     KConfigGroup m_storage;
 
