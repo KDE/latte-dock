@@ -431,7 +431,8 @@ AbilityItem.BasicItem {
             }
         } else{
             if (model.IsGroupParent) {
-                if (LatteCore.WindowSystem.compositingActive && backend.canPresentWindows()) {
+                var canPresentWindowsIsSupported = LatteCore.WindowSystem.compositingActive && (root.plasmaGreaterThan522 ? backend.canPresentWindows : backend.canPresentWindows());
+                if (canPresentWindowsIsSupported) {
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 }
             } else {

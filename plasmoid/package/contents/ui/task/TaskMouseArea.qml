@@ -191,9 +191,11 @@ MouseArea {
                     activateTask();
                 }
             } else if (mouse.button == Qt.LeftButton){
+                var canPresentWindowsIsSupported = LatteCore.WindowSystem.compositingActive && (root.plasmaGreaterThan522 ? backend.canPresentWindows : backend.canPresentWindows());
+
                 if( !taskItem.isLauncher && !root.disableAllWindowsFunctionality ){
                     if ( (root.leftClickAction === LatteTasks.Types.PreviewWindows && isGroupParent)
-                            || ( (LatteCore.WindowSystem.isPlatformWayland || !LatteCore.WindowSystem.compositingActive)
+                            || ( !canPresentWindowsIsSupported
                                 && root.leftClickAction === LatteTasks.Types.PresentWindows
                                 && isGroupParent) ) {
                         if(windowsPreviewDlg.activeItem !== taskItem || !windowsPreviewDlg.visible){
@@ -205,10 +207,11 @@ MouseArea {
                                || ((root.leftClickAction === LatteTasks.Types.PreviewWindows && !isGroupParent)) ) {
                         activateTask();
                     } else if (root.leftClickAction === LatteTasks.Types.CycleThroughTasks) {
-                        if (isGroupParent)
+                        if (isGroupParent) {
                             subWindows.activateNextTask();
-                        else
+                        } else {
                             activateTask();
+                        }
                     }
                 } else {
                     activateTask();

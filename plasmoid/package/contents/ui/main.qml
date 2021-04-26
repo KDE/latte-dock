@@ -63,6 +63,7 @@ Item {
     property bool plasma515: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,15,0)
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
     property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
+    property bool plasmaGreaterThan522: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,21,75)
 
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
@@ -561,9 +562,7 @@ Item {
 
     TaskManagerApplet.Backend {
         id: backend
-
         taskManagerItem: root
-        toolTipItem: toolTipDelegate
         highlightWindows: root.highlightWindows
 
         onAddLauncher: {
@@ -579,6 +578,11 @@ Item {
             //!   in plasma 5.8 (that was introduced after 5.8.5)
             if (LatteCore.Environment.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
                 groupDialog = groupDialogGhost;
+            }
+
+            //! In Plasma 5.22 toolTipItem was dropped
+            if (!root.plasmaGreaterThan522) {
+                toolTipItem = toolTipDelegate;
             }
         }
     }
