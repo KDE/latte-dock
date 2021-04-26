@@ -62,7 +62,8 @@ public:
     GenericTable<Data::Generic> subcontainments;
 
     //! View sub-states
-    bool isScheduledForMove{false};
+    bool isMoveOrigin{false};
+    bool isMoveDestination{true};
 
     bool isValid() const;
     bool isCreated() const;
