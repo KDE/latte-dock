@@ -115,8 +115,8 @@ bool View::operator==(const View &rhs) const
     return (id == rhs.id)
             && (name == rhs.name)
             //&& (isActive == rhs.isActive) /*activeness is a state and is not considered*/
-            //&& (isMoveOrigin == rhs.isMoveOrigin) /*changing layouts is a state and is not considered*/
-            //&& (isMoveDestination == rhs.isMoveDestination) /*changing layouts is a state and is not considered*/
+            && (isMoveOrigin == rhs.isMoveOrigin) /*changing layouts is a state and is not considered*/
+            && (isMoveDestination == rhs.isMoveDestination) /*changing layouts is a state and is not considered*/
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)
@@ -142,6 +142,17 @@ View::operator QString() const
     result += id;
     result +=" : ";
     result += isActive ? "Active" : "Inactive";
+    result +=" : ";
+    if (isMoveOrigin) {
+        result += " ↑ ";
+    } else if (isMoveDestination) {
+        result += " ↓ ";
+    } else if (isMoveOrigin && isMoveDestination) {
+        result += " ↑↓ ";
+    } else {
+        result += " - ";
+    }
+
     result += " : ";
 
     if (m_state == IsInvalid) {

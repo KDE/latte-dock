@@ -85,6 +85,7 @@ public:
 
 public slots:
     void copySelectedViews();
+    void cutSelectedViews();
     void duplicateSelectedViews();
     void pasteSelectedViews();
     void removeSelectedViews();
@@ -97,6 +98,8 @@ private:
 
     int rowForId(QString id) const;
     QString uniqueViewName(QString name);
+
+    Data::ViewsTable selectedViewsForClipboard();
 
 private slots:
     void loadConfig();

@@ -108,6 +108,7 @@ public:
 
     void setOriginalData(Latte::Data::ViewsTable &data);
     void setOriginalView(QString currentViewId, Latte::Data::View &view);
+    void updateCurrentView(QString currentViewId, Latte::Data::View &view);
 
     void updateActiveStatesBasedOn(const CentralLayout *layout);
 

@@ -300,6 +300,25 @@ void Views::populateScreens()
     }
 }
 
+void Views::updateCurrentView(QString currentViewId, Latte::Data::View &view)
+{
+    if (!m_viewsTable.containsId(currentViewId)) {
+        return;
+    }
+
+    int currentrow = m_viewsTable.indexOf(currentViewId);
+    m_viewsTable[currentrow] = view;
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ISCHANGEDROLE;
+    roles << ISACTIVEROLE;
+    roles << HASCHANGEDVIEWROLE;
+
+    emit dataChanged(this->index(currentrow, IDCOLUMN), this->index(currentrow, SUBCONTAINMENTSCOLUMN), roles);
+}
+
 void Views::setOriginalView(QString currentViewId, Latte::Data::View &view)
 {
     if (!m_viewsTable.containsId(currentViewId)) {

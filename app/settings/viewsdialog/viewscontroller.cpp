@@ -111,6 +111,7 @@ void Views::init()
 
     m_cutAction = new QAction(QIcon::fromTheme("edit-cut"), i18n("Cut"), m_view);
     m_cutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+    connect(m_cutAction, &QAction::triggered, this, &Views::cutSelectedViews);
 
     m_copyAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Copy"), m_view);
     m_copyAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
@@ -197,18 +198,15 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     return newview;
 }
 
-void Views::copySelectedViews()
+Data::ViewsTable Views::selectedViewsForClipboard()
 {
-    qDebug() << Q_FUNC_INFO;
-
+    Data::ViewsTable clipboardviews;
     if (!hasSelectedView()) {
-        return;
+        return clipboardviews;
     }
 
     Data::ViewsTable selectedviews = selectedViewsCurrentData();
     Latte::Data::Layout currentlayout = m_handler->currentData();
-
-    Data::ViewsTable clipboardviews;
 
     for(int i=0; i<selectedviews.rowCount(); ++i) {
         if (selectedviews[i].state() == Data::View::IsCreated) {
@@ -223,6 +221,39 @@ void Views::copySelectedViews()
             copiedview.isActive = false;
             clipboardviews << copiedview;
         }
+    }
+
+    return clipboardviews;
+}
+
+void Views::copySelectedViews()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!hasSelectedView()) {
+        return;
+    }
+
+    Data::ViewsTable clipboardviews = selectedViewsForClipboard();
+    m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
+}
+
+void Views::cutSelectedViews()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!hasSelectedView()) {
+        return;
+    }
+
+    Data::ViewsTable clipboardviews = selectedViewsForClipboard();
+
+    for (int i=0; i<clipboardviews.rowCount(); ++i) {
+        clipboardviews[i].isMoveOrigin = true;
+
+        Data::View tempview = m_model->currentData(clipboardviews[i].id);
+        tempview.isMoveOrigin = true;
+        m_model->updateCurrentView(tempview.id, tempview);
     }
 
     m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
@@ -331,9 +362,15 @@ void Views::save()
     Latte::Data::ViewsTable newViews = m_model->newViews();
 
     QHash<QString, Data::View> newviewsresponses;
+    QHash<QString, Data::View> cuttedviews;
 
-    //! add new views
+    //! add new views that are accepted
     for(int i=0; i<newViews.rowCount(); ++i){
+        if (newViews[i].isMoveOrigin) {
+            cuttedviews[newViews[i].id] = newViews[i];
+            continue;
+        }
+
         if (newViews[i].state() == Data::View::OriginFromViewTemplate) {
             Data::View addedview = central->newView(newViews[i]);
 
@@ -349,19 +386,31 @@ void Views::save()
 
     //! update altered views
     for (int i=0; i<alteredViews.rowCount(); ++i) {
-        if (alteredViews[i].state() == Data::View::IsCreated) {
+        if (alteredViews[i].state() == Data::View::IsCreated && !alteredViews[i].isMoveOrigin) {
             qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
             central->updateView(alteredViews[i]);
         }
+
+        if (alteredViews[i].isMoveOrigin) {
+            cuttedviews[alteredViews[i].id] = alteredViews[i];
+        }
     }
 
-    //! remove deprecated views
+    //! remove deprecated views that have been removed from user
     Latte::Data::ViewsTable removedViews = originalViews.subtracted(currentViews);
 
     for (int i=0; i<removedViews.rowCount(); ++i) {
         central->removeView(removedViews[i]);
     }
 
+    //! remove deprecated views that have been removed from Cut operation
+    for(const auto vid: cuttedviews.keys()){
+        if (cuttedviews[vid].state() == Data::View::IsCreated) {
+            central->removeView(cuttedviews[vid]);
+        }
+    }
+
+    //! update
     if ((removedViews.rowCount() > 0) || (newViews.rowCount() > 0)) {
         m_handler->corona()->layoutsManager()->synchronizer()->syncActiveLayoutsToOriginalFiles();
     }
@@ -371,12 +420,16 @@ void Views::save()
         m_model->setOriginalView(vid, newviewsresponses[vid]);
     }
 
-    //! update all table with latest data
-    currentViews = m_model->currentViewsData();
+    //! update/remove from model cutted views
+    for (const auto vid: cuttedviews.keys()) {
+        m_model->removeView(vid);
+    }
 
-    //! update model original data
+    //! update all table with latest data and make the original one
+    currentViews = m_model->currentViewsData();
     m_model->setOriginalData(currentViews);
 
+    //! update model activeness
     if (central->isActive()) {
         m_model->updateActiveStatesBasedOn(central);
     }
