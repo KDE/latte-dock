@@ -81,7 +81,7 @@ View &View::operator=(const View &rhs)
     alignment = rhs.alignment;
     m_state = rhs.m_state;
     m_originFile = rhs.m_originFile;
-    m_originLayout == rhs.m_originLayout;
+    m_originLayout = rhs.m_originLayout;
     m_originView = rhs.m_originView;
     subcontainments = rhs.subcontainments;
 
@@ -115,8 +115,8 @@ bool View::operator==(const View &rhs) const
     return (id == rhs.id)
             && (name == rhs.name)
             //&& (isActive == rhs.isActive) /*activeness is a state and is not considered*/
-            && (isMoveOrigin == rhs.isMoveOrigin) /*changing layouts is a state and is not considered*/
-            && (isMoveDestination == rhs.isMoveDestination) /*changing layouts is a state and is not considered*/
+            //&& (isMoveOrigin == rhs.isMoveOrigin) /*changing layouts is a state and is not considered*/
+            //&& (isMoveDestination == rhs.isMoveDestination) /*changing layouts is a state and is not considered*/
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)

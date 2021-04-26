@@ -288,6 +288,13 @@ void Views::pasteSelectedViews()
             hascurrentlayoutcuttedviews = true;
             continue;
         }
+
+        if (clipboardviews[i].isMoveOrigin) {
+            //! update cut flags only for real cutted view and not for copied one
+            clipboardviews[i].isMoveOrigin = false;
+            clipboardviews[i].isMoveDestination = true;
+        }
+
         appendViewFromViewTemplate(clipboardviews[i]);
     }
 
@@ -391,13 +398,12 @@ void Views::save()
     Latte::Data::ViewsTable newViews = m_model->newViews();
 
     QHash<QString, Data::View> newviewsresponses;
-    QHash<QString, Data::View> cuttedviews;
+    QHash<QString, Data::View> cuttedpastedviews;
 
     //! add new views that are accepted
     for(int i=0; i<newViews.rowCount(); ++i){
-        if (newViews[i].isMoveOrigin) {
-            cuttedviews[newViews[i].id] = newViews[i];
-            continue;
+        if (newViews[i].isMoveDestination) {
+            cuttedpastedviews[newViews[i].id] = newViews[i];
         }
 
         if (newViews[i].state() == Data::View::OriginFromViewTemplate) {
@@ -419,10 +425,6 @@ void Views::save()
             qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
             central->updateView(alteredViews[i]);
         }
-
-        if (alteredViews[i].isMoveOrigin) {
-            cuttedviews[alteredViews[i].id] = alteredViews[i];
-        }
     }
 
     //! remove deprecated views that have been removed from user
@@ -432,10 +434,29 @@ void Views::save()
         central->removeView(removedViews[i]);
     }
 
-    //! remove deprecated views that have been removed from Cut operation
-    for(const auto vid: cuttedviews.keys()){
-        if (cuttedviews[vid].state() == Data::View::IsCreated) {
-            central->removeView(cuttedviews[vid]);
+    //! remove deprecated views from external layouts that must be removed because of Cut->Paste Action
+    for(const auto vid: cuttedpastedviews.keys()){
+        bool viewidisinteger{true};
+        int vid_int = cuttedpastedviews[vid].originView().toInt(&viewidisinteger);
+        QString vid_str = cuttedpastedviews[vid].originView();
+
+        if (vid_str.isEmpty() || !viewidisinteger || vid_int<=0) {
+            //! ignore origin views that have not been created already
+            continue;
+        }
+
+        //! Be Careful: Remove deprecated views from Cut->Paste Action
+        QString origincurrentid = cuttedpastedviews[vid].originLayout();
+        Data::Layout originlayout = m_handler->layoutsController()->originalData(origincurrentid);
+
+        Latte::CentralLayout *originActive = m_handler->layoutsController()->isLayoutOriginal(origincurrentid) ?
+                    m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayout.name) : nullptr;
+        Latte::CentralLayout *origin = originActive ? originActive : new Latte::CentralLayout(this, origincurrentid);
+
+        Data::ViewsTable originviews = Latte::Layouts::Storage::self()->views(origin);
+
+        if (originviews.containsId(vid_str)) {
+            origin->removeView(originviews[vid_str]);
         }
     }
 
@@ -447,11 +468,6 @@ void Views::save()
     //! update model for newly added views
     for (const auto vid: newviewsresponses.keys()) {
         m_model->setOriginalView(vid, newviewsresponses[vid]);
-    }
-
-    //! update/remove from model cutted views
-    for (const auto vid: cuttedviews.keys()) {
-        m_model->removeView(vid);
     }
 
     //! update all table with latest data and make the original one
