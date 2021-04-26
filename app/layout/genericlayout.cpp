@@ -1585,10 +1585,11 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
     Latte::View *view = viewForContainment(viewData.id.toUInt());
     bool viewMustBeDeleted = (view && !viewData.onPrimary && !m_corona->screenPool()->isScreenActive(viewData.screen));
 
+    QString nextactivelayoutname = (viewData.state() == Data::View::OriginFromLayout && !viewData.originLayout().isEmpty() ? viewData.originLayout() : QString());
+
     if (view) {
         if (!viewMustBeDeleted) {
             QString scrName = Latte::Data::Screen::ONPRIMARYNAME;
-            QString nextlayoutname = (viewData.state() == Data::View::OriginFromLayout && !viewData.originLayout().isEmpty() ? viewData.originLayout() : QString());
 
             if (!viewData.onPrimary) {
                 if (m_corona->screenPool()->hasScreenId(viewData.screen)) {
@@ -1599,7 +1600,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             }
 
             view->setName(viewData.name);
-            view->positioner()->setNextLocation(nextlayoutname, scrName, viewData.edge, viewData.alignment);
+            view->positioner()->setNextLocation(nextactivelayoutname, scrName, viewData.edge, viewData.alignment);
             return;
         } else {
             //! viewMustBeDeleted
@@ -1623,6 +1624,10 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             m_pendingContainmentUpdates[viewData.id] = viewData;
         }
         containment->reactToScreenChange();
+    }
+
+    if (!nextactivelayoutname.isEmpty()) {
+        m_corona->layoutsManager()->moveView(name(), viewData.id.toUInt(), nextactivelayoutname);
     }
 
     //! complete update circle and inform the others about the changes

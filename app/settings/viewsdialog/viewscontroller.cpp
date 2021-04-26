@@ -506,14 +506,18 @@ void Views::save()
 
         QString tempviewid = pastedactiveview.id;
         pastedactiveview.id = QString::number(originviewid);
-        pastedactiveview.setState(pastedactiveview.state(), pastedactiveview.originFile(), destinationlayoutname, pastedactiveview.originView());
-
-        origin->updateView(pastedactiveview);
 
         if (view) {
-            //view->positioner()->setNextLocation(destinationlayoutname, QString(), Plasma::Types::Floating, Latte::Types::NoneAlignment);
+            //! onscreen_view->onscreen_view
+            //! onscreen_view->offscreen_view
+            pastedactiveview.setState(pastedactiveview.state(), pastedactiveview.originFile(), destinationlayoutname, pastedactiveview.originView());
+            origin->updateView(pastedactiveview);
         } else {
-            //m_handler->corona()->layoutsManager()->moveView(originlayoutname, originviewid, destinationlayoutname);
+            //! offscreen_view->onscreen_view
+            m_handler->corona()->layoutsManager()->moveView(originlayoutname, originviewid, destinationlayoutname);
+            //!is needed in order for layout to not trigger another move
+            pastedactiveview.setState(Data::View::IsCreated, QString(), QString(), QString());
+            centralActive->updateView(pastedactiveview);
         }
 
         pastedactiveview.setState(Data::View::IsCreated, QString(), QString(), QString());
