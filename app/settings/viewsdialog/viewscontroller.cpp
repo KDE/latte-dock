@@ -278,7 +278,7 @@ void Views::removeSelectedViews()
         m_model->removeView(selectedviews[i].id);
     }
 
-    m_view->selectRow(qMax(0, selectionheadrow-1));
+    m_view->selectRow(qBound(0, selectionheadrow, m_model->rowCount()-1));
 }
 
 void Views::selectRow(const QString &id)
