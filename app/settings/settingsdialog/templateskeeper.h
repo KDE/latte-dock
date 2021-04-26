@@ -60,6 +60,9 @@ public:
 public slots:
     void clear();
 
+signals:
+    void clipboardContentsChanged();
+
 private:
     QString viewKeeperId(const QString &layoutCurrentId, const QString &viewId);
 

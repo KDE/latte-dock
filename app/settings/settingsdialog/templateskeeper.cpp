@@ -55,8 +55,14 @@ Latte::Data::ViewsTable TemplatesKeeper::clipboardContents() const
 
 void TemplatesKeeper::setClipboardContents(const Latte::Data::ViewsTable &views)
 {
+    if (m_clipboardViews == views) {
+        return;
+    }
+
     m_clipboardViews.clear();
     m_clipboardViews = views;
+
+    emit clipboardContentsChanged();
 }
 
 void TemplatesKeeper::clear()
