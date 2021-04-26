@@ -61,6 +61,9 @@ public:
     Latte::Types::Alignment alignment{Latte::Types::Center};
     GenericTable<Data::Generic> subcontainments;
 
+    //! View sub-states
+    bool isScheduledForMove{false};
+
     bool isValid() const;
     bool isCreated() const;
     bool hasViewTemplateOrigin() const;

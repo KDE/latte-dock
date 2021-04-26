@@ -31,6 +31,7 @@ View::View()
 View::View(View &&o)
     : Generic(o),
       isActive(o.isActive),
+      isScheduledForMove(o.isScheduledForMove),
       onPrimary(o.onPrimary),
       screen(o.screen),
       screenEdgeMargin(o.screenEdgeMargin),
@@ -48,6 +49,7 @@ View::View(View &&o)
 View::View(const View &o)
     : Generic(o),
       isActive(o.isActive),
+      isScheduledForMove(o.isScheduledForMove),
       onPrimary(o.onPrimary),
       screen(o.screen),
       screenEdgeMargin(o.screenEdgeMargin),
@@ -67,6 +69,7 @@ View &View::operator=(const View &rhs)
     id = rhs.id;
     name = rhs.name;
     isActive = rhs.isActive;
+    isScheduledForMove = rhs.isScheduledForMove;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     screenEdgeMargin = rhs.screenEdgeMargin,
@@ -87,6 +90,7 @@ View &View::operator=(View &&rhs)
     id = rhs.id;
     name = rhs.name;
     isActive = rhs.isActive;
+    isScheduledForMove = rhs.isScheduledForMove;
     onPrimary = rhs.onPrimary;
     screen = rhs.screen;
     screenEdgeMargin = rhs.screenEdgeMargin,
@@ -107,6 +111,7 @@ bool View::operator==(const View &rhs) const
     return (id == rhs.id)
             && (name == rhs.name)
             //&& (isActive == rhs.isActive) /*activeness is a state and is not considered*/
+            //&& (isScheduledForMove == rhs.isScheduledForMove) /*changing layouts is a state and is not considered*/
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)
