@@ -209,18 +209,24 @@ Data::ViewsTable Views::selectedViewsForClipboard()
     Latte::Data::Layout currentlayout = m_handler->currentData();
 
     for(int i=0; i<selectedviews.rowCount(); ++i) {
+        if (selectedviews[i].state() == Data::View::IsInvalid) {
+            continue;
+        }
+
+        Latte::Data::View copiedview = selectedviews[i];
+
         if (selectedviews[i].state() == Data::View::IsCreated) {
             QString storedviewpath = m_handler->layoutsController()->templatesKeeper()->storedView(currentlayout.id, selectedviews[i].id);
-            Latte::Data::View copiedview = selectedviews[i];
             copiedview.setState(Data::View::OriginFromLayout, storedviewpath, currentlayout.id, selectedviews[i].id);
-            copiedview.isActive = false;
-            clipboardviews << copiedview;
-        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate
-                   || selectedviews[i].state() == Data::View::OriginFromLayout) {
-            Latte::Data::View copiedview = selectedviews[i];
-            copiedview.isActive = false;
-            clipboardviews << copiedview;
+        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate) {
+            copiedview.setState(Data::View::OriginFromViewTemplate, selectedviews[i].originFile(), currentlayout.id, selectedviews[i].id);
+        } else if (selectedviews[i].state() == Data::View::OriginFromLayout) {
+            //! is already in valid values
         }
+
+        copiedview.isActive = false;
+        clipboardviews << copiedview;
+
     }
 
     return clipboardviews;
@@ -235,6 +241,16 @@ void Views::copySelectedViews()
     }
 
     Data::ViewsTable clipboardviews = selectedViewsForClipboard();
+
+    //! reset cut substates for views
+    for (int i=0; i<clipboardviews.rowCount(); ++i) {
+        clipboardviews[i].isMoveOrigin = false;
+
+        Data::View tempview = m_model->currentData(clipboardviews[i].id);
+        tempview.isMoveOrigin = false;
+        m_model->updateCurrentView(tempview.id, tempview);
+    }
+
     m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
 }
 
@@ -248,6 +264,7 @@ void Views::cutSelectedViews()
 
     Data::ViewsTable clipboardviews = selectedViewsForClipboard();
 
+    //! activate cut substates for views
     for (int i=0; i<clipboardviews.rowCount(); ++i) {
         clipboardviews[i].isMoveOrigin = true;
 
@@ -262,9 +279,21 @@ void Views::cutSelectedViews()
 void Views::pasteSelectedViews()
 {
     Data::ViewsTable clipboardviews = m_handler->layoutsController()->templatesKeeper()->clipboardContents();
+    Latte::Data::Layout currentlayout = m_handler->currentData();
+
+    bool hascurrentlayoutcuttedviews{false};
 
     for(int i=0; i<clipboardviews.rowCount(); ++i) {
+        if (clipboardviews[i].isMoveOrigin && clipboardviews[i].originLayout() == currentlayout.id) {
+            hascurrentlayoutcuttedviews = true;
+            continue;
+        }
         appendViewFromViewTemplate(clipboardviews[i]);
+    }
+
+    if (hascurrentlayoutcuttedviews) {
+        m_handler->showInlineMessage(i18n("Docks and panels of current layout can not be cutted and be pasted afterwards in the same layout"),
+                                         KMessageWidget::Error);
     }
 }
 
