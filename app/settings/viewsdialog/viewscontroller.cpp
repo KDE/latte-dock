@@ -118,6 +118,7 @@ void Views::init()
 
     m_pasteAction = new QAction(QIcon::fromTheme("edit-paste"), i18n("Paste"), m_view);
     m_pasteAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+    connect(m_pasteAction, &QAction::triggered, this, &Views::pasteSelectedViews);
 
     m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Duplicate Here"), m_view);
     m_duplicateAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
@@ -223,6 +224,15 @@ void Views::copySelectedViews()
     }
 
     m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
+}
+
+void Views::pasteSelectedViews()
+{
+    Data::ViewsTable clipboardviews = m_handler->layoutsController()->templatesKeeper()->clipboardContents();
+
+    for(int i=0; i<clipboardviews.rowCount(); ++i) {
+        appendViewFromViewTemplate(clipboardviews[i]);
+    }
 }
 
 void Views::duplicateSelectedViews()
