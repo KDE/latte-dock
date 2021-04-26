@@ -98,6 +98,8 @@ public:
     SyncedLaunchers *syncedLaunchers() const;
     Synchronizer *synchronizer() const;
 
+    void moveView(QString originLayoutName, uint originViewId, QString destinationLayoutName);
+
 public slots:
     void showAboutDialog();
 

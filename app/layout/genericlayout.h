@@ -142,7 +142,7 @@ public:
     //! Unassign that latteView from this layout (this is used for moving a latteView
     //! from layout to layout) and returns all the containments relevant to
     //! that latteView
-    QList<Plasma::Containment *> unassignFromLayout(Latte::View *latteView);
+    QList<Plasma::Containment *> unassignFromLayout(Plasma::Containment *latteContainment);
 
     QList<int> viewsScreens();
 

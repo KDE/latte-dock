@@ -1280,23 +1280,13 @@ void View::setLayout(Layout::GenericLayout *layout)
     }
 }
 
-void View::moveToLayout(QString layoutName)
+void View::moveToLayout(QString destinationLayoutName)
 {
     if (!m_layout) {
         return;
     }
 
-    QList<Plasma::Containment *> containments = m_layout->unassignFromLayout(this);
-
-    Latte::Corona *latteCorona = qobject_cast<Latte::Corona *>(this->corona());
-
-    if (latteCorona && containments.size() > 0) {
-        Layout::GenericLayout *newlayout = latteCorona->layoutsManager()->synchronizer()->layout(layoutName);
-
-        if (newlayout && newlayout != m_layout) {
-            newlayout->assignToLayout(this, containments);
-        }
-    }
+    m_corona->layoutsManager()->moveView(m_layout->name(), containment()->id(), destinationLayoutName);
 }
 
 void View::hideWindowsForSlidingOut()

@@ -853,7 +853,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     int id = containment->screen();
 
     if (!Layouts::Storage::isValid(id) && !Layouts::Storage::isValid(explicitScreen)) {
-      id = containment->lastScreen();
+        id = containment->lastScreen();
     }
 
     if (onPrimary) {
@@ -1060,52 +1060,55 @@ void GenericLayout::updateLastUsedActivity()
 
 void GenericLayout::assignToLayout(Latte::View *latteView, QList<Plasma::Containment *> containments)
 {
-    if (!m_corona) {
+    if (!m_corona || containments.isEmpty()) {
         return;
     }
 
     if (latteView) {
         m_latteViews[latteView->containment()] = latteView;
-        m_containments << containments;
-
-        for (const auto containment : containments) {
-            containment->config().writeEntry("layoutId", name());
-
-            if (latteView->containment() != containment) {
-                //! assign signals only to subcontainments
-                //! the View::setLayout() is responsible for the View::Containment signals
-                connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
-                connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
-                connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
-            }
-        }
-
-        latteView->setLayout(this);
-
-        emit viewsCountChanged();
     }
 
+    m_containments << containments;
+
+    for (const auto containment : containments) {
+        containment->config().writeEntry("layoutId", name());
+
+        if (!latteView || (latteView && latteView->containment() != containment)) {
+            //! assign signals only to subcontainments
+            //! the View::setLayout() is responsible for the View::Containment signals
+            connect(containment, &QObject::destroyed, this, &GenericLayout::containmentDestroyed);
+            connect(containment, &Plasma::Applet::destroyedChanged, this, &GenericLayout::destroyedChanged);
+            connect(containment, &Plasma::Containment::appletCreated, this, &GenericLayout::appletCreated);
+        }
+    }
+
+    if (latteView) {
+        latteView->setLayout(this);
+    }
+
+    emit viewsCountChanged();
+
     //! sync the original layout file for integrity
-    if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+    if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
         Layouts::Storage::self()->syncToLayoutFile(this, false);
     }
 }
 
-QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latteView)
+QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Plasma::Containment *latteContainment)
 {
     QList<Plasma::Containment *> containments;
 
-    if (!m_corona) {
+    if (!m_corona || !latteContainment || !contains(latteContainment)) {
         return containments;
     }
 
-    containments << latteView->containment();
+    containments << latteContainment;
 
     for (const auto containment : m_containments) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
 
         //! add subcontainments from that latteView
-        if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteView->containment()) {
+        if (parentApplet && parentApplet->containment() && parentApplet->containment() == latteContainment) {
             containments << containment;
             //! unassign signals only to subcontainments
             //! the View::setLayout() is responsible for the View::Containment signals
@@ -1120,7 +1123,7 @@ QList<Plasma::Containment *> GenericLayout::unassignFromLayout(Latte::View *latt
     }
 
     if (containments.size() > 0) {
-        m_latteViews.remove(latteView->containment());
+        m_latteViews.remove(latteContainment);
     }
 
     //! sync the original layout file for integrity
@@ -1416,7 +1419,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
         int screenId = containment->screen();
 
         if (!Layouts::Storage::isValid(screenId)) {
-           screenId = containment->lastScreen();
+            screenId = containment->lastScreen();
         }
 
         if (!latteViewExists(containment) && mapContainsId(&viewsMap, containment->id())) {

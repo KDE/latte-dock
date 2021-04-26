@@ -286,7 +286,7 @@ public slots:
     Q_INVOKABLE void exportTemplate();
 
 
-    Q_INVOKABLE void moveToLayout(QString layoutName);
+    Q_INVOKABLE void moveToLayout(QString destinationLayoutName);
 
     Q_INVOKABLE bool mimeContainsPlasmoid(QMimeData *mimeData, QString name);
 

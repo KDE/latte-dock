@@ -223,6 +223,38 @@ void Manager::loadLayoutOnStartup(QString layoutName)
     m_synchronizer->switchToLayout(layoutName);
 }
 
+void Manager::moveView(QString originLayoutName, uint originViewId, QString destinationLayoutName)
+{
+    if (memoryUsage() != Latte::MemoryUsage::MultipleLayouts
+            || originLayoutName.isEmpty()
+            || destinationLayoutName.isEmpty()
+            || originViewId <= 0
+            || originLayoutName == destinationLayoutName) {
+        return;
+    }
+
+    auto originlayout = m_synchronizer->layout(originLayoutName);
+    auto destinationlayout = m_synchronizer->layout(destinationLayoutName);
+
+
+    if (!originlayout || !destinationlayout || originlayout == destinationlayout) {
+        return;
+    }
+
+    Plasma::Containment *originviewcontainment = originlayout->containmentForId(originViewId);
+    Latte::View *originview = originlayout->viewForContainment(originViewId);
+
+    if (!originviewcontainment) {
+        return;
+    }
+
+    QList<Plasma::Containment *> origincontainments = originlayout->unassignFromLayout(originviewcontainment);
+
+    if (origincontainments.size() > 0) {
+        destinationlayout->assignToLayout(originview, origincontainments);
+    }
+}
+
 void Manager::loadLatteLayout(QString layoutPath)
 {
     qDebug() << " -------------------------------------------------------------------- ";
