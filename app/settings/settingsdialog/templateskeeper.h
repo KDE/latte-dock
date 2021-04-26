@@ -52,6 +52,8 @@ public:
 
     QString storedView(const QString &layoutCurrentId, const QString &viewId);
 
+    Latte::Data::ViewsTable clipboardContents() const;
+    void setClipboardContents(const Latte::Data::ViewsTable &views);
 
 public slots:
     void clear();
@@ -61,6 +63,7 @@ private:
 
 private:
     Latte::Data::ViewsTable m_storedViews;
+    Latte::Data::ViewsTable m_clipboardViews;
 
     Latte::Corona *m_corona{nullptr};
     Settings::Controller::Layouts *m_layoutsController{nullptr};

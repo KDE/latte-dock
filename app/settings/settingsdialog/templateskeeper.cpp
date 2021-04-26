@@ -43,12 +43,24 @@ TemplatesKeeper::~TemplatesKeeper()
     clear();
 }
 
+Latte::Data::ViewsTable TemplatesKeeper::clipboardContents() const
+{
+    return m_clipboardViews;
+}
+
+void TemplatesKeeper::setClipboardContents(const Latte::Data::ViewsTable &views)
+{
+    m_clipboardViews.clear();
+    m_clipboardViews = views;
+}
+
 void TemplatesKeeper::clear()
 {
     qDeleteAll(m_garbageLayouts);
 
     m_garbageLayouts.clear();
     m_storedViews.clear();
+    m_clipboardViews.clear();
 }
 
 QString TemplatesKeeper::viewKeeperId(const QString &layoutCurrentId, const QString &viewId)
@@ -88,6 +100,7 @@ QString TemplatesKeeper::storedView(const QString &layoutCurrentId, const QStrin
 
     return storedviewpath;
 }
+
 
 }
 }
