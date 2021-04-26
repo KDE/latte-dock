@@ -114,6 +114,7 @@ void Views::init()
 
     m_copyAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Copy"), m_view);
     m_copyAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    connect(m_copyAction, &QAction::triggered, this, &Views::copySelectedViews);
 
     m_pasteAction = new QAction(QIcon::fromTheme("edit-paste"), i18n("Paste"), m_view);
     m_pasteAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
@@ -193,6 +194,37 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     return newview;
 }
 
+void Views::copySelectedViews()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (!hasSelectedView()) {
+        return;
+    }
+
+    Data::ViewsTable selectedviews = selectedViewsCurrentData();
+    Latte::Data::Layout currentlayout = m_handler->currentData();
+
+    Data::ViewsTable clipboardviews;
+
+    for(int i=0; i<selectedviews.rowCount(); ++i) {
+        if (selectedviews[i].state() == Data::View::IsCreated) {
+            QString storedviewpath = m_handler->layoutsController()->templatesKeeper()->storedView(currentlayout.id, selectedviews[i].id);
+            Latte::Data::View copiedview = selectedviews[i];
+            copiedview.setState(Data::View::OriginFromLayout, storedviewpath, currentlayout.id, selectedviews[i].id);
+            copiedview.isActive = false;
+            clipboardviews << copiedview;
+        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate
+                   || selectedviews[i].state() == Data::View::OriginFromLayout) {
+            Latte::Data::View copiedview = selectedviews[i];
+            copiedview.isActive = false;
+            clipboardviews << copiedview;
+        }
+    }
+
+    m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
+}
+
 void Views::duplicateSelectedViews()
 {
     qDebug() << Q_FUNC_INFO;
@@ -208,10 +240,11 @@ void Views::duplicateSelectedViews()
         if (selectedviews[i].state() == Data::View::IsCreated) {
             QString storedviewpath = m_handler->layoutsController()->templatesKeeper()->storedView(currentlayout.id, selectedviews[i].id);
             Latte::Data::View duplicatedview = selectedviews[i];
-            duplicatedview.setState(Data::View::OriginFromViewTemplate, storedviewpath);
+            duplicatedview.setState(Data::View::OriginFromLayout, storedviewpath, currentlayout.id, selectedviews[i].id);
             duplicatedview.isActive = false;
             appendViewFromViewTemplate(duplicatedview);
-        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate) {
+        } else if (selectedviews[i].state() == Data::View::OriginFromViewTemplate
+                   || selectedviews[i].state() == Data::View::OriginFromLayout) {
             Latte::Data::View duplicatedview = selectedviews[i];
             duplicatedview.isActive = false;
             appendViewFromViewTemplate(duplicatedview);
@@ -291,6 +324,13 @@ void Views::save()
     for(int i=0; i<newViews.rowCount(); ++i){
         if (newViews[i].state() == Data::View::OriginFromViewTemplate) {
             Data::View addedview = central->newView(newViews[i]);
+
+            newviewsresponses[newViews[i].id] = addedview;
+        } else if (newViews[i].state() == Data::View::OriginFromLayout) {
+            Data::View adjustedview = newViews[i];
+            adjustedview.setState(Data::View::OriginFromViewTemplate, newViews[i].originFile(), QString(), QString());
+            Data::View addedview = central->newView(adjustedview);
+
             newviewsresponses[newViews[i].id] = addedview;
         }
     }

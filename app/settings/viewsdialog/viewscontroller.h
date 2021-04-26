@@ -84,6 +84,7 @@ public:
     void save();
 
 public slots:
+    void copySelectedViews();
     void duplicateSelectedViews();
     void removeSelectedViews();
 
