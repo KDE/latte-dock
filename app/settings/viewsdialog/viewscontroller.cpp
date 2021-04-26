@@ -292,8 +292,8 @@ void Views::pasteSelectedViews()
     }
 
     if (hascurrentlayoutcuttedviews) {
-        m_handler->showInlineMessage(i18n("Docks and panels of current layout can not be cutted and be pasted afterwards in the same layout"),
-                                         KMessageWidget::Error);
+        m_handler->showInlineMessage(i18n("Docks and panels from <b>Paste</b> action are already present in current layout"),
+                                         KMessageWidget::Information);
     }
 }
 
