@@ -52,6 +52,8 @@ public:
 
     QString storedView(const QString &layoutCurrentId, const QString &viewId);
 
+    bool hasClipboardContents() const;
+
     Latte::Data::ViewsTable clipboardContents() const;
     void setClipboardContents(const Latte::Data::ViewsTable &views);
 

@@ -43,6 +43,11 @@ TemplatesKeeper::~TemplatesKeeper()
     clear();
 }
 
+bool TemplatesKeeper::hasClipboardContents() const
+{
+    return (m_clipboardViews.rowCount() > 0);
+}
+
 Latte::Data::ViewsTable TemplatesKeeper::clipboardContents() const
 {
     return m_clipboardViews;

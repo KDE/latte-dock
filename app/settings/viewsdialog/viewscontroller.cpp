@@ -126,8 +126,10 @@ void Views::init()
 
     m_view->addAction(m_cutAction);
     m_view->addAction(m_copyAction);
-    m_view->addAction(m_pasteAction);
     m_view->addAction(m_duplicateAction);
+    m_view->addAction(m_pasteAction);
+
+    onSelectionsChanged();
 
     connect(m_view, &View::ViewsTableView::selectionsChanged, this, &Views::onSelectionsChanged);
     connect(m_view, &QObject::destroyed, this, &Views::storeColumnWidths);
@@ -297,7 +299,7 @@ void Views::onSelectionsChanged()
     m_cutAction->setVisible(hasselectedview);
     m_copyAction->setVisible(hasselectedview);
     m_duplicateAction->setVisible(hasselectedview);
-    m_pasteAction->setVisible(!hasselectedview);
+    m_pasteAction->setEnabled(m_handler->layoutsController()->templatesKeeper()->hasClipboardContents());
 }
 
 int Views::viewsForRemovalCount() const
