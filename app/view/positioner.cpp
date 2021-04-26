@@ -980,7 +980,7 @@ void Positioner::initSignalingForLocationChangeSliding()
 
         //! LAYOUT
         if (!m_nextLayoutName.isEmpty()) {
-            m_view->moveToLayout(m_nextLayoutName);
+            m_corona->layoutsManager()->moveView(m_view->layout()->name(), m_view->containment()->id(), m_nextLayoutName);
         }
 
         //! SCREEN

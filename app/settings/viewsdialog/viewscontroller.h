@@ -37,6 +37,7 @@
 
 
 namespace Latte {
+class CentralLayout;
 class Corona;
 class ViewsDialog;
 
@@ -95,6 +96,9 @@ signals:
 
 private:
     void init();
+
+    bool hasValidOriginView(const Data::View &view);
+    CentralLayout *originLayout(const Data::View &view);
 
     int rowForId(QString id) const;
     QString uniqueViewName(QString name);

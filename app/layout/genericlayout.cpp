@@ -1588,6 +1588,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
     if (view) {
         if (!viewMustBeDeleted) {
             QString scrName = Latte::Data::Screen::ONPRIMARYNAME;
+            QString nextlayoutname = (viewData.state() == Data::View::OriginFromLayout && !viewData.originLayout().isEmpty() ? viewData.originLayout() : QString());
 
             if (!viewData.onPrimary) {
                 if (m_corona->screenPool()->hasScreenId(viewData.screen)) {
@@ -1598,7 +1599,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             }
 
             view->setName(viewData.name);
-            view->positioner()->setNextLocation("", scrName, viewData.edge, viewData.alignment);
+            view->positioner()->setNextLocation(nextlayoutname, scrName, viewData.edge, viewData.alignment);
             return;
         } else {
             //! viewMustBeDeleted

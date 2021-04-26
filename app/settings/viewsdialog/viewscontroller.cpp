@@ -34,6 +34,7 @@
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
+#include "../../view/view.h"
 
 // Qt
 #include <QHeaderView>
@@ -382,6 +383,30 @@ int Views::viewsForRemovalCount() const
     return removedViews.rowCount();
 }
 
+bool Views::hasValidOriginView(const Data::View &view)
+{
+    bool viewidisinteger{true};
+    int vid_int = view.originView().toInt(&viewidisinteger);
+    QString vid_str = view.originView();
+
+    if (vid_str.isEmpty() || !viewidisinteger || vid_int<=0) {
+        return false;
+    }
+
+    return true;
+}
+
+CentralLayout *Views::originLayout(const Data::View &view)
+{
+    QString origincurrentid = view.originLayout();
+    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(origincurrentid);
+
+    Latte::CentralLayout *originactive = m_handler->layoutsController()->isLayoutOriginal(origincurrentid) ?
+                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    return originactive;
+}
+
 void Views::save()
 {
     //! when this function is called we consider that removal has already been approved
@@ -399,10 +424,19 @@ void Views::save()
 
     QHash<QString, Data::View> newviewsresponses;
     QHash<QString, Data::View> cuttedpastedviews;
+    QHash<QString, Data::View> cuttedpastedactiveviews;
 
     //! add new views that are accepted
     for(int i=0; i<newViews.rowCount(); ++i){
         if (newViews[i].isMoveDestination) {
+            CentralLayout *originActive = originLayout(newViews[i]);
+            bool inmovebetweenactivelayouts = centralActive && originActive && centralActive != originActive && hasValidOriginView(newViews[i]);
+
+            if (inmovebetweenactivelayouts) {
+                cuttedpastedactiveviews[newViews[i].id] = newViews[i];
+                continue;
+            }
+
             cuttedpastedviews[newViews[i].id] = newViews[i];
         }
 
@@ -458,6 +492,32 @@ void Views::save()
         if (originviews.containsId(vid_str)) {
             origin->removeView(originviews[vid_str]);
         }
+    }
+
+    //! move active views between different active layouts
+    for (const auto vid: cuttedpastedactiveviews.keys()) {
+        Data::View pastedactiveview = cuttedpastedactiveviews[vid];
+        uint originviewid = pastedactiveview.originView().toUInt();
+        CentralLayout *origin = originLayout(pastedactiveview);
+        QString originlayoutname = origin->name();
+        QString destinationlayoutname = originallayout.name;
+
+        auto view = origin->viewForContainment(originviewid);
+
+        QString tempviewid = pastedactiveview.id;
+        pastedactiveview.id = QString::number(originviewid);
+        pastedactiveview.setState(pastedactiveview.state(), pastedactiveview.originFile(), destinationlayoutname, pastedactiveview.originView());
+
+        origin->updateView(pastedactiveview);
+
+        if (view) {
+            //view->positioner()->setNextLocation(destinationlayoutname, QString(), Plasma::Types::Floating, Latte::Types::NoneAlignment);
+        } else {
+            //m_handler->corona()->layoutsManager()->moveView(originlayoutname, originviewid, destinationlayoutname);
+        }
+
+        pastedactiveview.setState(Data::View::IsCreated, QString(), QString(), QString());
+        newviewsresponses[tempviewid] = pastedactiveview;
     }
 
     //! update

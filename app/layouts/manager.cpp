@@ -236,7 +236,6 @@ void Manager::moveView(QString originLayoutName, uint originViewId, QString dest
     auto originlayout = m_synchronizer->layout(originLayoutName);
     auto destinationlayout = m_synchronizer->layout(destinationLayoutName);
 
-
     if (!originlayout || !destinationlayout || originlayout == destinationlayout) {
         return;
     }

@@ -1280,15 +1280,6 @@ void View::setLayout(Layout::GenericLayout *layout)
     }
 }
 
-void View::moveToLayout(QString destinationLayoutName)
-{
-    if (!m_layout) {
-        return;
-    }
-
-    m_corona->layoutsManager()->moveView(m_layout->name(), containment()->id(), destinationLayoutName);
-}
-
 void View::hideWindowsForSlidingOut()
 {
     if (m_primaryConfigView) {
