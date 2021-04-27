@@ -230,7 +230,9 @@ void WidgetExplorerView::hideConfigWindow()
         return;
     }
 
-    QTimer::singleShot(100, [this]() {
+    deleteLater();
+
+    /*QTimer::singleShot(100, [this]() {
         //! avoid crashes under wayland because some mouse events are sended after the surface is destroyed
 
         if (m_shellSurface) {
@@ -239,7 +241,7 @@ void WidgetExplorerView::hideConfigWindow()
         } else {
             hide();
         }
-    });
+    });*/
 }
 
 void WidgetExplorerView::syncSlideEffect()

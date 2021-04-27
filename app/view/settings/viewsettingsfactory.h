@@ -60,7 +60,6 @@ public:
 
 private:
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
-    QPointer<ViewPart::WidgetExplorerView> m_widgetExplorerView;
     QPointer<Plasma::Containment> m_lastContainment;
 
 };

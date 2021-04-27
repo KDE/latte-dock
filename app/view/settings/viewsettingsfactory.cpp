@@ -19,6 +19,7 @@
 
 #include "viewsettingsfactory.h"
 
+// local
 #include "primaryconfigview.h"
 #include "widgetexplorerview.h"
 #include "../view.h"
@@ -37,10 +38,6 @@ ViewSettingsFactory::~ViewSettingsFactory()
 {
     if (m_primaryConfigView) {
         delete m_primaryConfigView;
-    }
-
-    if (m_widgetExplorerView) {
-        delete m_widgetExplorerView;
     }
 }
 
@@ -88,13 +85,9 @@ ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View 
 
 ViewPart::WidgetExplorerView *ViewSettingsFactory::widgetExplorerView(Latte::View *view)
 {
-    if (!m_widgetExplorerView) {
-        m_widgetExplorerView = new ViewPart::WidgetExplorerView(view);
-    } else {
-        m_widgetExplorerView->setParentView(view);
-    }
-
-    return m_widgetExplorerView;
+    //! it is deleted on hiding
+    auto widgetExplorerView = new ViewPart::WidgetExplorerView(view);
+    return widgetExplorerView;
 }
 
 
