@@ -69,6 +69,9 @@ void Package::initPackage(KPackage::Package *package)
     package->addFileDefinition("preset4", QStringLiteral("presets/Extended.layout.latte"), i18n("extended preset file"));
     package->addFileDefinition("preset10", QStringLiteral("presets/multiple-layouts_hidden.layout.latte"), i18n("multiple layouts hidden file"));
 
+    //! applets
+    package->addFileDefinition("compactapplet", QStringLiteral("applet/CompactApplet.qml"), i18n("QML component that shows an applet in a popup"));
+
     package->setFallbackPackage(fallback);
     qDebug() << "package is valid" << package->isValid();
 }
