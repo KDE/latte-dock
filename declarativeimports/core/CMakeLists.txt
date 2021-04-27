@@ -2,6 +2,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURR
 
 set(lattecoreplugin_SRCS
     lattecoreplugin.cpp
+    dialog.cpp
     environment.cpp
     iconitem.cpp
     quickwindowsystem.cpp

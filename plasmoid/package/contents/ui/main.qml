@@ -336,7 +336,7 @@ Item {
 
     ////BEGIN interfaces
 
-    LatteTasks.Dialog{
+    LatteCore.Dialog{
         id: windowsPreviewDlg
         type: plasmoid.configuration.previewWindowAsPopup ? PlasmaCore.Dialog.PopupMenu : PlasmaCore.Dialog.Tooltip
         flags: plasmoid.configuration.previewWindowAsPopup ? Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.Popup :

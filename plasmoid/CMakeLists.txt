@@ -5,7 +5,6 @@ configure_file(metadata.desktop.cmake ${CMAKE_CURRENT_SOURCE_DIR}/package/metada
 plasma_install_package(package org.kde.latte.plasmoid)
 
 set(tasks_SRCS
-    plugin/dialog.cpp
     plugin/types.cpp
     plugin/lattetasksplugin.cpp
 )

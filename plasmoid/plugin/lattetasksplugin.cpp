@@ -20,7 +20,6 @@
 #include "lattetasksplugin.h"
 
 // local
-#include "dialog.h"
 #include "types.h"
 
 // Qt
@@ -31,6 +30,5 @@ void LatteTasksPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("org.kde.latte.private.tasks"));
     qmlRegisterUncreatableType<Latte::Tasks::Types>(uri, 0, 1, "Types", "Latte Tasks Types uncreatable");
-    qmlRegisterType<Latte::Quick::Dialog>(uri, 0, 1, "Dialog");
 }
 
