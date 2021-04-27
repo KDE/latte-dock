@@ -31,6 +31,7 @@
 #include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
 #include "../settingsdialog/templateskeeper.h"
+#include "../../layout/genericlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
@@ -301,7 +302,7 @@ void Views::pasteSelectedViews()
 
     if (hascurrentlayoutcuttedviews) {
         m_handler->showInlineMessage(i18n("Docks and panels from <b>Paste</b> action are already present in current layout"),
-                                         KMessageWidget::Information);
+                                     KMessageWidget::Information);
     }
 }
 
@@ -358,6 +359,21 @@ void Views::onCurrentLayoutChanged()
 {   
     Data::Layout layout = m_handler->currentData();
     m_model->setOriginalData(layout.views);
+
+    //! track viewscountchanged signal for current active layout scenario
+    for (const auto &var : m_currentLayoutConnections) {
+        QObject::disconnect(var);
+    }
+
+    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(layout.id);
+    auto currentlayout = m_handler->layoutsController()->isLayoutOriginal(layout.id) ?
+                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    if (currentlayout && currentlayout->isActive()) {
+        m_currentLayoutConnections << connect(currentlayout, &Layout::GenericLayout::viewsCountChanged, this, [&, currentlayout](){
+            m_model->updateActiveStatesBasedOn(currentlayout);
+        });
+    }
 }
 
 void Views::onSelectionsChanged()
@@ -407,9 +423,40 @@ CentralLayout *Views::originLayout(const Data::View &view)
     return originactive;
 }
 
+void Views::updateDoubledMoveDestinationRows() {
+    //! only one isMoveDestination should exist for each unique move isMoveOrigin case
+    //! all the rest that have been created through Cut/Paste or Duplicate options should become
+    //! simple OriginFromViewTemplate cases
+
+    for (int i=0; i<m_model->rowCount(); ++i) {
+        Data::View baseview = m_model->at(i);
+
+        if (!baseview.isMoveDestination || baseview.state()!=Data::View::OriginFromLayout) {
+            continue;
+        }
+
+        for (int j=i+1; j<m_model->rowCount(); ++j) {
+            Data::View subsequentview = m_model->at(j);
+
+            if (subsequentview.isMoveDestination
+                    && subsequentview.state() == Data::View::OriginFromLayout
+                    && subsequentview.originFile() == baseview.originFile()
+                    && subsequentview.originLayout() == baseview.originLayout()
+                    && subsequentview.originView() == baseview.originView()) {
+                //! this is a subsequent view that needs to be updated properly
+                subsequentview.isMoveDestination = false;
+                subsequentview.isMoveOrigin = false;
+                subsequentview.setState(Data::View::OriginFromViewTemplate, subsequentview.originFile(), QString(), QString());
+                m_model->updateCurrentView(subsequentview.id, subsequentview);
+            }
+        }
+    }
+}
+
 void Views::save()
 {
     //! when this function is called we consider that removal has already been approved
+    updateDoubledMoveDestinationRows();
 
     Latte::Data::Layout originallayout = m_handler->originalData();
     Latte::Data::Layout currentlayout = m_handler->currentData();
@@ -425,6 +472,9 @@ void Views::save()
     QHash<QString, Data::View> newviewsresponses;
     QHash<QString, Data::View> cuttedpastedviews;
     QHash<QString, Data::View> cuttedpastedactiveviews;
+
+    m_debugSaveCall++;
+    qDebug() << "org.kde.latte ViewsDialog::save() call: " << m_debugSaveCall << "-------- ";
 
     //! add new views that are accepted
     for(int i=0; i<newViews.rowCount(); ++i){
@@ -456,7 +506,7 @@ void Views::save()
     //! update altered views
     for (int i=0; i<alteredViews.rowCount(); ++i) {
         if (alteredViews[i].state() == Data::View::IsCreated && !alteredViews[i].isMoveOrigin) {
-            qDebug() << "org.kde.latte updating altered view :: " << alteredViews[i];
+            qDebug() << "org.kde.latte ViewsDialog::save() updating altered view :: " << alteredViews[i];
             central->updateView(alteredViews[i]);
         }
     }
@@ -465,6 +515,7 @@ void Views::save()
     Latte::Data::ViewsTable removedViews = originalViews.subtracted(currentViews);
 
     for (int i=0; i<removedViews.rowCount(); ++i) {
+        qDebug() << "org.kde.latte ViewsDialog::save() real removing view :: " << removedViews[i];
         central->removeView(removedViews[i]);
     }
 
@@ -478,6 +529,8 @@ void Views::save()
             //! ignore origin views that have not been created already
             continue;
         }
+
+        qDebug() << "org.kde.latte ViewsDialog::save() removing cut-pasted view :: " << cuttedpastedviews[vid];
 
         //! Be Careful: Remove deprecated views from Cut->Paste Action
         QString origincurrentid = cuttedpastedviews[vid].originLayout();
@@ -506,6 +559,8 @@ void Views::save()
 
         QString tempviewid = pastedactiveview.id;
         pastedactiveview.id = QString::number(originviewid);
+
+        qDebug() << "org.kde.latte ViewsDialog::save() move to another layout cutted-pasted active view :: " << pastedactiveview;
 
         if (view) {
             //! onscreen_view->onscreen_view
@@ -550,7 +605,7 @@ void Views::save()
 QString Views::uniqueViewName(QString name)
 {
     if (name.isEmpty()) {
-            return name;
+        return name;
     }
 
     int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
@@ -619,3 +674,4 @@ void Views::saveConfig()
 }
 }
 }
+

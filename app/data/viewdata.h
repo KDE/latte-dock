@@ -63,7 +63,7 @@ public:
 
     //! View sub-states
     bool isMoveOrigin{false};
-    bool isMoveDestination{true};
+    bool isMoveDestination{false};
 
     bool isValid() const;
     bool isCreated() const;

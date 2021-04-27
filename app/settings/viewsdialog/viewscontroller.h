@@ -32,6 +32,8 @@
 #include <QAbstractItemModel>
 #include <QHash>
 #include <QItemSelection>
+#include <QList>
+#include <QMetaObject>
 #include <QSortFilterProxyModel>
 #include <QTableView>
 
@@ -114,10 +116,17 @@ private slots:
     void onCurrentLayoutChanged();
     void onSelectionsChanged();
 
+    void updateDoubledMoveDestinationRows();
+
 private:
     Settings::Handler::ViewsHandler *m_handler{nullptr};
 
     Settings::View::ViewsTableView *m_view{nullptr};
+
+    int m_debugSaveCall{0};
+
+    //! current active layout signals/slots
+    QList<QMetaObject::Connection> m_currentLayoutConnections;
 
     //! layoutsView ui settings
     int m_viewSortColumn{Model::Views::SCREENCOLUMN};

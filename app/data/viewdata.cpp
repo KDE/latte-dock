@@ -143,11 +143,11 @@ View::operator QString() const
     result +=" : ";
     result += isActive ? "Active" : "Inactive";
     result +=" : ";
-    if (isMoveOrigin) {
+    if (m_state==OriginFromLayout && isMoveOrigin) {
         result += " ↑ ";
-    } else if (isMoveDestination) {
+    } else if (m_state==OriginFromLayout && isMoveDestination) {
         result += " ↓ ";
-    } else if (isMoveOrigin && isMoveDestination) {
+    } else if (m_state==OriginFromLayout && isMoveOrigin && isMoveDestination) {
         result += " ↑↓ ";
     } else {
         result += " - ";
