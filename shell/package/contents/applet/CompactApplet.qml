@@ -39,10 +39,15 @@ PlasmaCore.ToolTipArea {
 
     property Item fullRepresentation
     property Item compactRepresentation
-   // property Item expandedFeedback: expandedItem
+    /*Discover real visual parent - the following code points to Applet::ItemWrapper*/
+    property Item originalCompactRepresenationParent
+    property Item compactRepresentationVisualParent: originalCompactRepresenationParent && originalCompactRepresenationParent.parent
+                                                     ? originalCompactRepresenationParent.parent.parent : null
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
+            originalCompactRepresenationParent = compactRepresentation.parent;
+
             compactRepresentation.parent = root;
             compactRepresentation.anchors.fill = root;
             compactRepresentation.visible = true;
@@ -152,8 +157,9 @@ PlasmaCore.ToolTipArea {
         objectName: "popupWindow"
         flags: Qt.WindowStaysOnTopHint
         visible: plasmoid.expanded && fullRepresentation
-        visualParent: compactRepresentation ? compactRepresentation : null
+        visualParent: compactRepresentationVisualParent ? compactRepresentationVisualParent : (compactRepresentation ? compactRepresentation : null)
         location: PlasmaCore.Types.Floating //plasmoid.location
+        edge: plasmoid.location /*this way dialog borders are not updated and it is used only for adjusting dialog position*/
         hideOnWindowDeactivate: plasmoid.hideOnWindowDeactivate
         backgroundHints: (plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
 

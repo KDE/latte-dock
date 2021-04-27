@@ -25,6 +25,7 @@
 #include <QObject>
 
 // Plasma
+#include <Plasma>
 #include <PlasmaQuick/Dialog>
 
 namespace Latte {
@@ -34,15 +35,26 @@ class Dialog : public PlasmaQuick::Dialog {
     Q_OBJECT
     Q_PROPERTY (bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
+    /**
+     * Plasma Location of the dialog window. Useful if this dialog is a popup for a panel
+     */
+    Q_PROPERTY(Plasma::Types::Location edge READ edge WRITE setEdge NOTIFY edgeChanged)
+
 public:
     explicit Dialog(QQuickItem *parent = nullptr);
 
     bool containsMouse() const;
 
+    Plasma::Types::Location edge() const;
+    void setEdge(const Plasma::Types::Location &edge);
+
 signals:
     void containsMouseChanged();
+    void edgeChanged();
 
 protected:
+    void adjustGeometry(const QRect &geom) override;
+
     bool event(QEvent *e) override;
 
 private slots:
@@ -50,6 +62,8 @@ private slots:
 
 private:
     bool m_containsMouse{false};
+
+    Plasma::Types::Location m_edge{Plasma::Types::BottomEdge};
 
 
 };
