@@ -36,8 +36,8 @@ Item {
     id: main
     width: Math.max(heading.paintedWidth, units.iconSizes.enormous * 3 + units.smallSpacing * 4 + units.gridUnit * 2)
   //  height: 800//Screen.height
-
     opacity: draggingWidget ? 0.3 : 1
+    visible: viewConfig.visible
 
     //property QtObject containment
 
@@ -52,6 +52,7 @@ Item {
     property bool outputOnly: draggingWidget
 
     property Item categoryButton
+    property QtObject widgetExplorer: widgetExplorerLoader.active ? widgetExplorerLoader.item : null
 
     property bool draggingWidget: false
 
@@ -67,7 +68,19 @@ Item {
 
     onVisibleChanged: {
         if (!visible) {
-            kwindowsystem.showingDesktop = false
+            kwindowsystem.showingDesktop = false;
+            if (widgetExplorer) {
+                widgetExplorer.widgetsModel.filterQuery = "";
+                widgetExplorer.widgetsModel.filterType = "";
+                widgetExplorer.widgetsModel.searchTerm = "";
+            }
+            searchInput.text = "";
+        }
+    }
+
+    onWidgetExplorerChanged: {
+        if (widgetExplorer) {
+            setModelTimer.start();
         }
     }
 
@@ -132,12 +145,15 @@ Item {
         Component.onCompleted: viewConfig.updateEffects()
     }
 
-
-    PlasmaShell.WidgetExplorer {
-        id:widgetExplorer
-         //view: desktop
-        containment: containmentFromView
-        onShouldClose: main.closed();
+    Loader {
+        id: widgetExplorerLoader
+        active: main.visible
+        sourceComponent: PlasmaShell.WidgetExplorer {
+            //id:widgetExplorer
+             //view: desktop
+            containment: containmentFromView
+            onShouldClose: main.closed();
+        }
     }
 
 
@@ -278,7 +294,11 @@ Item {
         id: setModelTimer
         interval: 20
         running: true
-        onTriggered: list.model = widgetExplorer.widgetsModel
+        onTriggered: {
+            if (widgetExplorer) {
+                list.model = widgetExplorer.widgetsModel
+            }
+        }
     }
 
     PlasmaExtras.ScrollArea {
