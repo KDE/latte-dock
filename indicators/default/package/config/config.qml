@@ -102,7 +102,7 @@ ColumnLayout {
 
             value: Math.round(indicator.configuration.size * 100)
             from: 3
-            to: 15
+            to: 25
             stepSize: 1
             wheelEnabled: false
 

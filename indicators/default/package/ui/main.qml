@@ -41,7 +41,7 @@ LatteComponents.IndicatorItem{
 
     readonly property int screenEdgeMargin: plasmoid.location === PlasmaCore.Types.Floating || reversedEnabled ? 0 : indicator.screenEdgeMargin
 
-    readonly property int thicknessMargin: screenEdgeMargin + thickLocalMargin + 1
+    readonly property int thicknessMargin: screenEdgeMargin + thickLocalMargin + (glowEnabled ? 1 : 0)
 
     property real textColorBrightness: colorBrightness(theme.textColor)
 
@@ -68,6 +68,7 @@ LatteComponents.IndicatorItem{
     readonly property bool glow3D: indicator.configuration.glow3D
     readonly property int glowApplyTo: indicator.configuration.glowApplyTo
     readonly property real glowOpacity: indicator.configuration.glowOpacity
+    readonly property int glowMargins: glowEnabled ? 12 : 0
 
     /*Rectangle{
         anchors.fill: parent
@@ -132,8 +133,8 @@ LatteComponents.IndicatorItem{
             }
             showBorder: glowEnabled && glow3D
 
-            property int stateWidth: indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width
-            property int stateHeight: indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height
+            property int stateWidth: (indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width) - glowMargins
+            property int stateHeight: (indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height) - glowMargins
 
             property int animationTime: indicator.durationTime* (0.7*LatteCore.Environment.longDuration)
 
