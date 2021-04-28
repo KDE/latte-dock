@@ -54,6 +54,7 @@ Ability.MyViewPrivate {
 
     lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
 
+    appletsLayoutGeometry: view && view.effects ? view.effects.appletsLayoutGeometry : Qt.rect(0, 0, -1, -1)
     screenGeometry: view ? view.screenGeometry : plasmoid.screenGeometry
 
     containmentActions: isReady ? view.containmentActions : []

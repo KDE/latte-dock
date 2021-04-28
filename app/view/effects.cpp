@@ -333,6 +333,23 @@ void Effects::setInputMask(QRect area)
     emit inputMaskChanged();
 }
 
+QRect Effects::appletsLayoutGeometry() const
+{
+    return m_appletsLayoutGeometry;
+}
+
+void Effects::setAppletsLayoutGeometry(const QRect &geom)
+{
+    if (m_appletsLayoutGeometry == geom) {
+        return;
+    }
+
+    m_appletsLayoutGeometry = geom;
+    m_view->setProperty("_applets_layout_geometry", QVariant(m_appletsLayoutGeometry));
+
+    emit appletsLayoutGeometryChanged();
+}
+
 void Effects::forceMaskRedraw()
 {
     if (m_background) {

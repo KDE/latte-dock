@@ -60,6 +60,7 @@ class Effects: public QObject
     Q_PROPERTY(QRect mask READ mask WRITE setMask NOTIFY maskChanged)
     Q_PROPERTY(QRect rect READ rect WRITE setRect NOTIFY rectChanged)
     Q_PROPERTY(QRect inputMask READ inputMask WRITE setInputMask NOTIFY inputMaskChanged)
+    Q_PROPERTY(QRect appletsLayoutGeometry READ appletsLayoutGeometry WRITE setAppletsLayoutGeometry NOTIFY appletsLayoutGeometryChanged)
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
@@ -106,6 +107,9 @@ public:
     QRect rect() const;
     void setRect(QRect area);
 
+    QRect appletsLayoutGeometry() const;
+    void setAppletsLayoutGeometry(const QRect &geom);
+
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
 public slots:
@@ -123,6 +127,7 @@ public slots:
 
 signals:
     void animationsBlockedChanged();
+    void appletsLayoutGeometryChanged();
     void backgroundAllCornersChanged();
     void backgroundCornersMaskChanged();
     void backgroundOpacityChanged();
@@ -179,6 +184,7 @@ private:
     QRect m_rect;
     QRect m_mask;
     QRect m_inputMask;
+    QRect m_appletsLayoutGeometry;
 
     QPointer<Latte::View> m_view;
     QPointer<Latte::Corona> m_corona;

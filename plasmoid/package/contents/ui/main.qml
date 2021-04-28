@@ -890,7 +890,9 @@ Item {
 
             target: icList
 
-            property int maxThickness: (appletAbilities.parabolic.isHovered || windowPreviewIsShown || appletAbilities.animations.hasThicknessAnimation) ?
+            property int maxThickness: ((appletAbilities.parabolic.isEnabled && appletAbilities.parabolic.isHovered)
+                                        || (appletAbilities.parabolic.isEnabled && windowPreviewIsShown)
+                                        || appletAbilities.animations.hasThicknessAnimation) ?
                                            appletAbilities.metrics.mask.thickness.maxZoomedForItems : // dont clip bouncing tasks when zoom=1
                                            appletAbilities.metrics.mask.thickness.normalForItems
 

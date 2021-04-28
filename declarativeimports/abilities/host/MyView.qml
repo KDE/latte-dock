@@ -61,6 +61,7 @@ AbilityDefinition.MyView {
 
         readonly property alias lastUsedActivity: apis.lastUsedActivity
 
+        readonly property alias appletsLayoutGeometry: apis.appletsLayoutGeometry
         readonly property alias screenGeometry: apis.screenGeometry
 
         readonly property alias containmentActions: apis.containmentActions

@@ -284,6 +284,37 @@ Item{
         value: background.shadows.headThickness
     }
 
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
+        property:"appletsLayoutGeometry"
+        when: latteView && latteView.effects && manager.inNormalState
+        value: {
+            if (root.behaveAsPlasmaPanel
+                    || (!parabolic.isEnabled && root.userShowPanelBackground && plasmoid.configuration.panelSize===100)) {
+                if (myView.alignment === LatteCore.Types.Justify) {
+                    if (root.isHorizontal) {
+                        return Qt.rect(layoutsContainer.x + layoutsContainer.backgroundTailLength,
+                                       layoutsContainer.y,
+                                       layoutsContainer.width - layoutsContainer.backgroundShadowHeadLength - layoutsContainer.backgroundTailLength,
+                                       layoutsContainer.height);
+                    } else {
+                        return Qt.rect(layoutsContainer.x,
+                                       layoutsContainer.y + layoutsContainer.backgroundTailLength,
+                                       layoutsContainer.width,
+                                       layoutsContainer.height - layoutsContainer.backgroundShadowHeadLength - layoutsContainer.backgroundTailLength);
+                    }
+                } else {
+                    return Qt.rect(layoutsContainer.mainLayout.x,
+                                   layoutsContainer.mainLayout.y,
+                                   layoutsContainer.mainLayout.width,
+                                   layoutsContainer.mainLayout.height)
+                }
+            }
+
+            return Qt.rect(-1, -1, 0, 0);
+        }
+    }
+
     //! View::Positioner bindings
     Binding{
         target: latteView && latteView.positioner ? latteView.positioner : null

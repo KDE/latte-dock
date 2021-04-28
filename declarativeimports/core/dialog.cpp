@@ -62,6 +62,17 @@ void Dialog::setEdge(const Plasma::Types::Location &edge)
     emit edgeChanged();
 }
 
+bool Dialog::isRespectingAppletsLayoutGeometry() const
+{
+    //! As it appears plasma applets popups are defining their popups to Normal window.
+    return (type() == Dialog::Normal || type() == Dialog::PopupMenu);
+}
+
+QRect Dialog::appletsLayoutGeometryFromContainment() const
+{
+    QVariant geom = visualParent() && visualParent()->window() ? visualParent()->window()->property("_applets_layout_geometry") : QVariant();
+    return geom.isValid() ? geom.toRect() : QRect();
+}
 
 void Dialog::adjustGeometry(const QRect &geom)
 {
@@ -99,6 +110,28 @@ void Dialog::adjustGeometry(const QRect &geom)
 
         x = qBound(screengeometry.x(), x, screengeometry.right()-1);
         y = qBound(screengeometry.y(), y, screengeometry.bottom()-1);
+
+        QRect appletslayoutgeometry = appletsLayoutGeometryFromContainment();
+
+        if (isRespectingAppletsLayoutGeometry() && !appletslayoutgeometry.isEmpty()) {
+            QPoint appletsglobaltopleft = visualparent->window()->mapToGlobal(appletslayoutgeometry.topLeft());
+
+            QRect appletsglobalgeometry(appletsglobaltopleft.x(), appletsglobaltopleft.y(), appletslayoutgeometry.width(), appletslayoutgeometry.height());
+
+            if (m_edge == Plasma::Types::LeftEdge || m_edge == Plasma::Types::RightEdge) {
+                int bottomy = appletsglobalgeometry.bottom()-geom.height();
+
+                if (appletsglobalgeometry.height() >= geom.height()) {
+                    y = qBound(appletsglobalgeometry.y(), y, bottomy + 1);
+                }
+            } else {
+                int rightx = appletsglobalgeometry.right()-geom.width();
+
+                if (appletsglobalgeometry.width() >= geom.width()) {
+                    x = qBound(appletsglobalgeometry.x(), x, rightx + 1);
+                }
+            }
+        }
 
         QRect repositionedrect(x, y, geom.width(), geom.height());
         setGeometry(repositionedrect);

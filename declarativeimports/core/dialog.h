@@ -35,9 +35,7 @@ class Dialog : public PlasmaQuick::Dialog {
     Q_OBJECT
     Q_PROPERTY (bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
-    /**
-     * Plasma Location of the dialog window. Useful if this dialog is a popup for a panel
-     */
+    //! it is used instead of location property in order to not break borders drawing
     Q_PROPERTY(Plasma::Types::Location edge READ edge WRITE setEdge NOTIFY edgeChanged)
 
 public:
@@ -59,6 +57,10 @@ protected:
 
 private slots:
     void setContainsMouse(bool contains);
+
+private:
+    bool isRespectingAppletsLayoutGeometry() const;
+    QRect appletsLayoutGeometryFromContainment() const;
 
 private:
     bool m_containsMouse{false};

@@ -53,6 +53,7 @@ Item {
 
     property string lastUsedActivity: ""
 
+    property rect appletsLayoutGeometry: Qt.rect(-1, -1, 0, 0)
     property rect screenGeometry: Qt.rect(0, 0, 1600, 1080)
 
     property var containmentActions: []
