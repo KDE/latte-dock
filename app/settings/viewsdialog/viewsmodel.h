@@ -127,6 +127,10 @@ private slots:
     void populateScreens();
 
 private:
+    Data::ViewsTable edgesChoices(const Data::View &view) const;
+    Data::ViewsTable horizontalAlignmentChoices(const Data::View &view) const;
+    Data::ViewsTable verticalAlignmentChoices(const Data::View &view) const;
+
     bool isVertical(const Plasma::Types::Location &location) const;
 
     Latte::Data::Screen screenData(const QString &viewId) const;
@@ -137,9 +141,9 @@ private:
 
     Latte::Corona *m_corona{nullptr};
 
-    QVariant s_edges;
-    QVariant s_horizontalAlignments;
-    QVariant s_verticalAlignments;
+    Data::ViewsTable s_edges;
+    Data::ViewsTable s_horizontalAlignments;
+    Data::ViewsTable s_verticalAlignments;
     Latte::Data::ScreensTable s_screens;
 };
 

@@ -45,13 +45,17 @@ void CustomMenuItemWidget::setScreen(const Latte::Data::Screen &screen)
     m_screen = screen;
 }
 
+void CustomMenuItemWidget::setView(const Latte::Data::View &view)
+{
+    m_view = view;
+}
+
 QSize CustomMenuItemWidget::minimumSizeHint() const
 {
    QStyleOptionMenuItem opt;
    QSize contentSize = fontMetrics().size(Qt::TextSingleLine | Qt::TextShowMnemonic, m_action->text());
-   //contentSize.setHeight(contentSize.height() + 9);
-   contentSize.setHeight(contentSize.height() + 7);
-   contentSize.setWidth(contentSize.width() + 3 * contentSize.height());
+   contentSize.setHeight(contentSize.height() + 9);
+   contentSize.setWidth(contentSize.width() + 4 * contentSize.height());
    return style()->sizeFromContents(QStyle::CT_MenuItem, &opt, contentSize, this);
 }
 
@@ -83,6 +87,10 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
         remained = Latte::remainedFromScreenDrawing(opt);
         Latte::drawScreenBackground(&painter, style(), opt);
         QRect availableScreenRect = Latte::drawScreen(&painter, opt, m_screen.geometry);
+
+        if (!m_view.id.isEmpty()) {
+            Latte::drawView(&painter, opt, m_view, availableScreenRect);
+        }
     }
 
     opt.rect = remained;

@@ -66,7 +66,7 @@ QRect remainedFromScreenDrawing(const QStyleOption &option);
 QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry); // returns screen available rect
 void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option);
 void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option);
-void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect);
+void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect);
 
 int screenMaxLength(const QStyleOption &option);
 

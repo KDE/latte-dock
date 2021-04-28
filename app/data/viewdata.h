@@ -50,6 +50,7 @@ public:
     View();
     View(View &&o);
     View(const View &o);
+    View(const QString &newid, const QString &newname);
 
     //! View data
     bool isActive{false};

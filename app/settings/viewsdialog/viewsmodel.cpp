@@ -121,35 +121,131 @@ void Views::clear()
 
 void Views::initEdges()
 {
-    Latte::Data::GenericBasicTable edges;
-    edges << Data::Generic(QString::number(Plasma::Types::TopEdge), i18nc("top edge", "Top"));
-    edges << Data::Generic(QString::number(Plasma::Types::LeftEdge), i18nc("left edge", "Left"));
-    edges << Data::Generic(QString::number(Plasma::Types::BottomEdge), i18nc("bottom edge", "Bottom"));
-    edges << Data::Generic(QString::number(Plasma::Types::RightEdge), i18nc("right edge", "Right"));
+    s_edges.clear();
 
-    s_edges.setValue<Latte::Data::GenericBasicTable>(edges);
+    int i=0;
+    s_edges << Data::View(QString::number(Plasma::Types::TopEdge), i18nc("top edge", "Top"));
+    s_edges[i].edge = Plasma::Types::TopEdge; s_edges[i].alignment = Latte::Types::Center;
+
+    i++;
+    s_edges << Data::View(QString::number(Plasma::Types::LeftEdge), i18nc("left edge", "Left"));
+    s_edges[i].edge = Plasma::Types::LeftEdge; s_edges[i].alignment = Latte::Types::Center;
+
+    i++;
+    s_edges << Data::View(QString::number(Plasma::Types::BottomEdge), i18nc("bottom edge", "Bottom"));
+    s_edges[i].edge = Plasma::Types::BottomEdge; s_edges[i].alignment = Latte::Types::Center;
+
+    i++;
+    s_edges << Data::View(QString::number(Plasma::Types::RightEdge), i18nc("right edge", "Right"));
+    s_edges[i].edge = Plasma::Types::RightEdge; s_edges[i].alignment = Latte::Types::Center;
 }
 
 void Views::initAlignments()
 {
-    Latte::Data::GenericBasicTable horizontals;
-    Latte::Data::GenericBasicTable verticals;
+    s_horizontalAlignments.clear();
+    s_verticalAlignments.clear();
 
-    horizontals << Data::Generic(QString::number(Latte::Types::Left), i18nc("left alignment", "Left"));
-    verticals << Data::Generic(QString::number(Latte::Types::Top), i18nc("top alignment", "Top"));
+    int i=0; // Left / Top
+    s_horizontalAlignments << Data::View(QString::number(Latte::Types::Left), i18nc("left alignment", "Left"));
+    s_horizontalAlignments[i].edge = Plasma::Types::BottomEdge; s_horizontalAlignments[i].alignment = Latte::Types::Left;
 
+    s_verticalAlignments << Data::View(QString::number(Latte::Types::Top), i18nc("top alignment", "Top"));
+    s_verticalAlignments[i].edge = Plasma::Types::LeftEdge; s_verticalAlignments[i].alignment = Latte::Types::Top;
 
-    horizontals << Data::Generic(QString::number(Latte::Types::Center), i18nc("center alignment", "Center"));
-    verticals << horizontals[1];
+    i++; // Center
+    s_horizontalAlignments << Data::View(QString::number(Latte::Types::Center), i18nc("center alignment", "Center"));
+    s_horizontalAlignments[i].edge = Plasma::Types::BottomEdge; s_horizontalAlignments[i].alignment = Latte::Types::Center;
 
-    horizontals << Data::Generic(QString::number(Latte::Types::Right), i18nc("right alignment", "Right"));
-    verticals << Data::Generic(QString::number(Latte::Types::Bottom), i18nc("bottom alignment", "Bottom"));
+    s_verticalAlignments << s_horizontalAlignments[1];
+    s_verticalAlignments[i].edge = Plasma::Types::LeftEdge;
 
-    horizontals << Data::Generic(QString::number(Latte::Types::Justify), i18nc("justify alignment", "Justify"));
-    verticals << horizontals[3];
+    i++; // Right / Bottom
+    s_horizontalAlignments << Data::View(QString::number(Latte::Types::Right), i18nc("right alignment", "Right"));
+    s_horizontalAlignments[i].edge = Plasma::Types::BottomEdge; s_horizontalAlignments[i].alignment = Latte::Types::Right;
 
-    s_horizontalAlignments.setValue<Latte::Data::GenericBasicTable>(horizontals);
-    s_verticalAlignments.setValue<Latte::Data::GenericBasicTable>(verticals);
+    s_verticalAlignments << Data::View(QString::number(Latte::Types::Bottom), i18nc("bottom alignment", "Bottom"));
+    s_verticalAlignments[i].edge = Plasma::Types::LeftEdge; s_verticalAlignments[i].alignment = Latte::Types::Bottom;
+
+    i++; // Justify
+    s_horizontalAlignments << Data::View(QString::number(Latte::Types::Justify), i18nc("justify alignment", "Justify"));
+    s_horizontalAlignments[i].edge = Plasma::Types::BottomEdge; s_horizontalAlignments[i].alignment = Latte::Types::Justify;
+
+    s_verticalAlignments << s_horizontalAlignments[3];
+    s_verticalAlignments[i].edge = Plasma::Types::LeftEdge;
+}
+
+Data::ViewsTable Views::edgesChoices(const Data::View &view) const
+{
+    Data::ViewsTable t_edges = s_edges;
+
+    if (view.alignment == Latte::Types::Left) {
+        t_edges[0].alignment = view.alignment;
+        t_edges[1].alignment = Latte::Types::Top;
+        t_edges[2].alignment = view.alignment;
+        t_edges[3].alignment = Latte::Types::Top;
+    } else if (view.alignment == Latte::Types::Top) {
+        t_edges[0].alignment = Latte::Types::Left;
+        t_edges[1].alignment = view.alignment;
+        t_edges[2].alignment = Latte::Types::Left;
+        t_edges[3].alignment = view.alignment;
+    } else if (view.alignment == Latte::Types::Center
+               || view.alignment == Latte::Types::Justify) {
+        t_edges[0].alignment = view.alignment;
+        t_edges[1].alignment = view.alignment;
+        t_edges[2].alignment = view.alignment;
+        t_edges[3].alignment = view.alignment;
+    } else if (view.alignment == Latte::Types::Right) {
+        t_edges[0].alignment = view.alignment;
+        t_edges[1].alignment = Latte::Types::Bottom;
+        t_edges[2].alignment = view.alignment;
+        t_edges[3].alignment = Latte::Types::Bottom;
+    } else if (view.alignment == Latte::Types::Bottom) {
+        t_edges[0].alignment = Latte::Types::Right;
+        t_edges[1].alignment = view.alignment;
+        t_edges[2].alignment = Latte::Types::Right;
+        t_edges[3].alignment = view.alignment;
+    }
+
+    t_edges[0].screenEdgeMargin = view.screenEdgeMargin;
+    t_edges[1].screenEdgeMargin = view.screenEdgeMargin;
+    t_edges[2].screenEdgeMargin = view.screenEdgeMargin;
+    t_edges[3].screenEdgeMargin = view.screenEdgeMargin;
+
+    return t_edges;
+}
+
+Data::ViewsTable Views::horizontalAlignmentChoices(const Data::View &view) const
+{
+    Data::ViewsTable t_horizontalAlignments = s_horizontalAlignments;
+
+    t_horizontalAlignments[0].edge = view.edge;
+    t_horizontalAlignments[1].edge = view.edge;
+    t_horizontalAlignments[2].edge = view.edge;
+    t_horizontalAlignments[3].edge = view.edge;
+
+    t_horizontalAlignments[0].screenEdgeMargin = view.screenEdgeMargin;
+    t_horizontalAlignments[1].screenEdgeMargin = view.screenEdgeMargin;
+    t_horizontalAlignments[2].screenEdgeMargin = view.screenEdgeMargin;
+    t_horizontalAlignments[3].screenEdgeMargin = view.screenEdgeMargin;
+
+    return t_horizontalAlignments;
+}
+
+Data::ViewsTable Views::verticalAlignmentChoices(const Data::View &view) const
+{
+    Data::ViewsTable t_verticalAlignments = s_verticalAlignments;
+
+    t_verticalAlignments[0].edge = view.edge;
+    t_verticalAlignments[1].edge = view.edge;
+    t_verticalAlignments[2].edge = view.edge;
+    t_verticalAlignments[3].edge = view.edge;
+
+    t_verticalAlignments[0].screenEdgeMargin = view.screenEdgeMargin;
+    t_verticalAlignments[1].screenEdgeMargin = view.screenEdgeMargin;
+    t_verticalAlignments[2].screenEdgeMargin = view.screenEdgeMargin;
+    t_verticalAlignments[3].screenEdgeMargin = view.screenEdgeMargin;
+
+    return t_verticalAlignments;
 }
 
 bool Views::containsCurrentName(const QString &name) const
@@ -545,7 +641,6 @@ QVariant Views::data(const QModelIndex &index, int role) const
     bool isNewView = !o_viewsTable.containsId(m_viewsTable[row].id);
     QString origviewid = !isNewView ? m_viewsTable[row].id : "";
 
-
     if (role == IDROLE) {
         return (m_viewsTable[row].state() == Data::View::IsCreated ? m_viewsTable[row].id : "#");
     } else if (role == ISACTIVEROLE) {
@@ -565,9 +660,19 @@ QVariant Views::data(const QModelIndex &index, int role) const
             screensVariant.setValue<Latte::Data::ScreensTable>(currentScreens);
             return screensVariant;
         } else if (column == EDGECOLUMN) {
-            return s_edges;
+            QVariant edgesVariant;
+            edgesVariant.setValue<Latte::Data::ViewsTable>(edgesChoices(m_viewsTable[row]));
+            return edgesVariant;
         } else if (column == ALIGNMENTCOLUMN) {
-            return isVertical(m_viewsTable[row].edge) ? s_verticalAlignments : s_horizontalAlignments;
+            QVariant alignmentsVariant;
+
+            if (isVertical(m_viewsTable[row].edge)) {
+                alignmentsVariant.setValue<Latte::Data::ViewsTable>(verticalAlignmentChoices(m_viewsTable[row]));
+            } else {
+                alignmentsVariant.setValue<Latte::Data::ViewsTable>(horizontalAlignmentChoices(m_viewsTable[row]));
+            }
+
+            return alignmentsVariant;
         }
     } else if (role == HASCHANGEDVIEWROLE) {
         return (isNewView || (m_viewsTable[row] != o_viewsTable[origviewid]));

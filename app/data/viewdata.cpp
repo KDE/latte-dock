@@ -66,6 +66,11 @@ View::View(const View &o)
 {
 }
 
+View::View(const QString &newid, const QString &newname)
+    : Generic(newid, newname)
+{
+}
+
 View &View::operator=(const View &rhs)
 {
     id = rhs.id;

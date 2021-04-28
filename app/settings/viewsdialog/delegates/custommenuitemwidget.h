@@ -22,6 +22,7 @@
 
 // local
 #include "../../../data/screendata.h"
+#include "../../../data/viewdata.h"
 
 // Qt
 #include <QAction>
@@ -44,12 +45,13 @@ public:
     void paintEvent(QPaintEvent* e) override;
 
     void setScreen(const Latte::Data::Screen &screen);
+    void setView(const Latte::Data::View &view);
 
 private:
     QAction *m_action{nullptr};
 
     Latte::Data::Screen m_screen;
-
+    Latte::Data::View m_view;
 };
 
 }

@@ -415,7 +415,7 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
     return screenAvailableRect;
 }
 
-void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect)
+void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect)
 {
     int thick = 4;
     painter->save();

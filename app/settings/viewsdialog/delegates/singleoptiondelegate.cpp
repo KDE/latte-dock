@@ -64,6 +64,7 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
     QStringList activeChoices;
 
     Latte::Data::ScreensTable screens;
+    Latte::Data::ViewsTable views; //views are used as examples for edges and alignments
 
     if (column == Model::Views::SCREENCOLUMN) {
         screens = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ScreensTable>();
@@ -76,7 +77,11 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
             }
         }
     } else {
-        choices << index.data(Model::Views::CHOICESROLE).value<Latte::Data::GenericBasicTable>();
+        views = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ViewsTable>();
+
+        for (int i=0; i<views.rowCount(); ++i) {
+            choices << Latte::Data::Generic(views[i].id, views[i].name);
+        }
     }
 
     for (int i=0; i<choices.rowCount(); ++i) {
@@ -103,6 +108,10 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
 
         if (column == Model::Views::SCREENCOLUMN) {
             optioncustomwidget->setScreen(screens[i]);
+        } else {
+            Latte::Data::Screen viewscreen = index.data(Model::Views::SCREENROLE).value<Latte::Data::Screen>();
+            optioncustomwidget->setScreen(viewscreen);
+            optioncustomwidget->setView(views[i]);
         }
 
         action->setDefaultWidget(optioncustomwidget);
