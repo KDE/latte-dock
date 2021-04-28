@@ -888,12 +888,12 @@ Item {
                     when: plasmoid.location === PlasmaCore.Types.BottomEdge
 
                     AnchorChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
                         anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
                     }
                     PropertyChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: dndSpacerAddItemContainer.thickMargin;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
@@ -903,12 +903,12 @@ Item {
                     when: plasmoid.location === PlasmaCore.Types.TopEdge
 
                     AnchorChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
                         anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
                     }
                     PropertyChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.leftMargin: 0;    anchors.rightMargin: 0;     anchors.topMargin: dndSpacerAddItemContainer.thickMargin;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
@@ -918,12 +918,12 @@ Item {
                     when: plasmoid.location === PlasmaCore.Types.LeftEdge
 
                     AnchorChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                         anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                     }
                     PropertyChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.leftMargin: dndSpacerAddItemContainer.thickMargin;    anchors.rightMargin: 0;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
@@ -933,12 +933,12 @@ Item {
                     when: plasmoid.location === PlasmaCore.Types.RightEdge
 
                     AnchorChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
                         anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
                     }
                     PropertyChanges{
-                        target: dndSpacerAddItem;
+                        target: dndSpacerAddItemContainer;
                         anchors.leftMargin: 0;    anchors.rightMargin: dndSpacerAddItemContainer.thickMargin;     anchors.topMargin:0;    anchors.bottomMargin: 0;
                         anchors.horizontalCenterOffset: 0; anchors.verticalCenterOffset: 0;
                     }
