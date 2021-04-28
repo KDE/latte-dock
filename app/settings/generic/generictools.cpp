@@ -291,7 +291,7 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
     painter->restore();
 }
 
-int screenMaxLength(const QStyleOptionViewItem &option)
+int screenMaxLength(const QStyleOption &option)
 {
     int scr_maxlength = option.rect.height() * 1.7;
 
@@ -303,7 +303,7 @@ int screenMaxLength(const QStyleOptionViewItem &option)
     return scr_maxlength;
 }
 
-QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
+QRect remainedFromScreenDrawing(const QStyleOption &option)
 {
     int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
 
@@ -313,7 +313,7 @@ QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option)
     return optionRemainedRect;
 }
 
-void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option)
 {
     int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
 
@@ -328,10 +328,28 @@ void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option)
         screenOption.rect = QRect(option.rect.x(), option.rect.y(), total_length, option.rect.height());
     }
 
-    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
+    style->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, QRect screenGeometry)
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option)
+{
+    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
+
+    QStyleOptionMenuItem screenOption = option;
+    screenOption.text = "";
+    //! Remove the focus dotted lines
+    screenOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        screenOption.rect = QRect(option.rect.x() + option.rect.width() - total_length, option.rect.y(), total_length, option.rect.height());
+    } else {
+        screenOption.rect = QRect(option.rect.x(), option.rect.y(), total_length, option.rect.height());
+    }
+
+    style->drawControl(QStyle::CE_MenuItem, &screenOption, painter);
+}
+
+QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry)
 {
     float scr_ratio = (float)screenGeometry.width() / (float)screenGeometry.height();
     bool isVertical = (scr_ratio < 1.0);

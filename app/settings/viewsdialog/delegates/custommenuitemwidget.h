@@ -20,6 +20,9 @@
 #ifndef CUSTOMMENUITEMWIDGET_H
 #define CUSTOMMENUITEMWIDGET_H
 
+// local
+#include "../../../data/screendata.h"
+
 // Qt
 #include <QAction>
 #include <QWidget>
@@ -40,8 +43,12 @@ public:
     QSize minimumSizeHint() const override;
     void paintEvent(QPaintEvent* e) override;
 
+    void setScreen(const Latte::Data::Screen &screen);
+
 private:
     QAction *m_action{nullptr};
+
+    Latte::Data::Screen m_screen;
 
 };
 

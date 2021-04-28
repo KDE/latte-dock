@@ -93,7 +93,7 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
 
-    Latte::drawScreenBackground(painter, myOptions);
+    Latte::drawScreenBackground(painter, option.widget->style(), myOptions);
     QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry);
     Latte::drawView(painter, myOptions, view, availableScreenRect);
 

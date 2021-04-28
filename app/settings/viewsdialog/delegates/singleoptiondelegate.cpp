@@ -63,8 +63,10 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
     Latte::Data::GenericBasicTable choices;
     QStringList activeChoices;
 
+    Latte::Data::ScreensTable screens;
+
     if (column == Model::Views::SCREENCOLUMN) {
-        Latte::Data::ScreensTable screens = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ScreensTable>();
+        screens = index.data(Model::Views::CHOICESROLE).value<Latte::Data::ScreensTable>();
 
         for (int i=0; i<screens.rowCount(); ++i) {
             choices << Latte::Data::Generic(screens[i].id, screens[i].name);
@@ -98,6 +100,11 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
         });
 
         Settings::View::Widget::CustomMenuItemWidget *optioncustomwidget = new Settings::View::Widget::CustomMenuItemWidget(action, menu);
+
+        if (column == Model::Views::SCREENCOLUMN) {
+            optioncustomwidget->setScreen(screens[i]);
+        }
+
         action->setDefaultWidget(optioncustomwidget);
         menu->addAction(action);
     }

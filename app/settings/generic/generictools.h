@@ -62,12 +62,13 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
 
 
 //! screen icon
-QRect remainedFromScreenDrawing(const QStyleOptionViewItem &option);
-QRect drawScreen(QPainter *painter, const QStyleOptionViewItem &option, QRect screenGeometry); // returns screen available rect
-void drawScreenBackground(QPainter *painter, const QStyleOptionViewItem &option); // returns option.rect remained rect
+QRect remainedFromScreenDrawing(const QStyleOption &option);
+QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry); // returns screen available rect
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option);
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option);
 void drawView(QPainter *painter, const QStyleOptionViewItem &option, const Latte::Data::View &view, const QRect &availableScreenRect);
 
-int screenMaxLength(const QStyleOptionViewItem &option);
+int screenMaxLength(const QStyleOption &option);
 
 }
 

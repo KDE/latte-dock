@@ -40,11 +40,18 @@ CustomMenuItemWidget::CustomMenuItemWidget(QAction* action, QWidget *parent)
     setMouseTracking(true);
 }
 
+void CustomMenuItemWidget::setScreen(const Latte::Data::Screen &screen)
+{
+    m_screen = screen;
+}
+
 QSize CustomMenuItemWidget::minimumSizeHint() const
 {
    QStyleOptionMenuItem opt;
    QSize contentSize = fontMetrics().size(Qt::TextSingleLine | Qt::TextShowMnemonic, m_action->text());
-   contentSize.setHeight(contentSize.height() + 9);
+   //contentSize.setHeight(contentSize.height() + 9);
+   contentSize.setHeight(contentSize.height() + 7);
+   contentSize.setWidth(contentSize.width() + 3 * contentSize.height());
    return style()->sizeFromContents(QStyle::CT_MenuItem, &opt, contentSize, this);
 }
 
@@ -68,6 +75,14 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
 
     if (!m_action->icon().name().isEmpty()) {
         Latte::drawIcon(&painter, opt, m_action->icon().name());
+    }
+
+    opt.rect = remained;
+
+    if (!m_screen.id.isEmpty()) {
+        remained = Latte::remainedFromScreenDrawing(opt);
+        Latte::drawScreenBackground(&painter, style(), opt);
+        QRect availableScreenRect = Latte::drawScreen(&painter, opt, m_screen.geometry);
     }
 
     opt.rect = remained;
