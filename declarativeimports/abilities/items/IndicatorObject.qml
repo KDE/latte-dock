@@ -64,7 +64,7 @@ Item{
     property bool progressVisible: false /*since 0.9.2*/
     property real progress: 0 /*since 0.9.2*/
 
-    property int screenEdgeMargin: _indicator.metrics ? _indicator.metrics.margin.screenEdge : 0 /*since 0.10*/
+    property int screenEdgeMargin: _indicator.metrics ? Math.max(0, _indicator.metrics.margin.screenEdge) : 0 /*since 0.10*/
 
     property QtObject palette: null
 
