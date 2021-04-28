@@ -50,6 +50,11 @@ QStringList subtracted(const QStringList &original, const QStringList &current);
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
+//! simple icon
+QRect remainedFromIcon(const QStyleOption &option);
+void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option);
+void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon);
+
 //! changes indicator
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
 void drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);

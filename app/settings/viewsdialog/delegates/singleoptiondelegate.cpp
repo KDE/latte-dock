@@ -20,6 +20,7 @@
 #include "singleoptiondelegate.h"
 
 // local
+#include "custommenuitemwidget.h"
 #include "../viewsmodel.h"
 #include "../../generic/generictools.h"
 #include "../../../data/genericbasictable.h"
@@ -30,6 +31,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QTextDocument>
+#include <QWidgetAction>
 
 #define PRESSEDPROPERTY "PRESSED"
 
@@ -76,7 +78,8 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
     }
 
     for (int i=0; i<choices.rowCount(); ++i) {
-        QAction *action = new QAction(choices[i].name);
+        QWidgetAction *action = new QWidgetAction(menu);
+        action->setText(choices[i].name);
         action->setData(choices[i].id);
 
         if (choices[i].id == currentChoice) {
@@ -94,6 +97,8 @@ QWidget *SingleOption::createEditor(QWidget *parent, const QStyleOptionViewItem 
             button->clearFocus();
         });
 
+        Settings::View::Widget::CustomMenuItemWidget *optioncustomwidget = new Settings::View::Widget::CustomMenuItemWidget(action, menu);
+        action->setDefaultWidget(optioncustomwidget);
         menu->addAction(action);
     }
 

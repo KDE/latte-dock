@@ -188,6 +188,58 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
     }
 }
 
+QRect remainedFromIcon(const QStyleOption &option)
+{
+    int iconsize = option.rect.height() - 2*MARGIN;
+    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+
+    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::LeftToRight) ? QRect(option.rect.x() + total, option.rect.y(), option.rect.width() - total, option.rect.height()) :
+                                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - total, option.rect.height());
+
+    return optionRemainedRect;
+}
+
+void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option)
+{
+    int iconsize = option.rect.height() - 2*MARGIN;
+    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+
+    QStyleOptionMenuItem iconOption = option;
+    iconOption.text = "";
+    //! Remove the focus dotted lines
+ //   iconOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        iconOption.rect = QRect(option.rect.x(), option.rect.y(), total, option.rect.height());
+    } else {
+        iconOption.rect = QRect(option.rect.x() + option.rect.width() - total, option.rect.y(), total, option.rect.height());
+    }
+
+    style->drawControl(QStyle::CE_MenuItem, &iconOption, painter);
+}
+
+void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon)
+{
+    int iconsize = option.rect.height() - 2*MARGIN;
+    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+
+    bool active = Latte::isActive(option);
+    bool selected = Latte::isSelected(option);
+    bool focused = Latte::isFocused(option);
+
+    QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
+
+    QRect target;
+
+    if (qApp->layoutDirection() == Qt::RightToLeft) {
+        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y(), iconsize, iconsize);
+    } else {
+        target = QRect(option.rect.x() + MARGIN + ICONMARGIN, option.rect.y(), iconsize, iconsize);
+    }
+
+    painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));
+}
+
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option)
 {
     int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
