@@ -132,6 +132,8 @@ private:
     QStringList containmentsIds(const QString &filepath);
     QStringList appletsIds(const QString &filepath);
 
+    //! errors/warnings checkers
+    bool hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout, Data::Error &error);
     bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning);
 private:
     QTemporaryDir m_storageTmpDir;
