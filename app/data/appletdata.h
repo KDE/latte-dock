@@ -43,6 +43,7 @@ public:
     bool isSelected;
     QString description;
     QString icon;
+    QString storageId;
 
     bool isInstalled() const;
     bool isValid() const;

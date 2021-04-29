@@ -32,7 +32,8 @@ Applet::Applet(Applet &&o)
     : Generic(o),
       isSelected(o.isSelected),
       description(o.description),
-      icon(o.icon)
+      icon(o.icon),
+      storageId(o.storageId)
 {
 }
 
@@ -40,7 +41,8 @@ Applet::Applet(const Applet &o)
     : Generic(o),
       isSelected(o.isSelected),
       description(o.description),
-      icon(o.icon)
+      icon(o.icon),
+      storageId(o.storageId)
 {
 }
 
@@ -51,6 +53,7 @@ Applet &Applet::operator=(const Applet &rhs)
     description = rhs.description;
     isSelected = rhs.isSelected;
     icon = rhs.icon;
+    storageId = rhs.storageId;
 
     return (*this);
 }
@@ -62,6 +65,7 @@ Applet &Applet::operator=(Applet &&rhs)
     description = rhs.description;
     isSelected = rhs.isSelected;
     icon = rhs.icon;
+    storageId = rhs.storageId;
 
     return (*this);
 }
@@ -72,7 +76,8 @@ bool Applet::operator==(const Applet &rhs) const
             && (name == rhs.name)
             && (description == rhs.description)
             && (icon == rhs.icon)
-            && (isSelected == rhs.isSelected);
+            && (isSelected == rhs.isSelected)
+            && (storageId == rhs.storageId);
 }
 
 bool  Applet::operator!=(const Applet &rhs) const

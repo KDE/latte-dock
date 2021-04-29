@@ -877,7 +877,10 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
 
                 Data::ErrorInformation errorinfo;
                 errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
+                errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(applet->pluginMetaData().pluginId());
+                errorinfo.applet.storageId = aid;
+
                 error.information << errorinfo;
             }
         }
@@ -907,7 +910,10 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
 
                 Data::ErrorInformation errorinfo;
                 errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
+                errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
+                errorinfo.applet.storageId = aid;
+
                 error.information << errorinfo;
             }
         }
@@ -937,6 +943,7 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
 
             Data::ErrorInformation errorinfo;
             errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
+            errorinfo.containment.storageId = cid;
             warning.information << errorinfo;
         }
     } else { // inactive layout
@@ -950,6 +957,7 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
 
             Data::ErrorInformation errorinfo;
             errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
+            errorinfo.containment.storageId = cid;
             warning.information << errorinfo;
         }
     }
