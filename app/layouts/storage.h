@@ -22,6 +22,7 @@
 
 // local
 #include "../data/appletdata.h"
+#include "../data/genericdata.h"
 #include "../data/generictable.h"
 #include "../data/viewstable.h"
 
@@ -132,6 +133,8 @@ private:
 
 private:
     QTemporaryDir m_storageTmpDir;
+
+    Data::GenericTable<Data::Generic> m_knownErrors;
 
     QList<SubContaimentIdentityData> m_subIdentities;
 };

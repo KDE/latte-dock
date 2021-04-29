@@ -25,6 +25,7 @@
 #include "manager.h"
 #include "../lattecorona.h"
 #include "../screenpool.h"
+#include "../data/errordata.h"
 #include "../layout/abstractlayout.h"
 #include "../view/view.h"
 
@@ -55,6 +56,11 @@ const int Storage::IDBASE = 0;
 Storage::Storage()
 {
     qDebug() << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS::STORAGE, TEMP DIR ::: " << m_storageTmpDir.path();
+
+    //! Known Errors
+    m_knownErrors << Data::Generic(Data::Error::APPLETSWITHSAMEID, i18n("Different Applets With Same Id"));
+    m_knownErrors << Data::Generic(Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID, i18n("Different Applets And Containments With Same Id"));
+    m_knownErrors << Data::Generic(Data::Error::ORPHANEDSUBCONTAINMENTS, i18n("Orphaned Subcontainments"));
 
     SubContaimentIdentityData data;
 

@@ -36,6 +36,10 @@ namespace Data {
 class Error : public Data::Generic
 {
 public:
+    static constexpr const char* APPLETSWITHSAMEID = "17";
+    static constexpr const char* APPLETSANDCONTAINMENTSWITHSAMEID = "18";
+    static constexpr const char* ORPHANEDSUBCONTAINMENTS = "19";
+
     Error();
     Error(Error &&o);
     Error(const Error &o);
