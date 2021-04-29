@@ -2,6 +2,7 @@ set(lattedock-app_SRCS
     ${lattedock-app_SRCS}
     ${CMAKE_CURRENT_SOURCE_DIR}/activitydata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/appletdata.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/errorinformationdata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/genericbasictable.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/genericdata.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/generictable.cpp
