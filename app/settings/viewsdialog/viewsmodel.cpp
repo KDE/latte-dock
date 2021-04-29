@@ -110,6 +110,80 @@ const Latte::Data::ViewsTable &Views::originalViewsData()
     return o_viewsTable;
 }
 
+int Views::sortingFactorForState(const Data::View &view) const
+{
+    if (view.isActive) {
+        return 1;
+    } else if (view.state() == Data::View::IsCreated) {
+        return 2;
+    }
+
+    //! temp case
+    return 3;
+}
+
+int Views::sortingFactorForScreen(const Data::View &view) const
+{
+    if (view.onPrimary) {
+        return 1;
+    }
+
+    //! explicit screen
+    return 2;
+}
+
+int Views::sortingFactorForEdge(const Data::View &view) const
+{
+    if (view.edge == Plasma::Types::TopEdge) {
+        return 1;
+    } else if (view.edge == Plasma::Types::LeftEdge) {
+        return 2;
+    } else if (view.edge == Plasma::Types::BottomEdge) {
+        return 3;
+    }
+
+    //! Right edge
+    return 4;
+}
+
+int Views::sortingFactorForAlignment(const Data::View &view) const
+{
+    if (view.alignment == Latte::Types::Top || view.alignment == Latte::Types::Left) {
+        return 1;
+    } else if (view.alignment == Latte::Types::Center) {
+        return 2;
+    } else if (view.alignment == Latte::Types::Bottom || view.alignment == Latte::Types::Right) {
+        return 3;
+    }
+
+    //! Justify alignment
+    return 4;
+}
+
+int Views::sortingFactorForSubContainments(const Data::View &view) const
+{
+    return view.subcontainments.rowCount()+1;
+}
+
+QString Views::sortableText(const int &priority, const QString &text) const
+{
+    QString numberPart;
+
+    if (priority < 10) {
+        numberPart = "00000" + QString::number(priority);
+    } else if (priority < 100) {
+        numberPart = "0000" + QString::number(priority);
+    } else if (priority < 1000) {
+        numberPart = "000" + QString::number(priority);
+    } else if (priority < 10000) {
+        numberPart = "00" + QString::number(priority);
+    } else if (priority < 100000) {
+        numberPart = "0" + QString::number(priority);
+    }
+
+    return (numberPart + text);
+}
+
 void Views::clear()
 {
     if (m_viewsTable.rowCount() > 0) {
@@ -535,6 +609,7 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
     roles << role;
     roles << ISCHANGEDROLE;
     roles << HASCHANGEDVIEWROLE;
+    roles << SORTINGROLE;
 
     if (role != Qt::DisplayRole) {
         roles << Qt::DisplayRole;
@@ -574,7 +649,7 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
                 m_viewsTable[row].screen = screen;
             }
 
-            emit dataChanged(index, index, roles);
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
         }
         break;
     case EDGECOLUMN:
@@ -603,7 +678,7 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
                     m_viewsTable[row].alignment = Latte::Types::Right;
                 }
 
-                emit dataChanged(this->index(row, ALIGNMENTCOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
+                emit dataChanged(this->index(row, NAMECOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
             }
 
             return true;
@@ -618,7 +693,7 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
             }
 
             m_viewsTable[row].alignment = static_cast<Latte::Types::Alignment>(alignment);
-            emit dataChanged(index, index, roles);
+            emit dataChanged(this->index(row, NAMECOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
             return true;
         }
         break;
@@ -699,6 +774,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return m_viewsTable[row].id;
         } else if (role == ISCHANGEDROLE) {
             return (isNewView || (m_viewsTable[row].id != o_viewsTable[origviewid].id));
+        }  else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY);
+            return sortableText(priority, m_viewsTable[row].id);
         }
         break;
     case NAMECOLUMN:
@@ -706,6 +789,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return m_viewsTable[row].name;
         } else if (role == ISCHANGEDROLE) {
             return (isNewView || (m_viewsTable[row].name != o_viewsTable[origviewid].name));
+        } else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY);
+            return sortableText(priority, m_viewsTable[row].name);
         }
         break;
     case SCREENCOLUMN:
@@ -726,6 +817,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return (isNewView
                     || (m_viewsTable[row].onPrimary != o_viewsTable[origviewid].onPrimary)
                     || (!m_viewsTable[row].onPrimary && m_viewsTable[row].screen != o_viewsTable[origviewid].screen));
+        } else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY) + (fscr * HIGHPRIORITY) + (fedg * MEDIUMPRIORITY) + (fali * NORMALPRIORITY);
+            return priority;
         }
         break;
     case EDGECOLUMN:
@@ -745,6 +844,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return QString::number(m_viewsTable[row].edge);
         } else if (role == ISCHANGEDROLE) {
             return (isNewView || (m_viewsTable[row].edge != o_viewsTable[origviewid].edge));
+        } else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY) + (fedg * HIGHPRIORITY) + (fscr * MEDIUMPRIORITY) + (fali * NORMALPRIORITY);
+            return priority;
         }
         break;
     case ALIGNMENTCOLUMN:
@@ -768,6 +875,14 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return QString::number(m_viewsTable[row].alignment);
         } else if (role == ISCHANGEDROLE) {
             return (isNewView || (m_viewsTable[row].alignment != o_viewsTable[origviewid].alignment));
+        } else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY) + (fali * HIGHPRIORITY) + (fscr * MEDIUMPRIORITY) + (fedg * NORMALPRIORITY);
+            return priority;
         }
         break;
     case SUBCONTAINMENTSCOLUMN:
@@ -793,6 +908,15 @@ QVariant Views::data(const QModelIndex &index, int role) const
             return QString();
         } else if (role == ISCHANGEDROLE) {
             return (isNewView || (m_viewsTable[row].subcontainments != o_viewsTable[origviewid].subcontainments));
+        } else if (role == SORTINGROLE) {
+            int fsta = sortingFactorForState(m_viewsTable[row]);
+            int fscr = sortingFactorForScreen(m_viewsTable[row]);
+            int fedg = sortingFactorForEdge(m_viewsTable[row]);
+            int fali = sortingFactorForAlignment(m_viewsTable[row]);
+            int fsub = sortingFactorForSubContainments(m_viewsTable[row]);
+
+            int priority = (fsta * HIGHESTPRIORITY) + (fsub * HIGHPRIORITY) + (fscr * MEDIUMPRIORITY) + (fedg * NORMALPRIORITY);
+            return priority;
         }
     };
 

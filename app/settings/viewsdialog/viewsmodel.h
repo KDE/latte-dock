@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2021  Michail Vourlakos <mvourlakos@gmail.com>
  *
@@ -68,10 +69,10 @@ public:
 
     enum SortingPriority
     {
-        NORMALPRIORITY = 8000,
-        MEDIUMPRIORITY = 6000,
-        HIGHPRIORITY = 4000,
-        HIGHESTPRIORITY = 2000
+        NORMALPRIORITY = 10,
+        MEDIUMPRIORITY = 100,
+        HIGHPRIORITY = 1000,
+        HIGHESTPRIORITY = 10000
     };
 
     explicit Views(QObject *parent, Latte::Corona *corona);
@@ -132,6 +133,15 @@ private:
     Data::ViewsTable verticalAlignmentChoices(const Data::View &view) const;
 
     bool isVertical(const Plasma::Types::Location &location) const;
+
+    int sortingFactorForState(const Data::View &view) const;
+    int sortingFactorForScreen(const Data::View &view) const;
+    int sortingFactorForEdge(const Data::View &view) const;
+    int sortingFactorForAlignment(const Data::View &view) const;
+    int sortingFactorForSubContainments(const Data::View &view) const;
+
+    //! based on priority a sortable text is returned
+    QString sortableText(const int &priority, const QString &text) const;
 
     Latte::Data::Screen screenData(const QString &viewId) const;
 
