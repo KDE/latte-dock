@@ -1653,6 +1653,7 @@ void GenericLayout::removeView(const Latte::Data::View &viewData)
     Plasma::Containment *viewcontainment = containmentForId(viewData.id.toUInt());
 
     if (viewcontainment) {
+        m_containments.removeAll(viewcontainment);
         viewcontainment->setImmutability(Plasma::Types::Mutable);
         viewcontainment->destroy();
     }
