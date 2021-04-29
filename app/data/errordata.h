@@ -27,6 +27,7 @@
 #include "errorinformationdata.h"
 
 //! Qt
+#include <QList>
 #include <QMetaType>
 #include <QString>
 
@@ -57,6 +58,8 @@ public:
 private:
 
 };
+
+typedef QList<Error> ErrorList;
 
 }
 }

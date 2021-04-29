@@ -134,6 +134,7 @@ private:
 
     //! errors/warnings checkers
     bool hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout, Data::Error &error);
+    bool hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Error &warning);
     bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning);
 private:
     QTemporaryDir m_storageTmpDir;
