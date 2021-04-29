@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef ERRORDATA_H
-#define ERRORDATA_H
+#ifndef GENERICERRORDATA_H
+#define GENERICERRORDATA_H
 
 //! local
 #include "genericdata.h"
@@ -55,15 +55,16 @@ public:
 
     GenericTable<Data::ErrorInformation> information;
 
-private:
-
 };
 
-typedef QList<Error> ErrorList;
+typedef Error Warning;
+typedef QList<Error> ErrorsList;
+typedef QList<Warning> WarningsList;
 
 }
 }
 
 Q_DECLARE_METATYPE(Latte::Data::Error)
+Q_DECLARE_METATYPE(Latte::Data::ErrorsList)
 
 #endif

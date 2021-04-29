@@ -52,6 +52,8 @@ public:
     bool operator!=(const ErrorInformation &rhs) const;
 };
 
+typedef ErrorInformation WarningInformation;
+
 }
 }
 

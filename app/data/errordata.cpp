@@ -62,7 +62,7 @@ bool Error::operator==(const Error &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
-            && (information == rhs.information)
+            && (information == rhs.information);
 }
 
 bool Error::operator!=(const Error &rhs) const

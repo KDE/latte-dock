@@ -47,6 +47,8 @@ Layout::Layout(Layout &&o)
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
+      errors(o.errors),
+      warnings(o.warnings),
       views(o.views)
 {
 }
@@ -67,6 +69,8 @@ Layout::Layout(const Layout &o)
       hasDisabledBorders(o.hasDisabledBorders),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
+      errors(o.errors),
+      warnings(o.warnings),
       views(o.views)
 {
 }
@@ -89,6 +93,8 @@ Layout &Layout::operator=(Layout &&rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
+    errors = rhs.errors;
+    warnings = rhs.warnings;
     views = rhs.views;
 
     return (*this);
@@ -112,6 +118,8 @@ Layout &Layout::operator=(const Layout &rhs)
     hasDisabledBorders = rhs.hasDisabledBorders;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
+    errors = rhs.errors;
+    warnings = rhs.warnings;
     views = rhs.views;
 
     return (*this);
@@ -135,6 +143,8 @@ bool Layout::operator==(const Layout &rhs) const
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
             && (backgroundStyle == rhs.backgroundStyle)
+            && (errors == rhs.errors)
+            && (warnings == rhs.warnings)
             && (views == rhs.views);
 }
 

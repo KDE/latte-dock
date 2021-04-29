@@ -110,6 +110,10 @@ public:
     Data::ViewsTable views(const QString &file);
     Data::ViewsTable views(const Layout::GenericLayout *layout);
 
+    //! errors/warning;
+    Data::ErrorsList errors(const Layout::GenericLayout *layout);
+    Data::WarningsList warnings(const Layout::GenericLayout *layout);
+
 private:
     Storage();
 
@@ -134,8 +138,8 @@ private:
 
     //! errors/warnings checkers
     bool hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout, Data::Error &error);
-    bool hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Error &warning);
-    bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning);
+    bool hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Warning &warning);
+    bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Warning &warning);
 private:
     QTemporaryDir m_storageTmpDir;
 

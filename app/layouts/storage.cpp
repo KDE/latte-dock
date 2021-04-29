@@ -924,7 +924,7 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
     return !error.information.isEmpty();
 }
 
-bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Error &warning)
+bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Warning &warning)
 {
     if (!layout  || layout->file().isEmpty() || !QFile(layout->file()).exists()) {
         return false;
@@ -968,11 +968,11 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
             QString cid = QString::number(containment->id());
 
             if (conflicted.contains(cid)) {
-                Data::ErrorInformation errorinfo;
-                errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
-                errorinfo.containment.storageId = cid;
+                Data::WarningInformation warninginfo;
+                warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
+                warninginfo.containment.storageId = cid;
 
-                warning.information << errorinfo;
+                warning.information << warninginfo;
             }
 
             for (const auto applet : containment->applets()) {
@@ -982,13 +982,13 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
                    continue;
                 }
 
-                Data::ErrorInformation errorinfo;
-                errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
-                errorinfo.containment.storageId = cid;
-                errorinfo.applet = metadata(applet->pluginMetaData().pluginId());
-                errorinfo.applet.storageId = aid;
+                Data::WarningInformation warninginfo;
+                warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
+                warninginfo.containment.storageId = cid;
+                warninginfo.applet = metadata(applet->pluginMetaData().pluginId());
+                warninginfo.applet.storageId = aid;
 
-                warning.information << errorinfo;
+                warning.information << warninginfo;
             }
         }
     } else { // inactive layout
@@ -1021,11 +1021,11 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
         //! create warning data
         for (const auto &cid : containmentsEntries.groupList()) {
             if (conflicted.contains(cid)) {
-                Data::ErrorInformation errorinfo;
-                errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
-                errorinfo.containment.storageId = cid;
+                Data::WarningInformation warninginfo;
+                warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
+                warninginfo.containment.storageId = cid;
 
-                warning.information << errorinfo;
+                warning.information << warninginfo;
             }
 
             for (const auto &aid : containmentsEntries.group(cid).group("Applets").groupList()) {
@@ -1033,13 +1033,13 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
                    continue;
                 }
 
-                Data::ErrorInformation errorinfo;
-                errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
-                errorinfo.containment.storageId = cid;
-                errorinfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
-                errorinfo.applet.storageId = aid;
+                Data::WarningInformation warninginfo;
+                warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
+                warninginfo.containment.storageId = cid;
+                warninginfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
+                warninginfo.applet.storageId = aid;
 
-                warning.information << errorinfo;
+                warning.information << warninginfo;
             }
         }
     }
@@ -1047,7 +1047,7 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
     return !warning.information.isEmpty();
 }
 
-bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning)
+bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Warning &warning)
 {
     if (!layout  || layout->file().isEmpty() || !QFile(layout->file()).exists()) {
         return false;
@@ -1067,10 +1067,10 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
                 continue;
             }
 
-            Data::ErrorInformation errorinfo;
-            errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
-            errorinfo.containment.storageId = cid;
-            warning.information << errorinfo;
+            Data::WarningInformation warninginfo;
+            warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
+            warninginfo.containment.storageId = cid;
+            warning.information << warninginfo;
         }
 
     } else { // inactive layout
@@ -1083,15 +1083,56 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
                 continue;
             }
 
-            Data::ErrorInformation errorinfo;
-            errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
-            errorinfo.containment.storageId = cid;
-            warning.information << errorinfo;
+            Data::WarningInformation warninginfo;
+            warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
+            warninginfo.containment.storageId = cid;
+            warning.information << warninginfo;
         }
     }
 
     return !warning.information.isEmpty();
 }
+
+Data::ErrorsList Storage::errors(const Layout::GenericLayout *layout)
+{
+    Data::ErrorsList errs;
+
+    if (!layout  || layout->file().isEmpty() || !QFile(layout->file()).exists()) {
+        return errs;
+    }
+
+    Data::Error error1;
+
+    if (hasDifferentAppletsWithSameId(layout, error1)) {
+        errs << error1;
+    }
+
+    return errs;
+}
+
+Data::WarningsList Storage::warnings(const Layout::GenericLayout *layout)
+{
+    Data::WarningsList warns;
+
+    if (!layout  || layout->file().isEmpty() || !QFile(layout->file()).exists()) {
+        return warns;
+    }
+
+    Data::Warning warning1;
+
+    if (hasAppletsAndContainmentsWithSameId(layout, warning1)) {
+        warns << warning1;
+    }
+
+    Data::Warning warning2;
+
+    if (hasOrphanedSubContainments(layout, warning2)) {
+        warns << warning2;
+    }
+
+    return warns;
+}
+
 
 bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors) const
 {

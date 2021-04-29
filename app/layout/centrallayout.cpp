@@ -155,6 +155,9 @@ Data::Layout CentralLayout::data() const
     cdata.activities = activities();
     cdata.lastUsedActivity = lastUsedActivity();
 
+    cdata.errors = errors().count();
+    cdata.warnings = warnings().count();
+
     return cdata;
 }
 

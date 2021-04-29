@@ -1675,6 +1675,16 @@ bool GenericLayout::isBroken() const
     return Layouts::Storage::self()->isBroken(this, errors);
 }
 
+Data::ErrorsList GenericLayout::errors() const
+{
+    return Layouts::Storage::self()->errors(this);
+}
+
+Data::WarningsList GenericLayout::warnings() const
+{
+    return Layouts::Storage::self()->warnings(this);
+}
+
 Latte::Data::ViewsTable GenericLayout::viewsTable() const
 {
     return Layouts::Storage::self()->views(this);

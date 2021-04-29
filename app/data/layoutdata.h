@@ -59,6 +59,8 @@ public:
     bool isTemplate{false};
     bool hasDisabledBorders{false};
     QStringList activities;
+    int errors{0};
+    int warnings{0};
 
     Latte::Layout::BackgroundStyle backgroundStyle{Latte::Layout::ColorBackgroundStyle};
 

@@ -23,6 +23,7 @@
 // local
 #include <coretypes.h>
 #include "abstractlayout.h"
+#include "../data/errordata.h"
 #include "../data/viewdata.h"
 #include "../data/viewstable.h"
 
@@ -147,6 +148,10 @@ public:
     QList<int> viewsScreens();
 
     Latte::Data::ViewsTable viewsTable() const;
+
+    //! errors/warnings
+    Data::ErrorsList errors() const;
+    Data::WarningsList warnings() const;
 
 public slots:
     Q_INVOKABLE int viewsWithTasks() const;
