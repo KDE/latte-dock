@@ -122,6 +122,7 @@ private:
     bool isHoveringLayoutsTable(const QPoint &pos);
 
     void initLayoutTemplatesSubMenu();
+    void initImportLayoutSubMenu();
     void initExportLayoutSubMenu();
 
     void installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin);
@@ -140,6 +141,7 @@ private:
     //! Layout menu actions
     QMenu *m_layoutMenu{nullptr};
     QMenu *m_layoutTemplatesSubMenu{nullptr};
+    QMenu *m_layoutImportSubMenu{nullptr};
     QMenu *m_layoutExportSubMenu{nullptr};
 
     QAction *m_switchLayoutAction{nullptr};
@@ -151,7 +153,6 @@ private:
     QAction *m_removeLayoutAction{nullptr};
     QAction *m_importLayoutAction{nullptr};
     QAction *m_exportLayoutAction{nullptr};
-    QAction *m_downloadLayoutAction{nullptr};
     QAction *m_detailsAction{nullptr};
     QAction *m_viewsAction{nullptr};
 };

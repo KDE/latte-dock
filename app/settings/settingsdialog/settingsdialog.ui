@@ -464,17 +464,6 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="downloadButton">
-                <property name="text">
-                 <string>Download...</string>
-                </property>
-                <property name="icon">
-                 <iconset theme="get-hot-new-stuff">
-                  <normaloff>.</normaloff>.</iconset>
-                </property>
-               </widget>
-              </item>
-              <item>
                <spacer name="verticalSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -532,7 +521,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>888</width>
+            <width>867</width>
             <height>375</height>
            </rect>
           </property>

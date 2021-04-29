@@ -203,30 +203,50 @@ void TabLayouts::initLayoutMenu()
 
     m_layoutMenu->addSeparator();
 
-    m_importLayoutAction = m_layoutMenu->addAction(i18nc("import layout", "&Import..."));
-    m_importLayoutAction->setToolTip(i18n("Import layout file from your system"));
-    m_importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
-    m_importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
-    connectActionWithButton(m_ui->importButton, m_importLayoutAction);
-    connect(m_importLayoutAction, &QAction::triggered, this, &TabLayouts::importLayout);
 
-    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "Exp&ort"));
+    //! Import
+    m_importLayoutAction = m_layoutMenu->addAction(i18nc("import layout", "&Import"));
+    m_importLayoutAction->setToolTip(i18n("Import layout from various resources"));
+    m_importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
+    m_importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
+    connectActionWithButton(m_ui->importButton, m_importLayoutAction);
+    connect(m_importLayoutAction, &QAction::triggered, m_ui->importButton, &QPushButton::showMenu);
+
+    initImportLayoutSubMenu();
+    m_importLayoutAction->setMenu(m_layoutImportSubMenu);
+    m_ui->importButton->setMenu(m_layoutImportSubMenu);
+
+    //! Export
+    m_exportLayoutAction = m_layoutMenu->addAction(i18nc("export layout", "&Export"));
     m_exportLayoutAction->setToolTip(i18n("Export selected layout at your system"));
     m_exportLayoutAction->setIcon(QIcon::fromTheme("document-export"));
-    m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    m_exportLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
     connectActionWithButton(m_ui->exportButton, m_exportLayoutAction);
     connect(m_exportLayoutAction, &QAction::triggered, m_ui->exportButton, &QPushButton::showMenu);
 
     initExportLayoutSubMenu();
     m_exportLayoutAction->setMenu(m_layoutExportSubMenu);
     m_ui->exportButton->setMenu(m_layoutExportSubMenu);
+}
 
-    m_downloadLayoutAction = m_layoutMenu->addAction(i18nc("download layout", "&Download..."));
-    m_downloadLayoutAction->setToolTip(i18n("Download community layouts from KDE Store"));
-    m_downloadLayoutAction->setIcon(QIcon::fromTheme("get-hot-new-stuff"));
-    m_downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
-    connectActionWithButton(m_ui->downloadButton, m_downloadLayoutAction);
-    connect(m_downloadLayoutAction, &QAction::triggered, this, &TabLayouts::downloadLayout);
+void TabLayouts::initImportLayoutSubMenu()
+{
+    if (!m_layoutImportSubMenu) {
+        m_layoutImportSubMenu = new QMenu(m_layoutMenu);
+        m_layoutImportSubMenu->setMinimumWidth(m_ui->importButton->width() * 2);
+    } else {
+        m_layoutImportSubMenu->clear();
+    }
+
+    QAction *importLayoutAction = m_layoutImportSubMenu->addAction(i18nc("import layout", "&Import From Local File..."));
+    importLayoutAction->setIcon(QIcon::fromTheme("document-import"));
+    importLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    connect(importLayoutAction, &QAction::triggered, this, &TabLayouts::importLayout);
+
+    QAction *downloadLayoutAction = m_layoutImportSubMenu->addAction(i18nc("download layout", "Import From K&DE Online Store..."));
+    downloadLayoutAction->setIcon(QIcon::fromTheme("get-hot-new-stuff"));
+    downloadLayoutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D));
+    connect(downloadLayoutAction, &QAction::triggered, this, &TabLayouts::downloadLayout);
 }
 
 void TabLayouts::initExportLayoutSubMenu()
@@ -471,7 +491,7 @@ void TabLayouts::downloadLayout()
 {
     qDebug() << Q_FUNC_INFO;
 
-    if (!isCurrentTab() || !m_downloadLayoutAction->isEnabled()) {
+    if (!isCurrentTab()) {
         return;
     }
 
