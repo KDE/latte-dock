@@ -168,6 +168,7 @@ void TabLayouts::initLayoutMenu()
     m_removeLayoutAction->setShortcut(QKeySequence(Qt::Key_Delete));
     connectActionWithButton(m_ui->removeButton, m_removeLayoutAction);
     connect(m_removeLayoutAction, &QAction::triggered, this, &TabLayouts::removeLayout);
+    m_ui->removeButton->addAction(m_removeLayoutAction); //this is needed in order to be triggered properly
 
     m_layoutMenu->addSeparator();
 

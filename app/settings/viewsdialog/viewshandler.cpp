@@ -100,12 +100,13 @@ void ViewsHandler::init()
     connect(m_duplicateViewAction, &QAction::triggered, m_viewsController, &Controller::Views::duplicateSelectedViews);
 
     //! Remove Button
-    m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), this);
+    m_removeViewAction = new QAction(i18nc("remove layout", "Remove"), m_ui->removeBtn);
     m_removeViewAction->setToolTip(i18n("Remove selected view"));
     m_removeViewAction->setIcon(QIcon::fromTheme("delete"));
     m_removeViewAction->setShortcut(QKeySequence(Qt::Key_Delete));
     connectActionWithButton(m_ui->removeBtn, m_removeViewAction);
     connect(m_removeViewAction, &QAction::triggered, this, &ViewsHandler::removeSelectedViews);
+    m_ui->removeBtn->addAction(m_removeViewAction); //this is needed in order to be triggered properly
 
     //! signals
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
