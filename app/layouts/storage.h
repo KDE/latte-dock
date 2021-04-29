@@ -22,6 +22,7 @@
 
 // local
 #include "../data/appletdata.h"
+#include "../data/errordata.h"
 #include "../data/genericdata.h"
 #include "../data/generictable.h"
 #include "../data/viewstable.h"
@@ -131,6 +132,7 @@ private:
     QStringList containmentsIds(const QString &filepath);
     QStringList appletsIds(const QString &filepath);
 
+    bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning);
 private:
     QTemporaryDir m_storageTmpDir;
 

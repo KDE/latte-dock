@@ -45,6 +45,8 @@ public:
 
     void appendTemporaryView(const Data::View &view);
 
+    bool hasContainmentId(const QString &cid) const;
+
     //! Operators
     ViewsTable &operator=(const ViewsTable &rhs);
     ViewsTable &operator=(ViewsTable &&rhs);

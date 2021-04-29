@@ -837,6 +837,47 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
     return true;
 }
 
+bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Error &warning)
+{
+    if (!layout  || layout->file().isEmpty() || !QFile(layout->file()).exists()) {
+        return false;
+    }
+
+    warning.id = m_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENTS].id;
+    warning.name = m_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENTS].name;
+
+    Data::ViewsTable views = Layouts::Storage::self()->views(layout);
+
+    if (!layout->isActive()) {
+        for (const auto containment : *layout->containments()) {
+            QString cid = QString::number(containment->id());
+
+            if (views.hasContainmentId(cid)) {
+                continue;
+            }
+
+            Data::ErrorInformation errorinfo;
+            errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
+            warning.information << errorinfo;
+        }
+    } else {
+        KSharedConfigPtr lfile = KSharedConfig::openConfig(layout->file());
+        KConfigGroup containmentsEntries = KConfigGroup(lfile, "Containments");
+
+        for (const auto &cId : containmentsEntries.groupList()) {
+            if (views.hasContainmentId(cId)) {
+                continue;
+            }
+
+            Data::ErrorInformation errorinfo;
+            errorinfo.containment = metadata(containmentsEntries.group(cId).readEntry("plugin", ""));
+            warning.information << errorinfo;
+        }
+    }
+
+    return !warning.information.isEmpty();
+}
+
 bool Storage::isBroken(const Layout::GenericLayout *layout, QStringList &errors) const
 {
     if (layout->file().isEmpty() || !QFile(layout->file()).exists()) {

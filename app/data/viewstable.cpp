@@ -73,6 +73,21 @@ bool ViewsTable::operator!=(const ViewsTable &rhs) const
     return !(*this == rhs);
 }
 
+bool ViewsTable::hasContainmentId(const QString &cid) const
+{
+    if (containsId(cid)) {
+        return true;
+    }
+
+    for(int i=0; i<rowCount(); ++i) {
+        if (m_list[i].subcontainments.containsId(cid)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 ViewsTable ViewsTable::subtracted(const ViewsTable &rhs) const
 {
     ViewsTable subtract;
