@@ -159,6 +159,28 @@ void SingleOption::updateButton(QWidget *editor, const QString &text) const
     button->setText(text);
 }
 
+void SingleOption::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem myOptions = option;
+    //! Remove the focus dotted lines
+    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
+    myOptions.text = index.model()->data(index, Qt::DisplayRole).toString();
+    myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());
+
+    bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
+    bool isChanged = index.data(Model::Views::ISCHANGEDROLE).toBool();
+
+    if (isActive) {
+        myOptions.text = "<b>" + myOptions.text + "</b>";
+    }
+
+    if (isChanged) {
+        myOptions.text = "<i>" + myOptions.text + "</i>";
+    }
+
+    Latte::drawFormattedText(painter, myOptions);
+}
+
 }
 }
 }
