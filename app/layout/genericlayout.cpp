@@ -1669,12 +1669,6 @@ void GenericLayout::importToCorona()
     Layouts::Storage::self()->importToCorona(this);
 }
 
-bool GenericLayout::isBroken() const
-{
-    QStringList errors;
-    return Layouts::Storage::self()->isBroken(this, errors);
-}
-
 Data::ErrorsList GenericLayout::errors() const
 {
     return Layouts::Storage::self()->errors(this);

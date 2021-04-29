@@ -53,7 +53,6 @@ public:
     QString lastUsedActivity;
     bool isActive{false};
     bool isConsideredActive{false}; //used from settings window to indicate activeness based on selected layouts mode
-    bool isBroken{false};
     bool isLocked{false};
     bool isShownInMenu{false};
     bool isTemplate{false};
@@ -73,6 +72,9 @@ public:
     bool isNull() const;
     bool isEmpty() const;
     bool isSystemTemplate() const;
+
+    bool hasErrors() const;
+    bool hasWarnings() const;
 
     //! Operators
     Layout &operator=(const Layout &rhs);

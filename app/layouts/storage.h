@@ -65,7 +65,6 @@ public:
     bool isWritable(const Layout::GenericLayout *layout) const;
     bool isLatteContainment(const Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
-    bool isBroken(const Layout::GenericLayout *layout, QStringList &errors) const;
     bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
 
     bool containsView(const QString &filepath, const int &viewId);

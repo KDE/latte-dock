@@ -512,12 +512,11 @@ void Layouts::initLayouts()
     m_handler->corona()->layoutsManager()->synchronizer()->updateLayoutsTable();
     Latte::Data::LayoutsTable layouts = m_handler->corona()->layoutsManager()->synchronizer()->layoutsTable();
 
-
-    QStringList brokenLayouts;
+    Latte::Data::LayoutsTable erroredlayouts;
 
     for (int i=0; i<layouts.rowCount(); ++i) {
-        if (layouts[i].isBroken) {
-            brokenLayouts.append(layouts[i].name);
+        if (layouts[i].hasErrors() || layouts[i].hasWarnings()) {
+            erroredlayouts << layouts[i];
         }
     }
 
@@ -533,13 +532,38 @@ void Layouts::initLayouts()
     applyColumnWidths();
 
     //! there are broken layouts and the user must be informed!
-    if (brokenLayouts.count() > 0) {
-        if (brokenLayouts.count() == 1) {
-            m_handler->showInlineMessage(i18nc("settings:broken layout", "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> it to improve stability...").arg(brokenLayouts.join(", ")),
+    if (erroredlayouts.rowCount() > 0) {
+        messagesForErroredLayouts(erroredlayouts);
+    }
+}
+
+void Layouts::messagesForErroredLayouts(const Data::LayoutsTable &layouts)
+{
+    //! add only warnings first
+    for (int i=0; i<layouts.rowCount(); ++i) {
+        if (!layouts[i].hasErrors() && layouts[i].hasWarnings()) {
+            m_handler->showInlineMessage(i18nc("settings:layout with warnings",
+                                               "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that might need your attention.").arg(layouts[i].name).arg(layouts[i].warnings),
+                                         KMessageWidget::Warning,
+                                         true);
+        }
+    }
+
+    //! add errors in the end in order to be read by the user
+    for (int i=0; i<layouts.rowCount(); ++i) {
+        if (layouts[i].hasErrors() && !layouts[i].hasWarnings()) {
+            m_handler->showInlineMessage(i18nc("settings:layout with errors",
+                                               "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> that you need to repair.").arg(layouts[i].name).arg(layouts[i].errors),
                                          KMessageWidget::Error,
                                          true);
-        } else {
-            m_handler->showInlineMessage(i18nc("settings:broken layouts", "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> them to improve stability...").arg(brokenLayouts.join(", ")),
+        }
+    }
+
+    //! add most important errors in the end in order to be read by the user
+    for (int i=0; i<layouts.rowCount(); ++i) {
+        if (layouts[i].hasErrors() && layouts[i].hasWarnings()) {
+            m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
+                                               "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layouts[i].name).arg(layouts[i].errors).arg(layouts[i].warnings),
                                          KMessageWidget::Error,
                                          true);
         }

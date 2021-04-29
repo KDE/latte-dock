@@ -75,7 +75,6 @@ public:
     bool isActive() const; //! is loaded and running
     virtual bool isCurrent();
     bool isWritable() const;
-    bool isBroken() const;
 
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;

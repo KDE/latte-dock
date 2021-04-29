@@ -148,7 +148,6 @@ Data::Layout CentralLayout::data() const
     cdata.background = customBackground();
     cdata.textColor = customTextColor();
     cdata.isActive = (m_corona != nullptr);
-    cdata.isBroken = isBroken();
     cdata.isLocked = !isWritable();
     cdata.isShownInMenu = showInMenu();
     cdata.hasDisabledBorders = disableBordersForMaximizedWindows();

@@ -274,9 +274,10 @@ void Synchronizer::updateLayoutsTable()
     }
 
     for (int i = 0; i < m_layouts.rowCount(); ++i) {
-        if (m_layouts[i].isBroken && !m_layouts[i].isActive) {
+        if ((m_layouts[i].errors>0 || m_layouts[i].warnings>0) && !m_layouts[i].isActive) {
             CentralLayout central(this, m_layouts[i].id);
-            m_layouts[i].isBroken = central.isBroken();
+            m_layouts[i].errors = central.errors().count();
+            m_layouts[i].warnings = central.warnings().count();
         }
     }
 }

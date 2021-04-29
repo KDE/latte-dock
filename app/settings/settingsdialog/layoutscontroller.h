@@ -135,6 +135,8 @@ private:
     QString uniqueTempDirectory();
     QString uniqueLayoutName(QString name);
 
+    void messagesForErroredLayouts(const Data::LayoutsTable &layouts);
+
 private:
     Settings::Handler::TabLayouts *m_handler{nullptr};
     Settings::Part::TemplatesKeeper *m_templatesKeeper{nullptr};

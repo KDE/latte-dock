@@ -40,7 +40,6 @@ Layout::Layout(Layout &&o)
       lastUsedActivity(o.lastUsedActivity),
       isActive(o.isActive),
       isConsideredActive(o.isConsideredActive),
-      isBroken(o.isBroken),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
@@ -62,7 +61,6 @@ Layout::Layout(const Layout &o)
       lastUsedActivity(o.lastUsedActivity),
       isActive(o.isActive),
       isConsideredActive(o.isConsideredActive),
-      isBroken(o.isBroken),
       isLocked(o.isLocked),
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
@@ -86,7 +84,6 @@ Layout &Layout::operator=(Layout &&rhs)
     lastUsedActivity = rhs.lastUsedActivity;
     isActive = rhs.isActive;
     isConsideredActive = rhs.isConsideredActive;
-    isBroken = rhs.isBroken;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
@@ -111,7 +108,6 @@ Layout &Layout::operator=(const Layout &rhs)
     lastUsedActivity = rhs.lastUsedActivity;
     isActive = rhs.isActive;
     isConsideredActive = rhs.isConsideredActive;
-    isBroken = rhs.isBroken;
     isLocked = rhs.isLocked;
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
@@ -133,7 +129,6 @@ bool Layout::operator==(const Layout &rhs) const
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
-            && (isBroken == rhs.isBroken)
             //&& (lastUsedActivity == rhs.lastUsedActivity) /*Disabled because it can change too often*/
             //&& (isActive == rhs.isActive) /*Disabled because this is not a data but a layout state*/
             //&& (isConsideredActive == rhs.isConsideredActive) /*Disabled because this is not a data but a layout state*/
@@ -181,6 +176,16 @@ bool Layout::isNull() const
 bool Layout::isSystemTemplate() const
 {
     return isTemplate && !id.startsWith(QDir::tempPath()) && !id.startsWith(QDir::homePath());
+}
+
+bool Layout::hasErrors() const
+{
+    return errors > 0;
+}
+
+bool Layout::hasWarnings() const
+{
+    return warnings > 0;
 }
 
 }
