@@ -41,13 +41,21 @@ void SingleText::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     myOptions.text = index.model()->data(index, Qt::DisplayRole).toString();
     myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());
 
-    bool isViewActive = index.data(Model::Views::ISACTIVEROLE).toBool();
+    bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
+    bool isMoveOrigin = index.data(Model::Views::ISMOVEORIGINROLE).toBool();
+    bool isChanged = isMoveOrigin;
 
-    if (isViewActive) {
+    float textopacity = 1.0;
+
+    if (isActive) {
         myOptions.text = "<b>" + myOptions.text + "</b>";
     }
 
-    Latte::drawFormattedText(painter, myOptions);
+    if (isMoveOrigin) {
+        textopacity = 0.25;
+    }
+
+    Latte::drawFormattedText(painter, myOptions, textopacity);
 }
 
 }

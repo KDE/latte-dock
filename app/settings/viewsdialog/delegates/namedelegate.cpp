@@ -53,6 +53,7 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     bool isEmpty = myOptions.text.isEmpty();
     bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
+    bool isMoveOrigin = index.data(Model::Views::ISMOVEORIGINROLE).toBool();
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
 
     Latte::Data::Screen screen = index.data(Model::Views::SCREENROLE).value<Latte::Data::Screen>();
@@ -74,12 +75,18 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         myOptions.text = "<label style='color:" + cssplaceholdercolor + ";'>" + myOptions.text + "</label>";
     }
 
+    float textopacity = 1.0;
+
     if (isActive) {
         myOptions.text = "<b>" + myOptions.text + "</b>";
     }
 
-    if (isChanged) {
+    if (isChanged || isMoveOrigin) {
         myOptions.text = "<i>" + myOptions.text + "</i>";
+    }
+
+    if (isMoveOrigin) {
+        textopacity = 0.25;
     }
 
     // draw changes indicator
@@ -94,11 +101,11 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
 
     Latte::drawScreenBackground(painter, option.widget->style(), myOptions);
-    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry);
-    Latte::drawView(painter, myOptions, view, availableScreenRect);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, textopacity);
+    Latte::drawView(painter, myOptions, view, availableScreenRect, textopacity);
 
     myOptions.rect = availableTextRect;
-    Latte::drawFormattedText(painter, myOptions);
+    Latte::drawFormattedText(painter, myOptions, textopacity);
 }
 
 }

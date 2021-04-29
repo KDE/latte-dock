@@ -213,6 +213,12 @@ bool GenericTable<T>::containsName(const QString &name) const
 }
 
 template <class T>
+bool GenericTable<T>::isEmpty() const
+{
+    return m_list.count() <= 0;
+}
+
+template <class T>
 bool GenericTable<T>::rowExists(const int &row) const
 {
     return (m_list.count()>=0 && row>=0 && row<rowCount());

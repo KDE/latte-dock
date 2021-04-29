@@ -168,7 +168,10 @@ void SingleOption::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());
 
     bool isActive = index.data(Model::Views::ISACTIVEROLE).toBool();
-    bool isChanged = index.data(Model::Views::ISCHANGEDROLE).toBool();
+    bool isMoveOrigin = index.data(Model::Views::ISMOVEORIGINROLE).toBool();
+    bool isChanged = index.data(Model::Views::ISCHANGEDROLE).toBool() || isMoveOrigin;
+
+    float textopacity = 1.0;
 
     if (isActive) {
         myOptions.text = "<b>" + myOptions.text + "</b>";
@@ -178,7 +181,11 @@ void SingleOption::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         myOptions.text = "<i>" + myOptions.text + "</i>";
     }
 
-    Latte::drawFormattedText(painter, myOptions);
+    if (isMoveOrigin) {
+        textopacity = 0.25;
+    }
+
+    Latte::drawFormattedText(painter, myOptions, textopacity);
 }
 
 }

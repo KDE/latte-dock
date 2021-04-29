@@ -117,7 +117,7 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
     return subtract;
 }
 
-void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option)
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity)
 {
     painter->save();
 
@@ -126,7 +126,10 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option)
     QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
     QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
 
-    QString css = QString("body { color : %1; }").arg(nBrush.color().name());
+    QColor brushColor = nBrush.color();
+    brushColor.setAlphaF(textOpacity);
+
+    QString css = QString("body { color : %1;}").arg(brushColor.name(QColor::HexArgb));
 
     QTextDocument doc;
     doc.setDefaultStyleSheet(css);
@@ -349,7 +352,7 @@ void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOp
     style->drawControl(QStyle::CE_MenuItem, &screenOption, painter);
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry)
+QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const float brushOpacity)
 {
     float scr_ratio = (float)screenGeometry.width() / (float)screenGeometry.height();
     bool isVertical = (scr_ratio < 1.0);
@@ -393,7 +396,9 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
     QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
 
     QPen pen; pen.setWidth(pen_width);
-    pen.setColor(option.palette.color(Latte::colorGroup(option), textColorRole));
+    QColor pencolor = option.palette.color(Latte::colorGroup(option), textColorRole);
+    pencolor.setAlphaF(brushOpacity);
+    pen.setColor(pencolor);
 
     painter->setPen(pen);
     painter->drawRect(screenRect);
@@ -415,7 +420,7 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
     return screenAvailableRect;
 }
 
-void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect)
+void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect, const float brushOpacity)
 {
     int thick = 4;
     painter->save();
@@ -423,7 +428,9 @@ void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::
     bool selected = Latte::isSelected(option);
     QPalette::ColorRole viewColorRole = !selected ? QPalette::Highlight : QPalette::Text;
     QPen pen; pen.setWidth(thick);
-    pen.setColor(option.palette.color(Latte::colorGroup(option), viewColorRole));
+    QColor pencolor = option.palette.color(Latte::colorGroup(option), viewColorRole);
+    pencolor.setAlphaF(brushOpacity);
+    pen.setColor(pencolor);
     painter->setPen(pen);
 
     int x = availableScreenRect.x();

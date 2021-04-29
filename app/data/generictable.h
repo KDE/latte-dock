@@ -58,6 +58,7 @@ public:
 
     bool containsId(const QString &id) const;
     bool containsName(const QString &name) const;
+    bool isEmpty() const;
     bool rowExists(const int &row) const;
 
     int indexOf(const QString &id) const;

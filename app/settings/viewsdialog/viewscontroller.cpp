@@ -242,15 +242,23 @@ void Views::copySelectedViews()
         return;
     }
 
+    //! reset cut substates for views
+    Data::ViewsTable currentviews = m_model->currentViewsData();
+    for (int i=0; i<currentviews.rowCount(); ++i) {
+        Data::View cview = currentviews[i];
+        cview.isMoveOrigin = false;
+        m_model->updateCurrentView(cview.id, cview);
+    }
+
     Data::ViewsTable clipboardviews = selectedViewsForClipboard();
 
     //! reset cut substates for views
     for (int i=0; i<clipboardviews.rowCount(); ++i) {
         clipboardviews[i].isMoveOrigin = false;
 
-        Data::View tempview = m_model->currentData(clipboardviews[i].id);
+     /*   Data::View tempview = m_model->currentData(clipboardviews[i].id);
         tempview.isMoveOrigin = false;
-        m_model->updateCurrentView(tempview.id, tempview);
+        m_model->updateCurrentView(tempview.id, tempview);*/
     }
 
     m_handler->layoutsController()->templatesKeeper()->setClipboardContents(clipboardviews);
@@ -262,6 +270,14 @@ void Views::cutSelectedViews()
 
     if (!hasSelectedView()) {
         return;
+    }
+
+    //! reset previous move records
+    Data::ViewsTable currentviews = m_model->currentViewsData();
+    for (int i=0; i<currentviews.rowCount(); ++i) {
+        Data::View cview = currentviews[i];
+        cview.isMoveOrigin = false;
+        m_model->updateCurrentView(cview.id, cview);
     }
 
     Data::ViewsTable clipboardviews = selectedViewsForClipboard();
@@ -358,6 +374,24 @@ void Views::selectRow(const QString &id)
 void Views::onCurrentLayoutChanged()
 {   
     Data::Layout layout = m_handler->currentData();
+
+    Data::ViewsTable clipboardviews = m_handler->layoutsController()->templatesKeeper()->clipboardContents();
+
+    if (!clipboardviews.isEmpty()) {
+        //! clipboarded views needs to update the relevant flags to loaded views
+        for (int i=0; i<layout.views.rowCount(); ++i) {
+            QString vid = layout.views[i].id;
+
+            if (!clipboardviews.containsId(vid)) {
+                continue;
+            }
+
+            if (clipboardviews[vid].isMoveOrigin && (clipboardviews[vid].originLayout() == layout.id)) {
+                layout.views[vid].isMoveOrigin = true;
+            }
+        }
+    }
+
     m_model->setOriginalData(layout.views);
 
     //! track viewscountchanged signal for current active layout scenario

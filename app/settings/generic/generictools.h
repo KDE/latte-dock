@@ -47,7 +47,7 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
-void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option);
+void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 //! simple icon
@@ -63,10 +63,10 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
 
 //! screen icon
 QRect remainedFromScreenDrawing(const QStyleOption &option);
-QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry); // returns screen available rect
+QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const float brushOpacity = 1.0); // returns screen available rect
 void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option);
 void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option);
-void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect);
+void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::View &view, const QRect &availableScreenRect, const float brushOpacity = 1.0);
 
 int screenMaxLength(const QStyleOption &option);
 

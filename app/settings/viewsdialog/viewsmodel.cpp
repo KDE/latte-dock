@@ -485,6 +485,7 @@ void Views::updateCurrentView(QString currentViewId, Latte::Data::View &view)
     roles << ISCHANGEDROLE;
     roles << ISACTIVEROLE;
     roles << HASCHANGEDVIEWROLE;
+    roles << ISMOVEORIGINROLE;
 
     emit dataChanged(this->index(currentrow, IDCOLUMN), this->index(currentrow, SUBCONTAINMENTSCOLUMN), roles);
 }
@@ -760,6 +761,8 @@ QVariant Views::data(const QModelIndex &index, int role) const
         QVariant viewVariant;
         viewVariant.setValue<Latte::Data::View>(m_viewsTable[row]);
         return viewVariant;
+    } else if (role == ISMOVEORIGINROLE) {
+        return m_viewsTable[row].isMoveOrigin;
     }
 
     if (role == Qt::TextAlignmentRole && column != NAMECOLUMN){
