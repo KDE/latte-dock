@@ -877,6 +877,7 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
                 }
 
                 Data::ErrorInformation errorinfo;
+                errorinfo.id = QString::number(error.information.rowCount());
                 errorinfo.containment = metadata(containment->pluginMetaData().pluginId());
                 errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(applet->pluginMetaData().pluginId());
@@ -911,6 +912,7 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
                 }
 
                 Data::ErrorInformation errorinfo;
+                errorinfo.id = QString::number(error.information.rowCount());
                 errorinfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
                 errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
@@ -969,6 +971,7 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
 
             if (conflicted.contains(cid)) {
                 Data::WarningInformation warninginfo;
+                warninginfo.id = QString::number(warning.information.rowCount());
                 warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
                 warninginfo.containment.storageId = cid;
 
@@ -983,6 +986,7 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
                 }
 
                 Data::WarningInformation warninginfo;
+                warninginfo.id = QString::number(warning.information.rowCount());
                 warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
                 warninginfo.containment.storageId = cid;
                 warninginfo.applet = metadata(applet->pluginMetaData().pluginId());
@@ -1022,6 +1026,7 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
         for (const auto &cid : containmentsEntries.groupList()) {
             if (conflicted.contains(cid)) {
                 Data::WarningInformation warninginfo;
+                warninginfo.id = QString::number(warning.information.rowCount());
                 warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
                 warninginfo.containment.storageId = cid;
 
@@ -1034,6 +1039,7 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
                 }
 
                 Data::WarningInformation warninginfo;
+                warninginfo.id = QString::number(warning.information.rowCount());
                 warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
                 warninginfo.containment.storageId = cid;
                 warninginfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
@@ -1068,6 +1074,7 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
             }
 
             Data::WarningInformation warninginfo;
+            warninginfo.id = QString::number(warning.information.rowCount());
             warninginfo.containment = metadata(containment->pluginMetaData().pluginId());
             warninginfo.containment.storageId = cid;
             warning.information << warninginfo;
@@ -1084,6 +1091,7 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
             }
 
             Data::WarningInformation warninginfo;
+            warninginfo.id = QString::number(warning.information.rowCount());
             warninginfo.containment = metadata(containmentsEntries.group(cid).readEntry("plugin", ""));
             warninginfo.containment.storageId = cid;
             warning.information << warninginfo;

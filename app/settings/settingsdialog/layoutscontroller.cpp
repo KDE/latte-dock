@@ -543,7 +543,7 @@ void Layouts::messagesForErroredLayouts(const Data::LayoutsTable &layouts)
     for (int i=0; i<layouts.rowCount(); ++i) {
         if (!layouts[i].hasErrors() && layouts[i].hasWarnings()) {
             m_handler->showInlineMessage(i18nc("settings:layout with warnings",
-                                               "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that might need your attention.").arg(layouts[i].name).arg(layouts[i].warnings),
+                                               "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that need your attention.").arg(layouts[i].name).arg(layouts[i].warnings),
                                          KMessageWidget::Warning,
                                          true);
         }
