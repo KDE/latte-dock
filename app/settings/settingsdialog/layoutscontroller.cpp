@@ -652,6 +652,7 @@ void Layouts::duplicateSelectedLayout()
     copied.name = uniqueLayoutName(selectedLayoutCurrent.name);
     copied.id = uniqueTempDirectory() + "/" + copied.name + ".layout.latte";;
     copied.isActive = false;
+    copied.isConsideredActive = false;
     copied.isLocked = false;
     copied.activities = QStringList();
 
