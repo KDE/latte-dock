@@ -57,12 +57,11 @@ Storage::Storage()
 {
     qDebug() << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS::STORAGE, TEMP DIR ::: " << m_storageTmpDir.path();
 
-    //! Known Errors
+    //! Known Errors / Warnings
     s_knownErrors << Data::Generic(Data::Error::APPLETSWITHSAMEID, i18n("Different Applets With Same Id"));
     s_knownErrors << Data::Generic(Data::Error::ORPHANEDPARENTAPPLETOFSUBCONTAINMENT, i18n("Orphaned Parent Applet Of Subcontainment"));
-    //! Known Warnings
-    s_knownWarnings << Data::Generic(Data::Warning::APPLETANDCONTAINMENTWITHSAMEID, i18n("Different Applet And Containment With Same Id"));
-    s_knownWarnings << Data::Generic(Data::Warning::ORPHANEDSUBCONTAINMENT, i18n("Orphaned Subcontainment"));
+    s_knownErrors<< Data::Generic(Data::Warning::APPLETANDCONTAINMENTWITHSAMEID, i18n("Different Applet And Containment With Same Id"));
+    s_knownErrors << Data::Generic(Data::Warning::ORPHANEDSUBCONTAINMENT, i18n("Orphaned Subcontainment"));
 
 
     //! Known SubContainment Families
@@ -935,8 +934,8 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
         return false;
     }
 
-    warning.id = s_knownWarnings[Data::Error::APPLETANDCONTAINMENTWITHSAMEID].id;
-    warning.name = s_knownWarnings[Data::Error::APPLETANDCONTAINMENTWITHSAMEID].name;
+    warning.id = s_knownErrors[Data::Error::APPLETANDCONTAINMENTWITHSAMEID].id;
+    warning.name = s_knownErrors[Data::Error::APPLETANDCONTAINMENTWITHSAMEID].name;
 
     if (layout->isActive()) { // active layout
         QStringList registeredcontainments;
@@ -1128,8 +1127,8 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
         return false;
     }
 
-    warning.id = s_knownWarnings[Data::Error::ORPHANEDSUBCONTAINMENT].id;
-    warning.name = s_knownWarnings[Data::Error::ORPHANEDSUBCONTAINMENT].name;
+    warning.id = s_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENT].id;
+    warning.name = s_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENT].name;
 
     Data::ViewsTable views = Layouts::Storage::self()->views(layout);
 
