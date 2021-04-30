@@ -612,6 +612,8 @@ const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layout
     copied.isLocked = !settings->isWritable();
     copied.isShownInMenu = settings->showInMenu();
     copied.hasDisabledBorders = settings->disableBordersForMaximizedWindows();
+    copied.errors = settings->errors().count();
+    copied.warnings = settings->warnings().count();
 
     m_model->appendLayout(copied);
 
