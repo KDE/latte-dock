@@ -59,23 +59,12 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     Latte::Data::Screen screen = index.data(Model::Views::SCREENROLE).value<Latte::Data::Screen>();
     Latte::Data::View view = index.data(Model::Views::VIEWROLE).value<Latte::Data::View>();
 
+    float textopacity = 1.0;
+
     if (isEmpty) {
         myOptions.text = "&lt; " + i18n("optional") + " &gt;";
-
-        QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
-        QBrush placeholderBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
-        QColor placeholderColor = placeholderBrush.color();
-
-        QString cssplaceholdercolor = "rgba(";
-        cssplaceholdercolor += QString::number(placeholderColor.red()) + ",";
-        cssplaceholdercolor += QString::number(placeholderColor.green()) + ", ";
-        cssplaceholdercolor += QString::number(placeholderColor.blue()) + ", ";
-        cssplaceholdercolor += "128)";
-
-        myOptions.text = "<label style='color:" + cssplaceholdercolor + ";'>" + myOptions.text + "</label>";
+        textopacity = 0.5;
     }
-
-    float textopacity = 1.0;
 
     if (isActive) {
         myOptions.text = "<b>" + myOptions.text + "</b>";
