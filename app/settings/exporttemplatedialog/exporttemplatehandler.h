@@ -91,6 +91,8 @@ private:
 
     void setFilepath(const QString &filepath);
 
+    bool overwriteConfirmation(const QString &fileName);
+
 private slots:
     void onExport();
     void onFilepathChanged();
