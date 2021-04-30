@@ -165,6 +165,8 @@ void Layouts::initView()
     m_view->setItemDelegateForColumn(Model::Layouts::BORDERSCOLUMN, new Settings::Layout::Delegate::CheckBox(this));
     m_view->setItemDelegateForColumn(Model::Layouts::ACTIVITYCOLUMN, new Settings::Layout::Delegate::Activities(this));
 
+    connect(m_view->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &Layouts::onCurrentRowChanged);
+
     connect(m_view, &QObject::destroyed, this, [&]() {
         storeColumnWidths(m_model->inMultipleMode());
     });
@@ -512,14 +514,6 @@ void Layouts::initLayouts()
     m_handler->corona()->layoutsManager()->synchronizer()->updateLayoutsTable();
     Latte::Data::LayoutsTable layouts = m_handler->corona()->layoutsManager()->synchronizer()->layoutsTable();
 
-    Latte::Data::LayoutsTable erroredlayouts;
-
-    for (int i=0; i<layouts.rowCount(); ++i) {
-        if (layouts[i].hasErrors() || layouts[i].hasWarnings()) {
-            erroredlayouts << layouts[i];
-        }
-    }
-
     //! Send original loaded data to model
     m_model->setOriginalInMultipleMode(inMultiple);
     m_model->setOriginalData(layouts);
@@ -531,42 +525,41 @@ void Layouts::initLayouts()
 
     applyColumnWidths();
 
-    //! there are broken layouts and the user must be informed!
-    if (erroredlayouts.rowCount() > 0) {
-        messagesForErroredLayouts(erroredlayouts);
+    onCurrentRowChanged();
+}
+
+void Layouts::messageForErroredLayout(const Data::Layout &layout)
+{
+    if (!layout.hasErrors() && layout.hasWarnings()) {
+        //! add only warnings first
+        m_handler->showInlineMessage(i18nc("settings:layout with warnings",
+                                           "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that need your attention.").arg(layout.name).arg(layout.warnings),
+                                     KMessageWidget::Warning);
+    } else if (layout.hasErrors() && !layout.hasWarnings()) {
+        //! add errors in the end in order to be read by the user
+        m_handler->showInlineMessage(i18nc("settings:layout with errors",
+                                           "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors),
+                                     KMessageWidget::Error,
+                                     true);
+    } else if (layout.hasErrors() && layout.hasWarnings()) {
+        //! add most important errors in the end in order to be read by the user
+        m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
+                                           "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors).arg(layout.warnings),
+                                     KMessageWidget::Error,
+                                     true);
     }
 }
 
-void Layouts::messagesForErroredLayouts(const Data::LayoutsTable &layouts)
+void Layouts::onCurrentRowChanged()
 {
-    //! add only warnings first
-    for (int i=0; i<layouts.rowCount(); ++i) {
-        if (!layouts[i].hasErrors() && layouts[i].hasWarnings()) {
-            m_handler->showInlineMessage(i18nc("settings:layout with warnings",
-                                               "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that need your attention.").arg(layouts[i].name).arg(layouts[i].warnings),
-                                         KMessageWidget::Warning,
-                                         true);
-        }
+    if (!hasSelectedLayout()) {
+        return;
     }
 
-    //! add errors in the end in order to be read by the user
-    for (int i=0; i<layouts.rowCount(); ++i) {
-        if (layouts[i].hasErrors() && !layouts[i].hasWarnings()) {
-            m_handler->showInlineMessage(i18nc("settings:layout with errors",
-                                               "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> that you need to repair.").arg(layouts[i].name).arg(layouts[i].errors),
-                                         KMessageWidget::Error,
-                                         true);
-        }
-    }
+    Latte::Data::Layout selectedlayout = selectedLayoutCurrentData();
 
-    //! add most important errors in the end in order to be read by the user
-    for (int i=0; i<layouts.rowCount(); ++i) {
-        if (layouts[i].hasErrors() && layouts[i].hasWarnings()) {
-            m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
-                                               "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layouts[i].name).arg(layouts[i].errors).arg(layouts[i].warnings),
-                                         KMessageWidget::Error,
-                                         true);
-        }
+    if (selectedlayout.hasErrors() || selectedlayout.hasWarnings()) {
+        messageForErroredLayout(selectedlayout);
     }
 }
 

@@ -122,6 +122,7 @@ private slots:
     void storeColumnWidths(bool inMultipleMode);
     void applyColumnWidths(bool storeValues = false);
 
+    void onCurrentRowChanged();
     void onNameDuplicatedFrom(const QString &provenId,  const QString &trialId);
     void onLayoutAddedExternally(const Data::Layout &layout);
     void onLayoutActivitiesChangedExternally(const Data::Layout &layout);
@@ -135,7 +136,7 @@ private:
     QString uniqueTempDirectory();
     QString uniqueLayoutName(QString name);
 
-    void messagesForErroredLayouts(const Data::LayoutsTable &layouts);
+    void messageForErroredLayout(const Data::Layout &layout);
 
 private:
     Settings::Handler::TabLayouts *m_handler{nullptr};
