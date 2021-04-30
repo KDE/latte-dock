@@ -85,109 +85,66 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     bool isNewLayout = index.data(Model::Layouts::ISNEWLAYOUTROLE).toBool();
     bool hasChanges = index.data(Model::Layouts::LAYOUTHASCHANGESROLE).toBool();
+    bool hasErrors = index.data(Model::Layouts::ERRORSROLE).toBool();
+    bool hasWarnings = index.data(Model::Layouts::WARNINGSROLE).toBool();
 
     QString name = index.data(Qt::UserRole).toString();
 
     bool isChanged = (isNewLayout || hasChanges);
-    bool drawTwoIcons = isLocked && isConsideredActive;
 
-    QStyleOptionViewItem adjustedOption = option;
+    QStyleOptionViewItem myOptions = option;
+    myOptions.text = name;
 
     //! Remove the focus dotted lines
-    adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
-    adjustedOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
+    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
+    myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());;
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    QRect optionRect = Latte::remainedFromChangesIndicator(option);
-    Latte::drawChangesIndicatorBackground(painter, option);
-    adjustedOption.rect = optionRect;
-
-    if (isLocked || isConsideredActive) {
-        QStandardItemModel *model = (QStandardItemModel *) index.model();
-
-        bool active = Latte::isActive(option);
-        bool enabled = Latte::isEnabled(option);
-        bool selected = Latte::isSelected(option);
-        bool focused = Latte::isFocused(option);
-        bool hovered = Latte::isHovered(option);
-
-        //! font metrics
-        QFontMetrics fm(option.font);
-        int textWidth = fm.boundingRect(name).width();
-        int thick = optionRect.height();
-        int length = drawTwoIcons ? (2*thick /*+ 2*/) : thick;
-
-        int startWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? length : 0;
-        int endWidth = (qApp->layoutDirection() == Qt::RightToLeft) ? 0 : length;
-
-        QRect destinationS(optionRect.x(), optionRect.y(), startWidth, thick);
-        QRect destinationE(optionRect.x() + optionRect.width() - endWidth, optionRect.y(), endWidth, thick);
-
-        QStyleOptionViewItem myOptionS = adjustedOption;
-        QStyleOptionViewItem myOptionE = adjustedOption;
-        QStyleOptionViewItem myOptionMain = adjustedOption;
-
-        myOptionMain.font.setBold(isActive);
-        myOptionMain.font.setItalic(isChanged);
-
-        myOptionS.rect = destinationS;
-        myOptionE.rect = destinationE;
-        myOptionMain.rect.moveLeft(optionRect.x() + startWidth);
-        myOptionMain.rect.setWidth(optionRect.width() - startWidth - endWidth);
-
-        QStyledItemDelegate::paint(painter, myOptionMain, index);
-
-        //! draw background below icons
-        //! HIDDENTEXTCOLUMN is just needed to draw empty background rectangles
-        QStyledItemDelegate::paint(painter, myOptionS, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-        QStyledItemDelegate::paint(painter, myOptionE, model->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
-
-        //! First Icon
-        QIcon firstIcon = isLocked && !drawTwoIcons ? QIcon::fromTheme("object-locked") : QIcon::fromTheme("favorites");
-        QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
-
-        if (qApp->layoutDirection() == Qt::LeftToRight) {
-            int firstIconX = optionRect.x() + optionRect.width() - endWidth;
-            painter->drawPixmap(QRect(firstIconX, optionRect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
-
-            //debug
-            //painter->drawLine(firstIconX, optionRect.y(), firstIconX, optionRect.y()+thick);
-            //painter->drawLine(firstIconX+thick - 1, optionRect.y(), firstIconX+thick - 1, optionRect.y()+thick);
-
-            if (drawTwoIcons) {
-                int secondIconX = optionRect.x() + optionRect.width() - thick;
-                QIcon secondIcon = QIcon::fromTheme("object-locked");
-                painter->drawPixmap(QRect(secondIconX, optionRect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
-
-                //debug
-                //painter->drawLine(secondIconX, optionRect.y(), secondIconX, optionRect.y()+thick);
-                //painter->drawLine(secondIconX + thick - 1, optionRect.y(), secondIconX + thick - 1,optionRect.y()+thick);
-            }
-        } else {
-            painter->drawPixmap(QRect(optionRect.x(), optionRect.y(), thick, thick), firstIcon.pixmap(thick, thick, mode));
-
-            if (drawTwoIcons) {
-                QIcon secondIcon = QIcon::fromTheme("object-locked");
-                painter->drawPixmap(QRect(optionRect.x() + thick, optionRect.y(), thick, thick), secondIcon.pixmap(thick, thick, mode));
-            }
-        }
-
-        if (isChanged) {
-            Latte::drawChangesIndicator(painter, option);
-        }
-        return;
-    }
-
-    //! Draw valid text area
-    adjustedOption.font.setBold(isActive);
-    adjustedOption.font.setItalic(isChanged);
-
-    QStyledItemDelegate::paint(painter, adjustedOption, index);
+    //! Changes Indicator
+    QRect remainedrect = Latte::remainedFromChangesIndicator(myOptions);
+    Latte::drawChangesIndicatorBackground(painter, myOptions);
 
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
+
+    myOptions.rect = remainedrect;
+
+    if (hasErrors || hasWarnings) {
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
+        if (hasErrors) {
+            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
+        } else if (hasWarnings) {
+            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight);
+        }
+        myOptions.rect = remainedrect;
+    }
+
+    if (isConsideredActive) {
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
+        Latte::drawIcon(painter, myOptions, "favorites", Qt::AlignRight);
+        myOptions.rect = remainedrect;
+    }
+
+    if (isLocked) {
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
+        Latte::drawIcon(painter, myOptions, "object-locked", Qt::AlignRight);
+        myOptions.rect = remainedrect;
+    }
+
+    if (isActive) {
+        myOptions.text = "<b>" + myOptions.text + "</b>";
+    }
+
+    if (isChanged) {
+        myOptions.text = "<i>" + myOptions.text + "</i>";
+    }
+
+    Latte::drawFormattedText(painter, myOptions);
 }
 
 }

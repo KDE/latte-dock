@@ -191,18 +191,27 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
     }
 }
 
-QRect remainedFromIcon(const QStyleOption &option)
+QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
 {
     int iconsize = option.rect.height() - 2*MARGIN;
     int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
 
-    QRect optionRemainedRect = (qApp->layoutDirection() == Qt::LeftToRight) ? QRect(option.rect.x() + total, option.rect.y(), option.rect.width() - total, option.rect.height()) :
-                                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - total, option.rect.height());
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+
+    QRect optionRemainedRect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + total, option.rect.y(), option.rect.width() - total, option.rect.height()) :
+                                                             QRect(option.rect.x(), option.rect.y(), option.rect.width() - total, option.rect.height());
 
     return optionRemainedRect;
 }
 
-void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option)
+void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, Qt::AlignmentFlag alignment)
 {
     int iconsize = option.rect.height() - 2*MARGIN;
     int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
@@ -210,9 +219,17 @@ void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOpti
     QStyleOptionMenuItem iconOption = option;
     iconOption.text = "";
     //! Remove the focus dotted lines
- //   iconOption.state = (option.state & ~QStyle::State_HasFocus);
+    //   iconOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    Qt::AlignmentFlag curalign = alignment;
 
     if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    if (curalign == Qt::AlignLeft) {
         iconOption.rect = QRect(option.rect.x(), option.rect.y(), total, option.rect.height());
     } else {
         iconOption.rect = QRect(option.rect.x() + option.rect.width() - total, option.rect.y(), total, option.rect.height());
@@ -221,7 +238,35 @@ void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOpti
     style->drawControl(QStyle::CE_MenuItem, &iconOption, painter);
 }
 
-void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon)
+void drawIconBackground(QPainter *painter, const QStyleOptionViewItem &option, Qt::AlignmentFlag alignment)
+{
+    int iconsize = option.rect.height() - 2*MARGIN;
+    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+
+    QStyleOptionViewItem iconOption = option;
+    iconOption.text = "";
+
+    //! Remove the focus dotted lines
+    iconOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    if (curalign == Qt::AlignLeft) {
+        iconOption.rect = QRect(option.rect.x(), option.rect.y(), total, option.rect.height());
+    } else {
+        iconOption.rect = QRect(option.rect.x() + option.rect.width() - total, option.rect.y(), total, option.rect.height());
+    }
+
+    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &iconOption, painter);
+}
+
+void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment)
 {
     int iconsize = option.rect.height() - 2*MARGIN;
     int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
@@ -232,12 +277,20 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
 
     QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
     QRect target;
 
-    if (qApp->layoutDirection() == Qt::RightToLeft) {
-        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y(), iconsize, iconsize);
-    } else {
+    if (curalign == Qt::AlignLeft) {
         target = QRect(option.rect.x() + MARGIN + ICONMARGIN, option.rect.y(), iconsize, iconsize);
+    } else {
+        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y(), iconsize, iconsize);
     }
 
     painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));

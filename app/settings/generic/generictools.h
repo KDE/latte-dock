@@ -51,9 +51,10 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, co
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
 
 //! simple icon
-QRect remainedFromIcon(const QStyleOption &option);
-void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option);
-void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon);
+QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+void drawIconBackground(QPainter *painter, const QStyleOptionViewItem &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 
 //! changes indicator
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);

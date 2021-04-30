@@ -237,13 +237,15 @@ void Layouts::removeLayout(const QString &id)
 
 void Layouts::setLayoutProperties(const Latte::Data::Layout &layout)
 {
-    if (m_layoutsTable.containsId(layout.id) && m_layoutsTable[layout.id] != layout) {
+    if (m_layoutsTable.containsId(layout.id)) {
         m_layoutsTable[layout.id] = layout;
         int dataRow = m_layoutsTable.indexOf(layout.id);
 
         QVector<int> roles;
         roles << Qt::DisplayRole;
         roles << Qt::UserRole;
+        roles << ERRORSROLE;
+        roles << WARNINGSROLE;
         emit dataChanged(index(dataRow, IDCOLUMN), index(dataRow, ACTIVITYCOLUMN), roles);
     }
 }
@@ -560,6 +562,10 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         QVariant iconVariant;
         iconVariant.setValue<Latte::Data::LayoutIcon>(_icon);
         return iconVariant;
+    } else if (role == ERRORSROLE) {
+        return m_layoutsTable[row].errors;
+    } else if (role == WARNINGSROLE) {
+        return m_layoutsTable[row].warnings;
     }
 
     switch (column) {

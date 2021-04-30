@@ -72,6 +72,8 @@ public:
         ORIGINALISSHOWNINMENUROLE,
         ORIGINALHASBORDERSROLE,
         ORIGINALASSIGNEDACTIVITIESROLE,
+        ERRORSROLE,
+        WARNINGSROLE
     };
 
     enum SortingPriority
