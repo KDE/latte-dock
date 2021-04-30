@@ -136,6 +136,8 @@ private:
     QString uniqueTempDirectory();
     QString uniqueLayoutName(QString name);
 
+    void initialMessageForErroredLayouts(const int &count);
+    void initialMessageForWarningLayouts(const int &count);
     void messageForErroredLayout(const Data::Layout &layout);
 
 private:

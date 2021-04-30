@@ -525,8 +525,56 @@ void Layouts::initLayouts()
 
     applyColumnWidths();
 
+    int erroredlayouts{0};
+    int warninglayouts{0};
+
+    for (int i=0; i<layouts.rowCount(); ++i) {
+        if (layouts[i].hasErrors()) {
+            erroredlayouts++;
+        } else if (layouts[i].hasWarnings()) {
+            warninglayouts++;
+        }
+    }
+
     onCurrentRowChanged();
+    initialMessageForWarningLayouts(warninglayouts);
+    initialMessageForErroredLayouts(erroredlayouts);
 }
+
+void Layouts::initialMessageForErroredLayouts(const int &count)
+{
+    if (count <= 0) {
+        return;
+    }
+
+    if (count == 1) {
+        m_handler->showInlineMessage(i18nc("settings:counted layout with errors",
+                                           "<b>Error:</b> There is <b>1 layout</b> that has reported errors."),
+                                     KMessageWidget::Error);
+    } else {
+        m_handler->showInlineMessage(i18nc("settings:counted layouts with errors",
+                                           "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors.").arg(count),
+                                     KMessageWidget::Error);
+    }
+}
+
+void Layouts::initialMessageForWarningLayouts(const int &count)
+{
+    if (count <= 0) {
+        return;
+    }
+
+    if (count == 1) {
+        m_handler->showInlineMessage(i18nc("settings:counted layout with warnings",
+                                           "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."),
+                                     KMessageWidget::Warning);
+    } else {
+        m_handler->showInlineMessage(i18nc("settings:counted layouts with warnings",
+                                           "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings.").arg(count),
+                                     KMessageWidget::Warning);
+    }
+}
+
 
 void Layouts::messageForErroredLayout(const Data::Layout &layout)
 {
