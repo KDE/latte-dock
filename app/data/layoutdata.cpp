@@ -129,17 +129,17 @@ bool Layout::operator==(const Layout &rhs) const
             && (color == rhs.color)
             && (background == rhs.background)
             && (textColor == rhs.textColor)
-            //&& (lastUsedActivity == rhs.lastUsedActivity) /*Disabled because it can change too often*/
-            //&& (isActive == rhs.isActive) /*Disabled because this is not a data but a layout state*/
-            //&& (isConsideredActive == rhs.isConsideredActive) /*Disabled because this is not a data but a layout state*/
+            //&& (lastUsedActivity == rhs.lastUsedActivity) /*Disabled because this is not needed in order to track layout changes for saving*/
+            //&& (isActive == rhs.isActive) /*Disabled because this is not needed in order to track layout changes for saving*/
+            //&& (isConsideredActive == rhs.isConsideredActive) /*Disabled because this is not needed in order to track layout changes for saving*/
             && (isLocked == rhs.isLocked)
             && (isShownInMenu == rhs.isShownInMenu)
             && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (activities == rhs.activities)
             && (backgroundStyle == rhs.backgroundStyle)
-            && (errors == rhs.errors)
-            && (warnings == rhs.warnings)
+            //&& (errors == rhs.errors) /*Disabled because this is not needed in order to track layout changes for saving*/
+            //&& (warnings == rhs.warnings) /*Disabled because this is not needed in order to track layout changes for saving*/
             && (views == rhs.views);
 }
 
