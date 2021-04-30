@@ -951,19 +951,13 @@ void Layouts::onNameDuplicatedFrom(const QString &provenId, const QString &trial
 
 void Layouts::loadConfig()
 {
-    //! remove old unneeded oprtions
-    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
-    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
+    QStringList defaultcolumnwidths;
+    defaultcolumnwidths << QString::number(48) << QString::number(508) << QString::number(129) << QString::number(104);
 
-    if (!columnWidths.isEmpty()) {
-        //! migrating
-        m_viewColumnWidths = columnWidths;
-    } else {
-        //! new storage
-        m_viewColumnWidths = m_storage.readEntry("columnWidths", QStringList());
-        m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Layouts::NAMECOLUMN);
-        m_viewSortOrder = static_cast<Qt::SortOrder>(m_storage.readEntry("sortOrder", (int)Qt::AscendingOrder));
-    }
+    //! new storage
+    m_viewColumnWidths = m_storage.readEntry("columnWidths", defaultcolumnwidths);
+    m_viewSortColumn = m_storage.readEntry("sortColumn", (int)Model::Layouts::NAMECOLUMN);
+    m_viewSortOrder = static_cast<Qt::SortOrder>(m_storage.readEntry("sortOrder", (int)Qt::AscendingOrder));
 }
 
 void Layouts::saveConfig()

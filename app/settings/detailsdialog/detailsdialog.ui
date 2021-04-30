@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>561</width>
-    <height>615</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -576,15 +576,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Latte::Settings::LayoutsComboBox</class>
+   <extends>QComboBox</extends>
+   <header>settings/generic/layoutscombobox.h</header>
+  </customwidget>
+  <customwidget>
    <class>Latte::Settings::Widget::PatternWidget</class>
    <extends>QWidget</extends>
    <header>settings/detailsdialog/patternwidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Latte::Settings::LayoutsComboBox</class>
-   <extends>QComboBox</extends>
-   <header>settings/generic/layoutscombobox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -624,23 +624,8 @@ void SettingsDialog::save()
 
 void SettingsDialog::loadConfig()
 {
-    //! remove old unneeded oprtions
-    KConfigGroup deprecatedStorage(KConfigGroup(KSharedConfig::openConfig(), "UniversalSettings"));
-    QStringList columnWidths = deprecatedStorage.readEntry("layoutsColumnWidths", QStringList());
-
-    if (!columnWidths.isEmpty()) {
-        //! migrating
-        m_windowSize = deprecatedStorage.readEntry("layoutsWindowSize", QSize(700, 450));
-        m_downloadWindowSize = deprecatedStorage.readEntry("downloadWindowSize", QSize(800, 550));
-
-        deprecatedStorage.writeEntry("layoutsColumnWidths", QStringList());
-        deprecatedStorage.writeEntry("layoutsWindowSize", QSize());
-        deprecatedStorage.writeEntry("downloadWindowSize", QSize());
-    } else {
-        //! new storage
-        m_windowSize = m_storage.readEntry("windowSize", QSize(700, 450));
-        m_downloadWindowSize = m_storage.readEntry("downloadWindowSize", QSize(800, 550));
-    }
+    m_windowSize = m_storage.readEntry("windowSize", QSize(1100, 750));
+    m_downloadWindowSize = m_storage.readEntry("downloadWindowSize", QSize(980, 600));
 }
 
 void SettingsDialog::saveConfig()
