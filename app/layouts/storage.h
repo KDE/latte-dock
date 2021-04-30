@@ -142,7 +142,8 @@ private:
 private:
     QTemporaryDir m_storageTmpDir;
 
-    Data::GenericTable<Data::Generic> m_knownErrors;
+    Data::GenericTable<Data::Generic> s_knownErrors;
+    Data::GenericTable<Data::Generic> s_knownWarnings;
 
     QList<SubContaimentIdentityData> m_subIdentities;
 };

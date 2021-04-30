@@ -58,15 +58,17 @@ Storage::Storage()
     qDebug() << " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> LAYOUTS::STORAGE, TEMP DIR ::: " << m_storageTmpDir.path();
 
     //! Known Errors
-    m_knownErrors << Data::Generic(Data::Error::APPLETSWITHSAMEID, i18n("Different Applets With Same Id"));
-    m_knownErrors << Data::Generic(Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID, i18n("Different Applets And Containments With Same Id"));
-    m_knownErrors << Data::Generic(Data::Error::ORPHANEDSUBCONTAINMENTS, i18n("Orphaned Subcontainments"));
+    s_knownErrors << Data::Generic(Data::Error::APPLETSWITHSAMEID, i18n("Different Applets With Same Id"));
+    //! Known Warnings
+    s_knownWarnings << Data::Generic(Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID, i18n("Different Applets And Containments With Same Id"));
+    s_knownWarnings << Data::Generic(Data::Error::ORPHANEDSUBCONTAINMENTS, i18n("Orphaned Subcontainments"));
 
+
+    //! Known SubContainment Families
     SubContaimentIdentityData data;
-
-    //! Systray
+    //! Systray Family
     m_subIdentities << SubContaimentIdentityData{.cfgGroup="Configuration", .cfgProperty="SystrayContainmentId"};
-    //! Group applet
+    //! Group applet Family
     m_subIdentities << SubContaimentIdentityData{.cfgGroup="Configuration", .cfgProperty="ContainmentId"};
 }
 
@@ -843,8 +845,8 @@ bool Storage::hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout,
         return false;
     }
 
-    error.id = m_knownErrors[Data::Error::APPLETSWITHSAMEID].id;
-    error.name = m_knownErrors[Data::Error::APPLETSWITHSAMEID].name;
+    error.id = s_knownErrors[Data::Error::APPLETSWITHSAMEID].id;
+    error.name = s_knownErrors[Data::Error::APPLETSWITHSAMEID].name;
 
     if (layout->isActive()) { // active layout
         QStringList registeredapplets;
@@ -932,8 +934,8 @@ bool Storage::hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *l
         return false;
     }
 
-    warning.id = m_knownErrors[Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID].id;
-    warning.name = m_knownErrors[Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID].name;
+    warning.id = s_knownWarnings[Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID].id;
+    warning.name = s_knownWarnings[Data::Error::APPLETSANDCONTAINMENTSWITHSAMEID].name;
 
     if (layout->isActive()) { // active layout
         QStringList registeredcontainments;
@@ -1059,8 +1061,8 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
         return false;
     }
 
-    warning.id = m_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENTS].id;
-    warning.name = m_knownErrors[Data::Error::ORPHANEDSUBCONTAINMENTS].name;
+    warning.id = s_knownWarnings[Data::Error::ORPHANEDSUBCONTAINMENTS].id;
+    warning.name = s_knownWarnings[Data::Error::ORPHANEDSUBCONTAINMENTS].name;
 
     Data::ViewsTable views = Layouts::Storage::self()->views(layout);
 
