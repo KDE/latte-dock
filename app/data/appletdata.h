@@ -44,6 +44,7 @@ public:
     QString description;
     QString icon;
     QString storageId;
+    QString subcontainmentId;
 
     bool isInstalled() const;
     bool isValid() const;

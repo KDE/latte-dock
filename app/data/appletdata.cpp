@@ -33,7 +33,8 @@ Applet::Applet(Applet &&o)
       isSelected(o.isSelected),
       description(o.description),
       icon(o.icon),
-      storageId(o.storageId)
+      storageId(o.storageId),
+      subcontainmentId(o.subcontainmentId)
 {
 }
 
@@ -42,7 +43,8 @@ Applet::Applet(const Applet &o)
       isSelected(o.isSelected),
       description(o.description),
       icon(o.icon),
-      storageId(o.storageId)
+      storageId(o.storageId),
+      subcontainmentId(o.subcontainmentId)
 {
 }
 
@@ -54,6 +56,7 @@ Applet &Applet::operator=(const Applet &rhs)
     isSelected = rhs.isSelected;
     icon = rhs.icon;
     storageId = rhs.storageId;
+    subcontainmentId = rhs.subcontainmentId;
 
     return (*this);
 }
@@ -66,6 +69,7 @@ Applet &Applet::operator=(Applet &&rhs)
     isSelected = rhs.isSelected;
     icon = rhs.icon;
     storageId = rhs.storageId;
+    subcontainmentId = rhs.subcontainmentId;
 
     return (*this);
 }
@@ -77,7 +81,8 @@ bool Applet::operator==(const Applet &rhs) const
             && (description == rhs.description)
             && (icon == rhs.icon)
             && (isSelected == rhs.isSelected)
-            && (storageId == rhs.storageId);
+            && (storageId == rhs.storageId)
+            && (subcontainmentId == rhs.subcontainmentId);
 }
 
 bool  Applet::operator!=(const Applet &rhs) const

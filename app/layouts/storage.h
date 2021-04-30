@@ -67,6 +67,7 @@ public:
     bool isLatteContainment(const KConfigGroup &group) const;
     bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
 
+    bool hasContainment(const Layout::GenericLayout *layout, const int &id);
     bool containsView(const QString &filepath, const int &viewId);
 
     int subContainmentId(const KConfigGroup &appletGroup) const;
@@ -135,8 +136,10 @@ private:
     QStringList containmentsIds(const QString &filepath);
     QStringList appletsIds(const QString &filepath);
 
-    //! errors/warnings checkers
+    //! errors checkers
     bool hasDifferentAppletsWithSameId(const Layout::GenericLayout *layout, Data::Error &error);
+    bool hasOrphanedParentAppletOfSubContainment(const Layout::GenericLayout *layout, Data::Error &error);
+    //! warnings checkers
     bool hasAppletsAndContainmentsWithSameId(const Layout::GenericLayout *layout, Data::Warning &warning);
     bool hasOrphanedSubContainments(const Layout::GenericLayout *layout, Data::Warning &warning);
 private:

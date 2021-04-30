@@ -38,8 +38,9 @@ class Error : public Data::Generic
 {
 public:
     static constexpr const char* APPLETSWITHSAMEID = "103";
-    static constexpr const char* APPLETSANDCONTAINMENTSWITHSAMEID = "202";
-    static constexpr const char* ORPHANEDSUBCONTAINMENTS = "204";
+    static constexpr const char* ORPHANEDPARENTAPPLETOFSUBCONTAINMENT = "107";
+    static constexpr const char* APPLETANDCONTAINMENTWITHSAMEID = "202";
+    static constexpr const char* ORPHANEDSUBCONTAINMENT = "204";
 
     Error();
     Error(Error &&o);
