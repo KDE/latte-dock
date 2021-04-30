@@ -533,18 +533,18 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
     if (!layout.hasErrors() && layout.hasWarnings()) {
         //! add only warnings first
         m_handler->showInlineMessage(i18nc("settings:layout with warnings",
-                                           "Warning: Be careful, Layout <b>%0</b> reports <b>%1 warning(s)</b> that need your attention.").arg(layout.name).arg(layout.warnings),
+                                           "<b>Warning: %0</b> layout has reported <b>%1 warning(s)</b> that need your attention.").arg(layout.name).arg(layout.warnings),
                                      KMessageWidget::Warning);
     } else if (layout.hasErrors() && !layout.hasWarnings()) {
         //! add errors in the end in order to be read by the user
         m_handler->showInlineMessage(i18nc("settings:layout with errors",
-                                           "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors),
+                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors),
                                      KMessageWidget::Error,
                                      true);
     } else if (layout.hasErrors() && layout.hasWarnings()) {
         //! add most important errors in the end in order to be read by the user
         m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
-                                           "Error: Be careful, Layout <b>%0</b> reports <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors).arg(layout.warnings),
+                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors).arg(layout.warnings),
                                      KMessageWidget::Error,
                                      true);
     }
