@@ -30,6 +30,7 @@
 #include <QWidget>
 
 // KDE
+#include <KMessageBox>
 #include <KMessageWidget>
 
 namespace Latte {
@@ -47,7 +48,7 @@ public:
     void showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent = false, QList<QAction *> actions = QList<QAction *>());
     void hideInlineMessage();
 
-    int saveChangesConfirmation(const QString &text, QString applyBtnText = "", QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+    KMessageBox::ButtonCode saveChangesConfirmation(const QString &text);
 
 private slots:
     KMessageWidget *initMessageWidget();

@@ -36,7 +36,6 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QIcon>
-#include <QMessageBox>
 
 // KDE
 #include <KIconDialog>
@@ -259,16 +258,16 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
 
     if (m_lastConfirmedLayoutIndex != row) {
         if (hasChangedData()) { //new layout was chosen but there are changes
-            int result = saveChangesConfirmation();
+            KMessageBox::ButtonCode result = saveChangesConfirmation();
 
-            if (result == QMessageBox::Apply) {
+            if (result == KMessageBox::Yes) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
                 save();
-            } else if (result == QMessageBox::Discard) {
+            } else if (result == KMessageBox::No) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
-            } else if (result == QMessageBox::Cancel) {
+            } else if (result == KMessageBox::Cancel) {
                 //do nothing
             }
         } else { //new layout was chosen and there are no changes
@@ -408,16 +407,16 @@ void DetailsHandler::updateWindowTitle()
     m_dialog->setWindowTitle(i18nc("<layout name> Details","%0 Details").arg(m_ui->layoutsCmb->currentText()));
 }
 
-int DetailsHandler::saveChangesConfirmation()
+KMessageBox::ButtonCode DetailsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = c_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes or discard them?").arg(layoutName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes or discard them?").arg(layoutName);
 
         return m_dialog->saveChangesConfirmation(saveChangesText);
     }
 
-    return QMessageBox::Cancel;
+    return KMessageBox::Cancel;
 }
 
 }

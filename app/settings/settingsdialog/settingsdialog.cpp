@@ -43,9 +43,10 @@
 #include <QMimeData>
 
 // KDE
-#include <KIO/OpenFileManagerWindowJob>
 #include <KLocalizedString>
+#include <KMessageBox>
 #include <KWindowSystem>
+#include <KIO/OpenFileManagerWindowJob>
 
 
 namespace Latte {
@@ -475,13 +476,13 @@ bool SettingsDialog::saveChanges()
         || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->hasChangedData())) {
 
         QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
-        QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed. Do you want to apply the changes or discard them?").arg(tabName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed.<br/>Do you want to apply the changes or discard them?").arg(tabName);
 
-        int result = saveChangesConfirmation(saveChangesText);
+        KMessageBox::ButtonCode result = saveChangesConfirmation(saveChangesText);
 
-        if (result == QMessageBox::Apply) {
+        if (result == KMessageBox::Yes) {
             save();
-        } else if (result == QMessageBox::Discard) {
+        } else if (result == KMessageBox::No) {
             reset();
         } else {
             return false;

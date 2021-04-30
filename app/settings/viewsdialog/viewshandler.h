@@ -32,6 +32,9 @@
 #include <QMenu>
 #include <QSortFilterProxyModel>
 
+// KDE
+#include <KMessageBox>
+
 namespace Ui {
 class ViewsDialog;
 }
@@ -101,8 +104,8 @@ private:
 
     void loadLayout(const Latte::Data::Layout &data);
 
-    int saveChangesConfirmation();
-    int removalConfirmation(const int &count);
+    KMessageBox::ButtonCode saveChangesConfirmation();
+    KMessageBox::ButtonCode removalConfirmation(const int &count);
 
 private:
     Dialog::ViewsDialog *m_dialog{nullptr};

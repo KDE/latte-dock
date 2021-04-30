@@ -30,6 +30,9 @@
 #include <QButtonGroup>
 #include <QSortFilterProxyModel>
 
+// KDE
+#include <KMessageBox>
+
 namespace Ui {
 class DetailsDialog;
 }
@@ -106,7 +109,7 @@ private:
 
     void loadLayout(const Latte::Data::Layout &data);
 
-    int saveChangesConfirmation();
+    KMessageBox::ButtonCode saveChangesConfirmation();
 
 private:
     Dialog::DetailsDialog *m_dialog{nullptr};

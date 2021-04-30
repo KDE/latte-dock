@@ -39,11 +39,9 @@
 #include "../../templates/templatesmanager.h"
 #include "../../tools/commontools.h"
 
-// Qt
-#include <QMessageBox>
-
-//! KDE
+// KDE
 #include <KLocalizedString>
+#include <KStandardGuiItem>
 #include <KIO/OpenFileManagerWindowJob>
 
 namespace Latte {
@@ -235,7 +233,7 @@ void ViewsHandler::resetDefaults()
 
 void ViewsHandler::save()
 {
-    if (removalConfirmation(m_viewsController->viewsForRemovalCount()) == QMessageBox::Yes) {
+    if (removalConfirmation(m_viewsController->viewsForRemovalCount()) == KMessageBox::Yes) {
         m_viewsController->save();
     }
 }
@@ -273,23 +271,23 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
 
     if (m_lastConfirmedLayoutIndex != row) {
         if (hasChangedData()) { //new layout was chosen but there are changes
-            int result = saveChangesConfirmation();
+            KMessageBox::ButtonCode result = saveChangesConfirmation();
 
-            if (result == QMessageBox::Apply) {
+            if (result == KMessageBox::Yes) {
                 int removalviews = m_viewsController->viewsForRemovalCount();
-                int removalresponse = removalConfirmation(removalviews);
+                KMessageBox::ButtonCode removalresponse = removalConfirmation(removalviews);
 
-                if ( removalresponse == QMessageBox::Yes) {
+                if (removalresponse == KMessageBox::Yes) {
                     switchtonewlayout = true;
                     m_lastConfirmedLayoutIndex = row;
                     m_viewsController->save();
                 } else {
                     //do nothing
                 }
-            } else if (result == QMessageBox::Discard) {
+            } else if (result == KMessageBox::No) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
-            } else if (result == QMessageBox::Cancel) {
+            } else if (result == KMessageBox::Cancel) {
                 //do nothing
             }
         } else { //new layout was chosen and there are no changes
@@ -314,43 +312,37 @@ void ViewsHandler::updateWindowTitle()
     m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels").arg(m_ui->layoutsCmb->currentText()));
 }
 
-int ViewsHandler::removalConfirmation(const int &viewsCount)
+KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
 {
     if (viewsCount<=0) {
-        return QMessageBox::Yes;
+        return KMessageBox::Yes;
     }
 
     if (hasChangedData()) {
-        QString removalTxt = i18n("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/><br/> Would you like to continue?");
+        QString removalTxt = i18n("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?");
 
         if (viewsCount > 1) {
-            removalTxt = i18n ("You are going to <b>remove %0</b> docks and panels completely from your layout.<br/><br/> Would you like to continue?").arg(viewsCount);
+            removalTxt = i18n ("You are going to <b>remove %0</b> docks and panels completely from your layout.<br/>Would you like to continue?").arg(viewsCount);
         }
 
-        auto msg = new QMessageBox(m_dialog);
-        msg->setIcon(QMessageBox::Warning);
-        msg->setWindowTitle(i18n("Approve Removal"));
-        msg->setText(removalTxt);
-        msg->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msg->setDefaultButton(QMessageBox::No);
-        msg->setAttribute(Qt::WA_DeleteOnClose, true);
-
-        return msg->exec();
+        return KMessageBox::warningYesNo(m_dialog,
+                                         removalTxt,
+                                         i18n("Approve Removal"));
     }
 
-    return QMessageBox::Yes;
+    return KMessageBox::Yes;
 }
 
-int ViewsHandler::saveChangesConfirmation()
+KMessageBox::ButtonCode ViewsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = o_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed. Do you want to apply the changes now or discard them?").arg(layoutName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes <b>now</b> or discard them?").arg(layoutName);
 
-        return m_dialog->saveChangesConfirmation(saveChangesText, i18n("Apply Now"));
+        return m_dialog->saveChangesConfirmation(saveChangesText);
     }
 
-    return QMessageBox::Cancel;
+    return KMessageBox::Cancel;
 }
 
 }

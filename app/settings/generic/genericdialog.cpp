@@ -29,6 +29,7 @@
 
 // KDE
 #include <KLocalizedString>
+#include <KStandardGuiItem>
 
 static const int ERRORINTERVAL = 4000;
 static const int INFORMATIONINTERVAL = 3000;
@@ -64,41 +65,15 @@ KMessageWidget *GenericDialog::initMessageWidget()
     return messagewidget;
 }
 
-int GenericDialog::saveChangesConfirmation(const QString &text, QString applyBtnText, QMessageBox::StandardButton defaultButton)
+KMessageBox::ButtonCode GenericDialog::saveChangesConfirmation(const QString &text)
 {
-    auto msg = new QMessageBox(this);
-    msg->setIcon(QMessageBox::Warning);
-    msg->setWindowTitle(i18n("Apply Settings"));
-    msg->setAttribute(Qt::WA_DeleteOnClose, true);
+    QString dialogtext = text.isEmpty() ? i18n("The settings have changed.<br/>Do you want to apply the changes or discard them?") : text;
 
-    if (text.isEmpty()) {
-        msg->setText(i18n("The settings have changed. Do you want to apply the changes or discard them?"));
-    } else {
-        msg->setText(text);
-    }
-
-    if (applyBtnText.isEmpty()) {
-        msg->setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
-        msg->setDefaultButton(defaultButton == QMessageBox::NoButton ? QMessageBox::Apply : defaultButton);
-        return msg->exec();
-    } else {
-        msg->setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel);
-        QPushButton *applyCustomBtn = new QPushButton(msg);
-        applyCustomBtn->setText(applyBtnText);
-        applyCustomBtn->setIcon(QIcon::fromTheme("dialog-yes"));
-        msg->addButton(applyCustomBtn, QMessageBox::ApplyRole);
-        msg->setDefaultButton(defaultButton == QMessageBox::NoButton ? QMessageBox::Apply : defaultButton);
-
-        if (defaultButton == QMessageBox::NoButton || defaultButton == QMessageBox::Apply) {
-            msg->setDefaultButton(applyCustomBtn);
-        } else {
-            msg->setDefaultButton(defaultButton);
-        }
-
-        int result = msg->exec();
-
-        return (msg->clickedButton() == applyCustomBtn ? QMessageBox::Apply : result);
-    }
+    return KMessageBox::warningYesNoCancel(this,
+                                           dialogtext,
+                                           i18n("Apply Settings"),
+                                           KStandardGuiItem::apply(),
+                                           KStandardGuiItem::discard());
 }
 
 void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent, QList<QAction *> actions)
