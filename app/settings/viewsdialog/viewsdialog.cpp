@@ -124,7 +124,7 @@ void ViewsDialog::onReset()
 
 void ViewsDialog::loadConfig()
 {
-    m_windowSize = m_storage.readEntry("windowSize", QSize(775, 500));
+    m_windowSize = m_storage.readEntry("windowSize", QSize(980, 600));
 }
 
 void ViewsDialog::saveConfig()
