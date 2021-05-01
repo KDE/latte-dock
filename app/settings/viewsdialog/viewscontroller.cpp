@@ -524,8 +524,8 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
         return;
     }
 
-    QString message = i18nc("error id and title", "<b>Error %0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
-    message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes and abnormal behavior when you active the layout. It is suggested to remove the mentioned applets, fix the situation manually or remove the layout totally.<br/><br/>");
+    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
+    message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes and abnormal behavior when you activate and use this layout.<br/><br/>");
     message += i18n("<b>Applets:</b><br/>");
     for (int i=0; i<error.information.rowCount(); ++i) {
         QString appletname = error.information[i].applet.visibleName();
@@ -534,8 +534,14 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
         QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = error.information[i].containment.storageId;
         message += i18nc("applets with same id error, applet name, applet id, containment name, containment id",
-                         "&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
     }
+
+    message += i18n("<br/><b>Possible Solutions:</b><br/>");
+    message += i18n("&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>");
+    message += i18n("&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>");
+    message += i18n("&nbsp;&nbsp;3. Try to fix the situation by updating manually the applets id<br/>");
+    message += i18n("&nbsp;&nbsp;4. Remove this layout totally<br/>");
 
     m_handler->showInlineMessage(message, KMessageWidget::Error, true);
 }
