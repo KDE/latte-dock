@@ -512,6 +512,8 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
         for (int i=0; i< errors.count(); ++i) {
             if (errors[i].id == Data::Error::APPLETSWITHSAMEID) {
                 messageForErrorAppletsWithSameId(errors[i]);
+            } else if (errors[i].id == Data::Error::ORPHANEDPARENTAPPLETOFSUBCONTAINMENT) {
+                messageForErrorOrphanedParentAppletOfSubContainment(errors[i]);
             }
         }
     }
@@ -525,8 +527,11 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     }
 
     //! construct message
-    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
-    message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes and abnormal behavior when you activate and use this layout.<br/><br/>");
+    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/>").arg(error.id).arg(error.name);
+    message += "<br/>";
+    message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes, abnormal behavior and data loss when you activate and use this layout.<br/>");
+
+    message += "<br/>";
     message += i18n("<b>Applets:</b><br/>");
     for (int i=0; i<error.information.rowCount(); ++i) {
         QString appletname = error.information[i].applet.visibleName();
@@ -538,11 +543,80 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
                          "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
     }
 
-    message += i18n("<br/><b>Possible Solutions:</b><br/>");
+    message += "<br/>";
+    message += i18n("<b>Possible Solutions:</b><br/>");
     message += i18n("&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>");
     message += i18n("&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>");
     message += i18n("&nbsp;&nbsp;3. Try to fix the situation by updating manually the applets id<br/>");
     message += i18n("&nbsp;&nbsp;4. Remove this layout totally<br/>");
+
+    //! add actions
+    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+    Data::Layout currentlayout = m_handler->currentData();
+    openlayoutaction->setData(currentlayout.id);
+    QList<QAction *> actions;
+    actions << openlayoutaction;
+
+    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
+        QString file = openlayoutaction->data().toString();
+
+        if (!file.isEmpty()) {
+            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
+            job->start();
+        }
+    });
+
+    //! show message
+    m_handler->showInlineMessage(message,
+                                 KMessageWidget::Error,
+                                 true,
+                                 actions);
+}
+
+void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Error &error)
+{
+    if (error.id != Data::Error::ORPHANEDPARENTAPPLETOFSUBCONTAINMENT) {
+        return;
+    }
+
+    //! construct message
+    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
+    message += i18n("In your layout there are orphaned pseudo applets that link to unexistent subcontainments. Such case is for example a systemtray that has lost connection with its child applets. Such situation can create crashes, abnormal behavior and data loss when you activate and use this layout.<br/>");
+
+    message += "<br/>";
+    message += i18n("<b>Pseudo Applets:</b><br/>");
+    for (int i=0; i<error.information.rowCount(); ++i) {
+        if (!error.information[i].applet.isValid()) {
+            continue;
+        }
+
+        QString appletname = error.information[i].applet.visibleName();
+        QString appletstorageid = error.information[i].applet.storageId;
+        QString viewname = visibleViewName(error.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = error.information[i].containment.storageId;
+        message += i18nc("orphaned pseudo applets, applet name, applet id, containment name, containment id",
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
+    }
+
+    message += "<br/>";
+    message += i18n("<b>Orphaned Subcontainments:</b><br/>");
+    for (int i=0; i<error.information.rowCount(); ++i) {
+        if (error.information[i].applet.isValid()) {
+            continue;
+        }
+
+        QString viewname = visibleViewName(error.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = error.information[i].containment.storageId;
+        message += i18nc("orphaned subcontainments, containment name, containment id",
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>").arg(containmentname).arg(containmentstorageid);
+    }
+
+    message += "<br/>";
+    message += i18n("<b>Possible Solutions:</b><br/>");
+    message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the subcontainment id in pseudo applet settings<br/>");
+    message += i18n("&nbsp;&nbsp;2. Remove this layout totally<br/>");
 
     //! add actions
     QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);

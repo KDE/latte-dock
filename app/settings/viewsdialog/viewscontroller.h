@@ -111,6 +111,7 @@ private:
     //! errors/warnings
     void messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout);
     void messageForErrorAppletsWithSameId(const Data::Error &error);
+    void messageForErrorOrphanedParentAppletOfSubContainment(const Data::Error &error);
 
 private slots:
     void loadConfig();

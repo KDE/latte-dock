@@ -1118,6 +1118,11 @@ bool Storage::hasOrphanedParentAppletOfSubContainment(const Layout::GenericLayou
         }
     }
 
+    Data::Warning warning1;
+    if (!error.information.isEmpty() && hasOrphanedSubContainments(layout, warning1)) {
+        error.information << warning1.information;
+    }
+
     return !error.information.isEmpty();
 }
 
