@@ -250,7 +250,7 @@ void ViewsHandler::newView(const Data::Generic &templateData)
         Data::View newview = m_viewsController->appendViewFromViewTemplate(viewfromtemplate);
 
         showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...").arg(newview.name),
-                          KMessageWidget::Information);
+                          KMessageWidget::Positive);
     }
 }
 

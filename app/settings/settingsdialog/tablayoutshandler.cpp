@@ -708,7 +708,9 @@ void TabLayouts::exportLayoutForBackup()
                               actions);
         } else if (file.endsWith(".latterc")) {
             auto showExportConfigurationError = [this]() {
-                showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error, true);
+                showInlineMessage(i18n("Full configuration export <b>failed</b>..."),
+                                  KMessageWidget::Error,
+                                  true);
             };
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {

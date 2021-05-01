@@ -178,7 +178,9 @@ void ExportTemplateHandler::chooseFileDialog()
             if (!file.endsWith(".layout.latte")) {
                 QString selected = file;
                 selected = selected.replace(QDir::homePath(), "~");
-                showInlineMessage(i18n("<i>%0</i> does not end with <i>.layout.latte</i> extension. Selected file <b>rejected</b>.").arg(selected), KMessageWidget::Error, true);
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.layout.latte</i> extension. Selected file <b>rejected</b>.").arg(selected),
+                                  KMessageWidget::Error,
+                                  true);
             } else {
                 setFilepath(file);
             }
@@ -186,7 +188,9 @@ void ExportTemplateHandler::chooseFileDialog()
             if (!file.endsWith(".view.latte")) {
                 QString selected = file;
                 selected = selected.replace(QDir::homePath(), "~");
-                showInlineMessage(i18n("<i>%0</i> does not end with <i>.view.latte</i> extension. Selected file <b>rejected</b>.").arg(selected), KMessageWidget::Error, true);
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.view.latte</i> extension. Selected file <b>rejected</b>.").arg(selected),
+                                  KMessageWidget::Error,
+                                  true);
             } else {
                 setFilepath(file);
             }
@@ -243,7 +247,7 @@ void ExportTemplateHandler::onExport()
         });
 
         showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...").arg(curbasename),
-                          KMessageWidget::Information,
+                          KMessageWidget::Positive,
                           false,
                           actions);
 

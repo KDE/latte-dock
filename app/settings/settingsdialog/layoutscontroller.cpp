@@ -798,10 +798,10 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
             if (importedlayouts.count() > 0) {
                 if (importedlayouts.count() == 1) {
                     m_handler->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(importedlayouts[0]),
-                            KMessageWidget::Information);
+                            KMessageWidget::Positive);
                 } else {
                     m_handler->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...").arg(importedlayouts.join(",")),
-                                                 KMessageWidget::Information);
+                                                 KMessageWidget::Positive);
                 }
 
                 return true;

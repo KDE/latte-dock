@@ -319,7 +319,7 @@ void Views::pasteSelectedViews()
 
     if (hascurrentlayoutcuttedviews) {
         m_handler->showInlineMessage(i18n("Docks and panels from <b>Paste</b> action are already present in current layout"),
-                                     KMessageWidget::Information);
+                                     KMessageWidget::Warning);
     }
 }
 
@@ -561,7 +561,10 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     });
 
     //! show message
-    m_handler->showInlineMessage(message, KMessageWidget::Error, true, actions);
+    m_handler->showInlineMessage(message,
+                                 KMessageWidget::Error,
+                                 true,
+                                 actions);
 }
 
 void Views::save()

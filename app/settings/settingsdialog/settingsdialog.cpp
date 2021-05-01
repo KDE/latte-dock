@@ -350,7 +350,9 @@ void SettingsDialog::exportFullConfiguration()
 
     connect(exportFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
         auto showExportConfigurationError = [this]() {
-            showInlineMessage(i18n("Full configuration export <b>failed</b>..."), KMessageWidget::Error, true);
+            showInlineMessage(i18n("Full configuration export <b>failed</b>..."),
+                              KMessageWidget::Error,
+                              true);
         };
 
         if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
@@ -368,7 +370,7 @@ void SettingsDialog::exportFullConfiguration()
             });
 
             showInlineMessage(i18n("Full configuration export succeeded..."),
-                              KMessageWidget::Information,
+                              KMessageWidget::Positive,
                               false,
                               actions);
         } else {
