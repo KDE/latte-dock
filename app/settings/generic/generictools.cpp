@@ -347,9 +347,11 @@ void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
     painter->restore();
 }
 
-int screenMaxLength(const QStyleOption &option)
+int screenMaxLength(const QStyleOption &option, const int &maxIconSize)
 {
-    int scr_maxlength = option.rect.height() * 1.7;
+    int icon_length = maxIconSize >= 0 ? qMin(option.rect.height(), maxIconSize) : option.rect.height();
+
+    int scr_maxlength = icon_length * 1.7;
 
     //! provide odd screen_maxlength
     if (scr_maxlength % 2 == 0) {
@@ -359,9 +361,9 @@ int screenMaxLength(const QStyleOption &option)
     return scr_maxlength;
 }
 
-QRect remainedFromScreenDrawing(const QStyleOption &option)
+QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSize)
 {
-    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
+    int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
 
     QRect optionRemainedRect = (qApp->layoutDirection() == Qt::RightToLeft) ? QRect(option.rect.x(), option.rect.y(), option.rect.width() - total_length, option.rect.height()) :
                                                                               QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
@@ -369,9 +371,9 @@ QRect remainedFromScreenDrawing(const QStyleOption &option)
     return optionRemainedRect;
 }
 
-void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option)
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option, const int &maxIconSize)
 {
-    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
+    int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
 
     QStyleOptionViewItem screenOption = option;
     screenOption.text = "";
@@ -387,9 +389,9 @@ void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOp
     style->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
 }
 
-void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option)
+void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, const int &maxIconSize)
 {
-    int total_length = screenMaxLength(option) + MARGIN * 2 + 1;
+    int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
 
     QStyleOptionMenuItem screenOption = option;
     screenOption.text = "";
@@ -405,13 +407,13 @@ void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOp
     style->drawControl(QStyle::CE_MenuItem, &screenOption, painter);
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const float brushOpacity)
+QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const int &maxIconSize, const float brushOpacity)
 {
     float scr_ratio = (float)screenGeometry.width() / (float)screenGeometry.height();
     bool isVertical = (scr_ratio < 1.0);
 
-    int scr_maxlength = screenMaxLength(option);
-    int scr_maxthickness = option.rect.height() - MARGIN * 2;
+    int scr_maxlength = screenMaxLength(option, maxIconSize);
+    int scr_maxthickness = maxIconSize >= 0 ? qMin(maxIconSize, option.rect.height() - MARGIN * 2) : option.rect.height() - MARGIN * 2;
 
     int total_length = scr_maxlength + MARGIN * 2;
     int pen_width = 2;
@@ -419,9 +421,9 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    float scr_maxratio = ((float)scr_maxlength) / (float)(scr_maxthickness - 2*MARGIN);
+    float scr_maxratio = ((float)scr_maxlength) / (float)(scr_maxthickness);
     scr_ratio = qMin(qMax((float)0.75, scr_ratio), (float)scr_maxratio);
-    int scr_height = (!isVertical ? option.rect.height() - MARGIN * 6 : option.rect.height() - MARGIN * 4);
+    int scr_height = (!isVertical ? scr_maxthickness - MARGIN * 4 : scr_maxthickness - MARGIN * 2);
     int scr_width = scr_ratio * scr_height;
 
     //! provide even screen width and height
@@ -434,9 +436,11 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
         scr_height++;
     }
 
+    int topmargin = (option.rect.height() - scr_maxthickness) / 2;
+
     QRect screenMaximumRect = (qApp->layoutDirection() == Qt::RightToLeft) ?
-                QRect(option.rect.x() + option.rect.width() - scr_maxlength - MARGIN, option.rect.y() + MARGIN, scr_maxlength, scr_maxthickness - 1) :
-                QRect(option.rect.x() + MARGIN , option.rect.y() + MARGIN, scr_maxlength, scr_maxthickness - 1);
+                QRect(option.rect.x() + option.rect.width() - scr_maxlength - MARGIN, option.rect.y() + topmargin, scr_maxlength, scr_maxthickness - 1) :
+                QRect(option.rect.x() + MARGIN , option.rect.y() + topmargin, scr_maxlength, scr_maxthickness - 1);
 
     int topScreenMargin = (screenMaximumRect.height() - scr_height) / 2;
     int leftScreenMargin = (screenMaximumRect.width() - scr_width) / 2;

@@ -87,10 +87,10 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     myOptions.rect = availableTextRect;
 
-    availableTextRect = Latte::remainedFromScreenDrawing(myOptions);
-
-    Latte::drawScreenBackground(painter, option.widget->style(), myOptions);
-    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, textopacity);
+    int maxiconsize = -1; //disabled
+    availableTextRect = Latte::remainedFromScreenDrawing(myOptions, maxiconsize);
+    Latte::drawScreenBackground(painter, option.widget->style(), myOptions, maxiconsize);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, maxiconsize, textopacity);
     Latte::drawView(painter, myOptions, view, availableScreenRect, textopacity);
 
     myOptions.rect = availableTextRect;
