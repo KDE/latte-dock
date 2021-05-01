@@ -748,6 +748,7 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     //! add actions
     QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
     QAction *repairlayoutaction = new QAction(i18n("Repair"), this);
+    repairlayoutaction->setEnabled(false);
     Data::Layout currentlayout = m_handler->currentData();
     openlayoutaction->setData(currentlayout.id);
     QList<QAction *> actions;
