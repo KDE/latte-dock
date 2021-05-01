@@ -113,6 +113,7 @@ private:
     void messageForErrorAppletsWithSameId(const Data::Error &error);
     void messageForErrorOrphanedParentAppletOfSubContainment(const Data::Error &error);
     void messageForWarningOrphanedSubContainments(const Data::Warning &warning);
+    void messageForWarningAppletAndContainmentWithSameId(const Data::Warning &warning);
 
 private slots:
     void loadConfig();
@@ -158,3 +159,4 @@ private:
 }
 
 #endif
+

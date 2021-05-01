@@ -507,6 +507,8 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
         for (int i=0; i< warnings.count(); ++i) {
             if (warnings[i].id == Data::Warning::ORPHANEDSUBCONTAINMENT) {
                 messageForWarningOrphanedSubContainments(warnings[i]);
+            } else if (warnings[i].id == Data::Warning::APPLETANDCONTAINMENTWITHSAMEID) {
+                messageForWarningAppletAndContainmentWithSameId(warnings[i]);
             }
         }
     }
@@ -643,6 +645,74 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
     //! show message
     m_handler->showInlineMessage(message,
                                  KMessageWidget::Error,
+                                 true,
+                                 actions);
+}
+
+void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning &warning)
+{
+    if (warning.id != Data::Warning::APPLETANDCONTAINMENTWITHSAMEID) {
+        return;
+    }
+
+    //! construct message
+    QString message = i18nc("warning id and title", "<b>Warning #%0: %1</b> <br/><br/>").arg(warning.id).arg(warning.name);
+    message += i18n("In your layout there are applets and containments with the same id. Such situation is not dangerous but it should not occur.<br/>");
+
+    message += "<br/>";
+    message += i18n("<b>Applets:</b><br/>");
+    for (int i=0; i<warning.information.rowCount(); ++i) {
+        if (!warning.information[i].applet.isValid()) {
+            continue;
+        }
+
+        QString appletname = warning.information[i].applet.visibleName();
+        QString appletstorageid = warning.information[i].applet.storageId;
+        QString viewname = visibleViewName(warning.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = warning.information[i].containment.storageId;
+        message += i18nc("applets, applet name, applet id, containment name, containment id",
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
+    }
+
+    message += "<br/>";
+    message += i18n("<b>Containments:</b><br/>");
+    for (int i=0; i<warning.information.rowCount(); ++i) {
+        if (warning.information[i].applet.isValid()) {
+            continue;
+        }
+
+        QString viewname = visibleViewName(warning.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = warning.information[i].containment.storageId;
+        message += i18nc("containments, containment name, containment id",
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>").arg(containmentname).arg(containmentstorageid);
+    }
+
+    message += "<br/>";
+    message += i18n("<b>Possible Solutions:</b><br/>");
+    message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the containments or applets id <br/>");
+    message += i18n("&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with each other<br/>");
+
+    //! add actions
+    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+    Data::Layout currentlayout = m_handler->currentData();
+    openlayoutaction->setData(currentlayout.id);
+    QList<QAction *> actions;
+    actions << openlayoutaction;
+
+    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
+        QString file = openlayoutaction->data().toString();
+
+        if (!file.isEmpty()) {
+            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
+            job->start();
+        }
+    });
+
+    //! show message
+    m_handler->showInlineMessage(message,
+                                 KMessageWidget::Warning,
                                  true,
                                  actions);
 }

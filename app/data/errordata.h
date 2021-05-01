@@ -37,10 +37,11 @@ namespace Data {
 class Error : public Data::Generic
 {
 public:
-    static constexpr const char* APPLETSWITHSAMEID = "103";
-    static constexpr const char* ORPHANEDPARENTAPPLETOFSUBCONTAINMENT = "107";
-    static constexpr const char* APPLETANDCONTAINMENTWITHSAMEID = "202";
-    static constexpr const char* ORPHANEDSUBCONTAINMENT = "204";
+    //!errors and warnings use a step of four between them
+    static constexpr const char* APPLETSWITHSAMEID = "E103";
+    static constexpr const char* ORPHANEDPARENTAPPLETOFSUBCONTAINMENT = "E107";
+    static constexpr const char* ORPHANEDSUBCONTAINMENT = "W201";
+    static constexpr const char* APPLETANDCONTAINMENTWITHSAMEID = "W205";
 
     Error();
     Error(Error &&o);
