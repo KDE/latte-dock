@@ -44,7 +44,7 @@
 
 // KDE
 #include <KMessageWidget>
-
+#include <KIO/OpenUrlJob>
 
 namespace Latte {
 namespace Settings {
@@ -257,7 +257,7 @@ void Views::copySelectedViews()
     for (int i=0; i<clipboardviews.rowCount(); ++i) {
         clipboardviews[i].isMoveOrigin = false;
 
-     /*   Data::View tempview = m_model->currentData(clipboardviews[i].id);
+        /*   Data::View tempview = m_model->currentData(clipboardviews[i].id);
         tempview.isMoveOrigin = false;
         m_model->updateCurrentView(tempview.id, tempview);*/
     }
@@ -524,6 +524,7 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
         return;
     }
 
+    //! construct message
     QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
     message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes and abnormal behavior when you activate and use this layout.<br/><br/>");
     message += i18n("<b>Applets:</b><br/>");
@@ -543,7 +544,24 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     message += i18n("&nbsp;&nbsp;3. Try to fix the situation by updating manually the applets id<br/>");
     message += i18n("&nbsp;&nbsp;4. Remove this layout totally<br/>");
 
-    m_handler->showInlineMessage(message, KMessageWidget::Error, true);
+    //! add actions
+    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+    Data::Layout currentlayout = m_handler->currentData();
+    openlayoutaction->setData(currentlayout.id);
+    QList<QAction *> actions;
+    actions << openlayoutaction;
+
+    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
+        QString file = openlayoutaction->data().toString();
+
+        if (!file.isEmpty()) {
+            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
+            job->start();
+        }
+    });
+
+    //! show message
+    m_handler->showInlineMessage(message, KMessageWidget::Error, true, actions);
 }
 
 void Views::save()

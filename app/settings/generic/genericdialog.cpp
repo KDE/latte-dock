@@ -101,7 +101,12 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
         }
     }
 
-    messagewidget->setCloseButtonVisible(!isPersistent || actions.count()==0);
+    messagewidget->setCloseButtonVisible(actions.count()==0);
+
+    if (actions.count() > 0) {
+        QAction *cancelaction = new QAction(i18n("Cancel"), this);
+        actions << cancelaction;
+    }
 
     for (int i=0; i<actions.count(); ++i) {
         connect(actions[i], &QAction::triggered, messagewidget, &KMessageWidget::animatedHide);

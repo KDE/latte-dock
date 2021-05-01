@@ -77,6 +77,8 @@ public:
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
 
+    bool isViewsDialogVisible() const;
+
     Latte::Corona *corona() const;
     Dialog::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
@@ -86,6 +88,8 @@ public slots:
     void onDragLeaveEvent(QDragLeaveEvent *event);
     void onDragMoveEvent(QDragMoveEvent *event);
     void onDropEvent(QDropEvent *event);
+
+    void showViewsDialog();
 
     void reset() override;
     void resetDefaults() override;
@@ -108,8 +112,7 @@ private slots:
     void removeLayout();
     void toggleActivitiesManager();
     void toggleEnabledLayout();
-    void detailsLayout();
-    void viewsLayout();
+    void showDetailsDialog();
 
     void onCurrentPageChanged(int page);
     void onLayoutFilesDropped(const QStringList &paths);
@@ -135,6 +138,8 @@ private:
     Settings::Controller::Layouts *m_layoutsController{nullptr};
 
     KConfigGroup m_storage;
+
+    bool m_isViewsDialogVisible{false};
 
     QButtonGroup *m_inMemoryButtons;
 
