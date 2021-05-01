@@ -502,7 +502,13 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
 
     //! show warnings
     if (currentdata.warnings > 0) {
+        Data::WarningsList warnings = centralLayout->warnings();
 
+        for (int i=0; i< warnings.count(); ++i) {
+            if (warnings[i].id == Data::Warning::ORPHANEDSUBCONTAINMENT) {
+                messageForWarningOrphanedSubContainments(warnings[i]);
+            }
+        }
     }
 
     //! show errors
@@ -637,6 +643,59 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
     //! show message
     m_handler->showInlineMessage(message,
                                  KMessageWidget::Error,
+                                 true,
+                                 actions);
+}
+
+void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warning)
+{
+    if (warning.id != Data::Warning::ORPHANEDSUBCONTAINMENT) {
+        return;
+    }
+
+    //! construct message
+    QString message = i18nc("warning id and title", "<b>Warning #%0: %1</b> <br/><br/>").arg(warning.id).arg(warning.name);
+    message += i18n("In your layout there are orphaned subcontainments that are not used by any dock or panel. Such situation is not dangerous but it is advised to remove them in order to reduce memory usage.<br/>");
+
+    message += "<br/>";
+    message += i18n("<b>Orphaned Subcontainments:</b><br/>");
+    for (int i=0; i<warning.information.rowCount(); ++i) {
+        if (warning.information[i].applet.isValid()) {
+            continue;
+        }
+
+        QString viewname = visibleViewName(warning.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = warning.information[i].containment.storageId;
+        message += i18nc("orphaned subcontainments, containment name, containment id",
+                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>").arg(containmentname).arg(containmentstorageid);
+    }
+
+    message += "<br/>";
+    message += i18n("<b>Possible Solutions:</b><br/>");
+    message += i18n("&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove them automatically<br/>");
+
+    //! add actions
+    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+    QAction *repairlayoutaction = new QAction(i18n("Repair"), this);
+    Data::Layout currentlayout = m_handler->currentData();
+    openlayoutaction->setData(currentlayout.id);
+    QList<QAction *> actions;
+    actions << repairlayoutaction;
+    actions << openlayoutaction;
+
+    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
+        QString file = openlayoutaction->data().toString();
+
+        if (!file.isEmpty()) {
+            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
+            job->start();
+        }
+    });
+
+    //! show message
+    m_handler->showInlineMessage(message,
+                                 KMessageWidget::Warning,
                                  true,
                                  actions);
 }
