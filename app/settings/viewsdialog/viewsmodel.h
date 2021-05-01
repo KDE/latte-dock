@@ -65,6 +65,8 @@ public:
         SCREENROLE,
         VIEWROLE,
         ISMOVEORIGINROLE,
+        ERRORSROLE,
+        WARNINGSROLE,
         SORTINGROLE
     };
 
@@ -101,6 +103,8 @@ public:
 
     int rowForId(const QString &id) const;
 
+    QString viewForSubContainment(const QString &sid);
+
     const Latte::Data::View &at(const int &row);
     const Latte::Data::View currentData(const QString &id);
     const Latte::Data::View originalData(const QString &id);
@@ -111,6 +115,7 @@ public:
     void setOriginalData(Latte::Data::ViewsTable &data);
     void setOriginalView(QString currentViewId, Latte::Data::View &view);
     void updateCurrentView(QString currentViewId, Latte::Data::View &view);
+    void clearErrorsAndWarnings();
 
     void updateActiveStatesBasedOn(const CentralLayout *layout);
 

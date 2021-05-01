@@ -500,10 +500,13 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
 
     Data::Layout currentdata = centralLayout->data();
 
-    //! show warnings
+    m_model->clearErrorsAndWarnings();
+
+    //! warnings
     if (currentdata.warnings > 0) {
         Data::WarningsList warnings = centralLayout->warnings();
 
+        // show warnings
         for (int i=0; i< warnings.count(); ++i) {
             if (warnings[i].id == Data::Warning::ORPHANEDSUBCONTAINMENT) {
                 messageForWarningOrphanedSubContainments(warnings[i]);
@@ -511,17 +514,62 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
                 messageForWarningAppletAndContainmentWithSameId(warnings[i]);
             }
         }
+
+        // count warnings per view
+        for (int i=0; i<warnings.count(); ++i) {
+            for (int j=0; j<warnings[i].information.rowCount(); ++j) {
+                if (!warnings[i].information[j].containment.isValid()) {
+                    continue;
+                }
+
+                QString cid = warnings[i].information[j].containment.storageId;
+                Data::View view = m_model->currentData(cid);
+                if (!view.isValid()) {
+                    //! one step back from subcontainment to view in order to find the influenced view id
+                    cid = m_model->viewForSubContainment(cid);
+                    view = m_model->currentData(cid);
+                }
+
+                if (view.isValid()) {
+                    view.warnings++;
+                    m_model->updateCurrentView(cid, view);
+                }
+            }
+        }
     }
 
-    //! show errors
+    //! errors
     if (currentdata.errors > 0) {
         Data::ErrorsList errors = centralLayout->errors();
 
+        // show errors
         for (int i=0; i< errors.count(); ++i) {
             if (errors[i].id == Data::Error::APPLETSWITHSAMEID) {
                 messageForErrorAppletsWithSameId(errors[i]);
             } else if (errors[i].id == Data::Error::ORPHANEDPARENTAPPLETOFSUBCONTAINMENT) {
                 messageForErrorOrphanedParentAppletOfSubContainment(errors[i]);
+            }
+        }
+
+        // count errors per view
+        for (int i=0; i<errors.count(); ++i) {
+            for (int j=0; j<errors[i].information.rowCount(); ++j) {
+                if (!errors[i].information[j].containment.isValid()) {
+                    continue;
+                }
+
+                QString cid = errors[i].information[j].containment.storageId;
+                Data::View view = m_model->currentData(cid);
+                if (!view.isValid()) {
+                    //! one step back from subcontainment to view in order to find the influenced view id
+                    cid = m_model->viewForSubContainment(cid);
+                    view = m_model->currentData(cid);
+                }
+
+                if (view.isValid()) {
+                    view.errors++;
+                    m_model->updateCurrentView(cid, view);
+                }
             }
         }
     }

@@ -382,6 +382,17 @@ bool Views::isVertical(const Plasma::Types::Location &location) const
     return (location == Plasma::Types::LeftEdge || location == Plasma::Types::RightEdge);
 }
 
+QString Views::viewForSubContainment(const QString &sid)
+{
+    for(int i=0; i<m_viewsTable.rowCount(); ++i) {
+       if (m_viewsTable[i].hasSubContainment(sid)) {
+           return m_viewsTable[i].id;
+       }
+    }
+
+    return QString();
+}
+
 void Views::updateActiveStatesBasedOn(const CentralLayout *layout)
 {
     if (!layout) {
@@ -459,6 +470,22 @@ Latte::Data::ViewsTable Views::newViews() const
     return views;
 }
 
+void Views::clearErrorsAndWarnings()
+{
+    for(int i=0; i<m_viewsTable.rowCount(); ++i) {
+        m_viewsTable[i].errors = 0;
+        m_viewsTable[i].warnings = 0;
+    }
+
+    QVector<int> roles;
+    roles << Qt::DisplayRole;
+    roles << Qt::UserRole;
+    roles << ERRORSROLE;
+    roles << WARNINGSROLE;
+
+    emit dataChanged(this->index(0, IDCOLUMN), this->index(m_viewsTable.rowCount()-1, SUBCONTAINMENTSCOLUMN), roles);
+}
+
 void Views::populateScreens()
 {
     s_screens.clear();
@@ -490,6 +517,8 @@ void Views::updateCurrentView(QString currentViewId, Latte::Data::View &view)
     roles << ISACTIVEROLE;
     roles << HASCHANGEDVIEWROLE;
     roles << ISMOVEORIGINROLE;
+    roles << ERRORSROLE;
+    roles << WARNINGSROLE;
 
     emit dataChanged(this->index(currentrow, IDCOLUMN), this->index(currentrow, SUBCONTAINMENTSCOLUMN), roles);
 }
@@ -767,6 +796,10 @@ QVariant Views::data(const QModelIndex &index, int role) const
         return viewVariant;
     } else if (role == ISMOVEORIGINROLE) {
         return m_viewsTable[row].isMoveOrigin;
+    } else if (role == ERRORSROLE) {
+        return m_viewsTable[row].errors;
+    } else if (role == WARNINGSROLE) {
+        return m_viewsTable[row].warnings;
     }
 
     if (role == Qt::TextAlignmentRole && column != NAMECOLUMN){

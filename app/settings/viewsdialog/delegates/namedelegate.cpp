@@ -56,6 +56,9 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     bool isMoveOrigin = index.data(Model::Views::ISMOVEORIGINROLE).toBool();
     bool isChanged = (index.data(Model::Views::ISCHANGEDROLE).toBool() || index.data(Model::Views::HASCHANGEDVIEWROLE).toBool());
 
+    bool hasErrors = index.data(Model::Views::ERRORSROLE).toBool();
+    bool hasWarnings = index.data(Model::Views::WARNINGSROLE).toBool();
+
     Latte::Data::Screen screen = index.data(Model::Views::SCREENROLE).value<Latte::Data::Screen>();
     Latte::Data::View view = index.data(Model::Views::VIEWROLE).value<Latte::Data::View>();
 
@@ -79,21 +82,33 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     }
 
     // draw changes indicator
-    QRect availableTextRect = Latte::remainedFromChangesIndicator(option);
+    QRect remainedrect = Latte::remainedFromChangesIndicator(option);
     Latte::drawChangesIndicatorBackground(painter, option);
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
+    myOptions.rect = remainedrect;
 
-    myOptions.rect = availableTextRect;
+    // draw errors/warnings
+    if (hasErrors || hasWarnings) {
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
+        if (hasErrors) {
+            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
+        } else if (hasWarnings) {
+            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight);
+        }
+        myOptions.rect = remainedrect;
+    }
 
+    // draw screen icon
     int maxiconsize = -1; //disabled
-    availableTextRect = Latte::remainedFromScreenDrawing(myOptions, maxiconsize);
+    remainedrect = Latte::remainedFromScreenDrawing(myOptions, maxiconsize);
     Latte::drawScreenBackground(painter, option.widget->style(), myOptions, maxiconsize);
     QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, maxiconsize, textopacity);
     Latte::drawView(painter, myOptions, view, availableScreenRect, textopacity);
 
-    myOptions.rect = availableTextRect;
+    myOptions.rect = remainedrect;
     Latte::drawFormattedText(painter, myOptions, textopacity);
 }
 
