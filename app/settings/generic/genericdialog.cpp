@@ -98,6 +98,7 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
         } else if (type == KMessageWidget::Information) {
             hideInterval = (actions.count() == 0 ?  INFORMATIONINTERVAL : INFORMATIONWITHACTIONINTERVAL);
         } else if (type == KMessageWidget::Positive) {
+            hideInterval = POSITIVEINTERVAL;
         }
     }
 
