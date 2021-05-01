@@ -212,6 +212,7 @@ void Manager::loadLayoutOnStartup(QString layoutName)
     //! Latte didn't close correctly, maybe a crash
     if (layouts.size() > 0) {
         QDialog* dialog = new QDialog(nullptr);
+        dialog->setWindowTitle(i18n("Multiple Layouts Startup Warning"));
         dialog->setObjectName("sorry");
         dialog->setAttribute(Qt::WA_DeleteOnClose);
 

@@ -24,6 +24,7 @@
 
 // Qt
 #include <QDebug>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QDirIterator>
 #include <QMessageBox>
@@ -34,6 +35,7 @@
 // KDE
 #include <KDirWatch>
 #include <KLocalizedString>
+#include <KMessageBox>
 #include <KNotification>
 #include <KPluginMetaData>
 #include <KArchive/KTar>
@@ -235,7 +237,7 @@ void Factory::removeIndicatorRecords(const QString &path)
 
         //! delay informing the removal in case it is just an update
         QTimer::singleShot(1000, [this, pluginId]() {
-           emit indicatorRemoved(pluginId);
+            emit indicatorRemoved(pluginId);
         });
     }
 }
@@ -361,31 +363,38 @@ void Factory::removeIndicator(QString id)
     if (m_plugins.contains(id)) {
         QString pluginName = m_plugins[id].name();
 
-        auto msg = new QMessageBox(m_parentWidget);
-        msg->setIcon(QMessageBox::Warning);
-        msg->setWindowTitle(i18n("Remove Indicator"));
-        msg->setText(
-                    i18n("Do you want to remove <b>%0</b> indicator from your system?").arg(pluginName));
-        msg->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msg->setDefaultButton(QMessageBox::No);
+        QDialog* dialog = new QDialog(nullptr);
+        dialog->setWindowTitle(i18n("Remove Indicator Confirmation"));
+        dialog->setObjectName("warning");
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
 
-        connect(msg, &QMessageBox::finished, this, [ &, msg, id, pluginName](int result) {
+        auto buttonbox = new QDialogButtonBox(QDialogButtonBox::Yes | QDialogButtonBox::No);
+
+        KMessageBox::createKMessageBox(dialog,
+                                       buttonbox,
+                                       QMessageBox::Question,
+                                       i18n("Do you want to remove completely <b>%0</b> indicator from your system?").arg(pluginName),
+                                       QStringList(),
+                                       QString(),
+                                       0,
+                                       KMessageBox::NoExec,
+                                       QString());
+
+        connect(buttonbox, &QDialogButtonBox::accepted, [&, id, pluginName]() {
             auto showRemovedSucceed = [](QString name) {
                 auto notification = new KNotification("remove-done", KNotification::CloseOnTimeout);
                 notification->setText(i18nc("indicator_name, removed success","<b>%0</b> indicator removed successfully").arg(name));
                 notification->sendEvent();
             };
 
-            if (result == QMessageBox::Yes) {
-                qDebug() << "Trying to remove indicator :: " << id;
-                QProcess process;
-                process.start(QString("kpackagetool5 -r " +id + " -t Latte/Indicator"));
-                process.waitForFinished();
-                showRemovedSucceed(pluginName);
-            }
+            qDebug() << "Trying to remove indicator :: " << id;
+            QProcess process;
+            process.start(QString("kpackagetool5 -r " +id + " -t Latte/Indicator"));
+            process.waitForFinished();
+            showRemovedSucceed(pluginName);
         });
 
-        msg->open();
+        dialog->show();
     }
 }
 
