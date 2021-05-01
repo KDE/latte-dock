@@ -104,8 +104,13 @@ private:
 
     int rowForId(QString id) const;
     QString uniqueViewName(QString name);
+    QString visibleViewName(const QString &id) const;
 
     Data::ViewsTable selectedViewsForClipboard();
+
+    //! errors/warnings
+    void messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout);
+    void messageForErrorAppletsWithSameId(const Data::Error &error);
 
 private slots:
     void loadConfig();

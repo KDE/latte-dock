@@ -102,7 +102,7 @@ public:
     int rowForId(const QString &id) const;
 
     const Latte::Data::View &at(const int &row);
-    const Latte::Data::View &currentData(const QString &id);
+    const Latte::Data::View currentData(const QString &id);
     const Latte::Data::View originalData(const QString &id);
 
     const Latte::Data::ViewsTable &currentViewsData();

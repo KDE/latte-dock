@@ -100,5 +100,10 @@ bool Applet::isValid() const
     return !id.isEmpty();
 }
 
+QString Applet::visibleName() const
+{
+    return name.isEmpty() ? id : name;
+}
+
 }
 }

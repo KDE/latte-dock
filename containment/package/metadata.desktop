@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Latte
+Name=Latte Containment
 Name[az]=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
@@ -44,7 +44,7 @@ Comment[es]=Contención proporcionada para Latte Dock
 Comment[et]=Latte doki konteiner
 Comment[eu]=Konfinamendua hornitu da Latte Dockentzako
 Comment[fi]=Latte-telakalla tarjottu sisällytys
-Comment[fr]=Confinement fourni par le panneau « Latte »
+Comment[fr]=Confinement fourni par le panneau « Latte »
 Comment[gl]=Contedor fornecido para a doca Latte.
 Comment[id]=Kontainmen disediakan untuk Dock Latte
 Comment[it]=Contenitore fornito per Latte Dock

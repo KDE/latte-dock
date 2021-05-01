@@ -31,6 +31,7 @@
 #include "delegates/singletextdelegate.h"
 #include "../generic/generictools.h"
 #include "../settingsdialog/templateskeeper.h"
+#include "../../data/errorinformationdata.h"
 #include "../../layout/genericlayout.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/manager.h"
@@ -373,41 +374,45 @@ void Views::selectRow(const QString &id)
 
 void Views::onCurrentLayoutChanged()
 {   
-    Data::Layout layout = m_handler->currentData();
+    Data::Layout currentlayoutdata = m_handler->currentData();
 
     Data::ViewsTable clipboardviews = m_handler->layoutsController()->templatesKeeper()->clipboardContents();
 
     if (!clipboardviews.isEmpty()) {
         //! clipboarded views needs to update the relevant flags to loaded views
-        for (int i=0; i<layout.views.rowCount(); ++i) {
-            QString vid = layout.views[i].id;
+        for (int i=0; i<currentlayoutdata.views.rowCount(); ++i) {
+            QString vid = currentlayoutdata.views[i].id;
 
             if (!clipboardviews.containsId(vid)) {
                 continue;
             }
 
-            if (clipboardviews[vid].isMoveOrigin && (clipboardviews[vid].originLayout() == layout.id)) {
-                layout.views[vid].isMoveOrigin = true;
+            if (clipboardviews[vid].isMoveOrigin && (clipboardviews[vid].originLayout() == currentlayoutdata.id)) {
+                currentlayoutdata.views[vid].isMoveOrigin = true;
             }
         }
     }
 
-    m_model->setOriginalData(layout.views);
+    m_model->setOriginalData(currentlayoutdata.views);
 
     //! track viewscountchanged signal for current active layout scenario
     for (const auto &var : m_currentLayoutConnections) {
         QObject::disconnect(var);
     }
 
-    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(layout.id);
-    auto currentlayout = m_handler->layoutsController()->isLayoutOriginal(layout.id) ?
+    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(currentlayoutdata.id);
+    auto activelayout = m_handler->layoutsController()->isLayoutOriginal(currentlayoutdata.id) ?
                 m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    Latte::CentralLayout *currentlayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentlayoutdata.id);
 
     if (currentlayout && currentlayout->isActive()) {
         m_currentLayoutConnections << connect(currentlayout, &Layout::GenericLayout::viewsCountChanged, this, [&, currentlayout](){
             m_model->updateActiveStatesBasedOn(currentlayout);
         });
     }
+
+    messagesForErrorsWarnings(currentlayout);
 }
 
 void Views::onSelectionsChanged()
@@ -485,6 +490,54 @@ void Views::updateDoubledMoveDestinationRows() {
             }
         }
     }
+}
+
+void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
+{
+    if (!centralLayout) {
+        return;
+    }
+
+    Data::Layout currentdata = centralLayout->data();
+
+    //! show warnings
+    if (currentdata.warnings > 0) {
+
+    }
+
+    //! show errors
+    if (currentdata.errors > 0) {
+        Data::ErrorsList errors = centralLayout->errors();
+
+        for (int i=0; i< errors.count(); ++i) {
+            if (errors[i].id == Data::Error::APPLETSWITHSAMEID) {
+                messageForErrorAppletsWithSameId(errors[i]);
+            }
+        }
+    }
+
+}
+
+void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
+{
+    if (error.id != Data::Error::APPLETSWITHSAMEID) {
+        return;
+    }
+
+    QString message = i18nc("error id and title", "<b>Error %0: %1</b> <br/><br/>").arg(error.id).arg(error.name);
+    message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes and abnormal behavior when you active the layout. It is suggested to remove the mentioned applets, fix the situation manually or remove the layout totally.<br/><br/>");
+    message += i18n("<b>Applets:</b><br/>");
+    for (int i=0; i<error.information.rowCount(); ++i) {
+        QString appletname = error.information[i].applet.visibleName();
+        QString appletstorageid = error.information[i].applet.storageId;
+        QString viewname = visibleViewName(error.information[i].containment.storageId);
+        QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
+        QString containmentstorageid = error.information[i].containment.storageId;
+        message += i18nc("applets with same id error, applet name, applet id, containment name, containment id",
+                         "&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>").arg(appletname).arg(appletstorageid).arg(containmentname).arg(containmentstorageid);
+    }
+
+    m_handler->showInlineMessage(message, KMessageWidget::Error, true);
 }
 
 void Views::save()
@@ -658,6 +711,22 @@ QString Views::uniqueViewName(QString name)
     }
 
     return name;
+}
+
+QString Views::visibleViewName(const QString &id) const
+{
+    if (id.isEmpty()) {
+        return QString();
+    }
+
+    Data::View view = m_model->currentData(id);
+
+    if (view.isValid()) {
+        return view.name;
+    }
+
+    return QString();
+
 }
 
 void Views::applyColumnWidths()

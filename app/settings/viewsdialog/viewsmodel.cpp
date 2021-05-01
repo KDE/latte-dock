@@ -85,8 +85,12 @@ const Latte::Data::View &Views::at(const int &row)
     return m_viewsTable[row];
 }
 
-const Latte::Data::View &Views::currentData(const QString &id)
+const Latte::Data::View Views::currentData(const QString &id)
 {
+    if (!m_viewsTable.containsId(id)) {
+        return Latte::Data::View();
+    }
+
     return m_viewsTable[id];
 }
 
