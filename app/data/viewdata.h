@@ -62,6 +62,9 @@ public:
     Latte::Types::Alignment alignment{Latte::Types::Center};
     GenericTable<Data::Generic> subcontainments;
 
+    int errors{0};
+    int warnings{0};
+
     //! View sub-states
     bool isMoveOrigin{false};
     bool isMoveDestination{false};
@@ -71,6 +74,8 @@ public:
     bool hasViewTemplateOrigin() const;
     bool hasLayoutOrigin() const;
     bool hasSubContainment(const QString &subId) const;
+    bool hasErrors() const;
+    bool hasWarnings() const;
 
     bool isHorizontal() const;
     bool isVertical() const;

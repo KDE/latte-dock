@@ -43,6 +43,8 @@ View::View(View &&o)
       m_originFile(o.m_originFile),
       m_originLayout(o.m_originLayout),
       m_originView(o.m_originView),
+      errors(o.errors),
+      warnings(o.warnings),
       subcontainments(o.subcontainments)
 {
 }
@@ -62,6 +64,8 @@ View::View(const View &o)
       m_originFile(o.m_originFile),
       m_originLayout(o.m_originLayout),
       m_originView(o.m_originView),
+      errors(o.errors),
+      warnings(o.warnings),
       subcontainments(o.subcontainments)
 {
 }
@@ -88,6 +92,9 @@ View &View::operator=(const View &rhs)
     m_originFile = rhs.m_originFile;
     m_originLayout = rhs.m_originLayout;
     m_originView = rhs.m_originView;
+    errors = rhs.errors;
+    warnings = rhs.warnings;
+
     subcontainments = rhs.subcontainments;
 
     return (*this);
@@ -110,6 +117,9 @@ View &View::operator=(View &&rhs)
     m_originFile = rhs.m_originFile;
     m_originLayout = rhs.m_originLayout;
     m_originView = rhs.m_originView;
+    errors = rhs.errors;
+    warnings = rhs.warnings;
+
     subcontainments = rhs.subcontainments;
 
     return (*this);
@@ -119,9 +129,9 @@ bool View::operator==(const View &rhs) const
 {
     return (id == rhs.id)
             && (name == rhs.name)
-            //&& (isActive == rhs.isActive) /*activeness is a state and is not considered*/
-            //&& (isMoveOrigin == rhs.isMoveOrigin) /*changing layouts is a state and is not considered*/
-            //&& (isMoveDestination == rhs.isMoveDestination) /*changing layouts is a state and is not considered*/
+            //&& (isActive == rhs.isActive) /*Disabled because this is not needed in order to track view changes for saving*/
+            //&& (isMoveOrigin == rhs.isMoveOrigin) /*Disabled because this is not needed in order to track view changes for saving*/
+            //&& (isMoveDestination == rhs.isMoveDestination) /*Disabled because this is not needed in order to track view changes for saving*/
             && (onPrimary == rhs.onPrimary)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)
@@ -132,6 +142,8 @@ bool View::operator==(const View &rhs) const
             && (m_originFile == rhs.m_originFile)
             && (m_originLayout == rhs.m_originLayout)
             && (m_originView == rhs.m_originView)
+            //&& (errors == rhs.errors) /*Disabled because this is not needed in order to track view changes for saving*/
+            //&& (warnings == rhs.warnings) /*Disabled because this is not needed in order to track view changes for saving*/
             && (subcontainments == rhs.subcontainments);
 }
 
