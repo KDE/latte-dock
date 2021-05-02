@@ -582,6 +582,7 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
                                                            const bool &showOpenLayoutAction)
 {
     QList<QAction *> actions;
+    actions << extraActions;
 
     if (showOpenLayoutAction) {
         //! add default action to open layout
@@ -601,8 +602,6 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
             }
         });
     }
-
-    actions << extraActions;
 
     //! show message
     m_handler->showInlineMessage(messageText,
@@ -777,7 +776,7 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     QList<QAction *> extraactions;
     extraactions << repairlayoutaction;
 
-    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Warning, extraactions, false);
+    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Warning, extraactions);
 }
 
 void Views::save()
