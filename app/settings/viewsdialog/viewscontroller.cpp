@@ -576,6 +576,41 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
 
 }
 
+void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messageText,
+                                                           const KMessageWidget::MessageType &messageType,
+                                                           QList<QAction *> extraActions,
+                                                           const bool &showOpenLayoutAction)
+{
+    QList<QAction *> actions;
+
+    if (showOpenLayoutAction) {
+        //! add default action to open layout
+        QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+        openlayoutaction->setIcon(QIcon::fromTheme("document-open"));
+
+        Data::Layout currentlayout = m_handler->currentData();
+        openlayoutaction->setData(currentlayout.id);
+        actions << openlayoutaction;
+
+        connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
+            QString file = openlayoutaction->data().toString();
+
+            if (!file.isEmpty()) {
+                auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
+                job->start();
+            }
+        });
+    }
+
+    actions << extraActions;
+
+    //! show message
+    m_handler->showInlineMessage(messageText,
+                                 messageType,
+                                 true,
+                                 actions);
+}
+
 void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
 {
     if (error.id != Data::Error::APPLETSWITHSAMEID) {
@@ -606,27 +641,7 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     message += i18n("&nbsp;&nbsp;3. Try to fix the situation by updating manually the applets id<br/>");
     message += i18n("&nbsp;&nbsp;4. Remove this layout totally<br/>");
 
-    //! add actions
-    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
-    Data::Layout currentlayout = m_handler->currentData();
-    openlayoutaction->setData(currentlayout.id);
-    QList<QAction *> actions;
-    actions << openlayoutaction;
-
-    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
-        QString file = openlayoutaction->data().toString();
-
-        if (!file.isEmpty()) {
-            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
-            job->start();
-        }
-    });
-
-    //! show message
-    m_handler->showInlineMessage(message,
-                                 KMessageWidget::Error,
-                                 true,
-                                 actions);
+    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Error);
 }
 
 void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Error &error)
@@ -674,27 +689,8 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
     message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the subcontainment id in pseudo applet settings<br/>");
     message += i18n("&nbsp;&nbsp;2. Remove this layout totally<br/>");
 
-    //! add actions
-    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
-    Data::Layout currentlayout = m_handler->currentData();
-    openlayoutaction->setData(currentlayout.id);
-    QList<QAction *> actions;
-    actions << openlayoutaction;
-
-    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
-        QString file = openlayoutaction->data().toString();
-
-        if (!file.isEmpty()) {
-            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
-            job->start();
-        }
-    });
-
     //! show message
-    m_handler->showInlineMessage(message,
-                                 KMessageWidget::Error,
-                                 true,
-                                 actions);
+    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Error);
 }
 
 void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning &warning)
@@ -742,27 +738,8 @@ void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning 
     message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the containments or applets id <br/>");
     message += i18n("&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with each other<br/>");
 
-    //! add actions
-    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
-    Data::Layout currentlayout = m_handler->currentData();
-    openlayoutaction->setData(currentlayout.id);
-    QList<QAction *> actions;
-    actions << openlayoutaction;
-
-    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
-        QString file = openlayoutaction->data().toString();
-
-        if (!file.isEmpty()) {
-            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
-            job->start();
-        }
-    });
-
     //! show message
-    m_handler->showInlineMessage(message,
-                                 KMessageWidget::Warning,
-                                 true,
-                                 actions);
+    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Warning);
 }
 
 void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warning)
@@ -793,30 +770,14 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     message += i18n("<b>Possible Solutions:</b><br/>");
     message += i18n("&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove them automatically<br/>");
 
-    //! add actions
-    QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
+    //! add extra action
     QAction *repairlayoutaction = new QAction(i18n("Repair"), this);
+    repairlayoutaction->setIcon(QIcon::fromTheme("dialog-yes"));
     repairlayoutaction->setEnabled(false);
-    Data::Layout currentlayout = m_handler->currentData();
-    openlayoutaction->setData(currentlayout.id);
-    QList<QAction *> actions;
-    actions << repairlayoutaction;
-    actions << openlayoutaction;
+    QList<QAction *> extraactions;
+    extraactions << repairlayoutaction;
 
-    connect(openlayoutaction, &QAction::triggered, this, [&, openlayoutaction]() {
-        QString file = openlayoutaction->data().toString();
-
-        if (!file.isEmpty()) {
-            auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
-            job->start();
-        }
-    });
-
-    //! show message
-    m_handler->showInlineMessage(message,
-                                 KMessageWidget::Warning,
-                                 true,
-                                 actions);
+    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Warning, extraactions, false);
 }
 
 void Views::save()

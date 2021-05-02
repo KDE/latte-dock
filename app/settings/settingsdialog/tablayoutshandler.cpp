@@ -478,7 +478,9 @@ void TabLayouts::installLayoutTemplate(Latte::Data::Layout importedLayout, QStri
     }
 
     QAction *yesAction = new QAction(i18n("Yes"), this);
+    yesAction->setIcon(QIcon::fromTheme("dialog-yes"));
     QAction *noAction = new QAction(i18n("No"), this);
+    noAction->setIcon(QIcon::fromTheme("dialog-no"));
     QList<QAction *> actions;
     actions << yesAction;
     actions << noAction;
@@ -715,6 +717,7 @@ void TabLayouts::exportLayoutForBackup()
 
             if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
                 QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+                openUrlAction->setIcon(QIcon::fromTheme("document-open"));
                 openUrlAction->setData(file);
                 QList<QAction *> actions;
                 actions << openUrlAction;

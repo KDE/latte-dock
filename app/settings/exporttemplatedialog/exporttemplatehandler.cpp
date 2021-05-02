@@ -234,6 +234,7 @@ void ExportTemplateHandler::onExport()
 
     if (result) {
         QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+        openUrlAction->setIcon(QIcon::fromTheme("document-open"));
         openUrlAction->setData(c_filepath);
         QList<QAction *> actions;
         actions << openUrlAction;

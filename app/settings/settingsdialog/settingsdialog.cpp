@@ -357,6 +357,7 @@ void SettingsDialog::exportFullConfiguration()
 
         if (m_corona->layoutsManager()->importer()->exportFullConfiguration(file)) {
             QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+            openUrlAction->setIcon(QIcon::fromTheme("document-open"));
             openUrlAction->setData(file);
             QList<QAction *> actions;
             actions << openUrlAction;

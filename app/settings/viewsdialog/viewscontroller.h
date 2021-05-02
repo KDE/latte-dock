@@ -37,6 +37,8 @@
 #include <QSortFilterProxyModel>
 #include <QTableView>
 
+// KDE
+#include <KMessageWidget>
 
 namespace Latte {
 class CentralLayout;
@@ -123,6 +125,11 @@ private slots:
 
     void onCurrentLayoutChanged();
     void onSelectionsChanged();
+
+    void showDefaultPersistentErrorWarningInlineMessage(const QString &messageText,
+                                                        const KMessageWidget::MessageType &messageType,
+                                                        QList<QAction *> extraActions = QList<QAction *>(),
+                                                        const bool &showOpenLayoutAction = true);
 
     void updateDoubledMoveDestinationRows();
 

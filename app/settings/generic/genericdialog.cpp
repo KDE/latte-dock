@@ -119,7 +119,8 @@ void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::
     messagewidget->setCloseButtonVisible(actions.count()==0);
 
     if (actions.count() > 0) {
-        QAction *cancelaction = new QAction(i18n("Cancel"), this);
+        QAction *cancelaction = new QAction(i18n("Hide"), this);
+        cancelaction->setIcon(QIcon::fromTheme("dialog-cancel"));
         actions << cancelaction;
     }
 

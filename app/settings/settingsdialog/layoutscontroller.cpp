@@ -580,6 +580,7 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
 {
     //! add actions
     QAction *examineaction = new QAction(i18n("Examine..."), this);
+    examineaction->setIcon(QIcon::fromTheme("document-preview"));
     examineaction->setData(layout.id);
     QList<QAction *> actions;
     actions << examineaction;
