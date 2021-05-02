@@ -129,6 +129,7 @@ public:
     void removeView(const Latte::Data::View &viewData);
     void updateView(const Latte::Data::View &viewData);    
     QString storedView(const int &containmentId); //returns temp filepath containing all view data
+    void removeOrphanedSubContainment(const int &containmentId);
 
     //! Available edges for specific view in that screen
     virtual QList<Plasma::Types::Location> availableEdgesForView(QScreen *scr, Latte::View *forView) const;
@@ -206,6 +207,8 @@ private:
     QList<int> subContainmentsOf(Plasma::Containment *containment) const;
 
     QList<Latte::Data::View> sortedViewsData(const QList<Latte::Data::View> &viewsData);
+
+    void destroyContainment(Plasma::Containment *containment);
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};

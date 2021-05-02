@@ -1582,15 +1582,27 @@ void Storage::removeView(const QString &filepath, const Data::View &viewData)
         return;
     }
 
+    removeContainment(filepath, viewData.id);
+
+    for (int i=0; i<viewData.subcontainments.rowCount(); ++i) {
+        removeContainment(filepath, viewData.subcontainments[i].id);
+    }
+}
+
+void Storage::removeContainment(const QString &filepath, const QString &containmentId)
+{
+    if (containmentId.isEmpty()) {
+        return;
+    }
+
     KSharedConfigPtr lFile = KSharedConfig::openConfig(filepath);
     KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
 
-    containmentGroups.group(viewData.id).deleteGroup();
-
-    for (int i=0; i<viewData.subcontainments.rowCount(); ++i) {
-        containmentGroups.group(viewData.subcontainments[i].id).deleteGroup();
+    if (!containmentGroups.group(containmentId).exists()) {
+        return;
     }
 
+    containmentGroups.group(containmentId).deleteGroup();
     containmentGroups.sync();
 }
 

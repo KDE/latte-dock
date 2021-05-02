@@ -1651,12 +1651,36 @@ void GenericLayout::removeView(const Latte::Data::View &viewData)
     }
 
     Plasma::Containment *viewcontainment = containmentForId(viewData.id.toUInt());
+    destroyContainment(viewcontainment);
+}
 
-    if (viewcontainment) {
-        m_containments.removeAll(viewcontainment);
-        viewcontainment->setImmutability(Plasma::Types::Mutable);
-        viewcontainment->destroy();
+void GenericLayout::removeOrphanedSubContainment(const int &containmentId)
+{
+    Data::ViewsTable views = viewsTable();
+    QString cidstr = QString::number(containmentId);
+
+    if (views.hasContainmentId(cidstr)) {
+        return;
     }
+
+    if (!isActive()) {
+        Layouts::Storage::self()->removeContainment(file(), cidstr);
+        return;
+    }
+
+    Plasma::Containment *orphanedcontainment = containmentForId(cidstr.toUInt());
+    destroyContainment(orphanedcontainment);
+}
+
+void GenericLayout::destroyContainment(Plasma::Containment *containment)
+{
+    if (!containment) {
+        return;
+    }
+
+    m_containments.removeAll(containment);
+    containment->setImmutability(Plasma::Types::Mutable);
+    containment->destroy();
 }
 
 QString GenericLayout::storedView(const int &containmentId)
