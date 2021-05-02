@@ -104,6 +104,7 @@ public:
     void setOriginalLayoutForFreeActivities(const QString &id);
 
     void setOriginalInMultipleMode(const bool &inmultiple);
+    void setLayoutCurrentErrorsWarnings(const QString &layoutCurrentId, const int &errors, const int &warnings);
 
     void duplicateSelectedLayout();
     const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);

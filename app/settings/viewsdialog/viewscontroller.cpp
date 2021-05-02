@@ -47,9 +47,9 @@
 #include <KMessageWidget>
 
 #if KF5_VERSION_MINOR >= 71
-    #include <KIO/OpenUrlJob>
+#include <KIO/OpenUrlJob>
 #else
-    #include <KRun>
+#include <KRun>
 #endif
 
 namespace Latte {
@@ -406,11 +406,7 @@ void Views::onCurrentLayoutChanged()
         QObject::disconnect(var);
     }
 
-    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(currentlayoutdata.id);
-    auto activelayout = m_handler->layoutsController()->isLayoutOriginal(currentlayoutdata.id) ?
-                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
-
-    Latte::CentralLayout *currentlayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentlayoutdata.id);
+    Latte::CentralLayout *currentlayout = centralLayout(currentlayoutdata);
 
     if (currentlayout && currentlayout->isActive()) {
         m_currentLayoutConnections << connect(currentlayout, &Layout::GenericLayout::viewsCountChanged, this, [&, currentlayout](){
@@ -419,6 +415,17 @@ void Views::onCurrentLayoutChanged()
     }
 
     messagesForErrorsWarnings(currentlayout);
+}
+
+CentralLayout *Views::centralLayout(const Data::Layout &currentLayout)
+{
+    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(currentLayout.id);
+    auto activelayout = m_handler->layoutsController()->isLayoutOriginal(currentLayout.id) ?
+                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    Latte::CentralLayout *centrallayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentLayout.id);
+
+    return centrallayout;
 }
 
 void Views::onSelectionsChanged()
@@ -498,7 +505,7 @@ void Views::updateDoubledMoveDestinationRows() {
     }
 }
 
-void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
+void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout, const bool &showNoErrorsMessage)
 {
     if (!centralLayout) {
         return;
@@ -580,6 +587,14 @@ void Views::messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout)
         }
     }
 
+    m_handler->layoutsController()->setLayoutCurrentErrorsWarnings(currentdata.id, currentdata.errors, currentdata.warnings);
+
+    if (showNoErrorsMessage && currentdata.errors == 0 && currentdata.warnings == 0) {
+        m_handler->showInlineMessage(i18n("Really nice! You are good to go, your layout does not report any errors or warnings."),
+                                     KMessageWidget::Positive,
+                                     false);
+    }
+
 }
 
 void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messageText,
@@ -610,6 +625,7 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
 #else
                 KRun::runUrl(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), m_view);
 #endif
+                showDefaultInlineMessageValidator();
             }
         });
     }
@@ -617,6 +633,32 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
     //! show message
     m_handler->showInlineMessage(messageText,
                                  messageType,
+                                 true,
+                                 actions);
+}
+
+void Views::showDefaultInlineMessageValidator()
+{
+    Data::Layout currentlayout = m_handler->currentData();
+
+    //! add default action to open layout
+    QAction *validateaction = new QAction(i18n("Validate"), this);
+    validateaction->setIcon(QIcon::fromTheme("view-refresh"));
+    validateaction->setData(currentlayout.id);
+
+    QList<QAction *> actions;
+    actions << validateaction;
+
+    connect(validateaction, &QAction::triggered, this, [&, currentlayout]() {
+        auto centrallayout = centralLayout(currentlayout);
+        messagesForErrorsWarnings(centrallayout, true);
+    });
+
+    QString messagetext = i18n("After you have made your layout file changes, please click <b>Validate</b> to confirm them.");
+
+    //! show message
+    m_handler->showInlineMessage(messagetext,
+                                 KMessageWidget::Warning,
                                  true,
                                  actions);
 }
@@ -758,6 +800,8 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
         return;
     }
 
+    QList<int> orphaned;
+
     //! construct message
     QString message = i18nc("warning id and title", "<b>Warning #%0: %1</b> <br/><br/>").arg(warning.id).arg(warning.name);
     message += i18n("In your layout there are orphaned subcontainments that are not used by any dock or panel. Such situation is not dangerous but it is advised to remove them in order to reduce memory usage.<br/>");
@@ -774,6 +818,8 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
         QString containmentstorageid = warning.information[i].containment.storageId;
         message += i18nc("orphaned subcontainments, containment name, containment id",
                          "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>").arg(containmentname).arg(containmentstorageid);
+
+        orphaned << warning.information[i].containment.storageId.toInt();
     }
 
     message += "<br/>";
@@ -781,14 +827,28 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     message += i18n("&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned subcontainments<br/>");
     message += i18n("&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is <b>not active</b><br/>");
 
-    //! add extra action
+    //! add extra repair action
     QAction *repairlayoutaction = new QAction(i18n("Repair"), this);
     repairlayoutaction->setIcon(QIcon::fromTheme("dialog-yes"));
-    repairlayoutaction->setEnabled(false);
     QList<QAction *> extraactions;
     extraactions << repairlayoutaction;
 
-    showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Warning, extraactions);
+    Latte::Data::Layout currentlayout = m_handler->currentData();
+
+    connect(repairlayoutaction, &QAction::triggered, this, [&, currentlayout, orphaned]() {
+        auto centrallayout = centralLayout(currentlayout);
+
+        for (int i=0; i<orphaned.count(); ++i) {
+            centrallayout->removeOrphanedSubContainment(orphaned[i]);
+        }
+
+        messagesForErrorsWarnings(centrallayout, true);
+    });
+
+    //! show message
+    showDefaultPersistentErrorWarningInlineMessage(message,
+                                                   KMessageWidget::Warning,
+                                                   extraactions);
 }
 
 void Views::save()

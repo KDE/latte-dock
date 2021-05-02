@@ -265,7 +265,7 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
 
     current_containments.copyTo(&copyGroup);
 
-    copyGroup.sync();
+    newFile->reparseConfiguration();
 
     //! update ids to unique ones
     QString temp2File = newUniqueIdsFile(temp1FilePath, layout);
@@ -539,7 +539,7 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
         }
     }
 
-    fixedNewContainmets.sync();
+    file2Ptr->reparseConfiguration();
 
     return tempFile;
 }
@@ -572,7 +572,7 @@ void Storage::syncToLayoutFile(const Layout::GenericLayout *layout, bool removeL
         newGroup.sync();
     }
 
-    oldContainments.sync();
+    filePtr->reparseConfiguration();
 }
 
 QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayout *layout, QString file)
@@ -653,6 +653,8 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
                 break;
             }
         }
+
+        lFile->reparseConfiguration();
     }
 
     Data::ViewsTable updatedNextViews = views(temp2File);
@@ -740,7 +742,7 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
 
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
-    containments.sync();
+    destFilePtr->reparseConfiguration();
 
     return true;
 }
@@ -834,7 +836,7 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
 
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
-    copied_conts.sync();
+    destFilePtr->reparseConfiguration();
 
     return true;
 }
@@ -1603,7 +1605,7 @@ void Storage::removeContainment(const QString &filepath, const QString &containm
     }
 
     containmentGroups.group(containmentId).deleteGroup();
-    containmentGroups.sync();
+    lFile->reparseConfiguration();
 }
 
 QString Storage::storedView(const Layout::GenericLayout *layout, const int &containmentId)
@@ -1677,7 +1679,7 @@ QString Storage::storedView(const Layout::GenericLayout *layout, const int &cont
         }
     }
 
-    destinationContainments.sync();
+    destinationPtr->reparseConfiguration();
     return nextTmpStoredViewAbsolutePath;
 }
 

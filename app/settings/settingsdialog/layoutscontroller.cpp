@@ -654,6 +654,18 @@ void Layouts::onLayoutAddedExternally(const Data::Layout &layout)
     m_model->appendOriginalLayout(layout);
 }
 
+void Layouts::setLayoutCurrentErrorsWarnings(const QString &layoutCurrentId, const int &errors, const int &warnings)
+{
+    Latte::Data::Layout layout = m_model->currentData(layoutCurrentId);
+
+    if (!layout.isNull()) {
+        layout.errors = errors;
+        layout.warnings = warnings;
+        setLayoutProperties(layout);
+    }
+
+}
+
 void Layouts::sortByColumn(int column, Qt::SortOrder order)
 {
     m_view->sortByColumn(column, order);

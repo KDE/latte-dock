@@ -103,6 +103,7 @@ private:
 
     bool hasValidOriginView(const Data::View &view);
     CentralLayout *originLayout(const Data::View &view);
+    CentralLayout *centralLayout(const Data::Layout &currentLayout);
 
     int rowForId(QString id) const;
     QString uniqueViewName(QString name);
@@ -111,11 +112,18 @@ private:
     Data::ViewsTable selectedViewsForClipboard();
 
     //! errors/warnings
-    void messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout);
+    void messagesForErrorsWarnings(const Latte::CentralLayout *centralLayout, const bool &showNoErrorsMessage = false);
     void messageForErrorAppletsWithSameId(const Data::Error &error);
     void messageForErrorOrphanedParentAppletOfSubContainment(const Data::Error &error);
     void messageForWarningOrphanedSubContainments(const Data::Warning &warning);
     void messageForWarningAppletAndContainmentWithSameId(const Data::Warning &warning);
+
+    void showDefaultInlineMessageValidator();
+    void showDefaultPersistentErrorWarningInlineMessage(const QString &messageText,
+                                                        const KMessageWidget::MessageType &messageType,
+                                                        QList<QAction *> extraActions = QList<QAction *>(),
+                                                        const bool &showOpenLayoutAction = true);
+
 
 private slots:
     void loadConfig();
@@ -125,11 +133,6 @@ private slots:
 
     void onCurrentLayoutChanged();
     void onSelectionsChanged();
-
-    void showDefaultPersistentErrorWarningInlineMessage(const QString &messageText,
-                                                        const KMessageWidget::MessageType &messageType,
-                                                        QList<QAction *> extraActions = QList<QAction *>(),
-                                                        const bool &showOpenLayoutAction = true);
 
     void updateDoubledMoveDestinationRows();
 
