@@ -447,8 +447,11 @@ void TabLayouts::newLayout(const QString &templateName)
 
     if (!tdata.isNull()) {
         Data::Layout newlayout = m_layoutsController->addLayoutForFile(tdata.id, tdata.name, true);
-        showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
-                          KMessageWidget::Positive);
+
+        if (newlayout.errors == 0 && newlayout.warnings == 0) {
+            showInlineMessage(i18nc("settings:layout added successfully","Layout <b>%0</b> added successfully...").arg(newlayout.name),
+                              KMessageWidget::Positive);
+        }
     }
 }
 
