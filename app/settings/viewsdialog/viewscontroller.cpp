@@ -21,6 +21,7 @@
 #include "viewscontroller.h"
 
 // local
+#include <config-latte.h>
 #include "ui_viewsdialog.h"
 #include "viewsdialog.h"
 #include "viewshandler.h"
@@ -44,7 +45,12 @@
 
 // KDE
 #include <KMessageWidget>
-#include <KIO/OpenUrlJob>
+
+#if KF5_VERSION_MINOR >= 71
+    #include <KIO/OpenUrlJob>
+#else
+    #include <KRun>
+#endif
 
 namespace Latte {
 namespace Settings {
@@ -598,8 +604,12 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
             QString file = openlayoutaction->data().toString();
 
             if (!file.isEmpty()) {
+#if KF5_VERSION_MINOR >= 71
                 auto job = new KIO::OpenUrlJob(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), this);
                 job->start();
+#else
+                KRun::runUrl(QUrl::fromLocalFile(file), QStringLiteral("text/plain"), m_view);
+#endif
             }
         });
     }
