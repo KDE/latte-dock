@@ -114,7 +114,8 @@ void TabLayouts::initUi()
         }
     });
 
-    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TabLayouts::onCurrentPageChanged);
+    connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TabLayouts::currentPageChanged);
+    connect(this, &TabLayouts::currentPageChanged, this, &TabLayouts::onCurrentPageChanged);
 
     updatePerLayoutButtonsState();
 }
@@ -813,7 +814,7 @@ void TabLayouts::onRawLayoutDropped(const QString &rawLayout)
 
 bool TabLayouts::isCurrentTab() const
 {
-    return (m_layoutMenu->isEnabled() && (m_parentDialog->currentPage() == Dialog::LayoutPage));
+    return (m_parentDialog->currentPage() == Dialog::LayoutPage);
 }
 
 bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
@@ -826,9 +827,10 @@ bool TabLayouts::isHoveringLayoutsTable(const QPoint &pos)
 }
 
 
-void TabLayouts::onCurrentPageChanged(int page)
+void TabLayouts::onCurrentPageChanged()
 {
-    Dialog::ConfigurationPage cPage= static_cast<Dialog::ConfigurationPage>(page);
+    //int page = m_dialog->currentPage();
+    Dialog::ConfigurationPage cPage= m_parentDialog->currentPage();// static_cast<Dialog::ConfigurationPage>(page);
 
     if (cPage == Dialog::LayoutPage) {
         m_layoutMenu->setEnabled(true);

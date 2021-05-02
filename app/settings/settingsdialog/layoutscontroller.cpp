@@ -525,20 +525,7 @@ void Layouts::initLayouts()
 
     applyColumnWidths();
 
-    int erroredlayouts{0};
-    int warninglayouts{0};
-
-    for (int i=0; i<layouts.rowCount(); ++i) {
-        if (layouts[i].hasErrors()) {
-            erroredlayouts++;
-        } else if (layouts[i].hasWarnings()) {
-            warninglayouts++;
-        }
-    }
-
-    onCurrentRowChanged();
-    initialMessageForWarningLayouts(warninglayouts);
-    initialMessageForErroredLayouts(erroredlayouts);
+    showInitialErrorWarningMessages();
 }
 
 void Layouts::initialMessageForErroredLayouts(const int &count)
@@ -615,6 +602,30 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
                                      KMessageWidget::Error,
                                      true,
                                      actions);
+    }
+}
+
+void Layouts::showInitialErrorWarningMessages()
+{
+    if (!m_hasShownInitialErrorWarningMessages) {
+        m_hasShownInitialErrorWarningMessages = true;
+
+        Latte::Data::LayoutsTable layouts = m_handler->corona()->layoutsManager()->synchronizer()->layoutsTable();
+
+        int erroredlayouts{0};
+        int warninglayouts{0};
+
+        for (int i=0; i<layouts.rowCount(); ++i) {
+            if (layouts[i].hasErrors()) {
+                erroredlayouts++;
+            } else if (layouts[i].hasWarnings()) {
+                warninglayouts++;
+            }
+        }
+
+        onCurrentRowChanged();
+        initialMessageForWarningLayouts(warninglayouts);
+        initialMessageForErroredLayouts(erroredlayouts);
     }
 }
 

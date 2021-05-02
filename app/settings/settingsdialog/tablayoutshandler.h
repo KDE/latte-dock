@@ -95,6 +95,9 @@ public slots:
     void resetDefaults() override;
     void save() override;
 
+signals:
+    void currentPageChanged();
+
 private slots:
     void initUi();
     void initLayoutMenu();
@@ -114,7 +117,7 @@ private slots:
     void toggleEnabledLayout();
     void showDetailsDialog();
 
-    void onCurrentPageChanged(int page);
+    void onCurrentPageChanged();
     void onLayoutFilesDropped(const QStringList &paths);
     void onRawLayoutDropped(const QString &rawLayout);
     void updatePerLayoutButtonsState();
