@@ -297,6 +297,7 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
     }
 
     if (switchtonewlayout) {
+        m_dialog->deleteInlineMessages();
         QString layoutId = m_layoutsProxyModel->data(m_layoutsProxyModel->index(row, Model::Layouts::IDCOLUMN), Qt::UserRole).toString();
         m_dialog->layoutsController()->selectRow(layoutId);
         reload();
