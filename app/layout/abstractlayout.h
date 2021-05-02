@@ -67,6 +67,8 @@ class AbstractLayout : public QObject
 
     Q_PROPERTY(bool preferredForShortcutsTouched READ preferredForShortcutsTouched WRITE setPreferredForShortcutsTouched NOTIFY preferredForShortcutsTouchedChanged)
 
+    Q_PROPERTY(int popUpMargin READ popUpMargin WRITE setPopUpMargin NOTIFY popUpMarginChanged)
+
     Q_PROPERTY(QString icon READ icon NOTIFY iconChanged)
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
@@ -83,6 +85,9 @@ public:
 
     bool preferredForShortcutsTouched() const;
     void setPreferredForShortcutsTouched(bool touched);
+
+    int popUpMargin() const;
+    void setPopUpMargin(const int &margin);
 
     QString lastUsedActivity() const;
     void clearLastUsedActivity(); //!e.g. when we export a layout
@@ -138,6 +143,7 @@ signals:
     void lastUsedActivityChanged();
     void launchersChanged();
     void nameChanged();
+    void popUpMarginChanged();
     void preferredForShortcutsTouchedChanged();
     void textColorChanged();
     void versionChanged();
@@ -157,6 +163,8 @@ protected:
 
     //if version doesn't exist it is and old layout file
     int m_version{2};
+
+    int m_popUpMargin{-1}; //default
 
     QString m_customBackground;
     QString m_customTextColor;

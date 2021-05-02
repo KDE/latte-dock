@@ -71,6 +71,7 @@ void AbstractLayout::init()
     connect(this, &AbstractLayout::lastUsedActivityChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::launchersChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::preferredForShortcutsTouchedChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::popUpMarginChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::versionChanged, this, &AbstractLayout::saveConfig);
 }
 
@@ -104,6 +105,21 @@ void AbstractLayout::setPreferredForShortcutsTouched(bool touched)
 
     m_preferredForShortcutsTouched = touched;
     emit preferredForShortcutsTouchedChanged();
+}
+
+int AbstractLayout::popUpMargin() const
+{
+    return m_popUpMargin;
+}
+
+void AbstractLayout::setPopUpMargin(const int &margin)
+{
+    if (m_popUpMargin == margin) {
+        return;
+    }
+
+    m_popUpMargin = margin;
+    emit popUpMarginChanged();
 }
 
 QString AbstractLayout::background() const
@@ -355,6 +371,7 @@ void AbstractLayout::loadConfig()
     m_launchers = m_layoutGroup.readEntry("launchers", QStringList());
     m_lastUsedActivity = m_layoutGroup.readEntry("lastUsedActivity", QString());
     m_preferredForShortcutsTouched = m_layoutGroup.readEntry("preferredForShortcutsTouched", false);
+    m_popUpMargin = m_layoutGroup.readEntry("popUpMargin", -1);
 
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_backgroundStyle = static_cast<BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)ColorBackgroundStyle));
@@ -390,6 +407,7 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("customTextColor", m_customTextColor);
     m_layoutGroup.writeEntry("icon", m_icon);
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
+    m_layoutGroup.writeEntry("popUpMargin", m_popUpMargin);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
     m_layoutGroup.sync();
 }

@@ -151,6 +151,7 @@ Data::Layout CentralLayout::data() const
     cdata.isLocked = !isWritable();
     cdata.isShownInMenu = showInMenu();
     cdata.hasDisabledBorders = disableBordersForMaximizedWindows();
+    cdata.popUpMargin = popUpMargin();
     cdata.activities = activities();
     cdata.lastUsedActivity = lastUsedActivity();
 

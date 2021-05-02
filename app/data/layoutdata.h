@@ -57,6 +57,7 @@ public:
     bool isShownInMenu{false};
     bool isTemplate{false};
     bool hasDisabledBorders{false};
+    int popUpMargin{-1};
     QStringList activities;
     int errors{0};
     int warnings{0};

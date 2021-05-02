@@ -902,6 +902,7 @@ void Layouts::save()
         //! Extra Properties
         central->setShowInMenu(iLayoutCurrentData.isShownInMenu);
         central->setDisableBordersForMaximizedWindows(iLayoutCurrentData.hasDisabledBorders);
+        central->setPopUpMargin(iLayoutCurrentData.popUpMargin);
         central->setActivities(iLayoutCurrentData.activities);
 
         //! If the layout name changed OR the layout path is a temporary one

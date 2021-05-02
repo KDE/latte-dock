@@ -44,6 +44,7 @@ Layout::Layout(Layout &&o)
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
+      popUpMargin(o.popUpMargin),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
       errors(o.errors),
@@ -65,6 +66,7 @@ Layout::Layout(const Layout &o)
       isShownInMenu(o.isShownInMenu),
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
+      popUpMargin(o.popUpMargin),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
       errors(o.errors),
@@ -88,6 +90,7 @@ Layout &Layout::operator=(Layout &&rhs)
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
+    popUpMargin = rhs.popUpMargin;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
     errors = rhs.errors;
@@ -112,6 +115,7 @@ Layout &Layout::operator=(const Layout &rhs)
     isShownInMenu = rhs.isShownInMenu;
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
+    popUpMargin = rhs.popUpMargin;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
     errors = rhs.errors;
@@ -136,6 +140,7 @@ bool Layout::operator==(const Layout &rhs) const
             && (isShownInMenu == rhs.isShownInMenu)
             && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
+            && (popUpMargin == rhs.popUpMargin)
             && (activities == rhs.activities)
             && (backgroundStyle == rhs.backgroundStyle)
             //&& (errors == rhs.errors) /*Disabled because this is not needed in order to track layout changes for saving*/
