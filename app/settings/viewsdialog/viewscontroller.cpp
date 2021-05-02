@@ -585,11 +585,12 @@ void Views::showDefaultPersistentErrorWarningInlineMessage(const QString &messag
     actions << extraActions;
 
     if (showOpenLayoutAction) {
-        //! add default action to open layout
-        QAction *openlayoutaction = new QAction(i18n("Open Layout"), this);
-        openlayoutaction->setIcon(QIcon::fromTheme("document-open"));
-
         Data::Layout currentlayout = m_handler->currentData();
+
+        //! add default action to open layout
+        QAction *openlayoutaction = new QAction(i18n("Edit Layout"), this);
+        openlayoutaction->setEnabled(!currentlayout.isActive);
+        openlayoutaction->setIcon(QIcon::fromTheme("document-edit"));
         openlayoutaction->setData(currentlayout.id);
         actions << openlayoutaction;
 
@@ -637,7 +638,7 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     message += i18n("<b>Possible Solutions:</b><br/>");
     message += i18n("&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>");
     message += i18n("&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>");
-    message += i18n("&nbsp;&nbsp;3. Try to fix the situation by updating manually the applets id<br/>");
+    message += i18n("&nbsp;&nbsp;3. Update manually the applets id when the layout is <b>not active</b><br/>");
     message += i18n("&nbsp;&nbsp;4. Remove this layout totally<br/>");
 
     showDefaultPersistentErrorWarningInlineMessage(message, KMessageWidget::Error);
@@ -685,7 +686,7 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
 
     message += "<br/>";
     message += i18n("<b>Possible Solutions:</b><br/>");
-    message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the subcontainment id in pseudo applet settings<br/>");
+    message += i18n("&nbsp;&nbsp;1. Update manually the subcontainment id inside pseudo applet settings when the layout is <b>not active</b><br/>");
     message += i18n("&nbsp;&nbsp;2. Remove this layout totally<br/>");
 
     //! show message
@@ -734,7 +735,7 @@ void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning 
 
     message += "<br/>";
     message += i18n("<b>Possible Solutions:</b><br/>");
-    message += i18n("&nbsp;&nbsp;1. Try to fix the situation by updating manually the containments or applets id <br/>");
+    message += i18n("&nbsp;&nbsp;1. Update manually the containments or applets id when the layout is <b>not active</b><br/>");
     message += i18n("&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with each other<br/>");
 
     //! show message
@@ -767,7 +768,8 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
 
     message += "<br/>";
     message += i18n("<b>Possible Solutions:</b><br/>");
-    message += i18n("&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove them automatically<br/>");
+    message += i18n("&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned subcontainments<br/>");
+    message += i18n("&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is <b>not active</b><br/>");
 
     //! add extra action
     QAction *repairlayoutaction = new QAction(i18n("Repair"), this);
