@@ -45,6 +45,7 @@
 
 // KDE
 #include <KMessageWidget>
+#include <KSharedConfig>
 
 #if KF5_VERSION_MINOR >= 71
 #include <KIO/OpenUrlJob>
@@ -650,7 +651,14 @@ void Views::showDefaultInlineMessageValidator()
     actions << validateaction;
 
     connect(validateaction, &QAction::triggered, this, [&, currentlayout]() {
+
         auto centrallayout = centralLayout(currentlayout);
+        if (centrallayout && !centrallayout->isActive()) {
+            KSharedConfigPtr lFile = KSharedConfig::openConfig(centrallayout->file());
+            //! update configuration with latest changes
+            lFile->reparseConfiguration();
+        }
+
         messagesForErrorsWarnings(centrallayout, true);
     });
 
