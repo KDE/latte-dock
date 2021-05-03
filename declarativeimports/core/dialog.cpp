@@ -119,13 +119,13 @@ void Dialog::adjustGeometry(const QRect &geom)
         int popupmargin = qMax(0, appletsPopUpMargin());
 
         if (m_edge == Plasma::Types::LeftEdge) {
-            x = parenttopleft.x() + visualparent->width() - 1 + popupmargin;
+            x = parenttopleft.x() + visualparent->width() + popupmargin;
         } else if (m_edge == Plasma::Types::RightEdge) {
-            x = parenttopleft.x() - geom.width() + 1 - popupmargin;
+            x = parenttopleft.x() - geom.width() - popupmargin;
         } else if (m_edge == Plasma::Types::TopEdge) {
-            y = parenttopleft.y() + visualparent->height() - 1 + popupmargin;
+            y = parenttopleft.y() + visualparent->height() + popupmargin;
         } else { // bottom case
-            y = parenttopleft.y() - geom.height() + 1 - popupmargin;
+            y = parenttopleft.y() - geom.height() - popupmargin;
         }
 
         x = qBound(screengeometry.x(), x, screengeometry.right()-1);
