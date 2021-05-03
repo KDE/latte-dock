@@ -48,6 +48,14 @@ Window{
             columns: 2
 
             Text{
+                text: "Name"+space
+            }
+
+            Text{
+                text: latteView ? latteView.name : "___"
+            }
+
+            Text{
                 text: "Screen id"+space
             }
 

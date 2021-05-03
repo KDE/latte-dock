@@ -176,7 +176,7 @@ public slots:
     void setBackgroundFromBroadcast(QString activity, QString screenName, QString filename);
     void setBroadcastedBackgroundsEnabled(QString activity, QString screenName, bool enabled);
     void showAlternativesForApplet(Plasma::Applet *applet);
-    void toggleHiddenState(QString layoutName, QString screenName, int screenEdge);
+    void toggleHiddenState(QString layoutName, QString viewName, QString screenName, int screenEdge);
 
     //! values are separated with a "-" character
     void windowColorScheme(QString windowIdAndScheme);

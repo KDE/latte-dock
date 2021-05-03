@@ -968,7 +968,7 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     emit viewsCountChanged();
 }
 
-void GenericLayout::toggleHiddenState(QString screenName, Plasma::Types::Location edge)
+void GenericLayout::toggleHiddenState(QString viewName, QString screenName, Plasma::Types::Location edge)
 {
     if (!m_corona) {
         return;
@@ -982,18 +982,19 @@ void GenericLayout::toggleHiddenState(QString screenName, Plasma::Types::Locatio
     int viewsOnEdge{0};
 
     for(const auto view : latteViews()) {
-        if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
+        if ((viewName.isEmpty() || (!viewName.isEmpty() && viewName == view->name()))
+                && view->positioner()->currentScreenName() == validScreenName
+                && (edge == Plasma::Types::Floating || ((edge != Plasma::Types::Floating) && view->location() == edge))) {
             viewsOnEdge++;
         }
     }
 
     if (viewsOnEdge >= 1) {
         for(const auto view : latteViews()) {
-            if (view->positioner()->currentScreenName() == validScreenName && view->location() == edge) {
-                if (viewsOnEdge == 1 || (viewsOnEdge >1 && view->visibility() && view->visibility()->isSidebar())) {
-                    view->visibility()->toggleHiddenState();
-                    return;
-                }
+            if ((viewName.isEmpty() || (!viewName.isEmpty() && viewName == view->name()))
+                    && view->positioner()->currentScreenName() == validScreenName
+                    && (edge == Plasma::Types::Floating || ((edge != Plasma::Types::Floating) && view->location() == edge))) {
+                view->visibility()->toggleHiddenState();
             }
         }
     }

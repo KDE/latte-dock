@@ -1219,17 +1219,17 @@ void Corona::setBroadcastedBackgroundsEnabled(QString activity, QString screenNa
     PlasmaExtended::BackgroundCache::self()->setBroadcastedBackgroundsEnabled(activity, screenName, enabled);
 }
 
-void Corona::toggleHiddenState(QString layoutName, QString screenName, int screenEdge)
+void Corona::toggleHiddenState(QString layoutName, QString viewName, QString screenName, int screenEdge)
 {
     if (layoutName.isEmpty()) {
         for(auto layout : m_layoutsManager->currentLayouts()) {
-            layout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+            layout->toggleHiddenState(viewName, screenName, (Plasma::Types::Location)screenEdge);
         }
     } else {
         Layout::GenericLayout *gLayout = layout(layoutName);
 
         if (gLayout) {
-            gLayout->toggleHiddenState(screenName, (Plasma::Types::Location)screenEdge);
+            gLayout->toggleHiddenState(viewName, screenName, (Plasma::Types::Location)screenEdge);
         }
     }
 }
