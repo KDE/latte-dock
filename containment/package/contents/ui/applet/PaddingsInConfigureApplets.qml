@@ -104,10 +104,16 @@ Item {
 
     Rectangle {
         id: headPadding
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? normalMargin : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? normalMargin : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? normalMargin : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? normalMargin : 0
 
         width: root.isHorizontal ? length : thickness
         height: root.isHorizontal ? thickness : length
         color: parent.color
+
+        readonly property int normalMargin: appletItem.metrics.mask.thickness.normalForItems - thickness
 
         states:[
             State{
@@ -117,7 +123,7 @@ Item {
                 AnchorChanges{
                     target: headPadding
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
                 }
             },
             State{
@@ -127,7 +133,7 @@ Item {
                 AnchorChanges{
                     target: headPadding
                     anchors.horizontalCenter: parent.horizontalCenter; anchors.verticalCenter: undefined;
-                    anchors.right: undefined; anchors.left: undefined; anchors.top: undefined; anchors.bottom: parent.bottom;
+                    anchors.right: undefined; anchors.left: undefined; anchors.top: parent.top; anchors.bottom: undefined;
                 }
             },
             State{
@@ -137,7 +143,7 @@ Item {
                 AnchorChanges{
                     target: headPadding
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
-                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
+                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
                 }
             },
             State{
@@ -147,7 +153,7 @@ Item {
                 AnchorChanges{
                     target: headPadding
                     anchors.horizontalCenter: undefined; anchors.verticalCenter: parent.verticalCenter;
-                    anchors.right: undefined; anchors.left: parent.left; anchors.top: undefined; anchors.bottom: undefined;
+                    anchors.right: parent.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: undefined;
                 }
             }
         ]
