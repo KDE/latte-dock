@@ -57,10 +57,13 @@ protected:
 
 private slots:
     void setContainsMouse(bool contains);
+    void updatePopUpEnabledBorders();
 
 private:
     bool isRespectingAppletsLayoutGeometry() const;
     QRect appletsLayoutGeometryFromContainment() const;
+
+    int appletsPopUpMargin() const;
 
 private:
     bool m_containsMouse{false};

@@ -74,16 +74,34 @@ QRect Dialog::appletsLayoutGeometryFromContainment() const
     return geom.isValid() ? geom.toRect() : QRect();
 }
 
+int Dialog::appletsPopUpMargin() const
+{
+    QVariant margin = visualParent() && visualParent()->window() ? visualParent()->window()->property("_applets_popup_margin") : QVariant();
+    return margin.isValid() ? margin.toInt() : -1;
+}
+
+void Dialog::updatePopUpEnabledBorders()
+{
+    QRect appletslayoutgeometry = appletsLayoutGeometryFromContainment();
+    int appletspopupmargin = appletsPopUpMargin();
+
+    //! Plasma Scenario
+    bool hideEdgeBorder = isRespectingAppletsLayoutGeometry() && !appletslayoutgeometry.isEmpty() && appletspopupmargin==-1;
+
+    if (hideEdgeBorder) {
+        setLocation(m_edge);
+    } else {
+        setLocation(Plasma::Types::Floating);
+    }
+}
+
 void Dialog::adjustGeometry(const QRect &geom)
 {
-    if (location() != Plasma::Types::Floating) {
-        PlasmaQuick::Dialog::adjustGeometry(geom);
-        return;
-    }
-
     auto visualparent = visualParent();
 
     if (visualparent && visualparent->window() && visualparent->window()->screen()) {
+        updatePopUpEnabledBorders();
+
         QPointF parenttopleftf = visualparent->mapToGlobal(QPointF(0, 0));
         QPoint parenttopleft = parenttopleftf.toPoint();
         QScreen *screen = visualparent->window()->screen();
@@ -98,14 +116,16 @@ void Dialog::adjustGeometry(const QRect &geom)
             x = parenttopleft.x() + (visualparent->width()/2) - (geom.width()/2);
         }
 
+        int popupmargin = qMax(0, appletsPopUpMargin());
+
         if (m_edge == Plasma::Types::LeftEdge) {
-            x = parenttopleft.x() + visualparent->width() - 1;
+            x = parenttopleft.x() + visualparent->width() - 1 + popupmargin;
         } else if (m_edge == Plasma::Types::RightEdge) {
-            x = parenttopleft.x() - geom.width() + 1;
+            x = parenttopleft.x() - geom.width() + 1 - popupmargin;
         } else if (m_edge == Plasma::Types::TopEdge) {
-            y = parenttopleft.y() + visualparent->height() - 1;
+            y = parenttopleft.y() + visualparent->height() - 1 + popupmargin;
         } else { // bottom case
-            y = parenttopleft.y() - geom.height() + 1;
+            y = parenttopleft.y() - geom.height() + 1 - popupmargin;
         }
 
         x = qBound(screengeometry.x(), x, screengeometry.right()-1);

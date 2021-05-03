@@ -158,7 +158,7 @@ PlasmaCore.ToolTipArea {
         flags: Qt.WindowStaysOnTopHint
         visible: plasmoid.expanded && fullRepresentation
         visualParent: compactRepresentationVisualParent ? compactRepresentationVisualParent : (compactRepresentation ? compactRepresentation : null)
-        location: PlasmaCore.Types.Floating //plasmoid.location
+       // location: PlasmaCore.Types.Floating //plasmoid.location
         edge: plasmoid.location /*this way dialog borders are not updated and it is used only for adjusting dialog position*/
         hideOnWindowDeactivate: plasmoid.hideOnWindowDeactivate
         backgroundHints: (plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground

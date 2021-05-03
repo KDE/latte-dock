@@ -1195,6 +1195,7 @@ void View::setLayout(Layout::GenericLayout *layout)
         }
 
         connectionsLayout << connect(m_positioner, &Latte::ViewPart::Positioner::edgeChanged, m_layout, &Layout::GenericLayout::viewEdgeChanged);
+        connectionsLayout << connect(m_layout, &Layout::GenericLayout::popUpMarginChanged, m_effects, &Latte::ViewPart::Effects::popUpMarginChanged);
 
         //! Sometimes the activity isnt completely ready, by adding a delay
         //! we try to catch up
