@@ -539,7 +539,6 @@ void Layouts::initialMessageForErroredLayouts(const int &count)
                                            "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors.",
                                            count),
                                      KMessageWidget::Error);
-    }
 }
 
 void Layouts::initialMessageForWarningLayouts(const int &count)
@@ -553,7 +552,6 @@ void Layouts::initialMessageForWarningLayouts(const int &count)
                                            "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings.",
                                            count),
                                      KMessageWidget::Warning);
-    }
 }
 
 
