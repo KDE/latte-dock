@@ -105,6 +105,8 @@ private:
     void setColor(const QString &color);
     void setIcon(const QString &icon);
 
+    void setPopUpMargin(const int &margin);
+
     void setBackgroundStyle(const Latte::Layout::BackgroundStyle &style);
 
     void loadLayout(const Latte::Data::Layout &data);

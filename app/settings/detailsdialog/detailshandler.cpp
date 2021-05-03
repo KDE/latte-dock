@@ -97,6 +97,10 @@ void DetailsHandler::init()
 
 
     //! Options
+    connect(m_ui->popUpMarginSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, [&](int i) {
+        setPopUpMargin(i);
+    });
+
     connect(m_ui->inMenuChk, &QCheckBox::stateChanged, this, [&]() {
         setIsShownInMenu(m_ui->inMenuChk->isChecked());
     });
@@ -195,6 +199,8 @@ void DetailsHandler::loadLayout(const Latte::Data::Layout &data)
     } else {
         m_ui->patternClearBtn->setEnabled(false);
     }
+
+    m_ui->popUpMarginSpinBox->setValue(data.popUpMargin);
 
     m_ui->inMenuChk->setChecked(data.isShownInMenu);
     m_ui->borderlessChk->setChecked(data.hasDisabledBorders);
@@ -354,6 +360,16 @@ void DetailsHandler::setBackgroundStyle(const Latte::Layout::BackgroundStyle &st
     }
 
     c_data.backgroundStyle = style;
+    emit dataChanged();
+}
+
+void DetailsHandler::setPopUpMargin(const int &margin)
+{
+    if (c_data.popUpMargin == margin) {
+        return;
+    }
+
+    c_data.popUpMargin = margin;
     emit dataChanged();
 }
 
