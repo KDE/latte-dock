@@ -67,12 +67,6 @@ public:
     TabLayouts(Dialog::SettingsDialog *parent);
     ~TabLayouts();
 
-    enum ImportedLayoutOrigin
-    {
-        LOCALLY = 0,
-        DOWNLOADED
-    };
-
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
     bool isCurrentTab() const;
@@ -130,8 +124,6 @@ private:
     void initLayoutTemplatesSubMenu();
     void initImportLayoutSubMenu();
     void initExportLayoutSubMenu();
-
-    void installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin);
 
 private:
     Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
