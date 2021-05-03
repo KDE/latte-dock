@@ -40,10 +40,18 @@ LatteComponents.ComboBoxButton{
     comboBoxPopupTextHorizontalAlignment: Text.AlignHCenter
 
     property int mode: LatteCore.Types.WindowsGoBelow
-    readonly property int currentModeIndex: Math.min(Math.max(0, mode-firstVisibilityMode), lastVisibilityMode-firstVisibilityMode)
+    readonly property int currentModeIndex: {
+        for (var i=0; i<modes.length; ++i) {
+            if (modes[i].pluginId === mode) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
 
     readonly property int firstVisibilityMode:  modes[0].pluginId
-    readonly property int lastVisibilityMode: firstVisibilityMode + modes.length - 1
+    readonly property int lastVisibilityMode: modes[modes.length - 1].pluginId
 
     property variant modes: []
 
@@ -76,8 +84,11 @@ LatteComponents.ComboBoxButton{
     Connections {
         target: latteView.visibility
         onModeChanged: {
-            if (latteView.visibility.mode >= custom.firstVisibilityMode && latteView.visibility.mode<=custom.lastVisibilityMode) {
-                custom.viewRelevantVisibilityModeChanged();
+            for (var i=0; i<custom.modes.length; ++i) {
+                if (custom.modes[i].pluginId === latteView.visibility.mode) {
+                    custom.viewRelevantVisibilityModeChanged();
+                    return;
+                }
             }
         }
     }

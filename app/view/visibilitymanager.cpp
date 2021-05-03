@@ -345,11 +345,13 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     case Types::SidebarOnDemand:
         m_connections[base] = connect(m_latteView, &Latte::View::inEditModeChanged, this, [&]() {
             if (!m_latteView->inEditMode()) {
-                toggleHiddenState();
+                m_isRequestedShownSidebarOnDemand = false;
+                updateHiddenState();
             }
         });
 
-        toggleHiddenState();
+        m_isRequestedShownSidebarOnDemand = false;
+        updateHiddenState();
         break;
 
     case Types::SidebarAutoHide:
@@ -677,10 +679,79 @@ void VisibilityManager::show()
     }
 }
 
+void VisibilityManager::toggleHiddenState()
+{
+    if (!m_latteView->inEditMode()) {
+        if (isSidebar()) {
+           // if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+            //    removeBlockHidingEvent(Q_FUNC_INFO);
+           // }
+
+            if (m_mode == Latte::Types::SidebarOnDemand) {
+                m_isRequestedShownSidebarOnDemand = !m_isRequestedShownSidebarOnDemand;
+                updateHiddenState();
+            } else if (m_mode == Latte::Types::SidebarAutoHide) {
+                if (m_isHidden) {
+                    emit mustBeShown();
+                    startTimerHide(SIDEBARAUTOHIDEMINIMUMSHOW + m_timerHideInterval);
+                } else {
+                    emit mustBeHide();
+                }
+            }
+        } else {
+        /*    if (!m_isHidden && !m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+                addBlockHidingEvent(Q_FUNC_INFO);
+            } else if (m_isHidden) {
+                removeBlockHidingEvent(Q_FUNC_INFO);
+            }*/
+        }
+    }
+}
+
+void VisibilityManager::updateHiddenState()
+{
+    if (m_dragEnter)
+        return;
+
+    switch (m_mode) {
+    case Types::AutoHide:
+    case Types::WindowsCanCover:
+        raiseView(m_containsMouse);
+        break;
+
+    case Types::DodgeActive:
+        dodgeActive();
+        break;
+
+    case Types::DodgeMaximized:
+        dodgeMaximized();
+        break;
+
+    case Types::DodgeAllWindows:
+        dodgeAllWindows();
+        break;
+
+    case Types::SidebarOnDemand:
+        raiseView(m_isRequestedShownSidebarOnDemand);
+        break;
+
+    case Types::SidebarAutoHide:
+        raiseView(m_latteView->inEditMode() || (m_containsMouse && !m_isHidden));
+        break;
+
+    default:
+        break;
+    }
+}
 
 void VisibilityManager::raiseView(bool raise)
 {
     if (m_mode == Latte::Types::SidebarOnDemand) {
+        if (raise && m_isHidden) {
+            emit mustBeShown();
+        } else if (!raise && !m_isHidden && !m_dragEnter && !hidingIsBlocked()) {
+            emit mustBeHide();
+        }
         return;
     }
 
@@ -724,65 +795,6 @@ void VisibilityManager::raiseViewTemporarily()
 bool VisibilityManager::isValidMode() const
 {
     return (m_mode != Types::None && m_mode != Types::NormalWindow);
-}
-
-void VisibilityManager::toggleHiddenState()
-{
-    if (!m_latteView->inEditMode()) {
-        if (isSidebar()) {
-            if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
-                removeBlockHidingEvent(Q_FUNC_INFO);
-            }
-
-            if (m_isHidden) {
-                emit mustBeShown();
-
-                if(m_mode == Latte::Types::SidebarAutoHide) {
-                    startTimerHide(SIDEBARAUTOHIDEMINIMUMSHOW + m_timerHideInterval);
-                }
-            } else {
-                emit mustBeHide();
-            }
-        } else {
-        /*    if (!m_isHidden && !m_blockHidingEvents.contains(Q_FUNC_INFO)) {
-                addBlockHidingEvent(Q_FUNC_INFO);
-            } else if (m_isHidden) {
-                removeBlockHidingEvent(Q_FUNC_INFO);
-            }*/
-        }
-    }
-}
-
-void VisibilityManager::updateHiddenState()
-{
-    if (m_dragEnter)
-        return;
-
-    switch (m_mode) {
-    case Types::AutoHide:
-    case Types::WindowsCanCover:
-        raiseView(m_containsMouse);
-        break;
-
-    case Types::DodgeActive:
-        dodgeActive();
-        break;
-
-    case Types::DodgeMaximized:
-        dodgeMaximized();
-        break;
-
-    case Types::DodgeAllWindows:
-        dodgeAllWindows();
-        break;
-
-    case Types::SidebarAutoHide:
-        raiseView(m_latteView->inEditMode() || (m_containsMouse && !m_isHidden));
-        break;
-
-    default:
-        break;
-    }
 }
 
 void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)

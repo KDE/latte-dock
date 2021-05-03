@@ -233,6 +233,9 @@ private:
     bool m_raiseOnActivityChange{false};
     bool m_hideNow{false};
 
+    //! valid on demand sidebar hidden state in order to be checked after slide-ins/outs
+    bool m_isRequestedShownSidebarOnDemand{false};
+
     int m_frameExtentsHeadThicknessGap{0};
     int m_timerHideInterval{700};
     Plasma::Types::Location m_frameExtentsLocation{Plasma::Types::BottomEdge};

@@ -578,7 +578,7 @@ Item{
         //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenOut.running
                 && !latteView.visibility.blockHiding
-                && (!latteView.visibility.containsMouse)) {
+                && !latteView.visibility.containsMouse) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
