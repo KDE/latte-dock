@@ -78,6 +78,7 @@ public:
     void sortByColumn(int column, Qt::SortOrder order);
 
     bool hasSelectedView() const;
+    int selectedViewsCount() const;
     const Data::ViewsTable selectedViewsCurrentData() const;
 
     const Latte::Data::View appendViewFromViewTemplate(const Data::View &view);

@@ -260,12 +260,12 @@ void TabLayouts::initExportLayoutSubMenu()
         m_layoutExportSubMenu->clear();
     }
 
-    QAction *exportForBackup = m_layoutExportSubMenu->addAction(i18nc("export layout for backup","&Export For Backup..."));
+    QAction *exportForBackup = m_layoutExportSubMenu->addAction(i18nc("export for backup","&Export For Backup..."));
     exportForBackup->setIcon(QIcon::fromTheme("document-export"));
     exportForBackup->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
     connect(exportForBackup, &QAction::triggered, this, &TabLayouts::exportLayoutForBackup);
 
-    QAction *exportAsTemplate = m_layoutExportSubMenu->addAction(i18nc("export layout as layout template","Export As &Template..."));
+    QAction *exportAsTemplate = m_layoutExportSubMenu->addAction(i18nc("export as template","Export As &Template..."));
     exportAsTemplate->setIcon(QIcon::fromTheme("document-export"));
     exportAsTemplate->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_T));
     connect(exportAsTemplate, &QAction::triggered, this, &TabLayouts::exportLayoutAsTemplate);
@@ -468,7 +468,8 @@ void TabLayouts::duplicateLayout()
 
 void TabLayouts::installLayoutTemplate(Latte::Data::Layout importedLayout, QString templateFilePath, ImportedLayoutOrigin origin)
 {
-    QString layoutName = QFileInfo(templateFilePath).baseName();
+    QString layoutName = QFileInfo(templateFilePath).fileName();
+    layoutName = layoutName.remove("layout.latte");
 
     QString informationText = origin == ImportedLayoutOrigin::DOWNLOADED ? i18nc("settings:layout downloaded successfully","Layout <b>%0</b> downloaded successfully...").arg(importedLayout.name) :
                                                                            i18nc("settings:layout imported successfully","Layout <b>%0</b> imported successfully...").arg(importedLayout.name);

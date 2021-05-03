@@ -169,6 +169,11 @@ bool Views::hasSelectedView() const
     return m_view->selectionModel()->hasSelection();
 }
 
+int Views::selectedViewsCount() const
+{
+    return m_view->selectionModel()->selectedRows(Model::Views::IDCOLUMN).count();
+}
+
 int Views::rowForId(QString id) const
 {
     for (int i = 0; i < m_proxyModel->rowCount(); ++i) {

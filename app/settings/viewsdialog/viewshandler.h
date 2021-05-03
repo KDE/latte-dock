@@ -90,8 +90,13 @@ signals:
 
 private slots:
     void initViewTemplatesSubMenu();
+    void initViewExportSubMenu();
     void removeSelectedViews();
     void updateWindowTitle();
+
+    void exportViewForBackup();
+    void exportViewAsTemplate();
+    void importView();
 
     void onCurrentLayoutIndexChanged(int row);
 
@@ -122,9 +127,12 @@ private:
     QAction *m_newViewAction{nullptr};
     QAction *m_duplicateViewAction{nullptr};
     QAction *m_removeViewAction{nullptr};
+    QAction *m_exportViewAction{nullptr};
+    QAction *m_importViewAction{nullptr};
 
     //! Menus
     QMenu *m_viewTemplatesSubMenu{nullptr};
+    QMenu *m_viewExportSubMenu{nullptr};
 };
 
 }

@@ -39,6 +39,9 @@
 #include "../../templates/templatesmanager.h"
 #include "../../tools/commontools.h"
 
+// Qt
+#include <QFileDialog>
+
 // KDE
 #include <KLocalizedString>
 #include <KStandardGuiItem>
@@ -106,6 +109,26 @@ void ViewsHandler::init()
     connect(m_removeViewAction, &QAction::triggered, this, &ViewsHandler::removeSelectedViews);
     m_ui->removeBtn->addAction(m_removeViewAction); //this is needed in order to be triggered properly
 
+    //! Import
+    m_importViewAction =new QAction(i18nc("import dock/panel","&Import..."));
+    m_duplicateViewAction->setToolTip(i18n("Import dock or panel from local file"));
+    m_importViewAction->setIcon(QIcon::fromTheme("document-import"));
+    m_importViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    connectActionWithButton(m_ui->importBtn, m_importViewAction);
+    connect(m_importViewAction, &QAction::triggered, this, &ViewsHandler::importView);
+
+    //! Export
+    m_exportViewAction = new QAction(i18nc("export layout", "&Export"), this);
+    m_exportViewAction->setToolTip(i18n("Export selected dock or panel at your system"));
+    m_exportViewAction->setIcon(QIcon::fromTheme("document-export"));
+    m_exportViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    connectActionWithButton(m_ui->exportBtn, m_exportViewAction);
+    connect(m_exportViewAction, &QAction::triggered, m_ui->exportBtn, &QPushButton::showMenu);
+
+    initViewExportSubMenu();
+    m_exportViewAction->setMenu(m_viewExportSubMenu);
+    m_ui->exportBtn->setMenu(m_viewExportSubMenu);
+
     //! signals
     connect(this, &ViewsHandler::currentLayoutChanged, this, &ViewsHandler::reload);
 
@@ -160,6 +183,26 @@ void ViewsHandler::initViewTemplatesSubMenu()
             KIO::highlightInFileManager({QString(Latte::configPath() + "/latte/templates/Dock.view.latte")});
         });
     }
+}
+
+void ViewsHandler::initViewExportSubMenu()
+{
+    if (!m_viewExportSubMenu) {
+        m_viewExportSubMenu = new QMenu(m_ui->exportBtn);
+        m_viewExportSubMenu->setMinimumWidth(m_ui->exportBtn->width() * 2);
+    } else {
+        m_viewExportSubMenu->clear();
+    }
+
+    QAction *exportforbackup = m_viewExportSubMenu->addAction(i18nc("export for backup","&Export For Backup..."));
+    exportforbackup->setIcon(QIcon::fromTheme("document-export"));
+    exportforbackup->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
+    connect(exportforbackup, &QAction::triggered, this, &ViewsHandler::exportViewForBackup);
+
+    QAction *exportastemplate = m_viewExportSubMenu->addAction(i18nc("export as template","Export As &Template..."));
+    exportastemplate->setIcon(QIcon::fromTheme("document-export"));
+    exportastemplate->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_T));
+    connect(exportastemplate, &QAction::triggered, this, &ViewsHandler::exportViewAsTemplate);
 }
 
 void ViewsHandler::reload()
@@ -263,6 +306,69 @@ void ViewsHandler::removeSelectedViews()
     }
 
     m_viewsController->removeSelectedViews();
+}
+
+void ViewsHandler::exportViewForBackup()
+{
+    if (!m_viewsController->hasSelectedView()) {
+        return;
+    }
+
+    if (m_viewsController->selectedViewsCount() > 1) {
+        showInlineMessage(i18n("<b>Export</b> functionality is supported only for one dock or panel each time."),
+                          KMessageWidget::Warning,
+                          false);
+        return;
+    }
+
+    //! it needs to be thought properly how this should be approached
+    //! the best scenario is Storage to provide a view file and afterwards use that file
+}
+
+void ViewsHandler::exportViewAsTemplate()
+{
+    if (!m_viewsController->hasSelectedView()) {
+        return;
+    }
+
+    if (m_viewsController->selectedViewsCount() > 1) {
+        showInlineMessage(i18n("<b>Export</b> functionality is supported only for one dock or panel each time."),
+                          KMessageWidget::Warning,
+                          false);
+        return;
+    }
+
+    //! it needs to be thought properly how this should be approached
+    //! the best scenario is Storage to provide a view file and afterwards use that file
+}
+
+void ViewsHandler::importView()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    QFileDialog *importFileDialog = new QFileDialog(m_dialog, i18nc("import dock/panel", "Import Dock/Panel"), QDir::homePath(), QStringLiteral("view.latte"));
+
+    importFileDialog->setWindowIcon(QIcon::fromTheme("document-import"));
+    importFileDialog->setLabelText(QFileDialog::Accept, i18n("Import"));
+    importFileDialog->setFileMode(QFileDialog::AnyFile);
+    importFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    importFileDialog->setDefaultSuffix("view.latte");
+
+    QStringList filters;
+    filters << QString(i18nc("import dock panel", "Latte Dock or Panel file v0.2") + "(*.view.latte)");
+    importFileDialog->setNameFilters(filters);
+
+    connect(importFileDialog, &QFileDialog::finished, importFileDialog, &QFileDialog::deleteLater);
+
+    connect(importFileDialog, &QFileDialog::fileSelected, this, [&](const QString & file) {
+        Data::Generic templatedata;
+        templatedata.id = file;
+        templatedata.name = QFileInfo(file).fileName();
+        templatedata.name = templatedata.name.remove(".view.latte");
+        newView(templatedata);
+    });
+
+    importFileDialog->open();
 }
 
 void ViewsHandler::onCurrentLayoutIndexChanged(int row)
