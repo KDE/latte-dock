@@ -50,7 +50,7 @@ Item{
             if (abilityItem.isVertical) {
                 return abilityItem.abilities.metrics.totals.thickness + abilityItem.abilities.metrics.margin.screenEdge;
             } else {
-                if (isSeparatorInRealLength || !abilityItem.abilities.parabolic.isEnabled) {
+                if (isSeparatorInRealLength) {
                     return LatteCore.Environment.separatorLength+2*abilityItem.abilities.metrics.margin.length;
                 }
             }
@@ -73,7 +73,7 @@ Item{
             if (abilityItem.isHorizontal) {
                 return abilityItem.abilities.metrics.totals.thickness + abilityItem.abilities.metrics.margin.screenEdge;
             } else {
-                if (isSeparatorInRealLength || !abilityItem.abilities.parabolic.isEnabled) {
+                if (isSeparatorInRealLength) {
                     return LatteCore.Environment.separatorLength+2*abilityItem.abilities.metrics.margin.length;
                 }
             }
