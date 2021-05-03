@@ -1,9 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Latte Containment
+Name[ca]=Contenidor del Latte
+Name[nl]=Latte-container
+Name[sv]=Latte-omgivning
+Name[uk]=контейнер Латте
+Name[x-test]=xxLatte Containmentxx
 Comment=Containment provided for the Latte Dock
 Comment[az]=Latte Dok paneli üçün təmin edilən qoruma
-Comment[ca]=Intèrpret d'ordres proporcionat per l'acoblador Latte
+Comment[ca]=Contenidor proporcionat per l'acoblador Latte
 Comment[ca@valencia]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[da]=Beholder til Latte-dokken
 Comment[de]=Containment für Latte-Dock
