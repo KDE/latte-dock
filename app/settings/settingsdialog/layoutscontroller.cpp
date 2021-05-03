@@ -536,8 +536,8 @@ void Layouts::initialMessageForErroredLayouts(const int &count)
 
     m_handler->showInlineMessage(i18ncp("settings:counted layout with errors",
                                            "<b>Error:</b> There is <b>1 layout</b> that has reported errors.",
-                                           "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors.",
-                                           count),
+                                           "<b>Error:</b> There are <b>%0 layouts</b> that have reported errors.",
+                                           count).arg(count),
                                      KMessageWidget::Error);
 }
 
@@ -549,8 +549,8 @@ void Layouts::initialMessageForWarningLayouts(const int &count)
 
     m_handler->showInlineMessage(i18ncp("settings:counted layout with warnings",
                                            "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings.",
-                                           "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings.",
-                                           count),
+                                           "<b>Warning:</b> There are <b>%0 layouts</b> that have reported warnings.",
+                                           count).arg(count),
                                      KMessageWidget::Warning);
 }
 
