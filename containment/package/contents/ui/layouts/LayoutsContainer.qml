@@ -167,28 +167,32 @@ Item{
 
     readonly property int backgroundTailLength: {
         if (root.myView.alignment === LatteCore.Types.Left) {
-            return backgroundShadowTailLength + background.paddings.left;
+            return backgroundShadowTailLength + background.paddings.left - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Right) {
-            return backgroundShadowTailLength + background.paddings.right;
+            return backgroundShadowTailLength + background.paddings.right - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Top) {
-            return backgroundShadowTailLength + background.paddings.top;
+            return backgroundShadowTailLength + background.paddings.top - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Bottom) {
-            return backgroundShadowTailLength + background.paddings.bottom;
+            return backgroundShadowTailLength + background.paddings.bottom - metrics.margin.length; /*remove the first applet margin*/
+        } else if (root.myView.alignment === LatteCore.Types.Center) {
+            return backgroundShadowTailLength - metrics.margin.length; /*remove the first applet margin*/
         }
 
-        //! centered case
+        //! justify case
         return root.isHorizontal ? background.paddings.left : background.paddings.top; //shadow is already calculated
     }
 
     readonly property int backgroundHeadLength: {
         if (root.myView.alignment === LatteCore.Types.Left) {
-            return backgroundShadowHeadLength + background.paddings.right;
+            return backgroundShadowHeadLength + background.paddings.right - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Right) {
-            return backgroundShadowHeadLength + background.paddings.left;
+            return backgroundShadowHeadLength + background.paddings.left - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Top) {
-            return backgroundShadowHeadLength + background.paddings.bottom;
+            return backgroundShadowHeadLength + background.paddings.bottom - metrics.margin.length; /*remove the first applet margin*/
         } else if (root.myView.alignment === LatteCore.Types.Bottom) {
-            return backgroundShadowHeadLength + background.paddings.top;
+            return backgroundShadowHeadLength + background.paddings.top - metrics.margin.length; /*remove the first applet margin*/
+        } else if (root.myView.alignment === LatteCore.Types.Center) {
+            return backgroundShadowTailLength - metrics.margin.length; /*remove the first applet margin*/
         }
 
         //! centered case
@@ -268,6 +272,13 @@ Item{
             return LatteCore.Types.BottomEdgeLeftAlign;
         }
     }
+
+    /*Rectangle {
+        anchors.fill: _mainLayout
+        color: "transparent"
+        border.width: 1
+        border.color: "black"
+    }*/
 
     AppletsContainer {
         id: _mainLayout

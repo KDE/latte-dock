@@ -73,9 +73,8 @@ LatteComponents.IndicatorItem{
     /*Rectangle{
         anchors.fill: parent
         border.width: 1
-        border.color: "yellow"
+        border.color: "blue"
         color: "transparent"
-        opacity:0.6
     }*/
 
     function colorBrightness(color) {

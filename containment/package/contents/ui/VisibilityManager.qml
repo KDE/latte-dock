@@ -292,22 +292,35 @@ Item{
             if (root.behaveAsPlasmaPanel
                     || (!parabolic.isEnabled && root.userShowPanelBackground && plasmoid.configuration.panelSize===100)) {
                 if (myView.alignment === LatteCore.Types.Justify) {
+                    //! Justify is using the full LayoutsContainer layout
+
+                    var margintail = layoutsContainer.backgroundTailLength + metrics.margin.length;
+                    var marginhead = layoutsContainer.backgroundHeadLength + metrics.margin.length;
                     if (root.isHorizontal) {
-                        return Qt.rect(layoutsContainer.x + layoutsContainer.backgroundTailLength,
+                        return Qt.rect(layoutsContainer.x + margintail,
                                        layoutsContainer.y,
-                                       layoutsContainer.width - layoutsContainer.backgroundShadowHeadLength - layoutsContainer.backgroundTailLength,
+                                       layoutsContainer.width - margintail - marginhead,
                                        layoutsContainer.height);
                     } else {
                         return Qt.rect(layoutsContainer.x,
-                                       layoutsContainer.y + layoutsContainer.backgroundTailLength,
+                                       layoutsContainer.y + margintail,
                                        layoutsContainer.width,
-                                       layoutsContainer.height - layoutsContainer.backgroundShadowHeadLength - layoutsContainer.backgroundTailLength);
+                                       layoutsContainer.height - margintail - marginhead);
                     }
                 } else {
-                    return Qt.rect(layoutsContainer.mainLayout.x,
-                                   layoutsContainer.mainLayout.y,
-                                   layoutsContainer.mainLayout.width,
-                                   layoutsContainer.mainLayout.height)
+                    //! All the rest alignments are using MainLayout container
+
+                    if (root.isHorizontal) {
+                        return Qt.rect(layoutsContainer.mainLayout.x + metrics.margin.length,
+                                       layoutsContainer.mainLayout.y,
+                                       layoutsContainer.mainLayout.width - 2*metrics.margin.length,
+                                       layoutsContainer.mainLayout.height);
+                    } else {
+                        return Qt.rect(layoutsContainer.mainLayout.x,
+                                       layoutsContainer.mainLayout.y + metrics.margin.length,
+                                       layoutsContainer.mainLayout.width,
+                                       layoutsContainer.mainLayout.height - 2*metrics.margin.length);
+                    }
                 }
             }
 
