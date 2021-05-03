@@ -68,7 +68,7 @@ BackgroundProperties{
     paddings.top: {
         if (hasTopBorder) {
             var themePadding = themeExtendedBackground ? themeExtendedBackground.paddingTop : 0;
-            var customAppliedRadius = customRadiusIsEnabled && root.isVertical ? 0.8 * customRadius : 0;
+            var customAppliedRadius = customRadiusIsEnabled && root.isVertical ? 1.0 * customRadius : 0;
             return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackground.margins.top);
         }
 
@@ -77,7 +77,7 @@ BackgroundProperties{
     paddings.bottom: {
         if (hasBottomBorder) {
             var themePadding = themeExtendedBackground ? themeExtendedBackground.paddingBottom : 0;
-            var customAppliedRadius = customRadiusIsEnabled && root.isVertical ? 0.8 * customRadius : 0;
+            var customAppliedRadius = customRadiusIsEnabled && root.isVertical ? 1.0 * customRadius : 0;
             return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackground.margins.bottom);
         }
 
@@ -87,7 +87,7 @@ BackgroundProperties{
     paddings.left: {
         if (hasLeftBorder) {
             var themePadding = themeExtendedBackground ? themeExtendedBackground.paddingLeft : 0;
-            var customAppliedRadius = customRadiusIsEnabled && root.isHorizontal ? 0.8 * customRadius : 0;
+            var customAppliedRadius = customRadiusIsEnabled && root.isHorizontal ? 1.0 * customRadius : 0;
             return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackground.margins.left);
         }
 
@@ -97,7 +97,7 @@ BackgroundProperties{
     paddings.right: {
         if (hasRightBorder) {
             var themePadding= themeExtendedBackground ? themeExtendedBackground.paddingRight : 0;
-            var customAppliedRadius = customRadiusIsEnabled  && root.isHorizontal ? 0.8 * customRadius : 0;
+            var customAppliedRadius = customRadiusIsEnabled  && root.isHorizontal ? 1.0 * customRadius : 0;
 
             return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackground.margins.right);
         }
