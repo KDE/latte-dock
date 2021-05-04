@@ -840,7 +840,7 @@ PlasmaComponents.ContextMenu {
         enabled: !visualParent.tailItemIsSeparator || !visualParent.headItemIsSeparator
         visible: visualParent.hasShownLauncher
         icon: "add"
-        text: !visualParent.tailItemIsSeparator ? i18nc("add separator","Add %0").arg(tailSeparatorText) : i18nc("add separator","Add %0").arg(headSeparatorText)
+        text: !visualParent.tailItemIsSeparator ? i18nc("add separator","Add %1", tailSeparatorText) : i18nc("add separator","Add %1", headSeparatorText)
 
         onClicked: {
             var pos=visualParent.itemIndex;
@@ -858,7 +858,7 @@ PlasmaComponents.ContextMenu {
         visible: visualParent && visualParent.headItemIsSeparator
 
         icon: "remove"
-        text: i18nc("remove separator", "Remove %0").arg(headSeparatorText)
+        text: i18nc("remove separator", "Remove %1", headSeparatorText)
 
         onClicked: {
             if (visualParent.headItemIsSeparator) {
@@ -872,7 +872,7 @@ PlasmaComponents.ContextMenu {
         visible: visualParent && visualParent.tailItemIsSeparator
 
         icon: "remove"
-        text: i18nc("remove separator", "Remove %0").arg(tailSeparatorText)
+        text: i18nc("remove separator", "Remove %1", tailSeparatorText)
 
         onClicked: {
             if (visualParent.tailItemIsSeparator) {
