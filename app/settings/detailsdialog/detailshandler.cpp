@@ -420,14 +420,14 @@ void DetailsHandler::selectTextColor()
 
 void DetailsHandler::updateWindowTitle()
 {
-    m_dialog->setWindowTitle(i18nc("<layout name> Details","%0 Details").arg(m_ui->layoutsCmb->currentText()));
+    m_dialog->setWindowTitle(i18nc("<layout name> Details","%0 Details", m_ui->layoutsCmb->currentText()));
 }
 
 KMessageBox::ButtonCode DetailsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = c_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes or discard them?").arg(layoutName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes or discard them?", layoutName);
 
         return m_dialog->saveChangesConfirmation(saveChangesText);
     }

@@ -283,8 +283,8 @@ Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
 
     auto showNotificationSucceed = [](QString name, bool updated) {
         auto notification = new KNotification("import-done", KNotification::CloseOnTimeout);
-        notification->setText(updated ? i18nc("indicator_name, imported updated","%0 indicator updated successfully").arg(name) :
-                                        i18nc("indicator_name, imported success","%0 indicator installed successfully").arg(name));
+        notification->setText(updated ? i18nc("indicator_name, imported updated","%0 indicator updated successfully", name) :
+                                        i18nc("indicator_name, imported success","%0 indicator installed successfully", name));
         notification->sendEvent();
     };
 
@@ -373,7 +373,7 @@ void Factory::removeIndicator(QString id)
         KMessageBox::createKMessageBox(dialog,
                                        buttonbox,
                                        QMessageBox::Question,
-                                       i18n("Do you want to remove completely <b>%0</b> indicator from your system?").arg(pluginName),
+                                       i18n("Do you want to remove completely <b>%0</b> indicator from your system?", pluginName),
                                        QStringList(),
                                        QString(),
                                        0,
@@ -383,7 +383,7 @@ void Factory::removeIndicator(QString id)
         connect(buttonbox, &QDialogButtonBox::accepted, [&, id, pluginName]() {
             auto showRemovedSucceed = [](QString name) {
                 auto notification = new KNotification("remove-done", KNotification::CloseOnTimeout);
-                notification->setText(i18nc("indicator_name, removed success","<b>%0</b> indicator removed successfully").arg(name));
+                notification->setText(i18nc("indicator_name, removed success","<b>%0</b> indicator removed successfully", name));
                 notification->sendEvent();
             };
 

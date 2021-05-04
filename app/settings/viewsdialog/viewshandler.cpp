@@ -292,7 +292,7 @@ void ViewsHandler::newView(const Data::Generic &templateData)
         viewfromtemplate.name = templateData.name;
         Data::View newview = m_viewsController->appendViewFromViewTemplate(viewfromtemplate);
 
-        showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...").arg(newview.name),
+        showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...", newview.name),
                           KMessageWidget::Positive);
     }
 }
@@ -416,7 +416,7 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
 
 void ViewsHandler::updateWindowTitle()
 {
-    m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels").arg(m_ui->layoutsCmb->currentText()));
+    m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels", m_ui->layoutsCmb->currentText()));
 }
 
 KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
@@ -426,14 +426,10 @@ KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
     }
 
     if (hasChangedData()) {
-        QString removalTxt = i18n("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?");
-
-        if (viewsCount > 1) {
-            removalTxt = i18n ("You are going to <b>remove %0</b> docks and panels completely from your layout.<br/>Would you like to continue?").arg(viewsCount);
-        }
-
         return KMessageBox::warningYesNo(m_dialog,
-                                         removalTxt,
+                                         i18np("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?",
+                                               "You are going to <b>remove %1</b> docks and panels completely from your layout.<br/>Would you like to continue?",
+                                               viewsCount),
                                          i18n("Approve Removal"));
     }
 
@@ -444,7 +440,7 @@ KMessageBox::ButtonCode ViewsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = o_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes <b>now</b> or discard them?").arg(layoutName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes <b>now</b> or discard them?", layoutName);
 
         return m_dialog->saveChangesConfirmation(saveChangesText);
     }

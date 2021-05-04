@@ -178,7 +178,7 @@ void ExportTemplateHandler::chooseFileDialog()
             if (!file.endsWith(".layout.latte")) {
                 QString selected = file;
                 selected = selected.replace(QDir::homePath(), "~");
-                showInlineMessage(i18n("<i>%0</i> does not end with <i>.layout.latte</i> extension. Selected file <b>rejected</b>.").arg(selected),
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.layout.latte</i> extension. Selected file <b>rejected</b>.", selected),
                                   KMessageWidget::Error,
                                   true);
             } else {
@@ -188,7 +188,7 @@ void ExportTemplateHandler::chooseFileDialog()
             if (!file.endsWith(".view.latte")) {
                 QString selected = file;
                 selected = selected.replace(QDir::homePath(), "~");
-                showInlineMessage(i18n("<i>%0</i> does not end with <i>.view.latte</i> extension. Selected file <b>rejected</b>.").arg(selected),
+                showInlineMessage(i18n("<i>%0</i> does not end with <i>.view.latte</i> extension. Selected file <b>rejected</b>.", selected),
                                   KMessageWidget::Error,
                                   true);
             } else {
@@ -215,7 +215,7 @@ void ExportTemplateHandler::onExport()
 
     //! Proceed with export
     auto showExportTemplateError = [this](const QString &templateName) {
-        showInlineMessage(i18nc("settings:template export fail","Template <b>%0</b> export <b>failed</b>...").arg(templateName),
+        showInlineMessage(i18nc("settings:template export fail","Template <b>%0</b> export <b>failed</b>...", templateName),
                           KMessageWidget::Error,
                           true);
     };
@@ -247,7 +247,7 @@ void ExportTemplateHandler::onExport()
             }
         });
 
-        showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...").arg(curbasename),
+        showInlineMessage(i18nc("settings:template export success","Template <b>%0</b> export succeeded...", curbasename),
                           KMessageWidget::Positive,
                           false,
                           actions);
@@ -309,7 +309,7 @@ void ExportTemplateHandler::save()
 bool ExportTemplateHandler::overwriteConfirmation(const QString &fileName)
 {
     return (KMessageBox::warningYesNo(m_dialog,
-                                      i18n("The file \"%0\" already exists. Do you wish to overwrite it?").arg(fileName),
+                                      i18n("The file \"%0\" already exists. Do you wish to overwrite it?", fileName),
                                       i18n("Overwrite File?"),
                                       KStandardGuiItem::overwrite(),
                                       KStandardGuiItem::cancel()) == KMessageBox::Yes);

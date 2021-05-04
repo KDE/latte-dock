@@ -762,7 +762,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
 
             if (!m_viewsTable[row].onPrimary && !currentScreens.containsId(QString::number(m_viewsTable[row].screen))) {
                 Data::Screen explicitScr(QString::number(m_viewsTable[row].screen),
-                                         i18nc("unknown screen", "Unknown : [%0]").arg(explicitScr.id));
+                                         i18nc("unknown screen", "Unknown : [%0]", explicitScr.id));
                 currentScreens.insertBasedOnId(explicitScr);
             }
 
@@ -848,7 +848,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
                 if (s_screens.containsId(scrId)) {
                     return s_screens[scrId].name;
                 } else {
-                    return i18nc("unknown screen", "Unknown : [%0]").arg(scrId);
+                    return i18nc("unknown screen", "Unknown : [%0]", scrId);
                 }
             }
         } else if (role == Qt::UserRole) {

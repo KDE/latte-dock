@@ -479,7 +479,7 @@ bool SettingsDialog::saveChanges()
         || (m_acceptedPage == PreferencesPage && m_tabPreferencesHandler->hasChangedData())) {
 
         QString tabName = m_ui->tabWidget->tabBar()->tabText(m_acceptedPage).remove("&");
-        QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed.<br/>Do you want to apply the changes or discard them?").arg(tabName);
+        QString saveChangesText = i18n("The settings of <b>%0</b> tab have changed.<br/>Do you want to apply the changes or discard them?", tabName);
 
         KMessageBox::ButtonCode result = saveChangesConfirmation(saveChangesText);
 

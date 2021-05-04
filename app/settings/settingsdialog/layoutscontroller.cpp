@@ -535,9 +535,10 @@ void Layouts::initialMessageForErroredLayouts(const int &count)
     }
 
     m_handler->showInlineMessage(i18ncp("settings:counted layout with errors",
-                                           "<b>Error:</b> There is <b>1 layout</b> that has reported errors.",
-                                           "<b>Error:</b> There are <b>%0 layouts</b> that have reported errors.",
-                                           count).arg(count),
+                                        "<b>Error:</b> There is <b>1 layout</b> that has reported errors.",
+                                        "<b>Error:</b> There are <b>%0 layouts</b> that have reported errors.",
+                                        count,
+                                        count),
                                      KMessageWidget::Error);
 }
 
@@ -548,9 +549,9 @@ void Layouts::initialMessageForWarningLayouts(const int &count)
     }
 
     m_handler->showInlineMessage(i18ncp("settings:counted layout with warnings",
-                                           "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings.",
-                                           "<b>Warning:</b> There are <b>%0 layouts</b> that have reported warnings.",
-                                           count).arg(count),
+                                        "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings.",
+                                        "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings.",
+                                        count),
                                      KMessageWidget::Warning);
 }
 
@@ -576,21 +577,28 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
     if (!layout.hasErrors() && layout.hasWarnings()) {
         //! add only warnings first
         m_handler->showInlineMessage(i18nc("settings:layout with warnings",
-                                           "<b>Warning: %0</b> layout has reported <b>%1 warning(s)</b> that need your attention.").arg(layout.name).arg(layout.warnings),
+                                           "<b>Warning: %0</b> layout has reported <b>%1 warning(s)</b> that need your attention.",
+                                           layout.name,
+                                           layout.warnings),
                                      KMessageWidget::Warning,
                                      false,
                                      actions);
     } else if (layout.hasErrors() && !layout.hasWarnings()) {
         //! add errors in the end in order to be read by the user
         m_handler->showInlineMessage(i18nc("settings:layout with errors",
-                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors),
+                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> that you need to repair.",
+                                           layout.name,
+                                           layout.errors),
                                      KMessageWidget::Error,
                                      true,
                                      actions);
     } else if (layout.hasErrors() && layout.hasWarnings()) {
         //! add most important errors in the end in order to be read by the user
         m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
-                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.").arg(layout.name).arg(layout.errors).arg(layout.warnings),
+                                           "<b>Error: %0</b> layout has reported <b>%1 error(s)</b> and <b>%2 warning(s)</b> that you need to repair.",
+                                           layout.name,
+                                           layout.errors,
+                                           layout.warnings),
                                      KMessageWidget::Error,
                                      true,
                                      actions);
@@ -813,10 +821,10 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
 
             if (importedlayouts.count() > 0) {
                 if (importedlayouts.count() == 1) {
-                    m_handler->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...").arg(importedlayouts[0]),
+                    m_handler->showInlineMessage(i18n("Layout <b>%0</b> imported successfully...", importedlayouts[0]),
                             KMessageWidget::Positive);
                 } else {
-                    m_handler->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...").arg(importedlayouts.join(",")),
+                    m_handler->showInlineMessage(i18n("Layouts <b>%0</b> imported successfully...", importedlayouts.join(",")),
                                                  KMessageWidget::Positive);
                 }
 
@@ -1024,7 +1032,7 @@ void Layouts::onNameDuplicatedFrom(const QString &provenId, const QString &trial
     int originalRow = m_model->rowForId(provenId);
     Latte::Data::Layout provenLayout = m_model->at(originalRow);
 
-    m_handler->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...").arg(provenLayout.name),
+    m_handler->showInlineMessage(i18nc("settings: layout name used","Layout <b>%0</b> is already used, please provide a different name...", provenLayout.name),
                                  KMessageWidget::Error);
 
     QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);

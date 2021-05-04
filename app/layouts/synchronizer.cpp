@@ -474,7 +474,7 @@ void Synchronizer::hideAllViews()
 
 void Synchronizer::pauseLayout(QString layoutName)
 {
-    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {        
+    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
         CentralLayout *layout = centralLayout(layoutName);
 
         if (layout->isOnAllActivities()) {
@@ -928,11 +928,12 @@ void Synchronizer::syncMultipleLayoutsToActivities()
     }
 
     if (m_manager->corona()->universalSettings()->showInfoWindow()) {
-        if (newlyActivatedLayouts.count() == 1) {
-            m_manager->showInfoWindow(i18n("Activating layout: <b>%0</b> ...").arg(newlyActivatedLayouts[0]), 4000, QStringList(Data::Layout::ALLACTIVITIESID));
-        } else if (newlyActivatedLayouts.count() > 1) {
-            m_manager->showInfoWindow(i18n("Activating layouts: <b>%0</b> ...").arg(newlyActivatedLayouts.join(", ")), 4000, QStringList(Data::Layout::ALLACTIVITIESID));
-        }
+        m_manager->showInfoWindow(i18np("Activating layout: <b>%2</b> ...",
+                                        "Activating layouts: <b>%3</b> ...",
+                                        newlyActivatedLayouts.count(),
+                                        newlyActivatedLayouts[0],
+                                  newlyActivatedLayouts.join(", ")),
+                4000, QStringList(Data::Layout::ALLACTIVITIESID));
     }
 
     //! Unload no needed Layouts
