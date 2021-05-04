@@ -795,14 +795,22 @@ void GenericLayout::destroyedChanged(bool destroyed)
         return;
     }
 
+    Latte::View *view;
+
     if (destroyed) {
-        m_waitingLatteViews[sender] = m_latteViews.take(static_cast<Plasma::Containment *>(sender));
+        view = m_latteViews.take(static_cast<Plasma::Containment *>(sender));
+        m_waitingLatteViews[sender] = view;
     } else {
-        m_latteViews[sender] = m_waitingLatteViews.take(static_cast<Plasma::Containment *>(sender));
+        view = m_waitingLatteViews.take(static_cast<Plasma::Containment *>(sender));
+        m_latteViews[sender] =view;
     }
 
-    emit viewEdgeChanged();
-    emit viewsCountChanged();
+    if (view) {
+        emit m_corona->availableScreenRectChangedFrom(view);
+        emit m_corona->availableScreenRegionChangedFrom(view);
+        emit viewEdgeChanged();
+        emit viewsCountChanged();
+    }
 }
 
 void GenericLayout::renameLayout(QString newName)
@@ -1675,11 +1683,10 @@ void GenericLayout::removeOrphanedSubContainment(const int &containmentId)
 
 void GenericLayout::destroyContainment(Plasma::Containment *containment)
 {
-    if (!containment) {
+    if (!containment || !m_corona || !contains(containment)) {
         return;
     }
 
-    m_containments.removeAll(containment);
     containment->setImmutability(Plasma::Types::Mutable);
     containment->destroy();
 }
