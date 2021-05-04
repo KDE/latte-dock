@@ -221,7 +221,7 @@ void Manager::loadLayoutOnStartup(QString layoutName)
         KMessageBox::createKMessageBox(dialog,
                                        buttonbox,
                                        QMessageBox::Warning,
-                                       i18n("<b>Multiple Layouts based on Activities</b> mode did not close properly during the last session.<br/><br/>The following layout(s) <b>[ %0 ]</b> had to be updated for consistency!",
+                                       i18n("<b>Multiple Layouts based on Activities</b> mode did not close properly during the last session.<br/><br/>The following layout(s) <b>[ %1 ]</b> had to be updated for consistency!",
                                             layouts.join(",")),
                                        QStringList(),
                                        QString(),

@@ -683,7 +683,7 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
     }
 
     //! construct message
-    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/>",error.id, error.name);
+    QString message = i18nc("error id and title", "<b>Error #%1: %2</b> <br/>",error.id, error.name);
     message += "<br/>";
     message += i18n("In your layout there are two or more applets with same id. Such situation can create crashes, abnormal behavior and data loss when you activate and use this layout.<br/>");
 
@@ -696,7 +696,7 @@ void Views::messageForErrorAppletsWithSameId(const Data::Error &error)
         QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = error.information[i].containment.storageId;
         message += i18nc("applets with same id error, applet name, applet id, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>",
                          appletname,
                          appletstorageid,
                          containmentname,
@@ -720,7 +720,7 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
     }
 
     //! construct message
-    QString message = i18nc("error id and title", "<b>Error #%0: %1</b> <br/><br/>", error.id, error.name);
+    QString message = i18nc("error id and title", "<b>Error #%1: %2</b> <br/><br/>", error.id, error.name);
     message += i18n("In your layout there are orphaned pseudo applets that link to unexistent subcontainments. Such case is for example a systemtray that has lost connection with its child applets. Such situation can create crashes, abnormal behavior and data loss when you activate and use this layout.<br/>");
 
     message += "<br/>";
@@ -736,7 +736,7 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
         QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = error.information[i].containment.storageId;
         message += i18nc("orphaned pseudo applets, applet name, applet id, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>",
                          appletname,
                          appletstorageid,
                          containmentname,
@@ -754,7 +754,7 @@ void Views::messageForErrorOrphanedParentAppletOfSubContainment(const Data::Erro
         QString containmentname = viewname.isEmpty() ? error.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = error.information[i].containment.storageId;
         message += i18nc("orphaned subcontainments, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>",
                          containmentname,
                          containmentstorageid);
     }
@@ -775,7 +775,7 @@ void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning 
     }
 
     //! construct message
-    QString message = i18nc("warning id and title", "<b>Warning #%0: %1</b> <br/><br/>", warning.id, warning.name);
+    QString message = i18nc("warning id and title", "<b>Warning #%1: %2</b> <br/><br/>", warning.id, warning.name);
     message += i18n("In your layout there are applets and containments with the same id. Such situation is not dangerous but it should not occur.<br/>");
 
     message += "<br/>";
@@ -791,7 +791,7 @@ void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning 
         QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = warning.information[i].containment.storageId;
         message += i18nc("applets, applet name, applet id, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] inside  <b>%2</b> [#%3]<br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>",
                          appletname,
                          appletstorageid,
                          containmentname,
@@ -809,7 +809,7 @@ void Views::messageForWarningAppletAndContainmentWithSameId(const Data::Warning 
         QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = warning.information[i].containment.storageId;
         message += i18nc("containments, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>",
                          containmentname,
                          containmentstorageid);
     }
@@ -832,7 +832,7 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     QList<int> orphaned;
 
     //! construct message
-    QString message = i18nc("warning id and title", "<b>Warning #%0: %1</b> <br/><br/>", warning.id, warning.name);
+    QString message = i18nc("warning id and title", "<b>Warning #%1: %2</b> <br/><br/>", warning.id, warning.name);
     message += i18n("In your layout there are orphaned subcontainments that are not used by any dock or panel. Such situation is not dangerous but it is advised to remove them in order to reduce memory usage.<br/>");
 
     message += "<br/>";
@@ -846,7 +846,7 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
         QString containmentname = viewname.isEmpty() ? warning.information[i].containment.visibleName() : viewname;
         QString containmentstorageid = warning.information[i].containment.storageId;
         message += i18nc("orphaned subcontainments, containment name, containment id",
-                         "&nbsp;&nbsp;• <b>%0</b> [#%1] <br/>",
+                         "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>",
                          containmentname,
                          containmentstorageid);
 

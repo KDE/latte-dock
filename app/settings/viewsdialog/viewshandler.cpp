@@ -292,7 +292,7 @@ void ViewsHandler::newView(const Data::Generic &templateData)
         viewfromtemplate.name = templateData.name;
         Data::View newview = m_viewsController->appendViewFromViewTemplate(viewfromtemplate);
 
-        showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%0</b> added successfully...", newview.name),
+        showInlineMessage(i18nc("settings:dock/panel added successfully","<b>%1</b> added successfully...", newview.name),
                           KMessageWidget::Positive);
     }
 }
@@ -416,7 +416,9 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
 
 void ViewsHandler::updateWindowTitle()
 {
-    m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels","%0 Docks/Panels", m_ui->layoutsCmb->currentText()));
+    m_dialog->setWindowTitle(i18nc("<layout name> Docks/Panels",
+                                   "%1 Docks/Panels",
+                                   m_ui->layoutsCmb->currentText()));
 }
 
 KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
@@ -440,7 +442,7 @@ KMessageBox::ButtonCode ViewsHandler::saveChangesConfirmation()
 {
     if (hasChangedData()) {
         QString layoutName = o_data.name;
-        QString saveChangesText = i18n("The settings of <b>%0</b> layout have changed.<br/>Do you want to apply the changes <b>now</b> or discard them?", layoutName);
+        QString saveChangesText = i18n("The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the changes <b>now</b> or discard them?", layoutName);
 
         return m_dialog->saveChangesConfirmation(saveChangesText);
     }
