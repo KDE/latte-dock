@@ -575,29 +575,40 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
 
     if (!layout.hasErrors() && layout.hasWarnings()) {
         //! add only warnings first
-        m_handler->showInlineMessage(i18nc("settings:layout with warnings",
-                                           "<b>Warning: %1</b> layout has reported <b>%2 warning(s)</b> that need your attention.",
-                                           layout.name,
-                                           layout.warnings),
+        m_handler->showInlineMessage(i18ncp("settings:named layout with warnings",
+                                            "<b>Warning: %2</b> layout has reported <b>1 warning</b> that need your attention.",
+                                            "<b>Warning: %2</b> layout has reported <b>%1 warnings</b> that need your attention.",
+                                            layout.warnings,
+                                            layout.name),
                                      KMessageWidget::Warning,
                                      false,
                                      actions);
     } else if (layout.hasErrors() && !layout.hasWarnings()) {
         //! add errors in the end in order to be read by the user
-        m_handler->showInlineMessage(i18nc("settings:layout with errors",
-                                           "<b>Error: %1</b> layout has reported <b>%2 error(s)</b> that you need to repair.",
-                                           layout.name,
-                                           layout.errors),
+        m_handler->showInlineMessage(i18nc("settings:named layout with errors",
+                                           "<b>Error: %2</b> layout has reported <b>1 error</b> that you need to repair.",
+                                           "<b>Error: %2</b> layout has reported <b>%1 errors</b> that you need to repair.",
+                                           layout.errors,
+                                           layout.name),
                                      KMessageWidget::Error,
                                      true,
                                      actions);
     } else if (layout.hasErrors() && layout.hasWarnings()) {
         //! add most important errors in the end in order to be read by the user
-        m_handler->showInlineMessage(i18nc("settings:layout with errors and warnings",
-                                           "<b>Error: %1</b> layout has reported <b>%2 error(s)</b> and <b>%3 warning(s)</b> that you need to repair.",
+        QString errorstr = i18np("errors count",
+                                 "1 error",
+                                 "%1 errors",
+                                 layout.errors);
+        QString warningstr = i18np("warnings count",
+                                   "1 warning",
+                                   "%1 warnings",
+                                   layout.warnings);
+
+        m_handler->showInlineMessage(i18nc("settings: named layout with %2 errors and %3 warnings",
+                                           "<b>Error: %1</b> layout has reported <b>%2</b> and <b>%3</b> that you need to repair.",
                                            layout.name,
-                                           layout.errors,
-                                           layout.warnings),
+                                           errorstr,
+                                           warningstr),
                                      KMessageWidget::Error,
                                      true,
                                      actions);
