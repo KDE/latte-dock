@@ -38,7 +38,7 @@ Item{
     readonly property bool containsMouse: rulerMouseArea.containsMouse
     readonly property int thickness: theme.defaultFont.pixelSize
 
-    readonly property string tooltip: i18nc("maximum length tooltip, %0% is maximum length percentage","You can use mouse wheel to change maximum length of %0%").arg(plasmoid.configuration.maxLength)
+    readonly property string tooltip: i18nc("maximum length tooltip, %1 is maximum length percentage","You can use mouse wheel to change maximum length of %1%",plasmoid.configuration.maxLength)
 
     readonly property int userMaxLength: {
         if (root.isHorizontal) {

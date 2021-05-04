@@ -112,7 +112,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in pixels, e.g. 12 px.", "%0 px.").arg(appletsSizeSlider.value)
+                        text: i18nc("number in pixels, e.g. 12 px.", "%1 px.", appletsSizeSlider.value)//.arg(appletsSizeSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -170,8 +170,8 @@ PlasmaComponents.Page {
 
                         text: proportionSizeSlider.value !== proportionSizeSlider.from ?
                                   (absoluteSizeLblMouseArea.containsMouse ?
-                                       i18nc("number in pixels, e.g. 64 px.","%0 px.").arg(latteView.metrics.maxIconSize) :
-                                       i18nc("number in percentage, e.g. 85 %","%0 %").arg(proportionSizeSlider.value.toFixed(1))) :
+                                       i18nc("number in pixels, e.g. 64 px.","%1 px.", latteView.metrics.maxIconSize) :
+                                       i18nc("number in percentage, e.g. 85 %","%1 %", proportionSizeSlider.value.toFixed(1))) :
                                   i18nc("no value in percentage","--- %")
                         horizontalAlignment: Text.AlignRight
                         enabled: proportionSizeSlider.value !== proportionSizeSlider.from
@@ -225,7 +225,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(Number((zoomSlider.value * 100) - 100).toFixed(0))
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", Number((zoomSlider.value * 100) - 100).toFixed(0))
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -332,7 +332,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(maxLengthSlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", maxLengthSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -415,7 +415,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(minLengthSlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", minLengthSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -545,7 +545,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(offsetSlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", offsetSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -629,8 +629,8 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         text: lengthMarginLblMouseArea.containsMouse ?
-                                  i18nc("number in pixels, e.g. 8 px.","%0 px.").arg(currentValueInPixels) :
-                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(lengthExtMarginSlider.value)
+                                  i18nc("number in pixels, e.g. 8 px.","%1 px.", currentValueInPixels) :
+                                  i18nc("number in percentage, e.g. 85 %","%1 %", lengthExtMarginSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -675,8 +675,8 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         text: thickMarginLblMouseArea.containsMouse ?
-                                  i18nc("number in pixels, e.g. 8 px.","%0 px.").arg(currentValueInPixels) :
-                                  i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+                                  i18nc("number in pixels, e.g. 8 px.","%1 px.", currentValueInPixels) :
+                                  i18nc("number in percentage, e.g. 85 %","%1 %", currentValue)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -720,7 +720,7 @@ PlasmaComponents.Page {
                     }
 
                     PlasmaComponents.Label {
-                        text: currentValue < 0 ? "---" : i18nc("number in pixels, e.g. 85 px.","%0 px.").arg(currentValue)
+                        text: currentValue < 0 ? "---" : i18nc("number in pixels, e.g. 85 px.","%1 px.", currentValue)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -908,7 +908,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: showBackground.checked
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(panelSizeSlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", panelSizeSlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -958,7 +958,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: transparencySlider.enabled
-                        text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(transparencySlider.value)
+                        text: i18nc("number in percentage, e.g. 85 %","%1 %", transparencySlider.value)
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -1000,7 +1000,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: radiusSlider.enabled
-                        text: radiusSlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%0 %").arg(radiusSlider.value) : i18nc("Default word abbreviation", "Def.")
+                        text: radiusSlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%1 %", radiusSlider.value) : i18nc("Default word abbreviation", "Def.")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
@@ -1043,7 +1043,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: shadowSlider.enabled
-                        text: shadowSlider.value >= 0 ? i18nc("number in pixels, e.g. 12 px.", "%0 px.").arg(shadowSlider.value ) : i18nc("Default word abbreviation", "Def.")
+                        text: shadowSlider.value >= 0 ? i18nc("number in pixels, e.g. 12 px.", "%1 px.", shadowSlider.value ) : i18nc("Default word abbreviation", "Def.")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4

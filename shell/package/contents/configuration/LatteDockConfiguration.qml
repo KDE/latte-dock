@@ -151,8 +151,8 @@ Loader {
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             text: dialog.advancedLevel ?
-                      i18nc("view settings width scale","Width %0%").arg(userScaleWidth * 100) :
-                      i18nc("view settings width scale","Width %0% / Height %1%").arg(userScaleWidth * 100).arg(userScaleHeight * 100)
+                      i18nc("view settings width scale","Width %1%",userScaleWidth * 100) :
+                      i18nc("view settings width scale","Width %1% / Height %2%", userScaleWidth * 100, userScaleHeight * 100)
             visible: dragCorner.isActive
         }
 
@@ -358,7 +358,7 @@ Loader {
                     model: latteView.extendedInterface.latteTasksModel
 
                     PlasmaComponents.TabButton {
-                        text: index >= 1 ? i18nc("tasks header and index","Tasks <%0>").arg(index+1) : i18n("Tasks")
+                        text: index >= 1 ? i18nc("tasks header and index","Tasks <%1>", index+1) : i18n("Tasks")
                         onCheckedChanged: {
                             if (checked && pagesStackView.currentItem !== tasksRepeater.itemAt(index)) {
                                 pagesStackView.forwardSliding = (pagesStackView.currentItem.pageIndex > (tabBar.visibleStaticPages + index));

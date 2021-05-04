@@ -104,8 +104,8 @@ Loader {
 
             property bool wheelIsBlocked: false;
             readonly property double opacityStep: 0.1
-            readonly property string tooltip: i18nc("opacity for background under edit mode, %0% is opacity percentage",
-                                                    "You can use mouse wheel to change background opacity of %0%").arg(Math.round(plasmoid.configuration.editBackgroundOpacity * 100))
+            readonly property string tooltip: i18nc("opacity for background under edit mode, %1 is opacity percentage",
+                                                    "You can use mouse wheel to change background opacity of %1%",Math.round(plasmoid.configuration.editBackgroundOpacity * 100))
 
             onWheel: {
                 processWheel(wheel);

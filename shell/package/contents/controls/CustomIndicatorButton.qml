@@ -30,7 +30,7 @@ LatteComponents.ComboBoxButton{
     checkable: true
 
     buttonToolTip:  custom.type === "download:" ? i18n("Download indicator styles from the internet") :
-                                                  i18n("Use %0 style for your indicators").arg(buttonText)
+                                                  i18n("Use %1 style for your indicators", buttonText)
 
     buttonIsTransparent: true
     comboBoxButtonIsTransparent: true
