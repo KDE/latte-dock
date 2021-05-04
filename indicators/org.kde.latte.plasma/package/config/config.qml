@@ -64,7 +64,7 @@ ColumnLayout {
         }
 
         PlasmaComponents.Label {
-            text: i18nc("number in percentage, e.g. 85 %","%0 %").arg(currentValue)
+            text: i18nc("number in percentage, e.g. 85 %","%1 %", currentValue)
             horizontalAlignment: Text.AlignRight
             Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
             Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
