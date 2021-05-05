@@ -595,11 +595,11 @@ void Layouts::messageForErroredLayout(const Data::Layout &layout)
                                      actions);
     } else if (layout.hasErrors() && layout.hasWarnings()) {
         //! add most important errors in the end in order to be read by the user
-        QString errorstr = i18np("errors count",
+        QString errorstr = i18ncp("errors count",
                                  "1 error",
                                  "%1 errors",
                                  layout.errors);
-        QString warningstr = i18np("warnings count",
+        QString warningstr = i18ncp("warnings count",
                                    "1 warning",
                                    "%1 warnings",
                                    layout.warnings);
