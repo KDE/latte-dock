@@ -27,6 +27,7 @@
 #include <QObject>
 #include <QQmlPropertyMap>
 #include <QQuickItem>
+#include <QTimer>
 
 namespace KDeclarative {
 class ConfigPropertyMap;
@@ -48,6 +49,8 @@ class LayoutManager : public QObject
     Q_PROPERTY(QQuickItem *dndSpacerItem READ dndSpacer WRITE setDndSpacer NOTIFY dndSpacerChanged)
     Q_PROPERTY(QQuickItem *metrics READ metrics WRITE setMetrics NOTIFY metricsChanged)
 
+    Q_PROPERTY(bool hasRestoredApplets READ hasRestoredApplets NOTIFY hasRestoredAppletsChanged)
+
     //! this is the only way I have found to write their values properly in the configuration file in Multiple mode
     //! if they are not used from qml side in the form of plasmoid.configuration..... then
     //! appletsOrder is not stored when needed and applets additions/removals are not valid on next startup
@@ -59,6 +62,8 @@ class LayoutManager : public QObject
 
 public:
     LayoutManager(QObject *parent = nullptr);
+
+    bool hasRestoredApplets() const;
 
     int splitterPosition() const;
     int splitterPosition2() const;
@@ -104,6 +109,7 @@ public slots:
 
 signals:
     void appletOrderChanged();
+    void hasRestoredAppletsChanged();
     void plasmoidChanged();
     void rootItemChanged();
     void dndSpacerChanged();
@@ -165,6 +171,9 @@ private:
 
     QMetaMethod m_createAppletItemMethod;
     QMetaMethod m_createJustifySplitterMethod;
+
+    bool m_hasRestoredApplets{false};
+    QTimer m_hasRestoredAppletsTimer;
 
     //! first QString is the option in AppletItem
     //! second QString is how the option is stored in

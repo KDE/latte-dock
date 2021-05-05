@@ -43,6 +43,18 @@ LayoutManager::LayoutManager(QObject *parent)
     m_option["userBlocksColorizing"] = "userBlocksColorizingApplets";
 
     connect(this, &LayoutManager::rootItemChanged, this, &LayoutManager::onRootItemChanged);
+
+    m_hasRestoredAppletsTimer.setInterval(2000);
+    m_hasRestoredAppletsTimer.setSingleShot(true);
+    connect(&m_hasRestoredAppletsTimer, &QTimer::timeout, this, [&]() {
+        m_hasRestoredApplets = true;
+        emit hasRestoredAppletsChanged();
+    });
+}
+
+bool LayoutManager::hasRestoredApplets() const
+{
+    return m_hasRestoredApplets;
 }
 
 int LayoutManager::splitterPosition() const
@@ -397,6 +409,8 @@ void LayoutManager::restore()
 
     restoreOptions();
     save();
+
+    m_hasRestoredAppletsTimer.start();
 }
 
 void LayoutManager::restoreOptions()

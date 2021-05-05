@@ -193,7 +193,8 @@ Item {
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
     property bool inFullJustify: (plasmoid.configuration.alignment === LatteCore.Types.Justify) && (maxLengthPerCentage===100)
-    property bool inStartup: true
+    property bool inStartup: !fastLayoutManager.hasRestoredApplets
+
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
 
@@ -543,8 +544,6 @@ Item {
         fastLayoutManager.restore();
         plasmoid.action("configure").visible = !plasmoid.immutable;
         plasmoid.action("configure").enabled = !plasmoid.immutable;
-
-        inStartupTimer.start();
     }
 
     Component.onDestruction: {
@@ -1064,14 +1063,9 @@ Item {
     ///////////////BEGIN TIMER elements
 
     //! It is used in order to slide-in the latteView on startup
-    Timer{
-        id: inStartupTimer
-        interval: 1500
-        repeat: false
-        onTriggered: {
-            if (inStartup) {
-                visibilityManager.slotMustBeShown();
-            }
+    onInStartupChanged: {
+        if (!inStartup) {
+            visibilityManager.slotMustBeShown();
         }
     }
 

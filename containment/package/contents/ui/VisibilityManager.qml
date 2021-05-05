@@ -81,7 +81,7 @@ Item{
         target: latteView
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
-        when: latteView && !inRelocationHiding && !inClientSideScreenEdgeSliding && !inStartup
+        when: latteView && !inRelocationHiding && !inClientSideScreenEdgeSliding //&& !inStartup
         value: root.behaveAsPlasmaPanel ? thicknessAsPanel : metrics.mask.thickness.maxZoomed
     }
 
@@ -256,7 +256,7 @@ Item{
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
         property: "drawEffects"
-        when: latteView && latteView.effects
+        when: latteView && latteView.effects && !root.inStartup
         value: LatteCore.WindowSystem.compositingActive
                && (((root.blurEnabled && root.useThemePanel)
                     || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
@@ -570,11 +570,6 @@ Item{
             return;
         }
 
-        //! prevent sliding-in on startup if the dodge modes have sent a hide signal
-        if (inStartupTimer.running && root.inStartup) {
-            root.inStartup = false;
-        }
-
         //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenOut.running
                 && !latteView.visibility.blockHiding
@@ -853,7 +848,8 @@ Item{
 
         ScriptAction{
             script: {
-                root.inStartup = false;
+                // deprecated
+                // root.inStartup = false;
             }
         }
 
