@@ -258,8 +258,7 @@ Item{
         property: "drawEffects"
         when: latteView && latteView.effects && !root.inStartup
         value: LatteCore.WindowSystem.compositingActive
-               && (((root.blurEnabled && root.useThemePanel)
-                    || (root.blurEnabled && root.forceSolidPanel && LatteCore.WindowSystem.compositingActive))
+               && (((root.blurEnabled && root.useThemePanel) || (root.blurEnabled && root.forceSolidPanel))
                    && (!root.inStartup || inRelocationHiding))
     }
 
@@ -376,10 +375,10 @@ Item{
         when: latteView && latteView.visibility
         value: root.hasFloatingGapInputEventsDisabled
                && (latteView.visibility.mode === LatteCore.Types.AutoHide
-               || latteView.visibility.mode === LatteCore.Types.DodgeActive
-               || latteView.visibility.mode === LatteCore.Types.DodgeAllWindows
-               || latteView.visibility.mode === LatteCore.Types.DodgeMaximized
-               || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)
+                   || latteView.visibility.mode === LatteCore.Types.DodgeActive
+                   || latteView.visibility.mode === LatteCore.Types.DodgeAllWindows
+                   || latteView.visibility.mode === LatteCore.Types.DodgeMaximized
+                   || latteView.visibility.mode === LatteCore.Types.SidebarAutoHide)
     }
 
     //! View::WindowsTracker bindings
@@ -449,7 +448,7 @@ Item{
         onXChanged: updateMaskArea();
         onYChanged: updateMaskArea()
         onWidthChanged: updateMaskArea();
-        onHeightChanged: updateMaskArea();        
+        onHeightChanged: updateMaskArea();
     }
 
     Connections{
