@@ -29,11 +29,13 @@ LatteComponents.ComboBoxButton{
     id: custom
     checkable: true
 
-    buttonToolTip:  custom.type === "download:" ? i18n("Download indicator styles from the internet") :
-                                                  i18n("Use %1 style for your indicators", buttonText)
+    buttonToolTip:  custom.type === "install:" ? i18n("Install indicators from KDE Online Store or local files") :
+                                                 i18n("Use %1 style for your indicators", buttonText)
 
     buttonIsTransparent: true
+    buttonIsTriggeringMenu: true
     comboBoxButtonIsTransparent: true
+    comboBoxButtonIsVisible: latteView.indicator.customPluginsCount > 0
 
     comboBoxTextRole: "name"
     comboBoxIconRole: "icon"
@@ -69,7 +71,7 @@ LatteComponents.ComboBoxButton{
                 custom.updateButtonInformation();
             }
         }
-    }  
+    }
 
     Connections{
         target: custom.button
@@ -116,17 +118,15 @@ LatteComponents.ComboBoxButton{
     }
 
     function onButtonIsPressed() {
-        if (custom.type === "download:") {
-            latteView.indicator.downloadIndicator();
-        } else {
+        if (custom.type !== "install:") {
             latteView.indicator.type = custom.type;
         }
     }
 
     function updateButtonInformation() {
         if (latteView.indicator.customPluginsCount === 0) {
-            custom.buttonText = i18n("Download");
-            custom.type = "download:";
+            custom.buttonText = i18n("Install...");
+            custom.type = "install:";
             custom.checkable = false;
         } else {
             custom.checkable = true;

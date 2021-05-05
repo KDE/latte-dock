@@ -52,6 +52,7 @@ Rectangle {
     property bool comboBoxForcePressed: false
     property bool comboBoxPopUpAlignRight: true
     property bool comboBoxButtonIsTransparent: false
+    property bool comboBoxButtonIsVisible: true
     property int comboBoxMinimumPopUpWidth: 150
     property int comboBoxPopupTextHorizontalAlignment: Text.AlignLeft
     property string comboBoxEnabledRole: ""
@@ -60,6 +61,8 @@ Rectangle {
     property string comboBoxIconToolTipRole: ""
     property string comboBoxIconOnlyWhenHoveredRole: ""
     property string comboBoxIsSeparatorRole: ""
+
+    readonly property bool isButtonIndicatingMenuPopup: buttonIsTriggeringMenu && !comboBoxButtonIsVisible && mainComboBox.popup.visible
 
     signal iconClicked(int index);
 
@@ -80,7 +83,7 @@ Rectangle {
         LayoutMirroring.enabled: false
         enabled: buttonEnabled
         checked: root.checked || (buttonIsTriggeringMenu && mainComboBox.popup.visible)
-        visible: buttonIsTransparent ? 0 : 1
+        opacity: buttonIsTransparent && !isButtonIndicatingMenuPopup ? 0 : 1
 
         /*workaround in order to replicate the proper Buttons Exclusive Group Behavior*/
         checkable: root.checkable && !parent.exclusiveGroup
@@ -124,6 +127,7 @@ Rectangle {
         height: parent.height
 
         enabled: comboBoxEnabled
+        visible: comboBoxButtonIsVisible
 
         enabledRole: comboBoxEnabledRole
         iconRole: comboBoxIconRole
@@ -155,7 +159,7 @@ Rectangle {
         text: buttonText
         font: mainButton.font
         color: buttonIsTransparent ? theme.textColor : theme.buttonTextColor
-        visible: root.checkable
+        visible: root.checkable || (mainButton.opacity === 0)
 
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
