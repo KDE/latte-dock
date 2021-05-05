@@ -33,7 +33,7 @@ LatteComponents.ComboBoxButton{
                                                  i18n("Use %1 style for your indicators", buttonText)
 
     buttonIsTransparent: true
-    buttonIsTriggeringMenu: true
+    buttonIsTriggeringMenu: custom.type === "install:"
     comboBoxButtonIsTransparent: true
     comboBoxButtonIsVisible: latteView.indicator.customPluginsCount > 0
 

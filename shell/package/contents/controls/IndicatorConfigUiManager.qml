@@ -28,11 +28,6 @@ Item {
 
     property Item stackView: null
 
-    //! it is used during first window creation in order to avoid clearing custom indicators from its views
-    //! when the window is created the current view indicator type is stored and restored after
-    //! the tabBar of indicators has completed its creation/initialization
-    property string typeDuringCreation: ""
-
     Item {
         id: hiddenIndicatorPage
         anchors.fill: parent
@@ -48,7 +43,7 @@ Item {
 
             //var pageShown = stackView.currentItem ? 1 : 0;
             //var total = page1.children.length + page2.children.length + hiddenPages.children.length + pageShown;
-            //console.log(" >>>>>>>>>>>>>>>>> ALL PAGES :: " + total);
+            //console.log(" org.kde.latte >>>>>>>>>>>>>>>>> ALL PAGES :: " + total);
 
             if (children.length > 0) {
                 nextIndicator = children[0];
@@ -94,11 +89,6 @@ Item {
         Component.onCompleted: {
             viewConfig.indicatorUiManager.setParentItem(hiddenIndicatorPage);
             tabBar.selectTab(latteView.indicator.type);
-
-            if (latteView.indicator.type !== latteBtn.type) {
-                uiManager.typeDuringCreation = latteView.indicator.type;
-            }
-
             viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
         }
 
@@ -106,16 +96,8 @@ Item {
             target: latteView.indicator
             onPluginChanged: {
                 if (viewConfig.isReady) {
-                    if (uiManager.typeDuringCreation === "") {
-                        tabBar.selectTab(latteView.indicator.type);
-                        viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
-                    } else {
-                        //! restore the first assigned indicator after first window creation. This way we avoid
-                        //! unsetting custom indicators from views during first settings window creation.
-                        latteView.indicator.type = uiManager.typeDuringCreation;
-                        tabBar.selectTab(latteView.indicator.type);
-                        uiManager.typeDuringCreation = "";
-                    }
+                    tabBar.selectTab(latteView.indicator.type);
+                    viewConfig.indicatorUiManager.ui(latteView.indicator.type, latteView);
                 }
             }
         }
