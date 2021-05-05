@@ -1144,7 +1144,11 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
         for (const auto containment : *layout->containments()) {
             QString cid = QString::number(containment->id());
 
-            if (views.hasContainmentId(cid)) {
+            Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
+            Plasma::Containment *parentContainment = parentApplet ? qobject_cast<Plasma::Containment *>(parentApplet->parent()) : nullptr;
+
+            if (isLatteContainment(containment) || (parentApplet && parentContainment && layout->contains(parentContainment))) {
+                //! is latte containment or is subcontainment that belongs to latte containment
                 continue;
             }
 
@@ -1154,7 +1158,6 @@ bool Storage::hasOrphanedSubContainments(const Layout::GenericLayout *layout, Da
             warninginfo.containment.storageId = cid;
             warning.information << warninginfo;
         }
-
     } else { // inactive layout
         KSharedConfigPtr lfile = KSharedConfig::openConfig(layout->file());
         KConfigGroup containmentsEntries = KConfigGroup(lfile, "Containments");
