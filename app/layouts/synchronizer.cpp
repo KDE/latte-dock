@@ -927,7 +927,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         }
     }
 
-    if (m_manager->corona()->universalSettings()->showInfoWindow()) {
+    if (newlyActivatedLayouts.count()>0 && m_manager->corona()->universalSettings()->showInfoWindow()) {
         m_manager->showInfoWindow(i18np("Activating layout: <b>%2</b> ...",
                                         "Activating layouts: <b>%3</b> ...",
                                         newlyActivatedLayouts.count(),

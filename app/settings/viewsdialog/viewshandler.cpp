@@ -427,7 +427,7 @@ KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
         return KMessageBox::Yes;
     }
 
-    if (hasChangedData()) {
+    if (hasChangedData() && viewsCount>0) {
         return KMessageBox::warningYesNo(m_dialog,
                                          i18np("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?",
                                                "You are going to <b>remove %1</b> docks and panels completely from your layout.<br/>Would you like to continue?",

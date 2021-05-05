@@ -768,13 +768,15 @@ void TabLayouts::onLayoutFilesDropped(const QStringList &paths)
         }
     }
 
-    showInlineMessage(i18ncp("settings:layout imported successfully",
-                             "Layout <b>%2</b> imported successfully...",
-                             "Layouts <b>%3</b> imported successfully...",
-                             layoutNames.count(),
-                             layoutNames[0],
-                             layoutNames.join(", ")),
-            KMessageWidget::Positive);
+    if(layoutNames.count() > 0) {
+        showInlineMessage(i18ncp("settings:layout imported successfully",
+                                 "Layout <b>%2</b> imported successfully...",
+                                 "Layouts <b>%3</b> imported successfully...",
+                                 layoutNames.count(),
+                                 layoutNames[0],
+                          layoutNames.join(", ")),
+                KMessageWidget::Positive);
+    }
 }
 
 void TabLayouts::onRawLayoutDropped(const QString &rawLayout)
