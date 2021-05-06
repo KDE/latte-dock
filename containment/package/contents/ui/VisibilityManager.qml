@@ -699,7 +699,7 @@ Item{
                     inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
                 }
 
-                var subtractedScreenEdge = root.hasFloatingGapInputEventsDisabled ? metrics.mask.screenEdge : 0;
+                var subtractedScreenEdge = root.hasFloatingGapInputEventsDisabled && !latteView.visibility.isHidden ? metrics.mask.screenEdge : 0;
 
                 var inputGeometry = Qt.rect(0, 0, root.width, root.height);
 
@@ -712,7 +712,7 @@ Item{
                     inputGeometry.height = inputThickness ;
                 } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     inputGeometry.x = latteView.localGeometry.x;
-                    inputGeometry.y = root.height - inputThickness;
+                    inputGeometry.y = root.height - inputThickness - subtractedScreenEdge;
 
                     inputGeometry.width = latteView.localGeometry.width;
                     inputGeometry.height = inputThickness;
@@ -723,7 +723,7 @@ Item{
                     inputGeometry.width = inputThickness;
                     inputGeometry.height = latteView.localGeometry.height;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    inputGeometry.x = root.width - inputThickness;
+                    inputGeometry.x = root.width - inputThickness - subtractedScreenEdge;
                     inputGeometry.y = latteView.localGeometry.y;
 
                     inputGeometry.width = inputThickness;
