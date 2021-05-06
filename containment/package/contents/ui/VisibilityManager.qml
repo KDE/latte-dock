@@ -290,42 +290,19 @@ Item{
         value: {
             if (root.behaveAsPlasmaPanel
                     || (!parabolic.isEnabled && root.userShowPanelBackground && plasmoid.configuration.panelSize===100)) {
-                if (myView.alignment === LatteCore.Types.Justify) {
-                    //! Justify is using the full LayoutsContainer layout
+                var paddingtail = root.isHorizontal ? background.paddings.left : background.paddings.top;
+                var paddinghead = root.isHorizontal ? background.paddings.right : background.paddings.bottom;
 
-                    var margintail = layoutsContainer.backgroundTailLength;
-                    var marginhead = layoutsContainer.backgroundHeadLength;
-
-                    if (root.behaveAsPlasmaPanel) {
-                      //  margintail += metrics.margin.length;
-                      //  marginhead += metrics.margin.length;
-                    }
-
-                    if (root.isHorizontal) {
-                        return Qt.rect(layoutsContainer.x + margintail,
-                                       layoutsContainer.y,
-                                       layoutsContainer.width - margintail - marginhead,
-                                       layoutsContainer.height);
-                    } else {
-                        return Qt.rect(layoutsContainer.x,
-                                       layoutsContainer.y + margintail,
-                                       layoutsContainer.width,
-                                       layoutsContainer.height - margintail - marginhead);
-                    }
+                if (root.isHorizontal) {
+                    return Qt.rect(latteView.localGeometry.x + paddingtail,
+                                   latteView.localGeometry.y,
+                                   latteView.localGeometry.width - paddingtail - paddinghead,
+                                   latteView.localGeometry.height);
                 } else {
-                    //! All the rest alignments are using MainLayout container
-
-                    if (root.isHorizontal) {
-                        return Qt.rect(layoutsContainer.mainLayout.x + metrics.margin.length,
-                                       layoutsContainer.mainLayout.y,
-                                       layoutsContainer.mainLayout.width - 2*metrics.margin.length,
-                                       layoutsContainer.mainLayout.height);
-                    } else {
-                        return Qt.rect(layoutsContainer.mainLayout.x,
-                                       layoutsContainer.mainLayout.y + metrics.margin.length,
-                                       layoutsContainer.mainLayout.width,
-                                       layoutsContainer.mainLayout.height - 2*metrics.margin.length);
-                    }
+                    return Qt.rect(latteView.localGeometry.x,
+                                   latteView.localGeometry.y + paddingtail,
+                                   latteView.localGeometry.width,
+                                   latteView.localGeometry.height - paddingtail - paddinghead);
                 }
             }
 
