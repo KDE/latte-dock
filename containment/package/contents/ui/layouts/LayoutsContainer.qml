@@ -165,38 +165,48 @@ Item{
         return root.isHorizontal ? background.shadows.right : background.shadows.bottom;
     }
 
-    readonly property int backgroundTailLength: {
+    readonly property int lengthTailPadding: {
+        var minimumPadding = metrics.margin.length;
+        var bestMatchingPadding = 0;
+
         if (root.myView.alignment === LatteCore.Types.Left) {
-            return backgroundShadowTailLength + background.paddings.left - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Right) {
-            return backgroundShadowTailLength + background.paddings.right - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Top) {
-            return backgroundShadowTailLength + background.paddings.top - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.top, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Bottom) {
-            return backgroundShadowTailLength + background.paddings.bottom - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.bottom, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Center) {
-            return backgroundShadowTailLength - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
+        } else if (root.myView.alignment === LatteCore.Types.Justify) {
+            bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
         }
 
-        //! justify case
-        return root.isHorizontal ? background.paddings.left : background.paddings.top; //shadow is already calculated
+        //shadow is already calculated in Justify mode
+        return root.myView.alignment !== LatteCore.Types.Justify ? backgroundShadowTailLength + bestMatchingPadding : bestMatchingPadding;
     }
 
-    readonly property int backgroundHeadLength: {
+    readonly property int lengthHeadPadding: {
+        var minimumPadding = metrics.margin.length;
+        var bestMatchingPadding = 0;
+
         if (root.myView.alignment === LatteCore.Types.Left) {
-            return backgroundShadowHeadLength + background.paddings.right - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Right) {
-            return backgroundShadowHeadLength + background.paddings.left - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Top) {
-            return backgroundShadowHeadLength + background.paddings.bottom - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.bottom, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Bottom) {
-            return backgroundShadowHeadLength + background.paddings.top - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.top, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Center) {
-            return backgroundShadowTailLength - metrics.margin.length; /*remove the first applet margin*/
+            bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
+        } else if (root.myView.alignment === LatteCore.Types.Justify) {
+            bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
         }
 
-        //! centered case
-        return root.isHorizontal ? background.paddings.right : background.paddings.bottom; //shadow is already calculated
+        //shadow is already calculated in Justify mode
+        return root.myView.alignment !== LatteCore.Types.Justify ? backgroundShadowHeadLength + bestMatchingPadding : bestMatchingPadding;
     }
 
     onContentsWidthChanged: {
@@ -260,7 +270,7 @@ Item{
     AppletsContainer {
         id: _startLayout
         beginIndex: 0
-        offset: backgroundTailLength
+        offset: lengthTailPadding
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeLeftAlign;
@@ -287,7 +297,7 @@ Item{
         offset: {
             if (!centered) {
                 //! it is used for Top/Bottom/Left/Right alignments when they show both background length shadows
-                return background.offset + backgroundTailLength;
+                return background.offset + lengthTailPadding;
             }
 
             return (root.myView.alignment === LatteCore.Types.Justify) ? 0 : background.offset
@@ -372,7 +382,7 @@ Item{
     AppletsContainer {
         id: _endLayout
         beginIndex: 200
-        offset: backgroundHeadLength
+        offset: lengthHeadPadding
         alignment: {
             switch(plasmoid.location) {
             case PlasmaCore.Types.BottomEdge: return LatteCore.Types.BottomEdgeRightAlign;

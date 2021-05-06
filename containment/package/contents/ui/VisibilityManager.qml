@@ -293,8 +293,14 @@ Item{
                 if (myView.alignment === LatteCore.Types.Justify) {
                     //! Justify is using the full LayoutsContainer layout
 
-                    var margintail = layoutsContainer.backgroundTailLength + metrics.margin.length;
-                    var marginhead = layoutsContainer.backgroundHeadLength + metrics.margin.length;
+                    var margintail = layoutsContainer.backgroundTailLength;
+                    var marginhead = layoutsContainer.backgroundHeadLength;
+
+                    if (root.behaveAsPlasmaPanel) {
+                      //  margintail += metrics.margin.length;
+                      //  marginhead += metrics.margin.length;
+                    }
+
                     if (root.isHorizontal) {
                         return Qt.rect(layoutsContainer.x + margintail,
                                        layoutsContainer.y,
