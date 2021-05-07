@@ -6,6 +6,7 @@ Name[ca]=Contenidor del Latte
 Name[ca@valencia]=Contenidor del Latte
 Name[es]=Contenedor de Latte
 Name[nl]=Latte-container
+Name[sl]=Latte zadrževalnik
 Name[sv]=Latte-omgivning
 Name[uk]=контейнер Латте
 Name[x-test]=xxLatte Containmentxx
