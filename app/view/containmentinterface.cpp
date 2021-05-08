@@ -457,8 +457,9 @@ bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appl
         return false;
     }
 
-    return (appletQuickItem->fullRepresentation() != nullptr
-            && appletQuickItem->preferredRepresentation() != appletQuickItem->fullRepresentation());
+    return ((appletQuickItem->fullRepresentation() != nullptr
+            && appletQuickItem->preferredRepresentation() != appletQuickItem->fullRepresentation())
+            || Latte::Layouts::Storage::self()->isSubContainment(m_view->layout(), appletQuickItem->applet()));
 }
 
 bool ContainmentInterface::hasExpandedApplet() const
