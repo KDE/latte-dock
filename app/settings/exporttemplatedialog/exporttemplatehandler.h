@@ -24,6 +24,8 @@
 // local
 #include "../generic/generichandler.h"
 #include "../../data/appletdata.h"
+#include "../../data/layoutdata.h"
+#include "../../data/viewdata.h"
 
 // Qt
 #include <QButtonGroup>
@@ -64,7 +66,8 @@ class ExportTemplateHandler : public Generic
     Q_OBJECT
 public:
     ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog);
-    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const QString &layoutName, const QString &layoutId);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const Data::Layout &layout);
+    ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const Data::View &view);
     ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, Latte::View *view);
     ~ExportTemplateHandler();
 
@@ -86,7 +89,7 @@ private:
     void init();
     void initDefaults();
 
-    void loadLayoutApplets(const QString &layoutName, const QString &layoutId);
+    void loadApplets(const QString &file);
     void loadViewApplets(Latte::View *view);
 
     void setFilepath(const QString &filepath);
@@ -105,8 +108,7 @@ private:
     QString c_filepath;
     QString o_filepath;
 
-    QString  m_originLayoutFilePath;
-    Latte::View *m_originView{nullptr};
+    QString  m_originFilePath;
 
     Dialog::ExportTemplateDialog *m_dialog{nullptr};
     Ui::ExportTemplateDialog *m_ui{nullptr};

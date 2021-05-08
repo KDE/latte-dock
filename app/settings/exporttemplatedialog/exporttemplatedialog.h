@@ -23,7 +23,10 @@
 
 // local
 #include "../generic/genericdialog.h"
+#include "../viewsdialog/viewsdialog.h"
 #include "../settingsdialog/settingsdialog.h"
+#include "../../data/layoutdata.h"
+#include "../../data/viewdata.h"
 
 // Qt
 #include <QDialog>
@@ -57,7 +60,9 @@ class ExportTemplateDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ExportTemplateDialog(SettingsDialog *parent, const QString &layoutName, const QString &layoutId);
+    ExportTemplateDialog(QDialog *parent);
+    ExportTemplateDialog(SettingsDialog *parent, const Data::Layout &layout);
+    ExportTemplateDialog(ViewsDialog *parent, const Data::View &view);
     ExportTemplateDialog(Latte::View *view);
     ~ExportTemplateDialog();
 

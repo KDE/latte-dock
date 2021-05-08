@@ -24,6 +24,7 @@
 #include "ui_viewsdialog.h"
 #include "viewscontroller.h"
 #include "viewsdialog.h"
+#include "../exporttemplatedialog/exporttemplatedialog.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../settingsdialog/layoutsmodel.h"
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
@@ -428,8 +429,18 @@ void ViewsHandler::exportViewAsTemplate()
         return;
     }
 
-    //! it needs to be thought properly how this should be approached
-    //! the best scenario is Storage to provide a view file and afterwards use that file
+    Data::ViewsTable views =  m_viewsController->selectedViewsCurrentData();
+
+    if (views.rowCount() != 1) {
+        return;
+    }
+
+    Data::View exportview = views[0];
+    exportview.id = storedView(views[0].id);
+    exportview.setState(Data::View::OriginFromLayout, exportview.id, currentData().name, views[0].id);
+
+    Dialog::ExportTemplateDialog *exportdlg = new Dialog::ExportTemplateDialog(m_dialog, exportview);
+    exportdlg->exec();
 }
 
 void ViewsHandler::importView()

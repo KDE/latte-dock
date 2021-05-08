@@ -702,6 +702,8 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
     QFile(originFile).copy(destinationFile);
 
     KSharedConfigPtr destFilePtr = KSharedConfig::openConfig(destinationFile);
+    destFilePtr->reparseConfiguration();
+
     KConfigGroup containments = KConfigGroup(destFilePtr, "Containments");
 
     QStringList rejectedSubContainments;
@@ -758,6 +760,8 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
     }
 
     KSharedConfigPtr destFilePtr = KSharedConfig::openConfig(destinationFile);
+    destFilePtr->reparseConfiguration();
+
     KConfigGroup copied_conts = KConfigGroup(destFilePtr, "Containments");
     KConfigGroup copied_c1 = KConfigGroup(&copied_conts, QString::number(containment->id()));
 

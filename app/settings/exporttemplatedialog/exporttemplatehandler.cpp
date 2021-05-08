@@ -62,11 +62,23 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialo
     init();
 }
 
-ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const QString &layoutName, const QString &layoutId)
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const Data::Layout &layout)
     : ExportTemplateHandler(dialog)
 {
-    loadLayoutApplets(layoutName, layoutId);
-    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(layoutName + ".layout.latte");
+    loadApplets(layout.id);
+    m_dialog->setWindowTitle(i18n("Export Layout Template"));
+    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(layout.name + ".layout.latte");
+    setFilepath(o_filepath);
+}
+
+ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialog, const Data::View &view)
+    : ExportTemplateHandler(dialog)
+{
+    loadApplets(view.id);
+    m_dialog->setWindowTitle(i18n("Export Dock/Panel Template"));
+
+    QString viewname = view.name.isEmpty() ? view.originLayout() + " " + i18n("Dock") : view.name;
+    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(viewname + ".view.latte");
     setFilepath(o_filepath);
 }
 
@@ -74,8 +86,15 @@ ExportTemplateHandler::ExportTemplateHandler(Dialog::ExportTemplateDialog *dialo
     : ExportTemplateHandler(dialog)
 {
     QString type = (view->type() == Latte::Types::PanelView ? i18n("Panel") : i18n("Dock"));
-    loadViewApplets(view);
-    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(view->layout()->name() + " " + type + ".view.latte");
+
+    QString temporiginfile = view->layout()->storedView(view->containment()->id());
+
+    loadApplets(temporiginfile);
+    m_dialog->setWindowTitle(i18n("Export %1 Template", type));
+
+    QString viewname = view->name().isEmpty() ? view->layout()->name() + " " + type : view->name();
+
+    o_filepath = dialog->corona()->templatesManager()->proposedTemplateAbsolutePath(viewname + ".view.latte");
     setFilepath(o_filepath);
 }
 
@@ -127,20 +146,11 @@ void ExportTemplateHandler::setFilepath(const QString &filepath)
     emit filepathChanged();
 }
 
-void ExportTemplateHandler::loadLayoutApplets(const QString &layoutName, const QString &layoutId)
+void ExportTemplateHandler::loadApplets(const QString &file)
 {
-    m_originLayoutFilePath = layoutId;
-    Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(layoutId);
+    m_originFilePath = file;
+    Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(file);
     m_appletsModel->setData(c_data);
-    m_dialog->setWindowTitle(i18n("Export Layout Template"));
-}
-
-void ExportTemplateHandler::loadViewApplets(Latte::View *view)
-{
-    m_originView = view;
-    Data::AppletsTable c_data = Latte::Layouts::Storage::self()->plugins(view->layout(), view->containment()->id());
-    m_appletsModel->setData(c_data);
-    m_dialog->setWindowTitle(i18n("Export View Template"));
 }
 
 void ExportTemplateHandler::chooseFileDialog()
@@ -220,18 +230,9 @@ void ExportTemplateHandler::onExport()
                           true);
     };
 
-    bool result{false};
-
-    if (!m_originLayoutFilePath.isEmpty()) {
-        result = m_dialog->corona()->templatesManager()->exportTemplate(m_originLayoutFilePath,
-                                                                        c_filepath,
-                                                                        m_appletsModel->selectedApplets());
-    } else if (m_originView){
-        result = m_dialog->corona()->templatesManager()->exportTemplate(m_originView,
-                                                                        c_filepath,
-                                                                        m_appletsModel->selectedApplets());
-    }
-
+    bool result = m_dialog->corona()->templatesManager()->exportTemplate(m_originFilePath,
+                                                                         c_filepath,
+                                                                         m_appletsModel->selectedApplets());
     if (result) {
         QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
         openUrlAction->setIcon(QIcon::fromTheme("document-open"));

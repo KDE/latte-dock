@@ -598,7 +598,10 @@ void TabLayouts::exportLayoutAsTemplate()
     Data::Layout o_layout = m_layoutsController->selectedLayoutOriginalData();
     Data::Layout c_layout = m_layoutsController->selectedLayoutCurrentData();
 
-    Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, c_layout.name, o_layout.id);
+    Data::Layout exp_layout = o_layout;
+    exp_layout.name = c_layout.name;
+
+    Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, exp_layout);
     exportDlg->exec();
 }
 
