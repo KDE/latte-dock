@@ -536,7 +536,7 @@ void ContainmentInterface::onAppletExpandedChanged()
             }
         }
 
-        if (added) {
+        if (added && appletIsExpandable(appletItem)) {
             addExpandedApplet(appletItem);
         } else {
             removeExpandedApplet(appletItem);
@@ -582,11 +582,7 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
-                if (appletIsExpandable(ai)) {
-                    ai->setExpanded(!ai->isExpanded());
-                } else {
-                    emit applet->activated();
-                }
+                emit applet->activated();
             }
         }
     }
