@@ -213,6 +213,11 @@ const Latte::Data::View Views::appendViewFromViewTemplate(const Data::View &view
     return newview;
 }
 
+const Latte::Data::View Views::currentData(const QString &id)
+{
+    return m_model->currentData(id);
+}
+
 Data::ViewsTable Views::selectedViewsForClipboard()
 {
     Data::ViewsTable clipboardviews;
@@ -412,7 +417,7 @@ void Views::onCurrentLayoutChanged()
         QObject::disconnect(var);
     }
 
-    Latte::CentralLayout *currentlayout = centralLayout(currentlayoutdata);
+    Latte::CentralLayout *currentlayout = m_handler->centralLayout(currentlayoutdata.id);
 
     if (currentlayout && currentlayout->isActive()) {
         m_currentLayoutConnections << connect(currentlayout, &Layout::GenericLayout::viewsCountChanged, this, [&, currentlayout](){
@@ -421,17 +426,6 @@ void Views::onCurrentLayoutChanged()
     }
 
     messagesForErrorsWarnings(currentlayout);
-}
-
-CentralLayout *Views::centralLayout(const Data::Layout &currentLayout)
-{
-    Data::Layout originlayoutdata = m_handler->layoutsController()->originalData(currentLayout.id);
-    auto activelayout = m_handler->layoutsController()->isLayoutOriginal(currentLayout.id) ?
-                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
-
-    Latte::CentralLayout *centrallayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentLayout.id);
-
-    return centrallayout;
 }
 
 void Views::onSelectionsChanged()
@@ -657,7 +651,7 @@ void Views::showDefaultInlineMessageValidator()
 
     connect(validateaction, &QAction::triggered, this, [&, currentlayout]() {
 
-        auto centrallayout = centralLayout(currentlayout);
+        auto centrallayout = m_handler->centralLayout(currentlayout.id);
         if (centrallayout && !centrallayout->isActive()) {
             KSharedConfigPtr lFile = KSharedConfig::openConfig(centrallayout->file());
             //! update configuration with latest changes
@@ -867,7 +861,7 @@ void Views::messageForWarningOrphanedSubContainments(const Data::Warning &warnin
     Latte::Data::Layout currentlayout = m_handler->currentData();
 
     connect(repairlayoutaction, &QAction::triggered, this, [&, currentlayout, orphaned]() {
-        auto centrallayout = centralLayout(currentlayout);
+        auto centrallayout = m_handler->centralLayout(currentlayout.id);
 
         for (int i=0; i<orphaned.count(); ++i) {
             centrallayout->removeOrphanedSubContainment(orphaned[i]);
@@ -889,8 +883,7 @@ void Views::save()
 
     Latte::Data::Layout originallayout = m_handler->originalData();
     Latte::Data::Layout currentlayout = m_handler->currentData();
-    Latte::CentralLayout *centralActive = m_handler->isSelectedLayoutOriginal() ? m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originallayout.name) : nullptr;
-    Latte::CentralLayout *central = centralActive ? centralActive : new Latte::CentralLayout(this, currentlayout.id);
+    Latte::CentralLayout *central = m_handler->centralLayout(currentlayout.id);
 
     //! views in model
     Latte::Data::ViewsTable originalViews = m_model->originalViewsData();
@@ -909,7 +902,7 @@ void Views::save()
     for(int i=0; i<newViews.rowCount(); ++i){
         if (newViews[i].isMoveDestination) {
             CentralLayout *originActive = originLayout(newViews[i]);
-            bool inmovebetweenactivelayouts = centralActive && originActive && centralActive != originActive && hasValidOriginView(newViews[i]);
+            bool inmovebetweenactivelayouts = central->isActive() && originActive && central != originActive && hasValidOriginView(newViews[i]);
 
             if (inmovebetweenactivelayouts) {
                 cuttedpastedactiveviews[newViews[i].id] = newViews[i];
@@ -964,10 +957,7 @@ void Views::save()
         //! Be Careful: Remove deprecated views from Cut->Paste Action
         QString origincurrentid = cuttedpastedviews[vid].originLayout();
         Data::Layout originlayout = m_handler->layoutsController()->originalData(origincurrentid);
-
-        Latte::CentralLayout *originActive = m_handler->layoutsController()->isLayoutOriginal(origincurrentid) ?
-                    m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayout.name) : nullptr;
-        Latte::CentralLayout *origin = originActive ? originActive : new Latte::CentralLayout(this, origincurrentid);
+        Latte::CentralLayout *origin = m_handler->centralLayout(originlayout.id);
 
         Data::ViewsTable originviews = Latte::Layouts::Storage::self()->views(origin);
 
@@ -1001,7 +991,7 @@ void Views::save()
             m_handler->corona()->layoutsManager()->moveView(originlayoutname, originviewid, destinationlayoutname);
             //!is needed in order for layout to not trigger another move
             pastedactiveview.setState(Data::View::IsCreated, QString(), QString(), QString());
-            centralActive->updateView(pastedactiveview);
+            central->updateView(pastedactiveview);
         }
 
         pastedactiveview.setState(Data::View::IsCreated, QString(), QString(), QString());

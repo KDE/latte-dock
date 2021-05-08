@@ -40,6 +40,7 @@ class ViewsDialog;
 }
 
 namespace Latte{
+class CentralLayout;
 class Corona;
 namespace Settings{
 namespace Controller{
@@ -76,6 +77,8 @@ public:
     Latte::Data::Layout currentData() const;
     Latte::Data::Layout originalData() const;
 
+    CentralLayout *centralLayout(const QString &currentLayoutId);
+
     Ui::ViewsDialog *ui() const;
     Latte::Corona *corona() const;
     Settings::Controller::Layouts *layoutsController() const;
@@ -108,6 +111,8 @@ private:
     void reload();
 
     void loadLayout(const Latte::Data::Layout &data);
+
+    QString storedView(const QString &viewId);
 
     KMessageBox::ButtonCode saveChangesConfirmation();
     KMessageBox::ButtonCode removalConfirmation(const int &count);

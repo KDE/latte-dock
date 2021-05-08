@@ -281,6 +281,34 @@ void ViewsHandler::save()
     }
 }
 
+CentralLayout *ViewsHandler::centralLayout(const QString &currentLayoutId)
+{
+    Data::Layout originlayoutdata = layoutsController()->originalData(currentLayoutId);
+    auto activelayout = layoutsController()->isLayoutOriginal(currentLayoutId) ?
+                corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    Latte::CentralLayout *centrallayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentLayoutId);
+
+    return centrallayout;
+}
+
+QString ViewsHandler::storedView(const QString &viewId)
+{
+    Latte::Data::View viewdata = m_viewsController->currentData(viewId);
+
+    if (!viewdata.isValid()) {
+        return QString();
+    }
+
+    if (viewdata.isCreated()) {
+        CentralLayout *central = centralLayout(currentData().id);
+        return central->storedView(viewdata.id.toInt());
+    } else if (viewdata.hasViewTemplateOrigin() || viewdata.hasLayoutOrigin()) {
+        return viewdata.originFile();
+    }
+
+    return QString();
+}
 
 void ViewsHandler::newView(const Data::Generic &templateData)
 {
@@ -321,8 +349,70 @@ void ViewsHandler::exportViewForBackup()
         return;
     }
 
-    //! it needs to be thought properly how this should be approached
-    //! the best scenario is Storage to provide a view file and afterwards use that file
+    Data::ViewsTable views =  m_viewsController->selectedViewsCurrentData();
+
+    if (views.rowCount() != 1) {
+        return;
+    }
+
+    QString temporiginfile = storedView(views[0].id);
+
+    QFileDialog *exportFileDialog = new QFileDialog(m_dialog, i18n("Export Dock/Panel For Backup"), QDir::homePath(), QStringLiteral("view.latte"));
+
+    exportFileDialog->setLabelText(QFileDialog::Accept, i18nc("export view","Export"));
+    exportFileDialog->setFileMode(QFileDialog::AnyFile);
+    exportFileDialog->setAcceptMode(QFileDialog::AcceptSave);
+    exportFileDialog->setDefaultSuffix("view.latte");
+
+    QStringList filters;
+    QString filter1(i18nc("export view", "Latte Dock/Panel file v0.2") + "(*.view.latte)");
+
+    filters << filter1;
+
+    exportFileDialog->setNameFilters(filters);
+
+    connect(exportFileDialog, &QFileDialog::finished, exportFileDialog, &QFileDialog::deleteLater);
+
+    connect(exportFileDialog, &QFileDialog::fileSelected, this, [&, temporiginfile](const QString & file) {
+        auto showExportViewError = [this](const QString &destinationfile) {
+            showInlineMessage(i18nc("settings:view export fail","Export in file <b>%1</b> <b>failed</b>...", QFileInfo(destinationfile).fileName()),
+                              KMessageWidget::Error,
+                              true);
+        };
+
+        if (QFile::exists(file) && !QFile::remove(file)) {
+            showExportViewError(file);
+            return;
+        }
+
+        if (file.endsWith(".view.latte")) {
+            if (!QFile(temporiginfile).copy(file)) {
+                showExportViewError(file);
+                return;
+            }
+
+            QAction *openUrlAction = new QAction(i18n("Open Location..."), this);
+            openUrlAction->setData(file);
+            QList<QAction *> actions;
+            actions << openUrlAction;
+
+            connect(openUrlAction, &QAction::triggered, this, [&, openUrlAction]() {
+                QString file = openUrlAction->data().toString();
+
+                if (!file.isEmpty()) {
+                    KIO::highlightInFileManager({file});
+                }
+            });
+
+            showInlineMessage(i18nc("settings:view export success","Export in file <b>%1</b> succeeded...", QFileInfo(file).fileName()),
+                              KMessageWidget::Positive,
+                              false,
+                              actions);
+        }
+    });
+
+    exportFileDialog->open();
+    exportFileDialog->selectFile(views[0].name);
 }
 
 void ViewsHandler::exportViewAsTemplate()
