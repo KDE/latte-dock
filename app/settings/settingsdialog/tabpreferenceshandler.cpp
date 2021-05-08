@@ -68,11 +68,6 @@ void TabPreferences::initUi()
         emit dataChanged();
     });
 
-    connect(m_ui->outlineSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), [ = ](int i) {
-        m_preferences.outlineWidth = m_ui->outlineSpinBox->value();
-        emit dataChanged();
-    });
-
     connect(m_ui->autostartChkBox, &QCheckBox::stateChanged, this, [&]() {
         m_preferences.autostart = m_ui->autostartChkBox->isChecked();
         emit dataChanged();
@@ -119,7 +114,6 @@ void TabPreferences::initSettings()
     o_preferences.borderlessMaximized = m_corona->universalSettings()->canDisableBorders();
     o_preferences.mouseSensitivity = m_corona->universalSettings()->sensitivity();
     o_preferences.screensDelay = m_corona->universalSettings()->screenTrackerInterval();
-    o_preferences.outlineWidth = m_corona->themeExtended()->outlineWidth();
 
     m_preferences = o_preferences;
 
@@ -136,7 +130,6 @@ void TabPreferences::updateUi()
     m_ui->metaPressHoldChkBox->setChecked(m_preferences.metaHoldForBadges);
     m_ui->noBordersForMaximizedChkBox->setChecked(m_preferences.borderlessMaximized);
     m_ui->screenTrackerSpinBox->setValue(m_preferences.screensDelay);
-    m_ui->outlineSpinBox->setValue(m_preferences.outlineWidth);
 
     if (m_preferences.mouseSensitivity == Settings::LowMouseSensitivity) {
         m_ui->lowSensitivityBtn->setChecked(true);
@@ -181,7 +174,6 @@ void TabPreferences::save()
     m_corona->universalSettings()->setShowInfoWindow(m_preferences.layoutsInformationWindow);
     m_corona->universalSettings()->setCanDisableBorders(m_preferences.borderlessMaximized);
     m_corona->universalSettings()->setScreenTrackerInterval(m_preferences.screensDelay);
-    m_corona->themeExtended()->setOutlineWidth(m_preferences.outlineWidth);
 
     o_preferences = m_preferences;
     emit dataChanged();

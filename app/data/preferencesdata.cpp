@@ -30,7 +30,6 @@ const bool Preferences::BORDERLESSMAXIMIZED;
 const bool Preferences::METAPRESSFORAPPLAUNCHER;
 const bool Preferences::METAHOLDFORBADGES;
 const int Preferences::SCREENSDELAY;
-const int Preferences::OUTLINEWIDTH;
 const Settings::MouseSensitivity Preferences::MOUSESENSITIVITY;
 
 Preferences::Preferences()
@@ -45,8 +44,7 @@ Preferences::Preferences(Preferences &&o)
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
-      screensDelay(o.screensDelay),
-      outlineWidth(o.outlineWidth)
+      screensDelay(o.screensDelay)
 {
 }
 
@@ -58,8 +56,7 @@ Preferences::Preferences(const Preferences &o)
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
-      screensDelay(o.screensDelay),
-      outlineWidth(o.outlineWidth)
+      screensDelay(o.screensDelay)
 {
 }
 
@@ -73,7 +70,6 @@ Preferences &Preferences::operator=(const Preferences &rhs)
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
     screensDelay = rhs.screensDelay;
-    outlineWidth = rhs.outlineWidth;
 
     return (*this);
 }
@@ -88,7 +84,6 @@ Preferences &Preferences::operator=(Preferences &&rhs)
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
     screensDelay = rhs.screensDelay;
-    outlineWidth = rhs.outlineWidth;
 
     return (*this);
 }
@@ -102,8 +97,7 @@ bool Preferences::operator==(const Preferences &rhs) const
             && (metaPressForAppLauncher == rhs.metaPressForAppLauncher)
             && (metaHoldForBadges == rhs.metaHoldForBadges)
             && (mouseSensitivity == rhs.mouseSensitivity)
-            && (screensDelay == rhs.screensDelay)
-            && (outlineWidth == rhs.outlineWidth);
+            && (screensDelay == rhs.screensDelay);
 }
 
 bool Preferences::operator!=(const Preferences &rhs) const
@@ -120,8 +114,7 @@ bool Preferences::inDefaultValues() const
             && (metaPressForAppLauncher == METAPRESSFORAPPLAUNCHER)
             && (metaHoldForBadges == METAHOLDFORBADGES)
             && (mouseSensitivity == MOUSESENSITIVITY)
-            && (screensDelay == SCREENSDELAY)
-            && (outlineWidth == OUTLINEWIDTH);
+            && (screensDelay == SCREENSDELAY);
 }
 
 void Preferences::setToDefaults()
@@ -134,7 +127,6 @@ void Preferences::setToDefaults()
     metaHoldForBadges = METAHOLDFORBADGES;
     mouseSensitivity = MOUSESENSITIVITY;
     screensDelay = SCREENSDELAY;
-    outlineWidth = OUTLINEWIDTH;
 }
 
 

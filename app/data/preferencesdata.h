@@ -37,7 +37,6 @@ public:
     static const bool METAPRESSFORAPPLAUNCHER = false;
     static const bool METAHOLDFORBADGES = true;
     static const int SCREENSDELAY = 2500;
-    static const int OUTLINEWIDTH = 1;
     static const Settings::MouseSensitivity MOUSESENSITIVITY = Settings::HighMouseSensitivity;
 
     Preferences();
@@ -52,7 +51,6 @@ public:
     bool metaPressForAppLauncher{METAPRESSFORAPPLAUNCHER};
     bool metaHoldForBadges{METAHOLDFORBADGES};
     int screensDelay{SCREENSDELAY};
-    int outlineWidth{OUTLINEWIDTH};
     Settings::MouseSensitivity mouseSensitivity{MOUSESENSITIVITY};
 
     bool inDefaultValues() const;
