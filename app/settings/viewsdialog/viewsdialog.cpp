@@ -36,6 +36,7 @@ ViewsDialog::ViewsDialog(SettingsDialog *parent, Controller::Layouts *controller
       m_layoutsController(controller),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("ViewsDialog"))
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
     loadConfig();
 
     //! first we need to setup the ui

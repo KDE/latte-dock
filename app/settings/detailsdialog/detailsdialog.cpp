@@ -36,6 +36,7 @@ DetailsDialog::DetailsDialog(SettingsDialog *parent, Controller::Layouts *contro
       m_layoutsController(controller),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog").group("DetailsDialog"))
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
     loadConfig();
 
     //! first we need to setup the ui

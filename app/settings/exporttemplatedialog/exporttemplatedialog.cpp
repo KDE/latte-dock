@@ -37,11 +37,13 @@ ExportTemplateDialog::ExportTemplateDialog(QDialog *parent)
     : GenericDialog(parent),
       m_ui(new Ui::ExportTemplateDialog)
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, const Data::Layout &layout)
     : ExportTemplateDialog(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
     m_corona = parent->corona();
 
     init();
@@ -54,6 +56,7 @@ ExportTemplateDialog::ExportTemplateDialog(SettingsDialog *parent, const Data::L
 ExportTemplateDialog::ExportTemplateDialog(ViewsDialog *parent, const Data::View &view)
     : ExportTemplateDialog(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
     m_corona = parent->corona();
 
     init();
@@ -67,6 +70,7 @@ ExportTemplateDialog::ExportTemplateDialog(Latte::View *view)
     : GenericDialog(nullptr),
       m_ui(new Ui::ExportTemplateDialog)/*this is necessary, in order to create the ui*/
 {
+    setAttribute(Qt::WA_DeleteOnClose, true);
     m_corona = qobject_cast<Latte::Corona *>(view->corona());
 
     init();

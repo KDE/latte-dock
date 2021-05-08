@@ -58,11 +58,11 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
       m_ui(new Ui::SettingsDialog),
       m_corona(corona),
       m_storage(KConfigGroup(KSharedConfig::openConfig(),"LatteSettingsDialog"))
-{    
+{
+    setAttribute(Qt::WA_DeleteOnClose, true);
     setAcceptDrops(true);
     m_ui->setupUi(this);
 
-    setAttribute(Qt::WA_DeleteOnClose, true);
     //setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 
     //! load window size

@@ -736,7 +736,6 @@ void TabLayouts::showDetailsDialog()
     auto detailsDlg = new Settings::Dialog::DetailsDialog(m_parentDialog, m_layoutsController);
 
     detailsDlg->exec();
-    detailsDlg->deleteLater();
 }
 
 void TabLayouts::showViewsDialog()
@@ -757,7 +756,6 @@ void TabLayouts::showViewsDialog()
     m_isViewsDialogVisible = true;
     viewsDlg->exec();
     m_isViewsDialogVisible = false;
-    viewsDlg->deleteLater();
 }
 
 void TabLayouts::onLayoutFilesDropped(const QStringList &paths)
