@@ -929,10 +929,9 @@ void Synchronizer::syncMultipleLayoutsToActivities()
 
     if (newlyActivatedLayouts.count()>0 && m_manager->corona()->universalSettings()->showInfoWindow()) {
         m_manager->showInfoWindow(i18np("Activating layout: <b>%2</b> ...",
-                                        "Activating layouts: <b>%3</b> ...",
+                                        "Activating layouts: <b>%2</b> ...",
                                         newlyActivatedLayouts.count(),
-                                        newlyActivatedLayouts[0],
-                                  newlyActivatedLayouts.join(", ")),
+                                        newlyActivatedLayouts.join(", ")),
                 4000, QStringList(Data::Layout::ALLACTIVITIESID));
     }
 

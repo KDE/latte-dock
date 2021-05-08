@@ -772,10 +772,9 @@ void TabLayouts::onLayoutFilesDropped(const QStringList &paths)
     if(layoutNames.count() > 0) {
         showInlineMessage(i18ncp("settings:layout imported successfully",
                                  "Layout <b>%2</b> imported successfully...",
-                                 "Layouts <b>%3</b> imported successfully...",
+                                 "Layouts <b>%2</b> imported successfully...",
                                  layoutNames.count(),
-                                 layoutNames[0],
-                          layoutNames.join(", ")),
+                                 layoutNames.join(", ")),
                 KMessageWidget::Positive);
     }
 }
