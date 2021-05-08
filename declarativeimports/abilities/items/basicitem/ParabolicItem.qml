@@ -207,7 +207,9 @@ Item{
 
         ShortcutBadge{
             id: shortcutBadge
-            anchors.fill: _contentItemContainer
+            anchors.centerIn: parent
+            width: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
+            height: width
         }
     }
 
