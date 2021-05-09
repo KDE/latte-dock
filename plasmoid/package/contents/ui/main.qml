@@ -341,8 +341,8 @@ Item {
         type: plasmoid.configuration.previewWindowAsPopup ? PlasmaCore.Dialog.PopupMenu : PlasmaCore.Dialog.Tooltip
         flags: plasmoid.configuration.previewWindowAsPopup ? Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.Popup :
                                                              Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
-
         location: root.location
+        edge: root.location
         mainItem: toolTipDelegate
         visible: false
 

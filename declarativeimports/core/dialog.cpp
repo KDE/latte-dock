@@ -65,7 +65,7 @@ void Dialog::setEdge(const Plasma::Types::Location &edge)
 bool Dialog::isRespectingAppletsLayoutGeometry() const
 {
     //! As it appears plasma applets popups are defining their popups to Normal window.
-    return (type() == Dialog::Normal || type() == Dialog::PopupMenu);
+    return (type() == Dialog::Normal || type() == Dialog::PopupMenu || type() == Dialog::Tooltip);
 }
 
 QRect Dialog::appletsLayoutGeometryFromContainment() const
