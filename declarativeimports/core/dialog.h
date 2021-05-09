@@ -46,12 +46,14 @@ public:
     Plasma::Types::Location edge() const;
     void setEdge(const Plasma::Types::Location &edge);
 
+    QPoint popupPosition(QQuickItem *item, const QSize &size) override;
+
 signals:
     void containsMouseChanged();
     void edgeChanged();
 
 protected:
-    void adjustGeometry(const QRect &geom) override;
+  //  void adjustGeometry(const QRect &geom) override;
 
     bool event(QEvent *e) override;
 
