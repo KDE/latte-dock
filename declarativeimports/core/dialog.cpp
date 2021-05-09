@@ -110,13 +110,17 @@ QPoint Dialog::popupPosition(QQuickItem *item, const QSize &size)
         int x = 0;
         int y = 0;
 
+        int popupmargin = qMax(0, appletsPopUpMargin());
+
         if (m_edge == Plasma::Types::LeftEdge || m_edge == Plasma::Types::RightEdge) {
+            //! vertical scenario
+            screengeometry -= QMargins(0, popupmargin, 0, popupmargin);
             y = parenttopleft.y() + (visualparent->height()/2) - (size.height()/2);
         } else {
+            //! horizontal scenario
+            screengeometry -= QMargins(popupmargin, 0, popupmargin, 0);
             x = parenttopleft.x() + (visualparent->width()/2) - (size.width()/2);
         }
-
-        int popupmargin = qMax(0, appletsPopUpMargin());
 
         if (m_edge == Plasma::Types::LeftEdge) {
             x = parenttopleft.x() + visualparent->width() + popupmargin;
@@ -128,10 +132,12 @@ QPoint Dialog::popupPosition(QQuickItem *item, const QSize &size)
             y = parenttopleft.y() - size.height() - popupmargin;
         }
 
-        x = qBound(screengeometry.x(), x, screengeometry.right()-1);
-        y = qBound(screengeometry.y(), y, screengeometry.bottom()-1);
+        x = qBound(screengeometry.x(), x, screengeometry.right() - size.width() + 1);
+        y = qBound(screengeometry.y(), y, screengeometry.bottom() - size.height() + 1);
 
         QRect appletslayoutgeometry = appletsLayoutGeometryFromContainment();
+
+
 
         if (isRespectingAppletsLayoutGeometry() && !appletslayoutgeometry.isEmpty()) {
             QPoint appletsglobaltopleft = visualparent->window()->mapToGlobal(appletslayoutgeometry.topLeft());
