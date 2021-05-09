@@ -536,7 +536,9 @@ Item{
         }
 
         //! Normal Dodge/AutoHide case
-        if (!slidingAnimationAutoHiddenIn.running && !inRelocationHiding){
+        if (!slidingAnimationAutoHiddenIn.running
+                && !inRelocationHiding
+                && (latteView.visibility.isHidden || slidingAnimationAutoHiddenOut.running /*it is not already shown or is trying to hide*/)){
             slidingAnimationAutoHiddenIn.init();
         }
     }
@@ -555,7 +557,8 @@ Item{
         //! Normal Dodge/AutoHide case
         if (!slidingAnimationAutoHiddenOut.running
                 && !latteView.visibility.blockHiding
-                && !latteView.visibility.containsMouse) {
+                && (!latteView.visibility.containsMouse || latteView.visibility.mode === LatteCore.Types.SidebarOnDemand /*for SidebarOnDemand mouse should be ignored on hiding*/)
+                && (!latteView.visibility.isHidden || slidingAnimationAutoHiddenIn.running /*it is not already hidden or is trying to show*/)) {
             slidingAnimationAutoHiddenOut.init();
         }
     }
