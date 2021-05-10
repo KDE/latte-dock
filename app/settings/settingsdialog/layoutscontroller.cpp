@@ -706,20 +706,10 @@ const Latte::Data::Layout Layouts::addLayoutForFile(QString file, QString layout
 
     CentralLayout *settings = new CentralLayout(this, copied.id);
 
+    copied = settings->data();
     copied.name = uniqueLayoutName(layoutName);
-    copied.icon = settings->icon();
-    copied.backgroundStyle = settings->backgroundStyle();
-    copied.color = settings->color();
-    copied.textColor = settings->customTextColor();
-    copied.background = settings->customBackground();
-    copied.isLocked = !settings->isWritable();
-    copied.isShownInMenu = settings->showInMenu();
-    copied.hasDisabledBorders = settings->disableBordersForMaximizedWindows();
-    copied.errors = settings->errors().count();
-    copied.warnings = settings->warnings().count();
 
     m_model->appendLayout(copied);
-
     m_view->selectRow(rowForId(copied.id));
 
     return copied;
