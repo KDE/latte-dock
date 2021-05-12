@@ -821,7 +821,7 @@ Window{
             }
 
             Text{
-                text: visibilityManager.appletsTrackingWindowsCount
+                text: indexer.clientsTrackingWindowsCount
             }
 
             Text{

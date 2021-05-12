@@ -32,6 +32,8 @@ AbilityDefinition.Indexer {
 
     property var marginsAreaSeparators: []
 
+    property int clientsTrackingWindowsCount: 0
+
     Binding{
         target: indxr
         property: "separators"
@@ -224,6 +226,37 @@ AbilityDefinition.Indexer {
             }
 
             return bdgs;
+        }
+    }
+
+    Binding{
+        target: indxr
+        property: "clientsTrackingWindowsCount"
+        when: !(root.appletIsDragged || updateIsBlocked)
+        value: {
+            var cnts = 0;
+            var grid;
+
+            for (var l=0; l<=2; ++l) {
+                if (l===0) {
+                    grid = layouts.startLayout;
+                } else if (l===1) {
+                    grid = layouts.mainLayout;
+                } else if (l===2) {
+                    grid = layouts.endLayout;
+                }
+
+                for (var i=0; i<grid.children.length; ++i){
+                    var appletItem = grid.children[i];
+                    if (appletItem
+                            && appletItem.communicator
+                            && appletItem.communicator.requires.windowsTrackingEnabled) {
+                        cnts = cnts + 1;
+                    }
+                }
+            }
+
+            return cnts;
         }
     }
 

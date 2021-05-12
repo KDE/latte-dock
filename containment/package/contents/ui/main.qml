@@ -167,6 +167,7 @@ Item {
                                                           && latteView.windowsTracker.currentScreen.isTouchingBusyVerticalView
                                                           && plasmoid.configuration.backgroundOnlyOnMaximized)
 
+    property bool appletIsDragged: root.dragOverlay && root.dragOverlay.pressed
     property bool hideThickScreenGap: false /*set through binding*/
     property bool hideLengthScreenGaps: false /*set through binding*/
 
@@ -794,6 +795,10 @@ Item {
                 opacity: 0.06
             }
         }
+    }
+
+    BindingsExternal {
+        id: bindingsExternal
     }
 
     VisibilityManager{
