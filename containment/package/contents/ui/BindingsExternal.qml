@@ -283,6 +283,13 @@ Item {
     //! View::VisibilityManager
     Binding{
         target: latteView && latteView.visibility ? latteView.visibility : null
+        property: "isShownFully"
+        when: latteView && latteView.visibility
+        value: myView.isShownFully
+    }
+
+    Binding{
+        target: latteView && latteView.visibility ? latteView.visibility : null
         property: "strutsThickness"
         when: latteView && latteView.visibility
         value: {

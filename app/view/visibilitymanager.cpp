@@ -495,6 +495,21 @@ void VisibilityManager::setIsHidden(bool isHidden)
     emit isHiddenChanged();
 }
 
+bool VisibilityManager::isShownFully() const
+{
+    return m_isShownFully;
+}
+
+void VisibilityManager::setIsShownFully(bool fully)
+{
+    if (m_isShownFully == fully) {
+        return;
+    }
+
+    m_isShownFully = fully;
+    emit isShownFullyChanged();
+}
+
 bool VisibilityManager::hidingIsBlocked() const
 {
     return (m_blockHidingEvents.count() > 0);
