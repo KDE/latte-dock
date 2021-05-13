@@ -51,25 +51,25 @@ Ability.IndexerPrivate {
             var appletItem = sLayout.children[i];
 
             if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
-                return appletItem.index;
+                return appletItem.applet ? appletItem.applet.id : -1;
             }
         }
 
         var mLayout = layouts.mainLayout;
         for (var i=0; i<mLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
+            var appletItem = mLayout.children[i];
 
             if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
-                return appletItem.index;
+                return appletItem.applet ? appletItem.applet.id : -1;
             }
         }
 
         var eLayout = layouts.endLayout;
         for (var i=0; i<eLayout.children.length; ++i){
-            var appletItem = sLayout.children[i];
+            var appletItem = eLayout.children[i];
 
             if (visibleIndexBelongsAtApplet(appletItem, itemVisibleIndex)) {
-                return appletItem.index;
+                return appletItem.applet ? appletItem.applet.id : -1;
             }
         }
 

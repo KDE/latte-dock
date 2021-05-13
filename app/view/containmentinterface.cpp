@@ -402,7 +402,7 @@ int ContainmentInterface::appletIdForVisualIndex(const int index)
     identifyShortcutsHost();
 
     if (!m_appletIdForIndexMethod.isValid()) {
-        return false;
+        return -1;
     }
 
     QVariant appletId{-1};

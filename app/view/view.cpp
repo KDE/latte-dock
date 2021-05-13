@@ -695,6 +695,11 @@ void View::addTransientWindow(QWindow *window)
 
         QString winPtrStr = "0x" + QString::number((qulonglong)window,16);
         m_visibility->addBlockHidingEvent(winPtrStr);
+
+        if (m_visibility->hasBlockHidingEvent(Latte::GlobalShortcuts::SHORTCUTBLOCKHIDINGTYPE)) {
+            m_visibility->removeBlockHidingEvent(Latte::GlobalShortcuts::SHORTCUTBLOCKHIDINGTYPE);
+        }
+
         connect(window, &QWindow::visibleChanged, this, &View::removeTransientWindow);
     }
 }

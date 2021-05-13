@@ -52,11 +52,8 @@
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
-#define SHORTCUTBLOCKHIDINGTYPE "globalshortcuts::blockHiding()"
 
 namespace Latte {
-
-const int APPLETEXECUTIONDELAY = 400;
 
 GlobalShortcuts::GlobalShortcuts(QObject *parent)
     : QObject(parent)
@@ -249,16 +246,21 @@ void GlobalShortcuts::activateLauncherMenu()
     Latte::View *highestPriorityView = highestApplicationLauncherView(sortedViews);
 
     if (highestPriorityView) {
-        if (highestPriorityView->visibility()->isHidden() && highestPriorityView->extendedInterface()->applicationLauncherInPopup()) {
+        if (!highestPriorityView->visibility()->isShownFully() && highestPriorityView->extendedInterface()->applicationLauncherInPopup()) {
             m_lastInvokedAction = m_singleMetaAction;
 
+            //! wait for view to fully shown
+            connect(highestPriorityView->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, [&, highestPriorityView](){
+                if (highestPriorityView->visibility()->isShownFully()) {
+                    highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
+                    //!remove that signal tracking
+                    disconnect(highestPriorityView->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, nullptr);
+                }
+            });
+
+            //! That signal is removed from Latte::View only when the popup is really shown!
             highestPriorityView->visibility()->addBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
 
-            //! delay the execution in order to show first the view
-            QTimer::singleShot(APPLETEXECUTIONDELAY, [this, highestPriorityView]() {
-                highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
-                highestPriorityView->visibility()->removeBlockHidingEvent(SHORTCUTBLOCKHIDINGTYPE);
-            });
         } else {
             highestPriorityView->extendedInterface()->toggleAppletExpanded(highestPriorityView->extendedInterface()->applicationLauncherId());
         }
@@ -270,13 +272,17 @@ bool GlobalShortcuts::activatePlasmaTaskManager(const Latte::View *view, int ind
     bool activation{modifier == static_cast<Qt::Key>(Qt::META)};
     bool newInstance{!activation};
 
-    if (view->visibility()->isHidden()) {
-        //! delay the execution in order to show first the view
-        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, index, activation]() {
-            if (activation) {
-                view->extendedInterface()->activatePlasmaTask(index);
-            } else {
-                view->extendedInterface()->newInstanceForPlasmaTask(index);
+    if (!view->visibility()->isShownFully()) {
+        //! wait for view to fully shown
+        connect(view->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, [&, view, index, activation](){
+            if (view->visibility()->isShownFully()) {
+                if (activation) {
+                    view->extendedInterface()->activatePlasmaTask(index);
+                } else {
+                    view->extendedInterface()->newInstanceForPlasmaTask(index);
+                }
+                //!remove that signal tracking
+                disconnect(view->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, nullptr);
             }
         });
 
@@ -298,13 +304,17 @@ bool GlobalShortcuts::activateLatteEntry(Latte::View *view, int index, Qt::Key m
     int appletId = view->extendedInterface()->appletIdForVisualIndex(index);
     bool hasPopUp {(appletId>-1 && view->extendedInterface()->appletIsExpandable(appletId))};
 
-    if (view->visibility()->isHidden() && hasPopUp) {
-        //! delay the execution in order to show first the view
-        QTimer::singleShot(APPLETEXECUTIONDELAY, [this, view, index, activation]() {
-            if (activation) {
-                view->extendedInterface()->activateEntry(index);
-            } else {
-                view->extendedInterface()->newInstanceForEntry(index);
+    if (!view->visibility()->isShownFully() && hasPopUp) {
+        //! wait for view to fully shown
+        connect(view->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, [&, view, index, activation](){
+            if (view->visibility()->isShownFully()) {
+                if (activation) {
+                    view->extendedInterface()->activateEntry(index);
+                } else {
+                    view->extendedInterface()->newInstanceForEntry(index);
+                }
+                //!remove that signal tracking
+                disconnect(view->visibility(), &Latte::ViewPart::VisibilityManager::isShownFullyChanged, this, nullptr);
             }
         });
 

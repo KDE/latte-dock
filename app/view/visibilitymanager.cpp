@@ -530,6 +530,11 @@ void VisibilityManager::setIsFloatingGapWindowEnabled(bool enabled)
     emit isFloatingGapWindowEnabledChanged();
 }
 
+bool VisibilityManager::hasBlockHidingEvent(const QString &type)
+{
+    return (!type.isEmpty() && m_blockHidingEvents.contains(type));
+}
+
 void VisibilityManager::addBlockHidingEvent(const QString &type)
 {
     if (m_blockHidingEvents.contains(type) || type.isEmpty()) {

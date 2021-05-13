@@ -115,6 +115,7 @@ public:
     int timerHide() const;
     void setTimerHide(int msec);
 
+    bool hasBlockHidingEvent(const QString &type);
     bool isSidebar() const;
 
     //! KWin Edges Support functions
