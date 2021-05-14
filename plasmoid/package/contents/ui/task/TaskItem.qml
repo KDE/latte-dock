@@ -159,7 +159,7 @@ AbilityItem.BasicItem {
                                                                      && (windowsPreviewDlg.activeItem === taskItem)) )
 
     indicator.isGroup: !root.disableAllWindowsFunctionality && taskItem.isGroupParent
-    indicator.isHovered: taskItem.containsMouse
+    indicator.isHovered: taskItem.containsMouse || (windowsPreviewDlg.containsMouse && (toolTipDelegate.parentTask === taskItem))
     indicator.isMinimized: !root.disableAllWindowsFunctionality && taskItem.isMinimized
     indicator.isPressed: taskItem.pressed
     indicator.inAttention: !root.disableAllWindowsFunctionality && taskItem.inAttention
