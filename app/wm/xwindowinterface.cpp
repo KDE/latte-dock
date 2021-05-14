@@ -666,9 +666,9 @@ void XWindowInterface::requestToggleKeepAbove(WindowId wid)
     NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
 
     if (wInfo.isKeepAbove()) {
-        ni.setState(NET::States(), NET::StaysOnTop);
+        ni.setState(NET::States(), NET::KeepAbove);
     } else {
-        ni.setState(NET::StaysOnTop, NET::StaysOnTop);
+        ni.setState(NET::KeepAbove, NET::KeepAbove);
     }
 }
 
