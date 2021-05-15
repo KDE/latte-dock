@@ -19,6 +19,9 @@
 
 #include "menu.h"
 
+// local
+#include "layoutmenuitemwidget.h"
+
 // Qt
 #include <QAction>
 #include <QDebug>
@@ -381,35 +384,31 @@ void Menu::populateLayouts()
         bool isCurrent = ((memoryUsage == SingleLayout && isActive)
                           || (memoryUsage == MultipleLayouts && currentNames.contains(layoutsmenulist[i].layoutName)));
 
-        if (isCurrent && hasActiveNoCurrentLayout) {
-            layoutText += QString(" " + i18nc("current layout", "[Current]"));
-        }
 
-        QAction *layoutAction = m_switchLayoutsMenu->addAction(layoutText);
+        QWidgetAction *action = new QWidgetAction(m_switchLayoutsMenu);
+        action->setText(layoutsmenulist[i].layoutName);
+        action->setCheckable(true);
+        action->setChecked(isCurrent);
+        action->setData(layoutsmenulist[i].layoutName);
 
-        if (memoryUsage == LayoutsMemoryUsage::SingleLayout) {
-            layoutAction->setCheckable(true);
-
-            if (isActive) {
-                layoutAction->setChecked(true);
-            } else {
-                layoutAction->setChecked(false);
-            }
-        }
-
-        layoutAction->setData(layoutsmenulist[i].layoutName);
-
-        if (isCurrent) {
-            QFont font = layoutAction->font();
-            font.setBold(true);
-            layoutAction->setFont(font);
-        }
+        LayoutMenuItemWidget *menuitem = new LayoutMenuItemWidget(action, m_switchLayoutsMenu);
+        menuitem->setIcon(layoutsmenulist[i].isBackgroundFileIcon, layoutsmenulist[i].iconName);
+        action->setDefaultWidget(menuitem);
+        m_switchLayoutsMenu->addAction(action);
     }
 
     m_switchLayoutsMenu->addSeparator();
 
-    QAction *editLayoutsAction = m_switchLayoutsMenu->addAction(QIcon::fromTheme("document-edit"), i18n("Edit &Layouts..."));
-    editLayoutsAction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
+    QWidgetAction *editaction = new QWidgetAction(m_switchLayoutsMenu);
+    editaction->setText(i18n("Edit &Layouts..."));
+    editaction->setCheckable(false);
+    editaction->setData(QStringLiteral(" _show_latte_settings_dialog_"));
+    editaction->setVisible(false);
+
+    LayoutMenuItemWidget *editmenuitem = new LayoutMenuItemWidget(editaction, m_switchLayoutsMenu);
+    editmenuitem->setIcon(false, "document-edit");
+    editaction->setDefaultWidget(editmenuitem);
+    m_switchLayoutsMenu->addAction(editaction);
 }
 
 void Menu::populateMoveToLayouts()

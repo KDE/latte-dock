@@ -22,6 +22,7 @@
 // local
 #include "../viewsmodel.h"
 #include "../../generic/generictools.h"
+#include "../../generic/genericviewtools.h"
 #include "../../../data/screendata.h"
 #include "../../../data/viewdata.h"
 

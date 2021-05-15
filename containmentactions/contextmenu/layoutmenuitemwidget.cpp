@@ -19,6 +19,9 @@
 
 #include "layoutmenuitemwidget.h"
 
+// local
+#include "generictools.h"
+
 // Qt
 #include <QApplication>
 #include <QDebug>
@@ -39,6 +42,8 @@ LayoutMenuItemWidget::LayoutMenuItemWidget(QAction* action, QWidget *parent)
     auto radiobtn = new QRadioButton(this);
     radiobtn->setCheckable(true);
     radiobtn->setChecked(action->isChecked());
+
+    radiobtn->setVisible(action->isVisible() && action->isCheckable());
 
     l->addWidget(radiobtn);
     setLayout(l);
@@ -75,9 +80,9 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
         opt.state |= QStyle::State_Selected;
     }
 
-    //drawBackground(&painter, style(), opt);
+    Latte::drawBackground(&painter, style(), opt);
 
-    int radiosize = opt.rect.height() + 2;
+    int radiosize = opt.rect.height();
     QRect remained;
 
     if (qApp->layoutDirection() == Qt::LeftToRight) {
@@ -86,7 +91,25 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
         remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - radiosize, opt.rect.height());
     }
 
-    opt.rect = remained;
+    opt.rect  = remained;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        remained = QRect(opt.rect.x() + radiosize - 3*MARGIN , opt.rect.y(), opt.rect.width() - radiosize - 3*MARGIN, opt.rect.height());
+    } else {
+        remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - radiosize - 3*MARGIN, opt.rect.height());
+    }
+
+    QStyleOptionMenuItem iconOpt = opt;
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        iconOpt.rect = QRect(opt.rect.x() - 2*MARGIN, opt.rect.y() + MARGIN, opt.rect.width(), opt.rect.height() - 2*MARGIN);
+    } else {
+        iconOpt.rect = QRect(opt.rect.x() + opt.rect.width() + 2*MARGIN, opt.rect.y() + MARGIN, opt.rect.width(), opt.rect.height() - 2*MARGIN);
+    }
+
+    //remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft);
+    Latte::drawLayoutIcon(&painter, iconOpt, m_isBackgroundFile, m_iconName, Qt::AlignLeft);
+    opt.rect  = remained;
+
     style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
 
     painter.restore();

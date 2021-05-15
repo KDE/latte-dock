@@ -21,6 +21,7 @@
 
 // local
 #include "../../generic/generictools.h"
+#include "../../generic/genericviewtools.h"
 
 // Qt
 #include <QApplication>
