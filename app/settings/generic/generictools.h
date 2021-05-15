@@ -22,7 +22,6 @@
 #define GENERICSETTINGSTOOLS_H
 
 // local
-#include "../../data/layouticondata.h"
 #include "../../data/viewdata.h"
 
 // Qt
@@ -48,7 +47,7 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
-void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon);
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const bool &isBackgroundFile, const QString &iconName);
 
 //! background
 void drawBackground(QPainter *painter, const QStyleOptionViewItem &option);

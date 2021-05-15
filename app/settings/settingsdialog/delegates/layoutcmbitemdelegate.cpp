@@ -71,7 +71,7 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
         }
 
         int startX = centerX - (total_icons_width/2);
-        Latte::drawLayoutIcon(painter, option, QRect(startX, aY, thick, thick), icon);
+        Latte::drawLayoutIcon(painter, option, QRect(startX, aY, thick, thick), icon.isBackgroundFile, icon.name);
     }
 
     myOptions.rect.setWidth(option.rect.width() - iconsLength);

@@ -76,7 +76,7 @@ void LayoutsComboBox::paintEvent(QPaintEvent *event)
 
     QRect iconRect(opt.rect.x() + MARGIN, opt.rect.y() + VERTMARGIN, thick, thick);
     // draw layout icon
-    Latte::drawLayoutIcon(&painter, opt, iconRect,  m_layoutIcon);
+    Latte::drawLayoutIcon(&painter, opt, iconRect,  m_layoutIcon.isBackgroundFile, m_layoutIcon.name);
 }
 
 

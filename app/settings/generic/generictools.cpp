@@ -176,7 +176,7 @@ void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMe
     style->drawControl(QStyle::CE_MenuItem, &backOption, painter);
 }
 
-void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const bool &isBackgroundFile, const QString &iconName)
 {   
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
@@ -184,11 +184,11 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if (icon.isBackgroundFile) {
+    if (isBackgroundFile) {
         int backImageMargin = qMin(option.rect.height()/4, ICONMARGIN+2);
         QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
 
-        QPixmap backImage(icon.name);
+        QPixmap backImage(iconName);
         backImage = backImage.copy(backTarget);
 
         QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;
@@ -204,7 +204,7 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
     } else {
         QIcon::Mode mode = ((active && (selected || focused)) ? QIcon::Selected : QIcon::Normal);
 
-        painter->drawPixmap(target, QIcon::fromTheme(icon.name).pixmap(target.height(), target.height(), mode));
+        painter->drawPixmap(target, QIcon::fromTheme(iconName).pixmap(target.height(), target.height(), mode));
     }
 }
 
