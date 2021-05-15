@@ -48,8 +48,8 @@ void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     //! Remove the focus dotted lines
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
 
-    //! draw underlying background
-    QStyledItemDelegate::paint(painter, myOptions, index.model()->index(index.row(), Model::Layouts::HIDDENTEXTCOLUMN));
+    //! background
+    Latte::drawBackground(painter, option);
 
     Latte::Data::LayoutIcon icon = index.data(Qt::UserRole).value<Latte::Data::LayoutIcon>();
 

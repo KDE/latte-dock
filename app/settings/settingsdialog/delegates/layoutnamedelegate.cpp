@@ -99,12 +99,13 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());;
 
+    //! backround
+    Latte::drawBackground(painter, option);
+
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     //! Changes Indicator
     QRect remainedrect = Latte::remainedFromChangesIndicator(myOptions);
-    Latte::drawChangesIndicatorBackground(painter, myOptions);
-
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
@@ -113,7 +114,6 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (hasErrors || hasWarnings) {
         remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
         if (hasErrors) {
             Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
         } else if (hasWarnings) {
@@ -124,14 +124,12 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (isConsideredActive) {
         remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
         Latte::drawIcon(painter, myOptions, "favorites", Qt::AlignRight);
         myOptions.rect = remainedrect;
     }
 
     if (isLocked) {
         remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
         Latte::drawIcon(painter, myOptions, "object-locked", Qt::AlignRight);
         myOptions.rect = remainedrect;
     }

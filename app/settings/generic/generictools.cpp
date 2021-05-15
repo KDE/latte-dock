@@ -135,10 +135,6 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, co
     doc.setDefaultStyleSheet(css);
     doc.setHtml("<body>" + option.text + "</body>");
 
-    QStyleOptionViewItem tempOptions = option;
-    tempOptions.text = "";
-    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &tempOptions, painter);
-
     //we need an offset to be in the same vertical center of TextEdit
     int offsetY = ((option.rect.height() - doc.size().height()) / 2);
     int textWidth = doc.size().width();
@@ -232,61 +228,6 @@ QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
     return optionRemainedRect;
 }
 
-void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, Qt::AlignmentFlag alignment)
-{
-    int iconsize = option.rect.height() - 2*MARGIN;
-    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
-
-    QStyleOptionMenuItem iconOption = option;
-    iconOption.text = "";
-    //! Remove the focus dotted lines
-    //   iconOption.state = (option.state & ~QStyle::State_HasFocus);
-
-    Qt::AlignmentFlag curalign = alignment;
-
-    if (qApp->layoutDirection() == Qt::LeftToRight) {
-        curalign = alignment;
-    } else {
-        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
-    }
-
-    if (curalign == Qt::AlignLeft) {
-        iconOption.rect = QRect(option.rect.x(), option.rect.y(), total, option.rect.height());
-    } else {
-        iconOption.rect = QRect(option.rect.x() + option.rect.width() - total, option.rect.y(), total, option.rect.height());
-    }
-
-    style->drawControl(QStyle::CE_MenuItem, &iconOption, painter);
-}
-
-void drawIconBackground(QPainter *painter, const QStyleOptionViewItem &option, Qt::AlignmentFlag alignment)
-{
-    int iconsize = option.rect.height() - 2*MARGIN;
-    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
-
-    QStyleOptionViewItem iconOption = option;
-    iconOption.text = "";
-
-    //! Remove the focus dotted lines
-    iconOption.state = (option.state & ~QStyle::State_HasFocus);
-
-    Qt::AlignmentFlag curalign = alignment;
-
-    if (qApp->layoutDirection() == Qt::LeftToRight) {
-        curalign = alignment;
-    } else {
-        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
-    }
-
-    if (curalign == Qt::AlignLeft) {
-        iconOption.rect = QRect(option.rect.x(), option.rect.y(), total, option.rect.height());
-    } else {
-        iconOption.rect = QRect(option.rect.x() + option.rect.width() - total, option.rect.y(), total, option.rect.height());
-    }
-
-    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &iconOption, painter);
-}
-
 void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment)
 {
     int iconsize = option.rect.height() - 2*MARGIN;
@@ -325,24 +266,6 @@ QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option)
                                                                               QRect(option.rect.x(), option.rect.y(), option.rect.width() - tsize, option.rect.height());
 
     return optionRemainedRect;
-}
-
-void drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option)
-{
-    int tsize{INDICATORCHANGESLENGTH + INDICATORCHANGESMARGIN*2};
-
-    QStyleOptionViewItem indicatorOption = option;
-    indicatorOption.text = "";
-    //! Remove the focus dotted lines
-    indicatorOption.state = (option.state & ~QStyle::State_HasFocus);
-
-    if (qApp->layoutDirection() == Qt::RightToLeft) {
-        indicatorOption.rect = QRect(option.rect.x(), option.rect.y(), tsize, option.rect.height());
-    } else {
-        indicatorOption.rect = QRect(option.rect.x() + option.rect.width() - tsize, option.rect.y(), tsize, option.rect.height());
-    }
-
-    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &indicatorOption, painter);
 }
 
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option)
@@ -390,42 +313,6 @@ QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSi
                                                                               QRect(option.rect.x() + total_length, option.rect.y(), option.rect.width() - total_length, option.rect.height());
 
     return optionRemainedRect;
-}
-
-void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionViewItem &option, const int &maxIconSize)
-{
-    int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
-
-    QStyleOptionViewItem screenOption = option;
-    screenOption.text = "";
-    //! Remove the focus dotted lines
-    screenOption.state = (option.state & ~QStyle::State_HasFocus);
-
-    if (qApp->layoutDirection() == Qt::RightToLeft) {
-        screenOption.rect = QRect(option.rect.x() + option.rect.width() - total_length, option.rect.y(), total_length, option.rect.height());
-    } else {
-        screenOption.rect = QRect(option.rect.x(), option.rect.y(), total_length, option.rect.height());
-    }
-
-    style->drawControl(QStyle::CE_ItemViewItem, &screenOption, painter);
-}
-
-void drawScreenBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, const int &maxIconSize)
-{
-    int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
-
-    QStyleOptionMenuItem screenOption = option;
-    screenOption.text = "";
-    //! Remove the focus dotted lines
-    screenOption.state = (option.state & ~QStyle::State_HasFocus);
-
-    if (qApp->layoutDirection() == Qt::RightToLeft) {
-        screenOption.rect = QRect(option.rect.x() + option.rect.width() - total_length, option.rect.y(), total_length, option.rect.height());
-    } else {
-        screenOption.rect = QRect(option.rect.x(), option.rect.y(), total_length, option.rect.height());
-    }
-
-    style->drawControl(QStyle::CE_MenuItem, &screenOption, painter);
 }
 
 QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const int &maxIconSize, const float brushOpacity)
@@ -570,9 +457,6 @@ void drawView(QPainter *painter, const QStyleOption &option, const Latte::Data::
 
     painter->restore();
 }
-
-
-
 
 }
 

@@ -55,6 +55,7 @@ void SingleText::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         textopacity = 0.25;
     }
 
+    Latte::drawBackground(painter, option);
     Latte::drawFormattedText(painter, myOptions, textopacity);
 }
 

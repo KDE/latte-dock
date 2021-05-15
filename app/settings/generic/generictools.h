@@ -56,13 +56,10 @@ void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMe
 
 //! simple icon
 QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
-void drawIconBackground(QPainter *painter, const QStyleOptionViewItem &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
-void drawIconBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 
 //! changes indicator
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
-void drawChangesIndicatorBackground(QPainter *painter, const QStyleOptionViewItem &option);
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
 
 
