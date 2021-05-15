@@ -25,6 +25,8 @@
 #include "syncedlaunchers.h"
 #include "synchronizer.h"
 #include "../apptypes.h"
+#include "../data/layoutdata.h"
+#include "../data/layouticondata.h"
 #include "../settings/settingsdialog/settingsdialog.h"
 
 // Qt
@@ -86,6 +88,8 @@ public:
     void unload();
 
     QStringList currentLayoutsNames() const;
+
+    Latte::Data::LayoutIcon iconForLayout(const Data::Layout &layout) const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
     void setMemoryUsage(MemoryUsage::LayoutsMemory memoryUsage);

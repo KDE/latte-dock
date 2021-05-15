@@ -195,6 +195,37 @@ QStringList Manager::viewTemplateIds() const
     return ids;
 }
 
+Latte::Data::LayoutIcon Manager::iconForLayout(const Data::Layout &layout) const
+{
+    Latte::Data::LayoutIcon _icon;
+
+    if (!layout.icon.isEmpty()) {
+        //! if there is specific icon set from the user for this layout we draw only that icon
+        _icon.name = layout.icon;
+        _icon.isBackgroundFile = false;
+        return _icon;
+    }
+
+    //! fallback icon: background image
+    if (_icon.isEmpty()) {
+        QString colorPath = m_corona->kPackage().path() + "../../shells/org.kde.latte.shell/contents/images/canvas/";
+
+        if (layout.backgroundStyle == Layout::PatternBackgroundStyle && layout.background.isEmpty()) {
+            colorPath += "defaultcustomprint.jpg";
+        } else {
+            colorPath = layout.background.startsWith("/") ? layout.background : colorPath + layout.color + "print.jpg";
+        }
+
+        if (QFileInfo(colorPath).exists()) {
+            _icon.isBackgroundFile = true;
+            _icon.name = colorPath;
+            return _icon;
+        }
+    }
+
+    return Latte::Data::LayoutIcon();
+}
+
 QList<CentralLayout *> Manager::currentLayouts() const
 {
     return m_synchronizer->currentLayouts();

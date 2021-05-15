@@ -137,8 +137,6 @@ public:
     void setCurrentLayoutForFreeActivities(const QString &id);
     void setOriginalLayoutForFreeActivities(const QString &id);
 
-    void setIconsPath(QString iconsPath);
-
     QList<Latte::Data::Layout> alteredLayouts() const;
 
     const Latte::Data::LayoutsTable &currentLayoutsData();
@@ -180,11 +178,8 @@ private:
     QStringList cleanStrings(const QStringList &original, const QStringList &occupied);
 
     Latte::Data::LayoutIcon icon(const int &row) const;
-    Latte::Data::LayoutIcon iconForCentralLayout(const int &row) const;
 
 private:
-    QString m_iconsPath;
-
     Latte::Data::ActivitiesTable m_activitiesTable;
     QHash<QString, KActivities::Info *> m_activitiesInfo;
 

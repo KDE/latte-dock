@@ -145,7 +145,6 @@ void Layouts::initView()
 
     //!find the available colors
     m_iconsPath = m_handler->corona()->kPackage().path() + "../../shells/org.kde.latte.shell/contents/images/canvas/";
-    m_model->setIconsPath(m_iconsPath);
 
     QDir layoutDir(m_iconsPath);
     QStringList filter;
