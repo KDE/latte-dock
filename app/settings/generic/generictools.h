@@ -47,7 +47,6 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
-void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const bool &isBackgroundFile, const QString &iconName);
 
 //! background
 void drawBackground(QPainter *painter, const QStyleOptionViewItem &option);
@@ -56,6 +55,10 @@ void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMe
 //! simple icon
 QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+
+//! layout icon
+QRect remainedFromLayoutIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &isBackgroundFile, const QString &iconName, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 
 //! changes indicator
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);

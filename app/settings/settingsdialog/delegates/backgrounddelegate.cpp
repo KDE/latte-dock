@@ -45,33 +45,13 @@ BackgroundDelegate::BackgroundDelegate(QObject *parent)
 void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QStyleOptionViewItem myOptions = option;
-    //! Remove the focus dotted lines
-    myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
+    Latte::Data::LayoutIcon icon = index.data(Qt::UserRole).value<Latte::Data::LayoutIcon>();
 
     //! background
     Latte::drawBackground(painter, option);
 
-    Latte::Data::LayoutIcon icon = index.data(Qt::UserRole).value<Latte::Data::LayoutIcon>();
-
-    if (!icon.isEmpty()) {
-        int localMargin = MARGIN-1;// icons[0].isBackgroundFile && icons.count() == 1 ? qMin(option.rect.height()/4,MARGIN+5) : MARGIN-1;
-
-        int aY = option.rect.y() + localMargin;
-        int thick = option.rect.height() - localMargin*2;
-
-        int centerX = option.rect.x() + (option.rect.width() / 2);
-        int step = thick;
-        int total_icons_width = (thick-step) + step;
-
-        if (total_icons_width > option.rect.width()){
-            step = thick/2;
-            total_icons_width = (thick-step) + step;
-        }
-
-        int startX = centerX - (total_icons_width/2);
-
-        Latte::drawLayoutIcon(painter, option, QRect(startX, aY, thick, thick), icon.isBackgroundFile, icon.name);
-    }
+    myOptions.rect = QRect(option.rect.x(), option.rect.y() + 1, option.rect.width(), option.rect.height() - 2);
+    Latte::drawLayoutIcon(painter, myOptions, icon.isBackgroundFile, icon.name, Qt::AlignHCenter);
 }
 
 }

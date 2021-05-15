@@ -176,16 +176,48 @@ void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMe
     style->drawControl(QStyle::CE_MenuItem, &backOption, painter);
 }
 
-void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const bool &isBackgroundFile, const QString &iconName)
-{   
+QRect remainedFromLayoutIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
+{
+    if (alignment == Qt::AlignHCenter) {
+        return option.rect;
+    }
+
+    return remainedFromIcon(option, alignment);
+}
+
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &isBackgroundFile, const QString &iconName, Qt::AlignmentFlag alignment)
+{
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
     bool focused = Latte::isFocused(option);
 
+    int iconsize = option.rect.height() - 2*ICONMARGIN;
+    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight || alignment == Qt::AlignHCenter) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    QRect target;
+
+    if (curalign == Qt::AlignLeft) {
+        target = QRect(option.rect.x() + MARGIN + ICONMARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+    } else if (curalign == Qt::AlignRight) {
+        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+    } else {
+        //! centered
+        target = QRect(option.rect.x() + ((option.rect.width() - total)/2) + ICONMARGIN + MARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+    }
+
+    painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     if (isBackgroundFile) {
-        int backImageMargin = qMin(option.rect.height()/4, ICONMARGIN+2);
+        int backImageMargin = qMin(target.height()/4, ICONMARGIN+1);
         QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
 
         QPixmap backImage(iconName);
@@ -206,6 +238,8 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &
 
         painter->drawPixmap(target, QIcon::fromTheme(iconName).pixmap(target.height(), target.height(), mode));
     }
+
+    painter->restore();
 }
 
 QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
