@@ -93,21 +93,24 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
 
     opt.rect  = remained;
 
+    int iconlengthmargin = 4*MARGIN + ICONMARGIN;
     if (qApp->layoutDirection() == Qt::LeftToRight) {
-        remained = QRect(opt.rect.x() + radiosize - 3*MARGIN , opt.rect.y(), opt.rect.width() - radiosize - 3*MARGIN, opt.rect.height());
+        remained = QRect(opt.rect.x() + radiosize - iconlengthmargin , opt.rect.y(), opt.rect.width() - radiosize - iconlengthmargin, opt.rect.height());
     } else {
-        remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - radiosize - 3*MARGIN, opt.rect.height());
+        remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - radiosize - iconlengthmargin, opt.rect.height());
     }
 
     QStyleOptionMenuItem iconOpt = opt;
+    int iconthickmargin =  MARGIN + ICONMARGIN;
+    int textlengthmargin = 2*MARGIN + ICONMARGIN;
     if (qApp->layoutDirection() == Qt::LeftToRight) {
-        iconOpt.rect = QRect(opt.rect.x() - 2*MARGIN, opt.rect.y() + MARGIN, opt.rect.width(), opt.rect.height() - 2*MARGIN);
+        iconOpt.rect = QRect(opt.rect.x() - textlengthmargin, opt.rect.y() + iconthickmargin, opt.rect.width(), opt.rect.height() - 2*iconthickmargin);
     } else {
-        iconOpt.rect = QRect(opt.rect.x() + opt.rect.width() + 2*MARGIN, opt.rect.y() + MARGIN, opt.rect.width(), opt.rect.height() - 2*MARGIN);
+        iconOpt.rect = QRect(opt.rect.x() + opt.rect.width() + textlengthmargin, opt.rect.y() + iconthickmargin, opt.rect.width(), opt.rect.height() - 2*iconthickmargin);
     }
 
     //remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft);
-    Latte::drawLayoutIcon(&painter, iconOpt, m_isBackgroundFile, m_iconName, Qt::AlignLeft);
+    Latte::drawLayoutIcon(&painter, iconOpt, m_isBackgroundFile, m_iconName, Qt::AlignLeft);    
     opt.rect  = remained;
 
     style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
