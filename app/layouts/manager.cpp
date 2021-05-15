@@ -195,6 +195,12 @@ QStringList Manager::viewTemplateIds() const
     return ids;
 }
 
+Latte::Data::LayoutIcon Manager::iconForLayout(const QString &storedLayoutName) const
+{
+    Data::Layout l = m_synchronizer->data(storedLayoutName);
+    return iconForLayout(l);
+}
+
 Latte::Data::LayoutIcon Manager::iconForLayout(const Data::Layout &layout) const
 {
     Latte::Data::LayoutIcon _icon;

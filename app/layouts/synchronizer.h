@@ -119,6 +119,7 @@ public:
 
     KActivities::Controller *activitiesController() const;
 
+    Data::Layout data(const QString &storedLayoutName) const;
     Data::LayoutsTable layoutsTable() const;
     void setLayoutsTable(const Data::LayoutsTable &table);
 

@@ -248,6 +248,18 @@ void Synchronizer::setIsSingleLayoutInDeprecatedRenaming(const bool &enabled)
     m_isSingleLayoutInDeprecatedRenaming = enabled;
 }
 
+Data::Layout Synchronizer::data(const QString &storedLayoutName) const
+{
+    Data::Layout l;
+
+    if (m_layouts.containsName(storedLayoutName)) {
+        QString lid = m_layouts.idForName(storedLayoutName);
+        return m_layouts[lid];
+    }
+
+    return l;
+}
+
 Data::LayoutsTable Synchronizer::layoutsTable() const
 {
     return m_layouts;

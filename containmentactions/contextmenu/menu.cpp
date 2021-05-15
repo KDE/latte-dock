@@ -346,7 +346,21 @@ void Menu::populateLayouts()
     LayoutsMemoryUsage memoryUsage = static_cast<LayoutsMemoryUsage>((m_data[MEMORYINDEX]).toInt());
     QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
     QStringList currentNames = m_data[CURRENTLAYOUTSINDEX].split(";;");
-    QStringList layoutMenuNames = m_data[LAYOUTMENUINDEX].split(";;");
+
+    QList<LayoutInfo> layoutsmenulist;
+
+    QStringList layoutsdata = m_data[LAYOUTMENUINDEX].split(";;");
+
+    for (int i=0; i<layoutsdata.count(); ++i) {
+        QStringList cdata = layoutsdata[i].split("**");
+
+        LayoutInfo info;
+        info.layoutName = cdata[0];
+        info.isBackgroundFileIcon = cdata[1].toInt();
+        info.iconName = cdata[2];
+
+        layoutsmenulist << info;
+    }
 
     bool hasActiveNoCurrentLayout{false};
 
@@ -359,13 +373,13 @@ void Menu::populateLayouts()
         }
     }
 
-    for (int i = 0; i < layoutMenuNames.count(); ++i) {
-        bool isActive = activeNames.contains(layoutMenuNames[i]);
+    for (int i = 0; i < layoutsmenulist.count(); ++i) {
+        bool isActive = activeNames.contains(layoutsmenulist[i].layoutName);
 
-        QString layoutText = layoutMenuNames[i];
+        QString layoutText = layoutsmenulist[i].layoutName;
 
         bool isCurrent = ((memoryUsage == SingleLayout && isActive)
-                          || (memoryUsage == MultipleLayouts && currentNames.contains(layoutMenuNames[i])));
+                          || (memoryUsage == MultipleLayouts && currentNames.contains(layoutsmenulist[i].layoutName)));
 
         if (isCurrent && hasActiveNoCurrentLayout) {
             layoutText += QString(" " + i18nc("current layout", "[Current]"));
@@ -383,7 +397,7 @@ void Menu::populateLayouts()
             }
         }
 
-        layoutAction->setData(layoutMenuNames[i]);
+        layoutAction->setData(layoutsmenulist[i].layoutName);
 
         if (isCurrent) {
             QFont font = layoutAction->font();

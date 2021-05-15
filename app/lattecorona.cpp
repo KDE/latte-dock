@@ -27,6 +27,7 @@
 #include "lattedockadaptor.h"
 #include "screenpool.h"
 #include "data/generictable.h"
+#include "data/layouticondata.h"
 #include "declarativeimports/interfaces.h"
 #include "indicator/factory.h"
 #include "layout/abstractlayout.h"
@@ -1140,7 +1141,12 @@ QStringList Corona::contextMenuData(const uint &containmentId)
     for(const auto &layoutName : m_layoutsManager->synchronizer()->menuLayouts()) {
         if (m_layoutsManager->synchronizer()->centralLayout(layoutName)
                 || m_layoutsManager->memoryUsage() == Latte::MemoryUsage::SingleLayout) {
-            layoutsmenu << layoutName;
+            QStringList layoutdata;
+            Data::LayoutIcon layouticon = m_layoutsManager->iconForLayout(layoutName);
+            layoutdata << layoutName;
+            layoutdata << QString::number(layouticon.isBackgroundFile);
+            layoutdata << layouticon.name;
+            layoutsmenu << layoutdata.join("**");
         }
     }
 

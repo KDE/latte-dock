@@ -29,6 +29,12 @@
 class QAction;
 class QMenu;
 
+struct LayoutInfo {
+    QString layoutName;
+    bool isBackgroundFileIcon;
+    QString iconName;
+};
+
 class Menu : public Plasma::ContainmentActions
 {
     Q_OBJECT

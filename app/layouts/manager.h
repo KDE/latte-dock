@@ -89,6 +89,7 @@ public:
 
     QStringList currentLayoutsNames() const;
 
+    Latte::Data::LayoutIcon iconForLayout(const QString &storedLayoutName) const;
     Latte::Data::LayoutIcon iconForLayout(const Data::Layout &layout) const;
 
     MemoryUsage::LayoutsMemory memoryUsage() const;
