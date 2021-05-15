@@ -365,17 +365,6 @@ void Menu::populateLayouts()
         layoutsmenulist << info;
     }
 
-    bool hasActiveNoCurrentLayout{false};
-
-    if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
-        for (int i = 0; i<activeNames.count(); ++i) {
-            if (!currentNames.contains(activeNames[i])) {
-                hasActiveNoCurrentLayout = true;
-                break;
-            }
-        }
-    }
-
     for (int i = 0; i < layoutsmenulist.count(); ++i) {
         bool isActive = activeNames.contains(layoutsmenulist[i].layoutName);
 
@@ -422,38 +411,35 @@ void Menu::populateMoveToLayouts()
         QStringList currentNames = m_data[CURRENTLAYOUTSINDEX].split(";;");
         QString viewLayoutName = m_data[VIEWLAYOUTINDEX];
 
-        bool hasActiveNoCurrentLayout{false};
+        QList<LayoutInfo> layoutsmenulist;
 
-        if (memoryUsage == LayoutsMemoryUsage::MultipleLayouts) {
-            for (int i = 0; i<activeNames.count(); ++i) {
-                if (!currentNames.contains(activeNames[i])) {
-                    hasActiveNoCurrentLayout = true;
-                    break;
-                }
-            }
+        QStringList layoutsdata = m_data[LAYOUTMENUINDEX].split(";;");
+
+        for (int i=0; i<layoutsdata.count(); ++i) {
+            QStringList cdata = layoutsdata[i].split("**");
+
+            LayoutInfo info;
+            info.layoutName = cdata[0];
+            info.isBackgroundFileIcon = cdata[1].toInt();
+            info.iconName = cdata[2];
+
+            layoutsmenulist << info;
         }
 
-        for(int i=0; i<activeNames.count(); ++i) {
-            QString layoutText = activeNames[i];
+        for (int i = 0; i < layoutsmenulist.count(); ++i) {
+            bool isCurrent = currentNames.contains(layoutsmenulist[i].layoutName) && activeNames.contains(layoutsmenulist[i].layoutName);
+            bool isViewCurrentLayout = layoutsmenulist[i].layoutName == viewLayoutName;
 
-            bool isCurrent = currentNames.contains(activeNames[i]);
-            bool isViewCurrentLayout = activeNames[i] == viewLayoutName;
+            QWidgetAction *action = new QWidgetAction(m_moveToLayoutMenu);
+            action->setText(layoutsmenulist[i].layoutName);
+            action->setCheckable(true);
+            action->setChecked(isViewCurrentLayout);
+            action->setData(isViewCurrentLayout ? QString() : layoutsmenulist[i].layoutName);
 
-            if (isCurrent && hasActiveNoCurrentLayout) {
-                layoutText += QString(" " + i18nc("current layout", "[Current]"));
-            }
-
-            QAction *layoutAction = m_moveToLayoutMenu->addAction(layoutText);
-
-            layoutAction->setCheckable(true);
-            layoutAction->setChecked(isViewCurrentLayout);
-            layoutAction->setData(isViewCurrentLayout ? QString() : activeNames[i]);
-
-            if (isCurrent) {
-                QFont font = layoutAction->font();
-                font.setBold(true);
-                layoutAction->setFont(font);
-            }
+            LayoutMenuItemWidget *menuitem = new LayoutMenuItemWidget(action, m_moveToLayoutMenu);
+            menuitem->setIcon(layoutsmenulist[i].isBackgroundFileIcon, layoutsmenulist[i].iconName);
+            action->setDefaultWidget(menuitem);
+            m_moveToLayoutMenu->addAction(action);
         }
     }
 }
