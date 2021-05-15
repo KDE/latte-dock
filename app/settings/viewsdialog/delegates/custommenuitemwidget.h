@@ -29,6 +29,7 @@
 #include <QWidget>
 #include <QWidgetAction>
 #include <QPaintEvent>
+#include <QRadioButton>
 
 namespace Latte {
 namespace Settings {

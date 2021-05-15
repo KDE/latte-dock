@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QPainter>
+#include <QRadioButton>
 #include <QStyleOptionMenuItem>
 
 namespace Latte {
@@ -37,6 +38,15 @@ CustomMenuItemWidget::CustomMenuItemWidget(QAction* action, QWidget *parent)
     : QWidget(parent),
       m_action(action)
 {
+    QHBoxLayout *l = new QHBoxLayout;
+
+    auto radiobtn = new QRadioButton(this);
+    radiobtn->setCheckable(true);
+    radiobtn->setChecked(action->isChecked());
+
+    l->addWidget(radiobtn);
+    setLayout(l);
+
     setMouseTracking(true);
 }
 
@@ -73,20 +83,16 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
         opt.state |= QStyle::State_Selected;
     }
 
-    QRect remained = Latte::remainedFromIcon(opt);
+    Latte::drawBackground(&painter, style(), opt);
 
-    Latte::drawIconBackground(&painter, style(), opt);
-
-    if (!m_action->icon().name().isEmpty()) {
-        Latte::drawIcon(&painter, opt, m_action->icon().name());
-    }
+    int radiosize = opt.rect.height() + 2;
+    QRect remained = QRect(opt.rect.x() + radiosize , opt.rect.y(), opt.rect.width() - radiosize, opt.rect.height());
 
     opt.rect = remained;
 
     if (!m_screen.id.isEmpty()) {
         int maxiconsize = 26;
         remained = Latte::remainedFromScreenDrawing(opt, maxiconsize);
-        Latte::drawScreenBackground(&painter, style(), opt, maxiconsize);
         QRect availableScreenRect = Latte::drawScreen(&painter, opt, m_screen.geometry, maxiconsize);
 
         if (!m_view.id.isEmpty()) {

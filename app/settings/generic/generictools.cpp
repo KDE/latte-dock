@@ -159,6 +159,27 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, co
     painter->restore();
 }
 
+void drawBackground(QPainter *painter, const QStyleOptionViewItem &option)
+{
+    QStyleOptionViewItem backOption = option;
+    backOption.text = "";
+
+    //! Remove the focus dotted lines
+    backOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    option.widget->style()->drawControl(QStyle::CE_ItemViewItem, &backOption, painter);
+}
+
+void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMenuItem &option)
+{
+    QStyleOptionMenuItem backOption = option;
+    backOption.text = "";
+    //! Remove the focus dotted lines
+    //   iconOption.state = (option.state & ~QStyle::State_HasFocus);
+
+    style->drawControl(QStyle::CE_MenuItem, &backOption, painter);
+}
+
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const QRect &target, const Latte::Data::LayoutIcon &icon)
 {   
     bool active = Latte::isActive(option);

@@ -81,9 +81,10 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
         textopacity = 0.25;
     }
 
+    Latte::drawBackground(painter, option);
+
     // draw changes indicator
     QRect remainedrect = Latte::remainedFromChangesIndicator(option);
-    Latte::drawChangesIndicatorBackground(painter, option);
     if (isChanged) {
         Latte::drawChangesIndicator(painter, option);
     }
@@ -92,7 +93,6 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // draw errors/warnings
     if (hasErrors || hasWarnings) {
         remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIconBackground(painter, myOptions, Qt::AlignRight);
         if (hasErrors) {
             Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
         } else if (hasWarnings) {
@@ -104,7 +104,6 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
     // draw screen icon
     int maxiconsize = -1; //disabled
     remainedrect = Latte::remainedFromScreenDrawing(myOptions, maxiconsize);
-    Latte::drawScreenBackground(painter, option.widget->style(), myOptions, maxiconsize);
     QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, maxiconsize, textopacity);
     Latte::drawView(painter, myOptions, view, availableScreenRect, textopacity);
 
