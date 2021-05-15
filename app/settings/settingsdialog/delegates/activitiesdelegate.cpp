@@ -331,6 +331,7 @@ void Activities::paint(QPainter *painter, const QStyleOptionViewItem &option, co
         myOptions.text = "";
     }
 
+    Latte::drawBackground(painter, option);
     Latte::drawFormattedText(painter, myOptions);
 }
 

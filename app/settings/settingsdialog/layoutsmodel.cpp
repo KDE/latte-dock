@@ -420,30 +420,6 @@ Latte::Data::LayoutIcon Layouts::iconForCentralLayout(const int &row) const
         return _icon;
     }
 
-    if (inMultipleMode()) {
-        if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::ALLACTIVITIESID)) {
-            _icon.name = m_activitiesTable[Latte::Data::Layout::ALLACTIVITIESID].icon;
-            _icon.isBackgroundFile = false;
-            return _icon;
-        } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
-            _icon.name = m_activitiesTable[Latte::Data::Layout::FREEACTIVITIESID].icon;
-            _icon.isBackgroundFile = false;
-            return _icon;
-        } else {
-            QStringList activitiesIds = m_layoutsTable[row].activities;
-
-            for(int i=0; i<activitiesIds.count(); ++i) {
-                QString id = activitiesIds[i];
-                if (m_activitiesTable.containsId(id)) {
-                    _icon.name = m_activitiesTable[id].icon;
-                    _icon.isBackgroundFile = false;
-                    //! first activity icon found
-                    return _icon;
-                }
-            }
-        }
-    }
-
     //! fallback icon: background image
     if (_icon.isEmpty()) {
         QString colorPath;
