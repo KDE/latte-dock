@@ -23,6 +23,7 @@
 #include "../../generic/generictools.h"
 
 // Qt
+#include <QApplication>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QPainter>
@@ -86,7 +87,13 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
     Latte::drawBackground(&painter, style(), opt);
 
     int radiosize = opt.rect.height() + 2;
-    QRect remained = QRect(opt.rect.x() + radiosize , opt.rect.y(), opt.rect.width() - radiosize, opt.rect.height());
+    QRect remained;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        remained = QRect(opt.rect.x() + radiosize , opt.rect.y(), opt.rect.width() - radiosize, opt.rect.height());
+    } else {
+        remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - radiosize, opt.rect.height());
+    }
 
     opt.rect = remained;
 
