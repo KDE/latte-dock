@@ -84,7 +84,7 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
     Latte::drawBackground(&painter, style(), opt);
 
     //! radio button
-    int radiosize = opt.rect.height();
+    int radiosize = opt.rect.height() - 2*MARGIN;
     QRect remained;
 
     if (qApp->layoutDirection() == Qt::LeftToRight) {
@@ -96,8 +96,8 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
     opt.rect  = remained;
 
     //! icon
-    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 2, 3); //we need this padding for spacing
-    Latte::drawLayoutIcon(&painter, opt, m_isBackgroundFile, m_iconName, Qt::AlignLeft, 0, 3);
+    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 1, 4); //add also spacing to push text a little to the right
+    Latte::drawLayoutIcon(&painter, opt, m_isBackgroundFile, m_iconName, Qt::AlignLeft, 0, 4);
     opt.rect  = remained;
 
     //! text
