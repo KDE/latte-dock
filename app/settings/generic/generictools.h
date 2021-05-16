@@ -44,6 +44,8 @@ QPalette::ColorGroup colorGroup(const QStyleOption &option);
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
+void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, const float textOpacity = 1.0);
+void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, const bool &isTextCentered = false, const float textOpacity = 1.0);
 
 //! background
 void drawBackground(QPainter *painter, const QStyleOptionViewItem &option);

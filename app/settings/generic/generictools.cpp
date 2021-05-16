@@ -119,9 +119,17 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity)
 {
-    painter->save();
+    drawFormattedText(painter, option, option.text, Latte::isTextCentered(option), textOpacity);
+}
 
-    bool isTextCentered = Latte::isTextCentered(option);
+void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, const float textOpacity)
+{
+    drawFormattedText(painter, option, option.text, false, textOpacity);
+}
+
+void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, const bool &isTextCentered, const float textOpacity)
+{
+    painter->save();
 
     QPalette::ColorRole applyColor = Latte::isSelected(option) ? QPalette::HighlightedText : QPalette::Text;
     QBrush nBrush = option.palette.brush(Latte::colorGroup(option), applyColor);
@@ -133,7 +141,7 @@ void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, co
 
     QTextDocument doc;
     doc.setDefaultStyleSheet(css);
-    doc.setHtml("<body>" + option.text + "</body>");
+    doc.setHtml("<body>" + text + "</body>");
 
     //we need an offset to be in the same vertical center of TextEdit
     int offsetY = ((option.rect.height() - doc.size().height()) / 2);

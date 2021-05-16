@@ -60,6 +60,7 @@ QSize LayoutMenuItemWidget::minimumSizeHint() const
 {
    QStyleOptionMenuItem opt;
    QSize contentSize = fontMetrics().size(Qt::TextSingleLine | Qt::TextShowMnemonic, m_action->text());
+
    contentSize.setHeight(contentSize.height() + 9);
    contentSize.setWidth(contentSize.width() + 4 * contentSize.height());
    return style()->sizeFromContents(QStyle::CT_MenuItem, &opt, contentSize, this);
@@ -95,12 +96,14 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
     opt.rect  = remained;
 
     //! icon
-    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 0, 3);
+    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 2, 3); //we need this padding for spacing
     Latte::drawLayoutIcon(&painter, opt, m_isBackgroundFile, m_iconName, Qt::AlignLeft, 0, 3);
     opt.rect  = remained;
 
     //! text
-    style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
+    opt.text = opt.text.remove("&");
+    //style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
+    Latte::drawFormattedText(&painter, opt);
 
     painter.restore();
 }

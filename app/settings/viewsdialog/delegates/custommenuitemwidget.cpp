@@ -87,7 +87,8 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
 
     Latte::drawBackground(&painter, style(), opt);
 
-    int radiosize = opt.rect.height() + 2;
+    //! radio button
+    int radiosize = opt.rect.height();
     QRect remained;
 
     if (qApp->layoutDirection() == Qt::LeftToRight) {
@@ -109,7 +110,21 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
     }
 
     opt.rect = remained;
-    style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
+
+    //! text
+    opt.text = opt.text.remove("&");
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        //! add spacing
+        remained = QRect(opt.rect.x() + 2 , opt.rect.y(), opt.rect.width() - 2, opt.rect.height());
+    } else {
+        //! add spacing
+        remained = QRect(opt.rect.x() , opt.rect.y(), opt.rect.width() - 2, opt.rect.height());
+    }
+
+    opt.rect = remained;
+
+    //style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
+    Latte::drawFormattedText(&painter, opt);
 
     painter.restore();
 }
