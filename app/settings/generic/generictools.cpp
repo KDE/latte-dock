@@ -176,23 +176,26 @@ void drawBackground(QPainter *painter, const QStyle *style, const QStyleOptionMe
     style->drawControl(QStyle::CE_MenuItem, &backOption, painter);
 }
 
-QRect remainedFromLayoutIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
+QRect remainedFromLayoutIcon(const QStyleOption &option, Qt::AlignmentFlag alignment, int lengthMargin, int thickMargin)
 {
     if (alignment == Qt::AlignHCenter) {
         return option.rect;
     }
 
-    return remainedFromIcon(option, alignment);
+    return remainedFromIcon(option, alignment, lengthMargin, thickMargin);
 }
 
-void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &isBackgroundFile, const QString &iconName, Qt::AlignmentFlag alignment)
+void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &isBackgroundFile, const QString &iconName, Qt::AlignmentFlag alignment, int lengthMargin, int thickMargin)
 {
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
     bool focused = Latte::isFocused(option);
 
-    int iconsize = option.rect.height() - 2*ICONMARGIN;
-    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+    int lenmargin = (lengthMargin == -1 ? ICONMARGIN + MARGIN : lengthMargin);
+    int thickmargin = (thickMargin == -1 ? ICONMARGIN : thickMargin);
+
+    int iconsize = option.rect.height() - 2*thickMargin;
+    int total = iconsize + 2*lenmargin;
 
     Qt::AlignmentFlag curalign = alignment;
 
@@ -205,12 +208,12 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &i
     QRect target;
 
     if (curalign == Qt::AlignLeft) {
-        target = QRect(option.rect.x() + MARGIN + ICONMARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+        target = QRect(option.rect.x() + lenmargin, option.rect.y() + thickmargin, iconsize, iconsize);
     } else if (curalign == Qt::AlignRight) {
-        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+        target = QRect(option.rect.x() + option.rect.width() - total + lenmargin, option.rect.y() + thickmargin, iconsize, iconsize);
     } else {
         //! centered
-        target = QRect(option.rect.x() + ((option.rect.width() - total)/2) + ICONMARGIN + MARGIN, option.rect.y() + ICONMARGIN, iconsize, iconsize);
+        target = QRect(option.rect.x() + ((option.rect.width() - total)/2) + lenmargin, option.rect.y() + thickmargin, iconsize, iconsize);
     }
 
     painter->save();
@@ -242,10 +245,13 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &i
     painter->restore();
 }
 
-QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
+QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment, int lengthMargin, int thickMargin)
 {
-    int iconsize = option.rect.height() - 2*MARGIN;
-    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+    int lenmargin = (lengthMargin == -1 ? ICONMARGIN + MARGIN : lengthMargin);
+    int thickmargin = (thickMargin == -1 ? ICONMARGIN : thickMargin);
+
+    int iconsize = option.rect.height() - 2*thickMargin;
+    int total = iconsize + 2*lenmargin;
 
     Qt::AlignmentFlag curalign = alignment;
 
@@ -262,10 +268,13 @@ QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment)
     return optionRemainedRect;
 }
 
-void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment)
+void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon, Qt::AlignmentFlag alignment, int lengthMargin, int thickMargin)
 {
-    int iconsize = option.rect.height() - 2*MARGIN;
-    int total = iconsize + 2*ICONMARGIN + 2*MARGIN;
+    int lenmargin = (lengthMargin == -1 ? ICONMARGIN + MARGIN : lengthMargin);
+    int thickmargin = (thickMargin == -1 ? ICONMARGIN : thickMargin);
+
+    int iconsize = option.rect.height() - 2*thickMargin;
+    int total = iconsize + 2*lenmargin;
 
     bool active = Latte::isActive(option);
     bool selected = Latte::isSelected(option);
@@ -284,9 +293,9 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
     QRect target;
 
     if (curalign == Qt::AlignLeft) {
-        target = QRect(option.rect.x() + MARGIN + ICONMARGIN, option.rect.y(), iconsize, iconsize);
+        target = QRect(option.rect.x() + lenmargin, option.rect.y(), iconsize, iconsize);
     } else {
-        target = QRect(option.rect.x() + option.rect.width() - total + ICONMARGIN + MARGIN, option.rect.y(), iconsize, iconsize);
+        target = QRect(option.rect.x() + option.rect.width() - total + lenmargin, option.rect.y(), iconsize, iconsize);
     }
 
     painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));
