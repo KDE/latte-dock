@@ -190,20 +190,20 @@ Item{
                     }
                 }
             }
-
-            //! Latte Side Painting-style if the user chose it
-            Loader{
-                anchors.fill: _contentItemContainer
-                active: abilityItem.isMonochromaticForcedContentItem
-
-                sourceComponent: ColorOverlay {
-                    anchors.fill: parent
-                    color: latteBridge ? latteBridge.palette.textColor : "transparent"
-                    source: _contentItemContainer.contentItem
-                }
-            }
-            //! Latte Side Painting-style if the user chose it
         } //_contentItemContainer
+
+        //! Latte Side Painting-style if the user chose it
+        Loader{
+            anchors.fill: _contentItemContainer
+            active: abilityItem.isMonochromaticForcedContentItem && abilityItem.monochromizedItem
+
+            sourceComponent: ColorOverlay {
+                anchors.fill: parent
+                color: latteBridge ? latteBridge.palette.textColor : "transparent"
+                source: abilityItem.monochromizedItem
+            }
+        }
+        //! Latte Side Painting-style if the user chose it
 
         ShortcutBadge{
             id: shortcutBadge

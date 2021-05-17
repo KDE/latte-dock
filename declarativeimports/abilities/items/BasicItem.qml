@@ -106,6 +106,7 @@ Item{
 
     property Item abilities: null
     property Item contentItem: null
+    property Item monochromizedItem: null
 
     readonly property bool isHorizontal: !isVertical
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical

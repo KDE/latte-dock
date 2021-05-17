@@ -45,6 +45,8 @@ Item {
     readonly property real progress: smartLauncherItem && smartLauncherItem.progress ? smartLauncherItem.progress : 0
     readonly property QtObject smartLauncherItem: smartLauncherLoader.active ? smartLauncherLoader.item : null
 
+    readonly property Item monochromizedItem: badgesLoader.active ? badgesLoader.item : taskIconItem
+
     Rectangle{
         id: draggedRectangle
         width: parent.width + 2

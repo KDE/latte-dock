@@ -50,6 +50,7 @@ AbilityItem.BasicItem {
                             || (taskItem.containsMouse && inAttentionAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
 
     isMonochromaticForcedContentItem: plasmoid.configuration.forceMonochromaticIcons
+    monochromizedItem: taskIcon.monochromizedItem
 
     isSeparatorHidden: isSeparator && (lastValidIndex > taskItem.abilities.indexer.lastVisibleItemIndex)
     isSeparatorInRealLength: isSeparator && root.dragSource
