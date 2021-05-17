@@ -77,7 +77,6 @@ Minimum requirements:
 ### Ubuntu/Debian
 
 - [Ubuntu](https://packages.ubuntu.com/bionic/latte-dock)
-- [Rik Mills - ppa](https://launchpad.net/~rikmills/+archive/ubuntu/latte-dock)
 
 ### openSUSE
 
