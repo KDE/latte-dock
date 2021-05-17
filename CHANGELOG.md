@@ -1,5 +1,9 @@
 #**CHANGELOG**#
 
+#### Version 0.9.12
+
+* support Plasma 5.22
+
 #### Version 0.9.11
 
 * fix context menu for classic systray items such as Viber and Telegram
