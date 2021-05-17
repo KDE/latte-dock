@@ -11,6 +11,13 @@ Screenshots
 
 ![](https://cdn.kde.org/screenshots/latte-dock/latte-dock_settings.png)
 
+Development
+============
+
+- Official KDE repo in which you can also send your MRs is located at: https://invent.kde.org/plasma/latte-dock
+- Bug reports can be send at: https://bugs.kde.org/enter_bug.cgi?product=lattedock
+
+
 Installation
 ============
 
