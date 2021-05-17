@@ -1016,7 +1016,8 @@ MouseArea{
         }
         else{
             if (model.IsGroupParent) {
-                if (Latte.WindowSystem.compositingActive && backend.canPresentWindows()) {
+                var canPresentWindowsIsSupported = Latte.WindowSystem.compositingActive && (root.plasmaGreaterThan522 ? backend.canPresentWindows : backend.canPresentWindows());
+                if (canPresentWindowsIsSupported) {
                     root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
                 }
             } else {

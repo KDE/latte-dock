@@ -67,6 +67,7 @@ Item {
 
     property bool plasma515: latteView ? latteView.plasma515 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,15,0)
     property bool plasma518: latteView ? latteView.plasma518 : Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,18,0)
+    property bool plasmaGreaterThan522: Latte.WindowSystem.plasmaDesktopVersion >= Latte.WindowSystem.makeVersion(5,21,75)
 
     property bool editMode: latteView ? latteView.editMode : plasmoid.userConfiguring
     property bool inConfigureAppletsMode: latteView ? latteView.inConfigureAppletsMode : true
@@ -823,7 +824,6 @@ Item {
         id: backend
 
         taskManagerItem: root
-        toolTipItem: toolTipDelegate
         highlightWindows: root.highlightWindows
 
         onAddLauncher: {
@@ -839,6 +839,11 @@ Item {
             //!   in plasma 5.8 (that was introduced after 5.8.5)
             if (Latte.WindowSystem.frameworksVersion >= 335104 || (groupDialog !== undefined)) {
                 groupDialog = groupDialogGhost;
+            }
+
+            //! In Plasma 5.22 toolTipItem was dropped
+            if (!root.plasmaGreaterThan522) {
+                toolTipItem = toolTipDelegate;
             }
         }
     }
