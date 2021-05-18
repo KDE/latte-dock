@@ -21,6 +21,7 @@ add_subdirectory(settings/detailsdialog)
 add_subdirectory(settings/detailsdialog/delegates)
 add_subdirectory(settings/exporttemplatedialog)
 add_subdirectory(settings/exporttemplatedialog/delegates)
+add_subdirectory(settings/screensdialog)
 add_subdirectory(settings/settingsdialog)
 add_subdirectory(settings/settingsdialog/delegates)
 add_subdirectory(settings/viewsdialog)
@@ -41,6 +42,7 @@ qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Co
 
 ki18n_wrap_ui(lattedock-app_SRCS settings/detailsdialog/detailsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/exporttemplatedialog/exporttemplatedialog.ui)
+ki18n_wrap_ui(lattedock-app_SRCS settings/screensdialog/screensdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog/settingsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/viewsdialog/viewsdialog.ui)
 
