@@ -1516,36 +1516,17 @@ QList<int> GenericLayout::subContainmentsOf(Plasma::Containment *containment) co
 
 QList<int> GenericLayout::viewsScreens()
 {
+    Data::ViewsTable views = viewsTable();
     QList<int> screens;
 
-    if (isActive()) {
-        for (const auto containment : m_containments) {
-            if (Layouts::Storage::self()->isLatteContainment(containment)) {
-                int screenId{Layouts::Storage::IDNULL};
-
-                //! valid screen id
-                if (latteViewExists(containment)) {
-                    screenId = m_latteViews[containment]->positioner()->currentScreenId();
-                } else {
-                    screenId = containment->screen();
-
-                    if (!Layouts::Storage::isValid(screenId)) {
-                        screenId = containment->lastScreen();
-                    }
-                }
-
-                if (Layouts::Storage::isValid(screenId) && !screens.contains(screenId)) {
-                    screens << screenId;
-                }
-            }
+    for (int i=0; i<views.rowCount(); ++i) {
+        if (!views[i].onPrimary && !screens.contains(views[i].screen)) {
+            screens << views[i].screen;
         }
-
-        return screens;
-    } else {
-        return Layouts::Storage::self()->viewsScreens(file());
     }
-}
 
+    return screens;
+}
 
 //! STORAGE
 

@@ -1733,26 +1733,5 @@ Data::ViewsTable Storage::views(const QString &file)
     return vtable;
 }
 
-QList<int> Storage::viewsScreens(const QString &file)
-{
-    QList<int> screens;
-
-    KSharedConfigPtr lFile = KSharedConfig::openConfig(file);
-
-    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
-
-    for (const auto &cId : containmentGroups.groupList()) {
-        if (Layouts::Storage::self()->isLatteContainment(containmentGroups.group(cId))) {
-            int screenId = containmentGroups.group(cId).readEntry("lastScreen", IDNULL);
-
-            if (isValid(screenId) && !screens.contains(screenId)) {
-                screens << screenId;
-            }
-        }
-    }
-
-    return screens;
-}
-
 }
 }

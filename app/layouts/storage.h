@@ -102,9 +102,6 @@ public:
     Data::AppletsTable plugins(const Layout::GenericLayout *layout, const int containmentid = IDNULL);
     Data::AppletsTable plugins(const QString &layoutfile, const int containmentid = IDNULL);
 
-    //! list<screens ids>
-    QList<int> viewsScreens(const QString &file);
-
     Data::GenericTable<Data::Generic> subcontainments(const KConfigGroup &containmentGroup);
     Data::GenericTable<Data::Generic> subcontainments(const Layout::GenericLayout *layout, const Plasma::Containment *lattecontainment) const;
     Data::View view(const KConfigGroup &containmentGroup);
