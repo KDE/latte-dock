@@ -27,7 +27,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 SequentialAnimation {
     id: taskRealRemovalAnimation
-    PropertyAction { target: taskItem; property: "ListView.delayRemove"; value: true }
+    PropertyAction { target: taskItem; property: "ListView.delayRemove"; value: !taskItem.isSeparator } //try to delete separators instantly, this way maybe tasks model does not break when switching activities fastly
     PropertyAction { target: taskItem; property: "inAnimation"; value: true }
     PropertyAction { target: taskItem; property: "inAddRemoveAnimation"; value: true }
     PropertyAction { target: taskItem; property: "inRemoveStage"; value: true }
