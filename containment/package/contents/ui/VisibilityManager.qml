@@ -59,8 +59,9 @@ Item{
     property int slidingOutToPos: {
         if (root.behaveAsPlasmaPanel) {
             var edgeMargin = screenEdgeMarginEnabled ? plasmoid.configuration.screenEdgeMargin : 0
+            var thickmarg = latteView.visibility.isSidebar ? 0 : 1;
 
-            root.isHorizontal ? root.height + edgeMargin - 1 : root.width + edgeMargin - 1;
+            return root.isHorizontal ? root.height + edgeMargin - thickmarg : root.width + edgeMargin - thickmarg;
         } else {
             var topOrLeftEdge = ((plasmoid.location===PlasmaCore.Types.LeftEdge)||(plasmoid.location===PlasmaCore.Types.TopEdge));
             return (topOrLeftEdge ? -metrics.mask.thickness.normal : metrics.mask.thickness.normal);
@@ -377,7 +378,7 @@ Item{
                 inputGeometry.width = Math.min(inputGeometry.width, latteView.width);
                 inputGeometry.height = Math.min(inputGeometry.height, latteView.height);
 
-                if (latteView.visibility.isSidebar() && latteView.visibility.isHidden) {
+                if (latteView.visibility.isSidebar && latteView.visibility.isHidden) {
                     //! this way we make sure than no input is accepted anywhere
                     inputGeometry = Qt.rect(-1, -1, 1, 1);
                 }

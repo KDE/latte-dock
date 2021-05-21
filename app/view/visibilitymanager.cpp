@@ -75,6 +75,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
     connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::updateKWinEdgesSupport);
     connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateKWinEdgesSupport);
+    connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::updateSidebarState);
 
     connect(this, &VisibilityManager::isFloatingGapWindowEnabledChanged, this, &VisibilityManager::onIsFloatingGapWindowEnabledChanged);
 
@@ -377,6 +378,20 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
 
     emit modeChanged();
+}
+
+void VisibilityManager::updateSidebarState()
+{
+    bool cursidebarstate = ((m_mode == Types::SidebarOnDemand)
+                            || (m_mode == Types::SidebarAutoHide));
+
+    if (m_isSidebar == cursidebarstate) {
+        return;
+    }
+
+    m_isSidebar == cursidebarstate;
+    emit isSidebarChanged();
+
 }
 
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
