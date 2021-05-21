@@ -33,6 +33,7 @@
 #include <QPixmap>
 #include <QSGSimpleTextureNode>
 #include <QuickAddons/ManagedTextureNode>
+#include <QLatin1String>
 
 // KDE
 #include <KIconTheme>
@@ -43,13 +44,14 @@ namespace Latte {
 
 IconItem::IconItem(QQuickItem *parent)
     : QQuickItem(parent),
-      m_lastValidSourceName(QString()),
-      m_smooth(false),
       m_active(false),
+      m_smooth(false),
       m_textureChanged(false),
       m_sizeChanged(false),
       m_usesPlasmaTheme(false),
+      m_lastValidSourceName(QString()),
       m_colorGroup(Plasma::Theme::NormalColorGroup)
+
 {
     setFlag(ItemHasContents, true);
     connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
@@ -214,7 +216,7 @@ QString IconItem::lastValidSourceName()
 
 void IconItem::setLastValidSourceName(QString name)
 {
-    if (m_lastValidSourceName == name || name == "" || name == "application-x-executable") {
+    if (m_lastValidSourceName == name || name.isEmpty() || name == QLatin1String("application-x-executable")) {
         return;
     }
 

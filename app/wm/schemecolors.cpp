@@ -29,6 +29,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QLatin1String>
 
 // KDE
 #include <KConfigGroup>
@@ -159,7 +160,7 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
 
     QString tempScheme = scheme;
 
-    if (scheme == "kdeglobals") {
+    if (scheme == QLatin1String("kdeglobals")) {
         QString settingsFile = Latte::configPath() + "/kdeglobals";
 
         if (QFileInfo(settingsFile).exists()) {

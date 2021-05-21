@@ -34,6 +34,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QLatin1String>
 
 // KDE
 #include <KConfigGroup>
@@ -99,7 +100,7 @@ bool Storage::isLatteContainment(const Plasma::Containment *containment) const
         return false;
     }
 
-    if (containment->pluginMetaData().pluginId() == "org.kde.latte.containment") {
+    if (containment->pluginMetaData().pluginId() == QLatin1String("org.kde.latte.containment")) {
         return true;
     }
 
@@ -109,7 +110,7 @@ bool Storage::isLatteContainment(const Plasma::Containment *containment) const
 bool Storage::isLatteContainment(const KConfigGroup &group) const
 {
     QString pluginId = group.readEntry("plugin", "");
-    return pluginId == "org.kde.latte.containment";
+    return pluginId == QLatin1String("org.kde.latte.containment");
 }
 
 bool Storage::isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const
@@ -298,7 +299,7 @@ bool Storage::appletGroupIsValid(const KConfigGroup &appletGroup)
 {
     return !( appletGroup.keyList().count() == 0
               && appletGroup.groupList().count() == 1
-              && appletGroup.groupList().at(0) == "Configuration"
+              && appletGroup.groupList().at(0) == QLatin1String("Configuration")
               && appletGroup.group("Configuration").keyList().count() == 1
               && appletGroup.group("Configuration").hasKey("PreloadWeight") );
 }

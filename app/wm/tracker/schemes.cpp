@@ -26,6 +26,7 @@
 
 // Qt
 #include <QDir>
+#include <QLatin1String>
 
 // KDE
 #include <KDirWatch>
@@ -117,12 +118,12 @@ SchemeColors *Schemes::schemeForWindow(WindowId wid)
 
 void Schemes::setColorSchemeForWindow(WindowId wid, QString scheme)
 {
-    if (scheme == "kdeglobals" && !m_windowScheme.contains(wid)) {
+    if (scheme == QLatin1String("kdeglobals") && !m_windowScheme.contains(wid)) {
         //default scheme does not have to be set
         return;
     }
 
-    if (scheme == "kdeglobals") {
+    if (scheme == QLatin1String("kdeglobals")) {
         //! a window that previously had an explicit set scheme now is set back to default scheme
         m_windowScheme.remove(wid);
     } else {

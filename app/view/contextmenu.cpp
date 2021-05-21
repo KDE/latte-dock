@@ -28,6 +28,7 @@
 // Qt
 #include <QMouseEvent>
 #include <QVersionNumber>
+#include <QLatin1String>
 
 // KDE
 #include <KActionCollection>
@@ -151,7 +152,7 @@ bool ContextMenu::mousePressEventForContainmentMenu(QQuickView *view, QMouseEven
 
     QString trigger = Plasma::ContainmentActions::eventToString(event);
 
-    if (trigger == "RightButton;NoModifier") {
+    if (trigger == QLatin1String("RightButton;NoModifier")) {
         Plasma::ContainmentActions *plugin = m_latteView->containment()->containmentActions().value(trigger);
 
         if (!plugin || plugin->contextualActions().isEmpty()) {
@@ -235,7 +236,7 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
     //qDebug() << "1 ...";
     QString trigger = Plasma::ContainmentActions::eventToString(event);
 
-    if (trigger == "RightButton;NoModifier") {
+    if (trigger == QLatin1String("RightButton;NoModifier")) {
         Plasma::ContainmentActions *plugin = m_latteView->containment()->containmentActions().value(trigger);
 
         if (!plugin || plugin->contextualActions().isEmpty()) {

@@ -29,6 +29,7 @@
 
 // Qt
 #include <QFileDialog>
+#include <QLatin1String>
 
 // KDE
 #include <KLocalizedString>
@@ -153,11 +154,11 @@ void Indicator::setPluginIsReady(bool ready)
 
 int Indicator::index(const QString &type)
 {
-    if (type == "org.kde.latte.default") {
+    if (type == QLatin1String("org.kde.latte.default")) {
         return 0;
-    } else if (type == "org.kde.latte.plasma") {
+    } else if (type == QLatin1String("org.kde.latte.plasma")) {
         return 1;
-    } else if (type == "org.kde.latte.plasmatabstyle") {
+    } else if (type == QLatin1String("org.kde.latte.plasmatabstyle")) {
         return 2;
     } else if (customPluginIds().contains(type)){
         return 3 + customPluginIds().indexOf(type);

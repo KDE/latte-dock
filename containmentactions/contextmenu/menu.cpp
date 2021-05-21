@@ -29,6 +29,7 @@
 #include <QMenu>
 #include <QtDBus>
 #include <QTimer>
+#include <QLatin1String>
 
 // KDE
 #include <KActionCollection>
@@ -496,7 +497,7 @@ void Menu::switchToLayout(QAction *action)
 {
     const QString layout = action->data().toString();
 
-    if (layout == " _show_latte_settings_dialog_") {
+    if (layout == QLatin1String(" _show_latte_settings_dialog_")) {
         QTimer::singleShot(400, [this]() {
             QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 

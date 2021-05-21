@@ -31,6 +31,7 @@
 #include <QProcess>
 #include <QTemporaryDir>
 #include <QTimer>
+#include <QLatin1String>
 
 // KDE
 #include <KDirWatch>
@@ -250,7 +251,7 @@ bool Factory::isCustomType(const QString &id) const
 bool Factory::metadataAreValid(KPluginMetaData &metadata)
 {
     return metadata.isValid()
-            && metadata.category() == "Latte Indicator"
+            && metadata.category() == QLatin1String("Latte Indicator")
             && !metadata.value("X-Latte-MainScript").isEmpty();
 }
 

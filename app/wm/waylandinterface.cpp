@@ -34,6 +34,7 @@
 #include <QApplication>
 #include <QtX11Extras/QX11Info>
 #include <QRasterWindow>
+#include <QLatin1String>
 
 // KDE
 #include <KWindowSystem>
@@ -929,7 +930,7 @@ void WaylandInterface::windowCreatedProxy(KWayland::Client::PlasmaWindow *w)
     trackWindow(w);
     emit windowAdded(w->internalId());
 
-    if (w->appId() == "latte-dock") {
+    if (w->appId() == QLatin1String("latte-dock")) {
         emit latteWindowAdded();
     }
 }

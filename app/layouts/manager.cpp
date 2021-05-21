@@ -39,6 +39,7 @@
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
+#include <QLatin1String>
 
 // KDE
 #include <KMessageBox>
@@ -355,7 +356,7 @@ void Manager::cleanupOnStartup(QString path)
     for (const auto &actId : actionGroups.groupList()) {
         QString pluginId = actionGroups.group(actId).readEntry("RightButton;NoModifier", "");
 
-        if (pluginId == "org.kde.contextmenu") {
+        if (pluginId == QStringLiteral("org.kde.contextmenu")) {
             deprecatedActionGroup << actId;
         }
     }
@@ -372,7 +373,7 @@ void Manager::cleanupOnStartup(QString path)
     for (const auto &cId : containmentGroups.groupList()) {
         QString pluginId = containmentGroups.group(cId).readEntry("plugin", "");
 
-        if (pluginId == "org.kde.desktopcontainment") { //!must remove ghost containments first
+        if (pluginId == QStringLiteral("org.kde.desktopcontainment")) { //!must remove ghost containments first
             removeContaimentsList << cId;
         }
     }

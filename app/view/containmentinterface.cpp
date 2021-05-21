@@ -28,6 +28,7 @@
 
 // Qt
 #include <QDebug>
+#include <QLatin1String>
 
 // Plasma
 #include <Plasma/Applet>
@@ -83,9 +84,9 @@ void ContainmentInterface::identifyShortcutsHost()
         const auto &childItems = graphicItem->childItems();
 
         for (QQuickItem *item : childItems) {
-            if (item->objectName() == "containmentViewLayout" ) {
+            if (item->objectName() == QLatin1String("containmentViewLayout")) {
                 for (QQuickItem *subitem : item->childItems()) {
-                    if (subitem->objectName() == "PositionShortcutsAbilityHost") {
+                    if (subitem->objectName() == QLatin1String("PositionShortcutsAbilityHost")) {
                         m_shortcutsHost = subitem;
                         identifyMethods();
                         return;
@@ -212,7 +213,7 @@ bool ContainmentInterface::updateBadgeForLatteTask(const QString identifier, con
     for (auto *applet : applets) {
         KPluginMetaData meta = applet->kPackage().metadata();
 
-        if (meta.pluginId() == "org.kde.latte.plasmoid") {
+        if (meta.pluginId() == QLatin1String("org.kde.latte.plasmoid")) {
 
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
                 const auto &childItems = appletInterface->childItems();
@@ -642,7 +643,7 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
         KPluginMetaData meta = applet->kPackage().metadata();
         const auto &provides = KPluginMetaData::readStringList(meta.rawData(), QStringLiteral("X-Plasma-Provides"));
 
-        if (meta.pluginId() == "org.kde.latte.plasmoid") {
+        if (meta.pluginId() == QLatin1String("org.kde.latte.plasmoid")) {
             //! populate latte tasks applet
             m_latteTasksModel->addTask(ai);
         } else if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {

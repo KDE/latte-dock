@@ -31,6 +31,7 @@
 
 // Qt
 #include <QFile>
+#include <QLatin1String>
 
 // KDE
 #include <KArchive/KTar>
@@ -119,10 +120,10 @@ bool Importer::importOldLayout(QString oldAppletsPath, QString newName, bool alt
 
         bool shouldImport = false;
 
-        if (plugin == "org.kde.latte.containment" && session == DefaultSession && !alternative) {
+        if (plugin == QLatin1String("org.kde.latte.containment") && session == DefaultSession && !alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
-        } else if (plugin == "org.kde.latte.containment" && session == AlternativeSession && alternative) {
+        } else if (plugin == QLatin1String("org.kde.latte.containment") && session == AlternativeSession && alternative) {
             qDebug() << containmentId << " - " << plugin << " - " << session;
             shouldImport = true;
         }
@@ -329,8 +330,8 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
         for(const auto &name : rootDir->entries()) {
             auto fileEntry = rootDir->file(name);
 
-            if (fileEntry && (fileEntry->name() == "lattedockrc"
-                              || fileEntry->name() == "lattedock-appletsrc")) {
+            if (fileEntry && (fileEntry->name() == QLatin1String("lattedockrc")
+                              || fileEntry->name() == QLatin1String("lattedock-appletsrc"))) {
                 if (!fileEntry->copyTo(tempDir.absolutePath())) {
                     qInfo() << i18nc("import/export config", "The extracted file could not be copied!!!");
                     archive.close();

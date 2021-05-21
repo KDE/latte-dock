@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QDir>
 #include <QDebug>
+#include <QLatin1String>
 
 // KDE
 #include <KConfigGroup>
@@ -111,7 +112,7 @@ QString ShortcutsTracker::shortcutToBadge(QStringList shortcutRecords)
             badge = modifiers[modifiers.count() - 1];
 
             //! when shortcut follows Meta+"Character" scheme
-            if (modifiers.count() == 2 && modifiers[0] == "Meta") {
+            if (modifiers.count() == 2 && modifiers[0] == QLatin1String("Meta")) {
                 badge = badge.toLower();
             } else {
                 badge = badge.toUpper();

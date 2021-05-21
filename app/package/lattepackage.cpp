@@ -22,6 +22,7 @@
 
 // Qt
 #include <QDebug>
+#include <QLatin1String>
 
 // KDE
 #include <KPackage/PackageLoader>
@@ -86,7 +87,7 @@ void Package::pathChanged(KPackage::Package *package)
     if (!pluginName.isEmpty() && pluginName != "org.kde.latte.shell") {
         auto fallback = KPackage::PackageLoader::self()->loadPackage("Plasma/Shell", "org.kde.latte.shell");
         package->setFallbackPackage(fallback);
-    } else if (pluginName.isEmpty() || pluginName == "org.kde.latte.shell") {
+    } else if (pluginName.isEmpty() || pluginName == QLatin1String("org.kde.latte.shell")) {
         package->setFallbackPackage(KPackage::Package());
     }
 }
