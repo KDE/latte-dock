@@ -87,7 +87,7 @@ PlasmaComponents.Page {
                     value: tasks.configuration.showProgressBadge
 
                     onClicked: {
-                        tasks.configuration.showProgressBadge = tasks.configuration.showProgressBadge;
+                        tasks.configuration.showProgressBadge = !tasks.configuration.showProgressBadge;
                     }
                 }
 

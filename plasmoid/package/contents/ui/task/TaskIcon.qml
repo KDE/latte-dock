@@ -40,7 +40,7 @@ Item {
     readonly property color backgroundColor: iconColorsLoader.active ? iconColorsLoader.item.backgroundColor : theme.backgroundColor
     readonly property color glowColor: iconColorsLoader.active ? iconColorsLoader.item.glowColor : theme.textColor
 
-    readonly property bool smartLauncherEnabled: ((taskItem.isStartup === false) && (root.showInfoBadge || root.showProgressBadge))
+    readonly property bool smartLauncherEnabled: (taskItem.isStartup === false) //! it needs to be enabled independent of user-set option because it is used from indicators
     readonly property bool progressVisible: smartLauncherItem && smartLauncherItem.progressVisible
     readonly property real progress: smartLauncherItem && smartLauncherItem.progress ? smartLauncherItem.progress : 0
     readonly property QtObject smartLauncherItem: smartLauncherLoader.active ? smartLauncherLoader.item : null
@@ -152,10 +152,13 @@ Item {
 
         property real activateProgress: showInfo || showProgress || showAudio ? 1 : 0
 
-        property bool showInfo: (root.showInfoBadge && taskIcon.smartLauncherItem
-                                 && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0) && !taskIcon.smartLauncherItem.progressVisible)
+        property bool showInfo: (root.showInfoBadge
+                                 && taskIcon.smartLauncherItem
+                                 && (taskIcon.smartLauncherItem.countVisible || taskItem.badgeIndicator > 0)
+                                 && !showProgress)
 
-        property bool showProgress: root.showProgressBadge && taskIcon.smartLauncherItem
+        property bool showProgress: root.showProgressBadge
+                                    && taskIcon.smartLauncherItem
                                     && taskIcon.smartLauncherItem.progressVisible
 
         property bool showAudio: (root.showAudioBadge && taskItem.hasAudioStream && taskItem.playingAudio)
