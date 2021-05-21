@@ -162,6 +162,13 @@ void Positioner::init()
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Positioner::syncGeometry);
     connect(m_view, &Latte::View::maxThicknessChanged, this, &Positioner::syncGeometry);
 
+    connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged,  this, [&]() {
+        if (!m_view->behaveAsPlasmaPanel() && m_slideOffset != 0) {
+            m_slideOffset = 0;
+            syncGeometry();
+        }
+    });
+
     connect(m_view, &Latte::View::offsetChanged, this, [&]() {
         updatePosition(m_lastAvailableScreenRect);
     });
