@@ -136,7 +136,6 @@ Grid {
                 plasmoid.configuration.autoSizeEnabled = false;
 
                 //! Dynamic Background
-                plasmoid.configuration.solidBackgroundForMaximized = (plasmoid.configuration.panelTransparency !== 100 ? true : false);
                 plasmoid.configuration.colorizeTransparentPanels = false;
                 plasmoid.configuration.backgroundOnlyOnMaximized = false;
                 plasmoid.configuration.disablePanelShadowForMaximized = false;
