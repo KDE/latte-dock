@@ -244,6 +244,7 @@ Item {
         when: latteView && latteView.effects && visibilityManager.inNormalState
         value: {
             if (root.behaveAsPlasmaPanel
+                    || !LatteCore.WindowSystem.compositingActive
                     || (!parabolic.isEnabled && root.userShowPanelBackground && plasmoid.configuration.panelSize===100)) {
                 var paddingtail = root.isHorizontal ? background.paddings.left : background.paddings.top;
                 var paddinghead = root.isHorizontal ? background.paddings.right : background.paddings.bottom;
