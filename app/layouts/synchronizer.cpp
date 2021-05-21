@@ -34,6 +34,7 @@
 // Qt
 #include <QDir>
 #include <QFile>
+#include <QStringList>
 
 // Plasma
 #include <Plasma/Containment>
@@ -960,8 +961,8 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         });
     }
 
-    qSort(currentNames);
-    qSort(layoutNamesToLoad);
+    currentNames.sort();
+    layoutNamesToLoad.sort();
 
     if (currentNames != layoutNamesToLoad) {
         emit centralLayoutsChanged();
