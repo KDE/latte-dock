@@ -51,7 +51,6 @@ IconItem::IconItem(QQuickItem *parent)
       m_usesPlasmaTheme(false),
       m_lastValidSourceName(QString()),
       m_colorGroup(Plasma::Theme::NormalColorGroup)
-
 {
     setFlag(ItemHasContents, true);
     connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
