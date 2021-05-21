@@ -1,5 +1,5 @@
-/********************************************************************
-Copyright 2016  Eike Hein <hein.org>
+/*
+SPDX-FileCopyrightText: 2016 Eike Hein <hein.org>
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*********************************************************************/
+*/
 
 #include "tasktools.h"
 #include <config-latte.h>
