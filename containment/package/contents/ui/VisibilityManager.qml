@@ -377,6 +377,11 @@ Item{
                 inputGeometry.width = Math.min(inputGeometry.width, latteView.width);
                 inputGeometry.height = Math.min(inputGeometry.height, latteView.height);
 
+                if (latteView.visibility.isSidebar() && latteView.visibility.isHidden) {
+                    //! this way we make sure than no input is accepted anywhere
+                    inputGeometry = Qt.rect(-1, -1, 1, 1);
+                }
+
                 latteView.effects.inputMask = inputGeometry;
             }
         }

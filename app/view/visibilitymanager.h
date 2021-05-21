@@ -116,7 +116,6 @@ public:
     void setTimerHide(int msec);
 
     bool hasBlockHidingEvent(const QString &type);
-    bool isSidebar() const;
 
     //! KWin Edges Support functions
     bool enableKWinEdges() const;
@@ -140,6 +139,8 @@ public slots:
 
     Q_INVOKABLE void addBlockHidingEvent(const QString &type);
     Q_INVOKABLE void removeBlockHidingEvent(const QString &type);
+
+    Q_INVOKABLE bool isSidebar() const;
 
     void initViewFlags();
 
