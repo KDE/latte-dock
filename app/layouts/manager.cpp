@@ -1,8 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2017 Smith AR <audoban@openmailbox.org>
-    Michail Vourlakos <mvourlakos@gmail.com>
-
-    2019  Michail Vourlakos <mvourlakos@gmail.com>
+    SPDX-FileCopyrightText: 2019 Michail Vourlakos <mvourlakos@gmail.com>
 
     This file is part of Latte-Dock
 
