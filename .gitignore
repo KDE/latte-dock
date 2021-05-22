@@ -7,7 +7,8 @@
 .directory
 
 # build directory
-build/
+build*/
+/cmake-build*
 
 # backup files
 *.autosave
@@ -39,4 +40,6 @@ build/
 
 !*.layout.latte
 
-build-kdev/
+CMakeLists.txt.user*
+/compile_commands.json
+
