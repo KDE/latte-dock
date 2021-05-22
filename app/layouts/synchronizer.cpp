@@ -241,6 +241,8 @@ QStringList Synchronizer::menuLayouts() const
         }
     }
 
+    menulayouts.sort(Qt::CaseInsensitive);
+
     return menulayouts;
 }
 
