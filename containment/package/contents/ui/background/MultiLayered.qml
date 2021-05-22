@@ -300,16 +300,6 @@ BackgroundProperties{
             enabled: !LatteCore.WindowSystem.compositingActive
             NumberAnimation { duration: 0 }
         }
-
-        Behavior on opacity{
-            enabled: LatteCore.WindowSystem.compositingActive
-            NumberAnimation { duration: barLine.animationTime }
-        }
-
-        Behavior on opacity{
-            enabled: !LatteCore.WindowSystem.compositingActive
-            NumberAnimation { duration: 0 }
-        }
     }
 
     //! Layer 2: Provide visual solidness. Plasma themes by design may provide a panel-background svg that is not
@@ -410,7 +400,7 @@ BackgroundProperties{
 
         function updateEffectsArea() {
             if (!updateEffectsAreaTimer.running) {
-                invUpdateEffectsArea();
+               // invUpdateEffectsArea(); // disabled in order to force Timer at all cases
                 updateEffectsAreaTimer.start();
             }
         }
@@ -454,7 +444,7 @@ BackgroundProperties{
 
         Timer {
             id: updateEffectsAreaTimer
-            interval: 16 //! 60Hz or 60calls/sec
+            interval: 11 //! 90Hz or 90calls/sec
             onTriggered: solidBackground.invUpdateEffectsArea();
         }
 
