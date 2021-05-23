@@ -282,17 +282,6 @@ void ViewsHandler::save()
     }
 }
 
-CentralLayout *ViewsHandler::centralLayout(const QString &currentLayoutId)
-{
-    Data::Layout originlayoutdata = layoutsController()->originalData(currentLayoutId);
-    auto activelayout = layoutsController()->isLayoutOriginal(currentLayoutId) ?
-                corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
-
-    Latte::CentralLayout *centrallayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentLayoutId);
-
-    return centrallayout;
-}
-
 QString ViewsHandler::storedView(const QString &viewId)
 {
     Latte::Data::View viewdata = m_viewsController->currentData(viewId);
@@ -302,7 +291,7 @@ QString ViewsHandler::storedView(const QString &viewId)
     }
 
     if (viewdata.isCreated()) {
-        CentralLayout *central = centralLayout(currentData().id);
+        CentralLayout *central = m_dialog->layoutsController()->centralLayout(currentData().id);
         return central->storedView(viewdata.id.toInt());
     } else if (viewdata.hasViewTemplateOrigin() || viewdata.hasLayoutOrigin()) {
         return viewdata.originFile();

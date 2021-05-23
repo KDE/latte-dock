@@ -601,6 +601,12 @@ void TabLayouts::exportLayoutAsTemplate()
     Data::Layout exp_layout = o_layout;
     exp_layout.name = c_layout.name;
 
+    CentralLayout *central =  m_layoutsController->centralLayout(c_layout.id);
+
+    if (central->isActive()) {
+        central->syncToLayoutFile();
+    }
+
     Dialog::ExportTemplateDialog *exportDlg = new Dialog::ExportTemplateDialog(m_parentDialog, exp_layout);
     exportDlg->exec();
 }

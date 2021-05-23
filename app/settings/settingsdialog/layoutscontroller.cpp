@@ -313,6 +313,17 @@ void Layouts::setInMultipleMode(bool inMultiple)
     m_model->setInMultipleMode(inMultiple);
 }
 
+CentralLayout *Layouts::centralLayout(const QString &currentLayoutId)
+{
+    Data::Layout originlayoutdata = originalData(currentLayoutId);
+    auto activelayout = isLayoutOriginal(currentLayoutId) ?
+                m_handler->corona()->layoutsManager()->synchronizer()->centralLayout(originlayoutdata.name) : nullptr;
+
+    Latte::CentralLayout *centrallayout = activelayout ? activelayout : new Latte::CentralLayout(this, currentLayoutId);
+
+    return centrallayout;
+}
+
 void Layouts::applyColumnWidths(bool storeValues)
 {
     bool isLastModeMultiple = !m_model->inMultipleMode();

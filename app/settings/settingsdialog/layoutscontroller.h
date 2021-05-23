@@ -28,6 +28,7 @@
 #include "../../lattecorona.h"
 #include "../../data/layoutdata.h"
 #include "../../data/layoutstable.h"
+#include "../../layout/centrallayout.h"
 
 // Qt
 #include <QAbstractItemModel>
@@ -109,6 +110,8 @@ public:
     void duplicateSelectedLayout();
     const Latte::Data::Layout addLayoutForFile(QString file, QString layoutName = QString(), bool newTempDirectory = true);
     const Latte::Data::Layout addLayoutByText(QString rawLayoutText);
+
+    CentralLayout *centralLayout(const QString &currentLayoutId);
 
     //! import layouts from Latte versions <= v0.7.x
     bool importLayoutsFromV1ConfigFile(QString file);

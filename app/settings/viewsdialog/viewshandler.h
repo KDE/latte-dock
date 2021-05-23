@@ -77,8 +77,6 @@ public:
     Latte::Data::Layout currentData() const;
     Latte::Data::Layout originalData() const;
 
-    CentralLayout *centralLayout(const QString &currentLayoutId);
-
     Ui::ViewsDialog *ui() const;
     Latte::Corona *corona() const;
     Settings::Controller::Layouts *layoutsController() const;
