@@ -96,8 +96,9 @@ void LayoutMenuItemWidget::paintEvent(QPaintEvent* e)
     opt.rect  = remained;
 
     //! icon
-    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 1, 4); //add also spacing to push text a little to the right
-    Latte::drawLayoutIcon(&painter, opt, m_isBackgroundFile, m_iconName, Qt::AlignLeft, 0, 4);
+    int thickpadding = (opt.rect.height() - qMax(16, opt.maxIconWidth)) / 2; //old value 4
+    remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 1, thickpadding);
+    Latte::drawLayoutIcon(&painter, opt, m_isBackgroundFile, m_iconName, Qt::AlignLeft, 1, thickpadding);
     opt.rect  = remained;
 
     //! text

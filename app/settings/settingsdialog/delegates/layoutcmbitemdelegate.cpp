@@ -49,8 +49,8 @@ void LayoutCmbItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem 
     Latte::Data::LayoutIcon icon = index.data(Model::Layouts::BACKGROUNDUSERROLE).value<Latte::Data::LayoutIcon>();
 
     //! icon
-    QRect remained = Latte::remainedFromLayoutIcon(myOptions, Qt::AlignLeft, 4, 0);
-    Latte::drawLayoutIcon(painter, myOptions, icon.isBackgroundFile, icon.name, Qt::AlignLeft, 5, 0); //+1px in order to take into account popup window border
+    QRect remained = Latte::remainedFromLayoutIcon(myOptions, Qt::AlignLeft, 4, 2);
+    Latte::drawLayoutIcon(painter, myOptions, icon.isBackgroundFile, icon.name, Qt::AlignLeft, 5, 2); //+1px in order to take into account popup window border
     myOptions.rect = remained;
 
     //!

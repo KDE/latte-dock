@@ -228,7 +228,7 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &i
     painter->setRenderHint(QPainter::Antialiasing, true);
 
     if (isBackgroundFile) {
-        int backImageMargin = qMin(target.height()/4, ICONMARGIN+1);
+        int backImageMargin = 1; //most icon themes provide 1-2px. padding around icons //OLD CALCS: ICONMARGIN; //qMin(target.height()/4, ICONMARGIN+1);
         QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
 
         QPixmap backImage(iconName);

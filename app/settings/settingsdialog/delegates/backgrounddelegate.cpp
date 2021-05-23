@@ -49,7 +49,7 @@ void BackgroundDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
 
     //! background
     Latte::drawBackground(painter, option);
-    Latte::drawLayoutIcon(painter, option, icon.isBackgroundFile, icon.name, Qt::AlignHCenter, -1, 2);
+    Latte::drawLayoutIcon(painter, option, icon.isBackgroundFile, icon.name, Qt::AlignHCenter, -1, 3);
 }
 
 }

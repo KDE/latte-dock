@@ -68,8 +68,8 @@ void LayoutsComboBox::paintEvent(QPaintEvent *event)
     painter.drawComplexControl(QStyle::CC_ComboBox, opt);
 
     // icon
-    QRect remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 3, 3);
-    Latte::drawLayoutIcon(&painter, opt, m_layoutIcon.isBackgroundFile, m_layoutIcon.name, Qt::AlignLeft, 7, 4);
+    QRect remained = Latte::remainedFromLayoutIcon(opt, Qt::AlignLeft, 3, 5);
+    Latte::drawLayoutIcon(&painter, opt, m_layoutIcon.isBackgroundFile, m_layoutIcon.name, Qt::AlignLeft, 7, 6);
     opt.rect = remained;
 
     // adjust text place, move it a bit to the left
