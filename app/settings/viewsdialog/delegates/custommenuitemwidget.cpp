@@ -81,6 +81,8 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
     opt.menuItemType = QStyleOptionMenuItem::Normal;
     opt.menuHasCheckableItems = false;
 
+    bool inScreensColumn = !m_view.isValid();
+
     if (rect().contains(mapFromGlobal(QCursor::pos()))) {
         opt.state |= QStyle::State_Selected;
     }
@@ -122,6 +124,10 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
     }
 
     opt.rect = remained;
+
+    if (m_screen.isActive && inScreensColumn) {
+        opt.text = "<b>" + opt.text + "</b>";
+    }
 
     //style()->drawControl(QStyle::CE_MenuItem, &opt, &painter, this);
     Latte::drawFormattedText(&painter, opt);
