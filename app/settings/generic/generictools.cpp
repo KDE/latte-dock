@@ -301,9 +301,9 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
     QRect target;
 
     if (curalign == Qt::AlignLeft) {
-        target = QRect(option.rect.x() + lenmargin, option.rect.y(), iconsize, iconsize);
+        target = QRect(option.rect.x() + lenmargin, option.rect.y() + thickmargin, iconsize, iconsize);
     } else {
-        target = QRect(option.rect.x() + option.rect.width() - total + lenmargin, option.rect.y(), iconsize, iconsize);
+        target = QRect(option.rect.x() + option.rect.width() - total + lenmargin, option.rect.y() + thickmargin, iconsize, iconsize);
     }
 
     painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));

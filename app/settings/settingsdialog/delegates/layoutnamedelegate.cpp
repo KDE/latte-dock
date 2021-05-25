@@ -113,24 +113,24 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     myOptions.rect = remainedrect;
 
     if (hasErrors || hasWarnings) {
-        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight, -1, 2);
         if (hasErrors) {
-            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
+            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight, -1, 2);
         } else if (hasWarnings) {
-            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight);
+            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight, -1, 2);
         }
         myOptions.rect = remainedrect;
     }
 
     if (isConsideredActive) {
-        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIcon(painter, myOptions, "favorites", Qt::AlignRight);
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight, -1, 1);
+        Latte::drawIcon(painter, myOptions, "favorites", Qt::AlignRight, -1, 1);
         myOptions.rect = remainedrect;
     }
 
     if (isLocked) {
-        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
-        Latte::drawIcon(painter, myOptions, "object-locked", Qt::AlignRight);
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight, -1, 1);
+        Latte::drawIcon(painter, myOptions, "object-locked", Qt::AlignRight, -1, 1);
         myOptions.rect = remainedrect;
     }
 

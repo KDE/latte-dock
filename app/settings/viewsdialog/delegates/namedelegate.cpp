@@ -93,11 +93,11 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     // draw errors/warnings
     if (hasErrors || hasWarnings) {
-        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight);
+        remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight, -1, 2);
         if (hasErrors) {
-            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight);
+            Latte::drawIcon(painter, myOptions, "data-error", Qt::AlignRight, -1, 2);
         } else if (hasWarnings) {
-            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight);
+            Latte::drawIcon(painter, myOptions, "data-warning", Qt::AlignRight, -1, 2);
         }
         myOptions.rect = remainedrect;
     }
