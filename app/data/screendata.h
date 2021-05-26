@@ -33,6 +33,7 @@ public:
     //! Screen data
     bool hasExplicitViews{false};
     bool isActive{false};
+    bool isSelected{false};
     QRect geometry;
 
     //! Operators

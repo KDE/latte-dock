@@ -14,6 +14,7 @@ Screen::Screen()
     : Generic(),
       hasExplicitViews(false),
       isActive(false),
+      isSelected(false),
       geometry(QRect(0, 0, 1920, 1080))
 {
 }
@@ -22,6 +23,7 @@ Screen::Screen(Screen &&o)
     : Generic(o),
       hasExplicitViews(o.hasExplicitViews),
       isActive(o.isActive),
+      isSelected(o.isSelected),
       geometry(o.geometry)
 {
 }
@@ -30,6 +32,7 @@ Screen::Screen(const Screen &o)
     : Generic(o),
       hasExplicitViews(o.hasExplicitViews),
       isActive(o.isActive),
+      isSelected(o.isSelected),
       geometry(o.geometry)
 {
 }
@@ -46,6 +49,7 @@ Screen &Screen::operator=(const Screen &rhs)
     name = rhs.name;
     hasExplicitViews = rhs.hasExplicitViews;
     isActive = rhs.isActive;
+    isSelected = rhs.isSelected;
     geometry = rhs.geometry;
 
     return (*this);
@@ -57,6 +61,7 @@ Screen &Screen::operator=(Screen &&rhs)
     name = rhs.name;
     hasExplicitViews = rhs.hasExplicitViews;
     isActive = rhs.isActive;
+    isSelected = rhs.isSelected;
     geometry = rhs.geometry;
 
     return (*this);
@@ -68,6 +73,7 @@ bool Screen::operator==(const Screen &rhs) const
             && (name == rhs.name)
             && (hasExplicitViews == rhs.hasExplicitViews)
             //&& (isActive == rhs.isActive) /*Disabled because this is not a data but a screen state*/
+            && (isSelected == rhs.isSelected)
             && (geometry == rhs.geometry);
 }
 
@@ -83,6 +89,7 @@ void Screen::init(const QString &screenId, const QString &serialized)
     id = screenId;
     name = parts[0];
     isActive = false;
+    isSelected = false;
 
     if (parts.count() > 1) {
         geometry = Latte::stringToRect(parts[1]);
