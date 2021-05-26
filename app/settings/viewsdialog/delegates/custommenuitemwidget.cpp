@@ -53,7 +53,7 @@ QSize CustomMenuItemWidget::minimumSizeHint() const
    QStyleOptionMenuItem opt;
    QSize contentSize = fontMetrics().size(Qt::TextSingleLine | Qt::TextShowMnemonic, m_action->text());
    contentSize.setHeight(contentSize.height() + 9);
-   contentSize.setWidth(contentSize.width() + 4 * contentSize.height());
+   contentSize.setWidth(contentSize.width() + 1.5 * contentSize.height());
    return style()->sizeFromContents(QStyle::CT_MenuItem, &opt, contentSize, this);
 }
 
