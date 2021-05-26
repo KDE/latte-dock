@@ -606,10 +606,13 @@ void LastActiveWindow::requestMove(Latte::View *fromView, int localX, int localY
         return;
     }
 
-    QPoint globalPoint{fromView->x() + localX, fromView->y() + localY};
+    QPoint globalPoint{fromView->x() + localX, fromView->y() + localY};    
     m_wm->requestMoveWindow(m_winId, globalPoint);
 
     fromView->unblockMouse(localX, localY);
+
+    //! fixes bug #437679, Dragged windows do not become active and during drag they go behind active window
+    m_wm->requestActivate(m_winId);
 }
 
 void LastActiveWindow::requestToggleIsOnAllDesktops()
