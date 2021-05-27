@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Latte Dock
+Upstream-Contact: KDE <community@kde.org>
+Source: https://invent.kde.org/plasma/latte-dock
+
+Files: shell/package/contents/images/*.svgz
+Copyright: 2017 Michail Vourlakos
+License: LGPL-2.1-only
+
+Files: shell/package/contents/images/canvas/*
+Copyright: 2017 Michail Vourlakos
+License: GPL-2.0-or-later
+
+Files: icons/*
+Copyright: 2017 Michail Vourlakos
+License: GPL-2.0-or-later
