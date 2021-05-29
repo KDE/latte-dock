@@ -317,11 +317,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     case Types::WindowsCanCover:
         m_connections[base] = connect(this, &VisibilityManager::containsMouseChanged, this, [&]() {
-            if (m_containsMouse) {
-                emit mustBeShown();
-            } else {
-                raiseView(false);
-            }
+            raiseView(m_containsMouse);
         });
 
         raiseView(m_containsMouse);
