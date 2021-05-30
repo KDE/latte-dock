@@ -85,6 +85,8 @@ private slots:
     void importFullConfiguration();
     void exportFullConfiguration();
 
+    void showScreensDialog();
+
     void accept() override;
 
     void apply();

@@ -11,6 +11,7 @@
 #include "ui_settingsdialog.h"
 #include "../universalsettings.h"
 #include "../generic/generictools.h"
+#include "../screensdialog/screensdialog.h"
 #include "../../lattecorona.h"
 #include "../../screenpool.h"
 #include "../../data/layoutdata.h"
@@ -142,7 +143,9 @@ void SettingsDialog::initFileMenu()
 
     QAction *screensAction = m_fileMenu->addAction(i18n("Sc&reens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
-    //screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    screensAction->setToolTip(i18n("Examing your screens and remove deprecated references"));
+    connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensDialog);
 
     QAction *quitAction = m_fileMenu->addAction(i18n("&Quit Latte"));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
@@ -371,6 +374,12 @@ void SettingsDialog::exportFullConfiguration()
     QString proposedName = QStringLiteral("Latte Dock (") + currentDate.toString("yyyy-MM-dd")+")";
 
     exportFileDialog->selectFile(proposedName);
+}
+
+void SettingsDialog::showScreensDialog()
+{
+    auto screensDlg = new Settings::Dialog::ScreensDialog(this);
+    screensDlg->exec();
 }
 
 void SettingsDialog::accept()
