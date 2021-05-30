@@ -51,6 +51,9 @@ ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView()
 ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View *view)
 {
     if (!m_primaryConfigView) {
+        //!set user configuring early enough in order to give config windows time to be created properly
+        view->containment()->setUserConfiguring(true);
+
         m_primaryConfigView = new ViewPart::PrimaryConfigView(view);
     } else {
         auto previousView = m_primaryConfigView->parentView();
