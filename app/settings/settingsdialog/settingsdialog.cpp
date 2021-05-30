@@ -143,7 +143,7 @@ void SettingsDialog::initFileMenu()
 
     QAction *screensAction = m_fileMenu->addAction(i18n("Sc&reens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
-    screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+    //screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
     screensAction->setToolTip(i18n("Examing your screens and remove deprecated references"));
     connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensDialog);
 

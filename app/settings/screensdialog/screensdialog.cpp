@@ -7,7 +7,7 @@
 
 // local
 #include "ui_screensdialog.h"
-//#include "screenshandler.h"
+#include "screenshandler.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../../layouts/manager.h"
 #include "../../layouts/synchronizer.h"
@@ -26,7 +26,7 @@ ScreensDialog::ScreensDialog(SettingsDialog *parent)
     init();
     initRemoveNowButton();
     //! we must create handlers after creating/adjusting the ui
-    //m_handler = new Handler::ExportTemplateHandler(this, layout);
+    m_handler = new Handler::ScreensHandler(this);
     initSignals();
 }
 

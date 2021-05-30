@@ -151,7 +151,9 @@ Qt::ItemFlags Screens::flags(const QModelIndex &index) const
 
     auto flags = QAbstractTableModel::flags(index);
 
-    flags |= Qt::ItemIsUserCheckable;
+    if (!c_screens[row].isActive) {
+        flags |= Qt::ItemIsUserCheckable;
+    }
 
     return flags;
 }

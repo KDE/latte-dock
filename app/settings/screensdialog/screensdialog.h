@@ -22,9 +22,9 @@ class ScreensDialog;
 
 namespace Latte {
 namespace Settings {
-//namespace Handler {
-//class ScreensHandler;
-//}
+namespace Handler {
+class ScreensHandler;
+}
 }
 }
 
@@ -69,7 +69,7 @@ private:
     Ui::ScreensDialog *m_ui;
     Controller::Layouts *m_layoutsController{nullptr};
 
-    //Handler::ScreensHandler *m_handler;
+    Handler::ScreensHandler *m_handler;
 };
 
 }
