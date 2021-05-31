@@ -180,7 +180,7 @@ AbilityDefinition.Indexer {
 
             for (var i=0; i<layout.children.length; ++i){
                 var item = layout.children[i];
-                if (item && (item.isHidden || item.isSeparatorHidden) && item.itemIndex>=0) {
+                if (item && (item.isHidden || item.isSeparatorHidden) && item.itemIndex>=0 && hdns.indexOf(item.itemIndex) < 0) {
                     hdns.push(item.itemIndex);
                 }
             }
@@ -198,7 +198,7 @@ AbilityDefinition.Indexer {
 
             for (var i=0; i<layout.children.length; ++i){
                 var item = layout.children[i];
-                if (item && item.isSeparator && item.itemIndex>=0) {
+                if (item && item.isSeparator && item.itemIndex>=0 && seps.indexOf(item.itemIndex) < 0) {
                     seps.push(item.itemIndex);
                 }
             }
