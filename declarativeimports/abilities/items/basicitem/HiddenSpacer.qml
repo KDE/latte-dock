@@ -33,6 +33,7 @@ Item{
     Binding{
         target: hiddenSpacer
         property: "nHiddenSize"
+        when: !hiddenSizeDelayer.running && itemIndex > -1 //! helps to solve BUGLOCALREF: #1
         value: {
             if (abilityItem.isHidden) {
                 return 0;
@@ -78,5 +79,22 @@ Item{
             border.color: "red"
             color: "transparent"
         }
+    }
+
+    //! Delayer
+    onSeparatorSpaceChanged: {
+        if (!hiddenSizeDelayer.running) {
+            hiddenSizeDelayer.start();
+        }
+    }
+
+    //! BUGLOCALREF: #1
+    //! Timer that helps to avoid binding loops from head/tailItemIsVisibleSeparator by delaying to update the spacer size
+    //! This solution needs confirmation. That specific binding loop is very nasty as it breaks the tasks model consistency
+    //! somehow when switching between different activities and the model contains separators that become shown and hidden
+    //! during the activity change
+    Timer {
+        id: hiddenSizeDelayer
+        interval: 400
     }
 }
