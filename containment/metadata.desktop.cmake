@@ -34,6 +34,7 @@ Name[zh_TW]=Latte
 Comment=Containment provided for the Latte Dock
 Comment[ca]=Intèrpret d'ordres proporcionat per l'acoblador Latte
 Comment[ca@valencia]=Intèrpret d'ordres proporcionat per l'acoblador Latte
+Comment[cs]=Kontejner pro Latte Dock
 Comment[da]=Beholder til Latte-dokken
 Comment[de]=Containment für Latte-Dock
 Comment[el]=Περιέκτης της εφαρμογής Latte
