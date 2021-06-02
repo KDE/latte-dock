@@ -27,6 +27,9 @@ Item{
     property bool bottomBorder: false
     property bool rightBorder: false
 
+    property bool onlyHorizontalBorders: !leftBorder && !rightBorder
+    property bool onlyVerticalBorders: !topBorder && !bottomBorder
+
     property int noOfBorders: {
         if (allBorders) {
             return 4;
@@ -55,7 +58,7 @@ Item{
     readonly property bool bothVerticals: (leftBorder && rightBorder)
     readonly property bool bothHorizontals: (bottomBorder && topBorder)
 
-    readonly property bool drawWithoutRoundness: noOfBorders === 1
+    readonly property bool drawWithoutRoundness: onlyHorizontalBorders || onlyVerticalBorders
 
     readonly property Item painterRectangle: painter
 
