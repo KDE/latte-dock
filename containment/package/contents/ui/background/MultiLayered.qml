@@ -58,7 +58,9 @@ BackgroundProperties{
             var solidBackgroundPadding = solidBackground.margins.top;
 
             if (root.isVertical) {
-                return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
+                return expected;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -73,7 +75,9 @@ BackgroundProperties{
             var solidBackgroundPadding = solidBackground.margins.bottom;
 
             if (root.isVertical) {
-                return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
+                return expected;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -89,7 +93,9 @@ BackgroundProperties{
             var solidBackgroundPadding = solidBackground.margins.left;
 
             if (root.isHorizontal) {
-                return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
+                return expected;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -105,7 +111,9 @@ BackgroundProperties{
             var solidBackgroundPadding = solidBackground.margins.right;
 
             if (root.isHorizontal) {
-                return customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+                expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
+                return expected;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
