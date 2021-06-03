@@ -311,6 +311,11 @@ Ui::SettingsDialog *TabLayouts::ui() const
     return m_ui;
 }
 
+Controller::Layouts *TabLayouts::layoutsController() const
+{
+    return m_layoutsController;
+}
+
 bool TabLayouts::hasChangedData() const
 {
     return m_layoutsController->hasChangedData();

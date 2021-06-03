@@ -22,6 +22,9 @@ class ScreensDialog;
 
 namespace Latte {
 namespace Settings {
+namespace Controller {
+class Layouts;
+}
 namespace Handler {
 class ScreensHandler;
 }
@@ -38,11 +41,12 @@ class ScreensDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ScreensDialog(SettingsDialog *parent);
+    ScreensDialog(SettingsDialog *parent, Controller::Layouts *controller);
     ~ScreensDialog();
 
     Ui::ScreensDialog *ui() const;
     Latte::Corona *corona() const;
+    Controller::Layouts *layoutsController() const;
 
     QPushButton *removeNowButton() const;
 

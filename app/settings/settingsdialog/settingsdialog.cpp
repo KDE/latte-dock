@@ -378,7 +378,7 @@ void SettingsDialog::exportFullConfiguration()
 
 void SettingsDialog::showScreensDialog()
 {
-    auto screensDlg = new Settings::Dialog::ScreensDialog(this);
+    auto screensDlg = new Settings::Dialog::ScreensDialog(this, m_tabLayoutsHandler->layoutsController());
     screensDlg->exec();
 }
 

@@ -53,7 +53,7 @@ void ScreensHandler::init()
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ScreensHandler::reset);
 
     //! load data
-    m_screensModel->setData(m_dialog->corona()->screenPool()->screensTable());
+    m_screensModel->setData(m_dialog->layoutsController()->screensData());
 }
 
 bool ScreensHandler::hasChangedData() const

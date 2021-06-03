@@ -16,9 +16,10 @@ namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-ScreensDialog::ScreensDialog(SettingsDialog *parent)
+ScreensDialog::ScreensDialog(SettingsDialog *parent, Controller::Layouts *controller)
     : GenericDialog(parent),
-      m_ui(new Ui::ScreensDialog)
+      m_ui(new Ui::ScreensDialog),
+      m_layoutsController(controller)
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     m_corona = parent->corona();
@@ -42,6 +43,11 @@ Latte::Corona *ScreensDialog::corona() const
 Ui::ScreensDialog *ScreensDialog::ui() const
 {
     return m_ui;
+}
+
+Controller::Layouts *ScreensDialog::layoutsController() const
+{
+    return m_layoutsController;
 }
 
 void ScreensDialog::init()

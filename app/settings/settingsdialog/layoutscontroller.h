@@ -13,6 +13,7 @@
 #include "../../lattecorona.h"
 #include "../../data/layoutdata.h"
 #include "../../data/layoutstable.h"
+#include "../../data/screendata.h"
 #include "../../layout/centrallayout.h"
 
 // Qt
@@ -97,6 +98,8 @@ public:
     const Latte::Data::Layout addLayoutByText(QString rawLayoutText);
 
     CentralLayout *centralLayout(const QString &currentLayoutId);
+
+    const Latte::Data::ScreensTable screensData();
 
     //! import layouts from Latte versions <= v0.7.x
     bool importLayoutsFromV1ConfigFile(QString file);

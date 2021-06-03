@@ -851,12 +851,6 @@ const Latte::Data::LayoutsTable &Layouts::currentLayoutsData()
     return m_layoutsTable;
 }
 
-const Latte::Data::ScreensTable &Layouts::screensData()
-{
-    Latte::Data::ScreensTable scrs;
-    return scrs;
-}
-
 void Layouts::setOriginalInMultipleMode(const bool &inmultiple)
 {
     setInMultipleMode(inmultiple);

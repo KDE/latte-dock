@@ -61,6 +61,7 @@ public:
     Latte::Corona *corona() const;
     Dialog::SettingsDialog *dialog() const;
     Ui::SettingsDialog *ui() const;
+    Controller::Layouts *layoutsController() const;
 
 public slots:
     void onDragEnterEvent(QDragEnterEvent *event);

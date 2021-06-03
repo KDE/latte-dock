@@ -16,6 +16,7 @@
 #include "delegates/layoutnamedelegate.h"
 #include "../universalsettings.h"
 #include "../generic/generictools.h"
+#include "../../screenpool.h"
 #include "../../data/uniqueidinfo.h"
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
@@ -287,6 +288,11 @@ const Latte::Data::Layout Layouts::originalData(const QString &currentLayoutId) 
     return m_model->originalData(currentLayoutId);
 }
 
+const Latte::Data::ScreensTable Layouts::screensData()
+{
+    Latte::Data::ScreensTable scrs = m_handler->corona()->screenPool()->screensTable();
+    return scrs;
+}
 
 bool Layouts::inMultipleMode() const
 {
