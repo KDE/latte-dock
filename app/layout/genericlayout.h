@@ -131,7 +131,7 @@ public:
     //! that latteView
     QList<Plasma::Containment *> unassignFromLayout(Plasma::Containment *latteContainment);
 
-    QList<int> viewsScreens();
+    QList<int> viewsExplicitScreens();
 
     Latte::Data::ViewsTable viewsTable() const;
 

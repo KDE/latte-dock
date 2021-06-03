@@ -1501,7 +1501,7 @@ QList<int> GenericLayout::subContainmentsOf(Plasma::Containment *containment) co
     return subs;
 }
 
-QList<int> GenericLayout::viewsScreens()
+QList<int> GenericLayout::viewsExplicitScreens()
 {
     Data::ViewsTable views = viewsTable();
     QList<int> screens;

@@ -12,6 +12,7 @@
 #include "../../data/layoutdata.h"
 #include "../../data/layouticondata.h"
 #include "../../data/layoutstable.h"
+#include "../../data/screendata.h"
 
 // Qt
 #include <QAbstractTableModel>
@@ -126,6 +127,8 @@ public:
 
     const Latte::Data::LayoutsTable &currentLayoutsData();
     const Latte::Data::LayoutsTable &originalLayoutsData();
+
+    const Latte::Data::ScreensTable &screensData();
 
     void setOriginalInMultipleMode(const bool &inmultiple);
     void setOriginalData(Latte::Data::LayoutsTable &data);
