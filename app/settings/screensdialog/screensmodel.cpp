@@ -218,7 +218,8 @@ QVariant Screens::data(const QModelIndex &index, int role) const
     if (role == IDROLE) {
         return c_screens[row].id;
     } else if (role == Qt::DisplayRole) {
-        return c_screens[row].name;
+        QString display = "{" + c_screens[row].id + "} " + c_screens[row].name;
+        return display;
     } else if (role == Qt::CheckStateRole) {
         return (c_screens[row].isSelected ? Qt::Checked : Qt::Unchecked);
     } else if (role == ISSCREENACTIVEROLE) {
@@ -230,6 +231,8 @@ QVariant Screens::data(const QModelIndex &index, int role) const
         Latte::Data::Screen scrdata = c_screens[row];
         scrVariant.setValue<Latte::Data::Screen>(scrdata);
         return scrVariant;
+    } else if (role == SORTINGROLE) {
+        return c_screens[row].id.toInt();
     }
 
     return QVariant{};
