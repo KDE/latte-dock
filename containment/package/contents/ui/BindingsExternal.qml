@@ -232,8 +232,8 @@ Item {
             if (root.behaveAsPlasmaPanel
                     || !LatteCore.WindowSystem.compositingActive
                     || (!parabolic.isEnabled && root.userShowPanelBackground && plasmoid.configuration.panelSize===100)) {
-                var paddingtail = root.isHorizontal ? background.paddings.left : background.paddings.top;
-                var paddinghead = root.isHorizontal ? background.paddings.right : background.paddings.bottom;
+                var paddingtail = (root.isHorizontal ? background.paddings.left : background.paddings.top) + background.tailRoundnessMargin;
+                var paddinghead = (root.isHorizontal ? background.paddings.right : background.paddings.bottom) + background.headRoundnessMargin;
 
                 if (root.isHorizontal) {
                     return Qt.rect(latteView.localGeometry.x + paddingtail,

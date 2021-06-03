@@ -190,6 +190,24 @@ BackgroundProperties{
         return Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)
     }
 
+    readonly property int tailRoundnessMargin: {
+        //! used from contents geometry in order to remove any roundness sectors, e.g. for popups placement
+        if (root.isHorizontal) {
+            return paddings.left > metrics.margin.length ? metrics.margin.length : 0
+        } else {
+            return paddings.top > metrics.margin.length ? metrics.margin.length : 0
+        }
+    }
+
+    readonly property int headRoundnessMargin: {
+        //! used from contents geometry in order to remove any roundness sectors, e.g. for popups placement
+        if (root.isHorizontal) {
+            return paddings.right > metrics.margin.length ? metrics.margin.length : 0
+        } else {
+            return paddings.bottom > metrics.margin.length ? metrics.margin.length : 0
+        }
+    }
+
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     //! Metrics related
