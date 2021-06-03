@@ -151,7 +151,7 @@ Qt::ItemFlags Screens::flags(const QModelIndex &index) const
 
     auto flags = QAbstractTableModel::flags(index);
 
-    if (!c_screens[row].isActive) {
+    if (c_screens[row].isRemovable) {
         flags |= Qt::ItemIsUserCheckable;
     }
 

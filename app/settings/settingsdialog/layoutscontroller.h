@@ -130,6 +130,8 @@ private:
     QString uniqueTempDirectory();
     QString uniqueLayoutName(QString name);
 
+    QList<int> join(const QList<int> &currentRecords, const QList<int> &newRecords);
+
     void initialMessageForErroredLayouts(const int &count);
     void initialMessageForWarningLayouts(const int &count);
     void messageForErroredLayout(const Data::Layout &layout);

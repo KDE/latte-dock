@@ -290,8 +290,68 @@ const Latte::Data::Layout Layouts::originalData(const QString &currentLayoutId) 
 
 const Latte::Data::ScreensTable Layouts::screensData()
 {
-    Latte::Data::ScreensTable scrs = m_handler->corona()->screenPool()->screensTable();
-    return scrs;
+    Latte::Data::ScreensTable scrtable = m_handler->corona()->screenPool()->screensTable();
+
+    QList<int> expscreens;
+
+    //! update activeness
+    for (int i=1; i<scrtable.rowCount(); ++i) {
+        scrtable[i].isActive = m_handler->corona()->screenPool()->isScreenActive(scrtable[i].id.toInt());
+    }
+
+    //! update removability based on activeness
+    for (int i=0; i<scrtable.rowCount(); ++i) {
+        scrtable[i].isRemovable = !scrtable[i].isActive;
+    }
+
+    //! retrieve all layouts data
+    Latte::Data::LayoutsTable originalLayouts = m_model->originalLayoutsData();
+    Latte::Data::LayoutsTable currentLayouts = m_model->currentLayoutsData();
+    Latte::Data::LayoutsTable removedLayouts = originalLayouts.subtracted(currentLayouts);
+
+    //! temp removed layouts should be considered because they may not be deleted in the end
+    for (int i=0; i<removedLayouts.rowCount(); ++i) {
+        CentralLayout *central = centralLayout(removedLayouts[i].id);
+
+        if (!central) {
+            continue;
+        }
+
+        QList<int> newexps = central->viewsExplicitScreens();
+
+        expscreens = join(expscreens, newexps);
+    }
+
+    //! current layouts should be considered
+    for (int i=0; i<currentLayouts.rowCount(); ++i) {
+        CentralLayout *central = centralLayout(currentLayouts[i].id);
+
+        if (!central) {
+            continue;
+        }
+
+        QList<int> newexps = central->viewsExplicitScreens();
+
+        expscreens = join(expscreens, newexps);
+    }
+
+    //! discovered explicit screens should be flagged as NOREMOVABLE
+    for (int i=0; i<expscreens.count(); ++i) {
+        QString expscridstr = QString::number(expscreens[i]);
+
+        if (scrtable.containsId(expscridstr)) {
+            scrtable[expscridstr].isRemovable = false;
+        }
+    }
+
+    //! Print no-removable screens
+    /*for (int i=0; i<scrtable.rowCount(); ++i) {
+        if (!scrtable[i].isRemovable) {
+            qDebug() <<"org.kde.latte NO REMOVABLE EXP SCREEN ::: " << scrtable[i].id;
+        }
+    }*/
+
+    return scrtable;
 }
 
 bool Layouts::inMultipleMode() const
@@ -1040,6 +1100,19 @@ void Layouts::onNameDuplicatedFrom(const QString &provenId, const QString &trial
     QTimer::singleShot(0, [this, tIndex]() {
         m_view->edit(tIndex);
     });
+}
+
+QList<int> Layouts::join(const QList<int> &currentRecords, const QList<int> &newRecords)
+{
+    QList<int> result = currentRecords;
+
+    for(int i=0; i<newRecords.count(); ++i) {
+        if (!result.contains(newRecords[i])) {
+            result << newRecords[i];
+        }
+    }
+
+    return result;
 }
 
 void Layouts::loadConfig()
