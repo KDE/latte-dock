@@ -10,6 +10,7 @@
 #include "ui_screensdialog.h"
 #include "screensdialog.h"
 #include "screensmodel.h"
+#include "delegates/checkboxdelegate.h"
 #include "../../lattecorona.h"
 #include "../../screenpool.h"
 
@@ -48,6 +49,9 @@ void ScreensHandler::init()
     m_screensProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     m_ui->screensTable->setModel(m_screensProxyModel);
+
+    //! Delegates
+    m_ui->screensTable->setItemDelegateForColumn(Model::Screens::SCREENCOLUMN, new Settings::Screens::Delegate::CheckBox(this));
 
     //! Buttons
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ScreensHandler::reset);
