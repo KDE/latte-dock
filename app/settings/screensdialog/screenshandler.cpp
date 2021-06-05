@@ -45,10 +45,13 @@ void ScreensHandler::init()
     //! Screens Proxy Model
     m_screensProxyModel = new QSortFilterProxyModel(this);
     m_screensProxyModel->setSourceModel(m_screensModel);
+
+    m_ui->screensTable->setModel(m_screensProxyModel);
+
     m_screensProxyModel->setSortRole(Model::Screens::SORTINGROLE);
     m_screensProxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
-    m_ui->screensTable->setModel(m_screensProxyModel);
+    m_ui->screensTable->sortByColumn(Model::Screens::SCREENCOLUMN, Qt::DescendingOrder);
 
     //! Delegates
     m_ui->screensTable->setItemDelegateForColumn(Model::Screens::SCREENCOLUMN, new Settings::Screens::Delegate::CheckBox(this));

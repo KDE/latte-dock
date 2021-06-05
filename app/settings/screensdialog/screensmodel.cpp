@@ -95,6 +95,41 @@ void Screens::reset()
     emit screensDataChanged();
 }
 
+QString Screens::sortableId(const QString &id) const
+{
+    int sid = id.toInt();
+
+    //! reverse id priority, smaller id has higher priority
+    if (sid < 10) {
+        return QString::number(99999 - sid);
+    } else if (sid < 100) {
+        return QString::number(9999 - sid);
+    } else if (sid < 1000) {
+        return QString::number(999 - sid);
+    }
+
+    return QString::number(999 - sid);
+}
+
+QString Screens::sortableText(const int &priority, const QString &text) const
+{
+    QString numberPart;
+
+    if (priority < 10) {
+        numberPart = "00000" + QString::number(priority);
+    } else if (priority < 100) {
+        numberPart = "0000" + QString::number(priority);
+    } else if (priority < 1000) {
+        numberPart = "000" + QString::number(priority);
+    } else if (priority < 10000) {
+        numberPart = "00" + QString::number(priority);
+    } else if (priority < 100000) {
+        numberPart = "0" + QString::number(priority);
+    }
+
+    return (numberPart + text);
+}
+
 void Screens::setData(const Latte::Data::ScreensTable &screens)
 {
     clear();
@@ -232,7 +267,16 @@ QVariant Screens::data(const QModelIndex &index, int role) const
         scrVariant.setValue<Latte::Data::Screen>(scrdata);
         return scrVariant;
     } else if (role == SORTINGROLE) {
-        return c_screens[row].id.toInt();
+        //! reverse id priority, smaller id has higher priority
+        QString idstr = sortableId(c_screens[row].id);
+
+        if (c_screens[row].isActive) {
+            return sortableText(HIGHESTPRIORITY, idstr);
+        } else if (!c_screens[row].isRemovable) {
+            return sortableText(HIGHPRIORITY, idstr);
+        }
+
+        return sortableText(NORMALPRIORITY, idstr);
     }
 
     return QVariant{};

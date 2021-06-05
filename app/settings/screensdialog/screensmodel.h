@@ -39,6 +39,14 @@ public:
         LASTCOLUMN
     };
 
+    enum SortingPriority
+    {
+        NORMALPRIORITY = 10,
+        MEDIUMPRIORITY = 100,
+        HIGHPRIORITY = 1000,
+        HIGHESTPRIORITY = 10000
+    };
+
     explicit Screens(QObject *parent);
     ~Screens();
 
@@ -70,6 +78,9 @@ private:
     void initDefaults();
 
     void clear();
+
+    QString sortableId(const QString &id) const;
+    QString sortableText(const int &priority, const QString &text) const;
 
 private:
     Latte::Data::ScreensTable o_screens;
