@@ -36,12 +36,26 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
     Q_ASSERT(event);
     Q_ASSERT(model);
 
-    if (event->type() == QEvent::MouseButtonDblClick) {
-        if (!option.rect.contains(static_cast<QMouseEvent *>(event)->pos()))
+    if (event->type() == QEvent::MouseButtonRelease) {
+        //! single click on checkbox, changes state
+        QStyleOptionButton checkopt;
+        checkopt.text = "";
+        checkopt.rect = option.rect;
+        QRect remained = Latte::remainedFromCheckBox(checkopt);
+        QRegion checkregion = QRegion(option.rect).subtracted(remained);
+
+        if (!(checkregion.boundingRect().contains(static_cast<QMouseEvent *>(event)->pos()))) {
             return false;
+        }
+    } else if (event->type() == QEvent::MouseButtonDblClick) {
+        //! double click  on checkbox text, changes state
+        if (!option.rect.contains(static_cast<QMouseEvent *>(event)->pos())) {
+            return false;
+        }
     } else if (event->type() == QEvent::KeyPress) {
-        if (static_cast<QKeyEvent *>(event)->key() != Qt::Key_Space && static_cast<QKeyEvent *>(event)->key() != Qt::Key_Select)
+        if (static_cast<QKeyEvent *>(event)->key() != Qt::Key_Space && static_cast<QKeyEvent *>(event)->key() != Qt::Key_Select) {
             return false;
+        }
     } else {
         return false;
     }

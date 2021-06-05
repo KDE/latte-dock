@@ -46,6 +46,7 @@ public:
     Latte::Data::ScreensTable currentData() const;
 
 public slots:
+    void deselectAll();
     void reset() override;
     void resetDefaults() override;
     void save() override;

@@ -59,7 +59,6 @@ void ScreensDialog::init()
 
 void ScreensDialog::initButtons()
 {
-    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(false);
     connect(m_ui->buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked,
             this, &ScreensDialog::onCancel);
 }
@@ -87,7 +86,6 @@ QPushButton *ScreensDialog::removeNowButton() const
 
 void ScreensDialog::onDataChanged()
 {
-    //m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(!m_handler->inDefaultValues());
 }
 
 

@@ -57,7 +57,7 @@ void ScreensHandler::init()
     m_ui->screensTable->setItemDelegateForColumn(Model::Screens::SCREENCOLUMN, new Settings::Screens::Delegate::CheckBox(this));
 
     //! Buttons
-    connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ScreensHandler::reset);
+    connect(m_ui->deselectAllBtn, &QPushButton::clicked, this, &ScreensHandler::deselectAll);
 
     //! load data
     m_screensModel->setData(m_dialog->layoutsController()->screensData());
@@ -71,6 +71,11 @@ bool ScreensHandler::hasChangedData() const
 bool ScreensHandler::inDefaultValues() const
 {
     return m_screensModel->inDefaultValues();
+}
+
+void ScreensHandler::deselectAll()
+{
+    m_screensModel->deselectAll();
 }
 
 void ScreensHandler::reset()

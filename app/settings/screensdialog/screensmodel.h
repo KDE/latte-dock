@@ -69,7 +69,8 @@ public:
 
     Latte::Data::ScreensTable selectedScreens();
 
-    void reset();
+    void deselectAll();
+    void reset();    
 
 signals:
     void screensDataChanged();

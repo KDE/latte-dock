@@ -84,6 +84,19 @@ void Screens::clear()
     }
 }
 
+void Screens::deselectAll()
+{
+    QVector<int> roles;
+    roles << Qt::CheckStateRole;
+
+    for(int i=0; i<c_screens.rowCount(); ++i) {
+        c_screens[i].isSelected = false;
+    }
+
+    emit dataChanged(index(0, SCREENCOLUMN), index(c_screens.rowCount()-1, SCREENCOLUMN), roles);
+    emit screensDataChanged();
+}
+
 void Screens::reset()
 {
     c_screens = o_screens;
