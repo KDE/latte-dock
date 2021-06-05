@@ -87,15 +87,6 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     Latte::drawScreen(painter, adjustedOption, screen.geometry, maxiconsize);
     adjustedOption.rect = remainedrect;
 
-    //! screen name
-    adjustedOption.text = screen.name;
-
-    if (isActive) {
-        adjustedOption.text = "<b>" + adjustedOption.text + "</b>";
-    }
-
-    Latte::drawFormattedText(painter, adjustedOption);
-
     //! screen id
     adjustedOption.text = "{" + screen.id + "}";
 
@@ -104,6 +95,18 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     }
 
     adjustedOption.displayAlignment = Qt::AlignRight;
+    remainedrect = remainedFromFormattedText(adjustedOption, adjustedOption.text, Qt::AlignRight);
+    Latte::drawFormattedText(painter, adjustedOption);
+    adjustedOption.rect = remainedrect;
+
+    //! screen name
+    adjustedOption.text = screen.name;
+
+    if (isActive) {
+        adjustedOption.text = "<b>" + adjustedOption.text + "</b>";
+    }
+
+    adjustedOption.displayAlignment = Qt::AlignLeft;
     Latte::drawFormattedText(painter, adjustedOption);
 }
 

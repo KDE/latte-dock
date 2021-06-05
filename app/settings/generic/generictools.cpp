@@ -123,6 +123,34 @@ void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, co
     drawFormattedText(painter, option, option.text, Qt::AlignLeft, textOpacity);
 }
 
+QRect remainedFromFormattedText(const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment)
+{
+    QString css = QString("body {}");
+
+    QTextDocument doc;
+    doc.setDefaultStyleSheet(css);
+    doc.setHtml("<body>" + text + "</body>");
+
+    //we need an offset to be in the same vertical center of TextEdit
+    int textWidth = doc.size().width() + MARGIN;
+
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight || (curalign == Qt::AlignHCenter)) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    if (alignment == Qt::AlignHCenter) {
+        return option.rect;
+    } else if (curalign == Qt::AlignRight) {
+        return QRect(option.rect.x(), option.rect.y(), option.rect.width() - textWidth, option.rect.height());
+    } else {
+        return QRect(option.rect.x() + textWidth, option.rect.y(), option.rect.width() - textWidth, option.rect.height());
+    }
+}
+
 void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment, const float textOpacity)
 {
     painter->save();

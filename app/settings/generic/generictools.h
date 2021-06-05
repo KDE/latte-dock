@@ -29,6 +29,7 @@ Qt::AlignmentFlag horizontalAlignment(Qt::Alignment alignments);
 //! now they are not present to current list
 QStringList subtracted(const QStringList &original, const QStringList &current);
 
+QRect remainedFromFormattedText(const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
 void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, const float textOpacity = 1.0);
 void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment = Qt::AlignLeft, const float textOpacity = 1.0);
