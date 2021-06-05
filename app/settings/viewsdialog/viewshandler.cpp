@@ -9,6 +9,7 @@
 #include "ui_viewsdialog.h"
 #include "viewscontroller.h"
 #include "viewsdialog.h"
+#include "viewstableview.h"
 #include "../exporttemplatedialog/exporttemplatedialog.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../settingsdialog/layoutsmodel.h"
@@ -128,6 +129,10 @@ void ViewsHandler::init()
 
     //!
     connect(m_viewsController, &Settings::Controller::Views::dataChanged, this, &ViewsHandler::dataChanged);
+
+    connect(m_ui->viewsTable, &View::ViewsTableView::selectionsChanged, this, &ViewsHandler::onSelectionChanged);
+
+    onSelectionChanged();
 }
 
 void ViewsHandler::initViewTemplatesSubMenu()
@@ -487,6 +492,16 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
         //! reset combobox index
         m_ui->layoutsCmb->setCurrentText(o_data.name);
     }
+}
+
+void ViewsHandler::onSelectionChanged()
+{
+    bool hasselected = m_viewsController->hasSelectedView();
+
+    setTwinProperty(m_duplicateViewAction, TWINENABLED, hasselected);
+    setTwinProperty(m_removeViewAction, TWINENABLED, hasselected);
+    setTwinProperty(m_exportViewAction, TWINENABLED, hasselected);
+    m_viewExportSubMenu->setEnabled(hasselected);
 }
 
 void ViewsHandler::updateWindowTitle()

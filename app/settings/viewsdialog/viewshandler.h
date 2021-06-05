@@ -85,6 +85,7 @@ private slots:
     void importView();
 
     void onCurrentLayoutIndexChanged(int row);
+    void onSelectionChanged();
 
     void newView(const Data::Generic &templateData);
 
