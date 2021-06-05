@@ -72,6 +72,17 @@ bool isTextCentered(const QStyleOptionViewItem &option)
     return false;
 }
 
+Qt::AlignmentFlag horizontalAlignment(Qt::Alignment alignments)
+{
+    if (alignments & Qt::AlignHCenter) {
+        return Qt::AlignHCenter;
+    } else if (alignments & Qt::AlignRight) {
+        return Qt::AlignRight;
+    }
+
+    return Qt::AlignLeft;
+}
+
 QPalette::ColorGroup colorGroup(const QStyleOption &option)
 {
     if (!isEnabled(option)) {
@@ -104,15 +115,15 @@ QStringList subtracted(const QStringList &original, const QStringList &current)
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity)
 {
-    drawFormattedText(painter, option, option.text, Latte::isTextCentered(option), textOpacity);
+    drawFormattedText(painter, option, option.text, horizontalAlignment(option.displayAlignment), textOpacity);
 }
 
 void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, const float textOpacity)
 {
-    drawFormattedText(painter, option, option.text, false, textOpacity);
+    drawFormattedText(painter, option, option.text, Qt::AlignLeft, textOpacity);
 }
 
-void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, const bool &isTextCentered, const float textOpacity)
+void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment, const float textOpacity)
 {
     painter->save();
 
@@ -133,10 +144,18 @@ void drawFormattedText(QPainter *painter, const QStyleOption &option, const QStr
     int textWidth = doc.size().width();
     int textY = option.rect.top() + offsetY + 1;
 
-    if (isTextCentered) {
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight || (curalign == Qt::AlignHCenter)) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    if (alignment == Qt::AlignHCenter) {
         int textX = qMax(0, (option.rect.width() / 2) - (textWidth/2));
         painter->translate(option.rect.left() + textX, textY);
-    } else if (qApp->layoutDirection() == Qt::RightToLeft) {
+    } else if (curalign == Qt::AlignRight) {
         painter->translate(qMax(option.rect.left(), option.rect.right() - textWidth), textY);
     } else {
         painter->translate(option.rect.left(), textY);
@@ -254,7 +273,6 @@ QRect remainedFromIcon(const QStyleOption &option, Qt::AlignmentFlag alignment, 
         curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
     }
 
-
     QRect optionRemainedRect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + total, option.rect.y(), option.rect.width() - total, option.rect.height()) :
                                                              QRect(option.rect.x(), option.rect.y(), option.rect.width() - total, option.rect.height());
 
@@ -292,6 +310,43 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
     }
 
     painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));
+}
+
+QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment)
+{
+    int length = option.rect.height() - 2*MARGIN + 1;
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    QRect optionRemainedRect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + length, option.rect.y(), option.rect.width() - length, option.rect.height()) :
+                                                             QRect(option.rect.x(), option.rect.y(), option.rect.width() - length, option.rect.height());
+
+    return optionRemainedRect;
+}
+
+void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment)
+{
+    QStyleOptionButton optionbtn = option;
+
+    Qt::AlignmentFlag curalign = alignment;
+
+    if (qApp->layoutDirection() == Qt::LeftToRight) {
+        curalign = alignment;
+    } else {
+        curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
+    }
+
+    QRect changesrect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + MARGIN, option.rect.y(), option.rect.height(), option.rect.height()) :
+                                                      QRect(option.rect.x() + option.rect.width() - option.rect.height() - MARGIN, option.rect.y(), option.rect.height(), option.rect.height());
+
+    optionbtn.rect = changesrect;
+
+    QApplication::style()->drawControl(QStyle::CE_CheckBox, &optionbtn, painter);
 }
 
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option)

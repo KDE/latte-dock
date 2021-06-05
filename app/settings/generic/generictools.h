@@ -23,6 +23,7 @@ bool isHovered(const QStyleOption &option);
 bool isTextCentered(const QStyleOptionViewItem &option);
 
 QPalette::ColorGroup colorGroup(const QStyleOption &option);
+Qt::AlignmentFlag horizontalAlignment(Qt::Alignment alignments);
 
 //! strings that even though they were initially at original list
 //! now they are not present to current list
@@ -30,7 +31,7 @@ QStringList subtracted(const QStringList &original, const QStringList &current);
 
 void drawFormattedText(QPainter *painter, const QStyleOptionViewItem &option, const float textOpacity = 1.0);
 void drawFormattedText(QPainter *painter, const QStyleOptionMenuItem &option, const float textOpacity = 1.0);
-void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, const bool &isTextCentered = false, const float textOpacity = 1.0);
+void drawFormattedText(QPainter *painter, const QStyleOption &option, const QString &text, Qt::AlignmentFlag alignment = Qt::AlignLeft, const float textOpacity = 1.0);
 
 //! background
 void drawBackground(QPainter *painter, const QStyleOptionViewItem &option);
@@ -48,6 +49,8 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &i
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
 
+QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
 
 //! screen icon
 QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSize = -1);

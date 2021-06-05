@@ -18,6 +18,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStandardItemModel>
+#include <QStyleOptionButton>
 
 namespace Latte {
 namespace Settings {
@@ -45,8 +46,8 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
         return false;
     }
 
-    const bool currentState = index.data(Qt::UserRole).toBool();
-    return model->setData(index, !currentState, Qt::UserRole);
+    const bool currentState = index.data(Qt::CheckStateRole).toBool();
+    return model->setData(index, !currentState, Qt::CheckStateRole);
 }
 
 void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -54,7 +55,7 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
-    adjustedOption.displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
+    adjustedOption.displayAlignment = Qt::AlignLeft;
 
     bool originalChecked{false};
     bool currentChecked = index.data(Qt::UserRole).toBool();
@@ -63,18 +64,47 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     Latte::Data::Screen screen = index.data(Model::Screens::SCREENDATAROLE).value<Latte::Data::Screen>();
 
     bool isActive = index.data(Model::Screens::ISSCREENACTIVEROLE).toBool();
+    bool isSelected = index.data(Model::Screens::ISSELECTEDROLE).toBool();
 
-    adjustedOption.text = screendisplay;
+
+    //! background
+    Latte::drawBackground(painter, adjustedOption);
+
+    //! checkbox
+    QStyleOptionButton checkopt;
+    checkopt.state |= isSelected ? QStyle::State_On : QStyle::State_Off;
+    checkopt.state |= QStyle::State_Enabled;
+    checkopt.text = "";
+    checkopt.rect = option.rect;
+
+    QRect remainedrect = Latte::remainedFromCheckBox(checkopt);
+    Latte::drawCheckBox(painter, checkopt);
+    adjustedOption.rect = remainedrect;
+
+    //! screen
+    int maxiconsize = -1; //disabled
+    remainedrect = Latte::remainedFromScreenDrawing(adjustedOption, maxiconsize);
+    Latte::drawScreen(painter, adjustedOption, screen.geometry, maxiconsize);
+    adjustedOption.rect = remainedrect;
+
+    //! screen name
+    adjustedOption.text = screen.name;
 
     if (isActive) {
         adjustedOption.text = "<b>" + adjustedOption.text + "</b>";
     }
 
-    Latte::drawBackground(painter, adjustedOption);
-
     Latte::drawFormattedText(painter, adjustedOption);
 
-//    QStyledItemDelegate::paint(painter, adjustedOption, index);
+    //! screen id
+    adjustedOption.text = "{" + screen.id + "}";
+
+    if (isActive) {
+        adjustedOption.text = "<b>" + adjustedOption.text + "</b>";
+    }
+
+    adjustedOption.displayAlignment = Qt::AlignRight;
+    Latte::drawFormattedText(painter, adjustedOption);
 }
 
 
