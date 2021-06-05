@@ -46,6 +46,12 @@ bool CheckBox::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyl
         return false;
     }
 
+    Latte::Data::Screen screen = index.data(Model::Screens::SCREENDATAROLE).value<Latte::Data::Screen>();
+
+    if (!screen.isRemovable) {
+        return false;
+    }
+
     const bool currentState = index.data(Qt::CheckStateRole).toBool();
     return model->setData(index, !currentState, Qt::CheckStateRole);
 }
@@ -65,20 +71,23 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
 
     bool isActive = index.data(Model::Screens::ISSCREENACTIVEROLE).toBool();
     bool isSelected = index.data(Model::Screens::ISSELECTEDROLE).toBool();
-
+    bool isRemovable = screen.isRemovable;
 
     //! background
     Latte::drawBackground(painter, adjustedOption);
 
     //! checkbox
     QStyleOptionButton checkopt;
-    checkopt.state |= isSelected ? QStyle::State_On : QStyle::State_Off;
+    //checkopt.initFrom(option.widget->parentWidget());
     checkopt.state |= QStyle::State_Enabled;
+    checkopt.state |= isSelected ? QStyle::State_On : QStyle::State_Off;
     checkopt.text = "";
     checkopt.rect = option.rect;
 
     QRect remainedrect = Latte::remainedFromCheckBox(checkopt);
-    Latte::drawCheckBox(painter, checkopt);
+    if (screen.isRemovable) {
+        Latte::drawCheckBox(painter, checkopt);
+    }
     adjustedOption.rect = remainedrect;
 
     //! screen
