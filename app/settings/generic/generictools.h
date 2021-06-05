@@ -50,8 +50,9 @@ void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &i
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
 void drawChangesIndicator(QPainter *painter, const QStyleOptionViewItem &option);
 
-QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
-void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft);
+int primitiveCheckBoxWidth(const QStyleOptionButton &option, const QWidget *widget = nullptr);
+QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft, const QWidget *widget = nullptr);
+void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft, const QWidget *widget = nullptr);
 
 //! screen icon
 QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSize = -1);

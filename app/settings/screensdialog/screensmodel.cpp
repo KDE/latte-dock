@@ -188,6 +188,9 @@ Qt::ItemFlags Screens::flags(const QModelIndex &index) const
 
     if (c_screens[row].isRemovable) {
         flags |= Qt::ItemIsUserCheckable;
+    } else {
+        flags &= ~Qt::ItemIsSelectable;
+        flags &= ~Qt::ItemIsEditable;
     }
 
     return flags;

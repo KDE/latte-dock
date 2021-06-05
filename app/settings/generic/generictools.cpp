@@ -340,9 +340,18 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
     painter->drawPixmap(target, QIcon::fromTheme(icon).pixmap(target.height(), target.height(), mode));
 }
 
-QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment)
+int primitiveCheckBoxWidth(const QStyleOptionButton &option, const QWidget *widget)
 {
-    int length = option.rect.height() - 2*MARGIN + 1;
+    QStyleOption copt;
+    copt.rect = option.rect;
+    int w = QApplication::style()->sizeFromContents(QStyle::CT_CheckBox, &copt, QSize(0, option.rect.height()), widget).width();
+    w = w > 0 ? w : option.rect.height() - 2*MARGIN;
+    return w;
+}
+
+QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag alignment, const QWidget *widget)
+{
+    int length = primitiveCheckBoxWidth(option, widget) - MARGIN;
     Qt::AlignmentFlag curalign = alignment;
 
     if (qApp->layoutDirection() == Qt::LeftToRight) {
@@ -357,8 +366,9 @@ QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag a
     return optionRemainedRect;
 }
 
-void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment)
+void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment, const QWidget *widget)
 {
+    int length = primitiveCheckBoxWidth(option, widget) - MARGIN;
     QStyleOptionButton optionbtn = option;
 
     Qt::AlignmentFlag curalign = alignment;
@@ -369,12 +379,12 @@ void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::Align
         curalign = alignment == Qt::AlignLeft ? Qt::AlignRight : Qt::AlignLeft;
     }
 
-    QRect changesrect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + MARGIN, option.rect.y(), option.rect.height(), option.rect.height()) :
-                                                      QRect(option.rect.x() + option.rect.width() - option.rect.height() - MARGIN, option.rect.y(), option.rect.height(), option.rect.height());
+    QRect changesrect = (curalign == Qt::AlignLeft) ? QRect(option.rect.x() + MARGIN, option.rect.y(), length - MARGIN, option.rect.height()) :
+                                                      QRect(option.rect.x() + option.rect.width() - length, option.rect.y(), length - MARGIN, option.rect.height());
 
     optionbtn.rect = changesrect;
 
-    QApplication::style()->drawControl(QStyle::CE_CheckBox, &optionbtn, painter);
+    QApplication::style()->drawControl(QStyle::CE_CheckBox, &optionbtn, painter, widget);
 }
 
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option)

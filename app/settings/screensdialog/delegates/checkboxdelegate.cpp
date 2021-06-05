@@ -61,6 +61,7 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     QStyleOptionViewItem adjustedOption = option;
     //! Remove the focus dotted lines
     adjustedOption.state = (adjustedOption.state & ~QStyle::State_HasFocus);
+
     adjustedOption.displayAlignment = Qt::AlignLeft;
 
     bool originalChecked{false};
@@ -73,12 +74,16 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
     bool isSelected = index.data(Model::Screens::ISSELECTEDROLE).toBool();
     bool isRemovable = screen.isRemovable;
 
+    if (!isRemovable) {
+        //! disable selected and hover
+        adjustedOption.state = (adjustedOption.state & ~QStyle::State_MouseOver);
+    }
+
     //! background
     Latte::drawBackground(painter, adjustedOption);
 
     //! checkbox
     QStyleOptionButton checkopt;
-    //checkopt.initFrom(option.widget->parentWidget());
     checkopt.state |= QStyle::State_Enabled;
     checkopt.state |= isSelected ? QStyle::State_On : QStyle::State_Off;
     checkopt.text = "";
@@ -86,7 +91,7 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
 
     QRect remainedrect = Latte::remainedFromCheckBox(checkopt);
     if (screen.isRemovable) {
-        Latte::drawCheckBox(painter, checkopt);
+        Latte::drawCheckBox(painter, checkopt, Qt::AlignLeft, option.widget);
     }
     adjustedOption.rect = remainedrect;
 
