@@ -56,6 +56,9 @@ private:
     void initDefaults();
 
 private:
+    void onScreenDataChanged();
+
+private:
     Dialog::ScreensDialog *m_dialog{nullptr};
     Ui::ScreensDialog *m_ui{nullptr};
 

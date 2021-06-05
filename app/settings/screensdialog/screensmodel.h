@@ -51,6 +51,7 @@ public:
     ~Screens();
 
     bool hasChangedData() const;
+    bool hasSelected() const;
     bool inDefaultValues() const;
 
     int rowCount() const;
@@ -73,7 +74,7 @@ public:
     void reset();    
 
 signals:
-    void screensDataChanged();
+    void screenDataChanged();
 
 private:
     void initDefaults();

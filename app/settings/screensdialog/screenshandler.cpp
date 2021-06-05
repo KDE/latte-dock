@@ -40,7 +40,7 @@ void ScreensHandler::init()
     m_ui->screensTable->verticalHeader()->setVisible(false);
 
     //! Data Changed
-    connect(m_screensModel, &Settings::Model::Screens::screensDataChanged, this, &ScreensHandler::dataChanged);
+    connect(m_screensModel, &Settings::Model::Screens::screenDataChanged, this, &ScreensHandler::dataChanged);
 
     //! Screens Proxy Model
     m_screensProxyModel = new QSortFilterProxyModel(this);
@@ -61,6 +61,11 @@ void ScreensHandler::init()
 
     //! load data
     m_screensModel->setData(m_dialog->layoutsController()->screensData());
+
+    //! signals
+    connect(m_screensModel, &Settings::Model::Screens::screenDataChanged, this, &ScreensHandler::onScreenDataChanged);
+
+    onScreenDataChanged();
 }
 
 bool ScreensHandler::hasChangedData() const
@@ -89,6 +94,12 @@ void ScreensHandler::resetDefaults()
 {
     reset();
 }
+
+void ScreensHandler::onScreenDataChanged()
+{
+    m_dialog->removeNowButton()->setEnabled(m_screensModel->hasSelected());
+}
+
 
 void ScreensHandler::save()
 {

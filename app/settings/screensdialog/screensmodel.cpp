@@ -31,6 +31,17 @@ bool Screens::hasChangedData() const
     return c_screens != o_screens;
 }
 
+bool Screens::hasSelected() const
+{
+    for(int i=0; i<c_screens.rowCount(); ++i) {
+        if (c_screens[i].isSelected) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 int Screens::rowCount() const
 {
     return c_screens.rowCount();
@@ -80,7 +91,7 @@ void Screens::clear()
         c_screens.clear();
         endRemoveRows();
 
-        emit screensDataChanged();
+        emit screenDataChanged();
     }
 }
 
@@ -94,7 +105,7 @@ void Screens::deselectAll()
     }
 
     emit dataChanged(index(0, SCREENCOLUMN), index(c_screens.rowCount()-1, SCREENCOLUMN), roles);
-    emit screensDataChanged();
+    emit screenDataChanged();
 }
 
 void Screens::reset()
@@ -105,7 +116,7 @@ void Screens::reset()
     roles << Qt::CheckStateRole;
 
     emit dataChanged(index(0, SCREENCOLUMN), index(c_screens.rowCount()-1, SCREENCOLUMN), roles);
-    emit screensDataChanged();
+    emit screenDataChanged();
 }
 
 QString Screens::sortableId(const QString &id) const
@@ -154,7 +165,7 @@ void Screens::setData(const Latte::Data::ScreensTable &screens)
         o_screens = c_screens;
         endInsertRows();
 
-        emit screensDataChanged();
+        emit screenDataChanged();
     }
 }
 
@@ -176,7 +187,7 @@ void Screens::setSelected(const Latte::Data::ScreensTable &screens)
     }
 
     if (changed) {
-        emit screensDataChanged();
+        emit screenDataChanged();
     }
 }
 
@@ -248,7 +259,7 @@ bool Screens::setData(const QModelIndex &index, const QVariant &value, int role)
     case SCREENCOLUMN:
         if (role == Qt::CheckStateRole) {
             c_screens[row].isSelected = (value.toInt() > 0 ? true : false);
-            emit screensDataChanged();
+            emit screenDataChanged();
             return true;
         }
         break;
