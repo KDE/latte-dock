@@ -6,6 +6,7 @@
 #include "menu.h"
 
 // local
+#include "contextmenudata.h"
 #include "layoutmenuitemwidget.h"
 
 // Qt
