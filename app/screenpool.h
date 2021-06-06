@@ -41,12 +41,11 @@ public:
 
     void insertScreenMapping(const QString &connector);
     void reload(QString path);
+    void removeScreens(const Latte::Data::ScreensTable &obsoleteScreens);
 
     int id(const QString &connector) const;
 
     QString connector(int id) const;
-
-    QString reportHtml(const QList<int> &assignedScreens) const;
 
     QScreen *screenForId(int id);
 

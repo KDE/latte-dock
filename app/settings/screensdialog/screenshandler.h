@@ -55,7 +55,10 @@ private:
     void init();
     void initDefaults();
 
-private:
+    bool removalConfirmation(const QStringList &screens) const;
+
+private slots:
+    void onRemoveNow();
     void onScreenDataChanged();
 
 private:

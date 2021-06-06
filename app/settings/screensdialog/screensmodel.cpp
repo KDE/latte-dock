@@ -31,7 +31,7 @@ bool Screens::hasChangedData() const
     return c_screens != o_screens;
 }
 
-bool Screens::hasSelected() const
+bool Screens::hasChecked() const
 {
     for(int i=0; i<c_screens.rowCount(); ++i) {
         if (c_screens[i].isSelected) {
@@ -191,16 +191,16 @@ void Screens::setSelected(const Latte::Data::ScreensTable &screens)
     }
 }
 
-Latte::Data::ScreensTable Screens::selectedScreens()
+Latte::Data::ScreensTable Screens::checkedScreens()
 {
-    Data::ScreensTable selected;
+    Data::ScreensTable checked;
 
     for(int i=0; i<c_screens.rowCount(); ++i) {
         if (!c_screens[i].isActive && c_screens[i].isSelected) {
-            selected << c_screens[i];
+            checked << c_screens[i];
         }
     }
-    return selected;
+    return checked;
 }
 
 Qt::ItemFlags Screens::flags(const QModelIndex &index) const

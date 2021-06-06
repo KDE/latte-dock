@@ -137,70 +137,6 @@ Latte::Data::ScreensTable ScreenPool::screensTable()
     return m_screensTable;
 }
 
-QString ScreenPool::reportHtml(const QList<int> &assignedScreens) const
-{
-    QString report;
-
-    /* report += "<table cellspacing='8'>";
-    report += "<tr><td align='center'><b>" + i18nc("screen id","ID") + "</b></td>" +
-            "<td align='center'><b>" + i18nc("screen name", "Name") + "</b></td>" +
-            "<td align='center'><b>" + i18nc("screen type", "Type") + "</b></td>" +
-            "<td align='center'><b>" + i18n("Docks/Panels") + "</b></td></tr>";
-
-    report += "<tr><td colspan='4'><hr></td></tr>";
-
-    for(const QString &connector : m_connectorForId) {
-        int scrId = id(connector);
-        bool hasViews = assignedScreens.contains(scrId);
-        bool primary = m_lastPrimaryConnector == connector;
-        bool secondary = !primary && isScreenActive(scrId);
-
-        report += "<tr>";
-
-        //! ScreenId
-        QString idStr = "[" + QString::number(scrId) + "]";
-        if (primary || secondary) {
-            idStr = "<b>" + idStr +"</b>";
-        }
-        report += "<td align='center'>" + idStr + "</td>";
-
-        //! ScreenName and Primary flag
-        QString connectorStr = connector;
-        if (primary || secondary) {
-            connectorStr = "<b>"+ connector + "</b>";
-        }
-        report += "<td align='center'>" + connectorStr + "</td>";
-
-        //! ScreenType
-        QString typeStr = "";
-        if (primary) {
-            typeStr = "<b><font color='green'>[" + i18nc("primary screen","Primary") + "]</font></b>";
-        } else if (secondary) {
-            typeStr = "<b>[" + i18nc("secondary screen","Secondary") + "]</b>";
-        } else {
-            typeStr = "<i>" + i18nc("inactive screen","inactive") + "</i>";
-        }
-
-        report += "<td align='center'>" + typeStr +"</td>";
-
-        //! Screen has not assigned any docks/panels
-        QString notAssignedStr = "";
-        if (!hasViews) {
-            notAssignedStr = "<font color='red'><i>[" + i18nc("it has not latte docks/panels", "none") + "]</i></font>";
-        } else {
-            notAssignedStr = " ✔ ";
-        }
-
-        report += "<td align='center'>" + notAssignedStr +"</td>";
-
-        report += "</tr>";
-    }
-
-    report += "</table>";*/
-
-    return report;
-}
-
 void ScreenPool::reload(QString path)
 {
     QFile rcfile(QString(path + "/lattedockrc"));
@@ -210,6 +146,18 @@ void ScreenPool::reload(QString path)
         KSharedConfigPtr newFile = KSharedConfig::openConfig(rcfile.fileName());
         m_configGroup = KConfigGroup(newFile, QStringLiteral("ScreenConnectors"));
         load();
+    }
+}
+
+void ScreenPool::removeScreens(const Latte::Data::ScreensTable &obsoleteScreens)
+{
+    for (int i=0; i<obsoleteScreens.rowCount(); ++i) {
+        if (!m_screensTable.containsId(obsoleteScreens[i].id)) {
+            return;
+        }
+
+        m_screensTable.remove(obsoleteScreens[i].id);
+        m_configGroup.deleteEntry(obsoleteScreens[i].id);
     }
 }
 

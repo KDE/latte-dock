@@ -63,6 +63,7 @@ void ScreensHandler::init()
     m_screensModel->setData(m_dialog->layoutsController()->screensData());
 
     //! signals
+    connect(m_dialog->removeNowButton(), &QPushButton::clicked, this, &ScreensHandler::onRemoveNow);
     connect(m_screensModel, &Settings::Model::Screens::screenDataChanged, this, &ScreensHandler::onScreenDataChanged);
 
     onScreenDataChanged();
@@ -95,25 +96,46 @@ void ScreensHandler::resetDefaults()
     reset();
 }
 
+void ScreensHandler::onRemoveNow()
+{
+    if (!m_screensModel->hasChecked()) {
+        return;
+    }
+
+    Data::ScreensTable checkedscreens = m_screensModel->checkedScreens();
+
+    if (removalConfirmation(checkedscreens.names())) {
+        save();
+    }
+}
+
 void ScreensHandler::onScreenDataChanged()
 {
-    m_dialog->removeNowButton()->setEnabled(m_screensModel->hasSelected());
+    m_dialog->removeNowButton()->setEnabled(m_screensModel->hasChecked());
 }
 
 
 void ScreensHandler::save()
 {
-    //do nothing
+    if (!m_screensModel->hasChecked()) {
+        return;
+    }
+
+    m_dialog->corona()->screenPool()->removeScreens(m_screensModel->checkedScreens());
+
+    //! reload data
+    m_screensModel->setData(m_dialog->layoutsController()->screensData());
 }
 
-/*bool ScreensHandler::overwriteConfirmation(const QString &fileName)
+bool ScreensHandler::removalConfirmation(const QStringList &screens) const
 {
     return (KMessageBox::warningYesNo(m_dialog,
-                                      i18n("The file \"%1\" already exists. Do you wish to overwrite it?", fileName),
-                                      i18n("Overwrite File?"),
-                                      KStandardGuiItem::overwrite(),
-                                      KStandardGuiItem::cancel()) == KMessageBox::Yes);
-}*/
+                                     i18np("You are going to <b>remove %2</b> reference completely.<br/>Would you like to continue?",
+                                           "You are going to <b>remove %2</b> references completely.<br/>Would you like to continue?",
+                                           screens.count(),
+                                           screens.join(", ")),
+                                     i18n("Approve Removal")) == KMessageBox::Yes);
+}
 
 }
 }

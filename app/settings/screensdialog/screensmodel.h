@@ -51,7 +51,7 @@ public:
     ~Screens();
 
     bool hasChangedData() const;
-    bool hasSelected() const;
+    bool hasChecked() const;
     bool inDefaultValues() const;
 
     int rowCount() const;
@@ -68,7 +68,7 @@ public:
     void setData(const Latte::Data::ScreensTable &screens);
     void setSelected(const Latte::Data::ScreensTable &screens);
 
-    Latte::Data::ScreensTable selectedScreens();
+    Latte::Data::ScreensTable checkedScreens();
 
     void deselectAll();
     void reset();    

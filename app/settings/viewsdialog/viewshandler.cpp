@@ -267,7 +267,9 @@ void ViewsHandler::resetDefaults()
 
 void ViewsHandler::save()
 {
-    if (removalConfirmation(m_viewsController->viewsForRemovalCount()) == KMessageBox::Yes) {
+    int viewsforremoval = m_viewsController->viewsForRemovalCount();
+
+    if (viewsforremoval <=0 || removalConfirmation(viewsforremoval) == KMessageBox::Yes) {
         m_viewsController->save();
     }
 }
@@ -514,7 +516,7 @@ void ViewsHandler::updateWindowTitle()
 KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
 {
     if (viewsCount<=0) {
-        return KMessageBox::Yes;
+        return KMessageBox::No;
     }
 
     if (hasChangedData() && viewsCount>0) {
@@ -525,7 +527,7 @@ KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
                                          i18n("Approve Removal"));
     }
 
-    return KMessageBox::Yes;
+    return KMessageBox::No;
 }
 
 KMessageBox::ButtonCode ViewsHandler::saveChangesConfirmation()
