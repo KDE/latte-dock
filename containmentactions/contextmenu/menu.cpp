@@ -70,7 +70,6 @@ Menu::~Menu()
     m_moveToLayoutMenu->deleteLater();
 
     //! actions
-    m_addWidgetsAction->deleteLater();
     m_configureAction->deleteLater();
     m_duplicateAction->deleteLater();
     m_exportViewAction->deleteLater();
@@ -96,10 +95,10 @@ void Menu::makeActions()
     });
 
     //! Add Widgets...
-    m_addWidgetsAction = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
-    m_addWidgetsAction->setStatusTip(i18n("Show Widget Explorer"));
-    connect(m_addWidgetsAction, &QAction::triggered, this, &Menu::requestWidgetExplorer);
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::ADDWIDGETSACTION, m_addWidgetsAction);
+    m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION] = new QAction(QIcon::fromTheme("list-add"), i18n("&Add Widgets..."), this);
+    m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION]->setStatusTip(i18n("Show Widget Explorer"));
+    connect(m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION], &QAction::triggered, this, &Menu::requestWidgetExplorer);
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::ADDWIDGETSACTION, m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION]);
 
     /*connect(m_addWidgetsAction, &QAction::triggered, [ = ]() {
         QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
@@ -229,7 +228,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_quitApplication;
 
     actions << m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION];
-    actions << m_addWidgetsAction;
+    actions << m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION];
     actions << m_addViewAction;
     actions << m_moveAction;
     actions << m_exportViewAction;
@@ -280,8 +279,6 @@ QAction *Menu::action(const QString &name)
 {
     if (name == Latte::Data::ContextMenu::ADDVIEWACTION) {
         return m_addViewAction;
-    } else if (name == Latte::Data::ContextMenu::ADDWIDGETSACTION) {
-        return m_addWidgetsAction;
     } else if (name == Latte::Data::ContextMenu::DUPLICATEVIEWACTION) {
         return m_duplicateAction;
     } else if (name == Latte::Data::ContextMenu::EDITVIEWACTION) {
@@ -298,6 +295,10 @@ QAction *Menu::action(const QString &name)
         return m_quitApplication;
     } else if (name == Latte::Data::ContextMenu::REMOVEVIEWACTION) {
         return m_removeAction;
+    }
+
+    if (m_actions.contains(name)) {
+        return m_actions[name];
     }
 
     return nullptr;
