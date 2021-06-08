@@ -55,7 +55,6 @@ private:
 
     QHash<QString, QAction *> m_actions;
 
-    QAction *m_removeAction{nullptr};
     QAction *m_quitApplication{nullptr};
 
     QAction *m_addViewAction{nullptr};
