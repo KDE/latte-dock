@@ -13,6 +13,7 @@ namespace Latte {
 namespace Data {
 namespace ContextMenu {
 
+static const char SECTIONACTION[]= "_latte_section";
 static const char ADDVIEWACTION[]= "_add_view";
 static const char LAYOUTSACTION[] = "_layouts";
 static const char PREFERENCESACTION[] = "_preferences";
@@ -31,6 +32,10 @@ static QStringList ACTIONSALWAYSVISIBLE = {LAYOUTSACTION,
                                            SEPARATOR1ACTION,
                                            ADDWIDGETSACTION,
                                            ADDVIEWACTION};
+
+static QStringList ACTIONSVISIBLEONLYINEDIT = {MOVEVIEWACTION,
+                                               EXPORTVIEWTEMPLATEACTION,
+                                               REMOVEVIEWACTION};
 
 }
 }

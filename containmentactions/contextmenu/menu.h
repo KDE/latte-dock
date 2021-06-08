@@ -41,6 +41,7 @@ private Q_SLOTS:
     void quitApplication();
     void requestConfiguration();
     void requestWidgetExplorer();
+    void updateVisibleActions();
 
     void addView(QAction *action);
     void moveToLayout(QAction *action);
@@ -50,7 +51,9 @@ private:
     QStringList m_data;
     QStringList m_viewTemplates;
 
-    QList<QAction *>m_actions;
+    QStringList m_actionsAlwaysShown;
+
+    QHash<QString, QAction *> m_actions;
 
     QAction *m_sectionAction{nullptr};
     QAction *m_separator{nullptr};

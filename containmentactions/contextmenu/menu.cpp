@@ -30,9 +30,10 @@
 const int MEMORYINDEX = 0;
 const int ACTIVELAYOUTSINDEX = 1;
 const int CURRENTLAYOUTSINDEX = 2;
-const int LAYOUTMENUINDEX = 3;
-const int VIEWTYPEINDEX = 4;
-const int VIEWLAYOUTINDEX = 5;
+const int ACTIONSALWAYSSHOWN = 3;
+const int LAYOUTMENUINDEX = 4;
+const int VIEWTYPEINDEX = 5;
+const int VIEWLAYOUTINDEX = 6;
 
 enum ViewType
 {
@@ -247,6 +248,8 @@ QList<QAction *> Menu::contextualActions()
         m_viewTemplates = templatesData.value();
     }
 
+    m_actionsAlwaysShown = m_data[ACTIONSALWAYSSHOWN].split(";;");
+
     ViewType viewType{static_cast<ViewType>((m_data[VIEWTYPEINDEX]).toInt())};
 
     const QString configureActionText = (viewType == DockView) ? i18n("&Edit Dock...") : i18n("&Edit Panel...");
@@ -305,6 +308,30 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
     if (!m_configureAction || !m_removeAction) {
         return;
     }
+
+    m_configureAction->setVisible(!configuring);
+    m_exportViewAction->setVisible(configuring);
+    m_moveAction->setVisible(configuring);
+    m_removeAction->setVisible(configuring);
+
+    // because sometimes they are disabled unexpectedly, we should reenable them
+    m_configureAction->setEnabled(true);
+    m_exportViewAction->setEnabled(true);
+    m_moveAction->setEnabled(true);
+    m_removeAction->setEnabled(true);
+}
+
+void Menu::updateVisibleActions()
+{
+    bool configuring = containment()->isUserConfiguring();
+
+    if (!m_configureAction || !m_removeAction) {
+        return;
+    }
+
+    //! LAYOUTSACTION
+   // m_layoutsAction->setVisible(m_actionsAlwaysShown.contains(Data::ContextMenu::LAYOUTSACTION
+   //                             || ()))
 
     m_configureAction->setVisible(!configuring);
     m_exportViewAction->setVisible(configuring);

@@ -1122,6 +1122,7 @@ QStringList Corona::contextMenuData(const uint &containmentId)
     data << QString::number((int)m_layoutsManager->memoryUsage()); // Memory Usage
     data << m_layoutsManager->centralLayoutsNames().join(";;"); // All Active layouts
     data << m_layoutsManager->synchronizer()->currentLayoutsNames().join(";;"); // All Current layouts
+    data << m_universalSettings->contextMenuActionsAlwaysShown().join(";;");
 
     QStringList layoutsmenu;
 
