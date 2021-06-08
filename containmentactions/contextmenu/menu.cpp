@@ -70,7 +70,6 @@ Menu::~Menu()
     m_moveToLayoutMenu->deleteLater();
 
     //! actions
-    m_duplicateAction->deleteLater();
     m_exportViewAction->deleteLater();
     m_preferenceAction->deleteLater();
     m_printAction->deleteLater();    
@@ -164,15 +163,15 @@ void Menu::makeActions()
     });
 
     //! Duplicate Action
-    m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock as Template", this);
-    connect(m_duplicateAction, &QAction::triggered, [=](){
+    m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION] = new QAction(QIcon::fromTheme("edit-copy"), "Duplicate Dock as Template", this);
+    connect(m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION], &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
         if (iface.isValid()) {
             iface.call("duplicateView", containment()->id());
         }
     });
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::DUPLICATEVIEWACTION, m_duplicateAction);
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::DUPLICATEVIEWACTION, m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]);
 
     //! Duplicate Action
     m_exportViewAction = new QAction(QIcon::fromTheme("document-export"), "Export as Template...", this);
@@ -254,7 +253,7 @@ QList<QAction *> Menu::contextualActions()
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setText(configureActionText);
 
     const QString duplicateActionText = (viewType == DockView) ? i18n("&Duplicate Dock") : i18n("&Duplicate Panel");
-    m_duplicateAction->setText(duplicateActionText);
+    m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->setText(duplicateActionText);
 
     const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
     m_exportViewAction->setText(exportTemplateText);
@@ -278,8 +277,6 @@ QAction *Menu::action(const QString &name)
 {
     if (name == Latte::Data::ContextMenu::ADDVIEWACTION) {
         return m_addViewAction;
-    } else if (name == Latte::Data::ContextMenu::DUPLICATEVIEWACTION) {
-        return m_duplicateAction;
     } else if (name == Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION) {
         return m_exportViewAction;
     } else if (name == Latte::Data::ContextMenu::LAYOUTSACTION) {
@@ -462,10 +459,10 @@ void Menu::populateViewTemplates()
     }
 
     QAction *templatesSeparatorAction = m_addViewMenu->addSeparator();
-    QAction *duplicateAction = m_addViewMenu->addAction(m_duplicateAction->text());
-    duplicateAction->setToolTip(m_duplicateAction->toolTip());
-    duplicateAction->setIcon(m_duplicateAction->icon());
-    connect(duplicateAction, &QAction::triggered, m_duplicateAction, &QAction::triggered);
+    QAction *duplicateAction = m_addViewMenu->addAction(m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->text());
+    duplicateAction->setToolTip(m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->toolTip());
+    duplicateAction->setIcon(m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->icon());
+    connect(duplicateAction, &QAction::triggered, m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION], &QAction::triggered);
 }
 
 void Menu::addView(QAction *action)

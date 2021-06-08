@@ -55,7 +55,6 @@ private:
 
     QHash<QString, QAction *> m_actions;
 
-    QAction *m_duplicateAction{nullptr};
     QAction *m_exportViewAction{nullptr};
     QAction *m_preferenceAction{nullptr};
     QAction *m_printAction{nullptr};
