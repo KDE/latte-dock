@@ -34,7 +34,6 @@ public:
     QAction *action(const QString &name);
 private Q_SLOTS:
     void makeActions();
-    void onUserConfiguringChanged(const bool &configuring);
     void populateLayouts();
     void populateMoveToLayouts();
     void populateViewTemplates();
@@ -52,6 +51,7 @@ private:
     QStringList m_viewTemplates;
 
     QStringList m_actionsAlwaysShown;
+    QStringList m_activeLayoutNames;
 
     QHash<QString, QAction *> m_actions;
 

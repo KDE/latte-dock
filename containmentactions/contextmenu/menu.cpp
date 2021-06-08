@@ -140,7 +140,6 @@ void Menu::makeActions()
     //! Move submenu
     m_moveToLayoutMenu = new QMenu;
     m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION] = m_moveToLayoutMenu->menuAction();
-    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(containment()->isUserConfiguring());
     m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setText("Move To Layout");
     m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setIcon(QIcon::fromTheme("transform-move-horizontal"));
     m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setStatusTip(i18n("Move dock or panel to different layout"));
@@ -173,7 +172,6 @@ void Menu::makeActions()
 
     //! Export View Template Action
     m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION] = new QAction(QIcon::fromTheme("document-export"), "Export as Template...", this);
-    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(containment()->isUserConfiguring());
     connect(m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION], &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -185,7 +183,6 @@ void Menu::makeActions()
 
     //! Remove Action
     m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION] = new QAction(QIcon::fromTheme("delete"), "Remove Dock", this);
-    m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setVisible(containment()->isUserConfiguring());
     connect(m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION], &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
@@ -196,7 +193,9 @@ void Menu::makeActions()
     this->containment()->actions()->addAction(Latte::Data::ContextMenu::REMOVEVIEWACTION, m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]);
 
     //! Signals
-    connect(this->containment(), &Plasma::Containment::userConfiguringChanged, this, &Menu::onUserConfiguringChanged);
+    connect(this->containment(), &Plasma::Containment::userConfiguringChanged, [=](){
+        updateVisibleActions();
+    });
 }
 
 void Menu::requestConfiguration()
@@ -256,17 +255,14 @@ QList<QAction *> Menu::contextualActions()
     const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
     m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setText(exportTemplateText);
 
-    QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
-    if (activeNames.count() > 1 && containment()->isUserConfiguring()) {
-        m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(true);
-        const QString moveText = (viewType == DockView) ? i18n("&Move Dock To Layout") : i18n("&Move Panel To Layout");
-        m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setText(moveText);
-    } else {
-        m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(false);
-    }
+    m_activeLayoutNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
+    const QString moveText = (viewType == DockView) ? i18n("&Move Dock To Layout") : i18n("&Move Panel To Layout");
+    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setText(moveText);
 
     const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
     m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setText(removeActionText);
+
+    updateVisibleActions();
 
     return actions;
 }
@@ -280,25 +276,6 @@ QAction *Menu::action(const QString &name)
     return nullptr;
 }
 
-void Menu::onUserConfiguringChanged(const bool &configuring)
-{
-    if (!m_actions.contains(Latte::Data::ContextMenu::EDITVIEWACTION)
-            || !m_actions.contains(Latte::Data::ContextMenu::REMOVEVIEWACTION)) {
-        return;
-    }
-
-    m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
-    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
-    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(configuring);
-    m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setVisible(configuring);
-
-    // because sometimes they are disabled unexpectedly, we should reenable them
-    m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setEnabled(true);
-}
-
 void Menu::updateVisibleActions()
 {
     if (!m_actions.contains(Latte::Data::ContextMenu::EDITVIEWACTION)
@@ -308,16 +285,28 @@ void Menu::updateVisibleActions()
 
     bool configuring = containment()->isUserConfiguring();
 
+    // normal actions that the user can specify their visibility
+    for(auto actionName: m_actions.keys()) {
+        if (Latte::Data::ContextMenu::ACTIONSSPECIAL.contains(actionName)) {
+            continue;
+        }
+
+        bool isvisible = m_actionsAlwaysShown.contains(actionName) || configuring;
+        m_actions[actionName]->setVisible(isvisible);
+    }
+
+    // normal actions with more criteria
+    bool isshown = (m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->isVisible() && m_activeLayoutNames.count()>1);
+    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(isshown);
+
+    // special actions
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
-    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
-    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(configuring);
-    m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setVisible(configuring);
+    m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setVisible(true);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
-    m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setEnabled(true);
-    m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setEnabled(true);
+    for(auto actionName: m_actions.keys()) {
+        m_actions[actionName]->setEnabled(true);
+    }
 }
 
 

@@ -514,7 +514,8 @@ void UniversalSettings::loadConfig()
     m_version = m_universalGroup.readEntry("version", 1);
     m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
-    m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE);
+    m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", QStringList());
+    m_contextMenuActionsAlwaysShown = m_contextMenuActionsAlwaysShown.isEmpty() ? Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE : m_contextMenuActionsAlwaysShown;
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
