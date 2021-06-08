@@ -69,9 +69,6 @@ Menu::~Menu()
     //! actions
     qDeleteAll(m_actions.values());
     m_actions.clear();
-
-    //! actions
-    m_quitApplication->deleteLater();
 }
 
 void Menu::makeActions()
@@ -110,9 +107,9 @@ void Menu::makeActions()
 
 
     //! Quit Application
-    m_quitApplication = new QAction(QIcon::fromTheme("application-exit"), i18nc("quit application", "Quit &Latte"));
-    connect(m_quitApplication, &QAction::triggered, this, &Menu::quitApplication);
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::QUITLATTEACTION, m_quitApplication);
+    m_actions[Latte::Data::ContextMenu::QUITLATTEACTION] = new QAction(QIcon::fromTheme("application-exit"), i18nc("quit application", "Quit &Latte"));
+    connect(m_actions[Latte::Data::ContextMenu::QUITLATTEACTION], &QAction::triggered, this, &Menu::quitApplication);
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::QUITLATTEACTION, m_actions[Latte::Data::ContextMenu::QUITLATTEACTION]);
 
     //! Layouts submenu
     m_switchLayoutsMenu = new QMenu;
@@ -220,7 +217,7 @@ QList<QAction *> Menu::contextualActions()
     //actions << m_actions[Latte::Data::ContextMenu::PRINTACTION];
     actions << m_layoutsAction;
     actions << m_actions[Latte::Data::ContextMenu::PREFERENCESACTION];
-    actions << m_quitApplication;
+    actions << m_actions[Latte::Data::ContextMenu::QUITLATTEACTION];
 
     actions << m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION];
     actions << m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION];
@@ -278,8 +275,6 @@ QAction *Menu::action(const QString &name)
         return m_layoutsAction;
     } else if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
         return m_moveAction;
-    } else if (name == Latte::Data::ContextMenu::QUITLATTEACTION) {
-        return m_quitApplication;
     }
 
     if (m_actions.contains(name)) {
