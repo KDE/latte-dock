@@ -70,7 +70,6 @@ Menu::~Menu()
     m_moveToLayoutMenu->deleteLater();
 
     //! actions
-    m_preferenceAction->deleteLater();
     m_printAction->deleteLater();    
     m_removeAction->deleteLater();
     m_quitApplication->deleteLater();
@@ -151,9 +150,9 @@ void Menu::makeActions()
     connect(m_moveToLayoutMenu, &QMenu::triggered, this, &Menu::moveToLayout);
 
     //! Configure Latte
-    m_preferenceAction = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::PREFERENCESACTION, m_preferenceAction);
-    connect(m_preferenceAction, &QAction::triggered, [=](){
+    m_actions[Latte::Data::ContextMenu::PREFERENCESACTION] = new QAction(QIcon::fromTheme("configure"), i18nc("global settings window", "&Configure Latte..."), this);
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::PREFERENCESACTION, m_actions[Latte::Data::ContextMenu::PREFERENCESACTION]);
+    connect(m_actions[Latte::Data::ContextMenu::PREFERENCESACTION], &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
         if (iface.isValid()) {
@@ -221,7 +220,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_actions[Latte::Data::ContextMenu::SECTIONACTION];
     //actions << m_printAction;
     actions << m_layoutsAction;
-    actions << m_preferenceAction;
+    actions << m_actions[Latte::Data::ContextMenu::PREFERENCESACTION];
     actions << m_quitApplication;
 
     actions << m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION];
@@ -280,8 +279,6 @@ QAction *Menu::action(const QString &name)
         return m_layoutsAction;
     } else if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
         return m_moveAction;
-    } else if (name == Latte::Data::ContextMenu::PREFERENCESACTION) {
-        return m_preferenceAction;
     } else if (name == Latte::Data::ContextMenu::QUITLATTEACTION) {
         return m_quitApplication;
     } else if (name == Latte::Data::ContextMenu::REMOVEVIEWACTION) {
