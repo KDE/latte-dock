@@ -16,6 +16,7 @@ namespace ContextMenu {
 static const char SECTIONACTION[]= "_latte_section";
 static const char ADDVIEWACTION[]= "_add_view";
 static const char LAYOUTSACTION[] = "_layouts";
+static const char PRINTACTION[] = "_print";
 static const char PREFERENCESACTION[] = "_preferences";
 static const char QUITLATTEACTION[] = "_quit_latte";
 static const char ADDWIDGETSACTION[] = "_add_latte_widgets";

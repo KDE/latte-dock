@@ -61,16 +61,16 @@ Menu::Menu(QObject *parent, const QVariantList &args)
 
 Menu::~Menu()
 {
-    qDeleteAll(m_actions.values());
-    m_actions.clear();
-
     //! sub-menus
     m_addViewMenu->deleteLater();
     m_switchLayoutsMenu->deleteLater();
     m_moveToLayoutMenu->deleteLater();
 
     //! actions
-    m_printAction->deleteLater();    
+    qDeleteAll(m_actions.values());
+    m_actions.clear();
+
+    //! actions
     m_removeAction->deleteLater();
     m_quitApplication->deleteLater();
 }
@@ -85,8 +85,8 @@ void Menu::makeActions()
     m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION]->setSeparator(true);
 
     //! Print Message...
-    m_printAction = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
-    connect(m_printAction, &QAction::triggered, [ = ]() {
+    m_actions[Latte::Data::ContextMenu::PRINTACTION] = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
+    connect(m_actions[Latte::Data::ContextMenu::PRINTACTION], &QAction::triggered, [ = ]() {
         qDebug() << "Action Trigerred !!!";
     });
 
@@ -218,7 +218,7 @@ QList<QAction *> Menu::contextualActions()
     QList<QAction *> actions;
 
     actions << m_actions[Latte::Data::ContextMenu::SECTIONACTION];
-    //actions << m_printAction;
+    //actions << m_actions[Latte::Data::ContextMenu::PRINTACTION];
     actions << m_layoutsAction;
     actions << m_actions[Latte::Data::ContextMenu::PREFERENCESACTION];
     actions << m_quitApplication;
