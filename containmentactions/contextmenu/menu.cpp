@@ -67,7 +67,8 @@ Menu::~Menu()
     m_moveToLayoutMenu->deleteLater();
 
     //! clear menu actions that have been created from submenus
-    m_actions.remove(Latte::Data::ContextMenu::ADDVIEWACTION)
+    m_actions.remove(Latte::Data::ContextMenu::ADDVIEWACTION);
+    m_actions.remove(Latte::Data::ContextMenu::LAYOUTSACTION);
 
     //! actions
     qDeleteAll(m_actions.values());
@@ -116,11 +117,11 @@ void Menu::makeActions()
 
     //! Layouts submenu
     m_switchLayoutsMenu = new QMenu;
-    m_layoutsAction = m_switchLayoutsMenu->menuAction();
-    m_layoutsAction->setText(i18n("&Layouts"));
-    m_layoutsAction->setIcon(QIcon::fromTheme("user-identity"));
-    m_layoutsAction->setStatusTip(i18n("Switch to another layout"));
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::LAYOUTSACTION, m_layoutsAction);
+    m_actions[Latte::Data::ContextMenu::LAYOUTSACTION] = m_switchLayoutsMenu->menuAction();
+    m_actions[Latte::Data::ContextMenu::LAYOUTSACTION]->setText(i18n("&Layouts"));
+    m_actions[Latte::Data::ContextMenu::LAYOUTSACTION]->setIcon(QIcon::fromTheme("user-identity"));
+    m_actions[Latte::Data::ContextMenu::LAYOUTSACTION]->setStatusTip(i18n("Switch to another layout"));
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::LAYOUTSACTION, m_actions[Latte::Data::ContextMenu::LAYOUTSACTION]);
 
     connect(m_switchLayoutsMenu, &QMenu::aboutToShow, this, &Menu::populateLayouts);
     connect(m_switchLayoutsMenu, &QMenu::triggered, this, &Menu::switchToLayout);
@@ -218,7 +219,7 @@ QList<QAction *> Menu::contextualActions()
 
     actions << m_actions[Latte::Data::ContextMenu::SECTIONACTION];
     //actions << m_actions[Latte::Data::ContextMenu::PRINTACTION];
-    actions << m_layoutsAction;
+    actions << m_actions[Latte::Data::ContextMenu::LAYOUTSACTION];
     actions << m_actions[Latte::Data::ContextMenu::PREFERENCESACTION];
     actions << m_actions[Latte::Data::ContextMenu::QUITLATTEACTION];
 
@@ -272,9 +273,7 @@ QList<QAction *> Menu::contextualActions()
 
 QAction *Menu::action(const QString &name)
 {
-    if (name == Latte::Data::ContextMenu::LAYOUTSACTION) {
-        return m_layoutsAction;
-    } else if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
+    if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
         return m_moveAction;
     }
 
@@ -312,10 +311,6 @@ void Menu::updateVisibleActions()
             || !m_actions.contains(Latte::Data::ContextMenu::REMOVEVIEWACTION)) {
         return;
     }
-
-    //! LAYOUTSACTION
-   // m_layoutsAction->setVisible(m_actionsAlwaysShown.contains(Data::ContextMenu::LAYOUTSACTION
-   //                             || ()))
 
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
     m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
