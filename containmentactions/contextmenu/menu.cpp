@@ -66,6 +66,9 @@ Menu::~Menu()
     m_switchLayoutsMenu->deleteLater();
     m_moveToLayoutMenu->deleteLater();
 
+    //! clear menu actions that have been created from submenus
+    m_actions.remove(Latte::Data::ContextMenu::ADDVIEWACTION)
+
     //! actions
     qDeleteAll(m_actions.values());
     m_actions.clear();
@@ -124,11 +127,11 @@ void Menu::makeActions()
 
     //! Add View submenu
     m_addViewMenu = new QMenu;
-    m_addViewAction = m_addViewMenu->menuAction();
-    m_addViewAction->setText(i18n("&Add Dock/Panel"));
-    m_addViewAction->setIcon(QIcon::fromTheme("list-add"));
-    m_addViewAction->setStatusTip(i18n("Add dock or panel based on specific template"));
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::ADDVIEWACTION, m_addViewAction);
+    m_actions[Latte::Data::ContextMenu::ADDVIEWACTION] = m_addViewMenu->menuAction();
+    m_actions[Latte::Data::ContextMenu::ADDVIEWACTION]->setText(i18n("&Add Dock/Panel"));
+    m_actions[Latte::Data::ContextMenu::ADDVIEWACTION]->setIcon(QIcon::fromTheme("list-add"));
+    m_actions[Latte::Data::ContextMenu::ADDVIEWACTION]->setStatusTip(i18n("Add dock or panel based on specific template"));
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::ADDVIEWACTION, m_actions[Latte::Data::ContextMenu::ADDVIEWACTION]);
 
     connect(m_addViewMenu, &QMenu::aboutToShow, this, &Menu::populateViewTemplates);
     connect(m_addViewMenu, &QMenu::triggered, this, &Menu::addView);
@@ -221,7 +224,7 @@ QList<QAction *> Menu::contextualActions()
 
     actions << m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION];
     actions << m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION];
-    actions << m_addViewAction;
+    actions << m_actions[Latte::Data::ContextMenu::ADDVIEWACTION];
     actions << m_moveAction;
     actions << m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION];
     actions << m_actions[Latte::Data::ContextMenu::EDITVIEWACTION];
@@ -269,9 +272,7 @@ QList<QAction *> Menu::contextualActions()
 
 QAction *Menu::action(const QString &name)
 {
-    if (name == Latte::Data::ContextMenu::ADDVIEWACTION) {
-        return m_addViewAction;
-    } else if (name == Latte::Data::ContextMenu::LAYOUTSACTION) {
+    if (name == Latte::Data::ContextMenu::LAYOUTSACTION) {
         return m_layoutsAction;
     } else if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
         return m_moveAction;
