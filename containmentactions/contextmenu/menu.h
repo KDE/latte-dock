@@ -55,7 +55,6 @@ private:
 
     QHash<QString, QAction *> m_actions;
 
-    QAction *m_sectionAction{nullptr};
     QAction *m_separator{nullptr};
 
     QAction *m_addWidgetsAction{nullptr};

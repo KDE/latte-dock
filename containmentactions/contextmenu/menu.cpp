@@ -61,7 +61,9 @@ Menu::Menu(QObject *parent, const QVariantList &args)
 
 Menu::~Menu()
 {
-    m_sectionAction->deleteLater();
+    qDeleteAll(m_actions.values());
+    m_actions.clear();
+
     m_separator->deleteLater();
 
     //! sub-menus
@@ -82,9 +84,9 @@ Menu::~Menu()
 
 void Menu::makeActions()
 {
-    m_sectionAction = new QAction(this);
-    m_sectionAction->setSeparator(true);
-    m_sectionAction->setText("Latte");
+    m_actions[Latte::Data::ContextMenu::SECTIONACTION] = new QAction(this);
+    m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setSeparator(true);
+    m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setText("Latte");
 
     m_separator = new QAction(this);
     m_separator->setSeparator(true);
@@ -222,7 +224,7 @@ QList<QAction *> Menu::contextualActions()
 {
     QList<QAction *> actions;
 
-    actions << m_sectionAction;
+    actions << m_actions[Latte::Data::ContextMenu::SECTIONACTION];
     //actions << m_printAction;
     actions << m_layoutsAction;
     actions << m_preferenceAction;
