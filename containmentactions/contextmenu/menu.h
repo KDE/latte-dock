@@ -57,8 +57,6 @@ private:
 
     QMenu *m_addViewMenu{nullptr};
     QMenu *m_switchLayoutsMenu{nullptr};
-
-    QAction *m_moveAction{nullptr};
     QMenu *m_moveToLayoutMenu{nullptr};
 };
 
