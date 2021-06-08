@@ -301,12 +301,12 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
 
 void Menu::updateVisibleActions()
 {
-    bool configuring = containment()->isUserConfiguring();
-
     if (!m_actions.contains(Latte::Data::ContextMenu::EDITVIEWACTION)
             || !m_actions.contains(Latte::Data::ContextMenu::REMOVEVIEWACTION)) {
         return;
     }
+
+    bool configuring = containment()->isUserConfiguring();
 
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
     m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
