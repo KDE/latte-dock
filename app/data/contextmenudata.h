@@ -30,14 +30,7 @@ static QStringList ACTIONSALWAYSVISIBLE = {LAYOUTSACTION,
                                            QUITLATTEACTION,
                                            SEPARATOR1ACTION,
                                            ADDWIDGETSACTION,
-                                           ADDVIEWACTION,
-                                           MOVEVIEWACTION,
-                                           EXPORTVIEWTEMPLATEACTION,
-                                           REMOVEVIEWACTION};
-
-static QStringList ACTIONSVISIBLEONLYINEDIT = {MOVEVIEWACTION,
-                                               EXPORTVIEWTEMPLATEACTION,
-                                               REMOVEVIEWACTION};
+                                           ADDVIEWACTION};
 
 }
 }

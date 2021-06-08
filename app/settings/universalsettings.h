@@ -50,6 +50,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(QString singleModeLayoutName READ singleModeLayoutName WRITE setSingleModeLayoutName NOTIFY singleModeLayoutNameChanged)
 
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
+    Q_PROPERTY(QStringList contextMenuActionsAlwaysShown READ contextMenuActionsAlwaysShown WRITE setContextMenuActionsAlwaysShown NOTIFY actionsChanged)
 
     Q_PROPERTY(Latte::Settings::MouseSensitivity sensitivity READ sensitivity WRITE setSensitivity NOTIFY sensitivityChanged)
 
@@ -96,6 +97,9 @@ public:
     QString singleModeLayoutName() const;
     void setSingleModeLayoutName(QString layoutName);
 
+    QStringList contextMenuActionsAlwaysShown() const;
+    void setContextMenuActionsAlwaysShown(const QStringList &actions);
+
     QStringList launchers() const;
     void setLaunchers(QStringList launcherList);
 
@@ -118,6 +122,7 @@ public slots:
     void syncSettings();
 
 signals:
+    void actionsChanged();
     void autostartChanged();
     void badges3DStyleChanged();
     void canDisableBordersChanged();
@@ -176,6 +181,7 @@ private:
     QString m_singleModeLayoutName;
 
     QStringList m_launchers;
+    QStringList m_contextMenuActionsAlwaysShown;
 
     MemoryUsage::LayoutsMemory m_memoryUsage;
     Settings::MouseSensitivity m_sensitivity{Settings::HighMouseSensitivity};

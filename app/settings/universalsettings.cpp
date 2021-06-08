@@ -8,6 +8,7 @@
 #include "universalsettings.h"
 
 // local
+#include "../data/contextmenudata.h"
 #include "../data/layoutdata.h"
 #include "../layout/centrallayout.h"
 #include "../layouts/importer.h"
@@ -41,6 +42,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
 {
     m_corona = qobject_cast<Latte::Corona *>(parent);
 
+    connect(this, &UniversalSettings::actionsChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);  
     connect(this, &UniversalSettings::inAdvancedModeForEditSettingsChanged, this, &UniversalSettings::saveConfig);
@@ -184,6 +186,21 @@ void UniversalSettings::setSingleModeLayoutName(QString layoutName)
 
     m_singleModeLayoutName = layoutName;
     emit singleModeLayoutNameChanged();
+}
+
+QStringList UniversalSettings::contextMenuActionsAlwaysShown() const
+{
+    return m_contextMenuActionsAlwaysShown;
+}
+
+void UniversalSettings::setContextMenuActionsAlwaysShown(const QStringList &actions)
+{
+    if (m_contextMenuActionsAlwaysShown == actions) {
+        return;
+    }
+
+    m_contextMenuActionsAlwaysShown = actions;
+    emit actionsChanged();
 }
 
 QStringList UniversalSettings::launchers() const
@@ -497,6 +514,7 @@ void UniversalSettings::loadConfig()
     m_version = m_universalGroup.readEntry("version", 1);
     m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
+    m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE);
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
@@ -518,6 +536,8 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("badges3DStyle", m_badges3DStyle);
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
+    m_universalGroup.writeEntry("contextMenuActionsAlwaysShown", (m_contextMenuActionsAlwaysShown == Data::ContextMenu::ACTIONSALWAYSVISIBLE ?
+                                    QStringList() : m_contextMenuActionsAlwaysShown));
     m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
