@@ -70,7 +70,6 @@ Menu::~Menu()
     m_moveToLayoutMenu->deleteLater();
 
     //! actions
-    m_exportViewAction->deleteLater();
     m_preferenceAction->deleteLater();
     m_printAction->deleteLater();    
     m_removeAction->deleteLater();
@@ -173,17 +172,17 @@ void Menu::makeActions()
     });
     this->containment()->actions()->addAction(Latte::Data::ContextMenu::DUPLICATEVIEWACTION, m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]);
 
-    //! Duplicate Action
-    m_exportViewAction = new QAction(QIcon::fromTheme("document-export"), "Export as Template...", this);
-    m_exportViewAction->setVisible(containment()->isUserConfiguring());
-    connect(m_exportViewAction, &QAction::triggered, [=](){
+    //! Export View Template Action
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION] = new QAction(QIcon::fromTheme("document-export"), "Export as Template...", this);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(containment()->isUserConfiguring());
+    connect(m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION], &QAction::triggered, [=](){
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
 
         if (iface.isValid()) {
             iface.call("exportViewTemplate", containment()->id());
         }
     });
-    this->containment()->actions()->addAction(Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION, m_exportViewAction);
+    this->containment()->actions()->addAction(Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION, m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]);
 
     //! Remove Action
     m_removeAction = new QAction(QIcon::fromTheme("delete"), "Remove Dock", this);
@@ -229,7 +228,7 @@ QList<QAction *> Menu::contextualActions()
     actions << m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION];
     actions << m_addViewAction;
     actions << m_moveAction;
-    actions << m_exportViewAction;
+    actions << m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION];
     actions << m_actions[Latte::Data::ContextMenu::EDITVIEWACTION];
     actions << m_removeAction;
 
@@ -256,7 +255,7 @@ QList<QAction *> Menu::contextualActions()
     m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->setText(duplicateActionText);
 
     const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
-    m_exportViewAction->setText(exportTemplateText);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setText(exportTemplateText);
 
     QStringList activeNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
     if (activeNames.count() > 1 && containment()->isUserConfiguring()) {
@@ -277,8 +276,6 @@ QAction *Menu::action(const QString &name)
 {
     if (name == Latte::Data::ContextMenu::ADDVIEWACTION) {
         return m_addViewAction;
-    } else if (name == Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION) {
-        return m_exportViewAction;
     } else if (name == Latte::Data::ContextMenu::LAYOUTSACTION) {
         return m_layoutsAction;
     } else if (name == Latte::Data::ContextMenu::MOVEVIEWACTION) {
@@ -305,13 +302,13 @@ void Menu::onUserConfiguringChanged(const bool &configuring)
     }
 
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
-    m_exportViewAction->setVisible(configuring);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
     m_moveAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setEnabled(true);
-    m_exportViewAction->setEnabled(true);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setEnabled(true);
     m_moveAction->setEnabled(true);
     m_removeAction->setEnabled(true);
 }
@@ -329,13 +326,13 @@ void Menu::updateVisibleActions()
    //                             || ()))
 
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
-    m_exportViewAction->setVisible(configuring);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(configuring);
     m_moveAction->setVisible(configuring);
     m_removeAction->setVisible(configuring);
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setEnabled(true);
-    m_exportViewAction->setEnabled(true);
+    m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setEnabled(true);
     m_moveAction->setEnabled(true);
     m_removeAction->setEnabled(true);
 }
