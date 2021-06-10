@@ -10,6 +10,7 @@
 #include "ui_settingsdialog.h"
 #include "settingsdialog.h"
 #include "../universalsettings.h"
+#include "../actionsdialog/actionsdialog.h"
 #include "../../apptypes.h"
 #include "../../lattecorona.h"
 #include "../../plasma/extended/theme.h"
@@ -38,6 +39,9 @@ void TabPreferences::initUi()
     m_mouseSensitivityButtons->addButton(m_ui->mediumSensitivityBtn, Latte::Settings::MediumMouseSensitivity);
     m_mouseSensitivityButtons->addButton(m_ui->highSensitivityBtn, Latte::Settings::HighMouseSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
+
+    //! Buttons
+    connect(m_ui->contextMenuActionsBtn, &QPushButton::clicked, this, &TabPreferences::onActionsBtnPressed);
 
     //! signals
     connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
@@ -135,6 +139,12 @@ bool TabPreferences::hasChangedData() const
 bool TabPreferences::inDefaultValues() const
 {
     return m_preferences.inDefaultValues();
+}
+
+void TabPreferences::onActionsBtnPressed()
+{
+    auto viewsDlg = new Settings::Dialog::ActionsDialog(m_parentDialog);
+    viewsDlg->exec();
 }
 
 void TabPreferences::reset()

@@ -58,6 +58,8 @@ private slots:
     void initSettings();
     void updateUi();
 
+    void onActionsBtnPressed();
+
 private:
     Latte::Settings::Dialog::SettingsDialog *m_parentDialog{nullptr};
     Ui::SettingsDialog *m_ui{nullptr};
