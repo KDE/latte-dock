@@ -47,7 +47,7 @@ public:
     bool inDefaultValues() const override;
 
     QStringList contextMenuAlwaysActions() const;
-    void setContexteMenuAlwaysActions(const QStringList &actions);
+    void setContextMenuAlwaysActions(const QStringList &actions);
 
     void reset() override;
     void resetDefaults() override;

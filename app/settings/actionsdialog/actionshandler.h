@@ -53,14 +53,13 @@ public slots:
     void resetDefaults() override;
     void save() override;
 
+    void onCancel();
+
 private:
     void init();
-    void initDefaults();
+    void initItems();
 
     void loadItems(const QStringList &alwaysActions);
-
-    int rowInAlways(const Settings::ActionsDialog::ActionListWidgetItem *item) const;
-    int rowInEdit(const Settings::ActionsDialog::ActionListWidgetItem *item) const;
 
     Data::GenericTable<Data::Generic> table(const QStringList &ids);
 

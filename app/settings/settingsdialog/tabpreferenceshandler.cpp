@@ -117,7 +117,7 @@ QStringList TabPreferences::contextMenuAlwaysActions() const
     return m_preferences.contextMenuAlwaysActions;
 }
 
-void TabPreferences::setContexteMenuAlwaysActions(const QStringList &actions)
+void TabPreferences::setContextMenuAlwaysActions(const QStringList &actions)
 {
     if (m_preferences.contextMenuAlwaysActions == actions) {
         return;
