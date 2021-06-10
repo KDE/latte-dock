@@ -7,7 +7,11 @@
 #define PREFERENCESDATA_H
 
 // local
+#include "contextmenudata.h"
 #include "../apptypes.h"
+
+// Qt
+#include <QStringList>
 
 namespace Latte {
 namespace Data {
@@ -36,6 +40,7 @@ public:
     bool metaPressForAppLauncher{METAPRESSFORAPPLAUNCHER};
     bool metaHoldForBadges{METAHOLDFORBADGES};
     int screensDelay{SCREENSDELAY};
+    QStringList contextMenuAlwaysActions{Data::ContextMenu::ACTIONSALWAYSVISIBLE};
     Settings::MouseSensitivity mouseSensitivity{MOUSESENSITIVITY};
 
     bool inDefaultValues() const;
