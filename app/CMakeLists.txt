@@ -41,6 +41,7 @@ add_subdirectory(wm/tracker)
 set(latte_dbusXML dbus/org.kde.LatteDock.xml)
 qt5_add_dbus_adaptor(lattedock-app_SRCS ${latte_dbusXML} lattecorona.h Latte::Corona lattedockadaptor)
 
+ki18n_wrap_ui(lattedock-app_SRCS settings/actionsdialog/actionsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/detailsdialog/detailsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/exporttemplatedialog/exporttemplatedialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/screensdialog/screensdialog.ui)
