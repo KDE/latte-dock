@@ -35,7 +35,7 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QGridLayout" name="gridLayout" columnstretch="5,0,0">
+        <layout class="QGridLayout" name="gridLayout" columnstretch="5,0,9">
          <item row="4" column="2">
           <spacer name="verticalSpacer_3">
            <property name="orientation">
