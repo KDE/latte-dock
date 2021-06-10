@@ -16,6 +16,13 @@ namespace Ui {
 class ActionsDialog;
 }
 
+namespace Latte {
+namespace Settings {
+namespace Handler {
+class TabPreferences;
+}
+}
+}
 
 namespace Latte {
 namespace Settings {
@@ -26,10 +33,11 @@ class ActionsDialog : public GenericDialog
     Q_OBJECT
 
 public:
-    ActionsDialog(QDialog *parent);
+    ActionsDialog(QDialog *parent, Handler::TabPreferences *handler);
     ~ActionsDialog();
 
     Ui::ActionsDialog *ui() const;
+    Handler::TabPreferences *preferencesHandler() const;
 
 protected:
     void accept() override;
@@ -44,6 +52,8 @@ private:
 
 private:
     Ui::ActionsDialog *m_ui;
+
+    Handler::TabPreferences *m_preferencesHandler{nullptr};
 };
 
 }

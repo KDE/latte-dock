@@ -144,7 +144,7 @@ bool TabPreferences::inDefaultValues() const
 
 void TabPreferences::onActionsBtnPressed()
 {
-    auto viewsDlg = new Settings::Dialog::ActionsDialog(m_parentDialog);
+    auto viewsDlg = new Settings::Dialog::ActionsDialog(m_parentDialog, this);
     viewsDlg->exec();
 }
 

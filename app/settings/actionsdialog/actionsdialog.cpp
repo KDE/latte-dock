@@ -7,6 +7,7 @@
 
 // local
 #include "ui_actionsdialog.h"
+#include "../settingsdialog/tabpreferenceshandler.h"
 
 // Qt
 #include <QDebug>
@@ -15,9 +16,10 @@ namespace Latte {
 namespace Settings {
 namespace Dialog {
 
-ActionsDialog::ActionsDialog(QDialog *parent)
+ActionsDialog::ActionsDialog(QDialog *parent, Handler::TabPreferences *handler)
     : GenericDialog(parent),
-      m_ui(new Ui::ActionsDialog)/*this is necessary, in order to create the ui*/
+      m_ui(new Ui::ActionsDialog), /*this is necessary, in order to create the ui*/
+      m_preferencesHandler(handler)
 {
     setAttribute(Qt::WA_DeleteOnClose, true);
     init();
@@ -30,6 +32,11 @@ ActionsDialog::~ActionsDialog()
 Ui::ActionsDialog *ActionsDialog::ui() const
 {
     return m_ui;
+}
+
+Handler::TabPreferences *ActionsDialog::preferencesHandler() const
+{
+    return m_preferencesHandler;
 }
 
 void ActionsDialog::init()
