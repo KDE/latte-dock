@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Export Template</string>
+   <string>Context Menu Actions</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -37,10 +37,10 @@
        <item>
         <widget class="KActionSelector" name="actionsSelector">
          <property name="availableLabel">
-          <string comment="actions shown only in edit mode">Only in edit mode:</string>
+          <string comment="actions shown only in edit mode">Accesible only in edit mode:</string>
          </property>
          <property name="selectedLabel">
-          <string comment="actions shown always">Always Visible:</string>
+          <string comment="actions shown always">Accesible always:</string>
          </property>
          <property name="selectedInsertionPolicy">
           <enum>KActionSelector::Sorted</enum>
