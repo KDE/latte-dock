@@ -24,7 +24,7 @@ public:
 
     ActionListWidgetItem(const QIcon &icon, const QString &text, const int &order, const QString &id, QListWidget *parent = nullptr, int type = QListWidgetItem::Type);
 
-    bool operator<(const QListWidgetItem &other) const;
+    bool operator<(const QListWidgetItem &other) const override;
 };
 
 }

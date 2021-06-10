@@ -33,7 +33,7 @@ ActionsHandler::~ActionsHandler()
 
 void ActionsHandler::init()
 {
-    def_alwaysActions = table(Data::ContextMenu::ACTIONSALWAYSVISIBLE);
+    o_alwaysActions = m_dialog->preferencesHandler()->contextMenuAlwaysActions();
 
     QString itemid = Latte::Data::ContextMenu::LAYOUTSACTION;
     int itemindex = Latte::Data::ContextMenu::ACTIONSEDITORDER.indexOf(itemid);
@@ -125,12 +125,12 @@ void ActionsHandler::loadItems(const QStringList &alwaysActions)
 
 bool ActionsHandler::hasChangedData() const
 {
-    return c_alwaysActions != c_alwaysActions;
+    return currentAlwaysData() != o_alwaysActions;
 }
 
 bool ActionsHandler::inDefaultValues() const
 {
-    return c_alwaysActions == def_alwaysActions;
+    return currentAlwaysData() == Data::ContextMenu::ACTIONSALWAYSVISIBLE;
 }
 
 int ActionsHandler::rowInAlways(const Settings::ActionsDialog::ActionListWidgetItem *item) const
@@ -166,19 +166,27 @@ Data::GenericTable<Data::Generic> ActionsHandler::table(const QStringList &ids)
     return bastable;
 }
 
-QStringList ActionsHandler::currentData() const
+QStringList ActionsHandler::currentAlwaysData() const
 {
-    return c_alwaysActions.ids();
+    QStringList always;
+
+    for(int i=0; i<m_ui->actionsSelector->selectedListWidget()->count(); ++i) {
+        QListWidgetItem *widgetitem = m_ui->actionsSelector->selectedListWidget()->item(i);
+        always << widgetitem->data(ActionsDialog::ActionListWidgetItem::IDROLE).toString();
+    }
+
+    return always;
 }
 
 void ActionsHandler::reset()
 {
-    c_alwaysActions = o_alwaysActions;
+    loadItems(o_alwaysActions);
 }
 
 void ActionsHandler::resetDefaults()
 {
-    c_alwaysActions = def_alwaysActions;
+    o_alwaysActions = Data::ContextMenu::ACTIONSALWAYSVISIBLE;
+    loadItems(Data::ContextMenu::ACTIONSALWAYSVISIBLE);
 }
 
 void ActionsHandler::save()

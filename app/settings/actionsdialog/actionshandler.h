@@ -46,7 +46,7 @@ public:
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
-    QStringList currentData() const;
+    QStringList currentAlwaysData() const;
 
 public slots:
     void reset() override;
@@ -65,10 +65,7 @@ private:
     Data::GenericTable<Data::Generic> table(const QStringList &ids);
 
 private:
-    Data::GenericTable<Data::Generic> def_alwaysActions;
-
-    Data::GenericTable<Data::Generic> c_alwaysActions;
-    Data::GenericTable<Data::Generic> o_alwaysActions;
+    QStringList o_alwaysActions;
 
     QHash<QString, Settings::ActionsDialog::ActionListWidgetItem *> m_items;
 
