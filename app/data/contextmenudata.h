@@ -27,6 +27,16 @@ static const char QUITLATTEACTION[] = "_quit_latte";
 static const char SECTIONACTION[]= "_latte_section";
 static const char SEPARATOR1ACTION[] = "_separator1";
 
+static QStringList ACTIONSEDITORDER = {LAYOUTSACTION,
+                                       PREFERENCESACTION,
+                                       QUITLATTEACTION,
+                                       SEPARATOR1ACTION,
+                                       ADDWIDGETSACTION,
+                                       ADDVIEWACTION,
+                                       MOVEVIEWACTION,
+                                       EXPORTVIEWTEMPLATEACTION,
+                                       REMOVEVIEWACTION};
+
 static QStringList ACTIONSALWAYSVISIBLE = {LAYOUTSACTION,
                                            PREFERENCESACTION,
                                            QUITLATTEACTION,

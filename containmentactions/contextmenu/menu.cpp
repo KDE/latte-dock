@@ -217,18 +217,11 @@ QList<QAction *> Menu::contextualActions()
     QList<QAction *> actions;
 
     actions << m_actions[Latte::Data::ContextMenu::SECTIONACTION];
-    //actions << m_actions[Latte::Data::ContextMenu::PRINTACTION];
-    actions << m_actions[Latte::Data::ContextMenu::LAYOUTSACTION];
-    actions << m_actions[Latte::Data::ContextMenu::PREFERENCESACTION];
-    actions << m_actions[Latte::Data::ContextMenu::QUITLATTEACTION];
-
-    actions << m_actions[Latte::Data::ContextMenu::SEPARATOR1ACTION];
-    actions << m_actions[Latte::Data::ContextMenu::ADDWIDGETSACTION];
-    actions << m_actions[Latte::Data::ContextMenu::ADDVIEWACTION];
-    actions << m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION];
-    actions << m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION];
+    actions << m_actions[Latte::Data::ContextMenu::PRINTACTION];
+    for(int i=0; i<Latte::Data::ContextMenu::ACTIONSEDITORDER.count(); ++i) {
+        actions << m_actions[Latte::Data::ContextMenu::ACTIONSEDITORDER[i]];
+    }
     actions << m_actions[Latte::Data::ContextMenu::EDITVIEWACTION];
-    actions << m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION];
 
     m_data.clear();
     m_viewTemplates.clear();
@@ -288,6 +281,9 @@ void Menu::updateVisibleActions()
     // normal actions that the user can specify their visibility
     for(auto actionName: m_actions.keys()) {
         if (Latte::Data::ContextMenu::ACTIONSSPECIAL.contains(actionName)) {
+            continue;
+        } else if (Latte::Data::ContextMenu::ACTIONSALWAYSHIDDEN.contains(actionName)) {
+            m_actions[actionName]->setVisible(false);
             continue;
         }
 
