@@ -46,12 +46,16 @@ public:
     bool hasChangedData() const override;
     bool inDefaultValues() const override;
 
+    QStringList contextMenuAlwaysActions() const;
+    void setContexteMenuAlwaysActions(const QStringList &actions);
+
     void reset() override;
     void resetDefaults() override;
     void save() override;
 
 signals:
     void borderlessMaximizedChanged();
+    void contextActionsChanged();
 
 private slots:
     void initUi();

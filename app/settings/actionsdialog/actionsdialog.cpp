@@ -7,6 +7,7 @@
 
 // local
 #include "ui_actionsdialog.h"
+#include "actionshandler.h"
 #include "../settingsdialog/tabpreferenceshandler.h"
 
 // Qt
@@ -42,6 +43,7 @@ Handler::TabPreferences *ActionsDialog::preferencesHandler() const
 void ActionsDialog::init()
 {
     m_ui->setupUi(this);
+    m_actionsHandler = new Handler::ActionsHandler(this);
 }
 
 void ActionsDialog::accept()

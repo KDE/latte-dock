@@ -38,7 +38,7 @@ class ActionsHandler : public Generic
 {
     Q_OBJECT
 public:
-    ActionsHandler(Dialog::ActionsDialog *dialog, const QStringList &currentActions);
+    ActionsHandler(Dialog::ActionsDialog *dialog);
     ~ActionsHandler();
 
     bool hasChangedData() const override;

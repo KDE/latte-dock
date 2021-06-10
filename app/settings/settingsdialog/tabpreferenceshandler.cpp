@@ -91,6 +91,8 @@ void TabPreferences::initUi()
         m_preferences.borderlessMaximized = m_ui->noBordersForMaximizedChkBox->isChecked();
         emit dataChanged();
     });
+
+    connect(this, &TabPreferences::contextActionsChanged, this, &TabPreferences::dataChanged);
 }
 
 void TabPreferences::initSettings()
@@ -108,6 +110,21 @@ void TabPreferences::initSettings()
     m_preferences = o_preferences;
 
     updateUi();
+}
+
+QStringList TabPreferences::contextMenuAlwaysActions() const
+{
+    return m_preferences.contextMenuAlwaysActions;
+}
+
+void TabPreferences::setContexteMenuAlwaysActions(const QStringList &actions)
+{
+    if (m_preferences.contextMenuAlwaysActions == actions) {
+        return;
+    }
+
+    m_preferences.contextMenuAlwaysActions = actions;
+    emit contextActionsChanged();
 }
 
 void TabPreferences::updateUi()

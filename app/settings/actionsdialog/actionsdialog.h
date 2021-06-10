@@ -19,6 +19,7 @@ class ActionsDialog;
 namespace Latte {
 namespace Settings {
 namespace Handler {
+class ActionsHandler;
 class TabPreferences;
 }
 }
@@ -54,6 +55,7 @@ private:
     Ui::ActionsDialog *m_ui;
 
     Handler::TabPreferences *m_preferencesHandler{nullptr};
+    Handler::ActionsHandler *m_actionsHandler{nullptr};
 };
 
 }

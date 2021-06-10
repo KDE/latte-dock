@@ -17,13 +17,13 @@ namespace Latte {
 namespace Settings {
 namespace Handler {
 
-ActionsHandler::ActionsHandler(Dialog::ActionsDialog *dialog, const QStringList &currentActions)
+ActionsHandler::ActionsHandler(Dialog::ActionsDialog *dialog)
     : Generic(dialog),
       m_dialog(dialog),
       m_ui(m_dialog->ui())
 {
     init();
-    c_alwaysActions = table(currentActions);
+    //c_alwaysActions = table(currentActions);
 }
 
 ActionsHandler::~ActionsHandler()
