@@ -15,6 +15,7 @@
 #include <QDebug>
 
 // KDE
+#include <KActionSelector>
 #include <KLocalizedString>
 
 namespace Latte {
@@ -27,8 +28,6 @@ ActionsHandler::ActionsHandler(Dialog::ActionsDialog *dialog)
       m_ui(m_dialog->ui())
 {
     initItems();
-    loadItems(m_dialog->preferencesHandler()->contextMenuAlwaysActions());
-
     init();
 }
 
@@ -42,6 +41,14 @@ void ActionsHandler::init()
     connect(m_ui->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &ActionsHandler::save);
     connect(m_ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &ActionsHandler::reset);
     connect(m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, this, &ActionsHandler::resetDefaults);
+
+    connect(m_ui->actionsSelector, &KActionSelector::added, this, [&]() {
+        updateButtonEnablement();
+    });
+
+    connect(m_ui->actionsSelector, &KActionSelector::removed, this, [&]() {
+        updateButtonEnablement();
+    });
 }
 
 void ActionsHandler::initItems()
@@ -110,6 +117,8 @@ void ActionsHandler::initItems()
                                                               i18n("Remove Dock/Panel"),
                                                               itemindex,
                                                               itemid);
+
+    loadItems(m_dialog->preferencesHandler()->contextMenuAlwaysActions());
 }
 
 void ActionsHandler::loadItems(const QStringList &alwaysActions)
@@ -139,6 +148,8 @@ void ActionsHandler::loadItems(const QStringList &alwaysActions)
 
     m_ui->actionsSelector->availableListWidget()->sortItems();
     m_ui->actionsSelector->selectedListWidget()->sortItems();
+
+    updateButtonEnablement();
 }
 
 bool ActionsHandler::hasChangedData() const
@@ -181,8 +192,15 @@ void ActionsHandler::reset()
 
 void ActionsHandler::resetDefaults()
 {
-    o_alwaysActions = Data::ContextMenu::ACTIONSALWAYSVISIBLE;
     loadItems(Data::ContextMenu::ACTIONSALWAYSVISIBLE);
+}
+
+void ActionsHandler::updateButtonEnablement()
+{
+    bool haschanges = hasChangedData();
+    m_ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(haschanges);
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setEnabled(haschanges);
+    m_ui->buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(!inDefaultValues());
 }
 
 void ActionsHandler::onCancel()

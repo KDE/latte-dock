@@ -52,6 +52,7 @@ public slots:
     void reset() override;
     void resetDefaults() override;
     void save() override;
+    void updateButtonEnablement();
 
     void onCancel();
 
