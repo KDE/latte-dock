@@ -11,7 +11,7 @@
 
 namespace Latte {
 namespace Settings {
-namespace Preferences {
+namespace ActionsDialog {
 
 class ActionListWidgetItem : public QListWidgetItem
 {

@@ -8,7 +8,7 @@
 
 namespace Latte {
 namespace Settings {
-namespace Preferences {
+namespace ActionsDialog {
 
 ActionListWidgetItem::ActionListWidgetItem(const QIcon &icon, const QString &text, const int &order, const QString &id, QListWidget *parent, int type)
     : QListWidgetItem(icon, text, parent, type)

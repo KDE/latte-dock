@@ -7,10 +7,12 @@
 #define ACTIONSHANDLER_H
 
 // local
+#include "actionlistwidgetitem.h"
 #include "../generic/generichandler.h"
 #include "../../data/generictable.h"
 
 // Qt
+#include <QHash>
 #include <QObject>
 
 namespace Ui {
@@ -55,6 +57,11 @@ private:
     void init();
     void initDefaults();
 
+    void loadItems(const QStringList &alwaysActions);
+
+    int rowInAlways(const Settings::ActionsDialog::ActionListWidgetItem *item) const;
+    int rowInEdit(const Settings::ActionsDialog::ActionListWidgetItem *item) const;
+
     Data::GenericTable<Data::Generic> table(const QStringList &ids);
 
 private:
@@ -62,6 +69,8 @@ private:
 
     Data::GenericTable<Data::Generic> c_alwaysActions;
     Data::GenericTable<Data::Generic> o_alwaysActions;
+
+    QHash<QString, Settings::ActionsDialog::ActionListWidgetItem *> m_items;
 
     Dialog::ActionsDialog *m_dialog{nullptr};
     Ui::ActionsDialog *m_ui{nullptr};
