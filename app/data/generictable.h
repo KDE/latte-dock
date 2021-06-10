@@ -53,6 +53,7 @@ public:
 
     QString idForName(const QString &name) const;
 
+    QStringList ids() const;
     QStringList names() const;
 
     void clear();

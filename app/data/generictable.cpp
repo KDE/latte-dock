@@ -273,11 +273,23 @@ QString GenericTable<T>::idForName(const QString &name) const
 }
 
 template <class T>
+QStringList GenericTable<T>::ids() const
+{
+    QStringList idlist;
+
+    for(int i=0; i<m_list.count(); ++i) {
+        idlist << m_list[i].id;
+    }
+
+    return idlist;
+}
+
+template <class T>
 QStringList GenericTable<T>::names() const
 {
     QStringList nms;
 
-    for(int  i=0; i<m_list.count(); ++i) {
+    for(int i=0; i<m_list.count(); ++i) {
         nms << m_list[i].name;
     }
 
