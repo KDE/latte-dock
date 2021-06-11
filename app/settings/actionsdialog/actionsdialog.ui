@@ -21,10 +21,10 @@
        <item>
         <widget class="KActionSelector" name="actionsSelector">
          <property name="availableLabel">
-          <string comment="actions shown only in edit mode">Accesible only in edit mode:</string>
+          <string comment="actions shown only in edit mode">Accessible only in edit mode:</string>
          </property>
          <property name="selectedLabel">
-          <string comment="actions shown always">Accesible always:</string>
+          <string comment="actions shown always">Accessible always:</string>
          </property>
          <property name="selectedInsertionPolicy">
           <enum>KActionSelector::Sorted</enum>
