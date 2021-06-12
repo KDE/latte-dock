@@ -528,7 +528,11 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         winfoWrap.setIsFullscreen(w->isFullscreen());
         winfoWrap.setIsShaded(w->isShaded());
         winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
+#if KF5_VERSION_MINOR >= 81
+        winfoWrap.setIsOnAllActivities(w->plasmaActivities().isEmpty());
+#else
         winfoWrap.setIsOnAllActivities(true);
+#endif
         winfoWrap.setIsKeepAbove(w->isKeepAbove());
         winfoWrap.setIsKeepBelow(w->isKeepBelow());
         winfoWrap.setGeometry(w->geometry());
