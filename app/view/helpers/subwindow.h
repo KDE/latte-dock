@@ -50,6 +50,7 @@ public:
     void showWithMask();
 
     Latte::View *parentView();
+    Latte::WindowSystem::WindowId trackedWindowId();
 
     KWayland::Client::PlasmaShellSurface *surface();
 

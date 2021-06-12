@@ -47,8 +47,6 @@ public:
     TrackerPart::AllScreensTracker *allScreens() const;
     TrackerPart::CurrentScreenTracker *currentScreen() const;
 
-    void setWindowOnActivities(QWindow &window, const QStringList &activities);
-
     Latte::View *view() const;
     WindowSystem::AbstractWindowInterface *wm() const;
 

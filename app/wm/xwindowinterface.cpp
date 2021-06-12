@@ -203,9 +203,9 @@ void XWindowInterface::switchToPreviousVirtualDesktop()
     KWindowSystem::setCurrentDesktop(nextPos);
 }
 
-void XWindowInterface::setWindowOnActivities(QWindow &window, const QStringList &activities)
+void XWindowInterface::setWindowOnActivities(const WindowId &wid, const QStringList &activities)
 {
-    KWindowSystem::setOnActivities(window.winId(), activities);
+    KWindowSystem::setOnActivities(wid.toUInt(), activities);
 }
 
 void XWindowInterface::removeViewStruts(QWindow &view)

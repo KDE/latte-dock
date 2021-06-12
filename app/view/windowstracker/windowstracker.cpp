@@ -84,12 +84,6 @@ TrackerPart::CurrentScreenTracker *WindowsTracker::currentScreen() const
     return m_currentScreenTracker;
 }
 
-//! Window Functions
-void WindowsTracker::setWindowOnActivities(QWindow &window, const QStringList &activities)
-{
-    m_wm->setWindowOnActivities(window, activities);
-}
-
 //! Environment Functions
 void WindowsTracker::switchToNextActivity()
 {

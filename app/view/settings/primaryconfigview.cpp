@@ -120,14 +120,14 @@ Config::IndicatorUiManager *PrimaryConfigView::indicatorUiManager()
 
 void PrimaryConfigView::setOnActivities(QStringList activities)
 {
-    m_corona->wm()->setWindowOnActivities(*this, activities);
+    m_corona->wm()->setWindowOnActivities(trackedWindowId(), activities);
 
     if (m_secConfigView) {
-        m_corona->wm()->setWindowOnActivities(*m_secConfigView.data(), activities);
+        m_corona->wm()->setWindowOnActivities(m_secConfigView->trackedWindowId(), activities);
     }
 
     if (m_canvasConfigView) {
-        m_corona->wm()->setWindowOnActivities(*m_canvasConfigView.data(), activities);
+        m_corona->wm()->setWindowOnActivities(m_canvasConfigView->trackedWindowId(), activities);
     }
 }
 

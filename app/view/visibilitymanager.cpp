@@ -818,11 +818,11 @@ bool VisibilityManager::isValidMode() const
 void VisibilityManager::applyActivitiesToHiddenWindows(const QStringList &activities)
 {
     if (m_edgeGhostWindow) {
-        m_wm->setWindowOnActivities(*m_edgeGhostWindow, activities);
+        m_wm->setWindowOnActivities(m_edgeGhostWindow->trackedWindowId(), activities);
     }
 
     if (m_floatingGapWindow) {
-        m_wm->setWindowOnActivities(*m_floatingGapWindow, activities);
+        m_wm->setWindowOnActivities(m_floatingGapWindow->trackedWindowId(), activities);
     }
 }
 

@@ -1121,10 +1121,10 @@ void View::setActivities(const QStringList &ids)
 
 void View::applyActivitiesToWindows()
 {
-    if (m_visibility && m_layout) {
+    if (m_visibility && m_positioner && m_layout) {
         QStringList runningActivities = activities();
 
-        m_windowsTracker->setWindowOnActivities(*this, runningActivities);
+        m_positioner->setWindowOnActivities(m_positioner->trackedWindowId(), runningActivities);
 
         //! config windows
         if (m_primaryConfigView) {
@@ -1132,7 +1132,15 @@ void View::applyActivitiesToWindows()
         }
 
         if (m_appletConfigView) {
-            m_windowsTracker->setWindowOnActivities(*m_appletConfigView, runningActivities);
+            Latte::WindowSystem::WindowId appletconfigviewid;
+
+            if (KWindowSystem::isPlatformX11()) {
+                appletconfigviewid = m_appletConfigView->winId();
+            } else {
+                appletconfigviewid = m_corona->wm()->winIdFor("latte-dock", m_appletConfigView->title());
+            }
+
+            m_positioner->setWindowOnActivities(appletconfigviewid, runningActivities);
         }
 
         //! hidden windows

@@ -170,6 +170,15 @@ Latte::View *SubWindow::parentView()
     return m_latteView;
 }
 
+Latte::WindowSystem::WindowId SubWindow::trackedWindowId()
+{
+    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.toInt() <= 0) {
+        updateWaylandId();
+    }
+
+    return m_trackedWindowId;
+}
+
 KWayland::Client::PlasmaShellSurface *SubWindow::surface()
 {
     return m_shellSurface;

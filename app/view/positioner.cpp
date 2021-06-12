@@ -344,6 +344,11 @@ void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
     slideOutDuringExit();
 }
 
+void Positioner::setWindowOnActivities(const Latte::WindowSystem::WindowId &wid, const QStringList &activities)
+{
+    m_corona->wm()->setWindowOnActivities(wid, activities);
+}
+
 void Positioner::syncLatteViews()
 {
     if (m_view->layout()) {

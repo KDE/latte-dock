@@ -81,6 +81,7 @@ public:
     QRect canvasGeometry();
 
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);
+    void setWindowOnActivities(const Latte::WindowSystem::WindowId &wid, const QStringList &activities);
 
     void reconsiderScreen();
 
