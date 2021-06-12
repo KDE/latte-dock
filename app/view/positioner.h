@@ -109,6 +109,7 @@ signals:
     void screenGeometryChanged();
     void slideOffsetChanged();
     void windowSizeChanged();
+    void winIdChanged();
 
     //! these two signals are used from config ui and containment ui
     //! in order to orchestrate an animated hiding/showing of dock

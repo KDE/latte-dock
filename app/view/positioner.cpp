@@ -240,6 +240,8 @@ void Positioner::updateWaylandId()
 
         m_trackedWindowId = newId;
         m_corona->wm()->registerIgnoredWindow(m_trackedWindowId);
+
+        emit winIdChanged();
     }
 }
 

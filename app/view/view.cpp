@@ -286,6 +286,7 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &View::maxNormalThicknessChanged, this, &View::editThicknessChanged);
 
     connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
+    connect(m_positioner, &ViewPart::Positioner::winIdChanged, this, &View::applyActivitiesToWindows);
 
     connect(this, &View::localGeometryChanged, this, [&]() {
         updateAbsoluteGeometry();

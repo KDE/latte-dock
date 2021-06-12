@@ -6,6 +6,7 @@
 #include "synchronizer.h"
 
 //! local
+#include <config-latte.h>
 #include "importer.h"
 #include "manager.h"
 #include "../apptypes.h"
@@ -144,7 +145,7 @@ QStringList Synchronizer::freeActivities()
 }
 
 QStringList Synchronizer::runningActivities()
-{
+{   
     return m_manager->corona()->activitiesConsumer()->runningActivities();
 }
 
@@ -878,11 +879,13 @@ void Synchronizer::syncMultipleLayoutsToActivities()
 
     //! discover layouts assigned to explicit activities based on running activities
     for (const auto &activity : runningActivities()) {
+#if KF5_VERSION_MINOR < 81
         if (KWindowSystem::isPlatformWayland() && (m_activitiesController->currentActivity() != activity)){
-            //! Wayland Protection: Plasma wayland does not support yet Activities for windows
-            //! but we can load the layouts that belong OnAllActivities + (ForFreeActivities OR SpecificActivity)
+            //! Wayland Protection: Plasma wayland does not support Activities for windows before kde frameworks 5.81
+            //! In that scenario we can load the layouts that belong OnAllActivities + (ForFreeActivities OR SpecificActivity)
             continue;
         }
+#endif
 
         if (m_assignedLayouts.contains(activity)) {
             layoutNamesToLoad << m_assignedLayouts[activity];
