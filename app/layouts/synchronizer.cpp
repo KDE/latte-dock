@@ -897,7 +897,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         if (!layoutNamesToLoad.contains(layout->name())) {
             layoutNamesToUnload << layout->name();
         }
-    }
+    }    
 
     QString defaultForcedLayout;
 

@@ -395,14 +395,14 @@ void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringL
             }
         }
 
-        //! first enter to new activities
-        for (int i=0; i<requestenter.count(); ++i) {
-            w->requestEnterActivity(requestenter[i]);
-        }
-
         //! leave afterwards from deprecated activities
         for (int i=0; i<requestleave.count(); ++i) {
             w->requestLeaveActivity(requestleave[i]);
+        }
+
+        //! first enter to new activities
+        for (int i=0; i<requestenter.count(); ++i) {
+            w->requestEnterActivity(requestenter[i]);
         }
     }
 #endif
@@ -517,8 +517,8 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
     //!used to track Plasma DesktopView windows because during startup can not be identified properly
     bool plasmaBlockedWindow = w && (w->appId() == QLatin1String("org.kde.plasmashell")) && !isAcceptableWindow(w);
 
-    if (w && isValidWindow(w) && !plasmaBlockedWindow) {
-        winfoWrap.setIsValid(true);
+    if (w) {
+        winfoWrap.setIsValid(isValidWindow(w) && !plasmaBlockedWindow);
         winfoWrap.setWid(wid);
         winfoWrap.setParentId(w->parentWindow() ? w->parentWindow()->internalId() : 0);
         winfoWrap.setIsActive(w->isActive());
