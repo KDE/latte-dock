@@ -29,12 +29,12 @@ LatteComponents.IndicatorItem{
 
     readonly property int thicknessMargin: screenEdgeMargin + thickLocalMargin + (glowEnabled ? 1 : 0)
 
-    property real textColorBrightness: colorBrightness(theme.textColor)
+    property real textColorBrightness: colorBrightness(indicator.palette.textColor)
 
-    property color isActiveColor: theme.buttonFocusColor
+    property color isActiveColor: indicator.palette.buttonFocusColor
     property color minimizedColor: {
         if (minimizedTaskColoredDifferently) {
-            return (textColorBrightness > 127.5 ? Qt.darker(theme.textColor, 1.7) : Qt.lighter(theme.textColor, 7));
+            return (textColorBrightness > 127.5 ? Qt.darker(indicator.palette.textColor, 1.7) : Qt.lighter(indicator.palette.textColor, 7));
         }
 
         return isActiveColor;
@@ -104,7 +104,7 @@ LatteComponents.IndicatorItem{
             location: plasmoid.location
             glowOpacity: root.glowOpacity
             contrastColor: indicator.shadowColor
-            attentionColor: theme.negativeTextColor
+            attentionColor: indicator.palette.negativeTextColor
 
             roundCorners: true
             showAttention: indicator.inAttention
