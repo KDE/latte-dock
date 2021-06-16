@@ -38,6 +38,7 @@ public:
 
 signals:
     void colorSchemeChanged(const WindowId &wid);
+    void defaultSchemeChanged();
 
 private slots:
     void updateDefaultScheme();

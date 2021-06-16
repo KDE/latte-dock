@@ -89,6 +89,8 @@ void Schemes::updateDefaultScheme()
     if (!m_schemes.contains("kdeglobals") || m_schemes["kdeglobals"]->schemeFile() != defaultSchemePath) {
         m_schemes["kdeglobals"] = dScheme;
     }
+
+    emit defaultSchemeChanged();
 }
 
 SchemeColors *Schemes::schemeForFile(const QString &scheme)

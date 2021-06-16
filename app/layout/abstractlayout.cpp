@@ -382,7 +382,8 @@ void AbstractLayout::loadConfig()
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_backgroundStyle = static_cast<BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)ColorBackgroundStyle));
 
-    m_schemeFile = m_layoutGroup.readEntry("schemeFile", Data::Layout::DEFAULTSCHEMEFILE);
+    m_schemeFile = m_layoutGroup.readEntry("schemeFile", QString(Data::Layout::DEFAULTSCHEMEFILE));
+    m_schemeFile = m_schemeFile.isEmpty() ? Data::Layout::DEFAULTSCHEMEFILE : m_schemeFile;
 
     QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString());
     QString deprecatedBackground = m_layoutGroup.readEntry("background", QString());
