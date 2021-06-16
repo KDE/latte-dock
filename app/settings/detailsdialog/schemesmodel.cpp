@@ -90,6 +90,21 @@ void Schemes::insertSchemeInList(QString file)
     m_schemes.insert(atPos, tempScheme);
 }
 
+int Schemes::row(const QString &id)
+{
+    if (id.isEmpty() || id == Data::Layout::DEFAULTSCHEMEFILE) {
+        return 0;
+    }
+
+    for (int i = 0; i < m_schemes.count(); i++) {
+        if (m_schemes[i]->schemeFile() == id) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 QVariant Schemes::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.column() != 0 || index.row() < 0 || index.row() >= m_schemes.count()) {

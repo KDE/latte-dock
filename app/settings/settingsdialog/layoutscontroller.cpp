@@ -952,6 +952,9 @@ void Layouts::save()
         //! Icon
         central->setIcon(iLayoutCurrentData.icon);
 
+        //! Custom Scheme
+        central->setSchemeFile(iLayoutCurrentData.schemeFile);
+
         //! Backgrounds
         central->setBackgroundStyle(iLayoutCurrentData.backgroundStyle);
         central->setColor(iLayoutCurrentData.color);

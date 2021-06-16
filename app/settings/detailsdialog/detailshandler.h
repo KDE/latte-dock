@@ -34,6 +34,7 @@ namespace Latte{
 namespace Settings{
 namespace Model {
 class Colors;
+class Schemes;
 }
 }
 }
@@ -70,6 +71,7 @@ signals:
 private slots:
     void onCurrentLayoutIndexChanged(int row);
     void onCurrentColorIndexChanged(int row);
+    void onCurrentSchemeIndexChanged(int row);
 
     void clearIcon();
     void clearPattern();
@@ -86,6 +88,7 @@ private:
     void setHasDisabledBorders(bool disabled);
 
     void setBackground(const QString &background);
+    void setCustomSchemeFile(const QString &file);
     void setTextColor(const QString &textColor);
     void setColor(const QString &color);
     void setIcon(const QString &icon);
@@ -108,6 +111,7 @@ private:
 
     //! current data
     Model::Colors *m_colorsModel{nullptr};
+    Model::Schemes *m_schemesModel{nullptr};
 
     QButtonGroup *m_backButtonsGroup;
 

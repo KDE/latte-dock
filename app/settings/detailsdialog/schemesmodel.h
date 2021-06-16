@@ -37,6 +37,8 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    int row(const QString &id);
+
 private slots:
     void initSchemes();
 

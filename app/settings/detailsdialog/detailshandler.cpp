@@ -10,6 +10,7 @@
 #include "colorsmodel.h"
 #include "detailsdialog.h"
 #include "patternwidget.h"
+#include "schemesmodel.h"
 #include "delegates/colorcmbitemdelegate.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../settingsdialog/layoutsmodel.h"
@@ -33,7 +34,8 @@ DetailsHandler::DetailsHandler(Dialog::DetailsDialog *dialog)
     : Generic(dialog),
       m_dialog(dialog),
       m_ui(m_dialog->ui()),
-      m_colorsModel(new Model::Colors(this, dialog->corona()))
+      m_colorsModel(new Model::Colors(this, dialog->corona())),
+      m_schemesModel(new Model::Schemes(this))
 {
     init();
 }
@@ -54,6 +56,9 @@ void DetailsHandler::init()
     m_ui->layoutsCmb->setModel(m_layoutsProxyModel);
     m_ui->layoutsCmb->setModelColumn(Model::Layouts::NAMECOLUMN);
     m_ui->layoutsCmb->setItemDelegate(new Settings::Layout::Delegate::LayoutCmbItemDelegate(this));
+
+    //! Schemes
+    m_ui->customSchemeCmb->setModel(m_schemesModel);
 
     //! Background Pattern
     m_backButtonsGroup = new QButtonGroup(this);
@@ -105,6 +110,8 @@ void DetailsHandler::init()
     //! connect colors combobox after the selected layout has been loaded
     connect(m_ui->colorsCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::onCurrentColorIndexChanged);
 
+    //! connect custom scheme combobox after the selected layout has been loaded
+    connect(m_ui->customSchemeCmb, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DetailsHandler::onCurrentSchemeIndexChanged);
 
     //! pattern widgets
     connect(m_ui->backPatternWidget, &Widget::PatternWidget::mouseReleased, this, [&]() {
@@ -161,6 +168,8 @@ void DetailsHandler::loadLayout(const Latte::Data::Layout &data)
         m_ui->textColorBtn->setVisible(true);
         m_ui->patternClearBtn->setVisible(true);
     }
+
+    m_ui->customSchemeCmb->setCurrentIndex(m_schemesModel->row(data.schemeFile));
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
     m_ui->colorPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultTextColor(data.color));
@@ -278,6 +287,12 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
     }
 }
 
+void DetailsHandler::onCurrentSchemeIndexChanged(int row)
+{
+    QString selectedScheme = m_ui->customSchemeCmb->itemData(row, Model::Schemes::IDROLE).toString();
+    setCustomSchemeFile(selectedScheme);
+}
+
 void DetailsHandler::setBackground(const QString &background)
 {
     if (c_data.background == background) {
@@ -295,6 +310,16 @@ void DetailsHandler::setColor(const QString &color)
     }
 
     c_data.color = color;
+    emit dataChanged();
+}
+
+void DetailsHandler::setCustomSchemeFile(const QString &file)
+{
+    if (c_data.schemeFile == file) {
+        return;
+    }
+
+    c_data.schemeFile = file;
     emit dataChanged();
 }
 
