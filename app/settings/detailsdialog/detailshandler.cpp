@@ -12,6 +12,7 @@
 #include "patternwidget.h"
 #include "schemesmodel.h"
 #include "delegates/colorcmbitemdelegate.h"
+#include "delegates/schemecmbitemdelegate.h"
 #include "../settingsdialog/layoutscontroller.h"
 #include "../settingsdialog/layoutsmodel.h"
 #include "../settingsdialog/delegates/layoutcmbitemdelegate.h"
@@ -59,6 +60,7 @@ void DetailsHandler::init()
 
     //! Schemes
     m_ui->customSchemeCmb->setModel(m_schemesModel);
+    m_ui->customSchemeCmb->setItemDelegate(new Settings::Details::Delegate::SchemeCmbItemDelegate(this));
 
     //! Background Pattern
     m_backButtonsGroup = new QButtonGroup(this);
