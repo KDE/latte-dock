@@ -7,6 +7,7 @@
 #define GENERICSETTINGSTOOLS_H
 
 // Qt
+#include <QColor>
 #include <QPainter>
 #include <QPalette>
 #include <QRect>
@@ -45,6 +46,10 @@ void drawIcon(QPainter *painter, const QStyleOption &option, const QString &icon
 //! layout icon
 QRect remainedFromLayoutIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft, int lengthMargin = -1, int thickMargin = -1);
 void drawLayoutIcon(QPainter *painter, const QStyleOption &option, const bool &isBackgroundFile, const QString &iconName, Qt::AlignmentFlag alignment = Qt::AlignLeft, int lengthMargin = -1, int thickMargin = -1);
+
+//! color scheme icon
+QRect remainedFromColorSchemeIcon(const QStyleOption &option, Qt::AlignmentFlag alignment = Qt::AlignLeft, int lengthMargin = -1, int thickMargin = -1);
+void drawColorSchemeIcon(QPainter *painter, const QStyleOption &option, const QColor &textColor, const QColor &backgroundColor,Qt::AlignmentFlag alignment = Qt::AlignLeft, int lengthMargin = -1, int thickMargin = -1);
 
 //! changes indicator
 QRect remainedFromChangesIndicator(const QStyleOptionViewItem &option);
