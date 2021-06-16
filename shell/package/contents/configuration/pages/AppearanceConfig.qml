@@ -749,7 +749,7 @@ PlasmaComponents.Page {
                     Layout.fillWidth: true
                     model: [
                         {
-                            name: i18nc("plasma theme colors", "Plasma Theme"),
+                            name: i18nc("plasma theme colors", "Plasma Theme Colors"),
                             value: LatteContainment.Types.PlasmaThemeColors
                         },{
                             name: i18nc("dark theme colors", "Dark Colors"),
