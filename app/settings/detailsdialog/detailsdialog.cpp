@@ -102,7 +102,7 @@ void DetailsDialog::onReset()
 
 void DetailsDialog::loadConfig()
 {
-    m_windowSize = m_storage.readEntry("windowSize", QSize(535, 630));
+    m_windowSize = m_storage.readEntry("windowSize", QSize(560, 640));
 }
 
 void DetailsDialog::saveConfig()
