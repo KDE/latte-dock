@@ -59,6 +59,7 @@ void AbstractLayout::init()
     connect(this, &AbstractLayout::launchersChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::preferredForShortcutsTouchedChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::popUpMarginChanged, this, &AbstractLayout::saveConfig);
+    connect(this, &AbstractLayout::schemeFileChanged, this, &AbstractLayout::saveConfig);
     connect(this, &AbstractLayout::versionChanged, this, &AbstractLayout::saveConfig);
 }
 
@@ -116,6 +117,21 @@ QString AbstractLayout::background() const
     } else {
         return m_customBackground;
     }
+}
+
+QString AbstractLayout::schemeFile() const
+{
+    return m_schemeFile;
+}
+
+void AbstractLayout::setSchemeFile(const QString &file)
+{
+    if (m_schemeFile == file) {
+        return;
+    }
+
+    m_schemeFile = file;
+    emit schemeFileChanged();
 }
 
 QString AbstractLayout::textColor() const
@@ -363,6 +379,8 @@ void AbstractLayout::loadConfig()
     m_color = m_layoutGroup.readEntry("color", QString("blue"));
     m_backgroundStyle = static_cast<BackgroundStyle>(m_layoutGroup.readEntry("backgroundStyle", (int)ColorBackgroundStyle));
 
+    m_schemeFile = m_layoutGroup.readEntry("schemeFile", QString("kdeglobals"));
+
     QString deprecatedTextColor = m_layoutGroup.readEntry("textColor", QString());
     QString deprecatedBackground = m_layoutGroup.readEntry("background", QString());
 
@@ -396,6 +414,8 @@ void AbstractLayout::saveConfig()
     m_layoutGroup.writeEntry("lastUsedActivity", m_lastUsedActivity);
     m_layoutGroup.writeEntry("popUpMargin", m_popUpMargin);
     m_layoutGroup.writeEntry("preferredForShortcutsTouched", m_preferredForShortcutsTouched);
+    m_layoutGroup.writeEntry("schemeFile", m_schemeFile == QLatin1String("kdeglobals") ? "" : m_schemeFile);
+
     m_layoutGroup.sync();
 }
 

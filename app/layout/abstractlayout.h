@@ -59,6 +59,8 @@ class AbstractLayout : public QObject
     Q_PROPERTY(QString background READ background NOTIFY backgroundChanged)
     Q_PROPERTY(QString textColor READ textColor NOTIFY textColorChanged)
 
+    Q_PROPERTY(QString schemeFile READ schemeFile WRITE setSchemeFile NOTIFY schemeFileChanged)
+
     Q_PROPERTY(QStringList launchers READ launchers WRITE setLaunchers NOTIFY launchersChanged)
     Q_PROPERTY(QString lastUsedActivity READ lastUsedActivity NOTIFY lastUsedActivityChanged)
 
@@ -97,6 +99,9 @@ public:
 
     QString predefinedTextColor() const;
 
+    QString schemeFile() const;
+    void setSchemeFile(const QString &file);
+
     virtual QString textColor() const;
     void setTextColor(QString color);
 
@@ -131,6 +136,7 @@ signals:
     void nameChanged();
     void popUpMarginChanged();
     void preferredForShortcutsTouchedChanged();
+    void schemeFileChanged();
     void textColorChanged();
     void versionChanged();
 
@@ -157,6 +163,7 @@ protected:
     QString m_color;
     QString m_lastUsedActivity; //the last used activity for this layout
     QString m_icon;
+    QString m_schemeFile;
 
     BackgroundStyle m_backgroundStyle{ColorBackgroundStyle};
 
