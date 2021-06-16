@@ -30,6 +30,7 @@ Layout::Layout(Layout &&o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       popUpMargin(o.popUpMargin),
+      schemeFile(o.schemeFile),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
       errors(o.errors),
@@ -52,6 +53,7 @@ Layout::Layout(const Layout &o)
       isTemplate(o.isTemplate),
       hasDisabledBorders(o.hasDisabledBorders),
       popUpMargin(o.popUpMargin),
+      schemeFile(o.schemeFile),
       activities(o.activities),
       backgroundStyle(o.backgroundStyle),
       errors(o.errors),
@@ -76,6 +78,7 @@ Layout &Layout::operator=(Layout &&rhs)
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     popUpMargin = rhs.popUpMargin;
+    schemeFile = rhs.schemeFile;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
     errors = rhs.errors;
@@ -101,6 +104,7 @@ Layout &Layout::operator=(const Layout &rhs)
     isTemplate = rhs.isTemplate;
     hasDisabledBorders = rhs.hasDisabledBorders;
     popUpMargin = rhs.popUpMargin;
+    schemeFile = rhs.schemeFile;
     activities = rhs.activities;
     backgroundStyle = rhs.backgroundStyle;
     errors = rhs.errors;
@@ -126,6 +130,7 @@ bool Layout::operator==(const Layout &rhs) const
             && (isTemplate == rhs.isTemplate)
             && (hasDisabledBorders == rhs.hasDisabledBorders)
             && (popUpMargin == rhs.popUpMargin)
+            && (schemeFile == rhs.schemeFile)
             && (activities == rhs.activities)
             && (backgroundStyle == rhs.backgroundStyle)
             //&& (errors == rhs.errors) /*Disabled because this is not needed in order to track layout changes for saving*/

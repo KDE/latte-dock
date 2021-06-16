@@ -25,6 +25,7 @@ public:
     static constexpr const char* ALLACTIVITIESID = "{0}";
     static constexpr const char* FREEACTIVITIESID = "{free-activities}";
     static constexpr const char* CURRENTACTIVITYID = "{current-activity}";
+    static constexpr const char* DEFAULTSCHEMEFILE = "kdeglobals";
 
     Layout();
     Layout(Layout &&o);
@@ -36,6 +37,7 @@ public:
     QString background;
     QString textColor;
     QString lastUsedActivity;
+    QString schemeFile{DEFAULTSCHEMEFILE};
     bool isActive{false};
     bool isConsideredActive{false}; //used from settings window to indicate activeness based on selected layouts mode
     bool isLocked{false};
