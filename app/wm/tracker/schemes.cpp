@@ -91,6 +91,18 @@ void Schemes::updateDefaultScheme()
     }
 }
 
+SchemeColors *Schemes::schemeForFile(const QString &scheme)
+{
+    QString schemeFile = SchemeColors::possibleSchemeFile(scheme);
+
+    if (!schemeFile.isEmpty() && !m_schemes.contains(schemeFile)) {
+        //! when this scheme file has not been loaded yet
+        m_schemes[schemeFile] = new SchemeColors(this, schemeFile);
+    }
+
+    return m_schemes.contains(schemeFile) ? m_schemes[schemeFile] : nullptr;
+}
+
 SchemeColors *Schemes::schemeForWindow(WindowId wid)
 {
     if (!m_windowScheme.contains(wid)) {
