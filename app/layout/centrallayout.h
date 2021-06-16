@@ -11,6 +11,7 @@
 // local
 #include "genericlayout.h"
 #include "../data/layoutdata.h"
+#include "../wm/schemecolors.h"
 
 // Qt
 #include <QObject>
@@ -34,6 +35,7 @@ namespace Latte {
 class CentralLayout : public Layout::GenericLayout
 {
     Q_OBJECT
+    Q_PROPERTY(Latte::WindowSystem::SchemeColors *scheme READ scheme NOTIFY schemeChanged)
 
 public:
     CentralLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
@@ -59,25 +61,34 @@ public:
     Layout::Type type() const override;
     Data::Layout data() const;
 
+    Latte::WindowSystem::SchemeColors *scheme() const;
+
 public:
     Q_INVOKABLE bool isCurrent() override;
 
 signals:
     void disableBordersForMaximizedWindowsChanged();
+    void schemeChanged();
     void showInMenuChanged();
 
 private slots:
     void loadConfig();
     void saveConfig();
 
+    void onSchemeFileChanged();
+
 private:
     void init();
     void importLocalLayout(QString file);
+
+    void setScheme(Latte::WindowSystem::SchemeColors *_scheme);
 
 private:
     bool m_disableBordersForMaximizedWindows{false};
     bool m_showInMenu{false};
     QStringList m_activities;
+
+    Latte::WindowSystem::SchemeColors *m_scheme{nullptr};
 };
 
 }

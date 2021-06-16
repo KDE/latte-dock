@@ -17,6 +17,7 @@
 #include "../layouts/synchronizer.h"
 #include "../settings/universalsettings.h"
 #include "../view/view.h"
+#include "../wm/tracker/schemes.h"
 
 // KDE
 #include <KConfigGroup>
@@ -48,8 +49,12 @@ void CentralLayout::init()
 void CentralLayout::initToCorona(Latte::Corona *corona)
 {
     if (GenericLayout::initToCorona(corona)) {
+        onSchemeFileChanged();
+
         connect(this, &CentralLayout::disableBordersForMaximizedWindowsChanged,
                 m_corona->layoutsManager()->synchronizer(), &Layouts::Synchronizer::updateKWinDisabledBorders);
+
+        connect(this, &Layout::AbstractLayout::schemeFileChanged, this, &CentralLayout::onSchemeFileChanged);
     }
 }
 
@@ -123,6 +128,21 @@ void CentralLayout::setActivities(QStringList activities)
     emit activitiesChanged();
 }
 
+Latte::WindowSystem::SchemeColors *CentralLayout::scheme() const
+{
+    return m_scheme;
+}
+
+void CentralLayout::setScheme(Latte::WindowSystem::SchemeColors *_scheme)
+{
+    if (m_scheme == _scheme) {
+        return;
+    }
+
+    m_scheme = _scheme;
+    emit schemeChanged();
+}
+
 Data::Layout CentralLayout::data() const
 {
     Data::Layout cdata;
@@ -146,6 +166,11 @@ Data::Layout CentralLayout::data() const
     cdata.warnings = warnings().count();
 
     return cdata;
+}
+
+void CentralLayout::onSchemeFileChanged()
+{
+    setScheme(m_corona->wm()->schemesTracker()->schemeForFile(schemeFile()));
 }
 
 void CentralLayout::loadConfig()
