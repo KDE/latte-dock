@@ -34,7 +34,7 @@ Schemes::~Schemes()
     m_windowScheme.clear();
     //! it is just a reference to a real scheme file
     m_schemes.take("kdeglobals");
-    qDeleteAll(m_schemes);
+    qDeleteAll(m_schemes.values());
     m_schemes.clear();
 }
 
