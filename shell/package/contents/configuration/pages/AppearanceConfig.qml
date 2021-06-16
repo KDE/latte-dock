@@ -742,26 +742,30 @@ PlasmaComponents.Page {
                 readonly property bool colorsScriptIsPresent: universalSettings.colorsScriptIsPresent
 
                 PlasmaComponents.Label {
-                    text: i18n("Theme")
+                    text: i18n("Palette")
                 }
 
                 LatteComponents.ComboBox {
                     Layout.fillWidth: true
                     model: [
                         {
-                            name: i18nc("plasma theme colors", "Plasma"),
+                            name: i18nc("plasma theme colors", "Plasma Theme"),
                             value: LatteContainment.Types.PlasmaThemeColors
                         },{
-                            name: i18nc("dark theme colors", "Dark"),
+                            name: i18nc("dark theme colors", "Dark Colors"),
                             value: LatteContainment.Types.DarkThemeColors
                         },{
-                            name: i18nc("light theme colors", "Light"),
+                            name: i18nc("light theme colors", "Light Colors"),
                             value: LatteContainment.Types.LightThemeColors
                         },{
+                            name: i18nc("layout custom colors", "Layout Custom Colors"),
+                            value: LatteContainment.Types.LayoutThemeColors
+                        },
+                        /*,{
                             name: i18nc("reverse plasma theme colors", "Reverse"),
                             value: LatteContainment.Types.ReverseThemeColors
-                        },{
-                            name: i18nc("smart theme colors", "Smart"),
+                        }*/{
+                            name: i18nc("smart theme colors", "Smart Colors Based On Desktop Background"),
                             value: LatteContainment.Types.SmartThemeColors
                         }
                     ]
@@ -778,6 +782,8 @@ PlasmaComponents.Page {
                         } else if (colors === LatteContainment.Types.LightThemeColors) {
                             return 2;
                         } else if (colors === LatteContainment.Types.ReverseThemeColors) {
+                            return 3;
+                        } else if (colors === LatteContainment.Types.LayoutThemeColors) {
                             return 3;
                         } else if (colors === LatteContainment.Types.SmartThemeColors) {
                             return 4;
