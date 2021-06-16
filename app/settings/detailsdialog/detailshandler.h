@@ -79,6 +79,7 @@ private slots:
     void selectIcon();
     void selectTextColor();
     void updateWindowTitle();
+    void updateCustomSchemeCmb(const int &row);
 
 private:
     void init();

@@ -326,9 +326,9 @@ void drawColorSchemeIcon(QPainter *painter, const QStyleOption &option, const QC
     }
 
     painter->save();
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setRenderHint(QPainter::Antialiasing, false);
 
-    int backImageMargin = 1; //most icon themes provide 1-2px. padding around icons //OLD CALCS: ICONMARGIN; //qMin(target.height()/4, ICONMARGIN+1);
+    int backImageMargin = 0; //most icon themes provide 1-2px. padding around icons //OLD CALCS: ICONMARGIN; //qMin(target.height()/4, ICONMARGIN+1);
     QRect backTarget(target.x() + backImageMargin, target.y() + backImageMargin, target.width() - 2*backImageMargin, target.height() - 2*backImageMargin);
 
     QPalette::ColorRole textColorRole = selected ? QPalette::HighlightedText : QPalette::Text;

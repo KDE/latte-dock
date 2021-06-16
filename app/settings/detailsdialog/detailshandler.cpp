@@ -169,7 +169,9 @@ void DetailsHandler::loadLayout(const Latte::Data::Layout &data)
         m_ui->patternClearBtn->setVisible(true);
     }
 
-    m_ui->customSchemeCmb->setCurrentIndex(m_schemesModel->row(data.schemeFile));
+    int schind = m_schemesModel->row(data.schemeFile);
+    m_ui->customSchemeCmb->setCurrentIndex(schind);
+    updateCustomSchemeCmb(schind);
 
     m_ui->colorPatternWidget->setBackground(m_colorsModel->colorPath(data.color));
     m_ui->colorPatternWidget->setTextColor(Latte::Layout::AbstractLayout::defaultTextColor(data.color));
@@ -287,8 +289,17 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
     }
 }
 
+void DetailsHandler::updateCustomSchemeCmb(const int &row)
+{
+    int scmind = row;
+    m_ui->customSchemeCmb->setCurrentText(m_ui->customSchemeCmb->itemData(scmind, Qt::DisplayRole).toString());
+    m_ui->customSchemeCmb->setTextColor(m_ui->customSchemeCmb->itemData(scmind, Model::Schemes::TEXTCOLORROLE).value<QColor>());
+    m_ui->customSchemeCmb->setBackgroundColor(m_ui->customSchemeCmb->itemData(scmind, Model::Schemes::BACKGROUNDCOLORROLE).value<QColor>());
+}
+
 void DetailsHandler::onCurrentSchemeIndexChanged(int row)
 {
+    updateCustomSchemeCmb(row);
     QString selectedScheme = m_ui->customSchemeCmb->itemData(row, Model::Schemes::IDROLE).toString();
     setCustomSchemeFile(selectedScheme);
 }
