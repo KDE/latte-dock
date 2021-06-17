@@ -152,7 +152,7 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
-            text: i18n("Margin")
+            text: i18n("Position")
             horizontalAlignment: Text.AlignLeft
         }
 
