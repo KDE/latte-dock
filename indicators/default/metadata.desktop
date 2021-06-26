@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte
+Name[ast]=Latte
 Name[az]=Latte
 Name[ca]=Latte
 Name[ca@valencia]=Latte
