@@ -1,5 +1,27 @@
 #**CHANGELOG**#
 
+#### Version 0.10.0
+* 2200 commits after version 0.9
+* plenty of bug fixes and improvements
+* Highlights:
+  -- multiple docks and panels on the same screen edge
+  -- floating docks and panels
+  -- support background radius and background shadow size
+  -- ten different visibility modes
+  -- ondemand sidebars support
+  -- inform Plasma Desktop about panels and docks geometries (since plasma 5.18)
+  -- inform window managers about docks visible area (GTK_FRAME_EXTENTS support)
+  -- provide internal Widgets Explorer dialog and thus being able to be used completely in other desktop environments such as GNOME and XFCE
+  -- support multiple Latte Tasks in the same dock or panel
+  -- improve applets positioning for Justify alignment in latte panels
+  -- support latte centric applets that can use parabolic effect easily
+  -- support Plasma Margins Area Separators
+  -- user can specify custom color scheme per layout
+  -- redesign and improve all layouts dialogs
+  -- use templates for all layout functionality
+  -- provide move/copy/paste functionality for docks and panels
+  -- export layouts and docks/panels as templates for public use
+
 #### Version 0.9.11
 
 * fix context menu for classic systray items such as Viber and Telegram
