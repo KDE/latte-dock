@@ -98,6 +98,7 @@ int main(int argc, char **argv)
                           , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
                           , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "file_name")}
                           , {"import-full", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
+                          , {"add-dock", i18nc("command line", "Add Dock/Panel"), i18nc("command line: add", "template_name")}
                           , {"single", i18nc("command line", "Single layout memory mode. Only one layout is active at any case.")}
                           , {"multiple", i18nc("command line", "Multiple layouts memory mode. Multiple layouts can be active at any time based on Activities running.")}
                       });
@@ -223,9 +224,18 @@ int main(int argc, char **argv)
 
     if (!lockFile.tryLock(timeout)) {
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
+        bool addview{parser.isSet(QStringLiteral("add-dock"))};
+
         if (iface.isValid()) {
-            // LayoutPage = 0
-            iface.call("showSettingsWindow", 0);
+            if (addview) {
+                //iface.call("addView", 0, parser.value(QStringLiteral("add-dock")));
+                //! Enable code above when the code path is ready and works correctly
+                qGuiApp->exit();
+                return 0;
+            } else {
+                // LayoutPage = 0
+                iface.call("showSettingsWindow", 0);
+            }
         }
 
         qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
