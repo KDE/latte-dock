@@ -236,6 +236,15 @@ bool Manager::hasViewTemplate(const QString &templateName) const
     return m_viewTemplates.containsName(templateName);
 }
 
+QString Manager::viewTemplateFilePath(const QString templateName) const
+{
+    if (m_viewTemplates.containsName(templateName)) {
+        return m_viewTemplates.idForName(templateName);
+    }
+
+    return QString();
+}
+
 void Manager::installCustomLayoutTemplate(const QString &templateFilePath)
 {
     if (!templateFilePath.endsWith(".layout.latte")) {
