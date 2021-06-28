@@ -228,8 +228,7 @@ int main(int argc, char **argv)
 
         if (iface.isValid()) {
             if (addview) {
-                //iface.call("addView", 0, parser.value(QStringLiteral("add-dock")));
-                //! Enable code above when the code path is ready and works correctly
+                iface.call("addView", (uint)0, parser.value(QStringLiteral("add-dock")));
                 qGuiApp->exit();
                 return 0;
             } else {

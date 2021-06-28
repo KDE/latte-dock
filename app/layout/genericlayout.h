@@ -111,6 +111,7 @@ public:
     void recreateView(Plasma::Containment *containment, bool delayed = true);
     bool latteViewExists(Plasma::Containment *containment);
 
+    bool newView(const QString &templateName);
     Data::View newView(const Latte::Data::View &nextViewData);
     void removeView(const Latte::Data::View &viewData);
     void updateView(const Latte::Data::View &viewData);    

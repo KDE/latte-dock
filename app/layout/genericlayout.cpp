@@ -16,6 +16,7 @@
 #include "../layouts/storage.h"
 #include "../layouts/synchronizer.h"
 #include "../shortcuts/shortcutstracker.h"
+#include "../templates/templatesmanager.h"
 #include "../view/view.h"
 #include "../view/positioner.h"
 
@@ -1536,6 +1537,35 @@ void GenericLayout::syncToLayoutFile(bool removeLayoutId)
 {
     syncSettings();
     Layouts::Storage::self()->syncToLayoutFile(this, removeLayoutId);
+}
+
+bool GenericLayout::newView(const QString &templateName)
+{
+    if (!isActive() || !m_corona->templatesManager()->hasViewTemplate(templateName)) {
+        return false;
+    }
+
+    QString templatefilepath = m_corona->templatesManager()->viewTemplateFilePath(templateName);
+    Data::ViewsTable templateviews = Layouts::Storage::self()->views(templatefilepath);
+
+    if (templateviews.rowCount() <= 0) {
+        return false;
+    }
+
+    Data::View nextdata = templateviews[0];
+    int scrId = m_corona->screenPool()->primaryScreenId();
+
+    QList<Plasma::Types::Location> freeedges = freeEdges(scrId);
+
+    if (!freeedges.contains(nextdata.edge)) {
+        nextdata.edge = (freeedges.count() > 0 ? freeedges[0] : Plasma::Types::BottomEdge);
+    }
+
+    nextdata.setState(Data::View::OriginFromViewTemplate, templatefilepath);
+
+    newView(nextdata);
+
+    return true;
 }
 
 Data::View GenericLayout::newView(const Latte::Data::View &nextViewData)
