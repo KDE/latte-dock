@@ -38,7 +38,7 @@ Window{
             }
 
             Text{
-                text: latteView ? latteView.name : "___"
+                text: latteView && latteView.name.length > 0 ? latteView.name : "___"
             }
 
             Text{
