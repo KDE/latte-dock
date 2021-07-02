@@ -14,6 +14,7 @@ Name[ko]=Latte 컨테이너
 Name[nl]=Latte-container
 Name[pl]=Pojemnik Latte
 Name[pt]=Contentor do Latte
+Name[pt_BR]=Contêiner do Latte
 Name[sl]=Latte zadrževalnik
 Name[sv]=Latte-omgivning
 Name[uk]=контейнер Латте
