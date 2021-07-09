@@ -518,8 +518,17 @@ Layout::GenericLayout *Corona::layout(QString name) const
 }
 
 QRegion Corona::availableScreenRegion(int id) const
-{
-    return availableScreenRegionWithCriteria(id);
+{   
+    //! ignore modes are added in order for notifications to be placed
+    //! in better positioning and not overlap with sidebars or usually hidden views
+    QList<Types::Visibility> ignoremodes({Latte::Types::AutoHide,
+                                          Latte::Types::SidebarOnDemand,
+                                          Latte::Types::SidebarAutoHide});
+
+
+    return availableScreenRegionWithCriteria(id,
+                                             QString(),
+                                             ignoremodes);
 }
 
 QRegion Corona::availableScreenRegionWithCriteria(int id,
@@ -713,7 +722,15 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
 QRect Corona::availableScreenRect(int id) const
 {
-    return availableScreenRectWithCriteria(id);
+    //! ignore modes are added in order for notifications to be placed
+    //! in better positioning and not overlap with sidebars or usually hidden views
+    QList<Types::Visibility> ignoremodes({Latte::Types::AutoHide,
+                                          Latte::Types::SidebarOnDemand,
+                                          Latte::Types::SidebarAutoHide});
+
+    return availableScreenRectWithCriteria(id,
+                                           QString(),
+                                           ignoremodes);
 }
 
 QRect Corona::availableScreenRectWithCriteria(int id,
