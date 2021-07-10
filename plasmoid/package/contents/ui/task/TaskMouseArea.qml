@@ -211,7 +211,7 @@ MouseArea {
     }
 
     onWheel: {
-        var wheelActionsEnabled = (root.taskScrollAction !== LatteTasks.Types.ScrollNone || manualScrollTasksEnabled);
+        var wheelActionsEnabled = (root.taskScrollAction !== LatteTasks.Types.ScrollNone || root.manualScrollTasksEnabled);
 
         if (isSeparator
                 || wheelIsBlocked
