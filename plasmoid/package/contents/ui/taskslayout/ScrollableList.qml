@@ -27,7 +27,8 @@ Flickable{
     readonly property bool centered: root.alignment === LatteCore.Types.Center
     readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
 
-    readonly property bool contentsExceed: root.scrollingEnabled ? root.tasksLength > flickableContainer.length : false
+    //! Math.floor is needed in order to make calculations in (int) world
+    readonly property bool contentsExceed: root.scrollingEnabled ? Math.floor(root.tasksLength) > flickableContainer.length : false
     readonly property int contentsExtraSpace: contentsExceed ? root.tasksLength - flickableContainer.length : 0
 
     readonly property real scrollFirstPos: 0
