@@ -102,18 +102,18 @@ void TrackedViewInfo::setIsTouchingBusyVerticalView(bool touching)
     m_isTouchingBusyVerticalView = touching;
 }
 
-QRect TrackedViewInfo::availableScreenGeometry() const
+QRect TrackedViewInfo::screenGeometry() const
 {
-    return m_availableScreenGeometry;
+    return m_screenGeometry;
 }
 
-void TrackedViewInfo::setAvailableScreenGeometry(QRect geometry)
+void TrackedViewInfo::setScreenGeometry(QRect geometry)
 {
-    if (m_availableScreenGeometry == geometry) {
+    if (m_screenGeometry == geometry) {
         return;
     }
 
-    m_availableScreenGeometry = geometry;
+    m_screenGeometry = geometry;
 }
 
 SchemeColors *TrackedViewInfo::touchingWindowScheme() const
@@ -138,7 +138,7 @@ Latte::View *TrackedViewInfo::view() const
 bool TrackedViewInfo::isTracking(const WindowInfoWrap &winfo) const
 {   
     return  TrackedGeneralInfo::isTracking(winfo)
-            && m_availableScreenGeometry.contains(winfo.geometry().center());
+            && m_screenGeometry.contains(winfo.geometry().center());
 }
 
 }

@@ -51,8 +51,8 @@ public:
     bool isTouchingBusyVerticalView() const;
     void setIsTouchingBusyVerticalView(bool touching);
 
-    QRect availableScreenGeometry() const;
-    void setAvailableScreenGeometry(QRect geometry);
+    QRect screenGeometry() const;
+    void setScreenGeometry(QRect geometry);
 
     SchemeColors *touchingWindowScheme() const;
     void setTouchingWindowScheme(SchemeColors *scheme);
@@ -68,7 +68,7 @@ private:
     bool m_existsWindowTouchingEdge{false};
     bool m_isTouchingBusyVerticalView{false};
 
-    QRect m_availableScreenGeometry;
+    QRect m_screenGeometry;
 
     SchemeColors *m_touchingWindowScheme{nullptr};
 
