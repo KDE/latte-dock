@@ -62,8 +62,6 @@ Windows::~Windows()
 
 void Windows::init()
 {
-    connect(m_wm->corona(), &Plasma::Corona::availableScreenRectChanged, this, &Windows::updateAvailableScreenGeometries);
-
     connect(m_wm, &AbstractWindowInterface::windowChanged, this, [&](WindowId wid) {
         m_windows[wid] = m_wm->requestInfo(wid);
         updateAllHints();
@@ -106,19 +104,8 @@ void Windows::init()
         emit activeWindowChanged(wid);
     });
 
-    connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, [&] {
-        updateAllHints();
-    });
-
-    connect(m_wm, &AbstractWindowInterface::currentActivityChanged, this, [&] {
-        if (m_wm->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            //! this is needed in MultipleLayouts because there is a chance that multiple
-            //! layouts are providing different available screen geometries in different Activities
-            updateAvailableScreenGeometries();
-        }
-
-        updateAllHints();
-    });
+    connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, &Windows::updateAllHints);
+    connect(m_wm, &AbstractWindowInterface::currentActivityChanged,  this, &Windows::updateAllHints);
 }
 
 void Windows::initLayoutHints(Latte::Layout::GenericLayout *layout)
@@ -165,7 +152,7 @@ void Windows::addView(Latte::View *view)
 
     m_views[view] = new TrackedViewInfo(this, view);
 
-    updateAvailableScreenGeometries();
+    updateScreenGeometries();
 
     //! Consider Layouts
     addRelevantLayout(view);
@@ -173,6 +160,8 @@ void Windows::addView(Latte::View *view)
     connect(view, &Latte::View::layoutChanged, this, [&, view]() {
         addRelevantLayout(view);
     });
+
+    connect(view, &Latte::View::screenGeometryChanged, this, &Windows::updateScreenGeometries);
 
     connect(view, &Latte::View::isTouchingBottomViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
     connect(view, &Latte::View::isTouchingTopViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
@@ -695,7 +684,7 @@ bool Windows::isActive(const WindowInfoWrap &winfo)
 bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
 {
     return (winfo.isValid() && winfo.isActive() &&  !winfo.isMinimized()
-            && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
+            && m_views[view]->screenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
@@ -705,7 +694,7 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
     return (winfo.isValid() && !winfo.isMinimized()
             && !winfo.isShaded()
             && winfo.isMaximized()
-            && m_views[view]->availableScreenGeometry().contains(winfo.geometry().center()));
+            && m_views[view]->screenGeometry().contains(winfo.geometry().center()));
 }
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
@@ -784,17 +773,13 @@ void Windows::cleanupFaultyWindows()
 }
 
 
-void Windows::updateAvailableScreenGeometries()
+void Windows::updateScreenGeometries()
 {
     for (const auto view : m_views.keys()) {
-        if (m_views[view]->enabled()) {
-            int currentscrid = view->positioner()->currentScreenId();
-            QString activityid = view->layout() ? view->layout()->lastUsedActivity() : QString();
+        if (m_views[view]->screenGeometry() != view->screenGeometry()) {
+            m_views[view]->setScreenGeometry(view->screenGeometry());
 
-            QRect tempAvailableScreenGeometry = m_wm->corona()->availableScreenRectWithCriteria(currentscrid, activityid, m_ignoreModes, {});
-
-            if (tempAvailableScreenGeometry != m_views[view]->availableScreenGeometry()) {
-                m_views[view]->setAvailableScreenGeometry(tempAvailableScreenGeometry);
+            if (m_views[view]->enabled()) {
                 updateHints(view);
             }
         }

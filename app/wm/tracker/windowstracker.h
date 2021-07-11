@@ -112,7 +112,7 @@ signals:
     void applicationDataChanged(const WindowId &wid);
 
 private slots:
-    void updateAvailableScreenGeometries();
+    void updateScreenGeometries();
 
     void addRelevantLayout(Latte::View *view);
 
