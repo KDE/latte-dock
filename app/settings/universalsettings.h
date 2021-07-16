@@ -76,6 +76,9 @@ public:
     bool inAdvancedModeForEditSettings() const;
     void setInAdvancedModeForEditSettings(const bool &inAdvanced);
 
+    bool isAvailableGeometryBroadcastedToPlasma() const;
+    void setIsAvailableGeometryBroadcastedToPlasma(const bool &isBroadcasted);
+
     bool kwin_metaForwardedToLatte() const;
     void kwin_forwardMetaToLatte(bool forward);
 
@@ -133,6 +136,7 @@ signals:
     void layoutsWindowSizeChanged();
     void launchersChanged();
     void layoutsMemoryUsageChanged();
+    void isAvailableGeometryBroadcastedToPlasmaChanged();
     void metaPressAndHoldEnabledChanged();
     void sensitivityChanged();
     void screensCountChanged();
@@ -166,6 +170,7 @@ private:
     bool m_canDisableBorders{false};
     bool m_colorsScriptIsPresent{false};
     bool m_inAdvancedModeForEditSettings{false};
+    bool m_isAvailableGeometryBroadcastedToPlasma{true};
     bool m_metaPressAndHoldEnabled{true};
     bool m_showInfoWindow{true};
 

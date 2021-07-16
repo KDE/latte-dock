@@ -37,6 +37,9 @@ private slots:
 
     void init();
     void updateGeometries();
+    void clearGeometries();
+
+    void onBroadcastToPlasmaChanged();
 
 private slots:
     bool screenIsActive(const QString &screenName) const;
