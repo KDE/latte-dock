@@ -46,6 +46,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);  
     connect(this, &UniversalSettings::inAdvancedModeForEditSettingsChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::isAvailableGeometryBroadcastedToPlasmaChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
@@ -124,6 +125,21 @@ void UniversalSettings::setInAdvancedModeForEditSettings(const bool &inAdvanced)
 
     m_inAdvancedModeForEditSettings = inAdvanced;
     emit inAdvancedModeForEditSettingsChanged();
+}
+
+bool UniversalSettings::isAvailableGeometryBroadcastedToPlasma() const
+{
+    return m_isAvailableGeometryBroadcastedToPlasma;
+}
+
+void UniversalSettings::setIsAvailableGeometryBroadcastedToPlasma(const bool &isBroadcasted)
+{
+    if (m_isAvailableGeometryBroadcastedToPlasma == isBroadcasted) {
+        return;
+    }
+
+    m_isAvailableGeometryBroadcastedToPlasma = isBroadcasted;
+    emit isAvailableGeometryBroadcastedToPlasmaChanged();
 }
 
 bool UniversalSettings::showInfoWindow() const
@@ -517,6 +533,7 @@ void UniversalSettings::loadConfig()
     m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", QStringList());
     m_contextMenuActionsAlwaysShown = m_contextMenuActionsAlwaysShown.isEmpty() ? Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE : m_contextMenuActionsAlwaysShown;
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
+    m_isAvailableGeometryBroadcastedToPlasma = m_universalGroup.readEntry("isAvailableGeometryBroadcastedToPlasma", true);
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
@@ -540,6 +557,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("contextMenuActionsAlwaysShown", (m_contextMenuActionsAlwaysShown == Data::ContextMenu::ACTIONSALWAYSVISIBLE ?
                                     QStringList() : m_contextMenuActionsAlwaysShown));
     m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
+    m_universalGroup.writeEntry("isAvailableGeometryBroadcastedToPlasma", m_isAvailableGeometryBroadcastedToPlasma);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);

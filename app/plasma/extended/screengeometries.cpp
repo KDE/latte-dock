@@ -11,6 +11,7 @@
 #include "../../view/view.h"
 #include "../../layout/genericlayout.h"
 #include "../../layouts/manager.h"
+#include "../../settings/universalsettings.h"
 
 // Qt
 #include <QDebug>
@@ -61,6 +62,8 @@ void ScreenGeometries::init()
 {
     QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
 
+    connect(m_corona->universalSettings(), &Latte::UniversalSettings::isAvailableGeometryBroadcastedToPlasmaChanged, this, &ScreenGeometries::onBroadcastToPlasmaChanged);
+
     if (plasmaStrutsIface.isValid()) {
         m_plasmaInterfaceAvailable = true;
 
@@ -74,11 +77,15 @@ void ScreenGeometries::init()
         });
 
         connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
-            m_forceGeometryBroadcast = true;
-            m_publishTimer.start();
+            if (m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
+                m_forceGeometryBroadcast = true;
+                m_publishTimer.start();
+            }
         });
 
-        m_publishTimer.start();
+        if (m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
+            m_publishTimer.start();
+        }
     }
 }
 
@@ -93,9 +100,44 @@ bool ScreenGeometries::screenIsActive(const QString &screenName) const
     return false;
 }
 
-void ScreenGeometries::updateGeometries()
+void ScreenGeometries::onBroadcastToPlasmaChanged()
+{
+    if (m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
+        m_publishTimer.start();
+    } else {
+        clearGeometries();
+    }
+}
+
+void ScreenGeometries::clearGeometries()
 {
     if (!m_plasmaInterfaceAvailable) {
+        return;
+    }
+
+    QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
+
+    if (!plasmaStrutsIface.isValid()) {
+        return;
+    }
+
+    for (QScreen *screen : qGuiApp->screens()) {
+        QString scrName = screen->name();
+        int scrId = m_corona->screenPool()->id(screen->name());
+
+        if (m_corona->screenPool()->hasScreenId(scrId)) {
+            plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, QRect());
+            plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, QVariant());
+        }
+    }
+
+    m_lastAvailableRect.clear();
+    m_lastAvailableRegion.clear();
+}
+
+void ScreenGeometries::updateGeometries()
+{
+    if (!m_plasmaInterfaceAvailable || !m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
         return;
     }
 
@@ -185,7 +227,7 @@ void ScreenGeometries::updateGeometries()
 
 void ScreenGeometries::availableScreenGeometryChangedFrom(Latte::View *origin)
 {
-    if (origin && origin->layout() && origin->layout()->isCurrent()) {
+    if (m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma() &&  origin && origin->layout() && origin->layout()->isCurrent()) {
         m_publishTimer.start();
     }
 }
