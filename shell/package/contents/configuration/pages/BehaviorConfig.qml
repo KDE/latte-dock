@@ -84,7 +84,7 @@ PlasmaComponents.Page {
                     screensCount = universalSettings.screens.length;
                     screensModel.clear();
 
-                    var primary = {name: i18n("Follow Primary Screen"), icon: 'favorites'};
+                    var primary = {name: i18n("Follow Primary Screen"), icon: 'favorite'};
                     screensModel.append(primary);
 
                     //check if the screen exists, it is used in cases Latte is moving
