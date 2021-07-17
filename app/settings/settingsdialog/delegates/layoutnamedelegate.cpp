@@ -110,7 +110,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
 
     if (isConsideredActive) {
         remainedrect = Latte::remainedFromIcon(myOptions, Qt::AlignRight, -1, 1);
-        Latte::drawIcon(painter, myOptions, "favorites", Qt::AlignRight, -1, 1);
+        Latte::drawIcon(painter, myOptions, "favorite", Qt::AlignRight, -1, 1);
         myOptions.rect = remainedrect;
     }
 
