@@ -64,7 +64,7 @@ class LastActiveWindow : public QObject {
 
     Q_PROPERTY(QIcon icon READ icon NOTIFY iconChanged)
 
-    Q_PROPERTY(QVariant winId READ winId NOTIFY winIdChanged)
+    Q_PROPERTY(QVariant winId READ currentWinId NOTIFY currentWinIdChanged)
 
 public:
     LastActiveWindow(TrackedGeneralInfo *trackedInfo);
@@ -100,7 +100,7 @@ public:
     QRect geometry() const;
     QIcon icon() const;
 
-    QVariant winId() const;
+    QVariant currentWinId() const;
 
     void setInformation(const WindowInfoWrap &info);
 
@@ -116,12 +116,16 @@ public slots:
 
     void requestMove(Latte::View *fromView, int localX, int localY);
 
+    //! Debug
+    void printHistory();
+
 private slots:
+    void updateInformationFromHistory();
+
     void applicationDataChanged(const WindowId &wid);
 
     void windowChanged(const WindowId &wid);
     void windowRemoved(const WindowId &wid);
-
 
 signals:
     void colorSchemeChanged();
@@ -134,7 +138,7 @@ signals:
     void isOnAllDesktopsChanged();
     void isShadedChanged();
     void isValidChanged();
-    void hasSkipTaskbarChanged();    
+    void hasSkipTaskbarChanged();
 
     //! BEGIN: Window Abitilities
     /*since Latte v0.9.8*/
@@ -153,7 +157,10 @@ signals:
     void displayChanged();
 
     void geometryChanged();
-    void winIdChanged();
+    void currentWinIdChanged();
+
+    //! Debug
+    void printRequested();
 
 private:
     void setActive(bool active);
@@ -187,9 +194,12 @@ private:
     void setGeometry(QRect geometry);
     void setIcon(QIcon icon);
 
-    void setWinId(QVariant winId);
+    void setCurrentWinId(QVariant winId);
 
     void cleanHistory();
+    void appendInHistory(const QVariant &wid);
+    void removeFromHistory(const QVariant &wid);
+
     void updateColorScheme();
 
 private:
@@ -224,7 +234,7 @@ private:
     QRect m_geometry;
     QIcon m_icon;
 
-    QVariant m_winId;
+    QVariant m_currentWinId;
 
     QList<WindowId> m_history;
 
