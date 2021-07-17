@@ -108,6 +108,10 @@ void TrackedGeneralInfo::updateTrackingCurrentActivity()
     m_isTrackingCurrentActivity = ( m_activities.isEmpty() || m_activities[0] == QLatin1String("{0}") || m_activities.contains(m_wm->currentActivity()));
 }
 
+bool TrackedGeneralInfo::isTrackingActivity(const QString &activity)
+{
+    return (m_activities.isEmpty() || m_activities[0] == QLatin1String("{0}") || m_activities.contains(activity));
+}
 
 LastActiveWindow *TrackedGeneralInfo::lastActiveWindow() const
 {
@@ -140,9 +144,15 @@ void TrackedGeneralInfo::setActiveWindow(const WindowId &wid)
 
 bool TrackedGeneralInfo::isTracking(const WindowInfoWrap &winfo) const
 {
+    bool isignored = winfo.isMinimized() || (winfo.hasSkipTaskbar() && (winfo.hasSkipPager() || winfo.hasSkipSwitcher()));
+
+    return (winfo.isValid() && !isignored);
+}
+
+bool TrackedGeneralInfo::isShown(const WindowInfoWrap &winfo) const
+{
     return (winfo.isValid()
             && isTrackingCurrentActivity()
-            && !winfo.isMinimized()
             && winfo.isOnDesktop(m_wm->currentDesktop())
             && winfo.isOnActivity(m_wm->currentActivity()));
 }

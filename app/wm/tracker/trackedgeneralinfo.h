@@ -49,6 +49,7 @@ public:
     void setExistsWindowMaximized(bool maximized);
 
     bool isTrackingCurrentActivity() const;
+    bool isTrackingActivity(const QString &activity);
 
     LastActiveWindow *lastActiveWindow() const;
 
@@ -59,6 +60,9 @@ public:
 
     void setActiveWindow(const WindowId &wid);
 
+    //! windows that are not shown but are tracked should not be removed from history but give their place to other shown windows
+    bool isShown(const WindowInfoWrap &winfo) const;
+    //! windows that are not tracked can be removed totally from history as they are not relevant any more
     virtual bool isTracking(const WindowInfoWrap &winfo) const;
 
 signals:

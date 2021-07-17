@@ -92,7 +92,7 @@ void Windows::init()
         //! for some reason this is needed in order to update properly activeness values
         //! when the active window changes the previous active windows should be also updated
         for (const auto view : m_views.keys()) {
-            WindowId lastWinId = m_views[view]->lastActiveWindow()->winId();
+            WindowId lastWinId = m_views[view]->lastActiveWindow()->currentWinId();
             if ((lastWinId) != wid && m_windows.contains(lastWinId)) {
                 m_windows[lastWinId] = m_wm->requestInfo(lastWinId);
             }

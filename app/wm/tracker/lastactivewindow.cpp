@@ -25,8 +25,8 @@ namespace WindowSystem {
 namespace Tracker {
 
 const int INVALIDWID = -1;
-const int PREFHISTORY = 8;
-const int MAXHISTORY = 15;
+const int PREFHISTORY = 14;
+const int MAXHISTORY = 22;
 
 LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
     : QObject(trackedInfo),
@@ -35,7 +35,7 @@ LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
       m_wm(trackedInfo->wm())
 {
     connect(m_wm->schemesTracker(), &Schemes::colorSchemeChanged, this, [&](WindowId wid) {
-        if (wid == m_winId) {
+        if (wid == m_currentWinId) {
             updateColorScheme();
         }
     });
@@ -43,6 +43,9 @@ LastActiveWindow::LastActiveWindow(TrackedGeneralInfo *trackedInfo)
     connect(m_windowsTracker, &Windows::applicationDataChanged, this, &LastActiveWindow::applicationDataChanged);
     connect(m_windowsTracker, &Windows::windowChanged, this, &LastActiveWindow::windowChanged);
     connect(m_windowsTracker, &Windows::windowRemoved, this, &LastActiveWindow::windowRemoved);
+
+    connect(m_wm, &AbstractWindowInterface::currentActivityChanged, this, &LastActiveWindow::updateInformationFromHistory);
+    connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, &LastActiveWindow::updateInformationFromHistory);
 }
 
 LastActiveWindow::~LastActiveWindow()
@@ -394,48 +397,47 @@ void LastActiveWindow::setIcon(QIcon icon)
     emit iconChanged();
 }
 
-QVariant LastActiveWindow::winId() const
+QVariant LastActiveWindow::currentWinId() const
 {
-    return m_winId;
+    return m_currentWinId;
 }
 
-void LastActiveWindow::setWinId(QVariant winId)
+void LastActiveWindow::setCurrentWinId(QVariant winId)
 {
-    if (m_winId == winId && isValid()) {
+    if (m_currentWinId == winId) {
         return;
     }
 
-    if (!m_history.contains(winId)) {
-        m_history.prepend(winId);
-        cleanHistory();
-    } else {
-        int p = m_history.indexOf(winId);
-        //! move to start
-        m_history.move(p, 0);
-    }
-
-    m_winId = winId;
-    emit winIdChanged();
+    m_currentWinId = winId;
+    emit currentWinIdChanged();
 }
 
 void LastActiveWindow::setInformation(const WindowInfoWrap &info)
 {
-    bool isIgnored = info.hasSkipTaskbar() && (info.hasSkipPager() || info.hasSkipSwitcher());
-
-    if (isIgnored) {
-        if (m_history.contains(info.wid())) {
-            windowRemoved(info.wid());
+    if (!m_trackedInfo->isTracking(info)) {
+        removeFromHistory(info.wid());
+        if (m_currentWinId == info.wid()) {
+            updateInformationFromHistory();
         }
+
+        return;
+    }
+
+    if (!m_trackedInfo->isShown(info)) {
+        if (m_currentWinId == info.wid()) {
+            updateInformationFromHistory();
+        }
+
         return;
     }
 
     bool firstActiveness{false};
 
-    if (m_winId != info.wid()) {
+    if (m_currentWinId != info.wid()) {
         firstActiveness = true;
     }
 
-    setWinId(info.wid());
+    setCurrentWinId(info.wid());
 
     setIsValid(true);
     setActive(info.isActive());
@@ -475,12 +477,15 @@ void LastActiveWindow::setInformation(const WindowInfoWrap &info)
     } else {
         setIcon(info.icon());
     }
+
+    appendInHistory(info.wid());
+    emit printRequested();
 }
 
 //! PRIVATE SLOTS
 void LastActiveWindow::applicationDataChanged(const WindowId &wid)
 {
-    if (m_winId == wid) {
+    if (m_currentWinId == wid) {
         setAppName(m_windowsTracker->appNameFor(wid));
         setIcon(m_windowsTracker->iconFor(wid));
     }
@@ -491,44 +496,23 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
 {
     if (!m_trackedInfo->enabled()) {
         // qDebug() << " Last Active Window, Window Changed : TrackedInfo is disabled...";
+        setIsValid(false);
         return;
     }
 
     if (m_history.contains(wid)) {
-        //! remove from history minimized windows or windows that changed screen
-        //! and update information accordingly with the first valid window found from
-        //! history after the removal
-        WindowInfoWrap winfo = m_windowsTracker->infoFor(wid);
+        WindowInfoWrap historyitem = m_windowsTracker->infoFor(wid);
 
-        bool firstItemRemoved{false};
-
-        //! Remove minimized windows OR NOT-TRACKED windows from history
-        if (winfo.isMinimized() || !m_trackedInfo->isTracking(winfo)) {
-            if (m_history[0] == wid) {
-                firstItemRemoved = true;
+        if (!m_trackedInfo->isTracking(historyitem)) {
+            removeFromHistory(wid);
+            if (m_currentWinId == wid) {
+                updateInformationFromHistory();
             }
-
-            m_history.removeAll(wid);
-            cleanHistory();
-        }
-
-        if (m_history.count() > 0) {
-            if (m_history[0] == wid || firstItemRemoved) {
-                WindowInfoWrap history1 = m_windowsTracker->infoFor(m_history[0]);
-
-                //! Check if first found History window is still valid to show its information
-                if (history1.isMinimized() || !m_trackedInfo->isTracking(history1)) {
-                    windowChanged(m_history[0]);
-                } else {
-                    setInformation(history1);
-                }
+        } else if (!m_trackedInfo->isShown(historyitem)) {
+            if (m_currentWinId == wid) {
+                updateInformationFromHistory();
             }
-        } else {
-            //! History is empty so any demonstrated information are invalid
-            setIsValid(false);
         }
-
-        //qDebug() << " HISTORY ::: " << m_history;
     } else {
         //qDebug() << " LastActiveWindow : window is not in history";
     }
@@ -537,20 +521,8 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
 void LastActiveWindow::windowRemoved(const WindowId &wid)
 {
     if (m_history.contains(wid)) {
-        bool firstItemRemoved{false};
-
-        if (m_history.count() > 0 && m_history[0] == wid) {
-            firstItemRemoved = true;
-        }
-
-        m_history.removeAll(wid);
-        m_history.removeAll(wid);
-
-        if (m_history.count() > 0 && firstItemRemoved) {
-            windowChanged(m_history[0]);
-        } else {
-            setIsValid(false);
-        }
+        removeFromHistory(wid);
+        updateInformationFromHistory();
     }
 }
 
@@ -566,9 +538,46 @@ void LastActiveWindow::cleanHistory()
     }
 }
 
+void LastActiveWindow::printHistory() {
+    for(int i=0; i<m_history.count(); ++i) {
+        WindowInfoWrap historyitem = m_windowsTracker->infoFor(m_history[i]);
+        qDebug() << "  " << i << ". " << historyitem.wid() << " -- " << historyitem.display();
+    }
+}
+
+void LastActiveWindow::appendInHistory(const QVariant &wid)
+{
+    if (!m_history.contains(wid)) {
+        m_history.prepend(wid);
+        cleanHistory();
+    } else {
+        int windex = m_history.indexOf(wid);
+        m_history.move(windex, 0); //! move to start
+    }
+}
+
+void LastActiveWindow::removeFromHistory(const QVariant &wid)
+{
+    m_history.removeAll(wid);
+}
+
+void LastActiveWindow::updateInformationFromHistory()
+{
+    for(int i=0; i<m_history.count(); ++i) {
+        WindowInfoWrap historyitem = m_windowsTracker->infoFor(m_history[i]);
+
+        if (m_trackedInfo->isTracking(historyitem) && m_trackedInfo->isShown(historyitem)) {
+            setInformation(historyitem);
+            return;
+        }
+    }
+
+    setIsValid(false);
+}
+
 void LastActiveWindow::updateColorScheme()
 {
-    auto scheme = m_wm->schemesTracker()->schemeForWindow(m_winId);
+    auto scheme = m_wm->schemesTracker()->schemeForWindow(m_currentWinId);
     if (scheme) {
         setColorScheme(scheme->schemeFile());
     }
@@ -578,12 +587,12 @@ void LastActiveWindow::updateColorScheme()
 //! FUNCTIONALITY
 void LastActiveWindow::requestActivate()
 {
-    m_wm->requestActivate(m_winId);
+    m_wm->requestActivate(m_currentWinId);
 }
 
 void LastActiveWindow::requestClose()
 {
-    m_wm->requestClose(m_winId);
+    m_wm->requestClose(m_currentWinId);
 }
 
 void LastActiveWindow::requestMove(Latte::View *fromView, int localX, int localY)
@@ -595,35 +604,35 @@ void LastActiveWindow::requestMove(Latte::View *fromView, int localX, int localY
     QPoint globalPoint{fromView->x() + localX, fromView->y() + localY};
 
     //! fixes bug #437679, Dragged windows do not become active and during drag they go behind active window
-    m_wm->requestActivate(m_winId);
+    m_wm->requestActivate(m_currentWinId);
 
-    m_wm->requestMoveWindow(m_winId, globalPoint);
+    m_wm->requestMoveWindow(m_currentWinId, globalPoint);
     fromView->unblockMouse(localX, localY);
 }
 
 void LastActiveWindow::requestToggleIsOnAllDesktops()
 {
-    m_wm->requestToggleIsOnAllDesktops(m_winId);
+    m_wm->requestToggleIsOnAllDesktops(m_currentWinId);
 }
 
 void LastActiveWindow::requestToggleKeepAbove()
 {
-    m_wm->requestToggleKeepAbove(m_winId);
+    m_wm->requestToggleKeepAbove(m_currentWinId);
 }
 
 void LastActiveWindow::requestToggleMinimized()
 {
-    m_wm->requestToggleMinimized(m_winId);
+    m_wm->requestToggleMinimized(m_currentWinId);
 }
 
 void LastActiveWindow::requestToggleMaximized()
 {
-    m_wm->requestToggleMaximized(m_winId);
+    m_wm->requestToggleMaximized(m_currentWinId);
 }
 
 bool LastActiveWindow::canBeDragged()
 {
-    return m_wm->windowCanBeDragged(m_winId);
+    return m_wm->windowCanBeDragged(m_currentWinId);
 }
 
 }
