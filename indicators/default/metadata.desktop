@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte
+Name[ar]=لاتيه
 Name[ast]=Latte
 Name[az]=Latte
 Name[ca]=Latte

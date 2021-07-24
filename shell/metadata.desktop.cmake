@@ -64,6 +64,7 @@ Comment[zh_CN]=用于 Latte 停靠栏的 Shell
 Comment[zh_TW]=由 Latte Dock 提供的 Shell
 
 Keywords=shell
+Keywords[ar]=الصدَفة
 Keywords[az]=üzlük
 Keywords[ca]=intèrpret d'ordres
 Keywords[ca@valencia]=intèrpret d'ordres
