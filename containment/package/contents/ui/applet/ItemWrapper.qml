@@ -153,7 +153,6 @@ Item{
     property int index: appletItem.index
 
     property Item wrapperContainer: _wrapperContainer
-    property Item clickedEffect: _clickedEffect
     property Item overlayIconLoader: _overlayIconLoader
 
     readonly property int internalSplitterComputedLength: {
@@ -677,14 +676,6 @@ Item{
                 }
             }
         }
-    }
-
-    BrightnessContrast {
-        id: _clickedEffect
-        anchors.fill: _wrapperContainer
-        source: _wrapperContainer
-
-        visible: clickedAnimation.running && !indicators.info.providesClickedAnimation
     }
 
     Loader{

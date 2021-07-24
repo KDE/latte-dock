@@ -326,7 +326,7 @@ Item {
     property Item userRequests: null
 
     property bool containsMouse: parabolicAreaLoader.active && parabolicAreaLoader.item.containsMouse
-    property bool pressed: viewSignalsConnector.pressed || clickedAnimation.running
+    property bool pressed: viewSignalsConnector.pressed
 
 
     //// BEGIN :: Animate Applet when a new applet is dragged in the view
@@ -1019,33 +1019,4 @@ Item {
             easing.type: Easing.InCubic
         }
     }
-
-
-    /////Clicked Animation/////
-    SequentialAnimation{
-        id: clickedAnimation
-        alwaysRunToEnd: true
-        running: appletItem.isSquare && !originalAppletBehavior && appletItem.pressed
-                 && (appletItem.animations.speedFactor.current > 0) && !indicators.info.providesClickedAnimation
-
-        ParallelAnimation{
-            PropertyAnimation {
-                target: wrapper.clickedEffect
-                property: "brightness"
-                to: -0.35
-                duration: appletItem.animations.duration.large
-                easing.type: Easing.OutQuad
-            }
-        }
-        ParallelAnimation{
-            PropertyAnimation {
-                target: wrapper.clickedEffect
-                property: "brightness"
-                to: 0
-                duration: appletItem.animations.duration.large
-                easing.type: Easing.OutQuad
-            }
-        }
-    }
-    //END animations
 }

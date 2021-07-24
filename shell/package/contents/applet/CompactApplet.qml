@@ -6,6 +6,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
+import QtGraphicalEffects 1.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 2.0 as PlasmaComponents
@@ -31,6 +32,10 @@ PlasmaCore.ToolTipArea {
     property Item originalCompactRepresenationParent
     property Item compactRepresentationVisualParent: originalCompactRepresenationParent && originalCompactRepresenationParent.parent
                                                      ? originalCompactRepresenationParent.parent.parent : null
+
+    property Item appletItem: compactRepresentationVisualParent
+                              && compactRepresentationVisualParent.parent
+                              && compactRepresentationVisualParent.parent.parent ? compactRepresentationVisualParent.parent.parent.parent : null
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
@@ -194,6 +199,48 @@ PlasmaCore.ToolTipArea {
                 popupWindow.requestActivate();
             }
         }
-
     }
+
+    ////Clicked Effect ////
+    BrightnessContrast {
+        id: _clickedEffect
+        anchors.fill: parent
+        source: compactRepresentation
+        visible: appletItem && clickedAnimation.running && !appletItem.indicators.info.providesClickedAnimation
+        z:1000
+    }
+
+    /////Clicked Animation/////
+    SequentialAnimation{
+        id: clickedAnimation
+        alwaysRunToEnd: true
+        running: appletItem
+                 && appletItem.animations
+                 && appletItem.indicators
+                 && appletItem.isSquare
+                 && appletItem.pressed
+                 && !appletItem.originalAppletBehavior
+                 && (appletItem.animations.speedFactor.current > 0)
+                 && !appletItem.indicators.info.providesClickedAnimation
+
+        ParallelAnimation{
+            PropertyAnimation {
+                target: _clickedEffect
+                property: "brightness"
+                to: -0.35
+                duration: appletItem && appletItem.animations ? appletItem.animations.duration.large : 0
+                easing.type: Easing.OutQuad
+            }
+        }
+        ParallelAnimation{
+            PropertyAnimation {
+                target: _clickedEffect
+                property: "brightness"
+                to: 0
+                duration: appletItem && appletItem.animations ? appletItem.animations.duration.large : 0
+                easing.type: Easing.OutQuad
+            }
+        }
+    }
+    //END animations
 }
