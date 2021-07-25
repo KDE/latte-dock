@@ -129,9 +129,11 @@ PlasmaCore.ToolTipArea {
         }
     }*/
 
+    //! This timer is needed in order for the applet popup to not reshow instantly and faulty after the user
+    //! clicks compact representation to hide it
     Timer {
         id: expandedSync
-        interval: 100
+        interval: 500
         onTriggered: plasmoid.expanded = popupWindow.visible;
     }
 
