@@ -92,9 +92,6 @@ Item{
         anchors.leftMargin: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
         anchors.rightMargin: (abilityItem.location === PlasmaCore.Types.RightEdge) ? abilityItem.abilities.metrics.margin.screenEdge : 0
 
-        anchors.horizontalCenterOffset: abilityItem.iconOffsetX
-        anchors.verticalCenterOffset: abilityItem.iconOffsetY
-
         width: abilityItem.isHorizontal ? parabolicItem.regulatorLength : parabolicItem.regulatorThickness
         height: abilityItem.isHorizontal ? parabolicItem.regulatorThickness : parabolicItem.regulatorLength
 
@@ -140,6 +137,9 @@ Item{
         Item {
             id: _contentItemContainer
             anchors.centerIn: parent
+            anchors.horizontalCenterOffset: abilityItem.iconOffsetX
+            anchors.verticalCenterOffset: abilityItem.iconOffsetY
+
             width: newTempSize
             height: width
             visible: !abilityItem.isSeparator
