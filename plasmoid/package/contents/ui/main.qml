@@ -64,6 +64,8 @@ Item {
     property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical ? true : false
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? true : false
 
+    property bool hasTaskDemandingAttention: false
+
     property int clearWidth
     property int clearHeight
 
@@ -253,11 +255,24 @@ Item {
         target: plasmoid
         property: "status"
         value: {
-            if (tasksModel.anyTaskDemandsAttentionInValidTime || root.dragSource) {
-                return PlasmaCore.Types.NeedsAttentionStatus;
+            var hastaskinattention = root.hasTaskDemandingAttention && tasksModel.anyTaskDemandsAttentionInValidTime;
+            return (hastaskinattention || root.dragSource) ? PlasmaCore.Types.NeedsAttentionStatus : PlasmaCore.Types.PassiveStatus;
+        }
+    }
+
+    Binding {
+        target: root
+        property: "hasTaskDemandingAttention"
+        when: appletAbilities.indexer.isReady
+        value: {
+            for (var i=0; i<appletAbilities.indexer.layout.children.length; ++i){
+                var item = appletAbilities.indexer.layout.children[i];
+                if (item && item.isDemandingAttention) {
+                    return true;
+                }
             }
 
-            return PlasmaCore.Types.PassiveStatus;
+            return false;
         }
     }
 
@@ -506,9 +521,12 @@ Item {
         }
 
         onAnyTaskDemandsAttentionChanged: {
+            anyTaskDemandsAttentionInValidTime = anyTaskDemandsAttention;
+
             if (anyTaskDemandsAttention){
-                anyTaskDemandsAttentionInValidTime = true;
-                attentionTimerComponent.createObject(root);
+                attentionTimer.start();
+            } else {
+                attentionTimer.stop();
             }
         }
 
@@ -723,21 +741,14 @@ Item {
         thinTooltip.local.showIsBlocked: root.contextMenu || root.windowPreviewIsShown
     }
 
-    Component{
-        id: attentionTimerComponent
-        Timer{
-            id: attentionTimer
-            interval:8500
-            onTriggered: {
-                tasksModel.anyTaskDemandsAttentionInValidTime = false;
-                destroy();
+    Timer{
+        id: attentionTimer
+        interval:8500
+        onTriggered: {
+            tasksModel.anyTaskDemandsAttentionInValidTime = false;
 
-                if (appletAbilities.debug.timersEnabled) {
-                    console.log("plasmoid timer: attentionTimer called...");
-                }
-            }
-            Component.onCompleted: {
-                start();
+            if (appletAbilities.debug.timersEnabled) {
+                console.log("plasmoid timer: attentionTimer called...");
             }
         }
     }
