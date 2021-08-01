@@ -13,4 +13,6 @@ target_link_libraries(latte_packagestructure_indicator
 kcoreaddons_desktop_to_json(latte_packagestructure_indicator latte-packagestructure-indicator.desktop)
 
 install(TARGETS latte_packagestructure_indicator DESTINATION ${KDE_INSTALL_PLUGINDIR}/kpackage/packagestructure)
+set_target_properties(latte_packagestructure_indicator PROPERTIES OUTPUT_NAME latte_indicator)
+
 install(FILES latte-indicator.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})
