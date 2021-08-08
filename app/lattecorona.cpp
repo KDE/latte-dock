@@ -267,6 +267,8 @@ void Corona::load()
             addOutput(screen);
         }
 
+        m_inStartup = false;
+
         connect(qGuiApp, &QGuiApplication::screenAdded, this, &Corona::addOutput, Qt::UniqueConnection);
         connect(qGuiApp, &QGuiApplication::screenRemoved, this, &Corona::screenRemoved, Qt::UniqueConnection);
     }
@@ -1117,6 +1119,10 @@ void Corona::switchToLayout(QString layout)
 
 void Corona::showSettingsWindow(int page)
 {
+    if (m_inStartup) {
+        return;
+    }
+
     Settings::Dialog::ConfigurationPage p = Settings::Dialog::LayoutPage;
 
     if (page >= Settings::Dialog::LayoutPage && page <= Settings::Dialog::PreferencesPage) {
