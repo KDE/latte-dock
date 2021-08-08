@@ -300,9 +300,14 @@ CentralLayout *Synchronizer::centralLayout(QString layoutname) const
 QList<CentralLayout *> Synchronizer::currentLayouts() const
 {
     QList<CentralLayout *> layouts;
+    layouts.clear();
+
+    if (m_centralLayouts.isEmpty()) {
+        return layouts;
+    }
 
     if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
-        layouts << m_centralLayouts.at(0);
+        layouts << m_centralLayouts[0];
     } else {
         for (auto layout : m_centralLayouts) {
             if (layout->isOnAllActivities() || layout->appliedActivities().contains(m_manager->corona()->activitiesConsumer()->currentActivity())) {

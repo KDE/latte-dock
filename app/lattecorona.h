@@ -211,6 +211,7 @@ private:
 
     bool m_activitiesStarting{true};
     bool m_defaultLayoutOnStartup{false}; //! this is used to enforce loading the default layout on startup
+    bool m_inStartup{true}; //! this is used in order to identify when application is still in startup phase
     bool m_inQuit{false}; //! this is used in order to identify when application is in quit phase
     bool m_quitTimedEnded{false}; //! this is used on destructor in order to delay it and slide-out the views
 
