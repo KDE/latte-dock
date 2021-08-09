@@ -382,6 +382,7 @@ inline void configureAboutData()
     about.setHomepage(WEBSITE);
     about.setProgramLogo(QIcon::fromTheme(QStringLiteral("latte-dock")));
     about.setDesktopFileName(QStringLiteral("latte-dock"));
+    about.setProductName(QByteArray("lattedock"));
 
     // Authors
     about.addAuthor(QStringLiteral("Michail Vourlakos"), QString(), QStringLiteral("mvourlakos@gmail.com"));
