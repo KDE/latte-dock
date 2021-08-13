@@ -21,6 +21,7 @@ Name[sv]=Latte-omgivning
 Name[uk]=контейнер Латте
 Name[x-test]=xxLatte Containmentxx
 Name[zh_CN]=Latte 容器
+Name[zh_TW]=Latte Containment
 Comment=Containment provided for the Latte Dock
 Comment[az]=Latte Dok paneli üçün təmin edilən qoruma
 Comment[ca]=Contenidor proporcionat per l'acoblador Latte
