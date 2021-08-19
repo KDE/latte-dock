@@ -30,7 +30,7 @@ sudo pacman -S cmake extra-cmake-modules python plasma-framework plasma-desktop
 
 ### Fedora/RHEL
 ```
-sudo dnf install cmake extra-cmake-modules qt5-qtdeclarative-devel qt5-qtx11extras-devel kf5-kiconthemes-devel kf5-plasma-devel kf5-kwindowsystem-devel kf5-kdeclarative-devel kf5-kxmlgui-devel kf5-kactivities-devel gcc-c++ gcc xcb-util-devel kf5-kwayland-devel git gettext kf5-karchive-devel kf5-knotifications-devel libSM-devel kf5-kcrash-devel kf5-knewstuff-devel kf5-kdbusaddons-devel kf5-kxmlgui-devel kf5-kglobalaccel-devel kf5-kio-devel kf5-kguiaddons-devel kf5-kirigami2-devel kf5-kirigami-devel
+sudo dnf install cmake extra-cmake-modules qt5-qtdeclarative-devel qt5-qtx11extras-devel kf5-kiconthemes-devel kf5-plasma-devel kf5-kwindowsystem-devel kf5-kdeclarative-devel kf5-kxmlgui-devel kf5-kactivities-devel gcc-c++ gcc xcb-util-devel kf5-kwayland-devel git gettext kf5-karchive-devel kf5-knotifications-devel libSM-devel kf5-kcrash-devel kf5-knewstuff-devel kf5-kdbusaddons-devel kf5-kxmlgui-devel kf5-kglobalaccel-devel kf5-kio-devel kf5-kguiaddons-devel kf5-kirigami2-devel kf5-kirigami-devel kf5-ki18n-devel
 ``` 
 
 ### Building and Installing
