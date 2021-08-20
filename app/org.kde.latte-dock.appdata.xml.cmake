@@ -114,6 +114,7 @@
     <p xml:lang="az">"Qəhvədə İncəsənət"</p>
     <p xml:lang="ca">«Art al cafè»</p>
     <p xml:lang="ca-valencia">«Art al cafè»</p>
+    <p xml:lang="cs">"Umění v Kávě"</p>
     <p xml:lang="da">"Kunst i kaffe"</p>
     <p xml:lang="de">„Art In Coffee“</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
