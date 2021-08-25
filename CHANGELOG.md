@@ -1,5 +1,10 @@
 #**CHANGELOG**#
 
+#### Version 0.10.1
+* fix autostart crash: do not show settings dialog too early
+* fix build for Fedora
+* specify product name in KAboutData to receive bug reports correctly at kde bug tracker
+
 #### Version 0.10.0
 * 2200 commits after version 0.9
 * plenty of bug fixes and improvements
