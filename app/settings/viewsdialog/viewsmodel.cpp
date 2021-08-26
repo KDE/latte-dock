@@ -839,7 +839,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
     case SCREENCOLUMN:
         if (role == Qt::DisplayRole){
             if (m_viewsTable[row].onPrimary) {
-                return QString("Primary");
+                return i18nc("primary screen", "Primary");
             } else {
                 QString scrId = QString::number(m_viewsTable[row].screen);
                 if (s_screens.containsId(scrId)) {
@@ -867,16 +867,16 @@ QVariant Views::data(const QModelIndex &index, int role) const
     case EDGECOLUMN:
         if (role == Qt::DisplayRole){
             if (m_viewsTable[row].edge == Plasma::Types::BottomEdge) {
-                return QString("Bottom");
+                return i18nc("bottom location", "Bottom");
             } else if (m_viewsTable[row].edge == Plasma::Types::TopEdge) {
-                return QString("Top");
+                return i18nc("top location", "Top");
             } else if (m_viewsTable[row].edge == Plasma::Types::LeftEdge) {
-                return QString("Left");
+                return i18nc("left location", "Left");
             } else if (m_viewsTable[row].edge == Plasma::Types::RightEdge) {
-                return QString("Right");
+                return i18nc("right location", "Right");
             }
 
-            return QString("Unknown");
+            return i18nc("unknown location", "Unknown");
         } else if (role == Qt::UserRole) {
             return QString::number(m_viewsTable[row].edge);
         } else if (role == ISCHANGEDROLE) {
@@ -894,20 +894,20 @@ QVariant Views::data(const QModelIndex &index, int role) const
     case ALIGNMENTCOLUMN:
         if (role == Qt::DisplayRole){
             if (m_viewsTable[row].alignment == Latte::Types::Center) {
-                return QString("Center");
+                return i18nc("center alignment", "Center");
             } else if (m_viewsTable[row].alignment == Latte::Types::Left) {
-                return QString("Left");
+                return i18nc("left alignment", "Left");
             } else if (m_viewsTable[row].alignment == Latte::Types::Right) {
-                return QString("Right");
+                return i18nc("right alignment", "Right");
             } else if (m_viewsTable[row].alignment == Latte::Types::Top) {
-                return QString("Top");
+                return i18nc("top alignment", "Top");
             } else if (m_viewsTable[row].alignment == Latte::Types::Bottom) {
-                return QString("Bottom");
+                return i18nc("bottom alignment", "Bottom");
             } else if (m_viewsTable[row].alignment == Latte::Types::Justify) {
-                return QString("Justify");
+                return i18nc("justify alignment", "Justify");
             }
 
-            return QString("Unknown");
+            return i18nc("unknown alignment", "Unknown");
         } else if (role == Qt::UserRole) {
             return QString::number(m_viewsTable[row].alignment);
         } else if (role == ISCHANGEDROLE) {
