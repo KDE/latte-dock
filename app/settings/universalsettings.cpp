@@ -530,8 +530,7 @@ void UniversalSettings::loadConfig()
     m_version = m_universalGroup.readEntry("version", 1);
     m_badges3DStyle = m_universalGroup.readEntry("badges3DStyle", false);
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
-    m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", QStringList());
-    m_contextMenuActionsAlwaysShown = m_contextMenuActionsAlwaysShown.isEmpty() ? Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE : m_contextMenuActionsAlwaysShown;
+    m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE);
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
     m_isAvailableGeometryBroadcastedToPlasma = m_universalGroup.readEntry("isAvailableGeometryBroadcastedToPlasma", true);
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
@@ -554,8 +553,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("version", m_version);
     m_universalGroup.writeEntry("badges3DStyle", m_badges3DStyle);
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
-    m_universalGroup.writeEntry("contextMenuActionsAlwaysShown", (m_contextMenuActionsAlwaysShown == Data::ContextMenu::ACTIONSALWAYSVISIBLE ?
-                                    QStringList() : m_contextMenuActionsAlwaysShown));
+    m_universalGroup.writeEntry("contextMenuActionsAlwaysShown", m_contextMenuActionsAlwaysShown);
     m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
     m_universalGroup.writeEntry("isAvailableGeometryBroadcastedToPlasma", m_isAvailableGeometryBroadcastedToPlasma);
     m_universalGroup.writeEntry("launchers", m_launchers);
