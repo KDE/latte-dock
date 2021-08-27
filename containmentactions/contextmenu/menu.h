@@ -30,10 +30,10 @@ public:
     ~Menu() override;
 
     QList<QAction *> contextualActions() override;
+    void restore(const KConfigGroup &) override;
 
     QAction *action(const QString &name);
 private Q_SLOTS:
-    void makeActions();
     void populateLayouts();
     void populateMoveToLayouts();
     void populateViewTemplates();

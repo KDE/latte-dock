@@ -56,7 +56,6 @@ enum LatteConfigPage
 Menu::Menu(QObject *parent, const QVariantList &args)
     : Plasma::ContainmentActions(parent, args)
 {
-    makeActions();
 }
 
 Menu::~Menu()
@@ -75,8 +74,12 @@ Menu::~Menu()
     m_actions.clear();
 }
 
-void Menu::makeActions()
+void Menu::restore(const KConfigGroup &config)
 {
+    if (!m_actions.isEmpty()) {
+        return;
+    }
+
     m_actions[Latte::Data::ContextMenu::SECTIONACTION] = new QAction(this);
     m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setSeparator(true);
     m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setText("Latte");
