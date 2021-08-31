@@ -16,6 +16,7 @@ Name[eu]=Latte
 Name[fi]=Latte
 Name[fr]=Latte
 Name[gl]=Latte
+Name[ia]=Latte
 Name[id]=Latte
 Name[it]=Latte
 Name[ko]=Latte
