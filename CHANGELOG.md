@@ -1,5 +1,12 @@
 #**CHANGELOG**#
 
+#### Version 0.10.2
+* fix crash from containmentactions loading after kde frameworks 5.86
+* Fitt's Law fix for vertical panels in justify alignment
+* Fitt's Law fix for applets touching the screen edge and at the same time using parabolic effect
+* hide all context menu actions if the user has chosen it
+* add missing translations for docks/panels dialog
+
 #### Version 0.10.1
 * fix autostart crash: do not show settings dialog too early
 * fix build for Fedora
