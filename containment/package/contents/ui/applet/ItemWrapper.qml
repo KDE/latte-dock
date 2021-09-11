@@ -464,11 +464,13 @@ Item{
             if (appletItem.canFillThickness || appletItem.canFillScreenEdge) {
                 return 0;
             } else if (appletItem.inMarginsArea) {
-                return appletItem.metrics.marginsArea.marginThickness;
+                return (wrapper.zoomScaleThickness * appletItem.metrics.marginsArea.marginThickness);
             }
 
-            return appletItem.metrics.margin.thickness
+            return (wrapper.zoomScaleThickness * appletItem.metrics.margin.thickness);
         }
+
+        readonly property real zoomScaleThickness: wrapper.zoomScaleThickness
 
         Binding {
             target: _wrapperContainer
@@ -642,7 +644,7 @@ Item{
     Loader {
         id: eventsSinkLoader
         anchors.fill: _wrapperContainer
-        active: !communicator.parabolicEffectIsSupported && !isSeparator && !isSpacer
+        active: !communicator.parabolicEffectIsSupported && !isSeparator && !isSpacer && !isHidden && !isInternalViewSplitter
         //! The following can be added in case EventsSink creates slaginess with parabolic effect
         //!(appletItem.lockZoom || !appletItem.parabolic.isEnabled || !appletItem.parabolicEffectIsSupported)
 

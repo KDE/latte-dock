@@ -20,14 +20,13 @@ Item {
                 || (root.myView.alignment !== LatteCore.Types.Justify && appletItem.firstChildOfMainLayout)
                 || (root.myView.alignment !== LatteCore.Types.Justify && appletItem.lastChildOfMainLayout)) {
             //! Fitts Law on corners
-            return appletItem.lengthAppletFullMargin;
+            return destination ? destination.zoomScaleThickness * appletItem.lengthAppletFullMargin : appletItem.lengthAppletFullMargin;
         }
 
-        return appletItem.lengthAppletPadding;
+        return destination ? destination.zoomScaleThickness * appletItem.lengthAppletPadding : appletItem.lengthAppletPadding;
     }
 
     readonly property bool active: parent ? parent.active : false
-
 
     Loader{
         anchors.fill: parent
@@ -53,7 +52,8 @@ Item {
             width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : thickness
             height: {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    return lengthPadding;
+                    //! Fitt;s Law consider the spacer also from parabolic effect
+                    return appletItem.firstAppletInContainer ? lengthPadding + hiddenSpacerLeft.height + 1 : lengthPadding;
                 } else if (plasmoid.location === PlasmaCore.Types.TopEdge) {
                     return tailThickness;
                 } else {
@@ -79,7 +79,7 @@ Item {
                     AnchorChanges{
                         target: topArea;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
-                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: leftArea.top; anchors.bottom: undefined;
+                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: undefined; anchors.bottom: parent.top;
                     }
                 }
             ]
@@ -90,7 +90,8 @@ Item {
             width: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? destination.width + 2 * lengthPadding : thickness
             height: {
                 if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    return lengthPadding;
+                    //! Fitt;s Law consider the spacer also from parabolic effect
+                    return appletItem.lastAppletInContainer ? lengthPadding + hiddenSpacerRight.height + 1 : lengthPadding;
                 } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
                     return tailThickness;
                 } else {
@@ -116,7 +117,7 @@ Item {
                     AnchorChanges{
                         target: bottomArea;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
-                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: undefined; anchors.bottom: leftArea.bottom;
+                        anchors.right: undefined; anchors.left: leftArea.left; anchors.top: parent.bottom; anchors.bottom: undefined;
                     }
                 }
             ]
@@ -127,7 +128,8 @@ Item {
             height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? thickness : destination.height + 2 * lengthPadding
             width: {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    return lengthPadding;
+                    //! Fitt;s Law consider the spacer also from parabolic effect
+                    return appletItem.firstAppletInContainer ? lengthPadding + hiddenSpacerLeft.width + 1 : lengthPadding;
                 } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
                     return tailThickness;
                 } else {
@@ -143,7 +145,7 @@ Item {
                     AnchorChanges{
                         target: leftArea;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
-                        anchors.right: undefined; anchors.left: bottomArea.left; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
+                        anchors.right: parent.left; anchors.left: undefined; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
                     }
                 },
                 State{
@@ -164,7 +166,8 @@ Item {
             height: plasmoid.formFactor === PlasmaCore.Types.Horizontal ? thickness : destination.height + 2 * lengthPadding
             width: {
                 if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
-                    return lengthPadding;
+                    //! Fitt;s Law consider the spacer also from parabolic effect
+                    return appletItem.lastAppletInContainer ? lengthPadding + hiddenSpacerRight.width + 1 : lengthPadding;
                 } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
                     return tailThickness;
                 } else {
@@ -180,7 +183,7 @@ Item {
                     AnchorChanges{
                         target: rightArea;
                         anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined;
-                        anchors.right: bottomArea.right; anchors.left: undefined; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
+                        anchors.right: undefined; anchors.left: parent.right; anchors.top: undefined; anchors.bottom: bottomArea.bottom;
                     }
                 },
                 State{
