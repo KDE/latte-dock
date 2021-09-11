@@ -166,7 +166,8 @@ Item{
         } else if (root.myView.alignment === LatteCore.Types.Center) {
             bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Justify) {
-            bestMatchingPadding = Math.max(background.paddings.left, minimumPadding) - minimumPadding;
+            var backpadding = root.isHorizontal ? background.paddings.left : background.paddings.top;
+            bestMatchingPadding = Math.max(backpadding, minimumPadding) - minimumPadding;
         }
 
         //shadow is already calculated in Justify mode
@@ -188,7 +189,8 @@ Item{
         } else if (root.myView.alignment === LatteCore.Types.Center) {
             bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
         } else if (root.myView.alignment === LatteCore.Types.Justify) {
-            bestMatchingPadding = Math.max(background.paddings.right, minimumPadding) - minimumPadding;
+            var backpadding = root.isHorizontal ? background.paddings.right : background.paddings.bottom;
+            bestMatchingPadding = Math.max(backpadding, minimumPadding) - minimumPadding;
         }
 
         //shadow is already calculated in Justify mode
