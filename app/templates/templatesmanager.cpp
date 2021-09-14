@@ -89,6 +89,8 @@ void Manager::initLayoutTemplates(const QString &path)
 
 void Manager::initViewTemplates(const QString &path)
 {
+    bool istranslated = (m_corona->kPackage().filePath("templates") == path);
+
     QDir templatesDir(path);
     QStringList filter;
     filter.append(QString("*.view.latte"));
@@ -100,7 +102,14 @@ void Manager::initViewTemplates(const QString &path)
         if (!m_viewTemplates.containsId(templatePath)) {
             Data::Generic vdata;
             vdata.id = templatePath;
-            vdata.name = QFileInfo(templatePath).baseName();
+            QString tname = QFileInfo(templatePath).baseName();
+
+            if (istranslated) {
+                QByteArray tnamechars = tname.toUtf8();
+                vdata.name = i18nc("view template name", tnamechars);
+            } else {
+                vdata.name = tname;
+            }
 
             m_viewTemplates << vdata;
         }
@@ -306,8 +315,14 @@ QString Manager::uniqueViewTemplateName(QString name) const
 //! it is used in order to provide translations for system templates
 void Manager::exposeTranslatedTemplateNames()
 {
+    //! layout templates default names
     i18nc("default layout template name", "Default");
     i18nc("empty layout template name", "Empty");
+
+    //! dock/panel templates default names
+    i18nc("view template name", "Default Dock");
+    i18nc("view template name", "Default Panel");
+    i18nc("view template name", "Empty Panel");
 }
 
 }
