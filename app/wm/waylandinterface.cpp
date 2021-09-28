@@ -328,8 +328,12 @@ void WaylandInterface::switchToNextVirtualDesktop()
     int curPos = m_desktops.indexOf(m_currentDesktop);
     int nextPos = curPos + 1;
 
-    if (curPos == m_desktops.count()-1) {
-        nextPos = 0;
+    if (curPos >= m_desktops.count()-1) {
+        if (isVirtualDesktopNavigationWrappingAround()) {
+            nextPos = 0;
+        } else {
+            return;
+        }
     }
 
     KWayland::Client::PlasmaVirtualDesktop *desktopObj = m_virtualDesktopManagement->getVirtualDesktop(m_desktops[nextPos]);
@@ -350,8 +354,12 @@ void WaylandInterface::switchToPreviousVirtualDesktop()
     int curPos = m_desktops.indexOf(m_currentDesktop);
     int nextPos = curPos - 1;
 
-    if (curPos == 0) {
-        nextPos = m_desktops.count()-1;
+    if (curPos <= 0) {
+        if (isVirtualDesktopNavigationWrappingAround()) {
+            nextPos = m_desktops.count()-1;
+        } else {
+            return;
+        }
     }
 
     KWayland::Client::PlasmaVirtualDesktop *desktopObj = m_virtualDesktopManagement->getVirtualDesktop(m_desktops[nextPos]);

@@ -21,6 +21,7 @@
 // Qt
 #include <QObject>
 #include <QWindow>
+#include <QDBusServiceWatcher>
 #include <QDialog>
 #include <QMap>
 #include <QRect>
@@ -174,13 +175,23 @@ protected:
     bool isPlasmaPanel(const QRect &wGeometry) const;
     bool isSidepanel(const QRect &wGeometry) const;
 
+    bool isVirtualDesktopNavigationWrappingAround() const;
+
 private slots:
+    void initKWinInterface();
     void windowRemovedSlot(WindowId wid);
 
+    void onVirtualDesktopNavigationWrappingAroundChanged(bool navigationWrappingAround);
+
 private:
+    bool m_isKWinInterfaceAvailable{false};
+    bool m_isVirtualDesktopNavigationWrappingAround{true};
+
     Latte::Corona *m_corona;
     Tracker::Schemes *m_schemesTracker;
     Tracker::Windows *m_windowsTracker;
+
+    QDBusServiceWatcher *m_kwinServiceWatcher{nullptr};
 };
 
 }
