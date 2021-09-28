@@ -180,7 +180,11 @@ void XWindowInterface::switchToNextVirtualDesktop()
     int nextPos = curPos + 1;
 
     if (curPos == desktops) {
-        nextPos = 1;
+        if (isVirtualDesktopNavigationWrappingAround()) {
+            nextPos = 1;
+        } else {
+            return;
+        }
     }
 
     KWindowSystem::setCurrentDesktop(nextPos);
@@ -197,7 +201,11 @@ void XWindowInterface::switchToPreviousVirtualDesktop()
     int nextPos = curPos - 1;
 
     if (curPos == 1) {
-        nextPos = desktops;
+        if (isVirtualDesktopNavigationWrappingAround()) {
+            nextPos = desktops;
+        } else {
+            return;
+        }
     }
 
     KWindowSystem::setCurrentDesktop(nextPos);
