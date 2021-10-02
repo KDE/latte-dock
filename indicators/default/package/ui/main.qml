@@ -20,6 +20,7 @@ LatteComponents.IndicatorItem{
 
     enabledForApplets: indicator && indicator.configuration ? indicator.configuration.enabledForApplets : true
     lengthPadding: indicator && indicator.configuration ? indicator.configuration.lengthPadding : 0.08
+    backgroundCornerMargin: indicator && indicator.configuration ? indicator.configuration.backgroundCornerMargin : 1.00
 
     readonly property real factor: indicator.configuration.size
     readonly property int size: factor * indicator.currentIconSize

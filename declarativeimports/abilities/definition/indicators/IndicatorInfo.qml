@@ -21,6 +21,7 @@ Item{
 
     property real lengthPadding: 0.08
     property real appletLengthPadding: -1
+    property real backgroundCornerMargin: 1.00
 
     property variant svgPaths: []
 }

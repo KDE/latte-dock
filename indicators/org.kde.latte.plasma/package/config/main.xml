@@ -17,6 +17,9 @@
     <entry name="lengthPadding" type="Double">
        <default>0.08</default>
     </entry>
+    <entry name="backgroundCornerMargin" type="Double">
+       <default>1.00</default>
+    </entry>    
   </group>
 </kcfg>
 

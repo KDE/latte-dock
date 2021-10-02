@@ -64,6 +64,12 @@ Item {
     //! [since v0.10.0]
     property real lengthPadding: 0.08
 
+    //! this indicator specifies how far would like to be from panel background edge
+    //! it is totally panel background roundness related. By altering that value, indicators
+    //! can get inside panel background big roundnesses. This value is a percentage,
+    //! e.g 0.06 -> 6%
+    //! [since v0.10.3]
+    property real backgroundCornerMargin: 1.00
 
     //! svg image paths either from plasma theme or local files relevant to indicator "ui" directory
     //! in order to reduce resources usage

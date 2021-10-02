@@ -82,6 +82,14 @@ Ability.IndicatorsPrivate {
             return -1;
         }
 
+        backgroundCornerMargin: {
+            if (indicatorLevel.isLoaded && indicatorLevel.item.hasOwnProperty("backgroundCornerMargin")) {
+                return indicatorLevel.item.backgroundCornerMargin;
+            }
+
+            return 1.00;
+        }
+
         svgPaths: indicatorLevel.isLoaded && indicatorLevel.item.hasOwnProperty("svgImagePaths") ?
                       indicatorLevel.item.svgImagePaths : []
     }

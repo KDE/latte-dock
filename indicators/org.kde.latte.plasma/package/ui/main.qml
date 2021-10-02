@@ -23,6 +23,9 @@ LatteComponents.IndicatorItem {
     lengthPadding: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
                        indicator.configuration.lengthPadding : 0.08
 
+    backgroundCornerMargin: configurationIsReady && indicator.configuration.backgroundCornerMargin !== undefined ?
+                                indicator.configuration.backgroundCornerMargin : 1.00
+
     //! config options
     readonly property bool clickedAnimationEnabled: configurationIsReady
                                                     && indicator.configuration.clickedAnimationEnabled !== undefined
