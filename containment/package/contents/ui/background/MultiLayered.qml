@@ -60,7 +60,7 @@ BackgroundProperties{
             if (root.isVertical) {
                 var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
                 expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
-                return expected;
+                return expected * indicators.info.backgroundCornerMargin;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -77,7 +77,7 @@ BackgroundProperties{
             if (root.isVertical) {
                 var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
                 expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
-                return expected;
+                return expected * indicators.info.backgroundCornerMargin;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -95,7 +95,7 @@ BackgroundProperties{
             if (root.isHorizontal) {
                 var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
                 expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
-                return expected;
+                return expected * indicators.info.backgroundCornerMargin;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }
@@ -113,7 +113,7 @@ BackgroundProperties{
             if (root.isHorizontal) {
                 var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
                 expected = Math.max(0, expected - metrics.margin.length); //! remove from roundness padding the applied margins
-                return expected;
+                return expected * indicators.info.backgroundCornerMargin;
             } else {
                 return Math.max(themePadding, solidBackgroundPadding);
             }

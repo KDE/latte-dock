@@ -34,6 +34,7 @@ AbilityDefinition.Indicators {
         info.providesHoveredAnimation: false
         info.providesClickedAnimation: false
         info.extraMaskThickness: 0
+        info.backgroundCornerMargin: 1.00
         info.lengthPadding: 0.08
         info.minThicknessPadding: 0
         info.minLengthPadding:0

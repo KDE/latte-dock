@@ -33,6 +33,7 @@ Item{
         minThicknessPadding: 0
         minLengthPadding: 0
 
+        backgroundCornerMargin: 1.00
         lengthPadding: 0.08
         appletLengthPadding: -1
 

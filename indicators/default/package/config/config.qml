@@ -114,6 +114,42 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
+            text: i18n("Position")
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        LatteComponents.Slider {
+            id: thickMarginSlider
+            Layout.fillWidth: true
+
+            value: Math.round(indicator.configuration.thickMargin * 100)
+            from: 0
+            to: 30
+            stepSize: 1
+            wheelEnabled: false
+
+            onPressedChanged: {
+                if (!pressed) {
+                    indicator.configuration.thickMargin = value / 100;
+                }
+            }
+        }
+
+        PlasmaComponents.Label {
+            text: i18nc("number in percentage, e.g. 85 %","%1 %", currentValue)
+            horizontalAlignment: Text.AlignRight
+            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+            readonly property int currentValue: thickMarginSlider.value
+        }
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: units.smallSpacing
+
+        PlasmaComponents.Label {
             text: i18n("Padding")
             horizontalAlignment: Text.AlignLeft
         }
@@ -152,23 +188,23 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
-            text: i18n("Position")
+            text: i18n("Corner Margin")
             horizontalAlignment: Text.AlignLeft
         }
 
         LatteComponents.Slider {
-            id: thickMarginSlider
+            id: backgroundCornerMarginSlider
             Layout.fillWidth: true
 
-            value: Math.round(indicator.configuration.thickMargin * 100)
+            value: Math.round(indicator.configuration.backgroundCornerMargin * 100)
             from: 0
-            to: 30
-            stepSize: 1
+            to: 100
+            stepSize: 2
             wheelEnabled: false
 
             onPressedChanged: {
                 if (!pressed) {
-                    indicator.configuration.thickMargin = value / 100;
+                    indicator.configuration.backgroundCornerMargin = value / 100;
                 }
             }
         }
@@ -179,10 +215,9 @@ ColumnLayout {
             Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
             Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
 
-            readonly property int currentValue: thickMarginSlider.value
+            readonly property int currentValue: backgroundCornerMarginSlider.value
         }
     }
-
 
     LatteComponents.HeaderSwitch {
         id: glowEnabled

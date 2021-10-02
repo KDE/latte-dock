@@ -18,7 +18,7 @@ ColumnLayout {
     Layout.fillWidth: true
 
     LatteComponents.SubHeader {
-        text: i18n("Padding")
+        text: i18n("Style")
     }
 
     RowLayout {
@@ -26,7 +26,7 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
-            text: i18n("Length")
+            text: i18n("Padding")
             horizontalAlignment: Text.AlignLeft
         }
 
@@ -56,6 +56,42 @@ ColumnLayout {
             Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
 
             readonly property int currentValue: lengthIntMarginSlider.value
+        }
+    }
+
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: units.smallSpacing
+
+        PlasmaComponents.Label {
+            text: i18n("Corner Margin")
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        LatteComponents.Slider {
+            id: backgroundCornerMarginSlider
+            Layout.fillWidth: true
+
+            value: Math.round(indicator.configuration.backgroundCornerMargin * 100)
+            from: 0
+            to: 100
+            stepSize: 1
+            wheelEnabled: false
+
+            onPressedChanged: {
+                if (!pressed) {
+                    indicator.configuration.backgroundCornerMargin = value / 100;
+                }
+            }
+        }
+
+        PlasmaComponents.Label {
+            text: i18nc("number in percentage, e.g. 85 %","%1 %", currentValue)
+            horizontalAlignment: Text.AlignRight
+            Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
+            Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4
+
+            readonly property int currentValue: backgroundCornerMarginSlider.value
         }
     }
 
