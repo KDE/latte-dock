@@ -25,6 +25,7 @@
 #include <QDBusInterface>
 #include <QDir>
 #include <QLockFile>
+#include <QSessionManager>
 #include <QSharedMemory>
 
 // KDE
@@ -186,6 +187,19 @@ int main(int argc, char **argv)
         return 0;
     }
 
+    //! disable restore from session management
+    //! based on spectacle solution at:
+    //!   - https://bugs.kde.org/show_bug.cgi?id=430411
+    //!   - https://invent.kde.org/graphics/spectacle/-/commit/8db27170d63f8a4aaff09615e51e3cc0fb115c4d
+    QGuiApplication::setFallbackSessionManagementEnabled(false);
+
+    auto disableSessionManagement = [](QSessionManager &sm) {
+        sm.setRestartHint(QSessionManager::RestartNever);
+    };
+    QObject::connect(&app, &QGuiApplication::commitDataRequest, disableSessionManagement);
+    QObject::connect(&app, &QGuiApplication::saveStateRequest, disableSessionManagement);
+
+    //! choose layout for startup
     bool defaultLayoutOnStartup = false;
     int memoryUsage = -1;
     QString layoutNameOnStartup = "";
