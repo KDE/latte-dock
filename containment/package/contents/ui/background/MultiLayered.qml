@@ -190,6 +190,30 @@ BackgroundProperties{
         return Math.max(background.length + totals.shadowsLength, totals.paddingsLength + totals.shadowsLength)
     }
 
+    readonly property int tailRoundness: {
+        if ((root.isHorizontal && hasLeftBorder) || (!root.isHorizontal && hasTopBorder)) {
+            var customAppliedRadius = customRadiusIsEnabled ? customRadius : 0;
+            var themePadding = themeExtendedBackground ? (root.isHorizontal ? themeExtendedBackground.paddingLeft : themeExtendedBackground.paddingTop) : 0;
+            var solidBackgroundPadding = root.isHorizontal ? solidBackground.margins.left : solidBackground.margins.top;
+            var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+            return Math.max(0, expected - metrics.margin.length);
+        }
+
+        return 0;
+    }
+
+    readonly property int headRoundness: {
+        if ((root.isHorizontal && hasRightBorder) || (!root.isHorizontal && hasBottomBorder)) {
+            var customAppliedRadius = customRadiusIsEnabled ? customRadius : 0;
+            var themePadding = themeExtendedBackground ? (root.isHorizontal ? themeExtendedBackground.paddingRight : themeExtendedBackground.paddingBottom) : 0;
+            var solidBackgroundPadding = root.isHorizontal ? solidBackground.margins.right : solidBackground.margins.bottom;
+            var expected = customRadiusIsEnabled ? customAppliedRadius : Math.max(themePadding, solidBackgroundPadding);
+            return Math.max(0, expected - metrics.margin.length);
+        }
+
+        return 0;
+    }
+
     readonly property int tailRoundnessMargin: {
         //! used from contents geometry in order to remove any roundness sectors, e.g. for popups placement
         if (root.isHorizontal) {
