@@ -199,7 +199,7 @@ ColumnLayout {
             value: Math.round(indicator.configuration.backgroundCornerMargin * 100)
             from: 0
             to: 100
-            stepSize: 2
+            stepSize: 1
             wheelEnabled: false
 
             onPressedChanged: {
