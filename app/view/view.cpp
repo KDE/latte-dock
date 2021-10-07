@@ -662,16 +662,22 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         return;
     }
 
+    //! Fix for #443236, following setFlags(...) need to be added at all three cases
+    //! but initViewFlags() should be called afterwards because setFlags(...) breaks
+    //! the Dock window default behavior under x11
     if (status == Plasma::Types::NeedsAttentionStatus) {
         m_visibility->addBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
+        setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
     } else if (status == Plasma::Types::AcceptingInputStatus) {
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() & ~Qt::WindowDoesNotAcceptFocus);
+        m_visibility->initViewFlags();
         KWindowSystem::forceActiveWindow(winId());
     } else {
         updateTransientWindowsTracking();
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
+        setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
     }
 }
