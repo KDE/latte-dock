@@ -82,6 +82,7 @@ public slots:
 
     Q_INVOKABLE bool appletIsExpandable(const int id) const;
     Q_INVOKABLE bool appletIsExpanded(const int id) const;
+    Q_INVOKABLE bool appletIsActivationTogglesExpanded(const int id) const;
 
     Q_INVOKABLE bool isApplication(const QUrl &url) const;
 

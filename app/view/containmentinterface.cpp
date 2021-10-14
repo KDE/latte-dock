@@ -449,6 +449,29 @@ bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appl
             || Latte::Layouts::Storage::self()->isSubContainment(m_view->layout(), appletQuickItem->applet()));
 }
 
+bool ContainmentInterface::appletIsActivationTogglesExpanded(const int id) const
+{
+    if (!m_view->containment() || !m_view->inReadyState()) {
+        return false;
+    }
+
+    for (const auto applet : m_view->containment()->applets()) {
+        if (applet && applet->id() == (uint)id) {
+            if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
+                return true;
+            }
+
+            PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (ai) {
+                return ai->isActivationTogglesExpanded();
+            }
+        }
+    }
+
+    return false;
+}
+
 bool ContainmentInterface::hasExpandedApplet() const
 {
     return m_expandedAppletIds.count() > 0;
