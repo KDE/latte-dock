@@ -80,8 +80,8 @@ public slots:
     Q_INVOKABLE void deactivateApplets();
     Q_INVOKABLE void toggleAppletExpanded(const int id);
 
-    Q_INVOKABLE bool appletIsExpandable(const int id);
-    Q_INVOKABLE bool appletIsExpanded(const int id);
+    Q_INVOKABLE bool appletIsExpandable(const int id) const;
+    Q_INVOKABLE bool appletIsExpanded(const int id) const;
 
     Q_INVOKABLE bool isApplication(const QUrl &url) const;
 
@@ -109,7 +109,7 @@ private:
     void addExpandedApplet(PlasmaQuick::AppletQuickItem * appletQuickItem);
     void removeExpandedApplet(PlasmaQuick::AppletQuickItem *appletQuickItem);
 
-    bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem);
+    bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem) const;
 
 private:
     bool m_hasLatteTasks{false};

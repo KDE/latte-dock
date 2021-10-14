@@ -122,17 +122,17 @@ bool ContainmentInterface::applicationLauncherInPopup() const
     }
 
     uint launcherAppletId = applicationLauncherId();
-    QString launcherPluginId;
-
     const auto applets = m_view->containment()->applets();
+
+    PlasmaQuick::AppletQuickItem *appLauncherItem{nullptr};
 
     for (auto applet : applets) {
         if (applet->id() == launcherAppletId) {
-            launcherPluginId = applet->kPackage().metadata().pluginId();
+            appLauncherItem = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
         }
     }
 
-    return launcherPluginId != "org.kde.plasma.kickerdash";
+    return appLauncherItem && appletIsExpandable(appLauncherItem);
 }
 
 bool ContainmentInterface::containsApplicationLauncher() const
@@ -415,7 +415,7 @@ void ContainmentInterface::deactivateApplets()
     }
 }
 
-bool ContainmentInterface::appletIsExpandable(const int id)
+bool ContainmentInterface::appletIsExpandable(const int id) const
 {
     if (!m_view->containment() || !m_view->inReadyState()) {
         return false;
@@ -438,7 +438,7 @@ bool ContainmentInterface::appletIsExpandable(const int id)
     return false;
 }
 
-bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem)
+bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem) const
 {
     if (!appletQuickItem || !m_view->inReadyState()) {
         return false;
@@ -554,7 +554,7 @@ void ContainmentInterface::onPlasmaTasksCountChanged()
     emit hasPlasmaTasksChanged();
 }
 
-bool ContainmentInterface::appletIsExpanded(const int id)
+bool ContainmentInterface::appletIsExpanded(const int id) const
 {
     return m_expandedAppletIds.values().contains(id);
 }
