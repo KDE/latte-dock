@@ -915,7 +915,7 @@ PlasmaComponents.Page {
                     tooltip: i18n("BypassWindowManagerHint flag for the window. The view will be above all windows even those set as 'Always On Top'")
                     value: latteView.byPassWM
 
-                    onCheckedChanged: {
+                    onClicked: {
                         latteView.byPassWM = !latteView.byPassWM;
                     }
                 }

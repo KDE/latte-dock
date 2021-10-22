@@ -62,10 +62,10 @@
 
 namespace Latte {
 
-//! both alwaysVisible and byPassWM are passed through corona because
+//! both alwaysVisible and byPassWMX11 are passed through corona because
 //! during the view window creation containment hasn't been set, but these variables
 //! are needed in order for window flags to be set correctly
-View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
+View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     : PlasmaQuick::ContainmentView(corona),
       m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
@@ -90,8 +90,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
             | Qt::NoDropShadowWindowHint
             | Qt::WindowDoesNotAcceptFocus;
 
-    if (byPassWM) {
+    if (byPassX11WM) {
         setFlags(flags | Qt::BypassWindowManagerHint);
+        //! needs to be set early enough
+        m_byPassWM = byPassX11WM;
     } else {
         setFlags(flags);
     }
@@ -109,7 +111,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::updateTransientWindowsTracking);
 
     connect(this, &View::containmentChanged
-            , this, [ &, byPassWM]() {
+            , this, [ &, byPassX11WM]() {
         qDebug() << "dock view c++ containment changed 1...";
 
         if (!this->containment())
@@ -123,7 +125,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
         restoreConfig();
 
         //! Afterwards override that values in case during creation something different is needed
-        setByPassWM(byPassWM);
+        setByPassWM(byPassX11WM);
 
         //! Check the screen assigned to this dock
         reconsiderScreen();

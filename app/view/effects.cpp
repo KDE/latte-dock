@@ -577,7 +577,7 @@ void Effects::updateEffects()
                 //! Latte is now using GtkFrameExtents so Effects geometries must be adjusted
                 //! windows that use GtkFrameExtents and apply Effects on them they take GtkFrameExtents
                 //! as granted
-                if (KWindowSystem::isPlatformX11()) {
+                if (KWindowSystem::isPlatformX11() && !m_view->byPassWM()) {
                     if (m_view->location() == Plasma::Types::BottomEdge) {
                         fY = qMax(0, fY - m_view->headThicknessGap());
                     } else if (m_view->location() == Plasma::Types::RightEdge) {
