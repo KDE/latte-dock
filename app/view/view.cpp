@@ -106,6 +106,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassWM)
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
+    connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::updateTransientWindowsTracking);
 
     connect(this, &View::containmentChanged
             , this, [ &, byPassWM]() {
@@ -708,6 +709,10 @@ void View::removeTransientWindow(const bool &visible)
         disconnect(window, &QWindow::visibleChanged, this, &View::removeTransientWindow);
         m_transientWindows.removeAll(window);
 
+        if (m_visibility->hasBlockHidingEvent(Latte::GlobalShortcuts::SHORTCUTBLOCKHIDINGTYPE)) {
+            m_visibility->removeBlockHidingEvent(Latte::GlobalShortcuts::SHORTCUTBLOCKHIDINGTYPE);
+        }
+
         updateTransientWindowsTracking();
     }
 }
@@ -715,11 +720,9 @@ void View::removeTransientWindow(const bool &visible)
 void View::updateTransientWindowsTracking()
 {
     for(QWindow *window: qApp->topLevelWindows()) {
-        if (window->transientParent() == this){
-            if (window->isVisible()) {
-                addTransientWindow(window);
-                break;
-            }
+        if (window->transientParent() == this && window->isVisible()){
+            addTransientWindow(window);
+            break;
         }
     }
 }
