@@ -24,7 +24,8 @@ function reconsiderAppletIconItem(){
     //! which is going to be used in order to deactivate its active
     //! from our MouseArea
 
-    if (applet.pluginName === "org.kde.plasma.kickoff") {
+    if (applet.pluginName === "org.kde.plasma.kickoff"
+            || applet.pluginName === "org.kde.plasma.kickofflegacy") {
         identifyKickOff();
     } else if (applet.pluginName === "org.kde.plasma.kicker") {
         identifyKicker();
@@ -119,8 +120,10 @@ function identifyKdeConnectSms()
 }
 
 function identifyKickOff() {
-    if (applet.pluginName !== "org.kde.plasma.kickoff")
+    if (applet.pluginName !== "org.kde.plasma.kickoff"
+            && applet.pluginName !== "org.kde.plasma.kickofflegacy") {
         return;
+    }
 
     var level0 = applet.children;
 
