@@ -605,12 +605,14 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
 
         qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents;
 
-        if (!frameExtents.isNull() && !m_latteView->behaveAsPlasmaPanel()) {
+        bool bypasswm{m_latteView->byPassWM() && KWindowSystem::isPlatformX11()};
+
+        if (!frameExtents.isNull() && !m_latteView->behaveAsPlasmaPanel() && !bypasswm) {
             //! When a view returns its frame extents to zero then that triggers a compositor
             //! strange behavior that moves/hides the view totally and freezes entire Latte
             //! this is why we have blocked that setting
             m_wm->setFrameExtents(m_latteView, frameExtents);
-        } else if (m_latteView->behaveAsPlasmaPanel()) {
+        } else if (m_latteView->behaveAsPlasmaPanel() || bypasswm) {
             QMargins panelExtents(0, 0, 0, 0);
             m_wm->setFrameExtents(m_latteView, panelExtents);
             emit frameExtentsCleared();
