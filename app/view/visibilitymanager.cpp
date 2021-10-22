@@ -113,6 +113,11 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         connect(this, &VisibilityManager::modeChanged, this, [&]() {
             emit m_latteView->availableScreenRectChangedFrom(m_latteView);
         });
+
+        //! Send frame extents on startup, this is really necessary when recreating a view.
+        //! Such a case is when toggling byPassWM and a view is recreated after disabling editing mode
+        const bool forceUpdate{true};
+        publishFrameExtents(forceUpdate);
     }
 
     m_timerStartUp.setInterval(4000);
@@ -603,9 +608,9 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
             frameExtents.setTop(m_frameExtentsHeadThicknessGap);
         }
 
-        qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents;
-
         bool bypasswm{m_latteView->byPassWM() && KWindowSystem::isPlatformX11()};
+
+        qDebug() << " -> Frame Extents :: " << m_frameExtentsLocation << " __ " << " extents :: " << frameExtents << " bypasswm :: " << bypasswm;
 
         if (!frameExtents.isNull() && !m_latteView->behaveAsPlasmaPanel() && !bypasswm) {
             //! When a view returns its frame extents to zero then that triggers a compositor
