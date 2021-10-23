@@ -26,10 +26,10 @@ PlasmaCore.ToolTipArea {
     textFormat: plasmoid.toolTipTextFormat
     mainItem: plasmoid.toolTipItem ? plasmoid.toolTipItem : null
 
-    property Item fullRepresentation
-    property Item compactRepresentation
+    property Item fullRepresentation: null
+    property Item compactRepresentation: null
     /*Discover real visual parent - the following code points to Applet::ItemWrapper*/
-    property Item originalCompactRepresenationParent
+    property Item originalCompactRepresenationParent: null
     property Item compactRepresentationVisualParent: originalCompactRepresenationParent && originalCompactRepresenationParent.parent
                                                      ? originalCompactRepresenationParent.parent.parent : null
 
@@ -42,7 +42,15 @@ PlasmaCore.ToolTipArea {
             originalCompactRepresenationParent = compactRepresentation.parent;
 
             compactRepresentation.parent = root;
-            compactRepresentation.anchors.fill = root;
+            compactRepresentation.anchors.centerIn = root;
+            compactRepresentation.width = Qt.binding(function() {
+                return root.width;
+            });
+
+            compactRepresentation.height = Qt.binding(function() {
+                return root.height;
+            });
+
             compactRepresentation.visible = true;
         }
         root.visible = true;
@@ -203,11 +211,30 @@ PlasmaCore.ToolTipArea {
         }
     }
 
+    ////Indicators API ////
+    Binding {
+        target: compactRepresentation ? compactRepresentation.anchors : null
+        property: "horizontalCenterOffset"
+        when: compactRepresentation
+        value: appletItem ? appletItem.iconOffsetX : 0
+    }
+
+    Binding {
+        target: compactRepresentation ? compactRepresentation.anchors : null
+        property: "verticalCenterOffset"
+        when: compactRepresentation
+        value: appletItem ? appletItem.iconOffsetY : 0
+    }
+
     ////Clicked Effect ////
     BrightnessContrast {
         id: _clickedEffect
-        anchors.fill: parent
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: compactRepresentation ? compactRepresentation.anchors.horizontalCenterOffset : 0
+        anchors.verticalCenterOffset: compactRepresentation ? compactRepresentation.anchors.verticalCenterOffset : 0
         source: compactRepresentation
+        width: root.width
+        height: root.height
         visible: appletItem && clickedAnimation.running && !appletItem.indicators.info.providesClickedAnimation
         z:1000
     }

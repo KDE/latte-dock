@@ -94,6 +94,7 @@ Item {
                             && ((applet && applet.status === PlasmaCore.Types.HiddenStatus ) || isInternalViewSplitter)
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
+    property bool isPressed: viewSignalsConnector.pressed
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
                                           || applet.pluginName === "org.kde.latte.separator")
     property bool isSpacer: applet && (applet.pluginName === "org.kde.latte.spacer")
@@ -678,10 +679,10 @@ Item {
         target: root.latteView ? root.latteView.extendedInterface : null
         enabled: !appletItem.indexerIsSupported && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
-        onExpandedAppletStateChanged: {
+        onHasExpandedAppletChanged: {
             if (latteView.extendedInterface.hasExpandedApplet && appletItem.applet) {
                 appletItem.isExpanded = latteView.extendedInterface.appletIsExpandable(appletItem.applet.id)
-                        && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);
+                        && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);                                                                                
             } else {
                 appletItem.isExpanded = false;
             }
@@ -727,9 +728,10 @@ Item {
 
                 isActive: appletItem.isActive
                 isHovered: appletItem.containsMouse
+                isPressed: appletItem.isPressed
                 isSquare: appletItem.isSquare
 
-                hasActive: isActive
+                hasActive: appletItem.isActive
 
                 scaleFactor: appletItem.wrapper.zoomScale
                 panelOpacity: root.background.currentOpacity
