@@ -520,14 +520,18 @@ Item{
             property color backgroundColor: "transparent"
             property color glowColor: "transparent"
 
-            readonly property bool roundToIconSizeDisabled: communicator.appletIconItem && appletItem.parabolic.isEnabled
+            //! Plasma Applets RoundToIconSize should be ALWAYS false when Latte has discovered
+            //! the iconitem for these applets. This way we can be sure that applets and latte
+            //! tasks will follow the same icon size if it is possible; in any other case
+            //! the plasma applets might look to small
+            readonly property bool isRoundToIconSizeEnabled: !communicator.appletIconItem
 
-            onRoundToIconSizeDisabledChanged: {
+            onIsRoundToIconSizeEnabledChanged: {
                 if (!communicator.appletIconItem) {
                     return;
                 }
 
-                communicator.appletIconItem.roundToIconSize = !roundToIconSizeDisabled;
+                communicator.appletIconItem.roundToIconSize = isRoundToIconSizeEnabled;
             }
 
             sourceComponent: LatteCore.IconItem{
