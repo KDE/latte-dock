@@ -74,4 +74,13 @@ Item {
     //! svg image paths either from plasma theme or local files relevant to indicator "ui" directory
     //! in order to reduce resources usage
     property var svgImagePaths: []
+
+    onLevelChanged: {
+        if (level) {
+            //! initialization on startup, this way when changing from indicator that changes them
+            //! at an indicator that is not using them at all, their values are restored
+            level.requested.iconOffsetX = 0;
+            level.requested.iconOffsetY = 0;
+        }
+    }
 }
