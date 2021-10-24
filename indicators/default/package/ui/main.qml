@@ -83,17 +83,19 @@ LatteComponents.IndicatorItem{
 
         LatteComponents.GlowPoint{
             id:firstPoint
+            width: stateWidth
+            height: stateHeight
             opacity: {
                 if (indicator.isEmptySpace) {
                     return 0;
                 }
 
                 if (indicator.isTask) {
-                    return indicator.isLauncher || (indicator.inRemoving && !activeAndReverseAnimation.running) ? 0 : 1
+                    return indicator.isLauncher || (indicator.inRemoving && !isAnimating) ? 0 : 1
                 }
 
                 if (indicator.isApplet) {
-                    return (indicator.isActive || activeAndReverseAnimation.running) ? 1 : 0
+                    return (indicator.isActive || isAnimating) ? 1 : 0
                 }
             }
 
@@ -117,12 +119,25 @@ LatteComponents.IndicatorItem{
                 else
                     return false;
             }
-            showBorder: glowEnabled && glow3D
+            showBorder: glow3D
 
-            property int stateWidth: (indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width) - glowMargins
-            property int stateHeight: (indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height) - glowMargins
+            property int stateWidth: {
+                if (!vertical && isActive && activeStyle === 0 /*Line*/) {
+                    return (indicator.isGroup ? root.width - secondPoint.width : root.width - spacer.width) - glowMargins;
+                }
 
-            property int animationTime: indicator.durationTime* (0.7*LatteCore.Environment.longDuration)
+                return root.size;
+            }
+
+            property int stateHeight: {
+                if (vertical && isActive && activeStyle === 0 /*Line*/) {
+                    return (indicator.isGroup ? root.height - secondPoint.height : root.height - spacer.height) - glowMargins;
+                }
+
+                return root.size;
+            }
+
+            property int animationTime: indicator.durationTime* (0.75*LatteCore.Environment.longDuration)
 
             property bool isActive: indicator.hasActive || indicator.isActive
 
@@ -130,81 +145,63 @@ LatteComponents.IndicatorItem{
 
             property real scaleFactor: indicator.scaleFactor
 
-            function updateInitialSizes(){
-                if(root){
-                    if(vertical) {
-                        width = root.size;
+            readonly property bool isAnimating: inGrowAnimation || inShrinkAnimation
+            property bool inGrowAnimation: false
+            property bool inShrinkAnimation: false
+
+            property bool isBindingBlocked: isAnimating
+
+            readonly property bool isActiveStateForAnimation: indicator.isActive && root.activeStyle === 0 /*Line*/
+
+            onIsActiveStateForAnimationChanged: {
+                if (root.activeStyle === 0 /*Line*/) {
+                    if (isActiveStateForAnimation) {
+                        inGrowAnimation = true;
+                        inShrinkAnimation = false;
                     } else {
-                        height = root.size;
+                        inGrowAnimation = false;
+                        inShrinkAnimation = true;
                     }
+                } else {
+                    inGrowAnimation = false;
+                    inShrinkAnimation = false;
+                }
+            }
 
-                    if(vertical && isActive && activeStyle === 0 /*Line*/) {
-                        height = stateHeight;
-                    } else {
-                        height = root.size;
+            onWidthChanged: {
+                if (!vertical) {
+                    if (inGrowAnimation && width >= stateWidth) {
+                        inGrowAnimation = false;
+                    } else if (inShrinkAnimation && width <= stateWidth) {
+                        inShrinkAnimation = false;
                     }
+                }
+            }
 
-                    if(!vertical && isActive && activeStyle === 0 /*Line*/) {
-                        width = stateWidth;
-                    } else {
-                        width = root.size;
+            onHeightChanged: {
+                if (vertical) {
+                    if (inGrowAnimation && height >= stateHeight) {
+                        inGrowAnimation = false;
+                    } else if (inShrinkAnimation && height <= stateHeight) {
+                        inShrinkAnimation = false;
                     }
                 }
             }
 
-
-            onIsActiveChanged: {
-                if (activeStyle === 0 /*Line*/)
-                    activeAndReverseAnimation.start();
-            }
-
-            onScaleFactorChanged: {
-                if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/){
-                    width = stateWidth;
-                }
-                else if (!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/){
-                    height = stateHeight;
+            Behavior on width {
+                enabled: (!firstPoint.vertical && (firstPoint.isAnimating || firstPoint.opacity === 0/*first showing requirement*/))
+                NumberAnimation {
+                    duration: firstPoint.animationTime
+                    easing.type: Easing.Linear
                 }
             }
 
-            onSizeChanged: updateInitialSizes();
-
-            onStateWidthChanged:{
-                if(!activeAndReverseAnimation.running && !vertical && isActive && activeStyle === 0 /*Line*/)
-                    width = stateWidth;
-            }
-
-            onStateHeightChanged:{
-                if(!activeAndReverseAnimation.running && vertical && isActive && activeStyle === 0 /*Line*/)
-                    height = stateHeight;
-            }
-
-            onVerticalChanged: updateInitialSizes();
-
-            Component.onCompleted: {
-                updateInitialSizes();
-
-                if (indicator) {
-                    indicator.onCurrentIconSizeChanged.connect(updateInitialSizes);
+            Behavior on height {
+                enabled: (firstPoint.vertical && (firstPoint.isAnimating || firstPoint.opacity === 0/*first showing requirement*/))
+                NumberAnimation {
+                    duration: firstPoint.animationTime
+                    easing.type: Easing.Linear
                 }
-            }
-
-            Component.onDestruction: {
-                if (indicator) {
-                    indicator.onCurrentIconSizeChanged.disconnect(updateInitialSizes);
-                }
-            }
-
-            NumberAnimation{
-                id: activeAndReverseAnimation
-                target: firstPoint
-                property: plasmoid.formFactor === PlasmaCore.Types.Vertical ? "height" : "width"
-                to: indicator.hasActive && activeStyle === 0 /*Line*/
-                    ? (plasmoid.formFactor === PlasmaCore.Types.Vertical ? firstPoint.stateHeight : firstPoint.stateWidth) : root.size
-                duration: firstPoint.animationTime
-                easing.type: Easing.InQuad
-
-                onStopped: firstPoint.updateInitialSizes()
             }
         }
 

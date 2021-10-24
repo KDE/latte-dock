@@ -679,7 +679,7 @@ Item {
         target: root.latteView ? root.latteView.extendedInterface : null
         enabled: !appletItem.indexerIsSupported && !appletItem.isSeparator && !appletItem.isSpacer && !appletItem.isHidden
 
-        onHasExpandedAppletChanged: {
+        onExpandedAppletStateChanged: {
             if (latteView.extendedInterface.hasExpandedApplet && appletItem.applet) {
                 appletItem.isExpanded = latteView.extendedInterface.appletIsExpandable(appletItem.applet.id)
                         && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);                                                                                
