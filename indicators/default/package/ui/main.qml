@@ -222,7 +222,7 @@ LatteComponents.IndicatorItem{
             location: plasmoid.location
             glowOpacity: root.glowOpacity
             contrastColor: indicator.shadowColor
-            showBorder: glowEnabled && glow3D
+            showBorder: glow3D
 
             basicColor: state2Color
             roundCorners: true
