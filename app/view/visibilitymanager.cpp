@@ -596,6 +596,11 @@ void VisibilityManager::publishFrameExtents(bool forceUpdate)
         m_frameExtentsLocation = m_latteView->location();
         m_frameExtentsHeadThicknessGap = m_latteView->headThicknessGap();
 
+        if (KWindowSystem::isPlatformX11() && m_latteView->devicePixelRatio()!=1.0) {
+            //!Fix for X11 Global Scale
+            m_frameExtentsHeadThicknessGap = qRound(m_frameExtentsHeadThicknessGap * m_latteView->devicePixelRatio());
+        }
+
         QMargins frameExtents(0, 0, 0, 0);
 
         if (m_latteView->location() == Plasma::Types::LeftEdge) {

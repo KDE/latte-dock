@@ -17,6 +17,7 @@
 #include <QtDBus>
 
 // KDE
+#include <KWindowSystem>
 #include <KActivities/Controller>
 
 namespace Latte {
@@ -124,7 +125,19 @@ bool AbstractWindowInterface::isFullScreenWindow(const QRect &wGeometry) const
     }
 
     for (const auto scr : qGuiApp->screens()) {
-        if (wGeometry == scr->geometry()) {
+        auto screenGeometry = scr->geometry();
+
+        if (KWindowSystem::isPlatformX11() && scr->devicePixelRatio() != 1.0) {
+            //!Fix for X11 Global Scale, I dont think this could be pixel perfect accurate
+            auto factor = scr->devicePixelRatio();
+            screenGeometry = QRect(qRound(screenGeometry.x() * factor),
+                                   qRound(screenGeometry.y() * factor),
+                                   qRound(screenGeometry.width() * factor),
+                                   qRound(screenGeometry.height() * factor));
+        }
+
+
+        if (wGeometry == screenGeometry) {
             return true;
         }
     }
@@ -142,12 +155,23 @@ bool AbstractWindowInterface::isPlasmaPanel(const QRect &wGeometry) const
     bool isTouchingVerticalEdge{false};
 
     for (const auto scr : qGuiApp->screens()) {
-        if (scr->geometry().contains(wGeometry.center())) {
-            if (wGeometry.y() == scr->geometry().y() || wGeometry.bottom() == scr->geometry().bottom()) {
+        auto screenGeometry = scr->geometry();
+
+        if (KWindowSystem::isPlatformX11() && scr->devicePixelRatio() != 1.0) {
+            //!Fix for X11 Global Scale, I dont think this could be pixel perfect accurate
+            auto factor = scr->devicePixelRatio();
+            screenGeometry = QRect(qRound(screenGeometry.x() * factor),
+                                   qRound(screenGeometry.y() * factor),
+                                   qRound(screenGeometry.width() * factor),
+                                   qRound(screenGeometry.height() * factor));
+        }
+
+        if (screenGeometry.contains(wGeometry.center())) {
+            if (wGeometry.y() == screenGeometry.y() || wGeometry.bottom() == screenGeometry.bottom()) {
                 isTouchingHorizontalEdge = true;
             }
 
-            if (wGeometry.left() == scr->geometry().left() || wGeometry.right() == scr->geometry().right()) {
+            if (wGeometry.left() == screenGeometry.left() || wGeometry.right() == screenGeometry.right()) {
                 isTouchingVerticalEdge = true;
             }
 
@@ -175,8 +199,19 @@ bool AbstractWindowInterface::isSidepanel(const QRect &wGeometry) const
     QRect screenGeometry;
 
     for (const auto scr : qGuiApp->screens()) {
-        if (scr->geometry().contains(wGeometry.center())) {
-            screenGeometry = scr->geometry();
+        auto curScrGeometry = scr->geometry();
+
+        if (KWindowSystem::isPlatformX11() && scr->devicePixelRatio() != 1.0) {
+            //!Fix for X11 Global Scale, I dont think this could be pixel perfect accurate
+            auto factor = scr->devicePixelRatio();
+            curScrGeometry = QRect(qRound(curScrGeometry.x() * factor),
+                                   qRound(curScrGeometry.y() * factor),
+                                   qRound(curScrGeometry.width() * factor),
+                                   qRound(curScrGeometry.height() * factor));
+        }
+
+        if (curScrGeometry.contains(wGeometry.center())) {
+            screenGeometry = curScrGeometry;
             break;
         }
     }

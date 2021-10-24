@@ -318,6 +318,15 @@ void Effects::setInputMask(QRect area)
     m_inputMask = area;
 
     if (KWindowSystem::isPlatformX11()) {
+        if (m_view->devicePixelRatio() != 1.0) {
+            //!Fix for X11 Global Scale
+            auto ratio = m_view->devicePixelRatio();
+            area = QRect(qRound(area.x() * ratio),
+                         qRound(area.y() * ratio),
+                         qRound(area.width()*ratio),
+                         qRound(area.height() * ratio));
+        }
+
         m_corona->wm()->setInputMask(m_view, area);
     } else {
         //under wayland mask() is providing the Input Area
