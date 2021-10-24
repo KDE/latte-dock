@@ -642,6 +642,15 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
         }
     }
 
+    if (KWindowSystem::isPlatformX11() && devicePixelRatio() != 1.0) {
+        //!Fix for X11 Global Scale, I dont think this could be pixel perfect accurate
+        auto factor = devicePixelRatio();
+        absGeometry = QRect(qRound(absGeometry.x() * factor),
+                            qRound(absGeometry.y() * factor),
+                            qRound(absGeometry.width() * factor),
+                            qRound(absGeometry.height() * factor));
+    }
+
     if (m_absoluteGeometry == absGeometry && !bypassChecks) {
         return;
     }
