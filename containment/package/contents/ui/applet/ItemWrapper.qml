@@ -296,7 +296,7 @@ Item{
                            || appletItem.originalAppletBehavior)) {
 
                 //this way improves performance, probably because during animation the preferred sizes update a lot
-                if (appletMaximumLength>0 && appletMaximumLength < appletItem.metrics.iconSize){
+                if (appletMaximumLength>=0 && appletMaximumLength < appletItem.metrics.iconSize){
                     return appletMaximumLength;
                 } else if (appletMinimumLength > appletItem.metrics.iconSize){
                     return appletMinimumLength;
