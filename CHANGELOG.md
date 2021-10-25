@@ -1,5 +1,22 @@
 #**CHANGELOG**#
 
+#### Version 0.10.3
+* support GlobalScale in combination with PLASMA_USE_QT_SCALING properly under X11 environment
+* add CornerMargin option for latte and plasma indicators and expose it through the indicators api
+* unblock visibility mode properly when Meta is used to show an application launcher such as Win11, Simple menu etc.
+* fix focus behavior when applets are requesting input such as knotes applet
+* expose indicators iconOffsetX/Y value to applets
+* enable/disable "CanBeAboveFullscreenWindows" option properly
+* disable GtkFrameExtents for docks and panels that ByPassWindowManager ("CanBeAboveFullscreenWindows" option) under X11
+* draw always a contrasted border for latte indicator
+* simplify latte indicator implementation
+* enforce RoundToIconSize for all applets always and as such the Items Size is always respected. If the user has blur issues with its icons, he should specify an items size that is provided by its icons theme. For example, 16px., 24px., 36px., 48px.
+* identify kickofflegacy applet properly
+* fix popup positioning for plasma-style popups when the dock background is using very big corner roundness
+* prevent session manager from restoring latte just like Spectacle is already doing
+* respect virtual desktops navigation wrapping around option
+* expose translations for default dock and panel templates
+
 #### Version 0.10.2
 * fix crash from containmentactions loading after kde frameworks 5.86
 * Fitt's Law fix for vertical panels in justify alignment
