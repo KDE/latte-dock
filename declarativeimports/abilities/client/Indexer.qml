@@ -104,8 +104,8 @@ AbilityDefinition.Indexer {
             for(var i=0; i<layout.children.length; ++i) {
                 var item = layout.children[i];
                 if (item && item.itemIndex>=0
-                        && separators.indexOf(item.itemIndex)<0
-                        && hidden.indexOf(item.itemIndex)<0
+                        && !item.isSeparator /*not using "separators" array to avoid binding loops*/
+                        && !(item.isHidden || item.isSeparatorHidden) /*not using "hidden" array to avoid binding loops*/
                         && item.itemIndex < ind) {
                     ind = item.itemIndex;
                 }
@@ -124,9 +124,10 @@ AbilityDefinition.Indexer {
 
             for(var i=0; i<layout.children.length; ++i) {
                 var item = layout.children[i];
+
                 if (item && item.itemIndex>=0
-                        && separators.indexOf(item.itemIndex)<0
-                        && hidden.indexOf(item.itemIndex)<0
+                        && !item.isSeparator /*not using "separators" array to avoid binding loops*/
+                        && !(item.isHidden || item.isSeparatorHidden) /*not using "hidden" array to avoid binding loops*/
                         && item.itemIndex > ind) {
                      //console.log("org/kde/latte SETTING UP ::: " + item.itemIndex + " / " + layout.children.length);
                     ind = item.itemIndex;
