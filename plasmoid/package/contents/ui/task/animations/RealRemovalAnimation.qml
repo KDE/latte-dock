@@ -110,24 +110,17 @@ SequentialAnimation {
                     && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
                 tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, taskItem.parabolicItem.zoom);
             }
+
+            if (taskItem.isLauncherAnimationRunning && !taskItem.isSeparator) {
+                taskRealRemovalAnimation.pause();
+            }
         }
     }
 
-    //Ghost animation that acts as a delayer in case there is a bouncing animation
-    //taking place
-    PropertyAnimation {
-        target: taskItem.parabolicItem
-        property: "opacity"
-        to: 1
-
-        //this duration must be a bit less than the bouncing animation. Otherwise the
-        //smooth transition between removals is breaking
-        duration:  taskItem.inBouncingAnimation  && !taskItem.isSeparator? 4*launcherSpeedStep + 50 : 0
-        easing.type: Easing.InQuad
-
-        property int launcherSpeedStep: 0.8 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
+    //! Wait for launcher animation to finish before continue with real removal
+    PauseAnimation {
+        duration: taskItem.isLauncherAnimationRunning && !taskItem.isSeparator ? 50 : 0
     }
-    //end of ghost animation
 
     PropertyAnimation {
         target: taskItem.parabolicItem

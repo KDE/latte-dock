@@ -49,7 +49,7 @@ SequentialAnimation{
             target: taskItem.parabolicItem
             property: "zoomLength"
             to: 1
-            duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
+            duration: 0.5 * taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutBounce
         }
 
@@ -57,7 +57,7 @@ SequentialAnimation{
             target: taskItem.parabolicItem
             property: "zoom"
             to: 1
-            duration: taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
+            duration:  0.5 * taskItem.abilities.animations.speedFactor.current*launcherAnimation.speed
             easing.type: Easing.OutQuad
         }
     }
