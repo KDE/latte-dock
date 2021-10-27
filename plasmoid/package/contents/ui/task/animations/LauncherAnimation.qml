@@ -15,6 +15,8 @@ Item{
     property bool launchedAlready: false
     property int speed: 0.9 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
 
+    readonly property bool running: launcherAnimationLoader.item ? launcherAnimationLoader.item.running : false
+
     readonly property string needThicknessEvent: launcherAnimation + "_launcher"
 
     Loader {
@@ -37,6 +39,12 @@ Item{
             taskItem.setBlockingAnimation(false);
             taskItem.animationEnded();
         }
+    }
+
+    Binding {
+        target: taskItem
+        property: "isLauncherAnimationRunning"
+        value: running
     }
 
     function clearAnimationsSignals() {
@@ -84,8 +92,8 @@ Item{
         if(root.launcherBouncingEnabled){
             taskItem.animationStarted();
             init();
-            taskItem.launcherAction();
             launcherAnimationLoader.item.start();
+            taskItem.launcherAction();
         } else {
             launcherAnimationLoader.item.stop();
             taskItem.launcherAction();

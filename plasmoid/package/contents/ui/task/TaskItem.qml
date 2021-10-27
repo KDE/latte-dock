@@ -80,6 +80,8 @@ AbilityItem.BasicItem {
     property bool inPopup: false
     property bool inRemoveStage: false
 
+    property bool isLauncherAnimationRunning: false
+
     //! after clicking to show/hide preview enter events are trigerred even though the should not
     property bool showPreviewsIsBlockedFromReleaseEvent: false
 
@@ -945,5 +947,10 @@ AbilityItem.BasicItem {
     ///Item's Removal Animation
     ListView.onRemove: TaskAnimations.RealRemovalAnimation{ id: taskRealRemovalAnimation }
 
+    onIsLauncherAnimationRunningChanged: {
+        if (!isLauncherAnimationRunning && taskRealRemovalAnimation.paused) {
+            taskRealRemovalAnimation.resume();
+        }
+    }
 }// main Item
 
