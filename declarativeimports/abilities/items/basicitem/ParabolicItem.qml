@@ -124,6 +124,10 @@ Item{
 
             sourceComponent: DropShadow{
                 anchors.fill: parent
+                transformOrigin: abilityItem.iconTransformOrigin
+                opacity: abilityItem.iconOpacity
+                rotation: abilityItem.iconRotation
+                scale: abilityItem.iconScale
                 color: abilityItem.abilities.myView.itemShadow.shadowColor
                 fast: true
                 samples: 2 * radius
@@ -139,6 +143,10 @@ Item{
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: abilityItem.iconOffsetX
             anchors.verticalCenterOffset: abilityItem.iconOffsetY
+            transformOrigin: abilityItem.iconTransformOrigin
+            opacity: abilityItem.iconOpacity
+            rotation: abilityItem.iconRotation
+            scale: abilityItem.iconScale
 
             width: newTempSize
             height: width

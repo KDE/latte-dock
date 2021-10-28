@@ -75,12 +75,42 @@ Item {
     //! in order to reduce resources usage
     property var svgImagePaths: []
 
+    //! Level Requested API reference
+
+    //! indicator requests different icon X offset from icon center
+    //! [since v0.9.2]
+    //property int level.requested.iconOffsetX: 0
+
+    //! indicator requests different icon Y offset from icon center
+    //! [since v0.9.2]
+    //property int level.requested.iconOffsetY: 0
+
+    //! indicator requests different icon tranform origin
+    //! [since v0.10.4]
+    //property int level.requested.iconTransformOrigin: Item.Center
+
+    //! indicator requests different icon opacity
+    //! [since v0.10.4]
+    //property real level.requested.iconOpacity: 1.0
+
+    //! indicator requests different icon rotation
+    //! [since v0.10.4]
+    //property real level.requested.iconRotation: 0
+
+    //! indicator requests different icon scale
+    //! [since v0.10.4]
+    //property real level.requested.iconScale: 1.0
+
     onLevelChanged: {
         if (level) {
             //! initialization on startup, this way when changing from indicator that changes them
             //! at an indicator that is not using them at all, their values are restored
             level.requested.iconOffsetX = 0;
             level.requested.iconOffsetY = 0;
+            level.requested.iconTransformOrigin = Item.Center;
+            level.requested.iconOpacity = 1.0;
+            level.requested.iconRotation = 0;
+            level.requested.iconScale = 1.0;
         }
     }
 }
