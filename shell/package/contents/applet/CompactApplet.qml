@@ -226,6 +226,30 @@ PlasmaCore.ToolTipArea {
         value: appletItem ? appletItem.iconOffsetY : 0
     }
 
+    Binding {
+        target: root
+        property: "transformOrigin"
+        value: appletItem && compactRepresentation ? appletItem.iconTransformOrigin : Item.Center
+    }
+
+    Binding {
+        target: root
+        property: "opacity"
+        value: appletItem && compactRepresentation ? appletItem.iconOpacity : 1.0
+    }
+
+    Binding {
+        target: root
+        property: "rotation"
+        value: appletItem && compactRepresentation ? appletItem.iconRotation : 0
+    }
+
+    Binding {
+        target: root
+        property: "scale"
+        value: appletItem && compactRepresentation ? appletItem.iconScale : 1.0
+    }
+
     ////Clicked Effect ////
     BrightnessContrast {
         id: _clickedEffect

@@ -18,6 +18,10 @@ Item {
     readonly property Item requested: Item{
         property int iconOffsetX: 0
         property int iconOffsetY: 0
+        property int iconTransformOrigin: Item.Center
+        property real iconOpacity: 1.0
+        property real iconRotation: 0
+        property real iconScale: 1.0
     }
 
     property Item indicator: null
