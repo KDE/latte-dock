@@ -251,9 +251,7 @@ void AbstractWindowInterface::initKWinInterface()
     if (kwinIface.isValid() && !m_isKWinInterfaceAvailable) {
         m_isKWinInterfaceAvailable = true;
         qDebug() << " KWIN SERVICE :: is available...";
-
-        QDBusReply<bool> navWrapAround = kwinIface.call("navigationWrappingAround");
-        m_isVirtualDesktopNavigationWrappingAround = navWrapAround.value();
+        m_isVirtualDesktopNavigationWrappingAround = kwinIface.property("navigationWrappingAround").toBool();
 
         QDBusConnection bus = QDBusConnection::sessionBus();
         bool signalconnected = bus.connect(KWINSERVICE,
