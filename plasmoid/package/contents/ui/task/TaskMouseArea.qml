@@ -136,7 +136,7 @@ MouseArea {
         //console.log("Released Task Delegate...");
         _resistanerTimer.stop();
 
-        if(pressed && (!inBlockingAnimation || inAttentionAnimation) && !isSeparator){
+        if(pressed && (!inBlockingAnimation || inAttentionBuiltinAnimation) && !isSeparator){
 
             if (modifierAccepted(mouse) && !root.disableAllWindowsFunctionality){
                 if( !taskItem.isLauncher ){
@@ -250,7 +250,7 @@ MouseArea {
                 scrollableList.decreasePos();
             } else {
                 if (isLauncher || root.disableAllWindowsFunctionality) {
-                    taskItem.launcherAnimationRequested();
+                    taskItem.activateLauncher();
                 } else if (isGroupParent) {
                     subWindows.activateNextTask();
                 } else {

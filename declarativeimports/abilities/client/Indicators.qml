@@ -33,6 +33,10 @@ AbilityDefinition.Indicators {
         info.providesFrontLayer: false
         info.providesHoveredAnimation: false
         info.providesClickedAnimation: false
+        info.providesTaskLauncherAnimation: false
+        info.providesInAttentionAnimation: false
+        info.providesGroupedWindowAddedAnimation: false
+        info.providesGroupedWindowRemovedAnimation: false        
         info.extraMaskThickness: 0
         info.backgroundCornerMargin: 1.00
         info.lengthPadding: 0.08

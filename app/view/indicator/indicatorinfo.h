@@ -22,8 +22,14 @@ class Info: public QObject
     Q_OBJECT
     Q_PROPERTY(bool needsIconColors READ needsIconColors WRITE setNeedsIconColors NOTIFY needsIconColorsChanged)
     Q_PROPERTY(bool needsMouseEventCoordinates READ needsMouseEventCoordinates WRITE setNeedsMouseEventCoordinates NOTIFY needsMouseEventCoordinatesChanged)
+
     Q_PROPERTY(bool providesClickedAnimation READ providesClickedAnimation WRITE setProvidesClickedAnimation NOTIFY providesClickedAnimationChanged)
     Q_PROPERTY(bool providesHoveredAnimation READ providesHoveredAnimation WRITE setProvidesHoveredAnimation NOTIFY providesHoveredAnimationChanged)
+    Q_PROPERTY(bool providesInAttentionAnimation READ providesInAttentionAnimation WRITE setProvidesInAttentionAnimation NOTIFY providesInAttentionAnimationChanged)
+    Q_PROPERTY(bool providesTaskLauncherAnimation READ providesTaskLauncherAnimation WRITE setProvidesTaskLauncherAnimation NOTIFY providesTaskLauncherAnimationChanged)
+    Q_PROPERTY(bool providesGroupedWindowAddedAnimation READ providesGroupedWindowAddedAnimation WRITE setProvidesGroupedWindowAddedAnimation NOTIFY providesGroupedWindowAddedAnimationChanged)
+    Q_PROPERTY(bool providesGroupedWindowRemovedAnimation READ providesGroupedWindowRemovedAnimation WRITE setProvidesGroupedWindowRemovedAnimation NOTIFY providesGroupedWindowRemovedAnimationChanged)
+
     Q_PROPERTY(bool providesFrontLayer READ providesFrontLayer WRITE setProvidesFrontLayer NOTIFY providesFrontLayerChanged)
 
     Q_PROPERTY(int extraMaskThickness READ extraMaskThickness WRITE setExtraMaskThickness NOTIFY extraMaskThicknessChanged)
@@ -47,6 +53,18 @@ public:
     bool providesHoveredAnimation() const;
     void setProvidesHoveredAnimation(bool provides);
 
+    bool providesInAttentionAnimation() const;
+    void setProvidesInAttentionAnimation(bool provides);
+
+    bool providesTaskLauncherAnimation() const;
+    void setProvidesTaskLauncherAnimation(bool provides);
+
+    bool providesGroupedWindowAddedAnimation() const;
+    void setProvidesGroupedWindowAddedAnimation(bool provides);
+
+    bool providesGroupedWindowRemovedAnimation() const;
+    void setProvidesGroupedWindowRemovedAnimation(bool provides);
+
     bool providesFrontLayer() const;
     void setProvidesFrontLayer(bool front);
 
@@ -67,6 +85,10 @@ signals:
     void needsMouseEventCoordinatesChanged();
     void providesClickedAnimationChanged();
     void providesHoveredAnimationChanged();
+    void providesInAttentionAnimationChanged();
+    void providesTaskLauncherAnimationChanged();
+    void providesGroupedWindowAddedAnimationChanged();
+    void providesGroupedWindowRemovedAnimationChanged();
     void providesFrontLayerChanged();
 
 private:
@@ -74,6 +96,10 @@ private:
     bool m_needsMouseEventCoordinates{false};
     bool m_providesClickedAnimation{false};
     bool m_providesHoveredAnimation{false};
+    bool m_providesInAttentionAnimation{false};
+    bool m_providesTaskLauncherAnimation{false};
+    bool m_providesGroupedWindowAddedAnimation{false};
+    bool m_providesGroupedWindowRemovedAnimation{false};
     bool m_providesFrontLayer{false};
 
     int m_extraMaskThickness{0};

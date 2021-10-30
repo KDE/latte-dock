@@ -37,6 +37,17 @@ Item{
         }
     }
 
+    Connections{
+        target: taskItem
+
+        onInAttentionChanged:{
+            if (!taskItem.inAttention && newWindowAnimation.running && taskItem.inAttentionBuiltinAnimation) {
+                newWindowAnimation.pause();
+                fastRestoreAnimation.start();
+            }
+        }
+    }
+
     function clear(){
         newWindowAnimationLoader.item.stop();
 
@@ -44,8 +55,8 @@ Item{
         taskItem.parabolicItem.zoomThickness = 1.0;
 
         taskItem.setBlockingAnimation(false);
-        taskItem.inAttentionAnimation = false;
-        taskItem.inNewWindowAnimation = false;
+        taskItem.inAttentionBuiltinAnimation = false;
+        taskItem.inNewWindowBuiltinAnimation = false;
     }
 
     function pause() {
@@ -68,17 +79,23 @@ Item{
 
     function init(){
         taskItem.setBlockingAnimation(true);
-        taskItem.inNewWindowAnimation = true;
+        taskItem.inNewWindowBuiltinAnimation = true;
 
         taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
         taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
 
-        taskItem.inAttentionAnimation = isDemandingAttention;
+        taskItem.inAttentionBuiltinAnimation = isDemandingAttention;
 
         taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
     }
 
     function startNewWindowAnimation(){
+        if (isDemandingAttention && taskItem.abilities.indicators.info.providesInAttentionAnimation) {
+            return;
+        } else if (!isDemandingAttention && taskItem.abilities.indicators.info.providesGroupedWindowAddedAnimation) {
+            return;
+        }
+
         if (!taskItem.abilities.myView.isHidden
                 && ((root.windowInAttentionEnabled && isDemandingAttention)
                     || root.windowAddedInGroupEnabled)){
@@ -92,11 +109,11 @@ Item{
     }
 
     Component.onCompleted: {
-        taskItem.groupWindowAdded.connect(startNewWindowAnimation);
+        taskItem.taskGroupedWindowAdded.connect(startNewWindowAnimation);
     }
 
     Component.onDestruction: {
-        taskItem.groupWindowAdded.disconnect(startNewWindowAnimation);
+        taskItem.taskGroupedWindowAdded.disconnect(startNewWindowAnimation);
         taskItem.abilities.animations.needThickness.removeEvent(needThicknessEvent);
     }
 }

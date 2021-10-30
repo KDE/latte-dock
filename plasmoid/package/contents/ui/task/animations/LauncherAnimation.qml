@@ -43,7 +43,7 @@ Item{
 
     Binding {
         target: taskItem
-        property: "isLauncherAnimationRunning"
+        property: "isLauncherBuiltinAnimationRunning"
         value: running
     }
 
@@ -89,25 +89,27 @@ Item{
     }
 
     function startLauncherAnimation(){
-        if(root.launcherBouncingEnabled){
+        if (taskItem.abilities.indicators.info.providesTaskLauncherAnimation) {
+            return;
+        }
+
+        if(root.launcherBouncingEnabled) {
             taskItem.animationStarted();
             init();
             launcherAnimationLoader.item.start();
-            taskItem.launcherAction();
         } else {
             launcherAnimationLoader.item.stop();
-            taskItem.launcherAction();
         }
     }
 
 
     Component.onCompleted: {
-        taskItem.launcherAnimationRequested.connect(startLauncherAnimation);
+        taskItem.taskLauncherActivated.connect(startLauncherAnimation);
     }
 
     Component.onDestruction: {
         clearAnimationsSignals();
-        taskItem.launcherAnimationRequested.disconnect(startLauncherAnimation);
+        taskItem.taskLauncherActivated.disconnect(startLauncherAnimation);
     }
 }
 /////////////////// end of launcher animation

@@ -109,6 +109,18 @@ SequentialAnimation {
             if (taskItem.parabolicItem.zoom > 1 && !taskRealRemovalAnimation.enabledAnimation
                     && !taskItem.inBouncingAnimation && LatteCore.WindowSystem.compositingActive) {
                 tasksExtendedManager.setFrozenTask(taskItem.launcherUrl, taskItem.parabolicItem.zoom);
+            } else {
+                //! remove frozen task if it is deprecated. This fixes the libreoffice launcher issue with custom indicator launcher animations,
+                //! steps to reproduce:
+                //! 1. set an indicator that provides its own launcher animation such as "Animated Dot"
+                //! 2. enable parabolic effect zoom
+                //! 3. click on libreoffice writer launcher and keep the mouse inside the launcher
+                //! 4. close libreoffice writer window from its decoration close button
+                //! 5. libreoffice writer launcher is zoomed even though it should not
+                var frozenTask = tasksExtendedManager.getFrozenTask(taskItem.launcherUrl);
+                if (frozenTask && frozenTask.zoom>1) {
+                    tasksExtendedManager.removeFrozenTask(taskItem.launcherUrl);
+                }
             }
 
             if (taskItem.isLauncherAnimationRunning && !taskItem.isSeparator) {
@@ -195,9 +207,13 @@ SequentialAnimation {
             taskItem.visible = false;
 
             //send signal that the launcher is really removing
-            if (taskItem.inBouncingAnimation) {
+            if (taskItem.hasAddedWaitingLauncher) {
                 tasksExtendedManager.removeWaitingLauncher(taskItem.launcherUrl);
-                taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
+
+                if (!taskItem.abilities.indicators.info.providesTaskLauncherAnimation) {
+                    //! this is needed only from in-built launcher animation to restore zoom smoothly to neighbour tasks
+                    taskItem.abilities.parabolic.setDirectRenderingEnabled(false);
+                }
             }
         }
     }

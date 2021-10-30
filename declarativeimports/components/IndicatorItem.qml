@@ -33,6 +33,22 @@ Item {
     //! indicator provides its own clicked animations. Latte should not provide
     //! any clicked animation in that case
     property bool providesClickedAnimation: false
+    //! indicator provides its own inattention animation. Latte should not provide
+    //! any inattention animation in that case.
+    //! [since v0.10.4]
+    property bool providesInAttentionAnimation: false
+    //! indicator provides its own window added in group animation. Latte should not provide
+    //! any window added in group animation in that case.
+    //! [since v0.10.4]
+    property bool providesGroupedWindowAddedAnimation: false
+    //! indicator provides its own window removed from group animation. Latte should not provide
+    //! any window removed from group animation in that case.
+    //! [since v0.10.4]
+    property bool providesGroupedWindowRemovedAnimation: false
+    //! indicator provides its own task launcher triggered animation. Latte should not provide
+    //! any task launcher triggered animation in that case.
+    //! [since v0.10.4]
+    property bool providesTaskLauncherAnimation: false
 
     //! this indicator will draw its own indicators for applets
     //! [since v0.10.0]
@@ -75,7 +91,7 @@ Item {
     //! in order to reduce resources usage
     property var svgImagePaths: []
 
-    //! Level Requested API reference
+    //! LEVEL.Requested API reference
 
     //! indicator requests different icon X offset from icon center
     //! [since v0.9.2]
@@ -101,6 +117,11 @@ Item {
     //! [since v0.10.4]
     //property real level.requested.iconScale: 1.0
 
+    //! indicator is playing a task launcher animation. It is used in combination with
+    //! providesTaskLauncherAnimation
+    //! [since v0.10.4]
+    //property bool level.requested.isTaskLauncherAnimationRunning: false
+
     onLevelChanged: {
         if (level) {
             //! initialization on startup, this way when changing from indicator that changes them
@@ -111,6 +132,7 @@ Item {
             level.requested.iconOpacity = 1.0;
             level.requested.iconRotation = 0;
             level.requested.iconScale = 1.0;
+            level.requested.isTaskLauncherAnimationRunning = false;
         }
     }
 }

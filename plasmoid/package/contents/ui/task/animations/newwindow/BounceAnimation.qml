@@ -27,7 +27,7 @@ SequentialAnimation{
             duration: newWindowAnimation.speed
             easing.type: Easing.OutQuad
 
-            property real thickPercentage: taskItem.inAttentionAnimation ? 0.8 : 0.6
+            property real thickPercentage: taskItem.inAttentionBuiltinAnimation ? 0.8 : 0.6
         }
 
         PropertyAnimation {
