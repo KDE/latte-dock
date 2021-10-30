@@ -44,4 +44,11 @@ AbilityItem.IndicatorLevel {
             level.mouseReleased(Math.round(fixedPos.x), Math.round(fixedPos.y), button);
         }
     }
+
+    Connections {
+        target: abilityItem
+        onTaskLauncherActivated: level.taskLauncherActivated();
+        onTaskGroupedWindowAdded: level.taskGroupedWindowAdded();
+        onTaskGroupedWindowRemoved: level.taskGroupedWindowRemoved();
+    }
 }

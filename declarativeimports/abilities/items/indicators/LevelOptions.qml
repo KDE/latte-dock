@@ -9,6 +9,9 @@ Item {
     id: level
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);
+    signal taskLauncherActivated();
+    signal taskGroupedWindowAdded();
+    signal taskGroupedWindowRemoved();
 
     property bool isBackground: true
     property bool isForeground: false
@@ -22,6 +25,7 @@ Item {
         property real iconOpacity: 1.0
         property real iconRotation: 0
         property real iconScale: 1.0
+        property bool isTaskLauncherAnimationRunning: false
     }
 
     property Item indicator: null

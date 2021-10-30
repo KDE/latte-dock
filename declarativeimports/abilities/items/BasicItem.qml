@@ -22,6 +22,9 @@ Item{
     signal mouseReleased(int x, int y, int button);
     signal shortcutRequestedActivate();
     signal shortcutRequestedNewInstance();
+    signal taskLauncherActivated();
+    signal taskGroupedWindowAdded();
+    signal taskGroupedWindowRemoved();
 
     anchors.bottom: (parent && abilityItem.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
     anchors.top: (parent && abilityItem.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
@@ -116,6 +119,9 @@ Item{
     readonly property real iconOpacity: indicatorBackLayer.level.requested.iconOpacity
     readonly property real iconRotation: indicatorBackLayer.level.requested.iconRotation
     readonly property real iconScale: indicatorBackLayer.level.requested.iconScale
+
+    readonly property bool isIndicatorTaskLauncherAnimationRunning: (indicatorBackLayer.level.requested.isTaskLauncherAnimationRunning
+                                                                     || indicatorFrontLayer.level.requested.isTaskLauncherAnimationRunning)
 
     readonly property alias indicator: abilityIndicatorObj
     readonly property alias parabolicItem: _parabolicItem

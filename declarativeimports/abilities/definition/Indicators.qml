@@ -27,6 +27,10 @@ Item{
         providesFrontLayer: false
         providesHoveredAnimation: false
         providesClickedAnimation: false
+        providesTaskLauncherAnimation: false
+        providesInAttentionAnimation: false
+        providesGroupedWindowAddedAnimation: false
+        providesGroupedWindowRemovedAnimation: false
 
         extraMaskThickness: 0
 

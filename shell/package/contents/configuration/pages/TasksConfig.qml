@@ -288,6 +288,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce launchers when triggered")
                     value: tasks.configuration.animationLauncherBouncing
+                    enabled: !latteView.indicator.info.providesTaskLauncherAnimation
 
                     onClicked: {
                         tasks.configuration.animationLauncherBouncing = !tasks.configuration.animationLauncherBouncing;
@@ -298,6 +299,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Bounce tasks that need attention")
                     value: tasks.configuration.animationWindowInAttention
+                    enabled: !latteView.indicator.info.providesInAttentionAnimation
 
                     onClicked: {
                         tasks.configuration.animationWindowInAttention = !tasks.configuration.animationWindowInAttention;
@@ -318,6 +320,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks bounce their new windows")
                     value: tasks.configuration.animationWindowAddedInGroup
+                    enabled: !latteView.indicator.info.providesGroupedWindowAddedAnimation
 
                     onClicked: {
                         tasks.configuration.animationWindowAddedInGroup = !tasks.configuration.animationWindowAddedInGroup;
@@ -328,6 +331,7 @@ PlasmaComponents.Page {
                     Layout.maximumWidth: dialog.optionsWidth
                     text: i18n("Grouped tasks slide out their closed windows")
                     value: tasks.configuration.animationWindowRemovedFromGroup
+                    enabled: !latteView.indicator.info.providesGroupedWindowRemovedAnimation
 
                     onClicked: {
                         tasks.configuration.animationWindowRemovedFromGroup = !tasks.configuration.animationWindowRemovedFromGroup;

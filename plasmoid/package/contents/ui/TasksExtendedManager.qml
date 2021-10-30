@@ -238,7 +238,7 @@ Item {
         arraysGarbageCollectorTimer.restart();
 
         var frozenTaskExists = false;
-        console.log("SET FROZEN :: "+identifier+" - "+scale);
+        //console.log("SET FROZEN :: "+identifier+" - "+scale);
         var frozenTask = getFrozenTask(identifier);
 
         if (frozenTask) {

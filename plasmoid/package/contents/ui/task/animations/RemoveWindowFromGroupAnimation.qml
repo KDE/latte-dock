@@ -29,17 +29,21 @@ Item{
     }
 
     function removeTask(){
+        if (taskItem.abilities.indicators.info.providesGroupedWindowRemovedAnimation) {
+            return;
+        }
+
         if(!taskIconContainer.toBeDestroyed && root.windowRemovedFromGroupEnabled){
             removingAnimation.init();
         }
     }
 
     Component.onCompleted: {
-        taskItem.groupWindowRemoved.connect(removeTask);
+        taskItem.taskGroupedWindowRemoved.connect(removeTask);
     }
 
     Component.onDestruction: {
-        taskItem.groupWindowRemoved.disconnect(removeTask);
+        taskItem.taskGroupedWindowRemoved.disconnect(removeTask);
     }
 
     ///////////// Component for animating removing window from group

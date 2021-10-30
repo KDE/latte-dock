@@ -68,6 +68,34 @@ AbilityHost.Indicators {
 
     Binding{
         target: view && view.indicator ? view.indicator.info : null
+        property:"providesInAttentionAnimation"
+        when: view && view.indicator
+        value: _indicators.info.providesInAttentionAnimation
+    }
+
+    Binding{
+        target: view && view.indicator ? view.indicator.info : null
+        property:"providesTaskLauncherAnimation"
+        when: view && view.indicator
+        value: _indicators.info.providesTaskLauncherAnimation
+    }
+
+    Binding{
+        target: view && view.indicator ? view.indicator.info : null
+        property:"providesGroupedWindowAddedAnimation"
+        when: view && view.indicator
+        value: _indicators.info.providesGroupedWindowAddedAnimation
+    }
+
+    Binding{
+        target: view && view.indicator ? view.indicator.info : null
+        property:"providesGroupedWindowRemovedAnimation"
+        when: view && view.indicator
+        value: _indicators.info.providesGroupedWindowRemovedAnimation
+    }
+
+    Binding{
+        target: view && view.indicator ? view.indicator.info : null
         property:"providesFrontLayer"
         when: view && view.indicator
         value: _indicators.info.providesFrontLayer

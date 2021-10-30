@@ -14,6 +14,11 @@ Item{
     property bool providesHoveredAnimation: false
     property bool providesClickedAnimation: false
 
+    property bool providesTaskLauncherAnimation: false
+    property bool providesInAttentionAnimation: false
+    property bool providesGroupedWindowAddedAnimation: false
+    property bool providesGroupedWindowRemovedAnimation: false
+
     property int extraMaskThickness: 0
 
     property real minThicknessPadding: 0

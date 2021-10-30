@@ -84,6 +84,66 @@ void Info::setProvidesHoveredAnimation(bool provides)
     emit providesHoveredAnimationChanged();
 }
 
+bool Info::providesInAttentionAnimation() const
+{
+    return m_providesInAttentionAnimation;
+}
+
+void Info::setProvidesInAttentionAnimation(bool provides)
+{
+    if (m_providesInAttentionAnimation == provides) {
+        return;
+    }
+
+    m_providesInAttentionAnimation = provides;
+    emit providesInAttentionAnimationChanged();
+}
+
+bool Info::providesTaskLauncherAnimation() const
+{
+    return m_providesTaskLauncherAnimation;
+}
+
+void Info::setProvidesTaskLauncherAnimation(bool provides)
+{
+    if (m_providesTaskLauncherAnimation == provides) {
+        return;
+    }
+
+    m_providesTaskLauncherAnimation = provides;
+    emit providesTaskLauncherAnimationChanged();
+}
+
+bool Info::providesGroupedWindowAddedAnimation() const
+{
+    return m_providesGroupedWindowAddedAnimation;
+}
+
+void Info::setProvidesGroupedWindowAddedAnimation(bool provides)
+{
+    if (m_providesGroupedWindowAddedAnimation == provides) {
+        return;
+    }
+
+    m_providesGroupedWindowAddedAnimation = provides;
+    emit providesGroupedWindowAddedAnimationChanged();
+}
+
+bool Info::providesGroupedWindowRemovedAnimation() const
+{
+    return m_providesGroupedWindowRemovedAnimation;
+}
+
+void Info::setProvidesGroupedWindowRemovedAnimation(bool provides)
+{
+    if (m_providesGroupedWindowRemovedAnimation == provides) {
+        return;
+    }
+
+    m_providesGroupedWindowRemovedAnimation = provides;
+    emit providesGroupedWindowRemovedAnimationChanged();
+}
+
 bool Info::providesFrontLayer() const
 {
     return m_providesFrontLayer;

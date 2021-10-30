@@ -449,17 +449,6 @@ Item {
             removingAnimation.removingItem.destroy();
     }
 
-    Connections{
-        target: taskItem
-
-        onInAttentionChanged:{
-            if (!taskItem.inAttention && newWindowAnimation.running && taskItem.inAttentionAnimation) {
-                newWindowAnimation.pause();
-                fastRestoreAnimation.start();
-            }
-        }
-    }
-
     //////////// States ////////////////////
     states: [
         State{

@@ -77,7 +77,7 @@ SequentialAnimation{
         if(taskItem.isWindow || taskItem.isStartup){
             publishGeometryTimer.start();
             if (taskItem.isDemandingAttention){
-                taskItem.groupWindowAdded();
+                taskItem.taskGroupedWindowAdded();
             }
         }
         taskItem.inAnimation = false;
@@ -171,7 +171,7 @@ SequentialAnimation{
                 taskItem.parabolicItem.zoomThickness = 1.0;
             }
 
-            //! by enabling it we break the bouncing animation
+            //! by enabling it we break the bouncing animation and the indicators launchers animations
             //taskItem.visible = true;
             taskItem.parabolicItem.opacity = 1;
             taskItem.inAnimation = false;
