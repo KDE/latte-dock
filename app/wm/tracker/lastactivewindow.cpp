@@ -512,6 +512,8 @@ void LastActiveWindow::windowChanged(const WindowId &wid)
             if (m_currentWinId == wid) {
                 updateInformationFromHistory();
             }
+        } else if (m_history.indexOf(wid) == 0) {
+            setInformation(historyitem);
         }
     } else {
         //qDebug() << " LastActiveWindow : window is not in history";
