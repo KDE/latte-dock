@@ -376,11 +376,12 @@ void TabLayouts::switchLayout()
 
 void TabLayouts::toggleActivitiesManager()
 {
-    QDBusInterface iface("org.kde.plasmashell", "/PlasmaShell", "", QDBusConnection::sessionBus());
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.plasmashell"),
+                                                          QStringLiteral("/PlasmaShell"),
+                                                          QStringLiteral("org.kde.PlasmaShell"),
+                                                          QStringLiteral("toggleActivityManager"));
 
-    if (iface.isValid()) {
-        iface.call("toggleActivityManager");
-    }
+    QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
 }
 
 void TabLayouts::toggleEnabledLayout()

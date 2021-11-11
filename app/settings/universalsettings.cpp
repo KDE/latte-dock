@@ -370,11 +370,12 @@ void UniversalSettings::kwin_forwardMetaToLatte(bool forward)
     m_kwinrcModifierOnlyShortcutsGroup.writeEntry("Meta", forwardStr);
     m_kwinrcModifierOnlyShortcutsGroup.sync();
 
-    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                          QStringLiteral("/KWin"),
+                                                          QStringLiteral("org.kde.KWin"),
+                                                          QStringLiteral("reconfigure"));
 
-    if (iface.isValid()) {
-        iface.call("reconfigure");
-    }
+    QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
 }
 
 void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
@@ -389,13 +390,18 @@ void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
         return;
     }
 
-    m_kwinrcWindowsGroup.writeEntry("BorderlessMaximizedWindows", disable);
-    m_kwinrcWindowsGroup.sync();
-
     QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
 
     if (iface.isValid()) {
-        iface.call("reconfigure");
+        m_kwinrcWindowsGroup.writeEntry("BorderlessMaximizedWindows", disable);
+        m_kwinrcWindowsGroup.sync();
+
+        QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.kde.KWin"),
+                                                              QStringLiteral("/KWin"),
+                                                              QStringLiteral("org.kde.KWin"),
+                                                              QStringLiteral("reconfigure"));
+
+        QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
         m_kwinBorderlessMaximizedWindows = disable;
     }
 }
