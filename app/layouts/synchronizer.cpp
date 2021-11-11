@@ -1016,7 +1016,11 @@ void Synchronizer::updateKWinDisabledBorders()
                 }
             }
 
-            m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(false);
+            //! avoid initialization step for example during startup that no layouts have been loaded yet
+            if (centrals.size() > 0) {
+                m_manager->corona()->universalSettings()->kwin_setDisabledMaximizedBorders(false);
+            }
+
         }
     }
 }
