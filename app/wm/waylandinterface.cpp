@@ -20,7 +20,7 @@
 #include <QTimer>
 #include <QApplication>
 #include <QtX11Extras/QX11Info>
-#include <QRasterWindow>
+#include <QQuickView>
 #include <QLatin1String>
 
 // KDE
@@ -39,7 +39,7 @@ using namespace KWayland::Client;
 
 namespace Latte {
 
-class Private::GhostWindow : public QRasterWindow
+class Private::GhostWindow : public QQuickView
 {
     Q_OBJECT
 
@@ -52,6 +52,9 @@ public:
                  | Qt::WindowStaysOnTopHint
                  | Qt::NoDropShadowWindowHint
                  | Qt::WindowDoesNotAcceptFocus);
+
+        setColor(QColor(Qt::transparent));
+        setClearBeforeRendering(true);
 
         connect(m_waylandInterface, &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &GhostWindow::identifyWinId);
 
