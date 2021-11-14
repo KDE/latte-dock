@@ -43,6 +43,8 @@ private slots:
 
 private slots:
     bool screenIsActive(const QString &screenName) const;
+    void setPlasmaAvailableScreenRect(const QString &screenName, const QRect &rect);
+    void setPlasmaAvailableScreenRegion(const QString &screenName, const QRegion &region);
 
 private:
     bool m_plasmaInterfaceAvailable{false};

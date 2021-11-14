@@ -60,11 +60,17 @@ ScreenGeometries::~ScreenGeometries()
 
 void ScreenGeometries::init()
 {
-    QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
+    qDebug() << " PLASMA STRUTS MANAGER :: checking availability....";
+    bool serviceavailable{false};
+
+    if (QDBusConnection::sessionBus().interface()) {
+        serviceavailable = QDBusConnection::sessionBus().interface()->isServiceRegistered(PLASMASERVICE).value();
+        qDebug() << "PLASMA STRUTS MANAGER :: interface availability :: " << QDBusConnection::sessionBus().interface()->isServiceRegistered(PLASMASERVICE).value();
+    }
 
     connect(m_corona->universalSettings(), &Latte::UniversalSettings::isAvailableGeometryBroadcastedToPlasmaChanged, this, &ScreenGeometries::onBroadcastToPlasmaChanged);
 
-    if (plasmaStrutsIface.isValid()) {
+    if (serviceavailable) {
         m_plasmaInterfaceAvailable = true;
 
         qDebug() << " PLASMA STRUTS MANAGER :: is available...";
@@ -109,15 +115,54 @@ void ScreenGeometries::onBroadcastToPlasmaChanged()
     }
 }
 
+void ScreenGeometries::setPlasmaAvailableScreenRect(const QString &screenName, const QRect &rect)
+{
+    QDBusMessage message = QDBusMessage::createMethodCall(PLASMASERVICE,
+                                                          "/StrutManager",
+                                                          PLASMASTRUTNAMESPACE,
+                                                          "setAvailableScreenRect");
+    QVariantList args;
+
+    args << LATTESERVICE
+         << screenName
+         << rect;
+
+    message.setArguments(args);
+    QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
+}
+
+void ScreenGeometries::setPlasmaAvailableScreenRegion(const QString &screenName, const QRegion &region)
+{
+    QDBusMessage message = QDBusMessage::createMethodCall(PLASMASERVICE,
+                                                          "/StrutManager",
+                                                          PLASMASTRUTNAMESPACE,
+                                                          "setAvailableScreenRegion");
+
+    QVariant regionvariant;
+
+    if (!region.isNull()) {
+        //! transorm QRegion to QList<QRect> in order to be sent through dbus
+        QList<QRect> rects;
+        foreach (const QRect &rect, region) {
+            rects << rect;
+        }
+
+        regionvariant = QVariant::fromValue(rects);
+    }
+
+    QVariantList args;
+
+    args << LATTESERVICE
+         << screenName
+         << regionvariant;
+
+    message.setArguments(args);
+    QDBusConnection::sessionBus().call(message, QDBus::NoBlock);
+}
+
 void ScreenGeometries::clearGeometries()
 {
     if (!m_plasmaInterfaceAvailable) {
-        return;
-    }
-
-    QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
-
-    if (!plasmaStrutsIface.isValid()) {
         return;
     }
 
@@ -126,8 +171,8 @@ void ScreenGeometries::clearGeometries()
         int scrId = m_corona->screenPool()->id(screen->name());
 
         if (m_corona->screenPool()->hasScreenId(scrId)) {
-            plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, QRect());
-            plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, QVariant());
+            setPlasmaAvailableScreenRect(scrName, QRect());
+            setPlasmaAvailableScreenRegion(scrName, QRegion());
         }
     }
 
@@ -138,12 +183,6 @@ void ScreenGeometries::clearGeometries()
 void ScreenGeometries::updateGeometries()
 {
     if (!m_plasmaInterfaceAvailable || !m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
-        return;
-    }
-
-    QDBusInterface plasmaStrutsIface(PLASMASERVICE, "/StrutManager", PLASMASTRUTNAMESPACE, QDBusConnection::sessionBus());
-
-    if (!plasmaStrutsIface.isValid()) {
         return;
     }
 
@@ -178,13 +217,13 @@ void ScreenGeometries::updateGeometries()
             //! is using a different layout. When the user from Unity is switching to
             //! Music and afterwards to Canvas the desktop elements are not positioned properly
             if (m_forceGeometryBroadcast) {
-                plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, QRect());
+                setPlasmaAvailableScreenRect(scrName, QRect());
             }
 
             //! Disable checks because of the workaround concerning plasma desktop behavior
             if (m_forceGeometryBroadcast || (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect)) {
                 m_lastAvailableRect[scrName] = availableRect;
-                plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, scrName, availableRect);
+                setPlasmaAvailableScreenRect(scrName, availableRect);
                 qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
             }
 
@@ -194,14 +233,7 @@ void ScreenGeometries::updateGeometries()
 
             if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
                 m_lastAvailableRegion[scrName] = availableRegion;
-
-                //! transorm QRegion to QList<QRect> in order to be sent through dbus
-                QList<QRect> rects;
-                foreach (const QRect &rect, availableRegion) {
-                    rects << rect;
-                }
-
-                plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, scrName, QVariant::fromValue(rects));
+                setPlasmaAvailableScreenRegion(scrName, availableRegion);
                 qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
             }
         }
@@ -213,8 +245,8 @@ void ScreenGeometries::updateGeometries()
     for (QString &lastScrName : m_lastScreenNames) {
         if (!screenIsActive(lastScrName)) {
             //! screen became inactive and its geometries could be unpublished
-            plasmaStrutsIface.call("setAvailableScreenRect", LATTESERVICE, lastScrName, QRect());
-            plasmaStrutsIface.call("setAvailableScreenRegion", LATTESERVICE, lastScrName, QVariant::fromValue(QList<QRect>()));
+            setPlasmaAvailableScreenRect(lastScrName, QRect());
+            setPlasmaAvailableScreenRegion(lastScrName, QRegion());
 
             m_lastAvailableRect.remove(lastScrName);
             m_lastAvailableRegion.remove(lastScrName);
