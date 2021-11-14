@@ -390,9 +390,13 @@ void UniversalSettings::kwin_setDisabledMaximizedBorders(bool disable)
         return;
     }
 
-    QDBusInterface iface("org.kde.KWin", "/KWin", "", QDBusConnection::sessionBus());
+    bool serviceavailable{false};
 
-    if (iface.isValid()) {
+    if (QDBusConnection::sessionBus().interface()) {
+        serviceavailable = QDBusConnection::sessionBus().interface()->isServiceRegistered("org.kde.KWin").value();
+    }
+
+    if (serviceavailable) {
         m_kwinrcWindowsGroup.writeEntry("BorderlessMaximizedWindows", disable);
         m_kwinrcWindowsGroup.sync();
 
