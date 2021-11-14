@@ -84,7 +84,6 @@ void ScreenGeometries::init()
 
         connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
             if (m_corona->universalSettings()->isAvailableGeometryBroadcastedToPlasma()) {
-                m_forceGeometryBroadcast = true;
                 m_publishTimer.start();
             }
         });
@@ -212,23 +211,11 @@ void ScreenGeometries::updateGeometries()
                                                                                   true,
                                                                                   true);
 
-            //! Workaround: Force update, to workaround Plasma not updating its layout at some cases
-            //! Example: Canvas,Music activities use the same Layout. Unity activity
-            //! is using a different layout. When the user from Unity is switching to
-            //! Music and afterwards to Canvas the desktop elements are not positioned properly
-            if (m_forceGeometryBroadcast) {
-                setPlasmaAvailableScreenRect(scrName, QRect());
-            }
-
             //! Disable checks because of the workaround concerning plasma desktop behavior
-            if (m_forceGeometryBroadcast || (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect)) {
+            if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {
                 m_lastAvailableRect[scrName] = availableRect;
                 setPlasmaAvailableScreenRect(scrName, availableRect);
                 qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
-            }
-
-            if (m_forceGeometryBroadcast) {
-                m_forceGeometryBroadcast = false;
             }
 
             if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {

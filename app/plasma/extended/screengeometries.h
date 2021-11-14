@@ -48,7 +48,6 @@ private slots:
 
 private:
     bool m_plasmaInterfaceAvailable{false};
-    bool m_forceGeometryBroadcast{false};
 
     //! this is needed in order to avoid too many costly calculations for available screen geometries
     QTimer m_publishTimer;
