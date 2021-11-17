@@ -1,5 +1,18 @@
 #**CHANGELOG**#
 
+#### Version 0.10.4
+* Feature Indicators: extend Indicators API in order for indicators to be able to animate their parent icon including when a task launcher is activated
+* Feature Indicators: expose more Icon properties to indicators
+* Important: Fix 25secs startup freezes from QDBusInterface desktop geometry calls
+* Important: Fix startup delays because KWin was reconfiguring even though it was needed when BorderlessMaximized windows were activated
+* Important: Remove plasma workarounds that were hiding plasma desktop bug #445495
+* wayland: hide black line in the dock/panel center for AlwaysVisible visibility mode
+* LastActiveWindow: update last activated window properties when changed
+* initialize VirtualDesktopsWrappingAround property in a proper way
+* plasmoid: decouple bouncing launcher animation for task real removal animation
+* fix binding loops for Indexer qml ability
+* respect applets maximumLength when equals zero
+
 #### Version 0.10.3
 * support GlobalScale in combination with PLASMA_USE_QT_SCALING properly under X11 environment
 * add CornerMargin option for latte and plasma indicators and expose it through the indicators api
