@@ -40,6 +40,19 @@ enum LayoutsMemory
 }
 }
 
+namespace Latte {
+namespace MultipleLayouts {
+
+enum Status
+{
+    Uninitialized = -1,
+    Paused,
+    Running
+};
+
+}
+}
+
 //! These are LatteApp::Types that will be used from Latte App c++ implementation AND
 //! Latte containment qml. Such types are irrelevant and not used from plasma applets.
 

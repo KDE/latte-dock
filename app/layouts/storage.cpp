@@ -567,6 +567,44 @@ void Storage::syncToLayoutFile(const Layout::GenericLayout *layout, bool removeL
     removeAllClonedViews(layout->file());
 }
 
+void Storage::moveToLayoutFile(const QString &layoutName)
+{
+    if (layoutName.isEmpty()) {
+        return;
+    }
+
+    QString linkedFilePath = Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+    QString layoutFilePath = Importer::layoutUserFilePath(layoutName);
+
+    if (linkedFilePath.isEmpty() || layoutFilePath.isEmpty() || !QFileInfo(linkedFilePath).exists() || !QFileInfo(layoutFilePath).exists()) {
+        return;
+    }
+
+    KSharedConfigPtr layoutFilePtr = KSharedConfig::openConfig(layoutFilePath);
+    KConfigGroup singleContainments = KConfigGroup(layoutFilePtr, "Containments");
+    singleContainments.deleteGroup();
+
+    KSharedConfigPtr multiFilePtr = KSharedConfig::openConfig(linkedFilePath);
+    KConfigGroup multiContainments = KConfigGroup(multiFilePtr, "Containments");
+
+    for(const auto &cId : multiContainments.groupList()) {
+        QString cname = multiContainments.group(cId).readEntry("layoutId", QString());
+
+        if (!cname.isEmpty() && cname == layoutName) {
+            multiContainments.group(cId).writeEntry("layoutId", "");
+            KConfigGroup singleGroup = singleContainments.group(cId);
+            multiContainments.group(cId).copyTo(&singleGroup);
+            singleGroup.writeEntry("layoutId", "");
+            singleGroup.sync();
+
+            multiContainments.group(cId).deleteGroup();
+        }
+    }
+
+    layoutFilePtr->reparseConfiguration();
+    removeAllClonedViews(layoutFilePath);
+}
+
 QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayout *layout, QString file)
 {
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
@@ -1654,6 +1692,30 @@ void Storage::removeContainment(const QString &filepath, const QString &containm
     containmentGroups.group(containmentId).deleteGroup();
     lFile->reparseConfiguration();
 }
+
+QStringList Storage::storedLayoutsInMultipleFile()
+{
+    QStringList layouts;
+    QString linkedFilePath = Importer::layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+
+    if (linkedFilePath.isEmpty() || !QFileInfo(linkedFilePath).exists()) {
+        return layouts;
+    }
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
+    KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
+
+    for(const auto &cId : linkedContainments.groupList()) {
+        QString layoutName = linkedContainments.group(cId).readEntry("layoutId", QString());
+
+        if (!layoutName.isEmpty() && !layouts.contains(layoutName)) {
+            layouts << layoutName;
+        }
+    }
+
+    return layouts;
+}
+
 
 QString Storage::storedView(const Layout::GenericLayout *layout, const int &containmentId)
 {

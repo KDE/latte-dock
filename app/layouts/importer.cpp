@@ -758,6 +758,38 @@ QString Importer::uniqueLayoutName(QString name)
     return name;
 }
 
+Latte::MultipleLayouts::Status Importer::multipleLayoutsStatus()
+{
+    QString linkedFilePath = layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+    if (!QFileInfo(linkedFilePath).exists()) {
+        return Latte::MultipleLayouts::Uninitialized;
+    }
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
+    KConfigGroup multipleSettings = KConfigGroup(filePtr, "MultipleLayoutsSettings");
+    return static_cast<Latte::MultipleLayouts::Status>(multipleSettings.readEntry("status", (int)Latte::MultipleLayouts::Uninitialized));
+}
+
+void Importer::setMultipleLayoutsStatus(const Latte::MultipleLayouts::Status &status)
+{
+    QString linkedFilePath = layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);
+
+    if (!QFileInfo(linkedFilePath).exists()) {
+        return;
+    }
+
+    if (multipleLayoutsStatus() == status) {
+        return;
+    }
+
+    qDebug() << " MULTIPLE LAYOUTS changed status:" << status;
+
+    KSharedConfigPtr filePtr = KSharedConfig::openConfig(linkedFilePath);
+    KConfigGroup multipleSettings = KConfigGroup(filePtr, "MultipleLayoutsSettings");
+    multipleSettings.writeEntry("status", (int)(status));
+    multipleSettings.sync();
+}
+
 QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
 {
     QString linkedFilePath = layoutUserFilePath(Layout::MULTIPLELAYOUTSHIDDENNAME);

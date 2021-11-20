@@ -207,6 +207,10 @@ void Corona::onAboutToQuit()
         cleanConfig();
     }
 
+    if (m_layoutsManager->memoryUsage() == Latte::MemoryUsage::MultipleLayouts) {
+        m_layoutsManager->importer()->setMultipleLayoutsStatus(Latte::MultipleLayouts::Paused);
+    }
+
     qDebug() << "Latte Corona - unload: containments ...";
     m_layoutsManager->unload();
 }

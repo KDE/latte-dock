@@ -15,6 +15,7 @@
 #include <QObject>
 #include <QHash>
 #include <QTimer>
+#include <QStringList>
 
 
 namespace Latte {
@@ -65,7 +66,7 @@ public:
     void pauseLayout(QString layoutName);
     void syncActiveLayoutsToOriginalFiles();
     void syncLatteViewsToScreens();
-    void syncMultipleLayoutsToActivities();
+    void syncMultipleLayoutsToActivities(QStringList preloadedLayouts = QStringList());
 
     //! In that case single layout file must be removed after loading the new layout
     void setIsSingleLayoutInDeprecatedRenaming(const bool &enabled);
@@ -132,13 +133,14 @@ private slots:
     void onActivityRemoved(const QString &activityid);
     void onLayoutAdded(const QString &layoutpath);
 
+    void unloadPreloadedLayouts();
     void reloadAssignedLayouts();
     void updateBorderlessMaximizedAfterTimer();
 
 private:
     void addLayout(CentralLayout *layout);
     void unloadCentralLayout(CentralLayout *layout);
-    void unloadLayouts(const QStringList &layoutNames);
+    void unloadLayouts(const QStringList &layoutNames, const QStringList &preloadedLayouts);
 
     bool initSingleMode(QString layoutName);
     bool initMultipleMode(QString layoutName);

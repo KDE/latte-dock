@@ -77,6 +77,9 @@ public:
     void updateView(KConfigGroup viewGroup, const Data::View &viewData);
     QString storedView(const Layout::GenericLayout *layout, const int &containmentId); //returns temp filepath containing all view data
 
+    void moveToLayoutFile(const QString &layoutName);
+    QStringList storedLayoutsInMultipleFile();
+
     void removeContainment(const QString &filepath, const QString &containmentId);
 
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);

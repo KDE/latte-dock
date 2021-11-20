@@ -8,6 +8,9 @@
 #ifndef IMPORTER_H
 #define IMPORTER_H
 
+// local
+#include "../apptypes.h"
+
 // Qt
 #include <QObject>
 #include <QTemporaryDir>
@@ -106,6 +109,9 @@ public:
     //! startup and if such state occurs, it basically means that the app didn't
     //! close correctly, e.g. there was a crash.
     static QStringList checkRepairMultipleLayoutsLinkedFile();
+
+    static Latte::MultipleLayouts::Status multipleLayoutsStatus();
+    static void setMultipleLayoutsStatus(const Latte::MultipleLayouts::Status &status);
 
 signals:
     void newLayoutAdded(const QString &path);
