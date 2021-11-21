@@ -88,7 +88,10 @@ Item {
 
                 minSize = minSize>=0 && minSize!==Infinity ? minSize : -1;
                 prefSize = minSize>=0 && prefSize!==Infinity ? prefSize : -1;
-                maxSize = maxSize>=0 && maxSize!== Infinity ? maxSize : -1;
+
+                //! Qt ignores maximumlength=0 for applets that have set Layout.fillLength flag
+                //! this was tracked through bug #445869, mediacontroller_plus applet case
+                maxSize = maxSize>0 && maxSize!== Infinity ? maxSize : -1;
 
                 var appliedSize = -1;
                 //! check if the applet does not provide any valid metrics and for that case
