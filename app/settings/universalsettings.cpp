@@ -78,7 +78,11 @@ void UniversalSettings::load()
     bool autostartUserSet = m_universalGroup.readEntry("userConfiguredAutostart", false);
 
     if (!autostartUserSet && !autostart()) {
+        //! the first time the application is running and autostart is not set, autostart is enabled
+        //! and from now own it will not be recreated in the beginning
+
         setAutostart(true);
+        m_universalGroup.writeEntry("userConfiguredAutostart", true);
     }
 
     //! init screen scales
@@ -237,47 +241,22 @@ void UniversalSettings::setLaunchers(QStringList launcherList)
 
 bool UniversalSettings::autostart() const
 {
-    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
-    return autostartFile.exists();
+    return Layouts::Importer::isAutostartEnabled();
 }
 
 void UniversalSettings::setAutostart(bool state)
 {
-    //! remove old autostart file
-    QFile oldAutostartFile(Latte::configPath() + "/autostart/latte-dock.desktop");
-
-    if (oldAutostartFile.exists()) {
-        oldAutostartFile.remove();
+    if (autostart() == state) {
+        return;
     }
 
-    //! end of removal of old autostart file
-
-    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
-    QFile metaFile(Layouts::Importer::standardPath("applications/org.kde.latte-dock.desktop", false));
-
-    if (!state && autostartFile.exists()) {
-        //! the first time that the user disables the autostart, this is recorded
-        //! and from now own it will not be recreated it in the beginning
-        if (!m_universalGroup.readEntry("userConfiguredAutostart", false)) {
-            m_universalGroup.writeEntry("userConfiguredAutostart", true);
-        }
-
-        autostartFile.remove();
-        emit autostartChanged();
-    } else if (state && metaFile.exists()) {
-        //! check if autostart folder exists and create otherwise
-        QDir autostartDir(Latte::configPath() + "/autostart");
-        if (!autostartDir.exists()) {
-            QDir configDir(Latte::configPath());
-            configDir.mkdir("autostart");
-        }
-
-        metaFile.copy(autostartFile.fileName());
-        //! I haven't added the flag "OnlyShowIn=KDE;" into the autostart file
-        //! because I fall onto a Plasma 5.8 case that this flag
-        //! didn't let the plasma desktop to start
-        emit autostartChanged();
+    if (state) {
+        Layouts::Importer::enableAutostart();
+    } else {
+        Layouts::Importer::disableAutostart();
     }
+
+    emit autostartChanged();
 }
 
 bool UniversalSettings::badges3DStyle() const

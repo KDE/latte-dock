@@ -94,10 +94,13 @@ int main(int argc, char **argv)
                           {{"r", "replace"}, i18nc("command line", "Replace the current Latte instance.")}
                           , {{"d", "debug"}, i18nc("command line", "Show the debugging messages on stdout.")}
                           , {{"cc", "clear-cache"}, i18nc("command line", "Clear qml cache. It can be useful after system upgrades.")}
+                          , {"enable-autostart", i18nc("command line", "Enable autostart for this application")}
+                          , {"disable-autostart", i18nc("command line", "Disable autostart for this application")}
                           , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
                           , {"available-layouts", i18nc("command line", "Print available layouts")}
                           , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
-                          , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "file_name")}
+                          , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "absolute_filepath")}
+                          , {"suggested-layout-name", i18nc("command line", "Suggested layout name when importing a layout file"), i18nc("command line: import", "suggested_name")}
                           , {"import-full", i18nc("command line", "Import full configuration."), i18nc("command line: import", "file_name")}
                           , {"add-dock", i18nc("command line", "Add Dock/Panel"), i18nc("command line: add", "template_name")}
                           , {"single", i18nc("command line", "Single layout memory mode. Only one layout is active at any case.")}
@@ -169,6 +172,14 @@ int main(int argc, char **argv)
 
     parser.process(app);
 
+    if (parser.isSet(QStringLiteral("enable-autostart"))) {
+        Latte::Layouts::Importer::enableAutostart();
+    }
+
+    if (parser.isSet(QStringLiteral("disable-autostart"))) {
+        Latte::Layouts::Importer::disableAutostart();
+    }
+
     //! print available-layouts
     if (parser.isSet(QStringLiteral("available-layouts"))) {
         QStringList layouts = Latte::Layouts::Importer::availableLayouts();
@@ -239,19 +250,36 @@ int main(int argc, char **argv)
     if (!lockFile.tryLock(timeout)) {
         QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
         bool addview{parser.isSet(QStringLiteral("add-dock"))};
+        bool importlayout{parser.isSet(QStringLiteral("import-layout"))};
+        bool enableautostart{parser.isSet(QStringLiteral("enable-autostart"))};
+        bool disableautostart{parser.isSet(QStringLiteral("disable-autostart"))};
+
+        bool validaction{false};
 
         if (iface.isValid()) {
             if (addview) {
+                validaction = true;
                 iface.call("addView", (uint)0, parser.value(QStringLiteral("add-dock")));
                 qGuiApp->exit();
                 return 0;
+            } else if (importlayout) {
+                validaction = true;
+                QString suggestedname = parser.isSet(QStringLiteral("suggested-layout-name")) ? parser.value(QStringLiteral("suggested-layout-name")) : QString();
+                iface.call("importLayoutFile", parser.value(QStringLiteral("import-layout")), suggestedname);
+                qGuiApp->exit();
+                return 0;
+            } else if (enableautostart || disableautostart){
+                validaction = true;
             } else {
                 // LayoutPage = 0
                 iface.call("showSettingsWindow", 0);
             }
         }
 
-        qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
+        if (!validaction) {
+            qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
+        }
+
         qGuiApp->exit();
         return 0;
     }
@@ -279,7 +307,8 @@ int main(int argc, char **argv)
 
     //! import-layout option
     if (parser.isSet(QStringLiteral("import-layout"))) {
-        QString importedLayout = Latte::Layouts::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")));
+        QString suggestedname = parser.isSet(QStringLiteral("suggested-layout-name")) ? parser.value(QStringLiteral("suggested-layout-name")) : QString();
+        QString importedLayout = Latte::Layouts::Importer::importLayoutHelper(parser.value(QStringLiteral("import-layout")), suggestedname);
 
         if (importedLayout.isEmpty()) {
             qInfo() << i18n("The layout cannot be imported");

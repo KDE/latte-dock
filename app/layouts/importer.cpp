@@ -358,7 +358,7 @@ bool Importer::importOldConfiguration(QString oldConfigPath, QString newName)
     }
 
     //! the old configuration contains also screen values, these must be updated also
-   /*
+    /*
     * do not use any deprecated screen ids
     * KSharedConfigPtr oldScreensConfig = KSharedConfig::openConfig(screensPath);
     KConfigGroup m_screensGroup = KConfigGroup(oldScreensConfig, "ScreenConnectors");
@@ -531,9 +531,56 @@ bool Importer::importHelper(QString fileName)
     return true;
 }
 
-QString Importer::importLayout(QString fileName)
+bool Importer::isAutostartEnabled()
 {
-    QString newLayoutName = importLayoutHelper(fileName);
+    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
+    return autostartFile.exists();
+}
+
+void Importer::enableAutostart()
+{
+    //! deprecated old file
+    QFile oldAutostartFile(Latte::configPath() + "/autostart/latte-dock.desktop");
+
+    if (oldAutostartFile.exists()) {
+        //! remove deprecated file
+        oldAutostartFile.remove();
+    }
+
+    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
+    QFile metaFile(standardPath("applications/org.kde.latte-dock.desktop", false));
+
+    if (metaFile.exists()) {
+        //! check if autostart folder exists and create otherwise
+        QDir autostartDir(Latte::configPath() + "/autostart");
+        if (!autostartDir.exists()) {
+            QDir configDir(Latte::configPath());
+            configDir.mkdir("autostart");
+        }
+
+        metaFile.copy(autostartFile.fileName());
+    }
+}
+
+void Importer::disableAutostart()
+{
+    QFile oldAutostartFile(Latte::configPath() + "/autostart/latte-dock.desktop");
+
+    if (oldAutostartFile.exists()) {
+        //! remove deprecated file
+        oldAutostartFile.remove();
+    }
+
+    QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
+
+    if (autostartFile.exists()) {
+        autostartFile.remove();
+    }
+}
+
+QString Importer::importLayout(const QString &fileName, const QString &suggestedLayoutName)
+{
+    QString newLayoutName = importLayoutHelper(fileName, suggestedLayoutName);
 
     if (!newLayoutName.isEmpty()) {
         emit newLayoutAdded(layoutUserFilePath(newLayoutName));
@@ -542,7 +589,7 @@ QString Importer::importLayout(QString fileName)
     return newLayoutName;
 }
 
-QString Importer::importLayoutHelper(QString fileName)
+QString Importer::importLayoutHelper(const QString &fileName, const QString &suggestedLayoutName)
 {
     LatteFileVersion version = fileVersion(fileName);
 
@@ -550,7 +597,7 @@ QString Importer::importLayoutHelper(QString fileName)
         return QString();
     }
 
-    QString newLayoutName = Layout::AbstractLayout::layoutName(fileName);
+    QString newLayoutName = !suggestedLayoutName.isEmpty() ? suggestedLayoutName : Layout::AbstractLayout::layoutName(fileName);
     newLayoutName = uniqueLayoutName(newLayoutName);
 
     QString newPath = layoutUserFilePath(newLayoutName);
@@ -560,7 +607,7 @@ QString Importer::importLayoutHelper(QString fileName)
 
     if (newFileInfo.exists() && !newFileInfo.isWritable()) {
         QFile(newPath).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
-    }    
+    }
 
     return newLayoutName;
 }
