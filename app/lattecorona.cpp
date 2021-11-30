@@ -1082,38 +1082,54 @@ void Corona::updateDockItemBadge(QString identifier, QString value)
     m_globalShortcuts->updateViewItemBadge(identifier, value);
 }
 
+void Corona::setAutostart(const bool &enabled)
+{
+    m_universalSettings->setAutostart(enabled);
+}
 
 void Corona::switchToLayout(QString layout)
 {
     if ((layout.startsWith("file:/") || layout.startsWith("/")) && layout.endsWith(".layout.latte")) {
-        //! Import and load runtime a layout through dbus interface
-        //! It can be used from external programs that want to update runtime
-        //! the Latte shown layout
-        QString layoutPath = layout;
-
-        //! cleanup layout path
-        if (layoutPath.startsWith("file:///")) {
-            layoutPath = layout.remove("file://");
-        } else if (layoutPath.startsWith("file://")) {
-            layoutPath = layout.remove("file:/");
-        }
-
-        //! check out layoutpath existence
-        if (QFileInfo(layoutPath).exists()) {
-            qDebug() << " Layout is going to be imported and loaded from file :: " << layoutPath;
-
-            QString importedLayout = m_layoutsManager->importer()->importLayout(layoutPath);
-
-            if (importedLayout.isEmpty()) {
-                qDebug() << i18n("The layout cannot be imported from file :: ") << layoutPath;
-            } else {
-               m_layoutsManager->switchToLayout(importedLayout);
-            }
-        } else {
-            qDebug() << " Layout from missing file can not be imported and loaded :: " << layoutPath;
-        }
+        importLayoutFile(layout);
     } else {
         m_layoutsManager->switchToLayout(layout);
+    }
+}
+
+void Corona::importLayoutFile(const QString &filepath, const QString &suggestedLayoutName)
+{
+    bool isFilepathValid = (filepath.startsWith("file:/") || filepath.startsWith("/")) && filepath.endsWith(".layout.latte");
+
+    if (!isFilepathValid) {
+        qDebug() << i18n("The layout cannot be imported from file :: ") << filepath;
+        return;
+    }
+
+    //! Import and load runtime a layout through dbus interface
+    //! It can be used from external programs that want to update runtime
+    //! the Latte shown layout
+    QString layoutPath = filepath;
+
+    //! cleanup layout path
+    if (layoutPath.startsWith("file:///")) {
+        layoutPath = layoutPath.remove("file://");
+    } else if (layoutPath.startsWith("file://")) {
+        layoutPath = layoutPath.remove("file:/");
+    }
+
+    //! check out layoutpath existence
+    if (QFileInfo(layoutPath).exists()) {
+        qDebug() << " Layout is going to be imported and loaded from file :: " << layoutPath << " with suggested name :: " << suggestedLayoutName;
+
+        QString importedLayout = m_layoutsManager->importer()->importLayout(layoutPath, suggestedLayoutName);
+
+        if (importedLayout.isEmpty()) {
+            qDebug() << i18n("The layout cannot be imported from file :: ") << layoutPath;
+        } else {
+           m_layoutsManager->switchToLayout(importedLayout, MemoryUsage::SingleLayout);
+        }
+    } else {
+        qDebug() << " Layout from missing file can not be imported and loaded :: " << layoutPath;
     }
 }
 

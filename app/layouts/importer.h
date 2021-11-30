@@ -61,8 +61,11 @@ public:
     QString storageTmpDir() const;
     //! imports the specific layout and return the new layout name.
     //! if the function didn't succeed returns an empty string
-    QString importLayout(QString fileName);
+    QString importLayout(const QString &fileName, const QString &suggestedName = QString());
 
+    static void enableAutostart();
+    static void disableAutostart();
+    static bool isAutostartEnabled();
 
     static Importer::LatteFileVersion fileVersion(QString file);
 
@@ -80,7 +83,7 @@ public:
     static bool layoutExists(QString layoutName);
     //! imports the specific layout and return the new layout name.
     //! if the function didn't succeed returns an empty string
-    static QString importLayoutHelper(QString fileName);
+    static QString importLayoutHelper(const QString &fileName, const QString &suggestedName = QString());
 
     //! returns the file path of a layout either existing or not
     static QString layoutUserFilePath(QString layoutName);

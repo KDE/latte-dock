@@ -144,6 +144,7 @@ public:
     //! these functions are used from context menu through containmentactions    
     void quitApplication();
     void switchToLayout(QString layout);
+    void importLayoutFile(const QString &filepath, const QString &suggestedLayoutName = QString());
     void showSettingsWindow(int page);
 
     QStringList contextMenuData(const uint &containmentId);
@@ -153,6 +154,8 @@ public slots:
     void aboutApplication();
     void activateLauncherMenu();
     void loadDefaultLayout() override;
+
+    void setAutostart(const bool &enabled);
 
     void addView(const uint &containmentId, const QString &templateId);
     void duplicateView(const uint &containmentId);
