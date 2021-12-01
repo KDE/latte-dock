@@ -33,5 +33,5 @@ Name[zh_TW]=Latte 指示器
 ProvidersUrl=https://autoconfig.kde.org/ocs/providers.xml
 Categories=Latte Indicators
 StandardResource=tmp
-InstallationCommand=kpackagetool5 --install %f --type Latte/Indicator
-UninstallCommand=kpackagetool5 --remove %f --type Latte/Indicator
+Uncompress=kpackage
+KPackageType=Latte/Indicator
