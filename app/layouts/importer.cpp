@@ -550,6 +550,11 @@ void Importer::enableAutostart()
     QFile autostartFile(Latte::configPath() + "/autostart/org.kde.latte-dock.desktop");
     QFile metaFile(standardPath("applications/org.kde.latte-dock.desktop", false));
 
+    if (autostartFile.exists()) {
+        //! if autostart file already exists, do nothing
+        return;
+    }
+
     if (metaFile.exists()) {
         //! check if autostart folder exists and create otherwise
         QDir autostartDir(Latte::configPath() + "/autostart");
