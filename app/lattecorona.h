@@ -87,6 +87,7 @@ class Corona : public Plasma::Corona
 public:
     Corona(bool defaultLayoutOnStartup = false,
                QString layoutNameOnStartUp = QString(),
+               QString addViewTemplateName = QString(),
                int userSetMemoryUsage = -1,
                QObject *parent = nullptr);
     virtual ~Corona();
@@ -222,6 +223,7 @@ private:
     int m_userSetMemoryUsage{ -1};
 
     QString m_layoutNameOnStartUp;
+    QString m_startupAddViewTemplateName;
     QString m_importFullConfigurationFile;
 
     QList<KDeclarative::QmlObjectSharedEngine *> m_alternativesObjects;

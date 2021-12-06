@@ -119,6 +119,7 @@ signals:
     void centralLayoutsChanged();
     void layoutsChanged();
     void runningActicitiesChanged();
+    void initializationFinished();
 
     void currentLayoutIsSwitching(QString layoutName);
 

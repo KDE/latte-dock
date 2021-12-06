@@ -81,9 +81,10 @@
 
 namespace Latte {
 
-Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, int userSetMemoryUsage, QObject *parent)
+Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, QString addViewTemplateName, int userSetMemoryUsage, QObject *parent)
     : Plasma::Corona(parent),
       m_defaultLayoutOnStartup(defaultLayoutOnStartup),
+      m_startupAddViewTemplateName(addViewTemplateName),
       m_userSetMemoryUsage(userSetMemoryUsage),
       m_layoutNameOnStartUp(layoutNameOnStartUp),
       m_activitiesConsumer(new KActivities::Consumer(this)),
@@ -266,6 +267,15 @@ void Corona::load()
         for (QScreen *screen : qGuiApp->screens()) {
             addOutput(screen);
         }
+
+        connect(m_layoutsManager->synchronizer(), &Layouts::Synchronizer::initializationFinished, [this]() {
+            if (!m_startupAddViewTemplateName.isEmpty()) {
+                //! user requested through cmd startup to add view from specific view template and we can add it after the startup
+                //! sequence has loaded all required layouts properly
+                addView(0, m_startupAddViewTemplateName);
+                m_startupAddViewTemplateName = "";
+            }
+        });
 
         m_inStartup = false;
 

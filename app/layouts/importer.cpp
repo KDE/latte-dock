@@ -14,6 +14,7 @@
 #include "../screenpool.h"
 #include "../layout/abstractlayout.h"
 #include "../settings/universalsettings.h"
+#include "../templates/templatesmanager.h"
 #include "../tools/commontools.h"
 
 // Qt
@@ -583,6 +584,11 @@ void Importer::disableAutostart()
     }
 }
 
+bool Importer::hasViewTemplate(const QString &name)
+{
+    return availableViewTemplates().contains(name);
+}
+
 QString Importer::importLayout(const QString &fileName, const QString &suggestedLayoutName)
 {
     QString newLayoutName = importLayoutHelper(fileName, suggestedLayoutName);
@@ -606,6 +612,13 @@ QString Importer::importLayoutHelper(const QString &fileName, const QString &sug
     newLayoutName = uniqueLayoutName(newLayoutName);
 
     QString newPath = layoutUserFilePath(newLayoutName);
+
+    QDir localLayoutsDir(layoutUserDir());
+
+    if (!localLayoutsDir.exists()) {
+        QDir(Latte::configPath()).mkdir("latte");
+    }
+
     QFile(fileName).copy(newPath);
 
     QFileInfo newFileInfo(newPath);
@@ -633,6 +646,57 @@ QStringList Importer::availableLayouts()
     return layoutNames;
 }
 
+QStringList Importer::availableViewTemplates()
+{
+    QStringList templates;
+
+    QDir localDir(layoutUserDir() + "/templates");
+    QStringList filter;
+    filter.append(QString("*.view.latte"));
+    QStringList files = localDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    for(const auto &file : files) {
+        templates.append(Templates::Manager::templateName(file));
+    }
+
+    QDir systemDir(systemShellDataPath()+"/contents/templates");
+    QStringList sfiles = systemDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    for(const auto &file : sfiles) {
+        QString name = Templates::Manager::templateName(file);
+        if (!templates.contains(name)) {
+            templates.append(name);
+        }
+    }
+
+    return templates;
+}
+
+QStringList Importer::availableLayoutTemplates()
+{
+    QStringList templates;
+
+    QDir localDir(layoutUserDir() + "/templates");
+    QStringList filter;
+    filter.append(QString("*.layout.latte"));
+    QStringList files = localDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    for(const auto &file : files) {
+        templates.append(Templates::Manager::templateName(file));
+    }
+
+    QDir systemDir(systemShellDataPath()+"/contents/templates");
+    QStringList sfiles = systemDir.entryList(filter, QDir::Files | QDir::NoSymLinks);
+
+    for(const auto &file : sfiles) {
+        QString name = Templates::Manager::templateName(file);
+        if (!templates.contains(name)) {
+            templates.append(name);
+        }
+    }
+
+    return templates;
+}
 
 QString Importer::nameOfConfigFile(const QString &fileName)
 {
@@ -660,6 +724,18 @@ QString Importer::layoutUserDir()
 QString Importer::layoutUserFilePath(QString layoutName)
 {
     return QString(layoutUserDir() + "/" + layoutName + ".layout.latte");
+}
+
+QString Importer::systemShellDataPath()
+{
+    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
+    QString rootpath = paths.count() > 0 ? paths[paths.count()-1] : "/usr/share";
+    return  rootpath + "/plasma/shells/org.kde.latte.shell";
+}
+
+QString Importer::layoutTemplateSystemFilePath(const QString &name)
+{
+    return systemShellDataPath() + "/contents/templates/" + name + ".layout.latte";
 }
 
 QString Importer::uniqueLayoutName(QString name)

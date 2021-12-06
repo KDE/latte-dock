@@ -89,11 +89,18 @@ public:
     static QString layoutUserFilePath(QString layoutName);
     //! returns the layouts user directory
     static QString layoutUserDir();
+    //! returns the system path for latte shell data
+    static QString systemShellDataPath();
 
     static QString nameOfConfigFile(const QString &fileName);
     static QString uniqueLayoutName(QString name);
 
+    static bool hasViewTemplate(const QString &name);
+    static QString layoutTemplateSystemFilePath(const QString &name);
+
     static QStringList availableLayouts();
+    static QStringList availableLayoutTemplates();
+    static QStringList availableViewTemplates();
     //! it checks the linked file if there are Containments in it that belong
     //! to Original Layouts and moves them accordingly. This is used mainly on
     //! startup and if such state occurs, it basically means that the app didn't
