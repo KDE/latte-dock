@@ -311,6 +311,24 @@ QString Manager::uniqueViewTemplateName(QString name) const
     return name;
 }
 
+QString Manager::templateName(const QString &filePath)
+{
+    int lastSlash = filePath.lastIndexOf("/");
+    QString tempFilePath = filePath;
+    QString templatename = tempFilePath.remove(0, lastSlash + 1);
+
+    QString extension(".layout.latte");
+    int ext = templatename.lastIndexOf(extension);
+    if (ext>0) {
+        templatename = templatename.remove(ext, extension.size());
+    } else {
+        extension = ".view.latte";
+        ext = templatename.lastIndexOf(extension);
+        templatename = templatename.remove(ext,extension.size());
+    }
+
+    return templatename;
+}
 
 //! it is used in order to provide translations for system templates
 void Manager::exposeTranslatedTemplateNames()

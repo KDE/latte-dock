@@ -653,6 +653,8 @@ bool Synchronizer::initSingleMode(QString layoutName)
         }
 
         m_manager->corona()->universalSettings()->setSingleModeLayoutName(layoutName);
+
+        emit initializationFinished();
     });
 
     return true;
@@ -685,6 +687,8 @@ bool Synchronizer::initMultipleMode(QString layoutName)
         }
 
         syncMultipleLayoutsToActivities();
+
+        emit initializationFinished();
     });
 
     return true;

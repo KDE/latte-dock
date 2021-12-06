@@ -10,6 +10,7 @@
 #include "apptypes.h"
 #include "lattecorona.h"
 #include "layouts/importer.h"
+#include "templates/templatesmanager.h"
 
 // C++
 #include <memory>
@@ -214,6 +215,7 @@ int main(int argc, char **argv)
     bool defaultLayoutOnStartup = false;
     int memoryUsage = -1;
     QString layoutNameOnStartup = "";
+    QString addViewTemplateNameOnStartup = "";
 
     //! --default-layout option
     if (parser.isSet(QStringLiteral("default-layout"))) {
@@ -326,6 +328,31 @@ int main(int argc, char **argv)
         memoryUsage = (int)(Latte::MemoryUsage::SingleLayout);
     }
 
+    //! add-dock usage option
+    if (parser.isSet(QStringLiteral("add-dock"))) {
+        QString viewTemplateName = parser.value(QStringLiteral("add-dock"));
+        QStringList viewTemplates = Latte::Layouts::Importer::availableViewTemplates();
+
+        if (viewTemplates.contains(viewTemplateName)) {
+            if (layoutNameOnStartup.isEmpty()) {
+                //! Clean layout template is applied and proper name is used
+                QString emptytemplatepath = Latte::Layouts::Importer::layoutTemplateSystemFilePath(Latte::Templates::EMPTYLAYOUTTEMPLATENAME);
+                QString suggestedname = parser.isSet(QStringLiteral("suggested-layout-name")) ? parser.value(QStringLiteral("suggested-layout-name")) : viewTemplateName;
+                QString importedLayout = Latte::Layouts::Importer::importLayoutHelper(emptytemplatepath, suggestedname);
+
+                if (importedLayout.isEmpty()) {
+                    qInfo() << i18n("The layout cannot be imported");
+                    qGuiApp->exit();
+                    return 0;
+                } else {
+                    layoutNameOnStartup = importedLayout;
+                }
+            }
+
+            addViewTemplateNameOnStartup = viewTemplateName;
+        }
+    }
+
     //! text filter for debug messages
     if (parser.isSet(QStringLiteral("debug-text"))) {
         filterDebugMessageText = parser.value(QStringLiteral("debug-text"));
@@ -350,7 +377,7 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
-    Latte::Corona corona(defaultLayoutOnStartup, layoutNameOnStartup, memoryUsage);
+    Latte::Corona corona(defaultLayoutOnStartup, layoutNameOnStartup, addViewTemplateNameOnStartup, memoryUsage);
     KDBusService service(KDBusService::Unique);
 
     return app.exec();
