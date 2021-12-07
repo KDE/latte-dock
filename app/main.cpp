@@ -99,6 +99,8 @@ int main(int argc, char **argv)
                           , {"disable-autostart", i18nc("command line", "Disable autostart for this application")}
                           , {"default-layout", i18nc("command line", "Import and load default layout on startup.")}
                           , {"available-layouts", i18nc("command line", "Print available layouts")}
+                          , {"available-dock-templates", i18nc("command line", "Print available dock templates")}
+                          , {"available-layout-templates", i18nc("command line", "Print available layout templates")}
                           , {"layout", i18nc("command line", "Load specific layout on startup."), i18nc("command line: load", "layout_name")}
                           , {"import-layout", i18nc("command line", "Import and load a layout."), i18nc("command line: import", "absolute_filepath")}
                           , {"suggested-layout-name", i18nc("command line", "Suggested layout name when importing a layout file"), i18nc("command line: import", "suggested_name")}
@@ -193,6 +195,42 @@ int main(int argc, char **argv)
             }
         } else {
             qInfo() << i18n("There are no available layouts, during startup Default will be used.");
+        }
+
+        qGuiApp->exit();
+        return 0;
+    }
+
+    //! print available-layout-templates
+    if (parser.isSet(QStringLiteral("available-layout-templates"))) {
+        QStringList templates = Latte::Layouts::Importer::availableLayoutTemplates();
+
+        if (templates.count() > 0) {
+            qInfo() << i18n("Available layout templates found in your system:");
+
+            for (const auto &templatename : templates) {
+                qInfo() << "     " << templatename;
+            }
+        } else {
+            qInfo() << i18n("There are no available layout templates in your system.");
+        }
+
+        qGuiApp->exit();
+        return 0;
+    }
+
+    //! print available-dock-templates
+    if (parser.isSet(QStringLiteral("available-dock-templates"))) {
+        QStringList templates = Latte::Layouts::Importer::availableViewTemplates();
+
+        if (templates.count() > 0) {
+            qInfo() << i18n("Available dock templates found in your system:");
+
+            for (const auto &templatename : templates) {
+                qInfo() << "     " << templatename;
+            }
+        } else {
+            qInfo() << i18n("There are no available dock templates in your system.");
         }
 
         qGuiApp->exit();
