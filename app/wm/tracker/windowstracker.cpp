@@ -108,7 +108,8 @@ void Windows::init()
     });
 
     connect(m_wm, &AbstractWindowInterface::currentDesktopChanged, this, &Windows::updateAllHints);
-    connect(m_wm, &AbstractWindowInterface::currentActivityChanged,  this, &Windows::updateAllHints);
+    connect(m_wm, &AbstractWindowInterface::currentActivityChanged,  this, &Windows::updateAllHints);    
+    connect(m_wm, &AbstractWindowInterface::isShowingDesktopChanged,  this, &Windows::updateAllHints);
 }
 
 void Windows::initLayoutHints(Latte::Layout::GenericLayout *layout)
@@ -903,6 +904,10 @@ void Windows::updateHints(Latte::View *view)
 
     //! First Pass
     for (const auto &winfo : m_windows) {
+        if (m_wm->isShowingDesktop()) {
+            break;
+        }
+
         if (!existsFaultyWindow && (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0))) {
             existsFaultyWindow = true;
         }
@@ -966,7 +971,7 @@ void Windows::updateHints(Latte::View *view)
     }
 
     //! PASS 2
-    if (foundActiveInCurScreen && !foundActiveTouchInCurScreen) {
+    if (!m_wm->isShowingDesktop() && foundActiveInCurScreen && !foundActiveTouchInCurScreen) {
         //! Second Pass to track also Child windows if needed
 
         //qDebug() << "Windows Array...";
@@ -1069,6 +1074,10 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
     WindowId maxWinId;
 
     for (const auto &winfo : m_windows) {
+        if (m_wm->isShowingDesktop()) {
+            break;
+        }
+
         if (!existsFaultyWindow && (winfo.wid()<=0 || winfo.geometry() == QRect(0, 0, 0, 0))) {
             existsFaultyWindow = true;
         }

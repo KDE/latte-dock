@@ -103,6 +103,7 @@ public:
     virtual AppData appDataFor(WindowId wid) = 0;
 
     bool inCurrentDesktopActivity(const WindowInfoWrap &winfo);
+    bool isShowingDesktop() const;
 
     bool hasBlockedTracking(const WindowId &wid) const;
 
@@ -138,6 +139,8 @@ signals:
     void windowRemoved(WindowId wid);
     void currentDesktopChanged();
     void currentActivityChanged();
+
+    void isShowingDesktopChanged();
 
     void latteWindowAdded();
 
@@ -181,9 +184,13 @@ private slots:
     void initKWinInterface();
     void windowRemovedSlot(WindowId wid);
 
+    void setIsShowingDesktop(const bool &showing);
+
     void onVirtualDesktopNavigationWrappingAroundChanged(bool navigationWrappingAround);
 
 private:
+    bool m_isShowingDesktop{false};
+
     bool m_isKWinInterfaceAvailable{false};
     bool m_isVirtualDesktopNavigationWrappingAround{true};
 
