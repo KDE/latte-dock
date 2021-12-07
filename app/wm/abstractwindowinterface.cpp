@@ -62,6 +62,8 @@ AbstractWindowInterface::AbstractWindowInterface(QObject *parent)
         emit currentActivityChanged();
     });
 
+    connect(KWindowSystem::self(), &KWindowSystem::showingDesktopChanged, this, &AbstractWindowInterface::setIsShowingDesktop);
+
     //! KWin Service tracking
     m_kwinServiceWatcher->setConnection(QDBusConnection::sessionBus());
     m_kwinServiceWatcher->setWatchedServices(QStringList({KWINSERVICE}));
@@ -86,6 +88,21 @@ AbstractWindowInterface::~AbstractWindowInterface()
 
     m_schemesTracker->deleteLater();
     m_windowsTracker->deleteLater();
+}
+
+bool AbstractWindowInterface::isShowingDesktop() const
+{
+    return m_isShowingDesktop;
+}
+
+void AbstractWindowInterface::setIsShowingDesktop(const bool &showing)
+{
+    if (m_isShowingDesktop == showing) {
+        return;
+    }
+
+    m_isShowingDesktop = showing;
+    emit isShowingDesktopChanged();
 }
 
 QString AbstractWindowInterface::currentDesktop()
