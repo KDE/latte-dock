@@ -181,6 +181,8 @@ int main(int argc, char **argv)
 
     if (parser.isSet(QStringLiteral("disable-autostart"))) {
         Latte::Layouts::Importer::disableAutostart();
+        qGuiApp->exit();
+        return 0;
     }
 
     //! print available-layouts
