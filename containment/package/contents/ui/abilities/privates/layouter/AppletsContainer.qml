@@ -60,6 +60,7 @@ Item {
         target: appletsContainer
         property:"lengthWithoutSplitters"
         when: appletsContainer && grid && !updateIsBlocked && inNormalFillCalculationsState
+              && !(dragOverlay && dragOverlay.currentApplet && dragOverlay.currentApplet.isInternalViewSplitter /*avoid binding loop when dragging splitters around*/)
         value: {
             var space = 0;
             for (var i=0; i<grid.children.length; ++i){
