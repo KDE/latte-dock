@@ -34,10 +34,17 @@ MouseArea{
 
     //! replica of updating maximum length from configuration tab
     function updateMaxLength(step) {
+        var updateminimumlength = (plasmoid.configuration.maxLength === plasmoid.configuration.minLength);
+
         var tempML = plasmoid.configuration.maxLength + step;
 
-        var value = Math.max(Math.min(tempML,100),30);
+        var value = Math.max(Math.min(tempML,100), 30);
 
+        if (updateminimumlength) {
+            plasmoid.configuration.minLength = Math.max(30, value);
+        }
+
+        value = Math.max(plasmoid.configuration.minLength, value);
         plasmoid.configuration.maxLength = value;
 
         var newTotal = Math.abs(plasmoid.configuration.offset) + value;
