@@ -59,10 +59,9 @@ Item {
 
     Connections {
         target: root
-
         onContainsOnlyPlasmaTasksChanged: sizer.updateIconSize();
         onMaxLengthChanged: {
-            if (root.editMode) {
+            if (latteView && latteView.positioner && !latteView.positioner.isOffScreen) {
                 sizer.updateIconSize();
             }
         }
@@ -88,6 +87,15 @@ Item {
 
         onHeightChanged:{
             if (root.isVertical && metrics.portionIconSize!==-1) {
+                sizer.updateIconSize();
+            }
+        }
+    }
+
+    Connections {
+        target: latteView && latteView.positioner ? latteView.positioner : null
+        onIsOffScreenChanged: {
+            if (!latteView.positioner.isOffScreen) {
                 sizer.updateIconSize();
             }
         }

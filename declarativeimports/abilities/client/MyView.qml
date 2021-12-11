@@ -14,6 +14,7 @@ AbilityDefinition.MyView {
     readonly property bool isBridgeActive: bridge !== null
 
     isReady: ref.myView.isReady
+    groupId: ref.myView.groupId
 
     inNormalState: ref.myView.inNormalState
 

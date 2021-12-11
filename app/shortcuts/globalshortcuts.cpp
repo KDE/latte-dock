@@ -487,7 +487,7 @@ bool GlobalShortcuts::viewsToHideAreValid()
 
 void GlobalShortcuts::showSettings()
 {
-    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentViews();
+    QList<Latte::View *> sortedViews = m_corona->layoutsManager()->synchronizer()->sortedCurrentOriginalViews();
 
     //! find which is the next view to show its settings
     if (sortedViews.count() > 0) {

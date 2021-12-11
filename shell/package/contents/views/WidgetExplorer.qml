@@ -83,7 +83,8 @@ Item {
     function addCurrentApplet() {
         var pluginName = list.currentItem ? list.currentItem.pluginName : ""
         if (pluginName) {
-            widgetExplorer.addApplet(pluginName)
+            widgetExplorer.addApplet(pluginName);
+            latteView.extendedInterface.appletCreated(pluginName);
         }
     }
 

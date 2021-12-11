@@ -32,14 +32,8 @@ const int ACTIVELAYOUTSINDEX = 1;
 const int CURRENTLAYOUTSINDEX = 2;
 const int ACTIONSALWAYSSHOWN = 3;
 const int LAYOUTMENUINDEX = 4;
-const int VIEWTYPEINDEX = 5;
-const int VIEWLAYOUTINDEX = 6;
-
-enum ViewType
-{
-    DockView = 0,
-    PanelView
-};
+const int VIEWLAYOUTINDEX = 5;
+const int VIEWTYPEINDEX = 6;
 
 enum LayoutsMemoryUsage
 {
@@ -240,22 +234,25 @@ QList<QAction *> Menu::contextualActions()
 
     m_actionsAlwaysShown = m_data[ACTIONSALWAYSSHOWN].split(";;");
 
-    ViewType viewType{static_cast<ViewType>((m_data[VIEWTYPEINDEX]).toInt())};
+    updateViewData();
 
-    const QString configureActionText = (viewType == DockView) ? i18n("&Edit Dock...") : i18n("&Edit Panel...");
+    QString configureActionText = (m_view.type == DockView) ? i18n("&Edit Dock...") : i18n("&Edit Panel...");
+    if (m_view.isCloned) {
+        configureActionText = (m_view.type == DockView) ? i18n("&Edit Original Dock...") : i18n("&Edit Original Panel...");
+    }
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setText(configureActionText);
 
-    const QString duplicateActionText = (viewType == DockView) ? i18n("&Duplicate Dock") : i18n("&Duplicate Panel");
+    const QString duplicateActionText = (m_view.type == DockView) ? i18n("&Duplicate Dock") : i18n("&Duplicate Panel");
     m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->setText(duplicateActionText);
 
-    const QString exportTemplateText = (viewType == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
+    const QString exportTemplateText = (m_view.type == DockView) ? i18n("E&xport Dock as Template") : i18n("E&xport Panel as Template");
     m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setText(exportTemplateText);
 
     m_activeLayoutNames = m_data[ACTIVELAYOUTSINDEX].split(";;");
-    const QString moveText = (viewType == DockView) ? i18n("&Move Dock To Layout") : i18n("&Move Panel To Layout");
+    const QString moveText = (m_view.type == DockView) ? i18n("&Move Dock To Layout") : i18n("&Move Panel To Layout");
     m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setText(moveText);
 
-    const QString removeActionText = (viewType == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
+    const QString removeActionText = (m_view.type == DockView) ? i18n("&Remove Dock") : i18n("&Remove Panel");
     m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setText(removeActionText);
 
     updateVisibleActions();
@@ -301,6 +298,13 @@ void Menu::updateVisibleActions()
     // special actions
     m_actions[Latte::Data::ContextMenu::EDITVIEWACTION]->setVisible(!configuring);
     m_actions[Latte::Data::ContextMenu::SECTIONACTION]->setVisible(true);
+
+    if (m_view.isCloned) {
+        m_actions[Latte::Data::ContextMenu::DUPLICATEVIEWACTION]->setVisible(false);
+        m_actions[Latte::Data::ContextMenu::EXPORTVIEWTEMPLATEACTION]->setVisible(false);
+        m_actions[Latte::Data::ContextMenu::MOVEVIEWACTION]->setVisible(false);
+        m_actions[Latte::Data::ContextMenu::REMOVEVIEWACTION]->setVisible(false);
+    }
 
     // because sometimes they are disabled unexpectedly, we should reenable them
     for(auto actionName: m_actions.keys()) {
@@ -409,6 +413,14 @@ void Menu::populateMoveToLayouts()
             m_moveToLayoutMenu->addAction(action);
         }
     }
+}
+
+void Menu::updateViewData()
+{
+    QStringList vdata = m_data[VIEWTYPEINDEX].split(";;");
+    m_view.type = static_cast<ViewType>((vdata[0]).toInt());
+    m_view.isCloned = vdata[1].toInt();
+    m_view.clonesCount = vdata[2].toInt();
 }
 
 void Menu::populateViewTemplates()

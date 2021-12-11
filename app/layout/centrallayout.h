@@ -41,7 +41,7 @@ public:
     CentralLayout(QObject *parent, QString layoutFile, QString layoutName = QString());
     ~CentralLayout() override;
 
-    void initToCorona(Latte::Corona *corona);
+    bool initCorona() override;
 
     bool disableBordersForMaximizedWindows() const;
     void setDisableBordersForMaximizedWindows(bool disable);

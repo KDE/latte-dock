@@ -95,7 +95,9 @@ public:
     QList<CentralLayout *> currentLayouts() const;
     QList<Latte::View *> currentViews() const;
     QList<Latte::View *> currentViewsWithPlasmaShortcuts() const;
+    QList<Latte::View *> currentOriginalViews() const;
     QList<Latte::View *> sortedCurrentViews() const;
+    QList<Latte::View *> sortedCurrentOriginalViews() const;
     QList<Latte::View *> viewsBasedOnActivityId(const QString &id) const;
 
     CentralLayout *centralLayout(QString layoutname) const;

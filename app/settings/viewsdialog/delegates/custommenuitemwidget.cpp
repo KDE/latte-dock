@@ -89,8 +89,8 @@ void CustomMenuItemWidget::paintEvent(QPaintEvent* e)
 
     if (!m_screen.id.isEmpty()) {
         int maxiconsize = 26;
-        remained = Latte::remainedFromScreenDrawing(opt, maxiconsize);
-        QRect availableScreenRect = Latte::drawScreen(&painter, opt, m_screen.geometry, maxiconsize);
+        remained = Latte::remainedFromScreenDrawing(opt, m_screen.isScreensGroup(), maxiconsize);
+        QRect availableScreenRect = Latte::drawScreen(&painter, opt, m_screen.isScreensGroup(), m_screen.geometry, maxiconsize);
 
         if (!m_view.id.isEmpty()) {
             Latte::drawView(&painter, opt, m_view, availableScreenRect);

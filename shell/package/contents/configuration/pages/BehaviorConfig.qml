@@ -84,8 +84,14 @@ PlasmaComponents.Page {
                     screensCount = universalSettings.screens.length;
                     screensModel.clear();
 
-                    var primary = {name: i18n("Follow Primary Screen"), icon: 'favorite'};
+                    var primary = {name: i18n("On Primary Screen"), icon: 'favorite'};
                     screensModel.append(primary);
+
+                    var allscreens = {name: i18n("On All Screens"), icon: 'favorite'};
+                    screensModel.append(allscreens);
+
+                    var allsecscreens = {name: i18n("On All Secondary Screens"), icon: 'favorite'};
+                    screensModel.append(allsecscreens);
 
                     //check if the screen exists, it is used in cases Latte is moving
                     //the view automatically to primaryScreen in order for the user
@@ -107,8 +113,12 @@ PlasmaComponents.Page {
                         screensModel.append(scr);
                     }
 
-                    if (latteView.onPrimary) {
+                    if (latteView.onPrimary && latteView.screensGroup === LatteCore.Types.SingleScreenGroup) {
                         screenCmb.currentIndex = 0;
+                    } else if (latteView.screensGroup === LatteCore.Types.AllScreensGroup) {
+                        screenCmb.currentIndex = 1;
+                    } else if (latteView.screensGroup === LatteCore.Types.AllSecondaryScreensGroup) {
+                        screenCmb.currentIndex = 2;
                     } else {
                         screenCmb.currentIndex = screenCmb.findScreen(latteView.positioner.currentScreenName);
                     }
@@ -135,10 +145,14 @@ PlasmaComponents.Page {
                     Component.onCompleted: screenRow.updateScreens();
 
                     onActivated: {
-                        if (index === 0) {
-                            latteView.positioner.setNextLocation("", "{primary-screen}", PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
-                        } else if (index>0 && (index !== findScreen(latteView.positioner.currentScreenName) || latteView.onPrimary)) {
-                            latteView.positioner.setNextLocation("", textAt(index), PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
+                        if (index === 0) { // primary
+                            latteView.positioner.setNextLocation("", LatteCore.Types.SingleScreenGroup, "{primary-screen}", PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
+                        } else if (index === 1) { // all screens
+                            latteView.positioner.setNextLocation("", LatteCore.Types.AllScreensGroup, "{primary-screen}", PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
+                        } else if (index === 2) { // all secondary screens
+                            latteView.positioner.setNextLocation("", LatteCore.Types.AllSecondaryScreensGroup, "", PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
+                        } else if (index>2 && (index !== findScreen(latteView.positioner.currentScreenName) || latteView.onPrimary)) {// explicit screen
+                            latteView.positioner.setNextLocation("", LatteCore.Types.SingleScreenGroup, textAt(index), PlasmaCore.Types.Floating, LatteCore.Types.NoneAlignment);
                         }
                     }
 
@@ -184,7 +198,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -203,7 +217,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -222,7 +236,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -241,7 +255,7 @@ PlasmaComponents.Page {
                     onClicked: {
                         //! clicked event is more wayland friendly because it release focus from the button before hiding the window
                         if (viewConfig.isReady && plasmoid.location !== edge) {
-                            latteView.positioner.setNextLocation("", "", edge, LatteCore.Types.NoneAlignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", edge, LatteCore.Types.NoneAlignment);
                         }
                     }
                 }
@@ -286,7 +300,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -303,7 +317,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -320,7 +334,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }
@@ -338,7 +352,7 @@ PlasmaComponents.Page {
 
                     onPressedChanged: {
                         if (pressed) {
-                            latteView.positioner.setNextLocation("", "", PlasmaCore.Types.Floating, alignment);
+                            latteView.positioner.setNextLocation("", latteView.screensGroup, "", PlasmaCore.Types.Floating, alignment);
                         }
                     }
                 }

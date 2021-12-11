@@ -21,6 +21,7 @@
 #include "../../layout/centrallayout.h"
 #include "../../layouts/importer.h"
 #include "../../layouts/manager.h"
+#include "../../layouts/storage.h"
 #include "../../templates/templatesmanager.h"
 #include "../../tools/commontools.h"
 
@@ -657,6 +658,9 @@ void TabLayouts::exportLayoutForBackup()
             if (newFileInfo.exists() && !newFileInfo.isWritable()) {
                 QFile(file).setPermissions(QFileDevice::ReadUser | QFileDevice::WriteUser | QFileDevice::ReadGroup | QFileDevice::ReadOther);
             }
+
+            // cleanup clones from exported file
+            Latte::Layouts::Storage::self()->removeAllClonedViews(file);
 
             CentralLayout layoutS(this, file);
             layoutS.setActivities(QStringList());

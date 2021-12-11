@@ -12,8 +12,11 @@ import org.kde.latte.core 0.2 as LatteCore
 Item {
     id:_syncer
     property bool isBlocked: false
-    readonly property bool isActive: bridge !== null && bridge.launchers.host !==null && group !== LatteCore.Types.UniqueLaunchers
+    readonly property bool isActive: bridge !== null && bridge.launchers.host !==null
     readonly property int clientId: plasmoid.id
+    // used to identify launchers that need to be synced event though their launchers group type
+    // does not support it e.g. taskmanagers synced in different screens
+    readonly property int syncedGroupId: _launchers.groupId
 
     //! Connections
     Component.onCompleted: {

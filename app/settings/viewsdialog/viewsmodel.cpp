@@ -424,16 +424,26 @@ Latte::Data::Screen Views::screenData(const QString &viewId) const
         return Latte::Data::Screen();
     }
 
-    QString primaryid = QString::number(m_corona->screenPool()->primaryScreenId());
+   // QString primaryid = QString::number(m_corona->screenPool()->primaryScreenId());
     QString explicitid = QString::number(m_viewsTable[row].screen);
 
-    if (m_viewsTable[row].onPrimary && s_screens.containsId(primaryid)) {
-        return s_screens[primaryid];
+    Data::Screen scrData = s_screens[0]; //default
+
+    if (m_viewsTable[row].onPrimary || (m_viewsTable[row].screensGroup == Latte::Types::AllScreensGroup)) {
+        scrData = s_screens[0]; //primary, allscreens
+    } else if (m_viewsTable[row].screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+        scrData = s_screens[2]; //allsecondaryscreens
     } else if (!m_viewsTable[row].onPrimary && s_screens.containsId(explicitid)) {
-        return s_screens[explicitid];
+        scrData = s_screens[explicitid]; //explicit
     }
 
-    return Latte::Data::Screen();
+    if (m_viewsTable[row].screensGroup == Latte::Types::AllScreensGroup) {
+        scrData.id = QString::number(Data::Screen::ONALLSCREENSID);
+    } else if (m_viewsTable[row].screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+        scrData.id = QString::number(Data::Screen::ONALLSECONDARYSCREENSID);
+    }
+
+    return scrData;
 }
 
 Latte::Data::ViewsTable Views::alteredViews() const
@@ -486,14 +496,21 @@ void Views::clearErrorsAndWarnings()
 void Views::populateScreens()
 {
     s_screens.clear();
-    Data::Screen primary(QString::number(Data::Screen::ONPRIMARYID),
-                         i18nc("primary screen", " - Follow Primary Screen - "));
+    Data::Screen primary(QString::number(Data::Screen::ONPRIMARYID), i18n(" - On Primary Screen - "));
+    Data::Screen allscreens(QString::number(Data::Screen::ONALLSCREENSID), i18n(" - On All Screens - "));
+    Data::Screen allsecscreens(QString::number(Data::Screen::ONALLSECONDARYSCREENSID), i18n(" - On All Secondary Screens - "));
 
-    primary.isActive = true;
+    primary.isActive = true;    
+    allscreens.isActive = true;
+    allsecscreens.isActive = (m_corona->screenPool()->secondaryScreenIds().count() > 0);
+
     s_screens << primary;
+    s_screens << allscreens;
+    s_screens << allsecscreens;
+    int defcount = s_screens.rowCount();
     s_screens << m_corona->screenPool()->screensTable();
 
-    for (int i=1; i<s_screens.rowCount(); ++i) {
+    for (int i=defcount; i<s_screens.rowCount(); ++i) {
         s_screens[i].isActive = m_corona->screenPool()->isScreenActive(s_screens[i].id.toInt());
     }
 }
@@ -662,22 +679,30 @@ bool Views::setData(const QModelIndex &index, const QVariant &value, int role)
         if (role == Qt::UserRole) {
             int screen = value.toString().toInt();
             bool onprimary = (screen == Latte::Data::Screen::ONPRIMARYID);
-
-            if ((m_viewsTable[row].onPrimary == onprimary) && (m_viewsTable[row].screen == screen)) {
-                return false;
-            }
+            bool onallscreens = (screen == Latte::Data::Screen::ONALLSCREENSID);
+            bool onallsecscreens = (screen == Latte::Data::Screen::ONALLSECONDARYSCREENSID);
 
             if (onprimary) {
                 m_viewsTable[row].onPrimary = true;
+                m_viewsTable[row].screensGroup = Latte::Types::SingleScreenGroup;
+            } else if (onallscreens) {
+                m_viewsTable[row].onPrimary = true;
+                m_viewsTable[row].screensGroup = Latte::Types::AllScreensGroup;
+            } else if (onallsecscreens) {
+                m_viewsTable[row].onPrimary = false;
+                m_viewsTable[row].screensGroup = Latte::Types::AllSecondaryScreensGroup;
+            } else {
+                m_viewsTable[row].onPrimary = false;
+                m_viewsTable[row].screensGroup = Latte::Types::SingleScreenGroup;
+                m_viewsTable[row].screen = screen;
+            }
 
+            if (onprimary || onallscreens || onallsecscreens) {
                 if (o_viewsTable.containsId(m_viewsTable[row].id)) {
                     //! we need to update screen also in order to not show that there are changes even though
                     //! they are not any
                     m_viewsTable[row].screen = o_viewsTable[m_viewsTable[row].id].screen;
                 }
-            } else {
-                m_viewsTable[row].onPrimary = false;
-                m_viewsTable[row].screen = screen;
             }
 
             emit dataChanged(this->index(row, NAMECOLUMN), this->index(row, ALIGNMENTCOLUMN), roles);
@@ -759,7 +784,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
 
             if (!m_viewsTable[row].onPrimary && !currentScreens.containsId(QString::number(m_viewsTable[row].screen))) {
                 Data::Screen explicitScr(QString::number(m_viewsTable[row].screen),
-                                         i18nc("unknown screen", "Unknown : [%1]", explicitScr.id));
+                                         i18nc("unknown screen", "Unknown: [%1]", explicitScr.id));
                 currentScreens.insertBasedOnId(explicitScr);
             }
 
@@ -838,18 +863,30 @@ QVariant Views::data(const QModelIndex &index, int role) const
         break;
     case SCREENCOLUMN:
         if (role == Qt::DisplayRole){
-            if (m_viewsTable[row].onPrimary) {
+            if (m_viewsTable[row].screensGroup == Latte::Types::SingleScreenGroup &&  m_viewsTable[row].onPrimary) {
                 return i18nc("primary screen", "Primary");
+            } else if (m_viewsTable[row].screensGroup == Latte::Types::AllScreensGroup) {
+                return i18n("All Screens");
+            } else if (m_viewsTable[row].screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+                return i18n("Secondary Screens");
             } else {
                 QString scrId = QString::number(m_viewsTable[row].screen);
                 if (s_screens.containsId(scrId)) {
                     return s_screens[scrId].name;
                 } else {
-                    return i18nc("unknown screen", "Unknown : [%1]", scrId);
+                    return i18nc("unknown screen", "Unknown: [%1]", scrId);
                 }
             }
         } else if (role == Qt::UserRole) {
-            return m_viewsTable[row].onPrimary ? QString::number(Data::Screen::ONPRIMARYID) : QString::number(m_viewsTable[row].screen);
+            if (m_viewsTable[row].screensGroup == Latte::Types::SingleScreenGroup &&  m_viewsTable[row].onPrimary) {
+                return QString::number(Data::Screen::ONPRIMARYID);
+            } else if (m_viewsTable[row].screensGroup == Latte::Types::AllScreensGroup) {
+                return QString::number(Data::Screen::ONALLSCREENSID);
+            } else if (m_viewsTable[row].screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+                return QString::number(Data::Screen::ONALLSECONDARYSCREENSID);
+            } else {
+                return QString::number(m_viewsTable[row].screen);
+            }
         } else if (role == ISCHANGEDROLE) {
             return (isNewView
                     || (m_viewsTable[row].onPrimary != o_viewsTable[origviewid].onPrimary)

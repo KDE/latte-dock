@@ -11,7 +11,9 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "./myview" as MyViewTypes
 
-Item {    
+Item {
+    property int groupId: -1
+
     property bool isReady: false
 
     property bool inNormalState: true

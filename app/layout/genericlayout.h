@@ -55,12 +55,15 @@ public:
 
     virtual const QStringList appliedActivities() = 0; // to move at an interface
 
+    virtual bool initCorona();
     void importToCorona();
-    bool initToCorona(Latte::Corona *corona);
+    bool initContainments();
+    void setCorona(Latte::Corona *corona);
 
     bool isActive() const; //! is loaded and running
     virtual bool isCurrent();
     bool isWritable() const;
+    bool hasCorona() const;
 
     virtual int viewsCount(int screen) const;
     virtual int viewsCount(QScreen *screen) const;
@@ -92,8 +95,9 @@ public:
     QList<Latte::View *> sortedLatteViews();
     virtual QList<Latte::View *> viewsWithPlasmaShortcuts();
     virtual QList<Latte::View *> latteViews();
-    ViewsMap validViewsMap(ViewsMap *occupiedMap = nullptr);
-    virtual void syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap = nullptr);
+    virtual QList<Latte::View *> onlyOriginalViews();
+    ViewsMap validViewsMap();
+    virtual void syncLatteViewsToScreens();
 
     void syncToLayoutFile(bool removeLayoutId = false);
 
@@ -106,10 +110,10 @@ public:
     virtual void setLastConfigViewFor(Latte::View *view);
     virtual Latte::View *lastConfigViewFor();
 
-    //! this function needs the layout to have first set the corona through initToCorona() function
-    virtual void addView(Plasma::Containment *containment, bool forceOnPrimary = false, int explicitScreen = -1, Layout::ViewsMap *occupied = nullptr);
+    //! this function needs the layout to have first set the corona through setCorona() function
+    virtual void addView(Plasma::Containment *containment);
     void recreateView(Plasma::Containment *containment, bool delayed = true);
-    bool latteViewExists(Plasma::Containment *containment);
+    bool hasLatteView(Plasma::Containment *containment);
 
     bool newView(const QString &templateName);
     Data::View newView(const Latte::Data::View &nextViewData);
@@ -190,6 +194,7 @@ private:
     bool viewDataAtLowerStatePriority(const Latte::Data::View &test, const Latte::Data::View &base) const;
 
     bool mapContainsId(const ViewsMap *map, uint viewId) const;
+    QString mapScreenName(const ViewsMap *map, uint viewId) const;
 
     QList<int> subContainmentsOf(Plasma::Containment *containment) const;
 
@@ -199,7 +204,7 @@ private:
 
 private:
     bool m_blockAutomaticLatteViewCreation{false};
-
+    bool m_hasInitializedContainments{false};
     QPointer<Latte::View> m_lastConfigViewFor;
 
     QStringList m_unloadedContainmentsIds;

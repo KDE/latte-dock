@@ -8,6 +8,7 @@
 // local
 #include <coretypes.h>
 #include "effects.h"
+#include "originalview.h"
 #include "view.h"
 #include "visibilitymanager.h"
 #include "../lattecorona.h"
@@ -347,6 +348,7 @@ void Positioner::onStartupFinished()
     if (m_inStartup) {
         m_inStartup = false;
         syncGeometry();
+        emit isOffScreenChanged();
     }
 }
 
@@ -1045,6 +1047,12 @@ void Positioner::initSignalingForLocationChangeSliding()
             m_view->setAlignment(m_nextAlignment);
             m_nextAlignment = Latte::Types::NoneAlignment;
         }
+
+        //! SCREENSGROUP
+        if (m_view->isOriginal()) {
+            auto originalview = qobject_cast<Latte::OriginalView *>(m_view);
+            originalview->setScreensGroup(m_nextScreensGroup);
+        }
     });
 }
 
@@ -1139,7 +1147,7 @@ bool Positioner::isLastHidingRelocationEvent() const
     return (events <= 1);
 }
 
-void Positioner::setNextLocation(const QString layoutName, const QString screenName, int edge, int alignment)
+void Positioner::setNextLocation(const QString layoutName, const int screensGroup, QString screenName, int edge, int alignment)
 {
     bool isanimated{false};
     bool haschanges{false};
@@ -1162,6 +1170,30 @@ void Positioner::setNextLocation(const QString layoutName, const QString screenN
                 isanimated = true;
             }
         }
+    }
+
+    //! SCREENSGROUP
+    if (m_view->isOriginal()) {
+        auto originalview = qobject_cast<Latte::OriginalView *>(m_view);
+        //!initialize screens group
+        m_nextScreensGroup = originalview->screensGroup();
+
+        if (m_nextScreensGroup != screensGroup) {
+            haschanges = true;
+            m_nextScreensGroup = static_cast<Latte::Types::ScreensGroup>(screensGroup);
+
+            if (m_nextScreensGroup == Latte::Types::AllScreensGroup) {
+                screenName = Latte::Data::Screen::ONPRIMARYNAME;
+            } else if (m_nextScreensGroup == Latte::Types::AllSecondaryScreensGroup) {
+                int scrid = originalview->expectedScreenIdFromScreenGroup(m_nextScreensGroup);
+
+                if (scrid != Latte::ScreenPool::NOSCREENID) {
+                    screenName = m_corona->screenPool()->connector(scrid);
+                }
+            }
+        }
+    } else {
+        m_nextScreensGroup = Latte::Types::SingleScreenGroup;
     }
 
     //! SCREEN
@@ -1198,6 +1230,11 @@ void Positioner::setNextLocation(const QString layoutName, const QString screenN
     if (alignment != Latte::Types::NoneAlignment && m_view->alignment() != alignment) {
         m_nextAlignment = static_cast<Latte::Types::Alignment>(alignment);
         haschanges = true;
+    }
+
+    if (haschanges && m_view->isOriginal()) {
+        auto originalview = qobject_cast<Latte::OriginalView *>(m_view);
+        originalview->setNextLocationForClones(layoutName, edge, alignment);
     }
 
     m_repositionIsAnimated = isanimated;

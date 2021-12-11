@@ -16,6 +16,7 @@
 #include "../data/generictable.h"
 #include "../layout/abstractlayout.h"
 #include "../layout/centrallayout.h"
+#include "../layouts/storage.h"
 #include "../settings/universalsettings.h"
 #include "../templates/templatesmanager.h"
 #include "../tools/commontools.h"
@@ -332,6 +333,8 @@ void Manager::setOnActivities(QString layoutName, QStringList activities)
 
 void Manager::cleanupOnStartup(QString path)
 {
+    Layouts::Storage::self()->removeAllClonedViews(path);
+
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(path);
 
     KConfigGroup actionGroups = KConfigGroup(filePtr, "ActionPlugins");

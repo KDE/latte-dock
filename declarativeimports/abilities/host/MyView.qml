@@ -22,6 +22,7 @@ AbilityDefinition.MyView {
 
     readonly property Item publicApi: Item {
         readonly property alias isReady: apis.isReady
+        readonly property alias groupId: apis.groupId
 
         readonly property alias inNormalState: apis.inNormalState
 

@@ -12,6 +12,7 @@
 #include "../lattecorona.h"
 #include "../screenpool.h"
 #include "../data/errordata.h"
+#include "../data/viewdata.h"
 #include "../layout/abstractlayout.h"
 #include "../view/view.h"
 
@@ -99,13 +100,13 @@ bool Storage::isLatteContainment(const KConfigGroup &group) const
     return pluginId == QLatin1String("org.kde.latte.containment");
 }
 
-bool Storage::isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const
+bool Storage::isSubContainment(const Plasma::Corona *corona, const Plasma::Applet *applet) const
 {
-    if (!layout || !applet) {
+    if (!corona || !applet) {
         return false;
     }
 
-    for (const auto containment : *layout->containments()) {
+    for (const auto containment : corona->containments()) {
         Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
         if (parentApplet && parentApplet == applet) {
             return true;
@@ -178,14 +179,14 @@ int Storage::subIdentityIndex(const KConfigGroup &appletGroup) const
     return IDNULL;
 }
 
-Plasma::Containment *Storage::subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet)
+Plasma::Containment *Storage::subContainmentOf(const Plasma::Corona *corona, const Plasma::Applet *applet)
 {
-    if (!layout || !applet) {
+    if (!corona || !applet) {
         return nullptr;
     }
 
-    if (isSubContainment(layout, applet)) {
-        for (const auto containment : *layout->containments()) {
+    if (isSubContainment(corona, applet)) {
+        for (const auto containment : corona->containments()) {
             Plasma::Applet *parentApplet = qobject_cast<Plasma::Applet *>(containment->parent());
             if (parentApplet && parentApplet == applet) {
                 return containment;
@@ -224,6 +225,8 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
     //! Setting mutable for create a containment
     layout->corona()->setImmutability(Plasma::Types::Mutable);
 
+    removeAllClonedViews(layout->file());
+
     QString temp1FilePath = m_storageTmpDir.path() +  "/" + layout->name() + ".multiple.views";
     //! we need to copy first the layout file because the kde cache
     //! may not have yet been updated (KSharedConfigPtr)
@@ -240,8 +243,9 @@ void Storage::importToCorona(const Layout::GenericLayout *layout)
         tempLayoutFile.remove();
     }
 
-    if (copyFile.exists())
+    if (copyFile.exists()) {
         copyFile.remove();
+    }
 
     layoutOriginalFile.copy(tempLayoutFilePath);
 
@@ -329,7 +333,7 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
     QString currentdestinationname = destinationLayout->name();
     QString currentdestinationfile = "";
 
-    if (!destinationLayout->isActive()) {
+    if (!destinationLayout->hasCorona()) {
         currentdestinationfile = destinationLayout->file();
     }
 
@@ -344,7 +348,7 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
     //! BEGIN updating the ids in the temp file
     QStringList allIds;
 
-    if (destinationLayout->isActive()) {
+    if (destinationLayout->hasCorona()) {
         allIds << destinationLayout->corona()->containmentsIds();
         allIds << destinationLayout->corona()->appletsIds();
     } else {
@@ -475,7 +479,7 @@ QString Storage::newUniqueIdsFile(QString originFile, const Layout::GenericLayou
             }
         }
 
-        if (destinationLayout->isActive() && destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+        if (destinationLayout->hasCorona() && destinationLayout->corona()->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
             //! will be added in main corona multiple layouts file
             investigate_conts.group(cId).writeEntry("layoutId", destinationLayout->name());
         } else {
@@ -560,6 +564,7 @@ void Storage::syncToLayoutFile(const Layout::GenericLayout *layout, bool removeL
     }
 
     filePtr->reparseConfiguration();
+    removeAllClonedViews(layout->file());
 }
 
 QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayout *layout, QString file)
@@ -567,13 +572,10 @@ QList<Plasma::Containment *> Storage::importLayoutFile(const Layout::GenericLayo
     KSharedConfigPtr filePtr = KSharedConfig::openConfig(file);
     auto newContainments = layout->corona()->importLayout(KConfigGroup(filePtr, ""));
 
-    qDebug() << " imported containments ::: " << newContainments.length();
-
     QList<Plasma::Containment *> importedViews;
 
     for (const auto containment : newContainments) {
         if (isLatteContainment(containment)) {
-            qDebug() << "new latte containment id: " << containment->id();
             importedViews << containment;
         }
     }
@@ -609,7 +611,7 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
 
     qDebug() << "new view for layout";
 
-    if (destinationLayout->isActive()) {
+    if (destinationLayout->hasCorona()) {
         //! Setting mutable for create a containment
         destinationLayout->corona()->setImmutability(Plasma::Types::Mutable);
     }
@@ -650,7 +652,7 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
         return Data::View();
     }
 
-    if (destinationLayout->isActive()) {
+    if (destinationLayout->hasCorona()) {
         //! import views for active layout
         QList<Plasma::Containment *> importedViews = importLayoutFile(destinationLayout, temp2File);
 
@@ -732,6 +734,7 @@ bool Storage::exportTemplate(const QString &originFile, const QString &destinati
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
     destFilePtr->reparseConfiguration();
+    removeAllClonedViews(destinationFile);
 
     return true;
 }
@@ -828,6 +831,7 @@ bool Storage::exportTemplate(const Layout::GenericLayout *layout, Plasma::Contai
     KConfigGroup layoutSettingsGrp(destFilePtr, "LayoutSettings");
     clearExportedLayoutSettings(layoutSettingsGrp);
     destFilePtr->reparseConfiguration();
+    removeAllClonedViews(destinationFile);
 
     return true;
 }
@@ -1271,7 +1275,7 @@ Data::AppletsTable Storage::plugins(const Layout::GenericLayout *layout, const i
             }
 
             for (auto applet : containment->applets()) {
-                if (isSubContainment(layout, applet)) {
+                if (isSubContainment(layout->corona(), applet)) {
                     validcontainmentids << subContainmentId(applet->config());
                 }
             }
@@ -1426,6 +1430,51 @@ bool Storage::hasContainment(const Layout::GenericLayout *layout, const int &id)
     return false;
 }
 
+bool Storage::isClonedView(const Plasma::Containment *containment) const
+{
+    if (!containment) {
+        return false;
+    }
+
+    return isClonedView(containment->config());
+}
+
+bool Storage::isClonedView(const KConfigGroup &containmentGroup) const
+{
+    if (!isLatteContainment(containmentGroup)) {
+        return false;
+    }
+
+    int isClonedFrom = containmentGroup.readEntry("isClonedFrom", Data::View::ISCLONEDNULL);
+    return (isClonedFrom != IDNULL);
+}
+
+void Storage::removeAllClonedViews(const QString &filepath)
+{
+    KSharedConfigPtr lFile = KSharedConfig::openConfig(filepath);
+    KConfigGroup containmentGroups = KConfigGroup(lFile, "Containments");
+
+    QList<Data::View> clones;
+
+    for (const auto &contId : containmentGroups.groupList()) {
+        if (isClonedView(containmentGroups.group(contId))) {
+            clones << view(containmentGroups.group(contId));
+        }
+    }
+
+    if (clones.size() <= 0) {
+        return;
+    }
+
+    if (clones.count()>0) {
+        qDebug() << "org.kde.layout :: Removing clones from file: " << filepath;
+    }
+
+    for (const auto &clonedata : clones) {
+        qDebug() << "org.kde.layout :: Removing clone:" << clonedata.id << " and its subcontainments:" << clonedata.subcontainments;
+        removeView(filepath, clonedata);
+    }
+}
 
 Data::GenericTable<Data::Generic> Storage::subcontainments(const Layout::GenericLayout *layout, const Plasma::Containment *lattecontainment) const
 {
@@ -1505,8 +1554,10 @@ Data::View Storage::view(const KConfigGroup &containmentGroup)
     vdata.id = containmentGroup.name();
     vdata.name = containmentGroup.readEntry("name", QString());
     vdata.isActive = false;
+    vdata.screensGroup = static_cast<Latte::Types::ScreensGroup>(containmentGroup.readEntry("screensGroup", (int)Latte::Types::SingleScreenGroup));
     vdata.onPrimary = containmentGroup.readEntry("onPrimary", true);
     vdata.screen = containmentGroup.readEntry("lastScreen", IDNULL);
+    vdata.isClonedFrom = containmentGroup.readEntry("isClonedFrom", Data::View::ISCLONEDNULL);
     vdata.screenEdgeMargin = containmentGroup.group("General").readEntry("screenEdgeMargin", (int)-1);
 
     int location = containmentGroup.readEntry("location", (int)Plasma::Types::BottomEdge);
@@ -1530,7 +1581,9 @@ void Storage::updateView(KConfigGroup viewGroup, const Data::View &viewData)
     }
 
     viewGroup.writeEntry("name", viewData.name);
+    viewGroup.writeEntry("screensGroup", (int)viewData.screensGroup);
     viewGroup.writeEntry("onPrimary", viewData.onPrimary);
+    viewGroup.writeEntry("isClonedFrom", viewData.isClonedFrom);
     viewGroup.writeEntry("lastScreen", viewData.screen);
     viewGroup.group("General").writeEntry("screenEdgeMargin", viewData.screenEdgeMargin);
     viewGroup.writeEntry("location", (int)viewData.edge);
@@ -1675,6 +1728,38 @@ QString Storage::storedView(const Layout::GenericLayout *layout, const int &cont
 
     destinationPtr->reparseConfiguration();
     return nextTmpStoredViewAbsolutePath;
+}
+
+int Storage::expectedViewScreenId(const Latte::Corona *corona, const KConfigGroup &containmentGroup) const
+{
+    return expectedViewScreenId(corona, self()->view(containmentGroup));
+}
+
+int Storage::expectedViewScreenId(const Layout::GenericLayout *layout, const Plasma::Containment *lattecontainment) const
+{
+    if (!layout || !layout->corona()) {
+        return Latte::ScreenPool::NOSCREENID;
+    }
+
+    return expectedViewScreenId(layout->corona(), self()->view(layout, lattecontainment));
+}
+
+int Storage::expectedViewScreenId(const Latte::Corona *corona, const Data::View &view) const
+{
+    if (!corona || !view.isValid()) {
+        return Latte::ScreenPool::NOSCREENID;
+    }
+
+    if (view.screensGroup == Latte::Types::SingleScreenGroup || view.isCloned()) {
+        return view.onPrimary ? corona->screenPool()->primaryScreenId() : view.screen;
+    } else if (view.screensGroup == Latte::Types::AllScreensGroup) {
+        return corona->screenPool()->primaryScreenId();
+    } else if (view.screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+        QList<int> secondaryscreens = corona->screenPool()->secondaryScreenIds();
+        return secondaryscreens.contains(view.screen) || secondaryscreens.isEmpty() ? view.screen : secondaryscreens[0];
+    }
+
+    return Latte::ScreenPool::NOSCREENID;
 }
 
 Data::ViewsTable Storage::views(const Layout::GenericLayout *layout)

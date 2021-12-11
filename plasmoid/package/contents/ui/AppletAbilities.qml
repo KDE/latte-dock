@@ -23,6 +23,7 @@ AbilityClient.AppletAbilities {
         bridge: _abilityContainer.bridge
         layout: _abilityContainer.layout
         tasksModel: _abilityContainer.tasksModel
+        view: _abilityContainer.myView
     }
 
     //! local properties

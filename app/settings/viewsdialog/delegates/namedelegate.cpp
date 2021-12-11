@@ -27,7 +27,7 @@ NameDelegate::NameDelegate(QObject *parent)
 
 void NameDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    editor->setGeometry(Latte::remainedFromScreenDrawing(option));
+    editor->setGeometry(Latte::remainedFromScreenDrawing(option, false));
 }
 
 void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -90,8 +90,8 @@ void NameDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, 
 
     // draw screen icon
     int maxiconsize = -1; //disabled
-    remainedrect = Latte::remainedFromScreenDrawing(myOptions, maxiconsize);
-    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.geometry, maxiconsize, textopacity);
+    remainedrect = Latte::remainedFromScreenDrawing(myOptions, screen.isScreensGroup(), maxiconsize);
+    QRect availableScreenRect = Latte::drawScreen(painter, myOptions, screen.isScreensGroup(), screen.geometry, maxiconsize, textopacity);
     Latte::drawView(painter, myOptions, view, availableScreenRect, textopacity);
 
     myOptions.rect = remainedrect;

@@ -30,6 +30,7 @@ class ScreenPool : public QObject, public QAbstractNativeEventFilter
 
 public:
     static const int FIRSTSCREENID = 10;
+    static const int NOSCREENID = -1;
 
     ScreenPool(KSharedConfig::Ptr config, QObject *parent = nullptr);
     void load();
@@ -38,6 +39,7 @@ public:
     bool hasScreenId(int screenId) const;
     bool isScreenActive(int screenId) const;
     int primaryScreenId() const;
+    QList<int> secondaryScreenIds() const;
 
     void insertScreenMapping(const QString &connector);
     void reload(QString path);

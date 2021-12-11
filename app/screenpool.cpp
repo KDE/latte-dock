@@ -168,6 +168,21 @@ int ScreenPool::primaryScreenId() const
     return id(qGuiApp->primaryScreen()->name());
 }
 
+QList<int> ScreenPool::secondaryScreenIds() const
+{
+    QList<int> secondaryscreens;
+
+    for (const auto scr : qGuiApp->screens()) {
+        if (scr == qGuiApp->primaryScreen()) {
+            continue;
+        }
+
+        secondaryscreens << id(scr->name());
+    }
+
+    return secondaryscreens;
+}
+
 void ScreenPool::save()
 {
     QMap<int, QString>::const_iterator i;
@@ -214,7 +229,7 @@ void ScreenPool::insertScreenMapping(const QString &connector)
 int ScreenPool::id(const QString &connector) const
 {
     QString screenId = m_screensTable.idForName(connector);
-    return screenId.isEmpty() ? -1 : screenId.toInt();
+    return screenId.isEmpty() ? NOSCREENID : screenId.toInt();
 }
 
 QString ScreenPool::connector(int id) const

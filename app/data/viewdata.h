@@ -32,6 +32,8 @@ public:
         OriginFromLayout /*used from duplicate, copy, move view functions*/
     };
 
+    static const int ISCLONEDNULL;
+
     View();
     View(View &&o);
     View(const View &o);
@@ -40,11 +42,13 @@ public:
     //! View data
     bool isActive{false};
     bool onPrimary{true};
+    int isClonedFrom{ISCLONEDNULL};
     int screen{Latte::ScreenPool::FIRSTSCREENID};
     int screenEdgeMargin{0};
     float maxLength{1.0};
     Plasma::Types::Location edge{Plasma::Types::BottomEdge};
     Latte::Types::Alignment alignment{Latte::Types::Center};
+    Latte::Types::ScreensGroup screensGroup{Latte::Types::SingleScreenGroup};
     GenericTable<Data::Generic> subcontainments;
 
     int errors{0};
@@ -56,6 +60,8 @@ public:
 
     bool isValid() const;
     bool isCreated() const;
+    bool isOriginal() const;
+    bool isCloned() const;
     bool hasViewTemplateOrigin() const;
     bool hasLayoutOrigin() const;
     bool hasSubContainment(const QString &subId) const;

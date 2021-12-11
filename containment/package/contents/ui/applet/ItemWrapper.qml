@@ -23,6 +23,10 @@ Item{
     height: root.isHorizontal ? thickness : length
 
     readonly property real length: {
+        if (appletItem.isScheduledForDestruction) {
+            return 0;
+        }
+
         if (appletItem.isInternalViewSplitter) {
             if (!root.inConfigureAppletsMode) {
                 return 0;

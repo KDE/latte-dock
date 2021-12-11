@@ -24,6 +24,7 @@
 #include <Plasma/Containment>
 
 namespace Latte {
+class Corona;
 namespace Layout {
 class GenericLayout;
 }
@@ -51,14 +52,18 @@ public:
     bool isWritable(const Layout::GenericLayout *layout) const;
     bool isLatteContainment(const Plasma::Containment *containment) const;
     bool isLatteContainment(const KConfigGroup &group) const;
-    bool isSubContainment(const Layout::GenericLayout *layout, const Plasma::Applet *applet) const;
+    bool isSubContainment(const Plasma::Corona *corona, const Plasma::Applet *applet) const;
 
     bool hasContainment(const Layout::GenericLayout *layout, const int &id);
     bool containsView(const QString &filepath, const int &viewId);
 
+    bool isClonedView(const Plasma::Containment *containment) const;
+    bool isClonedView(const KConfigGroup &containmentGroup) const;
+    void removeAllClonedViews(const QString &filepath);
+
     int subContainmentId(const KConfigGroup &appletGroup) const;
 
-    Plasma::Containment *subContainmentOf(const Layout::GenericLayout *layout, const Plasma::Applet *applet);
+    Plasma::Containment *subContainmentOf(const Plasma::Corona *corona, const Plasma::Applet *applet);
 
     void lock(const Layout::GenericLayout *layout); //! make it only read-only
     void unlock(const Layout::GenericLayout *layout); //! make it writable which it should be the default
@@ -77,11 +82,14 @@ public:
     bool exportTemplate(const QString &originFile, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
     bool exportTemplate(const Layout::GenericLayout *layout, Plasma::Containment *containment, const QString &destinationFile, const Data::AppletsTable &approvedApplets);
 
+    int expectedViewScreenId(const Latte::Corona *corona, const Data::View &view) const;
+    int expectedViewScreenId(const Latte::Corona *corona, const KConfigGroup &containmentGroup) const;
+    int expectedViewScreenId(const Layout::GenericLayout *layout, const Plasma::Containment *lattecontainment) const;
+
     /// STATIC
     //! Check if an applet config group is valid or belongs to removed applet
     static bool appletGroupIsValid(const KConfigGroup &appletGroup);
     static bool isValid(const int &id);
-
 
     //! AppletsData Information
     Data::Applet metadata(const QString &pluginId);

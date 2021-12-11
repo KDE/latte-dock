@@ -181,14 +181,22 @@ DragDrop.DropArea {
         if (root.launchers.hasStealingApplet && dragInfo.onlyLaunchers) {
             root.launchers.addDroppedLaunchersInStealingApplet(event.mimeData.urls);
         } else {
-            plasmoid.processMimeData(event.mimeData, event.x, event.y);
+            var dndindex = fastLayoutManager.dndSpacerIndex();
+            var eventx = event.x;
+            var eventy = event.y;
+
+            if (dndindex >= 0) {
+                var masquearadedIndexFromPoint = fastLayoutManager.indexToMasquearadedPoint(fastLayoutManager.dndSpacerIndex());
+                eventx = masquearadedIndexFromPoint.x;
+                eventy = masquearadedIndexFromPoint.y;
+            }
+
+            plasmoid.processMimeData(event.mimeData, eventx, eventy);
+            //! inform others what plasmoid was drag n' dropped to be added
+            latteView.extendedInterface.appletDropped(event.mimeData, eventx, eventy);
             event.accept(event.proposedAction);
         }
 
         dndSpacer.opacity = 0;
-
-       // if (dragInfo.isPlasmoid && root.myView.alignment === LatteCore.Types.Justify) {
-       //     fastLayoutManager.moveAppletsBasedOnJustifyAlignment();
-       // }
     }
 }

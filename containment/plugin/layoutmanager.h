@@ -23,7 +23,7 @@ namespace Containment{
 
 class LayoutManager : public QObject
 {
-  Q_OBJECT
+  Q_OBJECT  
     Q_PROPERTY(QObject *plasmoidObj READ plasmoid() WRITE setPlasmoid NOTIFY plasmoidChanged)
 
     Q_PROPERTY(QQuickItem *rootItem READ rootItem WRITE setRootItem NOTIFY rootItemChanged)
@@ -41,20 +41,26 @@ class LayoutManager : public QObject
     //! appletsOrder is not stored when needed and applets additions/removals are not valid on next startup
     Q_PROPERTY(int splitterPosition READ splitterPosition NOTIFY splitterPositionChanged)
     Q_PROPERTY(int splitterPosition2 READ splitterPosition2 NOTIFY splitterPosition2Changed)
-    Q_PROPERTY(QString appletOrder READ appletOrder NOTIFY appletOrderChanged)
-    Q_PROPERTY(QString lockedZoomApplets READ lockedZoomApplets NOTIFY lockedZoomAppletsChanged)
-    Q_PROPERTY(QString userBlocksColorizingApplets READ userBlocksColorizingApplets NOTIFY userBlocksColorizingAppletsChanged)
+    Q_PROPERTY(QList<int> appletOrder READ appletOrder NOTIFY appletOrderChanged)
+    Q_PROPERTY(QList<int> order READ order NOTIFY orderChanged) //includes also splitters
+    Q_PROPERTY(QList<int> lockedZoomApplets READ lockedZoomApplets NOTIFY lockedZoomAppletsChanged)
+    Q_PROPERTY(QList<int> userBlocksColorizingApplets READ userBlocksColorizingApplets NOTIFY userBlocksColorizingAppletsChanged)
+    Q_PROPERTY(QList<int> appletsInScheduledDestruction READ appletsInScheduledDestruction NOTIFY appletsInScheduledDestructionChanged)
 
 public:
+    static const int JUSTIFYSPLITTERID = -10;
+
     LayoutManager(QObject *parent = nullptr);
 
     bool hasRestoredApplets() const;
 
     int splitterPosition() const;
     int splitterPosition2() const;
-    QString appletOrder() const;
-    QString lockedZoomApplets() const;
-    QString userBlocksColorizingApplets() const;
+    QList<int> appletOrder() const;
+    QList<int> lockedZoomApplets() const;
+    QList<int> order() const;
+    QList<int> userBlocksColorizingApplets() const;
+    QList<int> appletsInScheduledDestruction() const;
 
     QObject *plasmoid() const;
     void setPlasmoid(QObject *plasmoid);
@@ -81,8 +87,10 @@ public slots:
     Q_INVOKABLE void restore();
     Q_INVOKABLE void save();
     Q_INVOKABLE void saveOptions();
+    Q_INVOKABLE void setOption(const int &appletId, const QString &property, const QVariant &value);
 
     Q_INVOKABLE void addAppletItem(QObject *applet, int x, int y);
+    Q_INVOKABLE void addAppletItem(QObject *applet, int index);
     Q_INVOKABLE void removeAppletItem(QObject *applet);
 
     Q_INVOKABLE void addJustifySplittersInMainLayout();
@@ -92,8 +100,21 @@ public slots:
     Q_INVOKABLE void insertAfter(QQuickItem *hoveredItem, QQuickItem *item);
     Q_INVOKABLE void insertAtCoordinates(QQuickItem *item, const int &x, const int &y);
 
+    Q_INVOKABLE int dndSpacerIndex();
+
+    Q_INVOKABLE bool isMasqueradedIndex(const int &x, const int &y);
+    Q_INVOKABLE int masquearadedIndex(const int &x, const int &y);
+    Q_INVOKABLE QPoint indexToMasquearadedPoint(const int &index);
+
+    void requestAppletsOrder(const QList<int> &order);
+    void requestAppletsInLockedZoom(const QList<int> &applets);
+    void requestAppletsDisabledColoring(const QList<int> &applets);
+    void setAppletInScheduledDestruction(const int &id, const bool &enabled);
+
+
 signals:
     void appletOrderChanged();
+    void appletsInScheduledDestructionChanged();
     void hasRestoredAppletsChanged();
     void plasmoidChanged();
     void rootItemChanged();
@@ -103,6 +124,7 @@ signals:
 
     void mainLayoutChanged();
     void metricsChanged();
+    void orderChanged();
     void splitterPositionChanged();
     void splitterPosition2Changed();
     void startLayoutChanged();
@@ -112,10 +134,17 @@ private slots:
     void onRootItemChanged();
     void destroyJustifySplitters();
 
+    void updateOrder();
+    void cleanupOptions();
+
 private:
     void restoreOptions();
     void restoreOption(const char *option);
     void saveOption(const char *option);
+
+    void destroyAppletContainer(QObject *applet);
+
+    void initSaveConnections();
 
     void insertAtLayoutTail(QQuickItem *layout, QQuickItem *item);
     void insertAtLayoutHead(QQuickItem *layout, QQuickItem *item);
@@ -123,25 +152,40 @@ private:
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
 
-    void setAppletOrder(const QString &order);
-    void setLockedZoomApplets(const QString &applets);
-    void setUserBlocksColorizingApplets(const QString &applets);
+    void setAppletOrder(const QList<int> &order);
+    void setOrder(const QList<int> &order);
+    void setLockedZoomApplets(const QList<int> &applets);
+    void setUserBlocksColorizingApplets(const QList<int> &applets);
 
     void reorderSplitterInStartLayout();
     void reorderSplitterInEndLayout();
 
+    bool isJustifySplitter(const QQuickItem *item) const;
     bool isValidApplet(const int &id);
     bool insertAtLayoutCoordinates(QQuickItem *layout, QQuickItem *item, int x, int y);
 
     int distanceFromTail(QQuickItem *layout, QPointF pos) const;
     int distanceFromHead(QQuickItem *layout, QPointF pos) const;
 
+    QQuickItem *firstSplitter();
+    QQuickItem *lastSplitter();
+    QQuickItem *appletItem(const int &id);
+    QQuickItem *appletItemInLayout(QQuickItem *layout, const int &id);
+
+    QList<int> toIntList(const QString &serialized);
+    QString toStr(const QList<int> &list);
+
 private:
+    //! This is needed in order to overcome plasma frameworks limitations and instead of adding dropped widgets
+    //! based on coordinates, to be able to add them directly at the correct index
+    static const int MASQUERADEDINDEXTOPOINTBASE = -23456;
+
     int m_splitterPosition{-1};
     int m_splitterPosition2{-1};
-    QString m_appletOrder;
-    QString m_lockedZoomApplets;
-    QString m_userBlocksColorizingApplets;
+    QList<int> m_appletOrder;
+    QList<int> m_lockedZoomApplets;
+    QList<int> m_order;
+    QList<int> m_userBlocksColorizingApplets;
 
     QQuickItem *m_rootItem{nullptr};
     QQuickItem *m_dndSpacer{nullptr};
@@ -154,8 +198,11 @@ private:
     QObject *m_plasmoid{nullptr};
     KDeclarative::ConfigPropertyMap *m_configuration{nullptr};
 
+    QHash<int, QQuickItem *> m_appletsInScheduledDestruction;
+
     QMetaMethod m_createAppletItemMethod;
     QMetaMethod m_createJustifySplitterMethod;
+    QMetaMethod m_initAppletContainerMethod;
 
     bool m_hasRestoredApplets{false};
     QTimer m_hasRestoredAppletsTimer;

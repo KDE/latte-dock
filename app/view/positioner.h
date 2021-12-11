@@ -40,6 +40,7 @@ class Positioner: public QObject
     Q_PROPERTY(bool inRelocationShowing READ inRelocationShowing WRITE setInRelocationShowing NOTIFY inRelocationShowingChanged)
     Q_PROPERTY(bool inSlideAnimation READ inSlideAnimation WRITE setInSlideAnimation NOTIFY inSlideAnimationChanged)
 
+    Q_PROPERTY(bool isOffScreen READ isOffScreen NOTIFY isOffScreenChanged)
     Q_PROPERTY(bool isStickedOnTopEdge READ isStickedOnTopEdge WRITE setIsStickedOnTopEdge NOTIFY isStickedOnTopEdgeChanged)
     Q_PROPERTY(bool isStickedOnBottomEdge READ isStickedOnBottomEdge WRITE setIsStickedOnBottomEdge NOTIFY isStickedOnBottomEdgeChanged)
 
@@ -90,7 +91,7 @@ public:
     Latte::WindowSystem::WindowId trackedWindowId();
 
 public slots:
-    Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
+    Q_INVOKABLE void setNextLocation(const QString layoutName, const int screensGroup, QString screenName, int edge, int alignment);
     Q_INVOKABLE void slideInDuringStartup();
 
     void syncGeometry();
@@ -126,6 +127,7 @@ signals:
     void inRelocationAnimationChanged();
     void inRelocationShowingChanged();
     void inSlideAnimationChanged();
+    void isOffScreenChanged();
     void isStickedOnTopEdgeChanged();
     void isStickedOnBottomEdgeChanged();
 
@@ -193,6 +195,7 @@ private:
     bool m_repositionIsAnimated{false};
 
     QString m_nextLayoutName;
+    Latte::Types::ScreensGroup m_nextScreensGroup{Latte::Types::SingleScreenGroup};
     QString m_nextScreenName;
     QScreen *m_nextScreen{nullptr};
     Plasma::Types::Location m_nextScreenEdge{Plasma::Types::Floating};

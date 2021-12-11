@@ -15,10 +15,22 @@
 class QAction;
 class QMenu;
 
+enum ViewType
+{
+    DockView = 0,
+    PanelView
+};
+
 struct LayoutInfo {
     QString layoutName;
     bool isBackgroundFileIcon;
     QString iconName;
+};
+
+struct ViewTypeData {
+    ViewType type{ViewType::DockView};
+    bool isCloned{true};
+    int clonesCount{0};
 };
 
 class Menu : public Plasma::ContainmentActions
@@ -40,6 +52,7 @@ private Q_SLOTS:
     void quitApplication();
     void requestConfiguration();
     void requestWidgetExplorer();
+    void updateViewData();
     void updateVisibleActions();
 
     void addView(QAction *action);
@@ -52,6 +65,8 @@ private:
 
     QStringList m_actionsAlwaysShown;
     QStringList m_activeLayoutNames;
+
+    ViewTypeData m_view;
 
     QHash<QString, QAction *> m_actions;
 

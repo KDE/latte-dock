@@ -502,7 +502,7 @@ int screenMaxLength(const QStyleOption &option, const int &maxIconSize)
     return scr_maxlength;
 }
 
-QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSize)
+QRect remainedFromScreenDrawing(const QStyleOption &option, bool drawMultipleScreens, const int &maxIconSize)
 {
     int total_length = screenMaxLength(option, maxIconSize) + MARGIN * 2 + 1;
 
@@ -512,7 +512,7 @@ QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSi
     return optionRemainedRect;
 }
 
-QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const int &maxIconSize, const float brushOpacity)
+QRect drawScreen(QPainter *painter, const QStyleOption &option, bool drawMultipleScreens, QRect screenGeometry, const int &maxIconSize, const float brushOpacity)
 {
     float scr_ratio = (float)screenGeometry.width() / (float)screenGeometry.height();
     bool isVertical = (scr_ratio < 1.0);
@@ -565,13 +565,24 @@ QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeom
     painter->setPen(pen);
     painter->drawRect(screenRect);
 
+    //! draw screen base
     pen.setWidth(1);
     painter->setPen(pen);
+    painter->setRenderHint(QPainter::Antialiasing, false);
+
+    //! draw multiple
+    if (drawMultipleScreens) {
+        int multiplemargin = 3;
+        int curx = screenRect.x()-multiplemargin;
+        painter->drawLine(screenRect.x() - multiplemargin, screenRect.y() - multiplemargin,
+                          screenRect.x() - multiplemargin, screenRect.y() - multiplemargin + screenRect.height());
+        painter->drawLine(screenRect.x() - multiplemargin, screenRect.y() - multiplemargin,
+                          screenRect.x() - multiplemargin + screenRect.width(), screenRect.y() - multiplemargin);
+    }
 
     int basex = screenRect.x() + (screenRect.width()/2) - 4;
     int basey = screenRect.y() + screenRect.height() + 2;
 
-    painter->setRenderHint(QPainter::Antialiasing, false);
     painter->drawLine(basex , basey, basex + 8, basey);
 
     // debug screen maximum available rect

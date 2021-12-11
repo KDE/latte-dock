@@ -81,6 +81,14 @@ public:
         GlobalLaunchers = 2
     };
     Q_ENUM(LaunchersGroup);
+
+    enum ScreensGroup
+    {
+        SingleScreenGroup = 0,
+        AllScreensGroup,
+        AllSecondaryScreensGroup
+    };
+    Q_ENUM(ScreensGroup)
 };
 
 }//end of namespace

@@ -60,8 +60,8 @@ QRect remainedFromCheckBox(const QStyleOptionButton &option, Qt::AlignmentFlag a
 void drawCheckBox(QPainter *painter, const QStyleOptionButton &option, Qt::AlignmentFlag alignment = Qt::AlignLeft, const QWidget *widget = nullptr);
 
 //! screen icon
-QRect remainedFromScreenDrawing(const QStyleOption &option, const int &maxIconSize = -1);
-QRect drawScreen(QPainter *painter, const QStyleOption &option, QRect screenGeometry, const int &maxIconSize = -1, const float brushOpacity = 1.0); // returns screen available rect
+QRect remainedFromScreenDrawing(const QStyleOption &option, bool drawMultipleScreens, const int &maxIconSize = -1);
+QRect drawScreen(QPainter *painter, const QStyleOption &option, bool drawMultipleScreens, QRect screenGeometry, const int &maxIconSize = -1, const float brushOpacity = 1.0); // returns screen available rect
 
 int screenMaxLength(const QStyleOption &option, const int &maxIconSize = -1);
 

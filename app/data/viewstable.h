@@ -38,6 +38,7 @@ public:
     bool operator==(const ViewsTable &rhs) const;
     bool operator!=(const ViewsTable &rhs) const;
     ViewsTable subtracted(const ViewsTable &rhs) const;
+    ViewsTable onlyOriginals() const;
 };
 
 }

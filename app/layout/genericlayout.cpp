@@ -17,8 +17,10 @@
 #include "../layouts/synchronizer.h"
 #include "../shortcuts/shortcutstracker.h"
 #include "../templates/templatesmanager.h"
-#include "../view/view.h"
+#include "../view/clonedview.h"
+#include "../view/originalview.h"
 #include "../view/positioner.h"
+#include "../view/view.h"
 
 // Qt
 #include <QDebug>
@@ -143,7 +145,7 @@ void GenericLayout::setBlockAutomaticLatteViewCreation(bool block)
 
 bool GenericLayout::isActive() const
 {
-    return m_corona && (m_corona->layoutsManager()->synchronizer()->layout(m_layoutName) != nullptr);
+    return m_corona && m_hasInitializedContainments && (m_corona->layoutsManager()->synchronizer()->layout(m_layoutName) != nullptr);
 }
 
 bool GenericLayout::isCurrent()
@@ -153,6 +155,16 @@ bool GenericLayout::isCurrent()
     }
 
     return m_corona->layoutsManager()->currentLayoutsNames().contains(name());
+}
+
+bool GenericLayout::hasCorona() const
+{
+    return (m_corona!=nullptr);
+}
+
+void GenericLayout::setCorona(Latte::Corona *corona)
+{
+    m_corona = corona;
 }
 
 QString GenericLayout::background() const
@@ -368,6 +380,12 @@ Latte::View *GenericLayout::viewForContainment(uint id) const
         }
     }
 
+    for(auto view : m_waitingLatteViews) {
+        if (view && view->containment()->id() == id) {
+            return view;
+        }
+    }
+
     return nullptr;
 }
 
@@ -447,6 +465,19 @@ Latte::View *GenericLayout::viewForContainment(Plasma::Containment *containment)
 QList<Latte::View *> GenericLayout::latteViews()
 {
     return m_latteViews.values();
+}
+
+QList<Latte::View *> GenericLayout::onlyOriginalViews()
+{
+    QList<Latte::View *> viewslist;
+
+    for (const auto v : m_latteViews) {
+        if (v->isOriginal()) {
+            viewslist << v;
+        }
+    }
+
+    return viewslist;
 }
 
 QList<Latte::View *> GenericLayout::sortedLatteViews()
@@ -819,108 +850,54 @@ void GenericLayout::renameLayout(QString newName)
     }
 }
 
-void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimary, int explicitScreen, Layout::ViewsMap *occupied)
+void GenericLayout::addView(Plasma::Containment *containment)
 {
-    qDebug() << "Layout :::: " << m_layoutName << " ::: addView was called... m_containments :: " << m_containments.size();
+    qDebug().noquote() << "Adding View: Called for layout:" << m_layoutName << "with m_containments.size() ::" << m_containments.size();
 
     if (!containment || !m_corona || !containment->kPackage().isValid()) {
-        qWarning() << "the requested containment plugin can not be located or loaded";
+        qWarning() << "Adding View: The requested containment plugin can not be located or loaded";
         return;
     }
 
-    qDebug() << "step 1...";
+    qDebug() << "Adding View:" << containment->id() << "- Step 1...";
 
     if (!Layouts::Storage::self()->isLatteContainment(containment)) {
         return;
     }
 
-    qDebug() << "step 2...";
+    qDebug() << "Adding View:" << containment->id() << "- Step 2...";
 
-    for (auto *dock : m_latteViews) {
-        if (dock->containment() == containment)
-            return;
-    }
-
-    qDebug() << "step 3...";
-
-    QScreen *nextScreen{qGuiApp->primaryScreen()};
-
-    bool onPrimary = containment->config().readEntry("onPrimary", true);
-    int id = containment->screen();
-
-    if (!Layouts::Storage::isValid(id) && !Layouts::Storage::isValid(explicitScreen)) {
-        id = containment->lastScreen();
-    }
-
-    if (onPrimary) {
-        id = m_corona->screenPool()->primaryScreenId();
-    } else if (Layouts::Storage::isValid(explicitScreen)) {
-        id = explicitScreen;
-    }
-
-    Plasma::Types::Location edge = containment->location();
-
-    QString connector = m_corona->screenPool()->hasScreenId(id) ? m_corona->screenPool()->connector(id) : "";
-
-    qDebug() << "Adding view - containment id:" << containment->id() << " ,screen :" << id << " - " << connector
-             << " ,onprimary:" << onPrimary << " - "  << " edge:" << edge << " ,screenName:" << qGuiApp->primaryScreen()->name() << " ,forceOnPrimary:" << forceOnPrimary;
-
-    if (occupied && m_corona->screenPool()->hasScreenId(id) && (*occupied).contains(connector) && (*occupied)[connector].contains(edge)) {
-        qDebug() << "Rejected : adding view because the edge is already occupied by a higher priority view ! : " << (*occupied)[connector][edge];
+    if (hasLatteView(containment)) {
         return;
     }
 
-    if (Layouts::Storage::isValid(id) && !onPrimary && !forceOnPrimary) {
-        qDebug() << "Add view - connector : " << connector;
-        bool found{false};
+    qDebug() << "Adding View:" << containment->id() << "- Step 3...";
 
-        if (m_corona->screenPool()->hasScreenId(id)) {
-            for (const auto scr : qGuiApp->screens()) {
-                if (scr && scr->name() == connector) {
-                    found = true;
-                    nextScreen = scr;
-                    break;
-                }
-            }
+    QScreen *nextScreen{qGuiApp->primaryScreen()};
+    Data::View viewdata = Layouts::Storage::self()->view(this, containment);
+    viewdata.screen = Layouts::Storage::self()->expectedViewScreenId(m_corona, viewdata);
+
+    QString nextScreenName = m_corona->screenPool()->hasScreenId(viewdata.screen) ? m_corona->screenPool()->connector(viewdata.screen) : "";
+
+    qDebug().noquote() << "Adding View:" << viewdata.id << "-"
+                       << "IsClonedFrom:" << viewdata.isClonedFrom
+                       << ", NextScreen:" << viewdata.screen << "-" << nextScreenName
+                       << ", OnPrimary:" << viewdata.onPrimary
+                       << ", Edge:" << viewdata.edge;
+
+    if (!viewdata.onPrimary && Layouts::Storage::isValid(viewdata.screen)) {
+        bool foundNextExplicitScreen{false};
+
+        if (m_corona->screenPool()->isScreenActive(viewdata.screen)) {
+            foundNextExplicitScreen = true;
+            nextScreen = m_corona->screenPool()->screenForId(viewdata.screen);
         }
 
-        if (!found) {
-            qDebug() << "Rejected : adding explicit view, screen not available ! : " << connector;
+        if (!foundNextExplicitScreen) {
+            qDebug().noquote() << "Adding View:" << viewdata.id << "- Rejected because Screen is not available :: " << nextScreenName;
             return;
         }
-
-        //! explicit dock can not be added at explicit screen when that screen is the same with
-        //! primary screen and that edge is already occupied by a primary dock
-        //! CAN BE REMOVED because we now accept primary and explicit views on ACTIVE SCREENS at ALL CASES
-        //if (nextScreen == qGuiApp->primaryScreen() && primaryDockOccupyEdge(containment->location())) {
-        //    qDebug() << "Rejected : adding explicit view, primary dock occupies edge at screen ! : " << connector;
-        //    return;
-        // }
     }
-
-    if (Layouts::Storage::isValid(id) && onPrimary) {
-        qDebug() << "add dock - connector : " << connector;
-
-        for (const Plasma::Containment *testContainment : m_latteViews.keys()) {
-            int testScreenId = testContainment->screen();
-
-            if (!Layouts::Storage::isValid(testScreenId)) {
-                testScreenId = testContainment->lastScreen();
-            }
-
-            bool testOnPrimary = testContainment->config().readEntry("onPrimary", true);
-            Plasma::Types::Location testLocation = static_cast<Plasma::Types::Location>((int)testContainment->config().readEntry("location", (int)Plasma::Types::BottomEdge));
-
-            if (!testOnPrimary && m_corona->screenPool()->primaryScreenId() == testScreenId && testLocation == containment->location()) {
-                qDebug() << "Rejected explicit latteView and removing it in order add an onPrimary with higher priority at screen: " << connector;
-                auto viewToDelete = m_latteViews.take(testContainment);
-                viewToDelete->disconnectSensitiveSignals();
-                viewToDelete->deleteLater();
-            }
-        }
-    }
-
-    qDebug() << "Adding view passed ALL checks" << " ,onPrimary:" << onPrimary << " ,screen:" << nextScreen->name() << " !!!";
 
     //! it is used to set the correct flag during the creation
     //! of the window... This of course is also used during
@@ -937,20 +914,28 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
         byPassWM = containment->config().readEntry("byPassWM", false);
     }
 
-    auto latteView = new Latte::View(m_corona, nextScreen, byPassWM);
+    Latte::View *latteView;
+
+    if (!viewdata.isCloned()) {
+        latteView = new Latte::OriginalView(m_corona, nextScreen, byPassWM);
+    } else {
+        auto view = viewForContainment((uint)viewdata.isClonedFrom);
+
+        if (!containsView(viewdata.isClonedFrom) || !view) {
+            qDebug().noquote() << "Adding View:" << viewdata.id << "- Clone did not find OriginalView and as such was stopped!!!";
+            return;
+        }
+
+        auto originalview = qobject_cast<Latte::OriginalView *>(view);
+        latteView = new Latte::ClonedView(m_corona, originalview, nextScreen, byPassWM);
+    }
+
+    qDebug().noquote() << "Adding View:" << viewdata.id << "- Passed ALL checks !!!";
+    m_latteViews[containment] = latteView;
 
     latteView->init(containment);
     latteView->setContainment(containment);
-
-    //! force this special dock case to become primary
-    //! even though it isnt
-    if (forceOnPrimary) {
-        qDebug() << "Enforcing onPrimary:true as requested for LatteView...";
-        latteView->setOnPrimary(true);
-    }
-
     latteView->setLayout(this);
-
 
     //! Qt 5.9 creates a crash for this in wayland, that is why the check is used
     //! but on the other hand we need this for copy to work correctly and show
@@ -958,8 +943,6 @@ void GenericLayout::addView(Plasma::Containment *containment, bool forceOnPrimar
     //if (!KWindowSystem::isPlatformWayland()) {
     latteView->show();
     //}
-
-    m_latteViews[containment] = latteView;
 
     emit viewsCountChanged();
 }
@@ -996,27 +979,13 @@ void GenericLayout::toggleHiddenState(QString viewName, QString screenName, Plas
     }
 }
 
-bool GenericLayout::initToCorona(Latte::Corona *corona)
+bool GenericLayout::initCorona()
 {
-    if (m_corona) {
+    if (!m_corona) {
         return false;
     }
 
-    m_corona = corona;
-
-    for (const auto containment : m_corona->containments()) {
-        if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
-            addContainment(containment);
-        } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
-            QString layoutId = containment->config().readEntry("layoutId", QString());
-
-            if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
-                addContainment(containment);
-            }
-        }
-    }
-
-    qDebug() << "Layout ::::: " << name() << " added containments ::: " << m_containments.size();
+    connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
 
     updateLastUsedActivity();
 
@@ -1025,8 +994,6 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, &GenericLayout::updateLastUsedActivity);
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &GenericLayout::updateLastUsedActivity);
 
-    connect(m_corona, &Plasma::Corona::containmentAdded, this, &GenericLayout::addContainment);
-
     connect(this, &GenericLayout::lastConfigViewForChanged, m_corona->layoutsManager(), &Layouts::Manager::lastConfigViewChangedFrom);
     connect(m_corona->layoutsManager(), &Layouts::Manager::lastConfigViewChangedFrom, this, &GenericLayout::onLastConfigViewChangedFrom);
 
@@ -1034,8 +1001,41 @@ bool GenericLayout::initToCorona(Latte::Corona *corona)
     connect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRectChanged);
     connect(this, &GenericLayout::viewsCountChanged, m_corona, &Plasma::Corona::availableScreenRegionChanged);
 
-    emit viewsCountChanged();
+    return true;
+}
 
+bool GenericLayout::initContainments()
+{
+    if (!m_corona || m_hasInitializedContainments) {
+        return false;
+    }
+
+    qDebug() << "Layout ::::: " << name() << " added containments ::: " << m_containments.size();
+
+    for(int pass=1; pass<=2; ++pass) {
+        for (const auto containment : m_corona->containments()) {
+            //! in first pass we load subcontainments
+            //! in second pass we load main dock and panel containments
+            //! this way subcontainments will be always available to find when the layout is activating
+            //! for example during startup that clones must be created and subcontainments should be taken into account
+            if ((pass==1 && Layouts::Storage::self()->isLatteContainment(containment)
+                 || (pass==2 && !Layouts::Storage::self()->isLatteContainment(containment)))) {
+                continue;
+            }
+
+            if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout) {
+                addContainment(containment);
+            } else if (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
+                QString layoutId = containment->config().readEntry("layoutId", QString());
+
+                if (!layoutId.isEmpty() && (layoutId == m_layoutName)) {
+                    addContainment(containment);
+                }
+            }
+        }
+    }
+    m_hasInitializedContainments = true;
+    emit viewsCountChanged();
     return true;
 }
 
@@ -1163,7 +1163,7 @@ void GenericLayout::recreateView(Plasma::Containment *containment, bool delayed)
 }
 
 
-bool GenericLayout::latteViewExists(Plasma::Containment *containment)
+bool GenericLayout::hasLatteView(Plasma::Containment *containment)
 {
     if (!m_corona) {
         return false;
@@ -1254,111 +1254,47 @@ bool GenericLayout::mapContainsId(const Layout::ViewsMap *map, uint viewId) cons
     return false;
 }
 
-//! screen name, location, containmentId
-Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
+QString GenericLayout::mapScreenName(const ViewsMap *map, uint viewId) const
 {
-    //! Shared Views occupy the screen edge first
-    //! Primary Views occupy the screen edge if Shared Views do not exist already on that screen edge
-    //! Explicity Views occypy the screen edge if Shared Views and Primary Views do not exist already on that screen edge
+    for(const auto &scr : map->keys()) {
+        for(const auto &edge : (*map)[scr].keys()) {
+            if ((*map)[scr][edge].contains(viewId)) {
+                return scr;
+            }
+        }
+    }
+
+    return QString::number(Latte::ScreenPool::NOSCREENID);
+}
+
+//! screen name, location, containmentId
+Layout::ViewsMap GenericLayout::validViewsMap()
+{
     Layout::ViewsMap map;
 
     if (!m_corona) {
         return map;
     }
 
-    if (occupiedMap != nullptr) {
-        map = (*occupiedMap);
-    }
-
     QString prmScreenName = qGuiApp->primaryScreen()->name();
 
-    //! first step: primary docks must be placed in primary screen free edges
     for (const auto containment : m_containments) {
-        if (Layouts::Storage::self()->isLatteContainment(containment)) {
-            int screenId{Layouts::Storage::IDNULL};
+        if (Layouts::Storage::self()->isLatteContainment(containment)
+                && !Layouts::Storage::self()->isClonedView(containment)) {
+            Data::View view = hasLatteView(containment) ? m_latteViews[containment]->data() : Latte::Layouts::Storage::self()->view(this, containment);
+            view.screen = Layouts::Storage::self()->expectedViewScreenId(m_corona, view);
 
-            //! valid screen id
-            if (latteViewExists(containment)) {
-                screenId = m_latteViews[containment]->positioner()->currentScreenId();
+            if (view.onPrimary) {
+                map[prmScreenName][view.edge] << containment->id();
             } else {
-                screenId = containment->screen();
+                QString expScreenName = m_corona->screenPool()->connector(view.screen);
 
-                if (!Layouts::Storage::isValid(screenId)) {
-                    screenId = containment->lastScreen();
-                }
-            }
-
-            bool onPrimary{true};
-
-            //! valid onPrimary flag
-            if (latteViewExists(containment)) {
-                onPrimary = m_latteViews[containment]->onPrimary();
-            } else {
-                onPrimary = containment->config().readEntry("onPrimary", true);
-            }
-
-            //! valid location
-            Plasma::Types::Location location = containment->location();
-
-            if (onPrimary) {
-                map[prmScreenName][location] << containment->id();
-            } else {
-                QString expScreenName = m_corona->screenPool()->connector(screenId);
-
-                if (m_corona->screenPool()->isScreenActive(screenId)) {
-                    map[expScreenName][location] << containment->id();
+                if (m_corona->screenPool()->isScreenActive(view.screen)) {
+                    map[expScreenName][view.edge] << containment->id();
                 }
             }
         }
     }
-
-    /*
-    //! CAN BE REMOVED because we now accept primary and explicit views on ACTIVE SCREENS at ALL CASES
-    Layout::ViewsMap explicitMap;
-
-    //! second step: explicit docks must be placed in their screens if the screen edge is free
-    for (const auto containment : m_containments) {
-        if (Layouts::Storage::self()->isLatteContainment(containment)) {
-            int screenId{Layouts::Storage::IDNULL};
-
-            //! valid screen id
-            if (latteViewExists(containment)) {
-                screenId = m_latteViews[containment]->positioner()->currentScreenId();
-            } else {
-                screenId = containment->screen();
-
-                if (!Layouts::Storage::isValid(screenId)) {
-                    screenId = containment->lastScreen();
-                }
-            }
-
-            bool onPrimary{true};
-
-            //! valid onPrimary flag
-            if (latteViewExists(containment)) {
-                onPrimary = m_latteViews[containment]->onPrimary();
-            } else {
-                onPrimary = containment->config().readEntry("onPrimary", true);
-            }
-
-            //! valid location
-            Plasma::Types::Location location = containment->location();
-
-            if (!onPrimary) {
-                QString expScreenName = m_corona->screenPool()->connector(screenId);
-
-                if (m_corona->screenPool()->isScreenActive(screenId) && !map[expScreenName].contains(location)) {
-                    explicitMap[expScreenName][location] << containment->id();
-                }
-            }
-        }
-    }
-
-    for(const QString &expScreenName : explicitMap.keys()) {
-        for(const Plasma::Types::Location &expLocation : explicitMap[expScreenName].keys()) {
-            map[expScreenName][expLocation] << explicitMap[expScreenName][expLocation];
-        }
-    }*/
 
     return map;
 }
@@ -1366,7 +1302,7 @@ Layout::ViewsMap GenericLayout::validViewsMap(Layout::ViewsMap *occupiedMap)
 
 //! the central functions that updates loading/unloading latteviews
 //! concerning screen changed (for multi-screen setups mainly)
-void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
+void GenericLayout::syncLatteViewsToScreens()
 {
     if (!m_corona) {
         return;
@@ -1400,11 +1336,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
     }
 
     //! use valid views map based on active screens
-    Layout::ViewsMap viewsMap = validViewsMap(occupiedMap);
-
-    if (occupiedMap != nullptr) {
-        qDebug() << "Occupied map used :: " << *occupiedMap;
-    }
+    Layout::ViewsMap viewsMap = validViewsMap();
 
     QString prmScreenName = qGuiApp->primaryScreen()->name();
 
@@ -1413,14 +1345,8 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
 
     //! add views
     for (const auto containment : m_containments) {
-        int screenId = containment->screen();
-
-        if (!Layouts::Storage::isValid(screenId)) {
-            screenId = containment->lastScreen();
-        }
-
-        if (!latteViewExists(containment) && mapContainsId(&viewsMap, containment->id())) {
-            qDebug() << "syncLatteViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << m_corona->screenPool()->connector(screenId);
+        if (!hasLatteView(containment) && mapContainsId(&viewsMap, containment->id())) {
+            qDebug() << "syncLatteViewsToScreens: view must be added... for containment:" << containment->id() << " at screen:" << mapScreenName(&viewsMap, containment->id());
             addView(containment);
         }
     }
@@ -1430,7 +1356,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
 
     for (auto view : m_latteViews) {
         auto containment = view->containment();
-        if (containment && !mapContainsId(&viewsMap, containment->id())) {
+        if (containment && view->isOriginal() && !mapContainsId(&viewsMap, containment->id())) {
             viewsToDelete << containment;
         }
     }
@@ -1445,7 +1371,7 @@ void GenericLayout::syncLatteViewsToScreens(Layout::ViewsMap *occupiedMap)
 
     //! reconsider views
     for (const auto view : m_latteViews) {
-        if (view->containment() && mapContainsId(&viewsMap, view->containment()->id())) {
+        if (view->containment() && view->isOriginal() && mapContainsId(&viewsMap, view->containment()->id())) {
             //! if the dock will not be deleted its a very good point to reconsider
             //! if the screen in which is running is the correct one
             qDebug() << "syncLatteViewsToScreens: view must consider its screen... for containment:" << view->containment()->id() << " at screen:" << view->positioner()->currentScreenName();
@@ -1607,7 +1533,7 @@ void GenericLayout::updateView(const Latte::Data::View &viewData)
             }
 
             view->setName(viewData.name);
-            view->positioner()->setNextLocation(nextactivelayoutname, scrName, viewData.edge, viewData.alignment);
+            view->positioner()->setNextLocation(nextactivelayoutname, viewData.screensGroup, scrName, viewData.edge, viewData.alignment);
             return;
         } else {
             //! viewMustBeDeleted

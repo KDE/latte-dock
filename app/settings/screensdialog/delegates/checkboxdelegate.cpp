@@ -111,8 +111,8 @@ void CheckBox::paint(QPainter *painter, const QStyleOptionViewItem &option, cons
 
     //! screen
     int maxiconsize = -1; //disabled
-    remainedrect = Latte::remainedFromScreenDrawing(adjustedOption, maxiconsize);
-    Latte::drawScreen(painter, adjustedOption, screen.geometry, maxiconsize);
+    remainedrect = Latte::remainedFromScreenDrawing(adjustedOption, false, maxiconsize);
+    Latte::drawScreen(painter, adjustedOption, false, screen.geometry, maxiconsize);
     adjustedOption.rect = remainedrect;
 
     //! screen id

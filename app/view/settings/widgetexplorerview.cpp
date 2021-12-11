@@ -89,6 +89,7 @@ void WidgetExplorerView::initParentView(Latte::View *view)
     SubConfigView::initParentView(view);
 
     rootContext()->setContextProperty(QStringLiteral("containmentFromView"), m_latteView->containment());
+    rootContext()->setContextProperty(QStringLiteral("latteView"), m_latteView);
 
     updateEnabledBorders();
     syncGeometry();

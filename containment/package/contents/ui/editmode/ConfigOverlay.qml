@@ -414,6 +414,7 @@ MouseArea {
                 closeButton.visible = !currentApplet.isInternalViewSplitter && currentApplet.applet.action("remove") && currentApplet.applet.action("remove").enabled;
                 lockButton.visible = !currentApplet.isInternalViewSplitter
                         && !currentApplet.communicator.indexerIsSupported
+                        && !currentApplet.communicator.appletBlocksParabolicEffect
                         && !currentApplet.isSeparator;
 
                 colorizingButton.visible = root.colorizerEnabled && !currentApplet.appletBlocksColorizing && !currentApplet.isInternalViewSplitter;
@@ -469,8 +470,8 @@ MouseArea {
                             iconSource: "color-picker"
                             tooltip: i18n("Enable painting  for this applet")
 
-                            onCheckedChanged: {
-                                currentApplet.userBlocksColorizing = !checked;
+                            onClicked: {
+                                fastLayoutManager.setOption(currentApplet.applet.id, "userBlocksColorizing", !checked);
                             }
                         }
 
@@ -480,8 +481,8 @@ MouseArea {
                             iconSource: checked ? "lock" : "unlock"
                             tooltip: i18n("Disable parabolic effect for this applet")
 
-                            onCheckedChanged: {
-                                currentApplet.lockZoom = checked;
+                            onClicked: {
+                                fastLayoutManager.setOption(currentApplet.applet.id, "lockZoom", checked);
                             }
                         }
 

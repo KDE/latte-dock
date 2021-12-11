@@ -103,6 +103,12 @@ void Screen::init(const QString &screenId, const QString &serialized)
     }
 }
 
+bool Screen::isScreensGroup() const
+{
+    int sid = id.toInt();
+    return ((sid == ONALLSCREENSID) || (sid == ONALLSECONDARYSCREENSID));
+}
+
 QString Screen::serialize() const
 {
     QStringList result;

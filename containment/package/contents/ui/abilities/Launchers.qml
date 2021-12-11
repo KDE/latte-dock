@@ -30,42 +30,53 @@ Ability.LaunchersPrivate {
         layoutsManager.syncedLaunchers.removeAbilityClient(client);
     }
 
-    function addSyncedLauncher(group, launcherUrl) {
+    function addSyncedLauncher(senderId, group, groupId, launcherUrl) {
         layoutsManager.syncedLaunchers.addLauncher(layoutName,
+                                                   senderId,
                                                    group,
+                                                   groupId,
                                                    launcherUrl);
     }
 
-    function removeSyncedLauncher(group, launcherUrl) {
+    function removeSyncedLauncher(senderId, group,groupId, launcherUrl) {
         layoutsManager.syncedLaunchers.removeLauncher(layoutName,
+                                                      senderId,
                                                       group,
+                                                      groupId,
                                                       launcherUrl);
     }
 
-    function addSyncedLauncherToActivity(group, launcherUrl, activityId) {
+    function addSyncedLauncherToActivity(senderId, group, groupId, launcherUrl, activityId) {
         layoutsManager.syncedLaunchers.addLauncherToActivity(layoutName,
+                                                             senderId,
                                                              group,
+                                                             groupId,
                                                              launcherUrl,
                                                              activityId);
     }
 
-    function removeSyncedLauncherFromActivity(group, launcherUrl, activityId) {
+    function removeSyncedLauncherFromActivity(senderId, group, groupId, launcherUrl, activityId) {
         layoutsManager.syncedLaunchers.removeLauncherFromActivity(layoutName,
+                                                                  senderId,
                                                                   group,
+                                                                  groupId,
                                                                   launcherUrl,
                                                                   activityId);
     }
 
-    function addDroppedLaunchers(group, urls) {
+    function addDroppedLaunchers(senderId, group, groupId, urls) {
         layoutsManager.syncedLaunchers.urlsDropped(layoutName,
+                                                   senderId,
                                                    group,
+                                                   groupId,
                                                    urls);
     }
 
-    function validateSyncedLaunchersOrder(senderId, group, orderedlaunchers) {
+    function validateSyncedLaunchersOrder(senderId, group, groupId, orderedlaunchers) {
         layoutsManager.syncedLaunchers.validateLaunchersOrder(layoutName,
                                                               senderId,
                                                               group,
+                                                              groupId,
                                                               orderedlaunchers);
     }
 

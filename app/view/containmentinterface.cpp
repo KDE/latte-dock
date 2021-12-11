@@ -9,11 +9,13 @@
 #include "view.h"
 #include "../lattecorona.h"
 #include "../layout/genericlayout.h"
+#include "../layouts/importer.h"
 #include "../layouts/storage.h"
 #include "../settings/universalsettings.h"
 
 // Qt
 #include <QDebug>
+#include <QDir>
 #include <QLatin1String>
 
 // Plasma
@@ -25,6 +27,7 @@
 #include <KDesktopFile>
 #include <KLocalizedString>
 #include <KPluginMetaData>
+#include <KDeclarative/ConfigPropertyMap>
 
 namespace Latte {
 namespace ViewPart {
@@ -41,13 +44,16 @@ ContainmentInterface::ContainmentInterface(Latte::View *parent)
     m_appletsExpandedConnectionsTimer.setInterval(2000);
     m_appletsExpandedConnectionsTimer.setSingleShot(true);
 
+    m_appletDelayedConfigurationTimer.setInterval(1000);
+    m_appletDelayedConfigurationTimer.setSingleShot(true);
+    connect(&m_appletDelayedConfigurationTimer, &QTimer::timeout, this, &ContainmentInterface::updateAppletDelayedConfiguration);
+
     connect(&m_appletsExpandedConnectionsTimer, &QTimer::timeout, this, &ContainmentInterface::updateAppletsTracking);
 
     connect(m_view, &View::containmentChanged
             , this, [&]() {
         if (m_view->containment()) {
             connect(m_view->containment(), &Plasma::Containment::appletAdded, this, &ContainmentInterface::onAppletAdded);
-
             m_appletsExpandedConnectionsTimer.start();
         }
     });
@@ -423,7 +429,7 @@ bool ContainmentInterface::appletIsExpandable(const int id) const
 
     for (const auto applet : m_view->containment()->applets()) {
         if (applet && applet->id() == (uint)id) {
-            if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
+            if (Layouts::Storage::self()->isSubContainment(m_view->corona(), applet)) {
                 return true;
             }
 
@@ -446,7 +452,7 @@ bool ContainmentInterface::appletIsExpandable(PlasmaQuick::AppletQuickItem *appl
 
     return ((appletQuickItem->fullRepresentation() != nullptr
             && appletQuickItem->preferredRepresentation() != appletQuickItem->fullRepresentation())
-            || Latte::Layouts::Storage::self()->isSubContainment(m_view->layout(), appletQuickItem->applet()));
+            || Latte::Layouts::Storage::self()->isSubContainment(m_view->corona(), appletQuickItem->applet()));
 }
 
 bool ContainmentInterface::appletIsActivationTogglesExpanded(const int id) const
@@ -457,7 +463,7 @@ bool ContainmentInterface::appletIsActivationTogglesExpanded(const int id) const
 
     for (const auto applet : m_view->containment()->applets()) {
         if (applet && applet->id() == (uint)id) {
-            if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
+            if (Layouts::Storage::self()->isSubContainment(m_view->corona(), applet)) {
                 return true;
             }
 
@@ -485,6 +491,148 @@ bool ContainmentInterface::hasLatteTasks() const
 bool ContainmentInterface::hasPlasmaTasks() const
 {
     return (m_plasmaTasksModel->count() > 0);
+}
+
+int ContainmentInterface::indexOfApplet(const int &id)
+{
+    if (m_appletOrder.contains(id)) {
+        return m_appletOrder.indexOf(id);
+    } else if (m_appletData.contains(id)) {
+        return m_appletData[id].lastValidIndex;
+    }
+
+    return -1;
+}
+
+ViewPart::AppletInterfaceData ContainmentInterface::appletDataAtIndex(const int &index)
+{
+    ViewPart::AppletInterfaceData data;
+
+    if (index<0 || (index > (m_appletOrder.count()-1))) {
+        return data;
+    }
+
+    return m_appletData[m_appletOrder[index]];
+}
+
+ViewPart::AppletInterfaceData ContainmentInterface::appletDataForId(const int &id)
+{
+    ViewPart::AppletInterfaceData data;
+
+    if (!m_appletData.contains(id)) {
+        return data;
+    }
+
+    return m_appletData[id];
+}
+
+QObject *ContainmentInterface::plasmoid() const
+{
+    return m_plasmoid;
+}
+
+void ContainmentInterface::setPlasmoid(QObject *plasmoid)
+{
+    if (m_plasmoid == plasmoid) {
+        return;
+    }
+
+    m_plasmoid = plasmoid;
+
+    if (m_plasmoid) {
+        m_configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
+
+        if (m_configuration) {
+            connect(m_configuration, &QQmlPropertyMap::valueChanged, this, &ContainmentInterface::containmentConfigPropertyChanged);
+        }
+    }
+
+    emit plasmoidChanged();
+}
+
+QObject *ContainmentInterface::layoutManager() const
+{
+    return m_layoutManager;
+}
+
+void ContainmentInterface::setLayoutManager(QObject *manager)
+{
+    if (m_layoutManager == manager) {
+        return;
+    }
+
+    m_layoutManager = manager;
+
+    // applets order
+    int metaorderindex = m_layoutManager->metaObject()->indexOfProperty("order");
+    if (metaorderindex >= 0) {
+        QMetaProperty metaorder = m_layoutManager->metaObject()->property(metaorderindex);
+        if (metaorder.hasNotifySignal()) {
+            QMetaMethod metaorderchanged = metaorder.notifySignal();
+            QMetaMethod metaupdateappletorder = this->metaObject()->method(this->metaObject()->indexOfSlot("updateAppletsOrder()"));
+            connect(m_layoutManager, metaorderchanged, this, metaupdateappletorder);
+            updateAppletsOrder();
+        }
+    }
+
+    // applets in locked zoom
+    metaorderindex = m_layoutManager->metaObject()->indexOfProperty("lockedZoomApplets");
+    if (metaorderindex >= 0) {
+        QMetaProperty metaorder = m_layoutManager->metaObject()->property(metaorderindex);
+        if (metaorder.hasNotifySignal()) {
+            QMetaMethod metaorderchanged = metaorder.notifySignal();
+            QMetaMethod metaupdateapplets = this->metaObject()->method(this->metaObject()->indexOfSlot("updateAppletsInLockedZoom()"));
+            connect(m_layoutManager, metaorderchanged, this, metaupdateapplets);
+            updateAppletsInLockedZoom();
+        }
+    }
+
+    // applets disabled their autocoloring
+    metaorderindex = m_layoutManager->metaObject()->indexOfProperty("userBlocksColorizingApplets");
+    if (metaorderindex >= 0) {
+        QMetaProperty metaorder = m_layoutManager->metaObject()->property(metaorderindex);
+        if (metaorder.hasNotifySignal()) {
+            QMetaMethod metaorderchanged = metaorder.notifySignal();
+            QMetaMethod metaupdateapplets = this->metaObject()->method(this->metaObject()->indexOfSlot("updateAppletsDisabledColoring()"));
+            connect(m_layoutManager, metaorderchanged, this, metaupdateapplets);
+            updateAppletsDisabledColoring();
+        }
+    }
+
+    emit layoutManagerChanged();
+}
+
+void ContainmentInterface::addApplet(const QString &pluginId)
+{
+    if (pluginId.isEmpty()) {
+        return;
+    }
+
+    QStringList paths = Latte::Layouts::Importer::standardPaths();
+    QString pluginpath;
+
+    for(int i=0; i<paths.count(); ++i) {
+        QString cpath = paths[i] + "/plasma/plasmoids/" + pluginId;
+
+        if (QDir(cpath).exists()) {
+            pluginpath = cpath;
+            break;
+        }
+    }
+
+    if (!pluginpath.isEmpty()) {
+        m_view->containment()->createApplet(pluginId);
+    }
+}
+
+void ContainmentInterface::addApplet(QObject *metadata, int x, int y)
+{
+    int processmimedataindex = m_plasmoid->metaObject()->indexOfMethod("processMimeData(QObject*,int,int)");
+    QMetaMethod processmethod = m_plasmoid->metaObject()->method(processmimedataindex);
+    processmethod.invoke(m_plasmoid,
+                         Q_ARG(QObject *, metadata),
+                         Q_ARG(int, x),
+                         Q_ARG(int, y));
 }
 
 void ContainmentInterface::addExpandedApplet(PlasmaQuick::AppletQuickItem * appletQuickItem)
@@ -555,6 +703,68 @@ void ContainmentInterface::onAppletExpandedChanged()
     }
 }
 
+QList<int> ContainmentInterface::appletsOrder() const
+{
+    return m_appletOrder;
+}
+
+void ContainmentInterface::updateAppletsOrder()
+{
+    if (!m_layoutManager) {
+        return;
+    }
+
+    QList<int> neworder = m_layoutManager->property("order").value<QList<int>>();
+
+    if (m_appletOrder == neworder) {
+        return;
+    }
+
+    m_appletOrder = neworder;
+
+    //! update applets last recorded index, this is needed for example when an applet is removed
+    //! to know in which index was located before the removal
+    for(const auto &id: m_appletOrder) {
+        if (m_appletData.contains(id)) {
+            m_appletData[id].lastValidIndex = m_appletOrder.indexOf(id);
+        }
+    }
+
+    emit appletsOrderChanged();
+}
+
+void ContainmentInterface::updateAppletsInLockedZoom()
+{
+    if (!m_layoutManager) {
+        return;
+    }
+
+    QList<int> appletslockedzoom = m_layoutManager->property("lockedZoomApplets").value<QList<int>>();
+
+    if (m_appletsInLockedZoom == appletslockedzoom) {
+        return;
+    }
+
+    m_appletsInLockedZoom = appletslockedzoom;
+    emit appletsInLockedZoomChanged(m_appletsInLockedZoom);
+}
+
+void ContainmentInterface::updateAppletsDisabledColoring()
+{
+    if (!m_layoutManager) {
+        return;
+    }
+
+    QList<int> appletsdisabledcoloring = m_layoutManager->property("userBlocksColorizingApplets").value<QList<int>>();
+
+    if (m_appletsDisabledColoring == appletsdisabledcoloring) {
+        return;
+    }
+
+    m_appletsDisabledColoring = appletsdisabledcoloring;
+    emit appletsDisabledColoringChanged(appletsdisabledcoloring);
+}
+
 void ContainmentInterface::onLatteTasksCountChanged()
 {
     if ((m_hasLatteTasks && m_latteTasksModel->count()>0)
@@ -589,13 +799,85 @@ void ContainmentInterface::toggleAppletExpanded(const int id)
     }
 
     for (const auto applet : m_view->containment()->applets()) {
-        if (applet->id() == (uint)id && !Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)/*block for sub-containments*/) {
+        if (applet->id() == (uint)id && !Layouts::Storage::self()->isSubContainment(m_view->corona(), applet)/*block for sub-containments*/) {
             PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
 
             if (ai) {
                 emit applet->activated();
             }
         }
+    }
+}
+
+void ContainmentInterface::removeApplet(const int &id)
+{
+    if (!m_appletData.contains(id)) {
+        return;
+    }
+
+    auto applet = m_appletData[id].applet;
+    emit applet->appletDeleted(applet); //! this signal should be part of Plasma Frameworks AppletPrivate::destroy() function...
+    applet->destroy();
+}
+
+
+void ContainmentInterface::setAppletsOrder(const QList<int> &order)
+{
+    QMetaObject::invokeMethod(m_layoutManager,
+                              "requestAppletsOrder",
+                              Qt::DirectConnection,
+                              Q_ARG(QList<int>, order));
+
+}
+
+void ContainmentInterface::setAppletsInLockedZoom(const QList<int> &applets)
+{
+    QMetaObject::invokeMethod(m_layoutManager,
+                              "requestAppletsInLockedZoom",
+                              Qt::DirectConnection,
+                              Q_ARG(QList<int>, applets));
+}
+
+void ContainmentInterface::setAppletsDisabledColoring(const QList<int> &applets)
+{
+    QMetaObject::invokeMethod(m_layoutManager,
+                              "requestAppletsDisabledColoring",
+                              Qt::DirectConnection,
+                              Q_ARG(QList<int>, applets));
+}
+
+void ContainmentInterface::setAppletInScheduledDestruction(const int &id, const bool &enabled)
+{
+    QMetaObject::invokeMethod(m_layoutManager,
+                              "setAppletInScheduledDestruction",
+                              Qt::DirectConnection,
+                              Q_ARG(int, id),
+                              Q_ARG(bool, enabled));
+}
+
+void ContainmentInterface::updateContainmentConfigProperty(const QString &key, const QVariant &value)
+{
+    if (!m_configuration || !m_configuration->keys().contains(key)) {
+
+    }
+
+    if (m_configuration->keys().contains(key)
+            && (*m_configuration)[key] != value) {
+        m_configuration->insert(key, value);
+        emit m_configuration->valueChanged(key, value);
+    }
+}
+
+void ContainmentInterface::updateAppletConfigProperty(const int &id, const QString &key, const QVariant &value)
+{
+    if (!m_appletData.contains(id) || !m_appletData[id].configuration || !m_appletData[id].configuration->keys().contains(key)) {
+        return;
+    }
+
+    if (m_appletData[id].configuration->keys().contains(key)
+            && (*m_appletData[id].configuration)[key] != value) {
+        m_appletData[id].configuration->insert(key, value);
+        emit m_appletData[id].configuration->valueChanged(key, value);
     }
 }
 
@@ -608,6 +890,69 @@ void ContainmentInterface::updateAppletsTracking()
     for (const auto applet : m_view->containment()->applets()) {
         onAppletAdded(applet);
     }
+
+    emit initializationCompleted();
+}
+
+void ContainmentInterface::updateAppletDelayedConfiguration()
+{
+    for (const auto id : m_appletData.keys()) {
+        if (!m_appletData[id].configuration) {
+            m_appletData[id].configuration = appletConfiguration(m_appletData[id].applet);
+
+            if (m_appletData[id].configuration) {
+                qDebug() << "org.kde.sync delayed applet configuration was successful for : " << id;
+                initAppletConfigurationSignals(id, m_appletData[id].configuration);
+            }
+        }
+    }
+}
+
+void ContainmentInterface::initAppletConfigurationSignals(const int &id, KDeclarative::ConfigPropertyMap *configuration)
+{
+    if (!configuration) {
+        return;
+    }
+
+    connect(configuration, &QQmlPropertyMap::valueChanged,
+            this, [&, id](const QString &key, const QVariant &value) {
+        //qDebug() << "org.kde.sync applet property changed : " << currentAppletId << " __ " << m_appletData[currentAppletId].plugin << " __ " << key << " __ " << value;
+        emit appletConfigPropertyChanged(id, key, value);
+    });
+}
+
+KDeclarative::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const Plasma::Applet *applet)
+{
+    if (!m_view->containment() || !applet) {
+        return nullptr;
+    }
+
+    PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+    bool isSubContainment = Layouts::Storage::self()->isSubContainment(m_view->corona(), applet); //we use corona() to make sure that returns true even when it is first created from user
+    int currentAppletId = applet->id();
+    KDeclarative::ConfigPropertyMap *configuration{nullptr};
+
+    //! set configuration object properly for applets and subcontainments
+    if (!isSubContainment) {
+        int metaconfigindex = ai->metaObject()->indexOfProperty("configuration");
+        if (metaconfigindex >=0 ){
+            configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
+        }
+    } else {
+        Plasma::Containment *subcontainment = Layouts::Storage::self()->subContainmentOf(m_view->corona(), applet);
+        if (subcontainment) {
+            PlasmaQuick::AppletQuickItem *subcai = subcontainment->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+
+            if (subcai) {
+                int metaconfigindex = subcai->metaObject()->indexOfProperty("configuration");
+                if (metaconfigindex >=0 ){
+                    configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>((subcai->property("configuration")).value<QObject *>());
+                }
+            }
+        }
+    }
+
+    return configuration;
 }
 
 void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
@@ -616,10 +961,15 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
         return;
     }
 
-    if (Layouts::Storage::self()->isSubContainment(m_view->layout(), applet)) {
+    PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+    bool isSubContainment = Layouts::Storage::self()->isSubContainment(m_view->corona(), applet); //we use corona() to make sure that returns true even when it is first created from user
+    int currentAppletId = applet->id();
+
+    //! Track expanded/able applets and Tasks applets
+    if (isSubContainment) {
         //! internal containment case
-        Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_view->layout(), applet);
-        PlasmaQuick::AppletQuickItem *contAi = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
+        Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_view->corona(), applet);
+        PlasmaQuick::AppletQuickItem *contAi = ai;
 
         if (contAi && !m_appletsExpandedConnections.contains(contAi)) {
             m_appletsExpandedConnections[contAi] = connect(contAi, &PlasmaQuick::AppletQuickItem::expandedChanged, this, &ContainmentInterface::onAppletExpandedChanged);
@@ -642,13 +992,7 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
                 });
             }
         }
-    } else {
-        PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-        if (!ai) {
-            return;
-        }
-
+    } else if (ai) {
         KPluginMetaData meta = applet->kPackage().metadata();
         const auto &provides = KPluginMetaData::readStringList(meta.rawData(), QStringLiteral("X-Plasma-Provides"));
 
@@ -668,6 +1012,56 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
         }
     }
 
+    //! Track All Applets, for example to support syncing between different docks and panels
+    if (ai) {
+        bool initializing{!m_appletData.contains(currentAppletId)};
+
+        KPluginMetaData meta = applet->kPackage().metadata();
+        ViewPart::AppletInterfaceData data;
+        data.id = currentAppletId;
+        data.plugin = meta.pluginId();
+        data.applet = applet;
+        data.plasmoid = ai;
+        data.lastValidIndex = m_appletOrder.indexOf(data.id);
+        //! set configuration object properly for applets and subcontainments
+        data.configuration = appletConfiguration(applet);
+
+        //! track property changes in applets
+        if (data.configuration) {
+            initAppletConfigurationSignals(data.id, data.configuration);
+        } else {
+            qDebug() << "org.kde.sync Unfortunately configuration syncing for :: " << currentAppletId << " was not established, configuration object was missing!";
+            m_appletDelayedConfigurationTimer.start();
+        }
+
+        if (initializing) {
+            //! track applet destroyed flag
+            connect(applet, &Plasma::Applet::destroyedChanged, this, [&, currentAppletId](bool destroyed) {
+                emit appletInScheduledDestructionChanged(currentAppletId, destroyed);
+            });
+
+            //! remove on applet destruction
+            connect(applet, &QObject::destroyed, this, [&, data](){
+                emit appletRemoved(data.id);
+                //qDebug() << "org.kde.sync: removing applet ::: " << data.id << " __ " << data.plugin << " remained : " << m_appletData.keys();
+                m_appletData.remove(data.id);
+            });
+        }
+
+        m_appletData[data.id] = data;
+        emit appletDataCreated(data.id);
+    }
+}
+
+QList<int> ContainmentInterface::toIntList(const QVariantList &list)
+{
+    QList<int> converted;
+
+    for(const QVariant &item: list) {
+        converted << item.toInt();
+    }
+
+    return converted;
 }
 
 }

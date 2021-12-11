@@ -236,7 +236,7 @@ const Latte::Data::ViewsTable Layouts::selectedLayoutViews()
         central = new CentralLayout(this, selectedCurrentData.id);
     }
 
-    selectedCurrentData.views = central->viewsTable();
+    selectedCurrentData.views = central->viewsTable().onlyOriginals();
     selectedCurrentData.views.isInitialized = true;
 
     if (!islayoutactive) {

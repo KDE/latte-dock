@@ -120,6 +120,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::updateTransientWindowsTracking);
 
+    connect(this, &View::containmentChanged, this, &View::groupIdChanged);
     connect(this, &View::containmentChanged
             , this, [ &, byPassX11WM]() {
         qDebug() << "dock view c++ containment changed 1...";
@@ -1017,6 +1018,15 @@ void View::setOnPrimary(bool flag)
     emit onPrimaryChanged();
 }
 
+int View::groupId() const
+{
+    if (!containment()) {
+        return -1;
+    }
+
+    return containment()->id();
+}
+
 float View::maxLength() const
 {
     return m_maxLength;
@@ -1389,6 +1399,8 @@ Latte::Data::View View::data() const
         vdata.screen = containment()->lastScreen();
     }
 
+    vdata.screensGroup = screensGroup();
+
     //!screen edge margin can be more accurate in the config file
     vdata.screenEdgeMargin = m_screenEdgeMargin > 0 ? m_screenEdgeMargin : containment()->config().group("General").readEntry("screenEdgeMargin", (int)-1);
 
@@ -1738,8 +1750,9 @@ void View::mousePressEvent(QMouseEvent *event)
 //!BEGIN configuration functions
 void View::saveConfig()
 {
-    if (!this->containment())
+    if (!this->containment()) {
         return;
+    }
 
     auto config = this->containment()->config();
     config.writeEntry("onPrimary", onPrimary());
@@ -1751,8 +1764,9 @@ void View::saveConfig()
 
 void View::restoreConfig()
 {
-    if (!this->containment())
+    if (!this->containment()) {
         return;
+    }
 
     auto config = this->containment()->config();
     m_onPrimary = config.readEntry("onPrimary", true);

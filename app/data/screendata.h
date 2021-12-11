@@ -23,7 +23,11 @@ class Screen : public Generic
 public:
     static constexpr const char* SERIALIZESPLITTER = ":::";
     static const int ONPRIMARYID = 0;
+    static const int ONALLSCREENSID = -100;
+    static const int ONALLSECONDARYSCREENSID = -101;
     static constexpr const char* ONPRIMARYNAME = "{primary-screen}";
+    static constexpr const char* ONALLSCREENSNAME = "{all-screens}";
+    static constexpr const char* ONALLSECONDARYSCREENSNAME = "{all-secondary-screens}";
 
     Screen();
     Screen(Screen &&o);
@@ -42,6 +46,8 @@ public:
     Screen &operator=(Screen &&rhs);
     bool operator==(const Screen &rhs) const;
     bool operator!=(const Screen &rhs) const;
+
+    bool isScreensGroup() const;
 
     void init(const QString &screenId, const QString &serialized);
     QString serialize() const;

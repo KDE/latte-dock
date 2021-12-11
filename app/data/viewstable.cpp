@@ -90,6 +90,19 @@ ViewsTable ViewsTable::subtracted(const ViewsTable &rhs) const
     return subtract;
 }
 
+ViewsTable ViewsTable::onlyOriginals() const
+{
+    ViewsTable originals;
+
+    for(int i=0; i<m_list.count(); ++i) {
+        if (m_list[i].isOriginal()) {
+            originals << m_list[i];
+        }
+    }
+
+    return originals;
+}
+
 void ViewsTable::appendTemporaryView(const Data::View &view)
 {
     int maxTempId = 0;

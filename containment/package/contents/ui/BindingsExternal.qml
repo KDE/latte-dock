@@ -337,5 +337,18 @@ Item {
                    && plasmoid.configuration.hideFloatingGapForMaximized)
     }
 
+    //! View::ExtendedInterface bindings
+    Binding{
+        target: latteView && latteView.extendedInterface ? latteView.extendedInterface : null
+        property: "plasmoid"
+        when: latteView && latteView.extendedInterface
+        value: plasmoid
+    }
 
+    Binding{
+        target: latteView && latteView.extendedInterface ? latteView.extendedInterface : null
+        property: "layoutManager"
+        when: latteView && latteView.extendedInterface
+        value: fastLayoutManager
+    }
 }

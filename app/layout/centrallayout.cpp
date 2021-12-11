@@ -46,9 +46,9 @@ void CentralLayout::init()
     connect(this, &CentralLayout::showInMenuChanged, this, &CentralLayout::saveConfig);
 }
 
-void CentralLayout::initToCorona(Latte::Corona *corona)
+bool CentralLayout::initCorona()
 {
-    if (GenericLayout::initToCorona(corona)) {
+    if (GenericLayout::initCorona()) {
         onSchemeFileChanged();
 
         connect(this, &CentralLayout::disableBordersForMaximizedWindowsChanged,
@@ -56,7 +56,10 @@ void CentralLayout::initToCorona(Latte::Corona *corona)
 
         connect(this, &Layout::AbstractLayout::schemeFileChanged, this, &CentralLayout::onSchemeFileChanged);
         connect(m_corona->wm()->schemesTracker(), &WindowSystem::Tracker::Schemes::defaultSchemeChanged, this, &CentralLayout::onSchemeFileChanged);
+        return true;
     }
+
+    return false;
 }
 
 bool CentralLayout::disableBordersForMaximizedWindows() const

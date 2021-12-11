@@ -48,7 +48,8 @@ Item {
             hoverEnabled: true
             onDoubleClicked: {
                 if (!delegate.pendingUninstall) {
-                    widgetExplorer.addApplet(pluginName)
+                    widgetExplorer.addApplet(pluginName);
+                    latteView.extendedInterface.appletCreated(pluginName);
                 }
             }
             onEntered: delegate.GridView.view.currentIndex = index

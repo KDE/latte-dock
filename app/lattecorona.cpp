@@ -32,6 +32,7 @@
 #include "plasma/extended/theme.h"
 #include "settings/universalsettings.h"
 #include "templates/templatesmanager.h"
+#include "view/originalview.h"
 #include "view/view.h"
 #include "view/settings/viewsettingsfactory.h"
 #include "view/windowstracker/windowstracker.h"
@@ -1192,8 +1193,24 @@ QStringList Corona::contextMenuData(const uint &containmentId)
     }
 
     data << layoutsmenu.join(";;");
-    data << QString::number((int)viewType); //Selected View type
     data << (view ? view->layout()->name() : QString());   //Selected View layout*/
+
+    QStringList viewtype;
+    viewtype << QString::number((int)viewType); //Selected View type
+
+    if (view && view->isOriginal()) { /*View*/
+        auto originalview = qobject_cast<Latte::OriginalView *>(view);
+        viewtype << "0";              //original view
+        viewtype <<  QString::number(originalview->clonesCount());
+    } else if (view && view->isCloned()) {
+        viewtype << "1";              //cloned view
+        viewtype << "0";              //has no clones
+    } else {
+        viewtype << "0";              //original view
+        viewtype << "0";              //has no clones
+    }
+
+    data << viewtype.join(";;");
 
     return data;
 }
@@ -1247,7 +1264,14 @@ void Corona::moveViewToLayout(const uint &containmentId, const QString &layoutNa
 {
     auto view = m_layoutsManager->synchronizer()->viewForContainment((int)containmentId);
     if (view && !layoutName.isEmpty() && view->layout()->name() != layoutName) {
-        view->positioner()->setNextLocation(layoutName, "", Plasma::Types::Floating, Latte::Types::NoneAlignment);
+        Latte::Types::ScreensGroup screensgroup{Latte::Types::SingleScreenGroup};
+
+        if (view->isOriginal()) {
+            auto originalview = qobject_cast<Latte::OriginalView *>(view);
+            screensgroup = originalview->screensGroup();
+        }
+
+        view->positioner()->setNextLocation(layoutName, screensgroup, "", Plasma::Types::Floating, Latte::Types::NoneAlignment);
     }
 }
 

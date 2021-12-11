@@ -24,8 +24,6 @@ import "../debugger" as Debugger
 
 Item {
     id: appletItem
-
-    visible: false
     width: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeWidth
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight
 
@@ -78,10 +76,13 @@ Item {
                                                        && root.dragOverlay.currentApplet
                                                        && root.dragOverlay.pressed
 
-    property bool userBlocksColorizing: false
     property bool appletBlocksColorizing: !communicator.requires.latteSideColoringEnabled || communicator.indexerIsSupported
     property bool appletBlocksParabolicEffect: communicator.requires.parabolicEffectLocked
-    property bool lockZoom: false
+    readonly property bool lockZoom: !parabolicEffectIsSupported
+                                     || appletBlocksParabolicEffect
+                                     || (fastLayoutManager && applet && (fastLayoutManager.lockedZoomApplets.indexOf(applet.id)>=0))
+    readonly property bool userBlocksColorizing: appletBlocksColorizing
+                                                 || (fastLayoutManager && applet && (fastLayoutManager.userBlocksColorizingApplets.indexOf(applet.id)>=0))
 
     property bool isActive: (isExpanded
                              && !appletItem.communicator.indexerIsSupported
@@ -90,8 +91,8 @@ Item {
 
     property bool isExpanded: false
 
-    property bool isHidden: !root.inConfigureAppletsMode
-                            && ((applet && applet.status === PlasmaCore.Types.HiddenStatus ) || isInternalViewSplitter)
+    property bool isScheduledForDestruction: (fastLayoutManager && applet && fastLayoutManager.appletsInScheduledDestruction.indexOf(applet.id)>=0)
+    property bool isHidden: (!root.inConfigureAppletsMode && ((applet && applet.status === PlasmaCore.Types.HiddenStatus ) || isInternalViewSplitter)) || isScheduledForDestruction
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
     property bool isPlaceHolder: false
@@ -573,9 +574,6 @@ Item {
     }
 
     onIsAutoFillAppletChanged: updateParabolicEffectIsSupported();
-
-    onLockZoomChanged: fastLayoutManager.saveOptions();
-    onUserBlocksColorizingChanged: fastLayoutManager.saveOptions();
 
     Component.onCompleted: {
         checkIndex();

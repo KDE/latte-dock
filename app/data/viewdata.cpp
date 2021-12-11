@@ -8,6 +8,8 @@
 namespace Latte {
 namespace Data {
 
+const int View::ISCLONEDNULL = -1;
+
 View::View()
     : Generic()
 {
@@ -19,8 +21,10 @@ View::View(View &&o)
       isMoveOrigin(o.isMoveOrigin),
       isMoveDestination(o.isMoveDestination),
       onPrimary(o.onPrimary),
+      isClonedFrom(o.isClonedFrom),
       screen(o.screen),
       screenEdgeMargin(o.screenEdgeMargin),
+      screensGroup(o.screensGroup),
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
@@ -40,8 +44,10 @@ View::View(const View &o)
       isMoveOrigin(o.isMoveOrigin),
       isMoveDestination(o.isMoveDestination),
       onPrimary(o.onPrimary),
+      isClonedFrom(o.isClonedFrom),
       screen(o.screen),
       screenEdgeMargin(o.screenEdgeMargin),
+      screensGroup(o.screensGroup),
       maxLength(o.maxLength),
       edge(o.edge),
       alignment(o.alignment),
@@ -68,8 +74,10 @@ View &View::operator=(const View &rhs)
     isMoveOrigin = rhs.isMoveOrigin;
     isMoveDestination = rhs.isMoveDestination;
     onPrimary = rhs.onPrimary;
+    isClonedFrom = rhs.isClonedFrom;
     screen = rhs.screen;
-    screenEdgeMargin = rhs.screenEdgeMargin,
+    screenEdgeMargin = rhs.screenEdgeMargin;
+    screensGroup = rhs.screensGroup;
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
@@ -93,8 +101,10 @@ View &View::operator=(View &&rhs)
     isMoveOrigin = rhs.isMoveOrigin;
     isMoveDestination = rhs.isMoveDestination;
     onPrimary = rhs.onPrimary;
+    isClonedFrom = rhs.isClonedFrom;
     screen = rhs.screen;
-    screenEdgeMargin = rhs.screenEdgeMargin,
+    screenEdgeMargin = rhs.screenEdgeMargin;
+    screensGroup = rhs.screensGroup;
     maxLength = rhs.maxLength;
     edge = rhs.edge;
     alignment = rhs.alignment;
@@ -118,8 +128,10 @@ bool View::operator==(const View &rhs) const
             //&& (isMoveOrigin == rhs.isMoveOrigin) /*Disabled because this is not needed in order to track view changes for saving*/
             //&& (isMoveDestination == rhs.isMoveDestination) /*Disabled because this is not needed in order to track view changes for saving*/
             && (onPrimary == rhs.onPrimary)
+            && (isClonedFrom == rhs.isClonedFrom)
             && (screen == rhs.screen)
             && (screenEdgeMargin == rhs.screenEdgeMargin)
+            && (screensGroup == rhs.screensGroup)
             && (maxLength == rhs.maxLength)
             && (edge == rhs.edge)
             && (alignment == rhs.alignment)
@@ -168,6 +180,21 @@ View::operator QString() const
     }
 
     result += " : ";
+    if (isCloned()) {
+        result += ("Cloned from:"+ isClonedFrom);
+    } else {
+        result += "Original";
+    }
+
+    result += " : ";
+    if (screensGroup == Latte::Types::SingleScreenGroup) {
+        result += onPrimary ? "Primary" : "Explicit";
+    } else if (screensGroup == Latte::Types::AllScreensGroup) {
+        result += "All Screens";
+    } else if (screensGroup == Latte::Types::AllSecondaryScreensGroup) {
+        result += "All Secondary Screens";
+    }
+
     result += onPrimary ? "Primary" : "Explicit";
     result += " : ";
     result += QString::number(screen);
@@ -210,6 +237,16 @@ View::operator QString() const
 bool View::isCreated() const
 {
     return m_state == IsCreated;
+}
+
+bool View::isOriginal() const
+{
+    return !isCloned();
+}
+
+bool View::isCloned() const
+{
+    return isClonedFrom != ISCLONEDNULL;
 }
 
 bool View::isValid() const

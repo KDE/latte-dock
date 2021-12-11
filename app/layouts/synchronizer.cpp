@@ -191,7 +191,9 @@ QStringList Synchronizer::centralLayoutsNames()
     QStringList names;
 
     if (m_manager->memoryUsage() == MemoryUsage::SingleLayout) {
-        names << m_centralLayouts.at(0)->name();
+        if (m_centralLayouts.count() > 0) {
+            names << m_centralLayouts.at(0)->name();
+        }
     } else {
         for (int i = 0; i < m_centralLayouts.size(); ++i) {
             CentralLayout *layout = m_centralLayouts.at(i);
@@ -357,6 +359,17 @@ QList<Latte::View *> Synchronizer::currentViews() const
     return views;
 }
 
+QList<Latte::View *> Synchronizer::currentOriginalViews() const
+{
+    QList<Latte::View *> views;
+
+    for(auto layout : currentLayouts()) {
+        views << layout->onlyOriginalViews();
+    }
+
+    return views;
+}
+
 QList<Latte::View *> Synchronizer::currentViewsWithPlasmaShortcuts() const
 {
     QList<Latte::View *> views;
@@ -370,9 +383,12 @@ QList<Latte::View *> Synchronizer::currentViewsWithPlasmaShortcuts() const
 
 QList<Latte::View *> Synchronizer::sortedCurrentViews() const
 {
-    QList<Latte::View *> views = currentViews();
+    return Layout::GenericLayout::sortedLatteViews(currentViews());
+}
 
-    return Layout::GenericLayout::sortedLatteViews(views);
+QList<Latte::View *> Synchronizer::sortedCurrentOriginalViews() const
+{
+    return Layout::GenericLayout::sortedLatteViews(currentOriginalViews());
 }
 
 QList<Latte::View *> Synchronizer::viewsBasedOnActivityId(const QString &id) const
@@ -436,7 +452,6 @@ void Synchronizer::addLayout(CentralLayout *layout)
 {
     if (!m_centralLayouts.contains(layout)) {
         m_centralLayouts.append(layout);
-        layout->initToCorona(m_manager->corona());
     }
 }
 
@@ -644,11 +659,20 @@ bool Synchronizer::initSingleMode(QString layoutName)
         qDebug() << " ... initializing layout in single mode : " << layoutName << " - " << layoutpath;
         unloadLayouts();
 
-        //! load the main layout/corona file
+        //! load the main single layout/corona file
         CentralLayout *newLayout = new CentralLayout(this, layoutpath, layoutName);
-        addLayout(newLayout);
 
-        m_manager->loadLatteLayout(layoutpath);
+        //! Order of initialization steps is very important and guarantees correct startup initialization
+        //! Step1: corona is set for the layout
+        //! Step2: containments from file are loaded into main corona
+        //! Step3: layout connects to corona signals and slots
+        //! Step4: layout is added in manager and is accesible for others to find
+        //! Step5: layout is attaching its initial containmens and is now considered ACTIVE
+        newLayout->setCorona(m_manager->corona()); //step1
+        m_manager->loadLatteLayout(layoutpath);    //step2
+        newLayout->initCorona();                   //step3
+        addLayout(newLayout);                      //step4
+        newLayout->initContainments();             //step5
 
         emit centralLayoutsChanged();
 
@@ -939,8 +963,18 @@ void Synchronizer::syncMultipleLayoutsToActivities()
 
             if (newLayout) {
                 qDebug() << "ACTIVATING LAYOUT ::::: " << layoutname;
-                addLayout(newLayout);
-                newLayout->importToCorona();
+
+                //! Order of initialization steps is very important and guarantees correct startup initialization
+                //! Step1: corona is set for the layout
+                //! Step2: containments from the layout file are adjusted and are imported into main corona
+                //! Step3: layout connects to corona signals and slots
+                //! Step4: layout is added in manager and is accesible for others to find
+                //! Step5: layout is attaching its initial containmens and is now considered ACTIVE
+                newLayout->setCorona(m_manager->corona()); //step1
+                newLayout->importToCorona();               //step2
+                newLayout->initCorona();                   //step3
+                addLayout(newLayout);                      //step4
+                newLayout->initContainments();             //step5
 
                 if (!defaultForcedLayout.isEmpty() && defaultForcedLayout == layoutname) {
                     emit newLayoutAdded(newLayout->data());

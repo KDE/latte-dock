@@ -117,7 +117,7 @@ QPoint ContextMenu::popUpTopLeft(Plasma::Applet *applet, const QRect popUpRect)
 
     if ((itemLength > menuLength)
             || (applet == m_latteView->containment())
-            || (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->layout(), applet)) ) {
+            || (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->corona(), applet)) ) {
         return popUpRelevantToGlobalPoint(globalItemRect, popUpRect);
     } else {
         return popUpRelevantToParent(globalItemRect, popUpRect);
@@ -267,8 +267,8 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
             if (ai && ai->isVisible() && appletContainsMouse) {
                 applet = ai->applet();
 
-                if (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->layout(), applet)) {
-                    Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_latteView->layout(), applet);
+                if (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->corona(), applet)) {
+                    Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_latteView->corona(), applet);
 
                     if (subContainment) {
                         Plasma::Applet *internalApplet{nullptr};

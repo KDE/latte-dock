@@ -13,6 +13,7 @@ import "./privates" as Ability
 Ability.MyViewPrivate {
     view: latteView
     isReady: view && view.visibility && view.layout && view.effects && view.positioner
+    groupId: view ? view.groupId : -1
 
     inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
                                  || (isReady && view.visibility.isHidden && !view.visibility.containsMouse && animations.needThickness.count === 0)

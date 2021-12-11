@@ -553,7 +553,15 @@ Item {
         }
     }
 
-    Containment.onAppletAdded: fastLayoutManager.addAppletItem(applet, x, y);
+    Containment.onAppletAdded: {
+        if (fastLayoutManager.isMasqueradedIndex(x, y)) {
+            var index = fastLayoutManager.masquearadedIndex(x, y);
+            fastLayoutManager.addAppletItem(applet, index);
+        } else {
+            fastLayoutManager.addAppletItem(applet, x, y);
+        }
+    }
+
     Containment.onAppletRemoved: fastLayoutManager.removeAppletItem(applet);
 
     Plasmoid.onUserConfiguringChanged: {
@@ -572,18 +580,21 @@ Item {
 
     //////////////START OF FUNCTIONS
     function createAppletItem(applet) {
-        var appletItem = appletItemComponent.createObject(dndSpacer.parent);
-        appletItem.applet = applet;
-        applet.parent = appletItem.appletWrapper;
-        applet.anchors.fill = appletItem.appletWrapper;
-        applet.visible = true;
+        var appletContainer = appletItemComponent.createObject(dndSpacer.parent);
+        initAppletContainer(appletContainer, applet);
 
         // don't show applet if it chooses to be hidden but still make it  accessible in the panelcontroller
-        appletItem.visible = Qt.binding(function() {
-            return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && root.inConfigureAppletsMode)
+        appletContainer.visible = Qt.binding(function() {
+            return (appletContainer.applet && appletContainer.applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && root.inConfigureAppletsMode)) && !appletContainer.isHidden;
         });
+        return appletContainer;
+    }
 
-        return appletItem;
+    function initAppletContainer(appletContainer, applet) {
+        appletContainer.applet = applet;
+        applet.parent = appletContainer.appletWrapper;
+        applet.anchors.fill = appletContainer.appletWrapper;
+        applet.visible = true;
     }
 
     function createJustifySplitter() {
@@ -743,23 +754,9 @@ Item {
         endLayout: layoutsContainer.endLayout
         metrics: _metrics
 
-        onLockedZoomAppletsChanged: plasmoid.configuration.lockedZoomApplets = fastLayoutManager.lockedZoomApplets;
-        onUserBlocksColorizingAppletsChanged: plasmoid.configuration.userBlocksColorizingApplets = fastLayoutManager.userBlocksColorizingApplets;
-
-        onAppletOrderChanged: {
-            plasmoid.configuration.appletOrder = fastLayoutManager.appletOrder;
-            root.updateIndexes();
-        }
-
-        onSplitterPositionChanged: {
-            plasmoid.configuration.splitterPosition = fastLayoutManager.splitterPosition;
-            root.updateIndexes();
-        }
-
-        onSplitterPosition2Changed: {
-            plasmoid.configuration.splitterPosition2 = fastLayoutManager.splitterPosition2;
-            root.updateIndexes();
-        }
+        onAppletOrderChanged: root.updateIndexes();
+        onSplitterPositionChanged: root.updateIndexes();
+        onSplitterPosition2Changed: root.updateIndexes();
     }
 
     ///////////////BEGIN UI elements
