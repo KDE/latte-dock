@@ -291,6 +291,24 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
     connect(m_positioner, &ViewPart::Positioner::winIdChanged, this, &View::applyActivitiesToWindows);
 
+    connect(this, &View::maxLengthChanged, this, [&]() {
+        if (m_inDelete) {
+            return;
+        }
+
+        emit availableScreenRectChangedFrom(this);
+        emit availableScreenRegionChangedFrom(this);
+    });
+
+    connect(this, &View::offsetChanged, this, [&]() {
+        if (m_inDelete ) {
+            return;
+        }
+
+        emit availableScreenRectChangedFrom(this);
+        emit availableScreenRegionChangedFrom(this);
+    });
+
     connect(this, &View::localGeometryChanged, this, [&]() {
         updateAbsoluteGeometry();
     });
@@ -407,6 +425,9 @@ void View::availableScreenRectChangedFromSlot(View *origin)
     }
 
     if (formFactor() == Plasma::Types::Vertical
+            && origin->formFactor() == Plasma::Types::Horizontal //! accept only horizontal views
+            && !(origin->location() == Plasma::Types::TopEdge && m_positioner->isStickedOnTopEdge()) //! ignore signals in such case
+            && !(origin->location() == Plasma::Types::BottomEdge && m_positioner->isStickedOnBottomEdge()) //! ignore signals in such case
             && origin->layout()
             && m_layout
             && origin->layout()->lastUsedActivity() == m_layout->lastUsedActivity()) {
@@ -660,8 +681,8 @@ void View::updateAbsoluteGeometry(bool bypassChecks)
         emit absoluteGeometryChanged(m_absoluteGeometry);
     }
 
-    //! this is needed in order to update correctly the screenGeometries
-    if (visibility() && corona() && visibility()->mode() == Types::AlwaysVisible) {
+    if ((m_absoluteGeometry != absGeometry) || bypassChecks) {
+        //! inform others such as neighbour vertical views that new geometries are applied
         //! main use of BYPASSCKECKS is from Positioner when the view changes screens
         emit availableScreenRectChangedFrom(this);
         emit availableScreenRegionChangedFrom(this);
