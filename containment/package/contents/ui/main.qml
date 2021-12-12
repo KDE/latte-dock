@@ -180,7 +180,7 @@ Item {
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled
     property bool immutable: plasmoid.immutable
     property bool inFullJustify: (plasmoid.configuration.alignment === LatteCore.Types.Justify) && (maxLengthPerCentage===100)
-    property bool inStartup: !fastLayoutManager.hasRestoredApplets
+    property bool inStartup: true
 
     property bool isHorizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
     property bool isVertical: !isHorizontal
@@ -1045,6 +1045,12 @@ Item {
         onViewChanged: {
             if (view) {
                 view.interfacesGraphicObj = _interfaces;
+
+                if (!root.inStartup) {
+                    //! used from recreating views
+                    root.inStartup = true;
+                    startupDelayer.start();
+                }
             }
         }
     }
@@ -1056,7 +1062,31 @@ Item {
     //! It is used in order to slide-in the latteView on startup
     onInStartupChanged: {
         if (!inStartup) {
+            latteView.positioner.startupFinished();
+            latteView.positioner.slideInDuringStartup();
             visibilityManager.slotMustBeShown();
+        }
+    }
+
+    Connections {
+        target:fastLayoutManager
+        onHasRestoredAppletsChanged: {
+            if (fastLayoutManager.hasRestoredApplets) {
+                startupDelayer.start();
+            }
+        }
+    }
+
+    Timer {
+        //! Give a little more time to layouter and applets to load and be positioned properly during startup when
+        //! the view is drawn out-of-screen and afterwards trigger the startup animation sequence:
+        //! 1.slide-out when out-of-screen //slotMustBeHide()
+        //! 2.be positioned properly at correct screen //slideInDuringStartup(), triggers Positioner::syncGeometry()
+        //! 3.slide-in properly in correct screen //slotMustBeShown();
+        id: startupDelayer
+        interval: 1000
+        onTriggered: {
+            visibilityManager.slotMustBeHide();
         }
     }
 

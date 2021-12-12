@@ -391,7 +391,6 @@ private:
     bool m_containsDrag{false};
     bool m_containsMouse{false};
     bool m_inDelete{false};
-    bool m_inStartup{true};
     bool m_isPreferredForShortcuts{false};
     bool m_onPrimary{true};
     bool m_screenEdgeMarginEnabled{false};

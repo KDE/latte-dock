@@ -107,6 +107,7 @@ void Positioner::init()
     connect(this, &Positioner::hidingForRelocationStarted, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::updateInRelocationAnimation);
     connect(this, &Positioner::showingAfterRelocationFinished, this, &Positioner::syncLatteViews);
+    connect(this, &Positioner::startupFinished, this, &Positioner::onStartupFinished);
 
     connect(m_view, &Latte::View::onPrimaryChanged, this, &Positioner::syncLatteViews);
 
@@ -336,6 +337,14 @@ void Positioner::slideInDuringStartup()
     m_corona->wm()->slideWindow(*m_view, slideLocation(m_view->containment()->location()));
 }
 
+void Positioner::onStartupFinished()
+{
+    if (m_inStartup) {
+        m_inStartup = false;
+        syncGeometry();
+    }
+}
+
 void Positioner::onCurrentLayoutIsSwitching(const QString &layoutName)
 {
     if (!m_view || !m_view->layout() || m_view->layout()->name() != layoutName || !m_view->isVisible()) {
@@ -509,7 +518,14 @@ void Positioner::immediateSyncGeometry()
         //! instead of two times (both inside the resizeWindow and the updatePosition)
         QRegion freeRegion;;
         QRect maximumRect;
-        QRect availableScreenRect{m_view->screen()->geometry()};
+        QRect availableScreenRect = m_view->screen()->geometry();
+
+        if (m_inStartup) {
+            //! paint out-of-screen
+            availableScreenRect = QRect(-9999, -9999, m_view->screen()->geometry().width(), m_view->screen()->geometry().height());
+        }
+
+        qDebug() << " ------------>> " << m_view->location() << " ___ " << availableScreenRect;
 
         if (m_view->formFactor() == Plasma::Types::Vertical) {
             QString layoutName = m_view->layout() ? m_view->layout()->name() : QString();
@@ -538,7 +554,12 @@ void Positioner::immediateSyncGeometry()
             }
 
             QString activityid = m_view->layout() ? m_view->layout()->lastUsedActivity() : QString();
-            freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, activityid, ignoreModes, ignoreEdges);
+            if (m_inStartup) {
+                //! paint out-of-screen
+                freeRegion = availableScreenRect;
+            } else {
+                freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, activityid, ignoreModes, ignoreEdges);
+            }
 
             maximumRect = maximumNormalGeometry();
             QRegion availableRegion = freeRegion.intersected(maximumRect);
@@ -870,6 +891,10 @@ void Positioner::resizeWindow(QRect availableScreenRect)
             size.setHeight(m_view->normalThickness());
         }
     }
+
+    //! protect from invalid window size under wayland
+    size.setWidth(qMax(1, size.width()));
+    size.setHeight(qMax(1, size.height()));
 
     m_validGeometry.setSize(size);
 

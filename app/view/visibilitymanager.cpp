@@ -79,16 +79,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 
         connect(m_latteView, &Latte::View::inEditModeChanged, this, &VisibilityManager::initViewFlags);
 
-        // disabling this call because it was creating too many struts calls and
-        // could create reduced responsiveness for DynamicStruts Scenario(for example
-        // when dragging active window from a floating dock/panel)
-        /*
-        connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, [&]() {
-            if (m_mode == Types::AlwaysVisible) {
-                updateStrutsBasedOnLayoutsAndActivities();
-            }
-        });*/
-
         //! Frame Extents
         connect(m_latteView, &Latte::View::headThicknessGapChanged, this, &VisibilityManager::onHeadThicknessChanged);
         connect(m_latteView, &Latte::View::locationChanged, this, [&]() {
@@ -267,23 +257,20 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             updateStrutsBasedOnLayoutsAndActivities();
         }
 
-        m_connections[base] = connect(this, &VisibilityManager::strutsThicknessChanged, this, [&]() {
-            bool execute = !m_timerBlockStrutsUpdate.isActive();
+        m_connections[base] = connect(this, &VisibilityManager::strutsThicknessChanged, &VisibilityManager::updateStrutsAfterTimer);
 
-            m_timerBlockStrutsUpdate.start();
+        // disabling this call because it was creating too many struts calls and   ???
+        // could create reduced responsiveness for DynamicStruts Scenario(for example ??
+        // when dragging active window from a floating dock/panel) ???
+        m_connections[base+1] = connect(m_latteView, &Latte::View::absoluteGeometryChanged, this, &VisibilityManager::updateStrutsAfterTimer);
 
-            if (execute) {
-                updateStrutsBasedOnLayoutsAndActivities();
-            }
-        });
-
-        m_connections[base+1] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
+        m_connections[base+2] = connect(m_corona->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged, this, [&]() {
             if (m_corona && m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts) {
                 updateStrutsBasedOnLayoutsAndActivities(true);
             }
         });
 
-        m_connections[base+2] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+        m_connections[base+3] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
             updateStrutsBasedOnLayoutsAndActivities(true);
         });
 
@@ -380,6 +367,17 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
 
     emit modeChanged();
+}
+
+void VisibilityManager::updateStrutsAfterTimer()
+{
+    bool execute = !m_timerBlockStrutsUpdate.isActive();
+
+    m_timerBlockStrutsUpdate.start();
+
+    if (execute) {
+        updateStrutsBasedOnLayoutsAndActivities();
+    }
 }
 
 void VisibilityManager::updateSidebarState()

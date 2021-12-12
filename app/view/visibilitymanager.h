@@ -204,6 +204,8 @@ private slots:
     void dodgeMaximized();
     void updateHiddenState();
 
+    void updateStrutsAfterTimer();
+
     bool isValidMode() const;
 
 private:

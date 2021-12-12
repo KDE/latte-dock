@@ -89,6 +89,7 @@ public:
 
 public slots:
     Q_INVOKABLE void setNextLocation(const QString layoutName, const QString screenId, int edge, int alignment);
+    Q_INVOKABLE void slideInDuringStartup();
 
     void syncGeometry();
 
@@ -96,7 +97,6 @@ public slots:
     //! that might prevent them. It must be called with care.
     void immediateSyncGeometry();
 
-    void slideInDuringStartup();
     void slideOutDuringExit(Plasma::Types::Location location = Plasma::Types::Floating);
 
     void initDelayedSignals();
@@ -118,6 +118,8 @@ signals:
     void hidingForRelocationFinished();
     void showingAfterRelocationFinished();
 
+    void startupFinished(); //called from containment qml end of startup sequence
+
     void onHideWindowsForSlidingOut();
     void inRelocationAnimationChanged();
     void inRelocationShowingChanged();
@@ -129,6 +131,7 @@ private slots:
     void onScreenChanged(QScreen *screen);
     void onCurrentLayoutIsSwitching(const QString &layoutName);
     void onLastRepositionApplyEvent();
+    void onStartupFinished();
 
     void validateDockGeometry();
     void updateInRelocationAnimation();
@@ -160,6 +163,7 @@ private:
     bool m_inRelocationAnimation{false};
     bool m_inRelocationShowing{false};
     bool m_inSlideAnimation{false};
+    bool m_inStartup{true};
 
     bool m_isStickedOnTopEdge{false};
     bool m_isStickedOnBottomEdge{false};
