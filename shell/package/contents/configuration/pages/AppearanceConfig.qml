@@ -684,7 +684,7 @@ PlasmaComponents.Page {
                     spacing: units.smallSpacing
 
                     PlasmaComponents.Label {
-                        text: i18n("Screen edge")
+                        text: i18n("Floating gap")
                         horizontalAlignment: Text.AlignLeft
                     }
 
