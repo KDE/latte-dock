@@ -53,6 +53,7 @@ public:
 
 signals:
     void primaryPoolChanged();
+    void screenGeometryChanged();
 
 protected:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) Q_DECL_OVERRIDE;

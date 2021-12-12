@@ -270,7 +270,10 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
             }
         });
 
-        m_connections[base+3] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
+        //! respect canSetStrut that must be disabled under x11 when an alwaysvisible screen edge is common between two or more screens
+        m_connections[base+3] = connect(m_corona->screenPool(), &Latte::ScreenPool::screenGeometryChanged, this, &VisibilityManager::updateStrutsAfterTimer);
+
+        m_connections[base+4] = connect(m_latteView, &Latte::View::activitiesChanged, this, [&]() {
             updateStrutsBasedOnLayoutsAndActivities(true);
         });
 
@@ -397,10 +400,10 @@ void VisibilityManager::updateSidebarState()
 void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate)
 {
     bool inMultipleLayoutsAndCurrent = (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::MultipleLayouts
-                                      && m_latteView->layout() && !m_latteView->positioner()->inRelocationAnimation()
-                                      && m_latteView->layout()->isCurrent());
+                                        && m_latteView->layout() && !m_latteView->positioner()->inRelocationAnimation()
+                                        && m_latteView->layout()->isCurrent());
 
-    if (m_strutsThickness>0 && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || inMultipleLayoutsAndCurrent)) {
+    if (m_strutsThickness>0 && canSetStrut() && (m_corona->layoutsManager()->memoryUsage() == MemoryUsage::SingleLayout || inMultipleLayoutsAndCurrent)) {
         QRect computedStruts = acceptableStruts();
         if (m_publishedStruts != computedStruts || forceUpdate) {
             //! Force update is needed when very important events happen in DE and there is a chance
@@ -415,6 +418,64 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate
         m_publishedStruts = QRect();
         m_wm->removeViewStruts(*m_latteView);
     }
+}
+
+bool VisibilityManager::canSetStrut() const
+{
+    if (!KWindowSystem::isPlatformX11()) {
+        return true;
+    }
+
+    // read the wm name, need to do this every time which means a roundtrip unfortunately
+    // but WM might have changed
+    //NETRootInfo rootInfo(QX11Info::connection(), NET::Supported | NET::SupportingWMCheck);
+    //if (qstricmp(rootInfo.wmName(), "KWin") == 0) {
+    // KWin since 5.7 can handle this fine, so only exclude for other window managers
+    //return true;
+    //}
+
+    if (qGuiApp->screens().count() < 2) {
+        return true;
+    }
+
+    const QRect thisScreen = m_latteView->screen()->geometry();
+
+    // Extended struts against a screen edge near to another screen are really harmful, so windows maximized under the panel is a lesser pain
+    // TODO: force "windows can cover" in those cases?
+    for (QScreen *screen : qGuiApp->screens()) {
+        if (!screen || m_latteView->screen() == screen) {
+            continue;
+        }
+
+        const QRect otherScreen = screen->geometry();
+
+        switch (m_latteView->location()) {
+        case Plasma::Types::TopEdge:
+            if (otherScreen.bottom() <= thisScreen.top()) {
+                return false;
+            }
+            break;
+        case Plasma::Types::BottomEdge:
+            if (otherScreen.top() >= thisScreen.bottom()) {
+                return false;
+            }
+            break;
+        case Plasma::Types::RightEdge:
+            if (otherScreen.left() >= thisScreen.right()) {
+                return false;
+            }
+            break;
+        case Plasma::Types::LeftEdge:
+            if (otherScreen.right() <= thisScreen.left()) {
+                return false;
+            }
+            break;
+        default:
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QRect VisibilityManager::acceptableStruts()
@@ -725,9 +786,9 @@ void VisibilityManager::toggleHiddenState()
 {
     if (!m_latteView->inEditMode()) {
         if (isSidebar()) {
-           // if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+            // if (m_blockHidingEvents.contains(Q_FUNC_INFO)) {
             //    removeBlockHidingEvent(Q_FUNC_INFO);
-           // }
+            // }
 
             if (m_mode == Latte::Types::SidebarOnDemand) {
                 m_isRequestedShownSidebarOnDemand = !m_isRequestedShownSidebarOnDemand;
@@ -741,7 +802,7 @@ void VisibilityManager::toggleHiddenState()
                 }
             }
         } else {
-        /*    if (!m_isHidden && !m_blockHidingEvents.contains(Q_FUNC_INFO)) {
+            /*    if (!m_isHidden && !m_blockHidingEvents.contains(Q_FUNC_INFO)) {
                 addBlockHidingEvent(Q_FUNC_INFO);
             } else if (m_isHidden) {
                 removeBlockHidingEvent(Q_FUNC_INFO);

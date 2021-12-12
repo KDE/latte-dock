@@ -129,6 +129,8 @@ void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGe
 
     m_screensTable[scrIdStr].geometry = screenGeometry;
     save();
+
+    emit screenGeometryChanged();
 }
 
 
