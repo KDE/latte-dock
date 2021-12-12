@@ -211,10 +211,12 @@ private slots:
 private:
     void startTimerHide(const int &msec = 0);
 
+    bool canSetStrut() const;
+
 private:
     WindowSystem::AbstractWindowInterface *m_wm;
     Types::Visibility m_mode{Types::None};
-    std::array<QMetaObject::Connection, 5> m_connections;
+    std::array<QMetaObject::Connection, 6> m_connections;
 
     QTimer m_timerShow;
     QTimer m_timerHide;
