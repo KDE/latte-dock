@@ -166,6 +166,11 @@ Item{
     }
 
     function slotMustBeShown() {
+        if (root.inStartup) {
+            slidingAnimationAutoHiddenIn.init();
+            return;
+        }
+
         //! WindowsCanCover case
         if (latteView && latteView.visibility.mode === LatteCore.Types.WindowsCanCover) {
             latteView.visibility.setViewOnFrontLayer();
@@ -190,6 +195,11 @@ Item{
     }
 
     function slotMustBeHide() {
+        if (root.inStartup) {
+            slidingAnimationAutoHiddenOut.init();
+            return;
+        }
+
         if (inSlidingIn && !inRelocationHiding) {
             /*consider hiding after sliding in has finished*/
             return;
@@ -468,10 +478,18 @@ Item{
 
             latteView.visibility.slideOutFinished();
             manager.updateInputGeometry();
+
+            if (root.inStartup) {
+                //! when view is first created slide-outs when that animation ends then
+                //! it flags that startup has ended and first slide-in can be started
+                //! this is important because if it is removed then some views
+                //! wont slide-in after startup.
+                root.inStartup = false;
+            }
         }
 
         function init() {
-            if (manager.inRelocationAnimation || !latteView.visibility.blockHiding) {
+            if (manager.inRelocationAnimation || root.inStartup/*used from recreating views*/ || !latteView.visibility.blockHiding) {
                 start();
             }
         }
