@@ -55,7 +55,7 @@ AbilityDefinition.MyView {
 
     Item {
         id: ref
-        readonly property Item myView: bridge ? bridge.myView.host : local
+        readonly property Item myView: bridge && bridge.myView ? bridge.myView.host : local
     }
 
     //! Bridge - Client assignment
