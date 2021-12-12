@@ -12,11 +12,10 @@ import "./privates" as Ability
 
 Ability.MyViewPrivate {
     view: latteView
-
-    isReady: latteView
+    isReady: view && view.visibility && view.layout && view.effects && view.positioner
 
     inNormalState: ((animations.needBothAxis.count === 0) && (animations.needLength.count === 0))
-                                 || (view && view.visibility.isHidden && !view.visibility.containsMouse && animations.needThickness.count === 0)
+                                 || (isReady && view.visibility.isHidden && !view.visibility.containsMouse && animations.needThickness.count === 0)
     isHidden: isReady && view.visibility.isHidden
     isShownPartially:  isReady && (inSlidingIn || inSlidingOut)
     isShownFully: isReady && !isHidden && !inSlidingIn && !inSlidingOut
@@ -28,20 +27,20 @@ Ability.MyViewPrivate {
 
     inSlidingIn: visibilityManager.inSlidingIn
     inSlidingOut: visibilityManager.inSlidingOut
-    inRelocationAnimation: view && view.positioner && view.positioner.inRelocationAnimation
+    inRelocationAnimation: isReady && view.positioner.inRelocationAnimation
     inRelocationHiding: visibilityManager.inRelocationHiding
 
     badgesIn3DStyle: universalSettings ? universalSettings.badges3DStyle : true
 
     alignment: plasmoid.configuration.alignment
-    visibilityMode: view ? view.visibility.mode : LatteCore.Types.None
+    visibilityMode: isReady ? view.visibility.mode : LatteCore.Types.None
 
     backgroundOpacity: background.currentOpacity
 
-    lastUsedActivity: view && view.layout ? view.layout.lastUsedActivity : ""
+    lastUsedActivity: isReady ? view.layout.lastUsedActivity : ""
 
-    appletsLayoutGeometry: view && view.effects ? view.effects.appletsLayoutGeometry : Qt.rect(0, 0, -1, -1)
-    screenGeometry: view ? view.screenGeometry : plasmoid.screenGeometry
+    appletsLayoutGeometry: isReady ? view.effects.appletsLayoutGeometry : Qt.rect(0, 0, -1, -1)
+    screenGeometry: isReady ? view.screenGeometry : plasmoid.screenGeometry
 
     containmentActions: isReady ? view.containmentActions : []
 

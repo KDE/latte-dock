@@ -525,8 +525,6 @@ void Positioner::immediateSyncGeometry()
             availableScreenRect = QRect(-9999, -9999, m_view->screen()->geometry().width(), m_view->screen()->geometry().height());
         }
 
-        qDebug() << " ------------>> " << m_view->location() << " ___ " << availableScreenRect;
-
         if (m_view->formFactor() == Plasma::Types::Vertical) {
             QString layoutName = m_view->layout() ? m_view->layout()->name() : QString();
             auto latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
