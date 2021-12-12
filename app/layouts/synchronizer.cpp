@@ -45,16 +45,19 @@ Synchronizer::Synchronizer(QObject *parent)
     connect(this, &Synchronizer::layoutsChanged, this, &Synchronizer::reloadAssignedLayouts);
 
     //! KWin update Disabled Borders
-    connect(this, &Synchronizer::centralLayoutsChanged, this, &Synchronizer::updateKWinDisabledBorders);
+    connect(this, &Synchronizer::centralLayoutsChanged, this, &Synchronizer::updateBorderlessMaximizedAfterTimer);
     connect(m_manager->corona()->universalSettings(), &UniversalSettings::canDisableBordersChanged, this, &Synchronizer::updateKWinDisabledBorders);
 
+    m_updateBorderlessMaximized.setInterval(500);
+    m_updateBorderlessMaximized.setSingleShot(true);
+    connect(&m_updateBorderlessMaximized, &QTimer::timeout, this, &Synchronizer::updateKWinDisabledBorders);
 
     //! KActivities tracking
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::activityRemoved,
             this, &Synchronizer::onActivityRemoved);
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
-            this, &Synchronizer::onCurrentActivityChanged);
+            this, &Synchronizer::updateBorderlessMaximizedAfterTimer);
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
             this, [&]() {
@@ -465,10 +468,13 @@ void Synchronizer::onActivityRemoved(const QString &activityid)
     }
 }
 
-void Synchronizer::onCurrentActivityChanged(const QString &activityid)
+void Synchronizer::updateBorderlessMaximizedAfterTimer()
 {
     if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        updateKWinDisabledBorders();
+        //! this signal is also triggered when runningactivities are changed and actually is received first
+        //! this is why we need a timer here in order to delay that execution and not activate/deactivate
+        //! maximizedborders faulty because syncMultipleLayoutsToActivities(); has not been executed yet
+        m_updateBorderlessMaximized.start();
     }
 }
 
