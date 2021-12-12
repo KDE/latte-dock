@@ -1737,6 +1737,7 @@ void View::restoreConfig()
     //! Send changed signals at the end in order to be sure that saveConfig
     //! wont rewrite default/invalid values
     emit alignmentChanged();
+    emit nameChanged();
     emit onPrimaryChanged();
     emit byPassWMChanged();
 }
