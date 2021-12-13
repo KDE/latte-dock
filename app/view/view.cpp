@@ -1359,7 +1359,8 @@ Latte::Data::View View::data() const
         vdata.screen = containment()->lastScreen();
     }
 
-    vdata.screenEdgeMargin = m_screenEdgeMargin;
+    //!screen edge margin can be more accurate in the config file
+    vdata.screenEdgeMargin = m_screenEdgeMargin > 0 ? m_screenEdgeMargin : containment()->config().group("General").readEntry("screenEdgeMargin", (int)-1);
 
     vdata.edge = location();
     vdata.maxLength = m_maxLength * 100;
