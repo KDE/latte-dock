@@ -78,6 +78,8 @@ public:
     bool isStickedOnBottomEdge() const;
     void setIsStickedOnBottomEdge(bool sticked);
 
+    bool isOffScreen() const;
+
     QRect canvasGeometry();
 
     void setScreenToFollow(QScreen *scr, bool updateScreenId = true);

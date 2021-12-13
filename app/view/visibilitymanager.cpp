@@ -422,6 +422,10 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate
 
 bool VisibilityManager::canSetStrut() const
 {
+    if (m_latteView->positioner()->isOffScreen()) {
+        return false;
+    }
+
     if (!KWindowSystem::isPlatformX11()) {
         return true;
     }
