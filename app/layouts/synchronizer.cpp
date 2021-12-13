@@ -57,7 +57,14 @@ Synchronizer::Synchronizer(QObject *parent)
             this, &Synchronizer::onActivityRemoved);
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::currentActivityChanged,
-            this, &Synchronizer::updateBorderlessMaximizedAfterTimer);
+            this, [&]() {
+        if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
+            //! this signal is also triggered when runningactivities are changed and actually is received first
+            //! this is why we need a timer here in order to delay that execution and not activate/deactivate
+            //! maximizedborders faulty because syncMultipleLayoutsToActivities(); has not been executed yet
+            updateBorderlessMaximizedAfterTimer();
+        }
+    });
 
     connect(m_manager->corona()->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged,
             this, [&]() {
@@ -470,12 +477,10 @@ void Synchronizer::onActivityRemoved(const QString &activityid)
 
 void Synchronizer::updateBorderlessMaximizedAfterTimer()
 {
-    if (m_manager->memoryUsage() == MemoryUsage::MultipleLayouts) {
-        //! this signal is also triggered when runningactivities are changed and actually is received first
-        //! this is why we need a timer here in order to delay that execution and not activate/deactivate
-        //! maximizedborders faulty because syncMultipleLayoutsToActivities(); has not been executed yet
-        m_updateBorderlessMaximized.start();
-    }
+    //! this signal is also triggered when runningactivities are changed and actually is received first
+    //! this is why we need a timer here in order to delay that execution and not activate/deactivate
+    //! maximizedborders faulty because syncMultipleLayoutsToActivities(); has not been executed yet
+    m_updateBorderlessMaximized.start();
 }
 
 void Synchronizer::hideAllViews()
@@ -912,7 +917,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
         if (!layoutNamesToLoad.contains(layout->name())) {
             layoutNamesToUnload << layout->name();
         }
-    }    
+    }
 
     QString defaultForcedLayout;
 
@@ -951,7 +956,7 @@ void Synchronizer::syncMultipleLayoutsToActivities()
                                         "Activating layouts: <b>%2</b> ...",
                                         newlyActivatedLayouts.count(),
                                         newlyActivatedLayouts.join(", ")),
-                4000, QStringList(Data::Layout::ALLACTIVITIESID));
+                                  4000, QStringList(Data::Layout::ALLACTIVITIESID));
     }
 
     //! Unload no needed Layouts
