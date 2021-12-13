@@ -266,6 +266,11 @@ void Positioner::setInRelocationShowing(bool active)
     }
 }
 
+bool Positioner::isOffScreen() const
+{
+    return (m_validGeometry.x()<-500 || m_validGeometry.y()<-500);
+}
+
 int Positioner::currentScreenId() const
 {
     auto *latteCorona = qobject_cast<Latte::Corona *>(m_view->corona());
