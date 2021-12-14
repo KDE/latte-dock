@@ -721,13 +721,8 @@ AbilityItem.BasicItem {
             // a PID to an audio stream window. Otherwise if you have two instances of
             // an application, one playing and the other not, it will look up appName
             // for the non-playing instance and erroneously show an indicator on both.
-            if (!pa.hasPidMatch(taskItem.appName)) {
-                var streams_result;
-                streams_result = pa.streamsForAppName(taskItem.appName);
-                if (streams_result.length===0 && launcherName !== "") {
-                    streams_result = pa.streamsForAppName(launcherName);
-                }
-                streams = streams_result;
+            if (!pa.hasPidMatch(task.appName)) {
+                streams = pa.streamsForAppName(task.appName);
             }
         }
 

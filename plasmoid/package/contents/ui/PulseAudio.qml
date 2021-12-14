@@ -45,8 +45,7 @@ QtObject {
         var streams = []
         for (var i = 0, length = instantiator.count; i < length; ++i) {
             var stream = instantiator.objectAt(i);
-            if (stream[key] === value
-                    || (key==="appName" && stream[key].toLowerCase() === value.toLowerCase())) {
+            if (stream[key] === value || (key==="appName" && stream[key].toLowerCase() === value.toLowerCase())) {
                 streams.push(stream);
             }
         }
@@ -58,7 +57,23 @@ QtObject {
     }
 
     function streamsForPid(pid) {
-        return findStreams("pid", pid);
+        var streams = findStreams("pid", pid);
+
+        if (streams.length === 0) {
+            for (var i = 0, length = instantiator.count; i < length; ++i) {
+                var stream = instantiator.objectAt(i);
+
+                if (stream.parentPid === -1) {
+                    stream.parentPid = backend.parentPid(stream.pid);
+                }
+
+                if (stream.parentPid === pid) {
+                    streams.push(stream);
+                }
+            }
+        }
+
+        return streams;
     }
 
     // QtObject has no default property, hence adding the Instantiator to one explicitly.
@@ -70,10 +85,13 @@ QtObject {
 
         delegate: QtObject {
             readonly property int pid: Client ? Client.properties["application.process.id"] : 0
+            // Determined on demand.
+            property int parentPid: -1
             readonly property string appName: Client ? Client.properties["application.name"] : ""
             readonly property bool muted: Muted
             // whether there is nothing actually going on on that stream
             readonly property bool corked: Corked
+
             readonly property int volume: Math.round(pulseVolume / PulseAudio.NormalVolume * 100.0)
             readonly property int pulseVolume: Volume
 
