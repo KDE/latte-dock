@@ -102,6 +102,8 @@ public:
     virtual WindowId winIdFor(QString appId, QString title) = 0;
     virtual AppData appDataFor(WindowId wid) = 0;
 
+    bool isKWinRunning() const;
+
     bool inCurrentDesktopActivity(const WindowInfoWrap &winfo);
     bool isShowingDesktop() const;
 
