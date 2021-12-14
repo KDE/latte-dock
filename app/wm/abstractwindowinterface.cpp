@@ -261,6 +261,11 @@ bool AbstractWindowInterface::inCurrentDesktopActivity(const WindowInfoWrap &win
 }
 
 //! KWin Interface
+bool AbstractWindowInterface::isKWinRunning() const
+{
+    return m_isKWinInterfaceAvailable;
+}
+
 void AbstractWindowInterface::initKWinInterface()
 {
     QDBusInterface kwinIface(KWINSERVICE, "/VirtualDesktopManager", KWINVIRTUALDESKTOPMANAGERNAMESPACE, QDBusConnection::sessionBus());

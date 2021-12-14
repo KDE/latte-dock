@@ -426,7 +426,7 @@ bool VisibilityManager::canSetStrut() const
         return false;
     }
 
-    if (!KWindowSystem::isPlatformX11()) {
+    if (!KWindowSystem::isPlatformX11() || !m_wm->isKWinRunning()/*alternative de*/) {
         return true;
     }
 
