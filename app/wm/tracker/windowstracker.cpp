@@ -41,6 +41,11 @@ Windows::Windows(AbstractWindowInterface *parent)
     m_updateApplicationDataTimer.setSingleShot(true);
     connect(&m_updateApplicationDataTimer, &QTimer::timeout, this, &Windows::updateApplicationData);
 
+    //! delayed update all hints
+    m_updateAllHintsTimer.setInterval(300);
+    m_updateAllHintsTimer.setSingleShot(true);
+    connect(&m_updateAllHintsTimer, &QTimer::timeout, this, &Windows::updateAllHints);
+
     init();
 }
 
@@ -169,6 +174,7 @@ void Windows::addView(Latte::View *view)
 
     connect(view, &Latte::View::isTouchingBottomViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
     connect(view, &Latte::View::isTouchingTopViewAndIsBusyChanged, this, &Windows::updateExtraViewHints);
+    connect(view, &Latte::View::absoluteGeometryChanged, this, &Windows::updateAllHintsAfterTimer);
 
     updateAllHints();
 
@@ -818,6 +824,14 @@ void Windows::updateScreenGeometries()
                 updateHints(view);
             }
         }
+    }
+}
+
+void Windows::updateAllHintsAfterTimer()
+{
+    if (!m_updateAllHintsTimer.isActive()) {
+        updateAllHints();
+        m_updateAllHintsTimer.start();
     }
 }
 
