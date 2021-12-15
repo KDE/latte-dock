@@ -114,8 +114,6 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
         publishFrameExtents(forceUpdate);
     }
 
-    m_timerStartUp.setInterval(4000);
-    m_timerStartUp.setSingleShot(true);
     m_timerShow.setSingleShot(true);
     m_timerHide.setSingleShot(true);
 
@@ -146,6 +144,14 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
     connect(&m_timerBlockStrutsUpdate, &QTimer::timeout, this, [&]() { updateStrutsBasedOnLayoutsAndActivities(); });
 
     restoreConfig();
+
+    //! connect save values after they have been restored
+    connect(this, &VisibilityManager::enableKWinEdgesChanged, this, &VisibilityManager::saveConfig);
+    connect(this, &VisibilityManager::modeChanged, this, &VisibilityManager::saveConfig);
+    connect(this, &VisibilityManager::raiseOnDesktopChanged, this, &VisibilityManager::saveConfig);
+    connect(this, &VisibilityManager::raiseOnActivityChanged, this, &VisibilityManager::saveConfig);
+    connect(this, &VisibilityManager::timerShowChanged, this, &VisibilityManager::saveConfig);
+    connect(this, &VisibilityManager::timerHideChanged, this, &VisibilityManager::saveConfig);
 }
 
 VisibilityManager::~VisibilityManager()
@@ -209,8 +215,11 @@ void VisibilityManager::setViewOnFrontLayer()
 
 void VisibilityManager::setMode(Latte::Types::Visibility mode)
 {
-    if (m_mode == mode)
+    if (m_mode == mode) {
         return;
+    }
+
+    qDebug() << "Updating visibility mode to  :::: " << mode;
 
     Q_ASSERT_X(mode != Types::None, staticMetaObject.className(), "set visibility to Types::None");
 
@@ -366,8 +375,6 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
     default:
         break;
     }
-
-    m_latteView->containment()->config().writeEntry("visibility", static_cast<int>(m_mode));
 
     emit modeChanged();
 }
@@ -977,8 +984,9 @@ void VisibilityManager::dodgeAllWindows()
 
 void VisibilityManager::saveConfig()
 {
-    if (!m_latteView->containment())
+    if (!m_latteView->containment()) {
         return;
+    }
 
     auto config = m_latteView->containment()->config();
 
@@ -987,58 +995,20 @@ void VisibilityManager::saveConfig()
     config.writeEntry("timerHide", m_timerHideInterval);
     config.writeEntry("raiseOnDesktopChange", m_raiseOnDesktopChange);
     config.writeEntry("raiseOnActivityChange", m_raiseOnActivityChange);
+    config.writeEntry("visibility", static_cast<int>(m_mode));
 
-    m_latteView->containment()->configNeedsSaving();
 }
 
 void VisibilityManager::restoreConfig()
 {
-    if (!m_latteView || !m_latteView->containment()){
-        return;
-    }
-
     auto config = m_latteView->containment()->config();
-    m_timerShow.setInterval(config.readEntry("timerShow", 0));
-    m_timerHideInterval = qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700));
-    emit timerShowChanged();
-    emit timerHideChanged();
-
-    m_enableKWinEdgesFromUser = config.readEntry("enableKWinEdges", true);
-    emit enableKWinEdgesChanged();
-
+    setTimerHide(qMax(HIDEMINIMUMINTERVAL, config.readEntry("timerHide", 700)));
+    setTimerShow(config.readEntry("timerShow", 0));
+    setEnableKWinEdges(config.readEntry("enableKWinEdges", true));
     setRaiseOnDesktop(config.readEntry("raiseOnDesktopChange", false));
     setRaiseOnActivity(config.readEntry("raiseOnActivityChange", false));
 
-    auto storedMode = (Types::Visibility)(m_latteView->containment()->config().readEntry("visibility", (int)(Types::DodgeActive)));
-
-    if (storedMode == Types::AlwaysVisible) {
-        qDebug() << "Loading visibility mode: Always Visible , on startup...";
-        setMode(Types::AlwaysVisible);
-    } else {
-        connect(&m_timerStartUp, &QTimer::timeout, this, [&]() {
-            if (!m_latteView || !m_latteView->containment()) {
-                return;
-            }
-
-            Types::Visibility fMode = (Types::Visibility)(m_latteView->containment()->config().readEntry("visibility", (int)(Types::DodgeActive)));
-            qDebug() << "Loading visibility mode:" << fMode << " on startup...";
-            setMode(fMode);
-        });
-        connect(m_latteView->containment(), &Plasma::Containment::userConfiguringChanged
-                , this, [&](bool configuring) {
-            if (configuring && m_timerStartUp.isActive())
-                m_timerStartUp.start(100);
-        });
-
-        m_timerStartUp.start();
-    }
-
-    connect(m_latteView->containment(), &Plasma::Containment::userConfiguringChanged
-            , this, [&](bool configuring) {
-        if (!configuring) {
-            saveConfig();
-        }
-    });
+    setMode((Types::Visibility)(config.readEntry("visibility", (int)(Types::DodgeActive))));
 }
 
 bool VisibilityManager::containsMouse() const

@@ -127,6 +127,7 @@ private:
     void cleanupFaultyWindows();
 
     void updateAllHints();
+    void updateAllHintsAfterTimer();
 
     //! Views
     void updateHints(Latte::View *view);
@@ -182,6 +183,7 @@ private:
 
     QMap<WindowId, WindowInfoWrap> m_windows;
 
+    QTimer m_updateAllHintsTimer;
     //! Some applications delay their application name/icon identification
     //! such as Libreoffice that updates its StartupWMClass after
     //! its startup

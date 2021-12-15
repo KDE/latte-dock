@@ -220,7 +220,6 @@ private:
 
     QTimer m_timerShow;
     QTimer m_timerHide;
-    QTimer m_timerStartUp;
     QTimer m_timerPublishFrameExtents;
     //! This timer is very important because it blocks how fast struts are updated.
     //! By using this timer we help the window manager in order to correspond to new
