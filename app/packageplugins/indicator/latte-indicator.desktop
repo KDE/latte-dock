@@ -3,6 +3,7 @@ Type=ServiceType
 X-KDE-ServiceType=Latte/Indicator
 
 Comment=Latte indicator
+Comment[ar]=مؤشرات لاتيه
 Comment[az]=Latte İndikatoru
 Comment[ca]=Indicador del Latte
 Comment[ca@valencia]=Indicador del Latte

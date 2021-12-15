@@ -1,6 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Latte Containment
+Name[ar]=حاوية لاتيه
 Name[az]=Latte əhatəsi
 Name[ca]=Contenidor del Latte
 Name[ca@valencia]=Contenidor del Latte
@@ -24,6 +25,7 @@ Name[x-test]=xxLatte Containmentxx
 Name[zh_CN]=Latte 容器
 Name[zh_TW]=Latte Containment
 Comment=Containment provided for the Latte Dock
+Comment[ar]=حاوية موفرة لرصيف لاتيه
 Comment[az]=Latte Dok paneli üçün təmin edilən qoruma
 Comment[ca]=Contenidor proporcionat per l'acoblador Latte
 Comment[ca@valencia]=Contenidor proporcionat per l'acoblador Latte

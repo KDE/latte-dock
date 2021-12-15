@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Standard Latte Menu
+Name[ar]=قائمة لاتيه قياسية
 Name[az]=Standart Latte menyusu
 Name[ca]=Menú estàndard del Latte
 Name[ca@valencia]=Menú estàndard del Latte
@@ -32,6 +33,7 @@ Name[x-test]=xxStandard Latte Menuxx
 Name[zh_CN]=标准 Latte 菜单
 Name[zh_TW]=標準的 Latte 選單
 Comment=The latte menu that normally shows on right-click
+Comment[ar]=قائمة لاتيه التي تظهر في المعتاد عن النقر باليمين
 Comment[az]=Sağ düymə kliki ilə göstəriləcək Latte menyusu
 Comment[ca]=El menú del Latte que es mostra normalment amb un clic del botó dret
 Comment[ca@valencia]=El menú del Latte que es mostra normalment amb un clic del botó dret
