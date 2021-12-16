@@ -1,5 +1,23 @@
 #**CHANGELOG**#
 
+#### Version 0.10.5
+* improve startup behavior and reduce visual glitches whenever a dock or panel is first appearing
+* prepare code for Plasma LookNFeel packages
+* improve applets dragging behavior when changing their position in a dock or panel
+* ignore window states when kwin window manager is showing desktop effect
+* reposition vertical docks and panels when surrounding docks and panels are changing their maximum length independent of their visibility mode
+* reduce/increase maximum length through canvas ruler even when the minimum length equals the maximum length
+* do not update kwin borderless windows behavior when it is not really changed for the current running layouts structure
+* copied and duplicated docks or panels should not have AllBorders background enabled with no reason
+* ignore maxlength that equals zero for fillLength applets as Qt already doing
+* support 10bit systems under x11 and not show only a blurred area in that case
+* multiscreen: disable struts under x11 for docks or panels that stand between two or more different screens
+* tasks: reassign launchers group properly when a dock or panel view is recreated for any of reasons
+* tasks: identify vivaldi audio stream properly and show the audio badge in that case
+* cmd: support --add-dock through command line even when application is not already running
+* cmd: provide option to print all available templates
+* cmd: provide option to enable/disable application autostart
+
 #### Version 0.10.4
 * Feature Indicators: extend Indicators API in order for indicators to be able to animate their parent icon including when a task launcher is activated
 * Feature Indicators: expose more Icon properties to indicators
