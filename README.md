@@ -24,8 +24,8 @@ Installation
 ## Requirements
 
 We recommend to use at least:
- **Plasma >= 5.15.0**
- **Qt >= 5.12**
+ **Plasma >= 5.18.0**
+ **Qt >= 5.15**
 
 
 Minimum requirements:
@@ -37,9 +37,9 @@ Minimum requirements:
 
 **development packages for:**
 ```
- Qt5Core >= 5.12.0
- Qt5Gui >= 5.12.0
- Qt5Dbus >= 5.12.0
+ Qt5Core >= 5.15.0
+ Qt5Gui >= 5.15.0
+ Qt5Dbus >= 5.15.0
 
  KF5Plasma >= 5.71.0
  KF5PlasmaQuick >= 5.71.0
