@@ -5,6 +5,8 @@
 
 #cmakedefine KF5_VERSION_MINOR @KF5_VERSION_MINOR@
 
+#cmakedefine QT5_VERSION_MINOR @QT5_VERSION_MINOR@
+
 #cmakedefine VERSION "@VERSION@"
 
 #cmakedefine WEBSITE "@WEBSITE@"
