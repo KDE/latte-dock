@@ -35,14 +35,9 @@ WindowsTracker::WindowsTracker(Latte::View *parent)
         }
     });
 
-    connect(m_latteView->positioner(), &Positioner::startupFinished, this, [&]() {
-        //! During startup phase windows tracking is not enabled and does not
-        //! influence startup sequence at all. At the same time to windows tracking
-        //! takes place during startup and as such startup time is reduced
-        m_wm->windowsTracker()->addView(m_latteView);
-        emit allScreensChanged();
-        emit currentScreenChanged();
-    });
+    m_wm->windowsTracker()->addView(m_latteView);
+    emit allScreensChanged();
+    emit currentScreenChanged();
 }
 
 WindowsTracker::~WindowsTracker()
