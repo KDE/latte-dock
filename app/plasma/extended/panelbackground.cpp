@@ -6,7 +6,6 @@
 #include "panelbackground.h"
 
 // local
-#include <config-latte.h>
 #include "theme.h"
 
 // Qt
@@ -122,7 +121,7 @@ void PanelBackground::updateMaxOpacity(Plasma::Svg *svg)
     QImage center = svg->image(QSize(CENTERWIDTH, CENTERHEIGHT), element(svg, "center"));
 
     if (center.format() != QImage::Format_ARGB32_Premultiplied) {
-#if QT5_VERSION_MINOR >= 13
+#if QTGUI_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         center.convertTo(QImage::Format_ARGB32_Premultiplied);
 #else
         center = center.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -173,7 +172,7 @@ void PanelBackground::updateRoundnessFromMask(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
-#if QT5_VERSION_MINOR >= 13
+#if QTGUI_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
 #else
         corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -345,7 +344,7 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
-#if QT5_VERSION_MINOR >= 13
+#if QTGUI_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
 #else
         corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -510,7 +509,7 @@ void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
-#if QT5_VERSION_MINOR >= 13
+#if QTGUI_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
 #else
         corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
@@ -586,7 +585,7 @@ void PanelBackground::updateShadow(Plasma::Svg *svg)
     QImage border = svg->image(svg->elementSize(borderId), borderId);
 
     if (border.format() != QImage::Format_ARGB32_Premultiplied) {
-#if QT5_VERSION_MINOR >= 13
+#if QTGUI_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         border.convertTo(QImage::Format_ARGB32_Premultiplied);
 #else
         border = border.convertToFormat(QImage::Format_ARGB32_Premultiplied);
