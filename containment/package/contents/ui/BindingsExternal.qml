@@ -319,7 +319,10 @@ Item {
     Binding{
         target: latteView && latteView.windowsTracker ? latteView.windowsTracker : null
         property: "enabled"
-        when: latteView && latteView.windowsTracker && latteView.visibility
+        //! During startup phase windows tracking is not enabled and does not
+        //! influence startup sequence at all. At the same time no windows tracking
+        //! takes place during startup and as such startup time is reduced
+        when: latteView && latteView.windowsTracker && latteView.visibility && !root.inStartup
         value: (latteView && latteView.visibility
                 && !(latteView.visibility.mode === LatteCore.Types.AlwaysVisible /* Visibility */
                      || latteView.visibility.mode === LatteCore.Types.WindowsGoBelow

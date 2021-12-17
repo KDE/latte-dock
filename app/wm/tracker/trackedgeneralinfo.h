@@ -79,10 +79,10 @@ protected:
     Tracker::Windows *m_tracker{nullptr};
 
 private:
-    bool m_enabled;
-    bool m_activeWindowMaximized;
-    bool m_existsWindowActive;
-    bool m_existsWindowMaximized;
+    bool m_enabled{false};
+    bool m_activeWindowMaximized{false};
+    bool m_existsWindowActive{false};
+    bool m_existsWindowMaximized{false};
 
     bool m_isTrackingCurrentActivity{true};
 
