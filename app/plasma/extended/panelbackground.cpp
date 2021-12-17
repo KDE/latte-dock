@@ -11,6 +11,7 @@
 // Qt
 #include <QDebug>
 #include <QImage>
+#include <QtGlobal>
 
 #define CENTERWIDTH 100
 #define CENTERHEIGHT 50
