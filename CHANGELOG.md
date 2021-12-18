@@ -1,5 +1,9 @@
 #**CHANGELOG**#
 
+#### Version 0.10.6
+* fix build with Qt 5.12
+* initialize windows tracking properly
+
 #### Version 0.10.5
 * improve startup behavior and reduce visual glitches whenever a dock or panel is first appearing
 * prepare code for Plasma LookNFeel packages
