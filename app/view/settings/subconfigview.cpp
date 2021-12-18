@@ -19,8 +19,6 @@
 // KDE
 #include <KLocalizedContext>
 #include <KDeclarative/KDeclarative>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
 namespace Latte {
@@ -181,7 +179,7 @@ void SubConfigView::initParentView(Latte::View *view)
 
 void SubConfigView::requestActivate()
 {
-    if (KWindowSystem::isPlatformWayland() && m_shellSurface) {
+    if (KWindowSystem::isPlatformWayland()) {
         updateWaylandId();
         m_corona->wm()->requestActivate(m_waylandWindowId);
     } else {
@@ -233,14 +231,9 @@ void SubConfigView::syncSlideEffect()
     m_corona->wm()->slideWindow(*this, slideLocation);
 }
 
-KWayland::Client::PlasmaShellSurface *SubConfigView::surface()
-{
-    return m_shellSurface;
-}
-
 void SubConfigView::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
+/*    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
         return;
     }
@@ -271,14 +264,14 @@ void SubConfigView::setupWaylandIntegration()
 
         updateWaylandId();
         syncGeometry();
-    }
+    }*/
 }
 
 void SubConfigView::showEvent(QShowEvent *ev)
 {
     QQuickView::showEvent(ev);
 
-    if (m_shellSurface) {
+    if (KWindowSystem::isPlatformWayland()) {
         //! readd shadows after hiding because the window shadows are not shown again after first showing
         m_corona->dialogShadows()->addWindow(this, m_enabledBorders);
     }
@@ -286,7 +279,7 @@ void SubConfigView::showEvent(QShowEvent *ev)
 
 bool SubConfigView::event(QEvent *e)
 {
-    if (e->type() == QEvent::PlatformSurface) {
+  /*  if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
             switch (pe->surfaceEventType()) {
             case QPlatformSurfaceEvent::SurfaceCreated:
@@ -308,7 +301,7 @@ bool SubConfigView::event(QEvent *e)
                 break;
             }
         }
-    }
+    }*/
 
     return QQuickView::event(e);
 }

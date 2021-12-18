@@ -101,6 +101,7 @@ else()
         KF5::PlasmaQuick
         KF5::WaylandClient
         KF5::XmlGui
+        LayerShellQt::Interface
     )
 
 endif()

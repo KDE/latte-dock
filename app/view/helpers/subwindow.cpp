@@ -16,8 +16,6 @@
 #include <QTimer>
 
 // KDE
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
 // X11
@@ -139,10 +137,6 @@ SubWindow::~SubWindow()
     for (auto &c : connectionsHack) {
         disconnect(c);
     }
-
-    if (m_shellSurface) {
-        delete m_shellSurface;
-    }
 }
 
 int SubWindow::location()
@@ -179,11 +173,6 @@ Latte::WindowSystem::WindowId SubWindow::trackedWindowId()
     return m_trackedWindowId;
 }
 
-KWayland::Client::PlasmaShellSurface *SubWindow::surface()
-{
-    return m_shellSurface;
-}
-
 void SubWindow::fixGeometry()
 {
     if (!m_calculatedGeometry.isEmpty()
@@ -193,10 +182,6 @@ void SubWindow::fixGeometry()
         setMaximumSize(m_calculatedGeometry.size());
         resize(m_calculatedGeometry.size());
         setPosition(m_calculatedGeometry.x(), m_calculatedGeometry.y());
-
-        if (m_shellSurface) {
-            m_shellSurface->setPosition(m_calculatedGeometry.topLeft());
-        }
     }
 }
 
@@ -221,7 +206,7 @@ void SubWindow::startGeometryTimer()
 
 void SubWindow::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
+   /* if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         // already setup
         return;
     }
@@ -246,7 +231,7 @@ void SubWindow::setupWaylandIntegration()
         m_corona->wm()->setViewExtraFlags(m_shellSurface);
 
         m_shellSurface->setPanelTakesFocus(false);
-    }
+    }*/
 }
 
 bool SubWindow::event(QEvent *e)

@@ -29,7 +29,7 @@
 #include <KWayland/Client/surface.h>
 
 #if KF5_VERSION_MINOR >= 52
-#include <KWayland/Client/plasmavirtualdesktop.h>
+//#include <KWayland/Client/plasmavirtualdesktop.h>
 #endif
 
 // X11
@@ -64,7 +64,7 @@ public:
 
     ~GhostWindow() {
         m_waylandInterface->unregisterIgnoredWindow(m_winId);
-        delete m_shellSurface;
+      //  delete m_shellSurface;
     }
 
     void setGeometry(const QRect &rect) {
@@ -78,11 +78,11 @@ public:
         setMaximumSize(rect.size());
         resize(rect.size());
 
-        m_shellSurface->setPosition(rect.topLeft());
+       // m_shellSurface->setPosition(rect.topLeft());
     }
 
     void setupWaylandIntegration() {
-        using namespace KWayland::Client;
+    /*    using namespace KWayland::Client;
 
         if (m_shellSurface)
             return;
@@ -98,10 +98,10 @@ public:
         m_shellSurface->setSkipTaskbar(true);
         m_shellSurface->setPanelTakesFocus(false);
         m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
-        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);
+        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);*/
     }
 
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+  //  KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
     WindowSystem::WaylandInterface *m_waylandInterface{nullptr};
 
     //! geometry() function under wayland does not return nice results
@@ -151,7 +151,7 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
 }
 
 #if KF5_VERSION_MINOR >= 52
-void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
+/*void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
 {
     if (m_virtualDesktopManagement == virtualDesktopManagement) {
         return;
@@ -172,11 +172,11 @@ void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirt
             setCurrentDesktop(QString());
         }
     });
-}
+}*/
 
 void WaylandInterface::addDesktop(const QString &id, quint32 position)
 {
-    if (m_desktops.contains(id)) {
+  /*  if (m_desktops.contains(id)) {
         return;
     }
 
@@ -192,7 +192,7 @@ void WaylandInterface::addDesktop(const QString &id, quint32 position)
 
     if (desktop->isActive()) {
         setCurrentDesktop(id);
-    }
+    }*/
 }
 
 void WaylandInterface::setCurrentDesktop(QString desktop)
@@ -205,11 +205,6 @@ void WaylandInterface::setCurrentDesktop(QString desktop)
     emit currentDesktopChanged();
 }
 #endif
-
-KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
-{
-    return m_corona->waylandCoronaInterface();
-}
 
 //! Register Latte Ignored Windows in order to NOT be tracked
 void WaylandInterface::registerIgnoredWindow(WindowId wid)
@@ -237,17 +232,17 @@ void WaylandInterface::unregisterIgnoredWindow(WindowId wid)
 
 void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latte::Types::Visibility mode)
 {
-    KWayland::Client::PlasmaShellSurface *surface = qobject_cast<KWayland::Client::PlasmaShellSurface *>(view);
+/*    KWayland::Client::PlasmaShellSurface *surface = qobject_cast<KWayland::Client::PlasmaShellSurface *>(view);
     Latte::View *latteView = qobject_cast<Latte::View *>(view);
     Latte::ViewPart::SubConfigView *configView = qobject_cast<Latte::ViewPart::SubConfigView *>(view);
 
     WindowId winId;
 
     if (latteView) {
-        surface = latteView->surface();
+        //surface = latteView->surface();
         winId = latteView->positioner()->trackedWindowId();
     } else if (configView) {
-        surface = configView->surface();
+        //surface = configView->surface();
         winId = configView->trackedWindowId();
     }
 
@@ -294,12 +289,12 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
         QTimer::singleShot(50, [this, surface]() {
             surface->setRole(PlasmaShellSurface::Role::ToolTip);
         });
-    }
+    }*/
 }
 
 void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
 {
-    if (!m_ghostWindows.contains(view.winId())) {
+ /*   if (!m_ghostWindows.contains(view.winId())) {
         m_ghostWindows[view.winId()] = new Private::GhostWindow(this);
     }
 
@@ -318,13 +313,13 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
 
     default:
         break;
-    }
+    }*/
 }
 
 void WaylandInterface::switchToNextVirtualDesktop()
 {
 #if KF5_VERSION_MINOR >= 52
-    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+  /*  if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
 
@@ -343,14 +338,14 @@ void WaylandInterface::switchToNextVirtualDesktop()
 
     if (desktopObj) {
         desktopObj->requestActivate();
-    }
+    }*/
 #endif
 }
 
 void WaylandInterface::switchToPreviousVirtualDesktop()
 {
 #if KF5_VERSION_MINOR >= 52
-    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+  /*  if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
 
@@ -369,7 +364,7 @@ void WaylandInterface::switchToPreviousVirtualDesktop()
 
     if (desktopObj) {
         desktopObj->requestActivate();
-    }
+    }*/
 #endif
 }
 
@@ -481,7 +476,7 @@ void WaylandInterface::setActiveEdge(QWindow *view, bool active)
         return;
     }
 
-    if (window->parentView()->surface() && window->parentView()->visibility()
+    /*if (window->parentView()->surface() && window->parentView()->visibility()
             && (window->parentView()->visibility()->mode() == Types::DodgeActive
                 || window->parentView()->visibility()->mode() == Types::DodgeMaximized
                 || window->parentView()->visibility()->mode() == Types::DodgeAllWindows
@@ -493,7 +488,7 @@ void WaylandInterface::setActiveEdge(QWindow *view, bool active)
             window->hideWithMask();
             window->surface()->requestShowAutoHidingPanel();
         }
-    }
+    }*/
 }
 
 void WaylandInterface::setFrameExtents(QWindow *view, const QMargins &extents)
@@ -603,6 +598,10 @@ AppData WaylandInterface::appDataFor(WindowId wid)
 
 KWayland::Client::PlasmaWindow *WaylandInterface::windowFor(WindowId wid)
 {
+    if (!m_windowManagement) {
+        return nullptr;
+    }
+
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&wid](PlasmaWindow * w) noexcept {
             return w->isValid() && w->internalId() == wid;
 });
@@ -628,6 +627,10 @@ QIcon WaylandInterface::iconFor(WindowId wid)
 
 WindowId WaylandInterface::winIdFor(QString appId, QString title)
 {
+    if (!m_windowManagement) {
+        return -1;
+    }
+
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&appId, &title](PlasmaWindow * w) noexcept {
         return w->isValid() && w->appId() == appId && w->title().startsWith(title);
     });
@@ -641,6 +644,10 @@ WindowId WaylandInterface::winIdFor(QString appId, QString title)
 
 WindowId WaylandInterface::winIdFor(QString appId, QRect geometry)
 {
+    if (!m_windowManagement) {
+        return -1;
+    }
+
     auto it = std::find_if(m_windowManagement->windows().constBegin(), m_windowManagement->windows().constEnd(), [&appId, &geometry](PlasmaWindow * w) noexcept {
         return w->isValid() && w->appId() == appId && w->geometry() == geometry;
     });

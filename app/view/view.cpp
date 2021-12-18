@@ -47,8 +47,6 @@
 // KDe
 #include <KActionCollection>
 #include <KActivities/Consumer>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
 // Plasma
@@ -434,7 +432,7 @@ void View::availableScreenRectChangedFromSlot(View *origin)
 
 void View::setupWaylandIntegration()
 {
-    if (m_shellSurface)
+   /* if (m_shellSurface)
         return;
 
     if (Latte::Corona *c = qobject_cast<Latte::Corona *>(corona())) {
@@ -457,13 +455,13 @@ void View::setupWaylandIntegration()
         if (m_positioner) {
             m_positioner->updateWaylandId();
         }
-    }
+    }*/
 }
 
-KWayland::Client::PlasmaShellSurface *View::surface()
+/*KWayland::Client::PlasmaShellSurface *View::surface()
 {
     return m_shellSurface;
-}
+}*/
 
 //! the main function which decides if this dock is at the
 //! correct screen
@@ -1527,31 +1525,8 @@ bool View::event(QEvent *e)
             break;
 
         case QEvent::PlatformSurface:
-            if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
-                switch (pe->surfaceEventType()) {
-                case QPlatformSurfaceEvent::SurfaceCreated:
-                    setupWaylandIntegration();
-
-                    if (m_shellSurface) {
-                        //! immediateSyncGeometry helps avoiding binding loops from containment qml side
-                        m_positioner->immediateSyncGeometry();
-                        m_effects->updateShadows();
-                    }
-
-                    break;
-
-                case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    if (m_shellSurface) {
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
-                        qDebug() << "WAYLAND dock window surface was deleted...";
-                        m_effects->clearShadows();
-                    }
-
-                    break;
-                }
-            }
-
+        case QEvent::Expose:
+            return QQuickWindow::event(e);
             break;
 
         case QEvent::Show:

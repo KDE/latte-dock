@@ -29,12 +29,6 @@ class FrameSvg;
 class Types;
 }
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
-
 namespace Latte {
 class Corona;
 class View;

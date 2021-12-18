@@ -17,11 +17,6 @@
 #include <QQuickView>
 #include <QScreen>
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
 
 namespace Latte {
 
@@ -68,7 +63,6 @@ private:
     Plasma::FrameSvg::EnabledBorders m_borders{Plasma::FrameSvg::TopBorder | Plasma::FrameSvg::BottomBorder};
 
     Latte::WindowSystem::WindowId m_trackedWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 
     Latte::Corona *m_corona{nullptr};
 };

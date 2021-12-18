@@ -856,9 +856,9 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     m_view->setPosition(position);
 
-    if (m_view->surface()) {
-        m_view->surface()->setPosition(position);
-    }
+    //if (m_view->surface()) {
+      //  m_view->surface()->setPosition(position);
+   // }
 }
 
 int Positioner::slideOffset() const

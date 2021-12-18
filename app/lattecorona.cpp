@@ -76,8 +76,9 @@
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>
-#include <KWayland/Client/plasmashell.h>
+//#include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/plasmawindowmanagement.h>
+
 
 namespace Latte {
 
@@ -312,10 +313,10 @@ void Corona::setupWaylandIntegration()
     Registry *registry{new Registry(this)};
     registry->create(connection);
 
-    connect(registry, &Registry::plasmaShellAnnounced, this
+/*    connect(registry, &Registry::plasmaShellAnnounced, this
             , [this, registry](quint32 name, quint32 version) {
         m_waylandCorona = registry->createPlasmaShell(name, version, this);
-    });
+    });*/
 
     QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
                      [this, registry](quint32 name, quint32 version) {
@@ -327,7 +328,7 @@ void Corona::setupWaylandIntegration()
             wI->initWindowManagement(pwm);
         }
     });
-
+/*
 #if KF5_VERSION_MINOR >= 52
     QObject::connect(registry, &KWayland::Client::Registry::plasmaVirtualDesktopManagementAnnounced,
                      [this, registry] (quint32 name, quint32 version) {
@@ -340,14 +341,9 @@ void Corona::setupWaylandIntegration()
         }
     });
 #endif
-
+*/
     registry->setup();
     connection->roundtrip();
-}
-
-KWayland::Client::PlasmaShell *Corona::waylandCoronaInterface() const
-{
-    return m_waylandCorona;
 }
 
 void Corona::cleanConfig()

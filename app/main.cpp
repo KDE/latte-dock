@@ -35,6 +35,7 @@
 #include <KAboutData>
 #include <KDBusService>
 #include <KQuickAddons/QtQuickSettings>
+#include <LayerShellQt/Shell>
 
 //! COLORS
 #define CNORMAL  "\e[0m"
@@ -67,6 +68,10 @@ int main(int argc, char **argv)
     } else {
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
+
+
+    const QByteArray oldShellIntegration = qgetenv("QT_WAYLAND_SHELL_INTEGRATION");
+    LayerShellQt::Shell::useLayerShell();
 
     QQuickWindow::setDefaultAlphaBuffer(true);
 
@@ -419,6 +424,9 @@ int main(int argc, char **argv)
 
     Latte::Corona corona(defaultLayoutOnStartup, layoutNameOnStartup, addViewTemplateNameOnStartup, memoryUsage);
     KDBusService service(KDBusService::Unique);
+
+    qDebug() << oldShellIntegration;
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", oldShellIntegration);
 
     return app.exec();
 }

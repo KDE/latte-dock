@@ -15,11 +15,6 @@
 #include <QQuickView>
 #include <QTimer>
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
 
 namespace Latte {
 class Corona;
@@ -51,8 +46,6 @@ public:
 
     Latte::View *parentView();
     Latte::WindowSystem::WindowId trackedWindowId();
-
-    KWayland::Client::PlasmaShellSurface *surface();
 
 signals:
     void forcedShown(); //[workaround] forced shown to avoid a KWin issue that hides windows when activities are stopped
@@ -105,7 +98,6 @@ protected:
     QPointer<Latte::Corona> m_corona;
 
     Latte::WindowSystem::WindowId m_trackedWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
 };
 
 }

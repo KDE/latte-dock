@@ -17,13 +17,9 @@
 #include <QObject>
 
 // KDE
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/plasmawindowmanagement.h>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowInfo>
 #include <KWindowEffects>
+#include <KWayland/Client/plasmawindowmanagement.h>
 
 
 namespace Latte {
@@ -94,7 +90,7 @@ public:
 
 #if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
-    void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
+    //void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
 #endif
 
 private slots:
@@ -113,7 +109,6 @@ private:
     void untrackWindow(KWayland::Client::PlasmaWindow *w);
 
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid);
-    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
 #if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
@@ -129,7 +124,7 @@ private:
 
 #if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
-    KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
+    //KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
     QStringList m_desktops;
 #endif
 

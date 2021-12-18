@@ -22,8 +22,6 @@
 #include <KLocalizedContext>
 #include <KDeclarative/KDeclarative>
 #include <KWindowSystem>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 
 // Plasma
 #include <Plasma/Package>
@@ -66,11 +64,6 @@ InfoView::~InfoView()
     PanelShadows::self()->removeWindow(this);
 
     qDebug() << "InfoView deleting ...";
-
-    if (m_shellSurface) {
-        delete m_shellSurface;
-        m_shellSurface = nullptr;
-    }
 }
 
 void InfoView::init()
@@ -123,10 +116,6 @@ void InfoView::syncGeometry()
     QPoint position{sGeometry.center().x() - size.width() / 2, sGeometry.center().y() - size.height() / 2 };
 
     setPosition(position);
-
-    if (m_shellSurface) {
-        m_shellSurface->setPosition(position);
-    }
 }
 
 void InfoView::showEvent(QShowEvent *ev)
@@ -162,7 +151,7 @@ void InfoView::updateWaylandId()
 
 void InfoView::setupWaylandIntegration()
 {
-    if (m_shellSurface) {
+/*   if (m_shellSurface) {
         // already setup
         return;
     }
@@ -185,12 +174,12 @@ void InfoView::setupWaylandIntegration()
 
         m_shellSurface = interface->createSurface(s, this);
         m_corona->wm()->setViewExtraFlags(m_shellSurface);
-    }
+    }*/
 }
 
 bool InfoView::event(QEvent *e)
 {
-    if (e->type() == QEvent::PlatformSurface) {
+ /*   if (e->type() == QEvent::PlatformSurface) {
         if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
             switch (pe->surfaceEventType()) {
                 case QPlatformSurfaceEvent::SurfaceCreated:
@@ -212,7 +201,7 @@ bool InfoView::event(QEvent *e)
                     break;
             }
         }
-    }
+    }*/
 
     return QQuickWindow::event(e);
 }
