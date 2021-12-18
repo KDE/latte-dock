@@ -48,6 +48,7 @@
 #include <KActionCollection>
 #include <KActivities/Consumer>
 #include <KWindowSystem>
+#include <LayerShellQt/Window>
 
 // Plasma
 #include <Plasma/Containment>
@@ -73,6 +74,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
 {
     //this is disabled because under wayland breaks Views positioning
     //setVisible(false);
+
+    setupWaylandIntegration();
 
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
@@ -432,6 +435,10 @@ void View::availableScreenRectChangedFromSlot(View *origin)
 
 void View::setupWaylandIntegration()
 {
+  //  auto layerWindow = LayerShellQt::Window::get(this);
+  //  layerWindow->setAnchors(LayerShellQt::Window::AnchorBottom);
+  //  layerWindow->setLayer(LayerShellQt::Window::LayerTop);
+
    /* if (m_shellSurface)
         return;
 
@@ -1526,7 +1533,7 @@ bool View::event(QEvent *e)
 
         case QEvent::PlatformSurface:
         case QEvent::Expose:
-            return QQuickWindow::event(e);
+          //  return QQuickWindow::event(e);
             break;
 
         case QEvent::Show:

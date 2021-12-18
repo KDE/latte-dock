@@ -69,7 +69,6 @@ int main(int argc, char **argv)
         QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
 
-
     const QByteArray oldShellIntegration = qgetenv("QT_WAYLAND_SHELL_INTEGRATION");
     LayerShellQt::Shell::useLayerShell();
 
@@ -422,11 +421,11 @@ int main(int argc, char **argv)
     KCrash::setDrKonqiEnabled(true);
     KCrash::setFlags(KCrash::AutoRestart | KCrash::AlwaysDirectly);
 
+    qDebug() << "Wayland Shell Integration:" << oldShellIntegration;
+    qputenv("QT_WAYLAND_SHELL_INTEGRATION", oldShellIntegration);
+
     Latte::Corona corona(defaultLayoutOnStartup, layoutNameOnStartup, addViewTemplateNameOnStartup, memoryUsage);
     KDBusService service(KDBusService::Unique);
-
-    qDebug() << oldShellIntegration;
-    qputenv("QT_WAYLAND_SHELL_INTEGRATION", oldShellIntegration);
 
     return app.exec();
 }

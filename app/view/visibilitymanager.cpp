@@ -1119,6 +1119,7 @@ void VisibilityManager::createEdgeGhostWindow()
 {
     if (!m_edgeGhostWindow) {
         m_edgeGhostWindow = new ScreenEdgeGhostWindow(m_latteView);
+        m_edgeGhostWindow->show();
 
         connect(m_edgeGhostWindow, &ScreenEdgeGhostWindow::containsMouseChanged, this, [ = ](bool contains) {
             if (contains) {
@@ -1173,6 +1174,7 @@ void VisibilityManager::createFloatingGapWindow()
 {
     if (!m_floatingGapWindow) {
         m_floatingGapWindow = new FloatingGapWindow(m_latteView);
+        m_floatingGapWindow->show();
 
         connect(m_floatingGapWindow, &FloatingGapWindow::asyncContainsMouseChanged, this, [ = ](bool contains) {
             if (contains) {

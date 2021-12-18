@@ -106,11 +106,10 @@ Corona::Corona(bool defaultLayoutOnStartup, QString layoutNameOnStartUp, QString
     //! create the window manager
     if (KWindowSystem::isPlatformWayland()) {
         m_wm = new WindowSystem::WaylandInterface(this);
+        setupWaylandIntegration();
     } else {
         m_wm = new WindowSystem::XWindowInterface(this);
     }
-
-    setupWaylandIntegration();
 
     KPackage::Package package(new Latte::Package(this));
 
@@ -313,9 +312,9 @@ void Corona::setupWaylandIntegration()
     Registry *registry{new Registry(this)};
     registry->create(connection);
 
-/*    connect(registry, &Registry::plasmaShellAnnounced, this
+    /*connect(registry, &Registry::plasmaShellAnnounced, this
             , [this, registry](quint32 name, quint32 version) {
-        m_waylandCorona = registry->createPlasmaShell(name, version, this);
+       m_waylandCorona = registry->createPlasmaShell(name, version, this);
     });*/
 
     QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
@@ -325,6 +324,7 @@ void Corona::setupWaylandIntegration()
         WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
 
         if (wI) {
+            qDebug() << "org.kde.pwm ::: created...";
             wI->initWindowManagement(pwm);
         }
     });

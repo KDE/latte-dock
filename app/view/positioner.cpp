@@ -25,6 +25,7 @@
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
+#include <LayerShellQt/Window>
 
 #define RELOCATIONSHOWINGEVENT "viewInRelocationShowing"
 
@@ -853,6 +854,13 @@ void Positioner::updatePosition(QRect availableScreenRect)
             m_validGeometry.moveTop(position.y());
         }
     }
+
+    auto layerWindow = LayerShellQt::Window::get(m_view);
+    layerWindow->setAnchors(LayerShellQt::Window::AnchorBottom);
+    layerWindow->setLayer(LayerShellQt::Window::LayerTop);
+    layerWindow->setMargins({0, 100, 0, 0});
+
+    qDebug() << "org.kde.layer ::: " << layerWindow->anchors() << " __ " << layerWindow->layer() << " :: " << m_validGeometry;
 
     m_view->setPosition(position);
 

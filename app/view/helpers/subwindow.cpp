@@ -119,7 +119,8 @@ SubWindow::SubWindow(Latte::View *view, QString debugType) :
     }
 
     setScreen(m_latteView->screen());
-    show();
+    // disabled because it creates a major protocol error for Wayland::Layer Shell
+    // show();
     hideWithMask();
 }
 
