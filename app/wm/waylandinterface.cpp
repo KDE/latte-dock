@@ -29,7 +29,7 @@
 #include <KWayland/Client/surface.h>
 
 #if KF5_VERSION_MINOR >= 52
-//#include <KWayland/Client/plasmavirtualdesktop.h>
+#include <KWayland/Client/plasmavirtualdesktop.h>
 #endif
 
 // X11
@@ -151,7 +151,7 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
 }
 
 #if KF5_VERSION_MINOR >= 52
-/*void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
+void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
 {
     if (m_virtualDesktopManagement == virtualDesktopManagement) {
         return;
@@ -172,11 +172,11 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
             setCurrentDesktop(QString());
         }
     });
-}*/
+}
 
 void WaylandInterface::addDesktop(const QString &id, quint32 position)
 {
-  /*  if (m_desktops.contains(id)) {
+    if (m_desktops.contains(id)) {
         return;
     }
 
@@ -192,7 +192,7 @@ void WaylandInterface::addDesktop(const QString &id, quint32 position)
 
     if (desktop->isActive()) {
         setCurrentDesktop(id);
-    }*/
+    }
 }
 
 void WaylandInterface::setCurrentDesktop(QString desktop)
@@ -319,7 +319,7 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
 void WaylandInterface::switchToNextVirtualDesktop()
 {
 #if KF5_VERSION_MINOR >= 52
-  /*  if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
 
@@ -338,14 +338,14 @@ void WaylandInterface::switchToNextVirtualDesktop()
 
     if (desktopObj) {
         desktopObj->requestActivate();
-    }*/
+    }
 #endif
 }
 
 void WaylandInterface::switchToPreviousVirtualDesktop()
 {
 #if KF5_VERSION_MINOR >= 52
-  /*  if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
+    if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
 
@@ -364,7 +364,7 @@ void WaylandInterface::switchToPreviousVirtualDesktop()
 
     if (desktopObj) {
         desktopObj->requestActivate();
-    }*/
+    }
 #endif
 }
 

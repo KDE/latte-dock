@@ -855,18 +855,14 @@ void Positioner::updatePosition(QRect availableScreenRect)
         }
     }
 
-    auto layerWindow = LayerShellQt::Window::get(m_view);
-    layerWindow->setAnchors(LayerShellQt::Window::AnchorBottom);
-    layerWindow->setLayer(LayerShellQt::Window::LayerTop);
-    layerWindow->setMargins({0, 100, 0, 0});
-
-    qDebug() << "org.kde.layer ::: " << layerWindow->anchors() << " __ " << layerWindow->layer() << " :: " << m_validGeometry;
+    if (KWindowSystem::isPlatformWayland()) {
+        auto layerWindow = LayerShellQt::Window::get(m_view);
+        layerWindow->setAnchors(LayerShellQt::Window::AnchorBottom);
+        layerWindow->setLayer(LayerShellQt::Window::LayerTop);
+        qDebug() << "org.kde.layer ::: " << layerWindow->anchors() << " __ " << layerWindow->layer() << " :: " << m_validGeometry;
+    }
 
     m_view->setPosition(position);
-
-    //if (m_view->surface()) {
-      //  m_view->surface()->setPosition(position);
-   // }
 }
 
 int Positioner::slideOffset() const

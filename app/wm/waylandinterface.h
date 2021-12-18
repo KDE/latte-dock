@@ -19,8 +19,11 @@
 // KDE
 #include <KWindowInfo>
 #include <KWindowEffects>
-#include <KWayland/Client/plasmawindowmanagement.h>
 
+#include <KWayland/Client/plasmawindowmanagement.h>
+#if KF5_VERSION_MINOR >= 52
+#include <KWayland/Client/plasmavirtualdesktop.h>
+#endif
 
 namespace Latte {
 class Corona;
@@ -90,7 +93,7 @@ public:
 
 #if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
-    //void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
+    void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
 #endif
 
 private slots:
@@ -124,7 +127,7 @@ private:
 
 #if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
-    //KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
+    KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
     QStringList m_desktops;
 #endif
 

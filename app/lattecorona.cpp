@@ -328,7 +328,7 @@ void Corona::setupWaylandIntegration()
             wI->initWindowManagement(pwm);
         }
     });
-/*
+
 #if KF5_VERSION_MINOR >= 52
     QObject::connect(registry, &KWayland::Client::Registry::plasmaVirtualDesktopManagementAnnounced,
                      [this, registry] (quint32 name, quint32 version) {
@@ -341,7 +341,7 @@ void Corona::setupWaylandIntegration()
         }
     });
 #endif
-*/
+
     registry->setup();
     connection->roundtrip();
 }
