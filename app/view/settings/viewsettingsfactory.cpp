@@ -55,6 +55,7 @@ ViewPart::PrimaryConfigView *ViewSettingsFactory::primaryConfigView(Latte::View 
         view->containment()->setUserConfiguring(true);
 
         m_primaryConfigView = new ViewPart::PrimaryConfigView(view);
+        m_primaryConfigView->show();
     } else {
         auto previousView = m_primaryConfigView->parentView();
 

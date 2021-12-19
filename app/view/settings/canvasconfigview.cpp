@@ -84,7 +84,7 @@ void CanvasConfigView::syncGeometry()
 
     m_geometryWhenVisible = geometry;
 
-    setPosition(geometry.topLeft());
+    m_corona->wm()->setWindowPosition(this, m_latteView->location(), m_geometryWhenVisible);
 
     setMaximumSize(geometry.size());
     setMinimumSize(geometry.size());

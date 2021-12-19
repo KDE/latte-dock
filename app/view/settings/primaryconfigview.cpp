@@ -58,7 +58,7 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
 
     connect(this, &QQuickView::statusChanged, [&](QQuickView::Status status) {
         if (status == QQuickView::Ready) {
-            updateEffects();
+     //       updateEffects();
         }
     });
 
@@ -87,6 +87,7 @@ PrimaryConfigView::PrimaryConfigView(Latte::View *view)
 
     setParentView(view);
     init();
+    instantUpdateAvailableScreenGeometry();
 }
 
 PrimaryConfigView::~PrimaryConfigView()
@@ -108,7 +109,7 @@ void PrimaryConfigView::init()
 
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
-    syncGeometry();
+    //syncGeometry();
 }
 
 Config::IndicatorUiManager *PrimaryConfigView::indicatorUiManager()
@@ -178,6 +179,7 @@ void PrimaryConfigView::showCanvasWindow()
 {
     if (!m_canvasConfigView) {
         m_canvasConfigView = new CanvasConfigView(m_latteView, this);
+        m_canvasConfigView->show();
     }
 
     if (m_canvasConfigView && !m_canvasConfigView->isVisible()){
@@ -202,6 +204,7 @@ void PrimaryConfigView::showSecondaryWindow()
 
     if (!m_secConfigView) {
         m_secConfigView = new SecondaryConfigView(m_latteView, this);
+        m_secConfigView->show();
     }
 
     if (m_secConfigView && !m_secConfigView->isVisible()){
@@ -265,7 +268,7 @@ void PrimaryConfigView::initParentView(Latte::View *view)
     });
 
     viewconnections << connect(m_corona->universalSettings(), &Latte::UniversalSettings::inAdvancedModeForEditSettingsChanged, m_latteView, &Latte::View::inSettingsAdvancedModeChanged);
-    viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);   
+    viewconnections << connect(m_latteView->containment(), &Plasma::Containment::immutabilityChanged, this, &PrimaryConfigView::immutabilityChanged);
 
     m_originalByPassWM = m_latteView->byPassWM();
     m_originalMode = m_latteView->visibility()->mode();
@@ -389,7 +392,7 @@ void PrimaryConfigView::syncGeometry()
 
     updateEnabledBorders();
 
-    auto geometry = QRect(position.x(), position.y(), size.width(), size.height());
+    auto geometry = QRect(position.x(), position.y(), qMax(10, size.width()), qMax(10, size.height()));
 
     QRect winGeometry(x(), y(), width(), height());
 
@@ -399,11 +402,12 @@ void PrimaryConfigView::syncGeometry()
 
     m_geometryWhenVisible = geometry;
 
-    setPosition(position);
+    setMaximumSize(geometry.size());
+    setMinimumSize(geometry.size());
+    resize(geometry.size());
 
-    setMaximumSize(size);
-    setMinimumSize(size);
-    resize(size);
+    qDebug() << "org.kde.layer ::: SETTING PRIMARY CONFIG WINDOW :::: " << m_geometryWhenVisible << " avail geometry :: " << m_availableScreenGeometry;
+    m_corona->wm()->setWindowPosition(this, m_latteView->location(), m_geometryWhenVisible);
 
     emit m_latteView->configWindowGeometryChanged();
 }
@@ -642,9 +646,10 @@ void PrimaryConfigView::updateEffects()
     QRegion fixedMask = mask.isNull() ? QRegion(QRect(0,0,width(),height())) : mask;
 
     if (!fixedMask.isEmpty()) {
-        setMask(fixedMask);
+        // needs testing because under layershell it creates an major error
+     //   setMask(fixedMask);
     } else {
-        setMask(QRegion());
+      //  setMask(QRegion());
     }
 
     if (KWindowSystem::compositingActive()) {

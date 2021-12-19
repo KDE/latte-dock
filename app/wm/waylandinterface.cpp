@@ -512,12 +512,12 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
         anchors = LayerShellQt::Window::AnchorTop;
         anchors = anchors | LayerShellQt::Window::AnchorRight;
         margins.setTop(geometry.top() - window->screen()->geometry().top());
-        margins.setRight(geometry.right() - window->screen()->geometry().right());
+        margins.setRight(window->screen()->geometry().right() - geometry.right());
     } else {
         // bottom case
         anchors = LayerShellQt::Window::AnchorBottom;
         anchors = anchors | LayerShellQt::Window::AnchorLeft;
-        margins.setBottom(geometry.bottom() - window->screen()->geometry().bottom());
+        margins.setBottom(window->screen()->geometry().bottom() - geometry.bottom());
         margins.setLeft(geometry.left() - window->screen()->geometry().left());
     }
 
