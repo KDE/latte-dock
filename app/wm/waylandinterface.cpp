@@ -424,6 +424,9 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
     QMargins margins;
     LayerShellQt::Window::Anchors anchors = 0;
 
+    //! WorkAround: Because kwin_wayland layershell suppport is working nicely only for windows
+    //! that are anchored on TopEdge. Anything related to Bottom and Right could fail regularly in
+    //! its positioning
     anchors = LayerShellQt::Window::AnchorTop;
     anchors = anchors | LayerShellQt::Window::AnchorLeft;
     margins.setTop(geometry.top() - window->screen()->geometry().top());
