@@ -855,7 +855,8 @@ void Positioner::updatePosition(QRect availableScreenRect)
         }
     }
 
-    m_corona->wm()->setWindowPosition(m_view, m_view->location(), m_validGeometry);
+    QRect currentGeometry{position.x(), position.y(), m_validGeometry.width(), m_validGeometry.height()};
+    m_corona->wm()->setWindowPosition(m_view, m_view->location(), currentGeometry);
 }
 
 int Positioner::slideOffset() const
