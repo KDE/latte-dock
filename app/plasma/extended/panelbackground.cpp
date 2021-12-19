@@ -11,6 +11,7 @@
 // Qt
 #include <QDebug>
 #include <QImage>
+#include <QtGlobal>
 
 #define CENTERWIDTH 100
 #define CENTERHEIGHT 50
@@ -121,7 +122,11 @@ void PanelBackground::updateMaxOpacity(Plasma::Svg *svg)
     QImage center = svg->image(QSize(CENTERWIDTH, CENTERHEIGHT), element(svg, "center"));
 
     if (center.format() != QImage::Format_ARGB32_Premultiplied) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         center.convertTo(QImage::Format_ARGB32_Premultiplied);
+#else
+        center = center.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+#endif
     }
 
     float alphasum{0};
@@ -168,7 +173,11 @@ void PanelBackground::updateRoundnessFromMask(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
+#else
+        corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+#endif
     }
 
     int baseRow = (topLeftCorner ? corner.height()-1 : 0);
@@ -336,7 +345,11 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
+#else
+        corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+#endif
     }
 
     int baseRow = (topLeftCorner ? corner.height()-1 : 0);
@@ -497,7 +510,11 @@ void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
     QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
+#else
+        corner = corner.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+#endif
     }
 
     int discovRow = (m_location == Plasma::Types::LeftEdge ? corner.height()-1 : 0);
@@ -569,7 +586,11 @@ void PanelBackground::updateShadow(Plasma::Svg *svg)
     QImage border = svg->image(svg->elementSize(borderId), borderId);
 
     if (border.format() != QImage::Format_ARGB32_Premultiplied) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
         border.convertTo(QImage::Format_ARGB32_Premultiplied);
+#else
+        border = border.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+#endif
     }
 
     //! find shadow size through, plasma theme

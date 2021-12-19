@@ -210,8 +210,9 @@
     <binary>latte-dock</binary>
     <library>liblatte2plugin.so</library>
   </provides>
+  <launchable type="desktop-id">org.kde.latte-dock.desktop</launchable>
   <releases>
-​    <release version="0.9.1" date="2019-08-04"/>
+    <release version="0.9.1" date="2019-08-04"/>
     <release version="0.9.0" date="2019-07-28"/>
     <release version="0.8.9" date="2019-06-28"/>
     <release version="0.8.8" date="2019-04-14"/>
@@ -227,10 +228,10 @@
     <release version="0.7.4" date="2018-03-05"/>
     <release version="0.7.3" date="2018-01-07"/>
     <release version="0.7.2" date="2017-11-12"/>
-​    <release version="0.7.1" date="2017-08-31"/>
-​    <release version="0.7.0" date="2017-08-11"/>
-​    <release version="0.6.2" date="2017-05-09"/>
-​    <release version="0.6.1" date="2017-05-05"/>
-​    <release version="0.6.0" date="2017-04-02"/>
-​  </releases>
+    <release version="0.7.1" date="2017-08-31"/>
+    <release version="0.7.0" date="2017-08-11"/>
+    <release version="0.6.2" date="2017-05-09"/>
+    <release version="0.6.1" date="2017-05-05"/>
+    <release version="0.6.0" date="2017-04-02"/>
+  </releases>
 </component>
