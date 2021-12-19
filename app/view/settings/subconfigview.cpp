@@ -75,7 +75,7 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
 
     connections << connect(&m_showTimer, &QTimer::timeout, this, [this]() {
         syncSlideEffect();
-       // show();
+        show();
     });
 }
 

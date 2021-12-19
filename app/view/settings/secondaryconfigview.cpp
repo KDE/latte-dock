@@ -203,12 +203,7 @@ void SecondaryConfigView::focusOutEvent(QFocusEvent *ev)
 
 void SecondaryConfigView::hideConfigWindow()
 {
-    if (KWindowSystem::isPlatformWayland()) {
-        //!NOTE: Avoid crash in wayland environment with qt5.9
-        close();
-    } else {
-        hide();
-    }
+    hide();
 }
 
 void SecondaryConfigView::updateEffects()

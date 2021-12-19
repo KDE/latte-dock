@@ -503,7 +503,12 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
     QMargins margins;
     LayerShellQt::Window::Anchors anchors = 0;
 
-    if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
+    anchors = LayerShellQt::Window::AnchorTop;
+    anchors = anchors | LayerShellQt::Window::AnchorLeft;
+    margins.setTop(geometry.top() - window->screen()->geometry().top());
+    margins.setLeft(geometry.left() - window->screen()->geometry().left());
+
+    /*if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
         anchors = LayerShellQt::Window::AnchorTop;
         anchors = anchors | LayerShellQt::Window::AnchorLeft;
         margins.setTop(geometry.top() - window->screen()->geometry().top());
@@ -519,7 +524,9 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
         anchors = anchors | LayerShellQt::Window::AnchorLeft;
         margins.setBottom(window->screen()->geometry().bottom() - geometry.bottom());
         margins.setLeft(geometry.left() - window->screen()->geometry().left());
-    }
+        //! when window changes height the kwin wm is not taking into account the anchoring.
+        //! Such an example is when PrimaryConfigView changes from normal to advanced mode and back
+    }*/
 
     layerWindow->setAnchors(anchors);
     layerWindow->setMargins(margins);

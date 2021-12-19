@@ -109,7 +109,7 @@ void PrimaryConfigView::init()
 
     auto source = QUrl::fromLocalFile(m_latteView->containment()->corona()->kPackage().filePath(tempFilePath));
     setSource(source);
-    //syncGeometry();
+    syncGeometry();
 }
 
 Config::IndicatorUiManager *PrimaryConfigView::indicatorUiManager()
@@ -164,13 +164,7 @@ void PrimaryConfigView::showConfigWindow()
 
 void PrimaryConfigView::hideConfigWindow()
 {
-    if (KWindowSystem::isPlatformWayland()) {
-        //!NOTE: Avoid crash in wayland environment with qt5.9
-        close();
-    } else {
-        hide();
-    }
-
+    hide();
     hideCanvasWindow();
     hideSecondaryWindow();
 }
@@ -402,12 +396,12 @@ void PrimaryConfigView::syncGeometry()
 
     m_geometryWhenVisible = geometry;
 
+    qDebug() << "org.kde.layer ::: SETTING PRIMARY CONFIG WINDOW :::: " << m_geometryWhenVisible << " avail geometry :: " << m_availableScreenGeometry;
+    m_corona->wm()->setWindowPosition(this, m_latteView->location(), m_geometryWhenVisible);
+
     setMaximumSize(geometry.size());
     setMinimumSize(geometry.size());
     resize(geometry.size());
-
-    qDebug() << "org.kde.layer ::: SETTING PRIMARY CONFIG WINDOW :::: " << m_geometryWhenVisible << " avail geometry :: " << m_availableScreenGeometry;
-    m_corona->wm()->setWindowPosition(this, m_latteView->location(), m_geometryWhenVisible);
 
     emit m_latteView->configWindowGeometryChanged();
 }

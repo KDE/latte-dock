@@ -179,12 +179,7 @@ void CanvasConfigView::focusOutEvent(QFocusEvent *ev)
 
 void CanvasConfigView::hideConfigWindow()
 {
-    if (KWindowSystem::isPlatformWayland()) {
-        //!NOTE: Avoid crash in wayland environment with qt5.9
-        close();
-    } else {
-        hide();
-    }
+    hide();
 }
 
 //!BEGIN borders
