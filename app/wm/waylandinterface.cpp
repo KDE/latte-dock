@@ -224,12 +224,45 @@ void WaylandInterface::setViewStruts(QWindow *view, const QRect &rect, Plasma::T
 
     auto layerWindow = LayerShellQt::Window::get(view);
 
+    int thickness = rect.height();
+
     if (location == Plasma::Types::LeftEdge
             || location == Plasma::Types::RightEdge) {
-        layerWindow->setExclusiveZone(rect.width());
-    } else {
-        layerWindow->setExclusiveZone(rect.height());
+        thickness = rect.width();
     }
+
+    LayerShellQt::Window::Anchors anchors = layerWindow->anchors();
+
+    if (location == Plasma::Types::TopEdge) {
+        anchors = LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorLeft;
+        anchors = anchors | LayerShellQt::Window::AnchorRight;
+    } else if (location == Plasma::Types::LeftEdge) {
+        anchors = LayerShellQt::Window::AnchorLeft;
+        anchors = anchors | LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorBottom;
+    } else if (location == Plasma::Types::BottomEdge) {
+        anchors = LayerShellQt::Window::AnchorBottom;
+        anchors = anchors | LayerShellQt::Window::AnchorLeft;
+        anchors = anchors | LayerShellQt::Window::AnchorRight;
+    } else if (location == Plasma::Types::RightEdge) {
+        anchors = LayerShellQt::Window::AnchorRight;
+        anchors = anchors | LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorBottom;
+    }
+
+    layerWindow->setAnchors(anchors);
+    layerWindow->setExclusiveZone(thickness);
+}
+
+void WaylandInterface::removeViewStruts(QWindow *view)
+{
+    if (!view) {
+        return;
+    }
+
+    auto layerWindow = LayerShellQt::Window::get(view);
+    layerWindow->setExclusiveZone(-1);
 }
 
 void WaylandInterface::switchToNextVirtualDesktop()
@@ -330,17 +363,6 @@ void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringL
 #endif
 }
 
-void WaylandInterface::removeViewStruts(QWindow *view)
-{
-    if (!view) {
-        return;
-    }
-
-    auto layerWindow = LayerShellQt::Window::get(view);
-
-    layerWindow->setExclusiveZone(0);
-}
-
 WindowId WaylandInterface::activeWindow()
 {
     if (!m_windowManagement) {
@@ -422,15 +444,21 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
     auto layerWindow = LayerShellQt::Window::get(window);
 
     QMargins margins;
-    LayerShellQt::Window::Anchors anchors = 0;
+    LayerShellQt::Window::Anchors anchors = layerWindow->anchors();
 
-    //! WorkAround: Because kwin_wayland layershell suppport is working nicely only for windows
-    //! that are anchored on TopEdge. Anything related to Bottom and Right could fail regularly in
-    //! its positioning
-    anchors = LayerShellQt::Window::AnchorTop;
-    anchors = anchors | LayerShellQt::Window::AnchorLeft;
+    if (layerWindow->exclusionZone() <= 0) {
+        //! WorkAround: Because kwin_wayland layershell suppport is working nicely only for windows
+        //! that are anchored on TopEdge. Anything related to Bottom and Right could fail regularly in
+        //! its positioning
+        anchors = LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorLeft;
+        layerWindow->setExclusiveZone(-1);
+    }
+
     margins.setTop(geometry.top() - window->screen()->geometry().top());
     margins.setLeft(geometry.left() - window->screen()->geometry().left());
+    margins.setRight(window->screen()->geometry().right() - geometry.right());
+    margins.setBottom(window->screen()->geometry().bottom() - geometry.bottom());
 
     /*
     if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
