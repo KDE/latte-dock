@@ -157,7 +157,7 @@ VisibilityManager::VisibilityManager(PlasmaQuick::ContainmentView *view)
 VisibilityManager::~VisibilityManager()
 {
     qDebug() << "VisibilityManager deleting...";
-    m_wm->removeViewStruts(*m_latteView);
+    m_wm->removeViewStruts(m_latteView);
 
     if (m_edgeGhostWindow) {
         m_edgeGhostWindow->deleteLater();
@@ -234,7 +234,7 @@ void VisibilityManager::setMode(Latte::Types::Visibility mode)
 
     if (m_mode == Types::AlwaysVisible) {
         //! remove struts for old always visible mode
-        m_wm->removeViewStruts(*m_latteView);
+        m_wm->removeViewStruts(m_latteView);
     }
 
     m_timerShow.stop();
@@ -419,11 +419,11 @@ void VisibilityManager::updateStrutsBasedOnLayoutsAndActivities(bool forceUpdate
             //! though they should not. In such case setting struts when the windows are hidden
             //! the struts do not take any effect
             m_publishedStruts = computedStruts;
-            m_wm->setViewStruts(*m_latteView, m_publishedStruts, m_latteView->location());
+            m_wm->setViewStruts(m_latteView, m_publishedStruts, m_latteView->location());
         }
     } else {
         m_publishedStruts = QRect();
-        m_wm->removeViewStruts(*m_latteView);
+        m_wm->removeViewStruts(m_latteView);
     }
 }
 

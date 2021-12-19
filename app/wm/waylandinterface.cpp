@@ -40,83 +40,6 @@ using namespace KWayland::Client;
 
 namespace Latte {
 
-class Private::GhostWindow : public QQuickView
-{
-    Q_OBJECT
-
-public:
-    WindowSystem::WindowId m_winId;
-
-    GhostWindow(WindowSystem::WaylandInterface *waylandInterface)
-        : m_waylandInterface(waylandInterface) {
-        setFlags(Qt::FramelessWindowHint
-                 | Qt::WindowStaysOnTopHint
-                 | Qt::NoDropShadowWindowHint
-                 | Qt::WindowDoesNotAcceptFocus);
-
-        setColor(QColor(Qt::transparent));
-        setClearBeforeRendering(true);
-
-        connect(m_waylandInterface, &WindowSystem::AbstractWindowInterface::latteWindowAdded, this, &GhostWindow::identifyWinId);
-
-        setupWaylandIntegration();
-        show();
-    }
-
-    ~GhostWindow() {
-        m_waylandInterface->unregisterIgnoredWindow(m_winId);
-      //  delete m_shellSurface;
-    }
-
-    void setGeometry(const QRect &rect) {
-        if (geometry() == rect) {
-            return;
-        }
-
-        m_validGeometry = rect;
-
-        setMinimumSize(rect.size());
-        setMaximumSize(rect.size());
-        resize(rect.size());
-
-       // m_shellSurface->setPosition(rect.topLeft());
-    }
-
-    void setupWaylandIntegration() {
-    /*    using namespace KWayland::Client;
-
-        if (m_shellSurface)
-            return;
-
-        Surface *s{Surface::fromWindow(this)};
-
-        if (!s)
-            return;
-
-        m_shellSurface = m_waylandInterface->waylandCoronaInterface()->createSurface(s, this);
-        qDebug() << "wayland ghost window surface was created...";
-
-        m_shellSurface->setSkipTaskbar(true);
-        m_shellSurface->setPanelTakesFocus(false);
-        m_shellSurface->setRole(PlasmaShellSurface::Role::Panel);
-        m_shellSurface->setPanelBehavior(PlasmaShellSurface::PanelBehavior::AlwaysVisible);*/
-    }
-
-  //  KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
-    WindowSystem::WaylandInterface *m_waylandInterface{nullptr};
-
-    //! geometry() function under wayland does not return nice results
-    QRect m_validGeometry;
-
-public slots:
-    void identifyWinId() {
-        if (m_winId.isNull()) {
-            m_winId = m_waylandInterface->winIdFor("latte-dock", m_validGeometry);
-            m_waylandInterface->registerIgnoredWindow(m_winId);
-        }
-    }
-};
-
 namespace WindowSystem {
 
 WaylandInterface::WaylandInterface(QObject *parent)
@@ -293,28 +216,20 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
     }*/
 }
 
-void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location)
+void WaylandInterface::setViewStruts(QWindow *view, const QRect &rect, Plasma::Types::Location location)
 {
- /*   if (!m_ghostWindows.contains(view.winId())) {
-        m_ghostWindows[view.winId()] = new Private::GhostWindow(this);
+    if (!view) {
+        return;
     }
 
-    auto w = m_ghostWindows[view.winId()];
+    auto layerWindow = LayerShellQt::Window::get(view);
 
-    switch (location) {
-    case Plasma::Types::TopEdge:
-    case Plasma::Types::BottomEdge:
-        w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
-        break;
-
-    case Plasma::Types::LeftEdge:
-    case Plasma::Types::RightEdge:
-        w->setGeometry({rect.x(), rect.y() + rect.height() / 2, rect.width(), 1});
-        break;
-
-    default:
-        break;
-    }*/
+    if (location == Plasma::Types::LeftEdge
+            || location == Plasma::Types::RightEdge) {
+        layerWindow->setExclusiveZone(rect.width());
+    } else {
+        layerWindow->setExclusiveZone(rect.height());
+    }
 }
 
 void WaylandInterface::switchToNextVirtualDesktop()
@@ -415,9 +330,15 @@ void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringL
 #endif
 }
 
-void WaylandInterface::removeViewStruts(QWindow &view)
+void WaylandInterface::removeViewStruts(QWindow *view)
 {
-    delete m_ghostWindows.take(view.winId());
+    if (!view) {
+        return;
+    }
+
+    auto layerWindow = LayerShellQt::Window::get(view);
+
+    layerWindow->setExclusiveZone(0);
 }
 
 WindowId WaylandInterface::activeWindow()
@@ -471,11 +392,11 @@ void WaylandInterface::enableBlurBehind(QWindow &view)
 
 void WaylandInterface::setActiveEdge(QWindow *view, bool active)
 {
-    ViewPart::ScreenEdgeGhostWindow *window = qobject_cast<ViewPart::ScreenEdgeGhostWindow *>(view);
+    //ViewPart::ScreenEdgeGhostWindow *window = qobject_cast<ViewPart::ScreenEdgeGhostWindow *>(view);
 
-    if (!window) {
-        return;
-    }
+    //if (!window) {
+      //  return;
+    //}
 
     /*if (window->parentView()->surface() && window->parentView()->visibility()
             && (window->parentView()->visibility()->mode() == Types::DodgeActive
@@ -508,7 +429,8 @@ void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::L
     margins.setTop(geometry.top() - window->screen()->geometry().top());
     margins.setLeft(geometry.left() - window->screen()->geometry().left());
 
-    /*if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
+    /*
+    if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
         anchors = LayerShellQt::Window::AnchorTop;
         anchors = anchors | LayerShellQt::Window::AnchorLeft;
         margins.setTop(geometry.top() - window->screen()->geometry().top());

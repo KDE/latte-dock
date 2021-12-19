@@ -112,12 +112,15 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
     }
 }
 
-void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
-                                     , Plasma::Types::Location location)
+void XWindowInterface::setViewStruts(QWindow *view, const QRect &rect, Plasma::Types::Location location)
 {
+    if (!view) {
+        return;
+    }
+
     NETExtendedStrut strut;
 
-    const auto screen = view.screen();
+    const auto screen = view->screen();
 
     const QRect currentScreen {screen->geometry()};
     const QRect wholeScreen {{0, 0}, screen->virtualSize()};
@@ -160,7 +163,7 @@ void XWindowInterface::setViewStruts(QWindow &view, const QRect &rect
         return;
     }
 
-    KWindowSystem::setExtendedStrut(view.winId(),
+    KWindowSystem::setExtendedStrut(view->winId(),
                                     strut.left_width,   strut.left_start,   strut.left_end,
                                     strut.right_width,  strut.right_start,  strut.right_end,
                                     strut.top_width,    strut.top_start,    strut.top_end,
@@ -216,9 +219,13 @@ void XWindowInterface::setWindowOnActivities(const WindowId &wid, const QStringL
     KWindowSystem::setOnActivities(wid.toUInt(), activities);
 }
 
-void XWindowInterface::removeViewStruts(QWindow &view)
+void XWindowInterface::removeViewStruts(QWindow *view)
 {
-    KWindowSystem::setStrut(view.winId(), 0, 0, 0, 0);
+    if (!view) {
+        return;
+    }
+
+    KWindowSystem::setStrut(view->winId(), 0, 0, 0, 0);
 }
 
 WindowId XWindowInterface::activeWindow()

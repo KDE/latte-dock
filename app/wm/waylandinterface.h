@@ -26,14 +26,6 @@
 #endif
 
 namespace Latte {
-class Corona;
-namespace Private {
-//! this class is used to create the struts inside wayland
-class GhostWindow;
-}
-}
-
-namespace Latte {
 namespace WindowSystem {
 
 class WaylandInterface : public AbstractWindowInterface
@@ -45,11 +37,10 @@ public:
     ~WaylandInterface() override;
 
     void setViewExtraFlags(QObject *view, bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) override;
-    void setViewStruts(QWindow &view, const QRect &rect
-                       , Plasma::Types::Location location) override;
+    void setViewStruts(QWindow *view, const QRect &rect, Plasma::Types::Location location) override;
     void setWindowOnActivities(const WindowId &wid, const QStringList &nextactivities) override;
 
-    void removeViewStruts(QWindow &view) override;
+    void removeViewStruts(QWindow *view) override;
 
     WindowId activeWindow() override;
     WindowInfoWrap requestInfo(WindowId wid) override;
@@ -121,9 +112,6 @@ private:
 #endif
 
 private:
-    friend class Private::GhostWindow;
-    mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
-
     KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
 
 #if KF5_VERSION_MINOR >= 52
