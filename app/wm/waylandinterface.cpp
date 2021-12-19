@@ -27,6 +27,7 @@
 #include <KWindowSystem>
 #include <KWindowInfo>
 #include <KWayland/Client/surface.h>
+#include <LayerShellQt/Window>
 
 #if KF5_VERSION_MINOR >= 52
 #include <KWayland/Client/plasmavirtualdesktop.h>
@@ -489,6 +490,43 @@ void WaylandInterface::setActiveEdge(QWindow *view, bool active)
             window->surface()->requestShowAutoHidingPanel();
         }
     }*/
+}
+
+void WaylandInterface::setWindowPosition(QWindow *window, const Plasma::Types::Location &location, const QRect &geometry)
+{
+    if (!window || !window->screen()) {
+        return;
+    }
+
+    auto layerWindow = LayerShellQt::Window::get(window);
+
+    QMargins margins;
+    LayerShellQt::Window::Anchors anchors = 0;
+
+    if (location == Plasma::Types::TopEdge || location == Plasma::Types::LeftEdge) {
+        anchors = LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorLeft;
+        margins.setTop(geometry.top() - window->screen()->geometry().top());
+        margins.setLeft(geometry.left() - window->screen()->geometry().left());
+    } else if (location == Plasma::Types::RightEdge) {
+        anchors = LayerShellQt::Window::AnchorTop;
+        anchors = anchors | LayerShellQt::Window::AnchorRight;
+        margins.setTop(geometry.top() - window->screen()->geometry().top());
+        margins.setRight(geometry.right() - window->screen()->geometry().right());
+    } else {
+        // bottom case
+        anchors = LayerShellQt::Window::AnchorBottom;
+        anchors = anchors | LayerShellQt::Window::AnchorLeft;
+        margins.setBottom(geometry.bottom() - window->screen()->geometry().bottom());
+        margins.setLeft(geometry.left() - window->screen()->geometry().left());
+    }
+
+    layerWindow->setAnchors(anchors);
+    layerWindow->setMargins(margins);
+    layerWindow->setLayer(LayerShellQt::Window::LayerTop);
+    window->setPosition(geometry.topLeft());
+
+    qDebug() << "org.kde.layer ::: " << layerWindow->anchors() << " __ " << layerWindow->layer() << " :: " << geometry << " :: " << margins;
 }
 
 void WaylandInterface::setFrameExtents(QWindow *view, const QMargins &extents)

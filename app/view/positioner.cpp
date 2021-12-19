@@ -526,7 +526,7 @@ void Positioner::immediateSyncGeometry()
         QRect maximumRect;
         QRect availableScreenRect = m_view->screen()->geometry();
 
-        if (m_inStartup) {
+        if (m_inStartup && KWindowSystem::isPlatformX11()) {
             //! paint out-of-screen
             availableScreenRect = QRect(-9999, -9999, m_view->screen()->geometry().width(), m_view->screen()->geometry().height());
         }
@@ -558,7 +558,7 @@ void Positioner::immediateSyncGeometry()
             }
 
             QString activityid = m_view->layout() ? m_view->layout()->lastUsedActivity() : QString();
-            if (m_inStartup) {
+            if (m_inStartup && KWindowSystem::isPlatformX11()) {
                 //! paint out-of-screen
                 freeRegion = availableScreenRect;
             } else {
@@ -855,14 +855,7 @@ void Positioner::updatePosition(QRect availableScreenRect)
         }
     }
 
-    if (KWindowSystem::isPlatformWayland()) {
-        auto layerWindow = LayerShellQt::Window::get(m_view);
-        layerWindow->setAnchors(LayerShellQt::Window::AnchorBottom);
-        layerWindow->setLayer(LayerShellQt::Window::LayerTop);
-        qDebug() << "org.kde.layer ::: " << layerWindow->anchors() << " __ " << layerWindow->layer() << " :: " << m_validGeometry;
-    }
-
-    m_view->setPosition(position);
+    m_corona->wm()->setWindowPosition(m_view, m_view->location(), m_validGeometry);
 }
 
 int Positioner::slideOffset() const

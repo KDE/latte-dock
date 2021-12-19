@@ -339,6 +339,14 @@ QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameG
 }
 #endif
 
+void XWindowInterface::setWindowPosition(QWindow *window, const Plasma::Types::Location &location, const QRect &geometry)
+{
+    if (!window) {
+        return;
+    }
+
+    window->setPosition(geometry.topLeft());
+}
 
 void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
 {

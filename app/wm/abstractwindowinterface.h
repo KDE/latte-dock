@@ -127,6 +127,7 @@ public:
     virtual void switchToNextVirtualDesktop() = 0;
     virtual void switchToPreviousVirtualDesktop() = 0;
 
+    virtual void setWindowPosition(QWindow *window, const Plasma::Types::Location &location, const QRect &geometry) = 0;
     virtual void setFrameExtents(QWindow *view, const QMargins &margins) = 0;
     virtual void setInputMask(QWindow *window, const QRect &rect) = 0;
 

@@ -83,6 +83,7 @@ public:
     void switchToNextVirtualDesktop() override;
     void switchToPreviousVirtualDesktop() override;
 
+    void setWindowPosition(QWindow *window, const Plasma::Types::Location &location, const QRect &geometry) override;
     void setFrameExtents(QWindow *view, const QMargins &margins) override;
     void setInputMask(QWindow *window, const QRect &rect) override;
 
