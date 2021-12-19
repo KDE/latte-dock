@@ -396,7 +396,6 @@ void PrimaryConfigView::syncGeometry()
 
     m_geometryWhenVisible = geometry;
 
-    qDebug() << "org.kde.layer ::: SETTING PRIMARY CONFIG WINDOW :::: " << m_geometryWhenVisible << " avail geometry :: " << m_availableScreenGeometry;
     m_corona->wm()->setWindowPosition(this, m_latteView->location(), m_geometryWhenVisible);
 
     setMaximumSize(geometry.size());
