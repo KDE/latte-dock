@@ -62,23 +62,13 @@ XWindowInterface::~XWindowInterface()
 {
 }
 
-void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte::Types::Visibility mode)
+void XWindowInterface::setViewExtraFlags(QWindow *view,bool isPanelWindow, Latte::Types::Visibility mode)
 {
-    WId winId = -1;
-
-    QQuickView *quickView = qobject_cast<QQuickView *>(view);
-
-    if (quickView) {
-        winId = quickView->winId();
+    if (!view) {
+        return;
     }
 
-    if (!quickView) {
-        QQuickWindow *quickWindow = qobject_cast<QQuickWindow *>(view);
-
-        if (quickWindow) {
-            winId = quickWindow->winId();
-        }
-    }
+    WId winId = view->winId();
 
     NETWinInfo winfo(QX11Info::connection()
                      , static_cast<xcb_window_t>(winId)

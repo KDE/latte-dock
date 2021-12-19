@@ -68,7 +68,7 @@ public:
     explicit AbstractWindowInterface(QObject *parent = nullptr);
     virtual ~AbstractWindowInterface();
 
-    virtual void setViewExtraFlags(QObject *view,bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) = 0;
+    virtual void setViewExtraFlags(QWindow *view,bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) = 0;
     virtual void setViewStruts(QWindow *view, const QRect &rect, Plasma::Types::Location location) = 0;
     virtual void setWindowOnActivities(const WindowId &wid, const QStringList &activities) = 0;
 
