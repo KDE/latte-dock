@@ -513,8 +513,6 @@ void TabLayouts::removeLayout()
         return;
     }
 
-    qDebug() << Q_FUNC_INFO;
-
     m_layoutsController->removeSelected();
 }
 
