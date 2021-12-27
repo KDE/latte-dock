@@ -704,8 +704,10 @@ bool Windows::isActiveInViewScreen(Latte::View *view, const WindowInfoWrap &winf
                                qRound(screenGeometry.height() * factor));
     }
 
-    return (winfo.isValid() && winfo.isActive() &&  !winfo.isMinimized()
-            && screenGeometry.contains(winfo.geometry().center()));
+    return (winfo.isValid()
+            && winfo.isActive()
+            && !winfo.isMinimized()
+            && screenGeometry.intersects(winfo.geometry()));
 }
 
 bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &winfo)
@@ -723,10 +725,11 @@ bool Windows::isMaximizedInViewScreen(Latte::View *view, const WindowInfoWrap &w
 
     //! updated implementation to identify the screen that the maximized window is present
     //! in order to avoid: https://bugs.kde.org/show_bug.cgi?id=397700
-    return (winfo.isValid() && !winfo.isMinimized()
+    return (winfo.isValid()
+            && !winfo.isMinimized()
             && !winfo.isShaded()
             && winfo.isMaximized()
-            && screenGeometry.contains(winfo.geometry().center()));
+            && screenGeometry.intersects(winfo.geometry()));
 }
 
 bool Windows::isTouchingView(Latte::View *view, const WindowSystem::WindowInfoWrap &winfo)
