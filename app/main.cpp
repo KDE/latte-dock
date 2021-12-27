@@ -467,7 +467,6 @@ inline void filterDebugMessageOutput(QtMsgType type, const QMessageLogContext &c
         TypeColor = CRED;
     } else {
         TypeColor = CIGREEN;
-
     }
 
     qDebug().nospace() << TypeColor << "[" << typeStr.toStdString().c_str() << " : " << CGREEN << QTime::currentTime().toString("h:mm:ss.zz").toStdString().c_str() << TypeColor << "]" << CNORMAL

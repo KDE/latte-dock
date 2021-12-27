@@ -171,7 +171,9 @@ void ScreenGeometries::clearGeometries()
 
         if (m_corona->screenPool()->hasScreenId(scrId)) {
             setPlasmaAvailableScreenRect(scrName, QRect());
-            setPlasmaAvailableScreenRegion(scrName, QRegion());
+
+            /* Disabling until Plasma is ready and not making mistakes.
+            setPlasmaAvailableScreenRegion(scrName, QRegion());*/
         }
     }
 
@@ -189,6 +191,8 @@ void ScreenGeometries::updateGeometries()
 
     qDebug() << " PLASMA SCREEN GEOMETRIES, LAST AVAILABLE SCREEN RECTS :: " << m_lastAvailableRect;
 
+    QStringList clearedScreenNames;
+
     //! check for available geometries changes
     for (QScreen *screen : qGuiApp->screens()) {
         QString scrName = screen->name();
@@ -204,24 +208,38 @@ void ScreenGeometries::updateGeometries()
                                                                             true,
                                                                             true);
 
+
+            /* Disabling until Plasma is ready and not making mistakes.
+             * The biggest issue is that after startup when setting Plasma Available Region the right aligned desktop
+             * widgets are moved to the left. This needs investigation to Plasma code to check out what is happening
             QRegion availableRegion = m_corona->availableScreenRegionWithCriteria(scrId,
                                                                                   QString(),
                                                                                   m_ignoreModes,
                                                                                   QList<Plasma::Types::Location>(),
                                                                                   true,
                                                                                   true);
+                                                                                  */
 
-            //! Disable checks because of the workaround concerning plasma desktop behavior
-            if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {
-                m_lastAvailableRect[scrName] = availableRect;
-                setPlasmaAvailableScreenRect(scrName, availableRect);
-                qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
-            }
+            bool clearedScreen = (availableRect == screen->geometry());
 
-            if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
-                m_lastAvailableRegion[scrName] = availableRegion;
-                setPlasmaAvailableScreenRegion(scrName, availableRegion);
-                qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
+            if (!clearedScreen) {
+                //! Disable checks because of the workaround concerning plasma desktop behavior
+                if (!m_lastAvailableRect.contains(scrName) || m_lastAvailableRect[scrName] != availableRect) {
+                    m_lastAvailableRect[scrName] = availableRect;
+                    setPlasmaAvailableScreenRect(scrName, availableRect);
+                    qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
+                }
+
+                /* Disabling until Plasma is ready and not making mistakes.
+                 * The biggest issue is that after startup when setting Plasma Available Region the right aligned desktop
+                 * widgets are moved to the left. This needs investigation to Plasma code to check out what is happening
+                if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
+                    m_lastAvailableRegion[scrName] = availableRegion;
+                    setPlasmaAvailableScreenRegion(scrName, availableRegion);
+                    qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
+                }*/
+            } else {
+                clearedScreenNames << scrName;
             }
         }
 
@@ -230,10 +248,12 @@ void ScreenGeometries::updateGeometries()
 
     //! check for inactive screens that were published previously
     for (QString &lastScrName : m_lastScreenNames) {
-        if (!screenIsActive(lastScrName)) {
+        if (!screenIsActive(lastScrName) || clearedScreenNames.contains(lastScrName)) {
             //! screen became inactive and its geometries could be unpublished
             setPlasmaAvailableScreenRect(lastScrName, QRect());
-            setPlasmaAvailableScreenRegion(lastScrName, QRegion());
+
+            /* Disabling until Plasma is ready and not making mistakes.
+            setPlasmaAvailableScreenRegion(lastScrName, QRegion());*/
 
             m_lastAvailableRect.remove(lastScrName);
             m_lastAvailableRegion.remove(lastScrName);
