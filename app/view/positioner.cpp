@@ -268,7 +268,7 @@ void Positioner::setInRelocationShowing(bool active)
 
 bool Positioner::isOffScreen() const
 {
-    return (m_validGeometry.x()<-500 || m_validGeometry.y()<-500);
+    return (m_view->absoluteGeometry().x()<-500 || m_view->absoluteGeometry().y()<-500);
 }
 
 int Positioner::currentScreenId() const

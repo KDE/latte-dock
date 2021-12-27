@@ -583,7 +583,9 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
     bool allEdges = ignoreEdges.isEmpty();
 
     for (const auto *view : views) {
-        if (view && view->containment() && view->screen() == screen
+        bool inDesktopOffScreenStartup = desktopUse && view && view->positioner() && view->positioner()->isOffScreen();
+
+        if (view && view->containment() && view->screen() == screen && !inDesktopOffScreenStartup
                 && ((allEdges || !ignoreEdges.contains(view->location()))
                     && (view->visibility() && !ignoreModes.contains(view->visibility()->mode())))) {
             int realThickness = view->normalThickness();
@@ -606,7 +608,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
                     case Latte::Types::Center:
                     case Latte::Types::Justify:
-                        x = (view->geometry().center().x() - w/2) + offsetW;
+                        x = (view->geometry().center().x() - w/2) + 1 + offsetW;
                         break;
 
                     case Latte::Types::Right:
@@ -630,7 +632,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
 
                     case Latte::Types::Center:
                     case Latte::Types::Justify:
-                        y = (view->geometry().center().y() - h/2) + offsetH;
+                        y = (view->geometry().center().y() - h/2) + 1 + offsetH;
                         break;
 
                     case Latte::Types::Bottom:
@@ -785,7 +787,9 @@ QRect Corona::availableScreenRectWithCriteria(int id,
     bool allEdges = ignoreEdges.isEmpty();
 
     for (const auto *view : views) {
-        if (view && view->containment() && view->screen() == screen
+        bool inDesktopOffScreenStartup = desktopUse && view && view->positioner() && view->positioner()->isOffScreen();
+
+        if (view && view->containment() && view->screen() == screen && !inDesktopOffScreenStartup
                 && ((allEdges || !ignoreEdges.contains(view->location()))
                     && (view->visibility() && !ignoreModes.contains(view->visibility()->mode())))) {
 
