@@ -171,9 +171,7 @@ void ScreenGeometries::clearGeometries()
 
         if (m_corona->screenPool()->hasScreenId(scrId)) {
             setPlasmaAvailableScreenRect(scrName, QRect());
-
-            /* Disabling until Plasma is ready and not making mistakes.
-            setPlasmaAvailableScreenRegion(scrName, QRegion());*/
+            setPlasmaAvailableScreenRegion(scrName, QRegion());
         }
     }
 
@@ -208,17 +206,12 @@ void ScreenGeometries::updateGeometries()
                                                                             true,
                                                                             true);
 
-
-            /* Disabling until Plasma is ready and not making mistakes.
-             * The biggest issue is that after startup when setting Plasma Available Region the right aligned desktop
-             * widgets are moved to the left. This needs investigation to Plasma code to check out what is happening
             QRegion availableRegion = m_corona->availableScreenRegionWithCriteria(scrId,
                                                                                   QString(),
                                                                                   m_ignoreModes,
                                                                                   QList<Plasma::Types::Location>(),
                                                                                   true,
                                                                                   true);
-                                                                                  */
 
             bool clearedScreen = (availableRect == screen->geometry());
 
@@ -230,14 +223,11 @@ void ScreenGeometries::updateGeometries()
                     qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE RECT :: " << screen->name() << " : " << availableRect;
                 }
 
-                /* Disabling until Plasma is ready and not making mistakes.
-                 * The biggest issue is that after startup when setting Plasma Available Region the right aligned desktop
-                 * widgets are moved to the left. This needs investigation to Plasma code to check out what is happening
                 if (!m_lastAvailableRegion.contains(scrName) || m_lastAvailableRegion[scrName] != availableRegion) {
                     m_lastAvailableRegion[scrName] = availableRegion;
                     setPlasmaAvailableScreenRegion(scrName, availableRegion);
                     qDebug() << " PLASMA SCREEN GEOMETRIES, AVAILABLE REGION :: " << screen->name() << " : " << availableRegion;
-                }*/
+                }
             } else {
                 clearedScreenNames << scrName;
             }
@@ -251,9 +241,7 @@ void ScreenGeometries::updateGeometries()
         if (!screenIsActive(lastScrName) || clearedScreenNames.contains(lastScrName)) {
             //! screen became inactive and its geometries could be unpublished
             setPlasmaAvailableScreenRect(lastScrName, QRect());
-
-            /* Disabling until Plasma is ready and not making mistakes.
-            setPlasmaAvailableScreenRegion(lastScrName, QRegion());*/
+            setPlasmaAvailableScreenRegion(lastScrName, QRegion());
 
             m_lastAvailableRect.remove(lastScrName);
             m_lastAvailableRegion.remove(lastScrName);
