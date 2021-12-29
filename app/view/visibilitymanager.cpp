@@ -433,21 +433,16 @@ bool VisibilityManager::canSetStrut() const
         return false;
     }
 
-    if (!KWindowSystem::isPlatformX11() || !m_wm->isKWinRunning()/*alternative de*/) {
+    if (!KWindowSystem::isPlatformX11() || m_wm->isKWinRunning()) {
+        // we always trust wayland and kwin to provide proper struts
         return true;
     }
-
-    // read the wm name, need to do this every time which means a roundtrip unfortunately
-    // but WM might have changed
-    //NETRootInfo rootInfo(QX11Info::connection(), NET::Supported | NET::SupportingWMCheck);
-    //if (qstricmp(rootInfo.wmName(), "KWin") == 0) {
-    // KWin since 5.7 can handle this fine, so only exclude for other window managers
-    //return true;
-    //}
 
     if (qGuiApp->screens().count() < 2) {
         return true;
     }
+
+    /*Alternative DEs*/
 
     const QRect thisScreen = m_latteView->screen()->geometry();
 
