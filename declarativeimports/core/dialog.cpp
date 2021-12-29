@@ -16,6 +16,7 @@ namespace Quick {
 Dialog::Dialog(QQuickItem *parent)
     : PlasmaQuick::Dialog(parent)
 {
+    connect(this, &PlasmaQuick::Dialog::visualParentChanged, this, &Dialog::onVisualParentChanged);
 }
 
 bool Dialog::containsMouse() const
@@ -64,6 +65,31 @@ int Dialog::appletsPopUpMargin() const
 {
     QVariant margin = visualParent() && visualParent()->window() ? visualParent()->window()->property("_applets_popup_margin") : QVariant();
     return margin.isValid() ? margin.toInt() : -1;
+}
+
+void Dialog::onVisualParentChanged()
+{
+    // clear mode
+    for (auto &c : m_visualParentConnections) {
+        disconnect(c);
+    }
+
+    if (!visualParent() || !flags().testFlag(Qt::ToolTip) || !visualParent()->metaObject())  {
+        return;
+    }
+
+    bool hassignal = (visualParent()->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("anchoredTooltipPositionChanged()")) != -1);
+
+    if (hassignal) {
+        m_visualParentConnections[0] = connect(visualParent(), SIGNAL(anchoredTooltipPositionChanged()) , this, SLOT(updateGeometry()));
+    }
+}
+
+void Dialog::updateGeometry()
+{
+    if (visualParent()) {
+        setPosition(popupPosition(visualParent(), size()));
+    }
 }
 
 void Dialog::updatePopUpEnabledBorders()

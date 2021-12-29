@@ -100,6 +100,13 @@ Item{
     readonly property bool isHorizontal: !isVertical
     readonly property bool isVertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
+    readonly property int parabolicAreaLastMousePos: {
+        if (parabolicEventsAreaLoader.active) {
+            return Math.round(plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parabolicEventsAreaLoader.item.lastMouseX : parabolicEventsAreaLoader.lastMouseY);
+        }
+
+        return 0;
+    }
 
     readonly property int location: {
         if (plasmoid.location === PlasmaCore.Types.LeftEdge

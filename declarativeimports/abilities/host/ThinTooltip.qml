@@ -11,6 +11,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
 
 AbilityDefinition.ThinTooltip {
@@ -108,7 +109,7 @@ AbilityDefinition.ThinTooltip {
         }
     }
 
-    PlasmaCore.Dialog{
+    LatteCore.Dialog{
         id: _tooltipDialog
         type: PlasmaCore.Dialog.Tooltip
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip

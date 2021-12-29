@@ -47,6 +47,9 @@ private slots:
     void setContainsMouse(bool contains);
     void updatePopUpEnabledBorders();
 
+    void onVisualParentChanged();
+    void updateGeometry();
+
 private:
     bool isRespectingAppletsLayoutGeometry() const;
     QRect appletsLayoutGeometryFromContainment() const;
@@ -58,6 +61,7 @@ private:
 
     Plasma::Types::Location m_edge{Plasma::Types::BottomEdge};
 
+    std::array<QMetaObject::Connection, 2> m_visualParentConnections;
 
 };
 

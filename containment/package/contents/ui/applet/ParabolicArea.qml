@@ -61,10 +61,10 @@ Item {
 
         if (isParabolicEnabled) {
             if (root.isHorizontal){
-                appletItem.layouts.currentSpot = mouseX;
+                appletItem.layouts.currentSpot = Math.round(mouseX);
                 calculateParabolicScales(mouseX);
             } else{
-                appletItem.layouts.currentSpot = mouseY;
+                appletItem.layouts.currentSpot = Math.round(mouseY);
                 calculateParabolicScales(mouseY);
             }
         }
@@ -84,14 +84,14 @@ Item {
                 if (root.isHorizontal){
                     var step = Math.abs(appletItem.layouts.currentSpot-mouseX);
                     if (step >= appletItem.animations.hoverPixelSensitivity){
-                        appletItem.layouts.currentSpot = mouseX;
+                        appletItem.layouts.currentSpot = Math.round(mouseX);
                         calculateParabolicScales(mouseX);
                     }
                 }
                 else{
                     var step = Math.abs(appletItem.layouts.currentSpot-mouseY);
                     if (step >= appletItem.animations.hoverPixelSensitivity){
-                        appletItem.layouts.currentSpot = mouseY;
+                        appletItem.layouts.currentSpot = Math.round(mouseY);
                         calculateParabolicScales(mouseY);
                     }
                 }
