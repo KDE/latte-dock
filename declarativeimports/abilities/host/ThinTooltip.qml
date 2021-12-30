@@ -52,7 +52,9 @@ AbilityDefinition.ThinTooltip {
             _hideTimer.stop();
             _showTimer.stop();
             _tooltipDialog.visible = false;
-            return;
+            //disabling because we need to updated currentvisualparent even when tooltip is blocked
+            //for example when triggering a different applet popup
+            //return;
         }
 
         _hideTimer.stop();
