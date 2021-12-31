@@ -22,7 +22,7 @@ Item{
 
     Connections {
         target: abilityItem
-        enabled: abilityItem.abilities.parabolic.isEnabled && abilityItem.containsMouse
+        enabled: abilityItem.abilities.parabolic.isEnabled && abilityItem.parabolicAreaContainsMouse
         onParabolicAreaLastMousePosChanged: visual.anchoredTooltipPositionChanged();
     }
 
