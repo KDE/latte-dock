@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Latte
+Name=Latte Dock
 Name[ar]=لاتيه
 Name[ast]=Latte
 Name[az]=Latte
