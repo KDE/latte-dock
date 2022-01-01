@@ -98,10 +98,20 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
         setFlags(flags);
     }
 
-    if (targetScreen)
+    if (KWindowSystem::isPlatformX11()) {
+        //! Enable OnAllDesktops during creation in order to protect corner cases that is ignored
+        //! during startup. Such corner case is bug #447689.
+        //! Best guess is that this is needed because OnAllDesktops is set through visibilitymanager
+        //! after containment has been assigned. That delay might lead wm ignoring the flag
+        //! until it is reapplied.
+        KWindowSystem::setOnAllDesktops(winId(), true);
+    }
+
+    if (targetScreen) {
         m_positioner->setScreenToFollow(targetScreen);
-    else
+    } else {
         m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
+    }
 
     m_releaseGrabTimer.setInterval(400);
     m_releaseGrabTimer.setSingleShot(true);
