@@ -175,7 +175,7 @@ Item{
 
         var parentLayoutCenter = (appletItem.layouter.maxLength - layoutsContainer.mainLayout.length)/2;
         var twinLayoutExceededCenter = Math.max(0, (parentTwinLayoutLength + root.maxJustifySplitterSize) - parentLayoutCenter);
-        var availableLength = Math.max(0, parentLayoutCenter - twinLayoutExceededCenter);
+        var availableLength = Math.max(0, parentLayoutCenter - twinLayoutExceededCenter) + 1; //add one pixel in order to not leave a gap inConfigureAppletsMode
 
         return Math.max(root.maxJustifySplitterSize, availableLength - parentLayoutLength);
     }
