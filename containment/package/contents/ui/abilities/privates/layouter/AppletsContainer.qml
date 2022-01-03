@@ -40,11 +40,9 @@ Item {
         value: {
             var space = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i]
-                        && !grid.children[i].isAutoFillApplet
-                        && !grid.children[i].isHidden) {
+                if (grid.children[i] && (grid.children[i].isPlaceHolder || (!grid.children[i].isAutoFillApplet && !grid.children[i].isHidden))) {
 
-                    if (grid.children[i].isInternalViewSplitter) {
+                    if (!grid.children[i].isPlaceHolder && grid.children[i].isInternalViewSplitter) {
                         space += root.maxJustifySplitterSize;
                     } else {
                         space = root.isHorizontal ? space + grid.children[i].width : space + grid.children[i].height;
@@ -64,9 +62,7 @@ Item {
         value: {
             var space = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i]
-                        && !grid.children[i].isInternalViewSplitter
-                        && !grid.children[i].isHidden) {
+                if (grid.children[i] && (grid.children[i].isPlaceHolder || (!grid.children[i].isInternalViewSplitter && !grid.children[i].isHidden))) {
                     space = root.isHorizontal ? space + grid.children[i].width : space + grid.children[i].height;
                 }
             }
@@ -86,7 +82,7 @@ Item {
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i] && grid.children[i].isHidden) {
                     //do nothing
-                } else if (grid.children[i] && grid.children[i].applet){/*internal splitters are ignored this way*/
+                } else if (grid.children[i] && (grid.children[i].isPlaceHolder || grid.children[i].applet)){/*internal splitters are ignored this way*/
                     res = res + 1;
                 }
             }
@@ -103,7 +99,10 @@ Item {
         value: {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && grid.children[i].isAutoFillApplet && !grid.children[i].isHidden) {
+                if (grid.children[i]
+                        && !grid.children[i].isPlaceHolder
+                        && grid.children[i].isAutoFillApplet
+                        && !grid.children[i].isHidden) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }
@@ -120,7 +119,11 @@ Item {
         value: {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && grid.children[i].isRequestingFill && grid.children[i].applet && !grid.children[i].isHidden) {
+                if (grid.children[i]
+                        && !grid.children[i].isPlaceHolder
+                        && grid.children[i].isRequestingFill
+                        && grid.children[i].applet
+                        && !grid.children[i].isHidden) {
                     //console.log("fill :::: " + children[i].applet.pluginName);
                     no++;
                 }
@@ -179,9 +182,9 @@ Item {
 
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
-                        && grid.children[i].isPlaceHolder
-                        || (grid.children[i].isInternalViewSplitter
-                            && !grid.children[i].isHidden)) {
+                        && !grid.children[i].isPlaceHolder
+                        && grid.children[i].isInternalViewSplitter
+                        && !grid.children[i].isHidden) {
                     intsSplits = intsSplits + 1;
                 }
             }

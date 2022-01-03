@@ -94,6 +94,7 @@ Item {
                             && ((applet && applet.status === PlasmaCore.Types.HiddenStatus ) || isInternalViewSplitter)
     property bool isInternalViewSplitter: (internalSplitterId > 0)
     property bool isZoomed: false
+    property bool isPlaceHolder: false
     property bool isPressed: viewSignalsConnector.pressed
     property bool isSeparator: applet && (applet.pluginName === "audoban.applet.separator"
                                           || applet.pluginName === "org.kde.latte.separator")
