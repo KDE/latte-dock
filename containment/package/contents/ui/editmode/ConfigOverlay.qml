@@ -120,7 +120,6 @@ MouseArea {
             var item = hoveredItem(mousesink.x, mousesink.y);
 
             if (item && item !== placeHolder) {
-                placeHolder.parent = configurationArea;
                 var posInItem = mapToItem(item, mousesink.x, mousesink.y);
 
                 if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
