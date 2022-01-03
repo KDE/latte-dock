@@ -293,10 +293,6 @@ Item{
 
         readonly property bool centered: (root.myView.alignment === LatteCore.Types.Center) || (root.myView.alignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
-
-        //! do not update during dragging/moving applets inConfigureAppletsMode
-        readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
-        property bool isCoveredFromBothSideLayouts: false
         property int inJustifyCenterOffset: 0
 
         alignment: {
@@ -353,24 +349,8 @@ Item{
 
         Binding{
             target: _mainLayout
-            property:"isCoveredFromBothSideLayouts"
-            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
-            value: {
-                if (!layouter.mainLayout.onlyInternalSplitters && !_mainLayout.offsetUpdateIsBlocked) {
-                    //! one of side layouts goes underneath the main layout when the main layout contains valid applets
-                    var limit = (root.maxLength - mainLayout.length)/2;
-                    return ((startLayout.length > limit ) && (endLayout.length > limit));
-                }
-
-                //! start and end layouts length exceed the maximum length
-                return (startLayout.length + endLayout.length) > (root.maxLength);
-            }
-        }
-
-        Binding{
-            target: _mainLayout
             property:"inJustifyCenterOffset"
-            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
+            when: !layouter.appletsInParentChange && layouter.inNormalFillCalculationsState
             value: {
                 if (root.myView.alignment !== LatteCore.Types.Justify) {
                     return 0;
