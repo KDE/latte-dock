@@ -139,15 +139,16 @@ void ScreenGeometries::setPlasmaAvailableScreenRegion(const QString &screenName,
 
     QVariant regionvariant;
 
+    QList<QRect> rects;
     if (!region.isNull()) {
         //! transorm QRegion to QList<QRect> in order to be sent through dbus
-        QList<QRect> rects;
         foreach (const QRect &rect, region) {
             rects << rect;
         }
-
-        regionvariant = QVariant::fromValue(rects);
+    } else {
+        rects << QRect();
     }
+    regionvariant = QVariant::fromValue(rects);
 
     QVariantList args;
 
@@ -238,14 +239,21 @@ void ScreenGeometries::updateGeometries()
 
     //! check for inactive screens that were published previously
     for (QString &lastScrName : m_lastScreenNames) {
-        if (!screenIsActive(lastScrName) || clearedScreenNames.contains(lastScrName)) {
+        bool scractive = screenIsActive(lastScrName);
+
+        if (!scractive || clearedScreenNames.contains(lastScrName)) {
             //! screen became inactive and its geometries could be unpublished
             setPlasmaAvailableScreenRect(lastScrName, QRect());
             setPlasmaAvailableScreenRegion(lastScrName, QRegion());
 
             m_lastAvailableRect.remove(lastScrName);
             m_lastAvailableRegion.remove(lastScrName);
+        }
+
+        if (!scractive) {
             qDebug() << " PLASMA SCREEN GEOMETRIES, INACTIVE SCREEN :: " << lastScrName;
+        } else if (clearedScreenNames.contains(lastScrName)) {
+            qDebug() << " PLASMA SCREEN GEOMETRIES, CLEARED SCREEN :: " << lastScrName;
         }
     }
 
