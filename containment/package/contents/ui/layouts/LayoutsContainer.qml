@@ -288,7 +288,7 @@ Item{
                 return background.offset + lengthTailPadding;
             }
 
-            return (root.myView.alignment === LatteCore.Types.Justify) ? 0 : background.offset
+            return (root.myView.alignment === LatteCore.Types.Justify) ? inJustifyCenterOffset : background.offset
         }
 
         readonly property bool centered: (root.myView.alignment === LatteCore.Types.Center) || (root.myView.alignment === LatteCore.Types.Justify)
@@ -297,6 +297,7 @@ Item{
         //! do not update during dragging/moving applets inConfigureAppletsMode
         readonly property bool offsetUpdateIsBlocked: ((root.dragOverlay && root.dragOverlay.pressed) || layouter.appletsInParentChange)
         property bool isCoveredFromBothSideLayouts: false
+        property int inJustifyCenterOffset: 0
 
         alignment: {
             if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
@@ -363,6 +364,33 @@ Item{
 
                 //! start and end layouts length exceed the maximum length
                 return (startLayout.length + endLayout.length) > (root.maxLength);
+            }
+        }
+
+        Binding{
+            target: _mainLayout
+            property:"inJustifyCenterOffset"
+            when: !_mainLayout.offsetUpdateIsBlocked && layouter.inNormalFillCalculationsState
+            value: {
+                if (root.myView.alignment !== LatteCore.Types.Justify) {
+                    return 0;
+                }
+
+                var layoutMaxLength = root.maxLength / 2;
+                var sideLayoutMaxLength = layoutMaxLength - mainLayout.length/2;
+                var sideslength = startLayout.length + endLayout.length;
+
+                if (sideslength > root.maxLength) {
+                    return 0;
+                }
+
+                if (startLayout.length > sideLayoutMaxLength) {
+                    return (startLayout.length - sideLayoutMaxLength);
+                } else if (endLayout.length > sideLayoutMaxLength) {
+                    return -(endLayout.length - sideLayoutMaxLength);
+                }
+
+                return 0;
             }
         }
     }
