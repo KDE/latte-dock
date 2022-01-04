@@ -102,7 +102,7 @@ Item{
     readonly property bool parabolicAreaContainsMouse: parabolicEventsAreaLoader.active && parabolicEventsAreaLoader.item.containsMouse
     readonly property int parabolicAreaLastMousePos: {
         if (parabolicEventsAreaLoader.active) {
-            return Math.round(plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parabolicEventsAreaLoader.item.lastMouseX : parabolicEventsAreaLoader.lastMouseY);
+            return Math.round(plasmoid.formFactor === PlasmaCore.Types.Horizontal ? parabolicEventsAreaLoader.item.lastMouseX : parabolicEventsAreaLoader.item.lastMouseY);
         }
 
         return 0;

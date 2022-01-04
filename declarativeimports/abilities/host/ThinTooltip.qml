@@ -117,6 +117,7 @@ AbilityDefinition.ThinTooltip {
         flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
 
         location: plasmoid.location
+        edge: plasmoid.location
         mainItem: RowLayout{
             Layout.fillWidth: true
             Layout.fillHeight: true
