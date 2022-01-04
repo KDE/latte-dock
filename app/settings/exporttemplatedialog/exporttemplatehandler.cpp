@@ -193,7 +193,7 @@ void ExportTemplateHandler::chooseFileDialog()
     });
 
     chooseFileDlg->open();
-    chooseFileDlg->selectFile(currentFile.baseName());
+    chooseFileDlg->selectFile(currentFile.fileName());
 }
 
 void ExportTemplateHandler::onExport()
