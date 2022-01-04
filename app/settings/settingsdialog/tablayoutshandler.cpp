@@ -712,7 +712,7 @@ void TabLayouts::exportLayoutForBackup()
     });
 
     exportFileDialog->open();
-    exportFileDialog->selectFile(selectedLayout.name);
+    exportFileDialog->selectFile(selectedLayout.name + ".layout.latte");
 }
 
 void TabLayouts::showDetailsDialog()

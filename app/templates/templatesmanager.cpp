@@ -214,10 +214,10 @@ QString Manager::proposedTemplateAbsolutePath(QString templateFilename)
     QString tempfilename = templateFilename;
 
     if (tempfilename.endsWith(".layout.latte")) {
-        QString clearedname = QFileInfo(tempfilename).baseName();
+        QString clearedname = tempfilename.chopped(QString(".layout.latte").size());
         tempfilename = uniqueLayoutTemplateName(clearedname) + ".layout.latte";
     } else if (tempfilename.endsWith(".view.latte")) {
-        QString clearedname = QFileInfo(tempfilename).baseName();
+        QString clearedname = tempfilename.chopped(QString(".view.latte").size());
         tempfilename = uniqueViewTemplateName(clearedname) + ".view.latte";
     }
 
