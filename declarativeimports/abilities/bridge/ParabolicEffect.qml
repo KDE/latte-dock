@@ -8,12 +8,12 @@ import QtQuick 2.0
 BridgeItem {
     id: parabolicBridge
 
-    function clientRequestUpdateLowerItemScale(newScale, step) {
-        host.sglUpdateLowerItemScale(appletIndex-1, newScale, step);
+    function clientRequestUpdateLowerItemScale(newScales) {
+        host.sglUpdateLowerItemScale(appletIndex-1, newScales);
     }
 
-    function clientRequestUpdateHigherItemScale(newScale, step) {
-        host.sglUpdateHigherItemScale(appletIndex+1, newScale, step);
+    function clientRequestUpdateHigherItemScale(newScales) {
+        host.sglUpdateHigherItemScale(appletIndex+1, newScales);
     }
 
   /*Be Careful, needs to be considered how to not create

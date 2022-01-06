@@ -18,7 +18,7 @@ Item {
     readonly property bool isParabolicEnabled: parabolicAreaLoader.isParabolicEnabled
     readonly property bool isThinTooltipEnabled: parabolicAreaLoader.isThinTooltipEnabled    
 
-    property real center: (root.isHorizontal ? appletItem.width : appletItem.height) / 2
+    property real length: root.isHorizontal ? appletItem.width : appletItem.height
 
     MouseArea {
         id: parabolicMouseArea
@@ -111,7 +111,7 @@ Item {
         }
 
         //use the new parabolic effect manager in order to handle all parabolic effect messages
-        var scales = parabolic.applyParabolicEffect(index, currentMousePosition, center);
+        var scales = parabolic.applyParabolicEffect(index, currentMousePosition, length);
 
         //Left hiddenSpacer
         if(appletItem.firstAppletInContainer){
@@ -127,71 +127,81 @@ Item {
     } //scale
 
 
-    function updateScale(nIndex, nScale, step){
-        if(appletItem && !appletItem.containsMouse && (appletItem.index === nIndex)){
+    function updateScale(nIndex, nScale){
+        if(appletItem && (appletItem.index === nIndex) /*&& !appletItem.containsMouse*/){ /*disable it in order to increase parabolic effect responsiveness*/
             if ( (parabolicEffectIsSupported && !appletItem.originalAppletBehavior && !appletItem.communicator.indexerIsSupported)
                     && (applet && applet.status !== PlasmaCore.Types.HiddenStatus)){
-                if(nScale >= 0) {
-                    wrapper.zoomScale = nScale + step;
+                    wrapper.zoomScale = Math.max(1, nScale);
+            }
+        }
+    }
+
+    function sltUpdateItemScale(delegateIndex, newScales, islower) {
+        var ishigher = !islower;
+        var clearrequestedfromlastacceptedsignal = (newScales.length===1) && (newScales[0]===1);
+        var sideindex = islower ? appletItem.index-1 : appletItem.index+1;
+
+        if (delegateIndex === appletItem.index) {
+            if (communicator.parabolicEffectIsSupported) {
+                if (islower) {
+                    communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(newScales);
                 } else {
-                    wrapper.zoomScale = wrapper.zoomScale + step;
+                    communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScales);
                 }
+                return;
+            }
+
+            if (newScales.length <= 0) {
+                return
+            }
+
+            var nextscales = newScales.slice();                                                          //first copy scales in order to not touch referenced/same array to other slots
+
+            if (!appletItem.isSeparator && !appletItem.isMarginsAreaSeparator && !appletItem.isHidden) { //accept signal and apply the first scale in the stack
+                updateScale(delegateIndex, nextscales[0]);                                               //apply scale
+                nextscales.splice(0, 1);                                                                 //remove accepted and previously applied scale
+
+                if ((nextscales.length===1) && (nextscales[0]===1)) {                                    //send clearrequestedfromlastacceptedsignal to inform neighbours in that direction to release zoom
+                    if (islower) {
+                        parabolic.sglUpdateLowerItemScale(sideindex, nextscales);
+                    } else {
+                        parabolic.sglUpdateHigherItemScale(sideindex, nextscales);
+                    }
+                    return;
+                }
+            }
+
+            if (!clearrequestedfromlastacceptedsignal) {              //send remaining scales in the stack as long as this is not the clearrequestedfromlastacceptedsignal, in order to not send twice
+                if (islower) {
+                    parabolic.sglUpdateLowerItemScale(appletItem.index-1, nextscales);
+                } else {
+                    parabolic.sglUpdateHigherItemScale(appletItem.index+1, nextscales);
+                }
+            }
+        } else if (islower && clearrequestedfromlastacceptedsignal && (appletItem.index < delegateIndex)) { //accept requestedfromlastacceptedsignal in lower direction if that is the case
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(newScales);
+            } else {
+                updateScale(sideindex, 1);
+            }
+        } else if (ishigher && clearrequestedfromlastacceptedsignal && (appletItem.index > delegateIndex)) { //accept requestedfromlastacceptedsignal in higher direction if that is the case
+            if (communicator.parabolicEffectIsSupported) {
+                communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScales);
+            } else {
+                updateScale(sideindex, 1);
             }
         }
     }
 
-    function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === appletItem.index) {
-            if (communicator.parabolicEffectIsSupported) {
-                communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(newScale, step);
-                return;
-            }
 
-            if (!appletItem.isSeparator && !appletItem.isMarginsAreaSeparator && !appletItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear lower items
-                    parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
-                }
-            } else {
-                parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
-            }
-        } else if ((newScale === 1) && (appletItem.index < delegateIndex)) {
-            //! apply zoom clearing
-            if (communicator.parabolicEffectIsSupported) {
-                communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(1, step);
-            } else {
-                updateScale(appletItem.index, 1, 0);
-            }
-        }
+    function sltUpdateLowerItemScale(delegateIndex, newScales) {
+        var islower = true;
+        sltUpdateItemScale(delegateIndex, newScales, islower);
     }
 
-    function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === appletItem.index) {
-            if (communicator.parabolicEffectIsSupported) {
-                communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScale, step);
-                return;
-            }
-
-            if (!appletItem.isSeparator && !appletItem.isMarginsAreaSeparator && !appletItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear higher items
-                    parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0);
-                }
-            } else {
-                parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
-            }
-        } else if ((newScale === 1) && (appletItem.index > delegateIndex)) {
-            //! apply zoom clearing
-            if (communicator.parabolicEffectIsSupported) {
-                communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(1, step);
-            } else {
-                updateScale(appletItem.index, 1, 0);
-            }
-        }
+    function sltUpdateHigherItemScale(delegateIndex, newScales) {
+        var ishigher = false;
+        sltUpdateItemScale(delegateIndex, newScales, ishigher);
     }
 
     Component.onCompleted: {

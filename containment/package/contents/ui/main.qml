@@ -1015,6 +1015,7 @@ Item {
         debug: _debug
         layouts: layoutsContainer
         view: latteView
+        settings: universalSettings
     }
 
     Ability.PositionShortcuts {

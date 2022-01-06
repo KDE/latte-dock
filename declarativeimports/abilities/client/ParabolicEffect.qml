@@ -20,6 +20,7 @@ AbilityDefinition.ParabolicEffect {
     factor: ref.parabolic.factor
     restoreZoomIsBlocked: bridge ? (bridge.parabolic.host.restoreZoomIsBlocked || local.restoreZoomIsBlocked) : local.restoreZoomIsBlocked
     currentParabolicItem: ref.parabolic.currentParabolicItem
+    spread: ref.parabolic.spread
 
     readonly property bool isActive: bridge !== null
     //! private properties can not go to definition because can not be made readonly in there
@@ -37,6 +38,7 @@ AbilityDefinition.ParabolicEffect {
     readonly property AbilityDefinition.ParabolicEffect local: AbilityDefinition.ParabolicEffect {
         id: _localref
         readonly property bool directRenderingEnabled: _localref._privates.directRenderingEnabled
+        spread: 3
     }
 
     Item {
@@ -127,34 +129,34 @@ AbilityDefinition.ParabolicEffect {
         }
     }
 
-    function hostRequestUpdateLowerItemScale(newScale, step){
+    function hostRequestUpdateLowerItemScale(newScales){
         //! function called from host
-        sglUpdateLowerItemScale(indexer.itemsCount-1, newScale, step);
+        sglUpdateLowerItemScale(indexer.itemsCount-1, newScales);
     }
 
-    function hostRequestUpdateHigherItemScale(newScale, step){
+    function hostRequestUpdateHigherItemScale(newScales){
         //! function called from host
-        sglUpdateHigherItemScale(0, newScale, step);
+        sglUpdateHigherItemScale(0, newScales);
     }
 
-    function sltTrackLowerItemScale(delegateIndex, newScale, step){
+    function sltTrackLowerItemScale(delegateIndex, newScales){
         //! send update signal to host
         if (bridge) {
             if (delegateIndex === -1) {
-                bridge.parabolic.clientRequestUpdateLowerItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex>=0) {
-                bridge.parabolic.clientRequestUpdateLowerItemScale(1, 0);
+                bridge.parabolic.clientRequestUpdateLowerItemScale(newScales);
+            } else if ((newScales.length===1) && (newScales[0]===1) && delegateIndex>=0) {
+                bridge.parabolic.clientRequestUpdateLowerItemScale(newScales);
             }
         }
     }
 
-    function sltTrackHigherItemScale(delegateIndex, newScale, step) {
+    function sltTrackHigherItemScale(delegateIndex, newScales) {
         //! send update signal to host
         if (bridge) {
             if (delegateIndex >= indexer.itemsCount) {
-                bridge.parabolic.clientRequestUpdateHigherItemScale(newScale, step);
-            } else if (newScale === 1 && delegateIndex<indexer.itemsCount) {
-                bridge.parabolic.clientRequestUpdateHigherItemScale(1, 0);
+                bridge.parabolic.clientRequestUpdateHigherItemScale(newScales);
+            } else if ((newScales.length===1) && (newScales[0]===1) && delegateIndex<indexer.itemsCount) {
+                bridge.parabolic.clientRequestUpdateHigherItemScale(newScales);
             }
         }
     }
@@ -163,48 +165,6 @@ AbilityDefinition.ParabolicEffect {
         if (bridge) {
             bridge.parabolic.host.setCurrentParabolicItemIndex(index);
         }
-    }
-
-    function applyParabolicEffect(index, currentMousePosition, center) {
-        var rDistance = Math.abs(currentMousePosition  - center);
-
-        //check if the mouse goes right or down according to the center
-        var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-        if (Qt.application.layoutDirection === Qt.RightToLeft && horizontal) {
-            positiveDirection = !positiveDirection;
-        }
-
-        //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-        var zoomCenter = (factor.zoom - 1) / 2
-
-        //computes the in the scale e.g. 0...0.35 according to the mouse distance
-        //0.35 on the edge and 0 in the center
-        var firstComputation = (rDistance / center) * zoomCenter;
-
-        //calculates the scaling for the neighbour tasks
-        var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, factor.zoom);
-        var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
-
-        //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-        //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-        var leftScale;
-        var rightScale;
-
-        if(positiveDirection === true){
-            rightScale = bigNeighbourZoom;
-            leftScale = smallNeighbourZoom;
-        }
-        else {
-            rightScale = smallNeighbourZoom;
-            leftScale = bigNeighbourZoom;
-        }
-
-        sglUpdateHigherItemScale(index+1 , rightScale, 0);
-        sglUpdateLowerItemScale(index-1, leftScale, 0);
-
-        return {leftScale:leftScale, rightScale:rightScale};
     }
 
     function invkClearZoom() {

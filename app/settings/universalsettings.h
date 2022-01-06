@@ -12,6 +12,7 @@
 #include <coretypes.h>
 #include "../apptypes.h"
 #include "../lattecorona.h"
+#include "../data/preferencesdata.h"
 
 // Qt
 #include <QObject>
@@ -46,6 +47,8 @@ class UniversalSettings : public QObject
     Q_PROPERTY(bool inAdvancedModeForEditSettings READ inAdvancedModeForEditSettings WRITE setInAdvancedModeForEditSettings NOTIFY inAdvancedModeForEditSettingsChanged)
     Q_PROPERTY(bool colorsScriptIsPresent READ colorsScriptIsPresent NOTIFY colorsScriptIsPresentChanged)
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
+
+    Q_PROPERTY(int parabolicSpread READ parabolicSpread WRITE setParabolicSpread NOTIFY parabolicSpreadChanged)
 
     Q_PROPERTY(QString singleModeLayoutName READ singleModeLayoutName WRITE setSingleModeLayoutName NOTIFY singleModeLayoutNameChanged)
 
@@ -90,6 +93,9 @@ public:
 
     bool showInfoWindow() const;
     void setShowInfoWindow(bool show);
+
+    int parabolicSpread() const;
+    void setParabolicSpread(const int &spread);
 
     int version() const;
     void setVersion(int ver);
@@ -138,6 +144,7 @@ signals:
     void layoutsMemoryUsageChanged();
     void isAvailableGeometryBroadcastedToPlasmaChanged();
     void metaPressAndHoldEnabledChanged();
+    void parabolicSpreadChanged();
     void sensitivityChanged();
     void screensCountChanged();
     void screenScalesChanged();
@@ -182,6 +189,7 @@ private:
     int m_version{1};
 
     int m_screenTrackerInterval{2500};
+    int m_parabolicSpread{Data::Preferences::PARABOLICSPREAD};
 
     QString m_singleModeLayoutName;
 

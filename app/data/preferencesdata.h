@@ -26,6 +26,7 @@ public:
     static const bool ISAVAILABLEGEOMETRYBROADCASTEDTOPLASMA = true;
     static const bool METAPRESSFORAPPLAUNCHER = false;
     static const bool METAHOLDFORBADGES = true;
+    static const int PARABOLICSPREAD = 3;
     static const int SCREENSDELAY = 2500;
     static const Settings::MouseSensitivity MOUSESENSITIVITY = Settings::HighMouseSensitivity;
 
@@ -41,6 +42,7 @@ public:
     bool isAvailableGeometryBroadcastedToPlasma{ISAVAILABLEGEOMETRYBROADCASTEDTOPLASMA};
     bool metaPressForAppLauncher{METAPRESSFORAPPLAUNCHER};
     bool metaHoldForBadges{METAHOLDFORBADGES};
+    int parabolicSpread{PARABOLICSPREAD};
     int screensDelay{SCREENSDELAY};
     QStringList contextMenuAlwaysActions{Data::ContextMenu::ACTIONSALWAYSVISIBLE};
     Settings::MouseSensitivity mouseSensitivity{MOUSESENSITIVITY};

@@ -33,12 +33,18 @@ TabPreferences::TabPreferences(Latte::Settings::Dialog::SettingsDialog *parent)
 
 void TabPreferences::initUi()
 {
-    //! exclusive group
+    //! exclusive groups
     m_mouseSensitivityButtons = new QButtonGroup(this);
     m_mouseSensitivityButtons->addButton(m_ui->lowSensitivityBtn, Latte::Settings::LowMouseSensitivity);
     m_mouseSensitivityButtons->addButton(m_ui->mediumSensitivityBtn, Latte::Settings::MediumMouseSensitivity);
     m_mouseSensitivityButtons->addButton(m_ui->highSensitivityBtn, Latte::Settings::HighMouseSensitivity);
     m_mouseSensitivityButtons->setExclusive(true);
+
+    m_parabolicSpreadButtons = new QButtonGroup(this);
+    m_parabolicSpreadButtons->addButton(m_ui->smallParabolicBtn, Data::Preferences::PARABOLICSPREAD);
+    m_parabolicSpreadButtons->addButton(m_ui->mediumParabolicBtn, 5);
+    m_parabolicSpreadButtons->addButton(m_ui->largeParabolicBtn, 7);
+    m_parabolicSpreadButtons->setExclusive(true);
 
     //! Buttons
     connect(m_ui->contextMenuActionsBtn, &QPushButton::clicked, this, &TabPreferences::onActionsBtnPressed);
@@ -48,6 +54,14 @@ void TabPreferences::initUi()
             [ = ](int id, bool checked) {
         if (checked) {
             m_preferences.mouseSensitivity = static_cast<Latte::Settings::MouseSensitivity>(id);
+            emit dataChanged();
+        }
+    });
+
+    connect(m_parabolicSpreadButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+            [ = ](int id, bool checked) {
+        if (checked) {
+            m_preferences.parabolicSpread = id;
             emit dataChanged();
         }
     });
@@ -111,6 +125,7 @@ void TabPreferences::initSettings()
     o_preferences.metaHoldForBadges = m_corona->universalSettings()->metaPressAndHoldEnabled();
     o_preferences.borderlessMaximized = m_corona->universalSettings()->canDisableBorders();
     o_preferences.mouseSensitivity = m_corona->universalSettings()->sensitivity();
+    o_preferences.parabolicSpread = m_corona->universalSettings()->parabolicSpread();
     o_preferences.screensDelay = m_corona->universalSettings()->screenTrackerInterval();
 
     m_preferences = o_preferences;
@@ -151,6 +166,14 @@ void TabPreferences::updateUi()
         m_ui->mediumSensitivityBtn->setChecked(true);
     } else if (m_preferences.mouseSensitivity == Settings::HighMouseSensitivity) {
         m_ui->highSensitivityBtn->setChecked(true);
+    }
+
+    if (m_preferences.parabolicSpread == Data::Preferences::PARABOLICSPREAD) {
+        m_ui->smallParabolicBtn->setChecked(true);
+    } else if (m_preferences.parabolicSpread == 5) {
+        m_ui->mediumParabolicBtn->setChecked(true);
+    } else if (m_preferences.parabolicSpread == 7) {
+        m_ui->largeParabolicBtn->setChecked(true);
     }
 
     emit dataChanged();
@@ -195,6 +218,7 @@ void TabPreferences::save()
     m_corona->universalSettings()->setMetaPressAndHoldEnabled(m_preferences.metaHoldForBadges);
     m_corona->universalSettings()->setShowInfoWindow(m_preferences.layoutsInformationWindow);
     m_corona->universalSettings()->setCanDisableBorders(m_preferences.borderlessMaximized);
+    m_corona->universalSettings()->setParabolicSpread(m_preferences.parabolicSpread);
     m_corona->universalSettings()->setScreenTrackerInterval(m_preferences.screensDelay);
 
     o_preferences = m_preferences;

@@ -49,9 +49,7 @@ Item{
 
     property real visualScaledLength: (abilityItem.abilities.metrics.iconSize + abilityItem.abilities.metrics.totals.lengthPaddings) * zoom
     property real visualScaledThickness: abilityItem.abilities.metrics.totals.thickness * zoom
-    /// end of Scalers///////
-
-    property real center: (abilityItem.isHorizontal ? abilityItem.width : abilityItem.height) / 2
+    /// end of Scalers///////  
 
     readonly property alias contentItemContainer: _contentItemContainer
     readonly property alias titleTooltipVisualParent: _titleTooltipVisualParent

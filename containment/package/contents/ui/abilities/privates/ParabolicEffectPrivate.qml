@@ -19,6 +19,7 @@ AbilityHost.ParabolicEffect {
     property Item debug: null
     property Item layouts: null
     property QtObject view: null
+    property QtObject settings: null
 
     readonly property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
 
@@ -131,49 +132,6 @@ AbilityHost.ParabolicEffect {
 
         lastParabolicItemIndex = index;
     }
-
-    function applyParabolicEffect(index, currentMousePosition, center) {
-        var rDistance = Math.abs(currentMousePosition  - center);
-
-        //check if the mouse goes right or down according to the center
-        var positiveDirection =  ((currentMousePosition  - center) >= 0 );
-
-        if (Qt.application.layoutDirection === Qt.RightToLeft && horizontal) {
-            positiveDirection = !positiveDirection;
-        }
-
-        //finding the zoom center e.g. for zoom:1.7, calculates 0.35
-        var zoomCenter = (factor.zoom - 1) / 2
-
-        //computes the in the scale e.g. 0...0.35 according to the mouse distance
-        //0.35 on the edge and 0 in the center
-        var firstComputation = (rDistance / center) * zoomCenter;
-
-        //calculates the scaling for the neighbour tasks
-        var bigNeighbourZoom = Math.min(1 + zoomCenter + firstComputation, factor.zoom);
-        var smallNeighbourZoom = Math.max(1 + zoomCenter - firstComputation, 1);
-
-        //bigNeighbourZoom = Number(bigNeighbourZoom.toFixed(4));
-        //smallNeighbourZoom = Number(smallNeighbourZoom.toFixed(4));
-
-        var leftScale;
-        var rightScale;
-
-        if(positiveDirection === true){
-            rightScale = bigNeighbourZoom;
-            leftScale = smallNeighbourZoom;
-        }
-        else {
-            rightScale = smallNeighbourZoom;
-            leftScale = bigNeighbourZoom;
-        }
-
-        sglUpdateHigherItemScale(index+1 , rightScale, 0);
-        sglUpdateLowerItemScale(index-1, leftScale, 0);
-
-        return {leftScale:leftScale, rightScale:rightScale};
-    }
-
 
     //! TIMERS
 

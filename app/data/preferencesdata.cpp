@@ -15,6 +15,7 @@ const bool Preferences::BORDERLESSMAXIMIZED;
 const bool Preferences::ISAVAILABLEGEOMETRYBROADCASTEDTOPLASMA;
 const bool Preferences::METAPRESSFORAPPLAUNCHER;
 const bool Preferences::METAHOLDFORBADGES;
+const int Preferences::PARABOLICSPREAD;
 const int Preferences::SCREENSDELAY;
 const Settings::MouseSensitivity Preferences::MOUSESENSITIVITY;
 
@@ -32,6 +33,7 @@ Preferences::Preferences(Preferences &&o)
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
+      parabolicSpread(o.parabolicSpread),
       screensDelay(o.screensDelay)
 {
 }
@@ -46,6 +48,7 @@ Preferences::Preferences(const Preferences &o)
       metaPressForAppLauncher(o.metaPressForAppLauncher),
       metaHoldForBadges(o.metaHoldForBadges),
       mouseSensitivity(o.mouseSensitivity),
+      parabolicSpread(o.parabolicSpread),
       screensDelay(o.screensDelay)
 {
 }
@@ -61,6 +64,7 @@ Preferences &Preferences::operator=(const Preferences &rhs)
     metaPressForAppLauncher = rhs.metaPressForAppLauncher;
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
+    parabolicSpread = rhs.parabolicSpread;
     screensDelay = rhs.screensDelay;
 
     return (*this);
@@ -77,6 +81,7 @@ Preferences &Preferences::operator=(Preferences &&rhs)
     metaPressForAppLauncher = rhs.metaPressForAppLauncher;
     metaHoldForBadges = rhs.metaHoldForBadges;
     mouseSensitivity = rhs.mouseSensitivity;
+    parabolicSpread = rhs.parabolicSpread;
     screensDelay = rhs.screensDelay;
 
     return (*this);
@@ -93,6 +98,7 @@ bool Preferences::operator==(const Preferences &rhs) const
             && (metaPressForAppLauncher == rhs.metaPressForAppLauncher)
             && (metaHoldForBadges == rhs.metaHoldForBadges)
             && (mouseSensitivity == rhs.mouseSensitivity)
+            && (parabolicSpread == rhs.parabolicSpread)
             && (screensDelay == rhs.screensDelay);
 }
 
@@ -112,6 +118,7 @@ bool Preferences::inDefaultValues() const
             && (metaPressForAppLauncher == METAPRESSFORAPPLAUNCHER)
             && (metaHoldForBadges == METAHOLDFORBADGES)
             && (mouseSensitivity == MOUSESENSITIVITY)
+            && (parabolicSpread == PARABOLICSPREAD)
             && (screensDelay == SCREENSDELAY);
 }
 
@@ -126,6 +133,7 @@ void Preferences::setToDefaults()
     metaPressForAppLauncher = METAPRESSFORAPPLAUNCHER;
     metaHoldForBadges = METAHOLDFORBADGES;
     mouseSensitivity = MOUSESENSITIVITY;
+    parabolicSpread = PARABOLICSPREAD;
     screensDelay = SCREENSDELAY;
 }
 

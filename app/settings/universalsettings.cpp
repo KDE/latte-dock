@@ -50,6 +50,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::metaPressAndHoldEnabledChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::parabolicSpreadChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::sensitivityChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::screenTrackerIntervalChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::showInfoWindowChanged, this, &UniversalSettings::saveConfig);
@@ -191,6 +192,21 @@ void UniversalSettings::setScreenTrackerInterval(int duration)
 
     m_screenTrackerInterval = duration;
     emit screenTrackerIntervalChanged();
+}
+
+int UniversalSettings::parabolicSpread() const
+{
+    return m_parabolicSpread;
+}
+
+void UniversalSettings::setParabolicSpread(const int &spread)
+{
+    if (m_parabolicSpread == spread) {
+        return;
+    }
+
+    m_parabolicSpread = spread;
+    emit parabolicSpreadChanged();
 }
 
 QString UniversalSettings::singleModeLayoutName() const
@@ -527,6 +543,7 @@ void UniversalSettings::loadConfig()
     m_screenTrackerInterval = m_universalGroup.readEntry("screenTrackerInterval", 2500);
     m_showInfoWindow = m_universalGroup.readEntry("showInfoWindow", true);
     m_singleModeLayoutName = m_universalGroup.readEntry("singleModeLayoutName", QString());
+    m_parabolicSpread = m_universalGroup.readEntry("parabolicSpread", Data::Preferences::PARABOLICSPREAD);
     m_memoryUsage = static_cast<MemoryUsage::LayoutsMemory>(m_universalGroup.readEntry("memoryUsage", (int)MemoryUsage::SingleLayout));
     m_sensitivity = static_cast<Settings::MouseSensitivity>(m_universalGroup.readEntry("mouseSensitivity", (int)Settings::HighMouseSensitivity));
 
@@ -550,6 +567,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("screenTrackerInterval", m_screenTrackerInterval);
     m_universalGroup.writeEntry("showInfoWindow", m_showInfoWindow);
     m_universalGroup.writeEntry("singleModeLayoutName", m_singleModeLayoutName);
+    m_universalGroup.writeEntry("parabolicSpread", m_parabolicSpread);
     m_universalGroup.writeEntry("memoryUsage", (int)m_memoryUsage);
     m_universalGroup.writeEntry("mouseSensitivity", (int)m_sensitivity);
     syncSettings();

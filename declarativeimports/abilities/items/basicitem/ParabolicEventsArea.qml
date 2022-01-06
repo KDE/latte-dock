@@ -20,7 +20,7 @@ Item {
 
     readonly property bool isParabolicEnabled: parabolicEventsAreaLoader.isParabolicEnabled
     readonly property bool isThinTooltipEnabled: parabolicEventsAreaLoader.isThinTooltipEnabled
-    readonly property real center: abilityItem.parabolicItem.center
+    readonly property real length: abilityItem.isHorizontal ? abilityItem.width : abilityItem.height
 
     MouseArea {
         id: parabolicMouseArea
@@ -131,7 +131,7 @@ Item {
         }
 
         //use the new parabolic ability in order to handle all parabolic effect messages
-        var scales = abilityItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, center);
+        var scales = abilityItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, length);
 
         //Left hiddenSpacer for first task
         if((index === abilityItem.abilities.indexer.firstVisibleItemIndex) && abilityItem.abilities.containment.isFirstAppletInContainment) {
@@ -153,59 +153,66 @@ Item {
         }
     } //zoom
 
-    function updateScale(nIndex, nScale, step){
-        if (!_parabolicArea.containsMouse && (index === nIndex) && !parabolicItem.isParabolicEventBlocked){
+    function updateScale(nIndex, nScale){
+        if (index === nIndex /*&& !_parabolicArea.containsMouse*/ /*&& !parabolicItem.isParabolicEventBlocked*/){ //!disabled them in order to provide smoother parabolic effect during dock showing and first hovering
             if (parabolicItem.isUpdatingOnlySpacers) {
                 var subSpacerScale = (nScale-1)/2;
 
                 hiddenSpacerLeft.nScale = subSpacerScale;
                 hiddenSpacerRight.nScale = subSpacerScale;
             } else {
-                var newScale = 1;
+                abilityItem.parabolicItem.zoom = Math.max(1, nScale);
+            }
+        }
+    }
 
-                if(nScale >= 0) {
-                    newScale = nScale + step;
+    function sltUpdateItemScale(delegateIndex, newScales, islower) {
+        var ishigher = !islower;
+        var clearrequestedfromlastacceptedsignal = (newScales.length===1) && (newScales[0]===1);
+        var sideindex = islower ? index-1 : index+1;
+
+        if (delegateIndex === index) {
+            if (newScales.length <= 0) {
+                return
+            }
+
+            var nextscales = newScales.slice();                       //first copy scales in order to not touch referenced/same array to other slots
+
+            if (!abilityItem.isSeparator && !abilityItem.isHidden) {  //accept signal and apply the first scale in the stack
+                updateScale(delegateIndex, nextscales[0]);            //apply scale
+                nextscales.splice(0,1);                               //remove accepted and previously applied scale
+
+                if ((nextscales.length===1) && (nextscales[0]===1)) { //send clearrequestedfromlastacceptedsignal to inform neighbours in that direction to release zoom
+                    if (islower) {
+                        abilityItem.abilities.parabolic.sglUpdateLowerItemScale(sideindex, nextscales);
+                    } else {
+                        abilityItem.abilities.parabolic.sglUpdateHigherItemScale(sideindex, nextscales);
+                    }
+                    return;
+                }
+            }
+
+            if (!clearrequestedfromlastacceptedsignal) {              //send remaining scales in the stack as long as this is not the clearrequestedfromlastacceptedsignal, in order to not send twice
+                if (islower) {
+                    abilityItem.abilities.parabolic.sglUpdateLowerItemScale(sideindex, nextscales);
                 } else {
-                    newScale = abilityItem.parabolicItem.zoom + step;
+                    abilityItem.abilities.parabolic.sglUpdateHigherItemScale(sideindex, nextscales);
                 }
-
-                abilityItem.parabolicItem.zoom = newScale;
             }
+        } else if ((islower && clearrequestedfromlastacceptedsignal && (index < delegateIndex))           //accept requestedfromlastacceptedsignal in lower direction if that is the case
+                   || (ishigher && clearrequestedfromlastacceptedsignal && (index > delegateIndex))) {    //accept requestedfromlastacceptedsignal in higher direction if that is the case
+            updateScale(index, 1);
         }
     }
 
-    function sltUpdateLowerItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === index) {
-            if (!abilityItem.isSeparator && !abilityItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear lower items
-                    abilityItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, 1, 0);
-                }
-            } else {
-                abilityItem.abilities.parabolic.sglUpdateLowerItemScale(delegateIndex-1, newScale, step);
-            }
-        } else if ((newScale === 1) && (index < delegateIndex)) {
-            updateScale(index, 1, 0);
-        }
+    function sltUpdateLowerItemScale(delegateIndex, newScales) {
+        var islower = true;
+        sltUpdateItemScale(delegateIndex, newScales, islower);
     }
 
-    function sltUpdateHigherItemScale(delegateIndex, newScale, step) {
-        if (delegateIndex === index) {
-            if (!abilityItem.isSeparator && !abilityItem.isHidden) {
-                //! when accepted
-                updateScale(delegateIndex, newScale, step);
-
-                if (newScale > 1) { // clear lower items
-                    abilityItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, 1, 0); // clear higher items
-                }
-            } else {
-                abilityItem.abilities.parabolic.sglUpdateHigherItemScale(delegateIndex+1, newScale, step);
-            }
-        } else if ((newScale === 1) && (index > delegateIndex)) {
-            updateScale(index, 1, 0);
-        }
+    function sltUpdateHigherItemScale(delegateIndex, newScales) {
+        var ishigher = false;
+        sltUpdateItemScale(delegateIndex, newScales, ishigher);
     }
 
     Component.onCompleted: {

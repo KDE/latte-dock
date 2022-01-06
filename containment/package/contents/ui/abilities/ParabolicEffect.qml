@@ -25,6 +25,7 @@ Ability.ParabolicEffectPrivate {
     }
     factor.maxZoom: Math.max(factor.zoom, animations.requirements.zoomFactor)
     restoreZoomIsBlocked: restoreZoomIsBlockedFromApplet || (view && view.contextMenuIsShown)
+    spread: settings ? settings.parabolicSpread : 3
 
     currentParabolicItem: view ? view.parabolic.currentItem : null
 }

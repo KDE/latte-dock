@@ -70,6 +70,7 @@ private:
     Latte::Corona *m_corona{nullptr};
 
     QButtonGroup *m_mouseSensitivityButtons;
+    QButtonGroup *m_parabolicSpreadButtons;
 
     //! current data
     Data::Preferences m_preferences;
