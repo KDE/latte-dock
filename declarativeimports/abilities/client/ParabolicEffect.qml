@@ -142,9 +142,10 @@ AbilityDefinition.ParabolicEffect {
     function sltTrackLowerItemScale(delegateIndex, newScales){
         //! send update signal to host
         if (bridge) {
+            var clearrequestedfromlastacceptedsignal = (newScales.length===1) && (newScales[0]===1);
             if (delegateIndex === -1) {
                 bridge.parabolic.clientRequestUpdateLowerItemScale(newScales);
-            } else if ((newScales.length===1) && (newScales[0]===1) && delegateIndex>=0) {
+            } else if (clearrequestedfromlastacceptedsignal && delegateIndex>=0) {
                 bridge.parabolic.clientRequestUpdateLowerItemScale(newScales);
             }
         }
@@ -153,9 +154,10 @@ AbilityDefinition.ParabolicEffect {
     function sltTrackHigherItemScale(delegateIndex, newScales) {
         //! send update signal to host
         if (bridge) {
+            var clearrequestedfromlastacceptedsignal = (newScales.length===1) && (newScales[0]===1);
             if (delegateIndex >= indexer.itemsCount) {
                 bridge.parabolic.clientRequestUpdateHigherItemScale(newScales);
-            } else if ((newScales.length===1) && (newScales[0]===1) && delegateIndex<indexer.itemsCount) {
+            } else if (clearrequestedfromlastacceptedsignal && delegateIndex<indexer.itemsCount) {
                 bridge.parabolic.clientRequestUpdateHigherItemScale(newScales);
             }
         }

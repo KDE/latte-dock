@@ -182,13 +182,13 @@ Item {
             if (communicator.parabolicEffectIsSupported) {
                 communicator.bridge.parabolic.client.hostRequestUpdateLowerItemScale(newScales);
             } else {
-                updateScale(sideindex, 1);
+                updateScale(appletItem.index, 1);
             }
         } else if (ishigher && clearrequestedfromlastacceptedsignal && (appletItem.index > delegateIndex)) { //accept requestedfromlastacceptedsignal in higher direction if that is the case
             if (communicator.parabolicEffectIsSupported) {
                 communicator.bridge.parabolic.client.hostRequestUpdateHigherItemScale(newScales);
             } else {
-                updateScale(sideindex, 1);
+                updateScale(appletItem.index, 1);
             }
         }
     }
