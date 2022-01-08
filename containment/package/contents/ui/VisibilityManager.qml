@@ -174,7 +174,6 @@ Item{
         //! WindowsCanCover case
         if (latteView && latteView.visibility.mode === LatteCore.Types.WindowsCanCover) {
             latteView.visibility.setViewOnFrontLayer();
-            return;
         }
 
         if (!latteView.visibility.isHidden && latteView.positioner.inSlideAnimation) {
