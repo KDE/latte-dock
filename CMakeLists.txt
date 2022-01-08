@@ -1,7 +1,8 @@
 project(lattedock)
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(VERSION 0.10.75)
 set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
@@ -51,9 +52,6 @@ string(REGEX REPLACE "\\." "" KF5_VERSION_MINOR ${KF5_VERSION_MINOR})
 message(STATUS "KF5 VERSION : ${KF5_VERSION}")
 message(STATUS "KF5 VERSION MINOR : ${KF5_VERSION_MINOR}")
 
-if(${KF5_VERSION_MINOR} LESS "62")
-find_package(KF5 REQUIRED COMPONENTS SysGuard)
-endif()
 
 include(ECMQMLModules)
 ecm_find_qmlmodule(QtQuick 2.7)

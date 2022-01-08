@@ -581,8 +581,6 @@ void Effects::updateEffects()
                 //! adjust mask coordinates based on local coordinates
                 int fX = m_rect.x(); int fY = m_rect.y();
 
-
-#if KF5_VERSION_MINOR >= 65
                 //! Latte is now using GtkFrameExtents so Effects geometries must be adjusted
                 //! windows that use GtkFrameExtents and apply Effects on them they take GtkFrameExtents
                 //! as granted
@@ -593,7 +591,6 @@ void Effects::updateEffects()
                         fX = qMax(0, fX - m_view->headThicknessGap());
                     }
                 }
-#endif
 
                 //! There are cases that mask is NULL even though it should not
                 //! Example: SidebarOnDemand from v0.10 that BEHAVEASPLASMAPANEL in EditMode

@@ -93,12 +93,7 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
         KWindowSystem::setType(winId, NET::Normal);
     }
 
-#if KF5_VERSION_MINOR >= 45
     KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager | NET::SkipSwitcher);
-#else
-    KWindowSystem::setState(winId, NET::SkipTaskbar | NET::SkipPager);
-#endif
-
     KWindowSystem::setOnAllDesktops(winId, true);
 
     //! Layer to be applied
@@ -323,7 +318,6 @@ void XWindowInterface::setActiveEdge(QWindow *view, bool active)
     xcb_change_property(c, XCB_PROP_MODE_REPLACE, window->winId(), atom->atom, XCB_ATOM_CARDINAL, 32, 1, &value);
 }
 
-#if KF5_VERSION_MINOR >= 65
 QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const
 {
     NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
@@ -337,7 +331,7 @@ QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameG
 
     return visibleGeometry;
 }
-#endif
+
 
 
 void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
@@ -346,7 +340,6 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
         return;
     }
 
-#if KF5_VERSION_MINOR >= 65
     NETWinInfo ni(QX11Info::connection(), view->winId(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
 
     if (margins.isNull()) {
@@ -377,7 +370,7 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
     NETStrut applied = ni2.gtkFrameExtents();
     QMargins amargins(applied.left, applied.top, applied.right, applied.bottom);
     qDebug() << "     window gtk frame extents applied :: " << amargins;*/
-#endif
+
 }
 
 void XWindowInterface::checkShapeExtension()
@@ -471,17 +464,11 @@ WindowInfoWrap XWindowInterface::requestInfo(WindowId wid)
         winfoWrap.setIsShaded(winfo.hasState(NET::Shaded));
         winfoWrap.setIsOnAllDesktops(winfo.onAllDesktops());
         winfoWrap.setIsOnAllActivities(winfo.activities().empty());
-#if KF5_VERSION_MINOR >= 65
         winfoWrap.setGeometry(visibleGeometry(wid, winfo.frameGeometry()));
-#else
-        winfoWrap.setGeometry(winfo.frameGeometry());
-#endif
         winfoWrap.setIsKeepAbove(winfo.hasState(NET::KeepAbove));
         winfoWrap.setIsKeepBelow(winfo.hasState(NET::KeepBelow));
         winfoWrap.setHasSkipPager(winfo.hasState(NET::SkipPager));
-#if KF5_VERSION_MINOR >= 45
         winfoWrap.setHasSkipSwitcher(winfo.hasState(NET::SkipSwitcher));
-#endif
         winfoWrap.setHasSkipTaskbar(winfo.hasState(NET::SkipTaskbar));
 
         //! BEGIN:Window Abilities

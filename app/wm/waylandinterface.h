@@ -92,10 +92,9 @@ public:
 
     void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
 
-#if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
     void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
-#endif
+
 
 private slots:
     void updateWindow();
@@ -115,11 +114,10 @@ private:
     KWayland::Client::PlasmaWindow *windowFor(WindowId wid);
     KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
 
-#if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
     void setCurrentDesktop(QString desktop);
     void addDesktop(const QString &id, quint32 position);
-#endif
+
 
 private:
     friend class Private::GhostWindow;
@@ -127,11 +125,10 @@ private:
 
     KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
 
-#if KF5_VERSION_MINOR >= 52
     //! VirtualDesktopsSupport
     KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
     QStringList m_desktops;
-#endif
+
 
     Latte::Corona *m_corona{nullptr};
 };

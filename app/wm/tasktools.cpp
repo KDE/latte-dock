@@ -15,13 +15,7 @@
 #include <KSharedConfig>
 #include <KStartupInfo>
 #include <KWindowSystem>
-
-#if KF5_VERSION_MINOR >= 62
-    #include <KProcessList>
-#else
-    #include <processcore/processes.h>
-    #include <processcore/process.h>
-#endif
+#include <KProcessList>
 
 #include <QDir>
 #include <QGuiApplication>
@@ -492,30 +486,21 @@ KService::List servicesFromPid(quint32 pid, KSharedConfig::Ptr rulesConfig)
         return KService::List();
     }
 
-#if KF5_VERSION_MINOR >= 62
-    auto proc = KProcessList::processInfo(pid);
-    if (!proc.isValid()) {
-        return KService::List();
-    }
 
-    const QString cmdLine = proc.command();
-#else
-    KSysGuard::Processes procs;
-    procs.updateOrAddProcess(pid);
+auto proc = KProcessList::processInfo(pid);
+if (!proc.isValid()) {
+    return KService::List();
+}
 
-    KSysGuard::Process *proc = procs.getProcess(pid);
-    const QString &cmdLine = proc ? proc->command().simplified() : QString(); // proc->command has a trailing space???
-#endif
+const QString cmdLine = proc.command();
+
 
     if (cmdLine.isEmpty()) {
         return KService::List();
     }
 
-#if KF5_VERSION_MINOR >= 62
-    return servicesFromCmdLine(cmdLine, proc.name(), rulesConfig);
-#else
-    return servicesFromCmdLine(cmdLine, proc->name(), rulesConfig);
-#endif
+return servicesFromCmdLine(cmdLine, proc.name(), rulesConfig);
+
 }
 
 KService::List servicesFromCmdLine(const QString &_cmdLine, const QString &processName,

@@ -117,12 +117,9 @@ void SubConfigView::init()
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-#if KF5_VERSION_MINOR >= 45
     kdeclarative.setupContext();
     kdeclarative.setupEngine(engine());
-#else
-    kdeclarative.setupBindings();
-#endif
+
 }
 
 Qt::WindowFlags SubConfigView::wFlags() const

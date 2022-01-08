@@ -80,12 +80,8 @@ void InfoView::init()
     KDeclarative::KDeclarative kdeclarative;
     kdeclarative.setDeclarativeEngine(engine());
     kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-#if KF5_VERSION_MINOR >= 45
     kdeclarative.setupContext();
     kdeclarative.setupEngine(engine());
-#else
-    kdeclarative.setupBindings();
-#endif
 
     auto source = QUrl::fromLocalFile(m_corona->kPackage().filePath("infoviewui"));
     setSource(source);

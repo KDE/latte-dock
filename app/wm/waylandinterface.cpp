@@ -28,9 +28,8 @@
 #include <KWindowInfo>
 #include <KWayland/Client/surface.h>
 
-#if KF5_VERSION_MINOR >= 52
 #include <KWayland/Client/plasmavirtualdesktop.h>
-#endif
+
 
 // X11
 #include <NETWM>
@@ -150,7 +149,6 @@ void WaylandInterface::initWindowManagement(KWayland::Client::PlasmaWindowManage
     }, Qt::QueuedConnection);
 }
 
-#if KF5_VERSION_MINOR >= 52
 void WaylandInterface::initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement)
 {
     if (m_virtualDesktopManagement == virtualDesktopManagement) {
@@ -204,7 +202,6 @@ void WaylandInterface::setCurrentDesktop(QString desktop)
     m_currentDesktop = desktop;
     emit currentDesktopChanged();
 }
-#endif
 
 KWayland::Client::PlasmaShell *WaylandInterface::waylandCoronaInterface() const
 {
@@ -256,9 +253,7 @@ void WaylandInterface::setViewExtraFlags(QObject *view, bool isPanelWindow, Latt
     }
 
     surface->setSkipTaskbar(true);
-#if KF5_VERSION_MINOR >= 47
     surface->setSkipSwitcher(true);
-#endif
 
     bool atBottom{!isPanelWindow && (mode == Latte::Types::WindowsCanCover || mode == Latte::Types::WindowsAlwaysCover)};
 
@@ -323,7 +318,6 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
 
 void WaylandInterface::switchToNextVirtualDesktop()
 {
-#if KF5_VERSION_MINOR >= 52
     if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
@@ -344,12 +338,10 @@ void WaylandInterface::switchToNextVirtualDesktop()
     if (desktopObj) {
         desktopObj->requestActivate();
     }
-#endif
 }
 
 void WaylandInterface::switchToPreviousVirtualDesktop()
 {
-#if KF5_VERSION_MINOR >= 52
     if (!m_virtualDesktopManagement || m_desktops.count() <= 1) {
         return;
     }
@@ -370,7 +362,6 @@ void WaylandInterface::switchToPreviousVirtualDesktop()
     if (desktopObj) {
         desktopObj->requestActivate();
     }
-#endif
 }
 
 void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringList &nextactivities)
@@ -547,10 +538,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         winfoWrap.setIsKeepAbove(w->isKeepAbove());
         winfoWrap.setIsKeepBelow(w->isKeepBelow());
         winfoWrap.setGeometry(w->geometry());
-
-#if KF5_VERSION_MINOR >= 47
         winfoWrap.setHasSkipSwitcher(w->skipSwitcher());
-#endif
         winfoWrap.setHasSkipTaskbar(w->skipTaskbar());
 
         //! BEGIN:Window Abilities
@@ -565,9 +553,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         //! END:Window Abilities
 
         winfoWrap.setDisplay(w->title());
-#if KF5_VERSION_MINOR >= 52
         winfoWrap.setDesktops(w->plasmaVirtualDesktops());
-#endif
 
 #if KF5_VERSION_MINOR >= 81
         winfoWrap.setActivities(w->plasmaActivities());
@@ -716,7 +702,6 @@ void WaylandInterface::requestMoveWindow(WindowId wid, QPoint from)
 
 void WaylandInterface::requestToggleIsOnAllDesktops(WindowId wid)
 {
-#if KF5_VERSION_MINOR >= 52
     auto w = windowFor(wid);
 
     if (w && isValidWindow(w) && m_desktops.count() > 1) {
@@ -730,7 +715,6 @@ void WaylandInterface::requestToggleIsOnAllDesktops(WindowId wid)
             }
         }
     }
-#endif
 }
 
 void WaylandInterface::requestToggleKeepAbove(WindowId wid)
@@ -782,11 +766,9 @@ void WaylandInterface::requestToggleMinimized(WindowId wid)
     WindowInfoWrap wInfo = requestInfo(wid);
 
     if (w && isValidWindow(w) && inCurrentDesktopActivity(wInfo)) {
-#if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);
         }
-#endif
         w->requestToggleMinimized();
     }
 }
@@ -797,11 +779,9 @@ void WaylandInterface::requestToggleMaximized(WindowId wid)
     WindowInfoWrap wInfo = requestInfo(wid);
 
     if (w && isValidWindow(w) && windowCanBeMaximized(wid) && inCurrentDesktopActivity(wInfo)) {
-#if KF5_VERSION_MINOR >= 52
         if (!m_currentDesktop.isEmpty()) {
             w->requestEnterVirtualDesktop(m_currentDesktop);
         }
-#endif
         w->requestToggleMaximized();
     }
 }
@@ -865,11 +845,8 @@ bool WaylandInterface::isAcceptableWindow(const KWayland::Client::PlasmaWindow *
     //! Window Checks
     bool hasSkipTaskbar = w->skipTaskbar();
     bool isSkipped = hasSkipTaskbar;
-
-#if KF5_VERSION_MINOR >= 47
     bool hasSkipSwitcher = w->skipSwitcher();
     isSkipped = hasSkipTaskbar && hasSkipSwitcher;
-#endif
 
     if (isSkipped
             && ((w->appId() == QLatin1String("yakuake")
@@ -929,13 +906,9 @@ void WaylandInterface::trackWindow(KWayland::Client::PlasmaWindow *w)
     connect(w, &PlasmaWindow::skipTaskbarChanged, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::onAllDesktopsChanged, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
-
-#if KF5_VERSION_MINOR >= 52
     connect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
-#else
-    connect(w, &PlasmaWindow::virtualDesktopChanged, this, &WaylandInterface::updateWindow);
-#endif
+
 
 #if KF5_VERSION_MINOR >= 81
     connect(w, &PlasmaWindow::plasmaActivityEntered, this, &WaylandInterface::updateWindow);
@@ -962,13 +935,9 @@ void WaylandInterface::untrackWindow(KWayland::Client::PlasmaWindow *w)
     disconnect(w, &PlasmaWindow::skipTaskbarChanged, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::onAllDesktopsChanged, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
-
-#if KF5_VERSION_MINOR >= 52
     disconnect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
-#else
-    disconnect(w, &PlasmaWindow::virtualDesktopChanged, this, &WaylandInterface::updateWindow);
-#endif
+
 
 #if KF5_VERSION_MINOR >= 81
     disconnect(w, &PlasmaWindow::plasmaActivityEntered, this, &WaylandInterface::updateWindow);

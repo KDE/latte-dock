@@ -75,9 +75,7 @@ private:
     bool isAcceptableWindow(WindowId wid);
     bool isValidWindow(WindowId wid);
 
-#if KF5_VERSION_MINOR >= 65
     QRect visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const;
-#endif
 
     void windowAddedProxy(WId wid);
     void windowChangedProxy(WId wid, NET::Properties prop1, NET::Properties2 prop2);
