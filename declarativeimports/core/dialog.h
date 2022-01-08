@@ -10,6 +10,10 @@
 #include <QEvent>
 #include <QObject>
 
+#include <QMetaObject>
+
+#include <array>
+
 // Plasma
 #include <Plasma>
 #include <PlasmaQuick/Dialog>
