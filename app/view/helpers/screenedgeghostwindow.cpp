@@ -86,29 +86,33 @@ void ScreenEdgeGhostWindow::updateGeometry()
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
         //! set minimum length to be 25% of screen width
         length = qMax(m_latteView->screenGeometry().width()/4,qMin(m_latteView->absoluteGeometry().width(), m_latteView->screenGeometry().width() - 1));
-        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().width());
+        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().width()) / 2;
     } else {
         //! set minimum length to be 25% of screen height
         length = qMax(m_latteView->screenGeometry().height()/4,qMin(m_latteView->absoluteGeometry().height(), m_latteView->screenGeometry().height() - 1));
-        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().height());
+        lengthDifference = qMax(0,length - m_latteView->absoluteGeometry().height()) / 2;
+    }
+
+    if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
+        int leftF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
+        int rightF = qMin(m_latteView->screenGeometry().right(), m_latteView->absoluteGeometry().right() + lengthDifference);
+        newGeometry.setLeft(leftF);
+        newGeometry.setRight(rightF);
+    } else {
+        int topF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
+        int bottomF = qMax(m_latteView->screenGeometry().bottom(), m_latteView->absoluteGeometry().bottom() + lengthDifference);
+        newGeometry.setTop(topF);
+        newGeometry.setBottom(bottomF);
     }
 
     if (m_latteView->location() == Plasma::Types::BottomEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
-        newGeometry.moveLeft(xF);
         newGeometry.moveTop(m_latteView->screenGeometry().bottom() - m_thickness);
     } else if (m_latteView->location() == Plasma::Types::TopEdge) {
-        int xF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
-        newGeometry.moveLeft(xF);
         newGeometry.moveTop(m_latteView->screenGeometry().top());
     } else if (m_latteView->location() == Plasma::Types::LeftEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
         newGeometry.moveLeft(m_latteView->screenGeometry().left());
-        newGeometry.moveTop(yF);
-    } else if (m_latteView->location() == Plasma::Types::RightEdge) {
-        int yF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
+    } else if (m_latteView->location() == Plasma::Types::RightEdge) {        
         newGeometry.moveLeft(m_latteView->screenGeometry().right() - m_thickness);
-        newGeometry.moveTop(yF);
     }
 
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
@@ -120,7 +124,6 @@ void ScreenEdgeGhostWindow::updateGeometry()
     }
 
     m_calculatedGeometry = newGeometry;
-
     emit calculatedGeometryChanged();
 }
 
