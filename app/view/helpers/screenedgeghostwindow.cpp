@@ -72,7 +72,7 @@ void ScreenEdgeGhostWindow::updateGeometry()
         return;
     }
 
-    QRect newGeometry;
+    QRect newGeometry = m_latteView->absoluteGeometry();
 
     if (KWindowSystem::compositingActive()) {
         m_thickness = 6;
@@ -100,7 +100,7 @@ void ScreenEdgeGhostWindow::updateGeometry()
         newGeometry.setRight(rightF);
     } else {
         int topF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
-        int bottomF = qMax(m_latteView->screenGeometry().bottom(), m_latteView->absoluteGeometry().bottom() + lengthDifference);
+        int bottomF = qMin(m_latteView->screenGeometry().bottom(), m_latteView->absoluteGeometry().bottom() + lengthDifference);
         newGeometry.setTop(topF);
         newGeometry.setBottom(bottomF);
     }
@@ -116,11 +116,9 @@ void ScreenEdgeGhostWindow::updateGeometry()
     }
 
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
-        newGeometry.setWidth(length);
         newGeometry.setHeight(m_thickness + 1);
     } else {
         newGeometry.setWidth(m_thickness + 1);
-        newGeometry.setHeight(length);
     }
 
     m_calculatedGeometry = newGeometry;
