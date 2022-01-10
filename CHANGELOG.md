@@ -1,5 +1,19 @@
 #**CHANGELOG**#
 
+#### Version 0.10.7
+* multi-screen: always trust KWin under X11 in order to set correct struts for panels and docks
+* automatically offset centered applets when the left or right widgets overlap the centered one
+* windowsgobelow: show properly during startup
+* kwinedges: calculate accurately their size and position
+* improve applets dragging during rearrange and configure widgets mode
+* hide thin tooltips properly at some cases that were stack
+* fill one pixel gap of justify splitters during rearrange and configure widgets mode
+* fix, windows belong to screen whenever they are touching it. This way a window could belong in more than one screens and be taken into account for visibility modes and active window tracking
+* remove file extensions for layouts and templates properly in order to identify the layout or template name
+* fix build for Freebsd
+* x11: force OnAllDesktops for all docks and panels during creation
+* fix empty availableScreenRegion broadcast to Plasma
+
 #### Version 0.10.6
 * fix build with Qt 5.12
 * initialize windows tracking properly
