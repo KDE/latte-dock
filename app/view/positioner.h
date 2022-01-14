@@ -155,7 +155,7 @@ private:
 
     bool isLastHidingRelocationEvent() const;
 
-    QRect maximumNormalGeometry();
+    QRect maximumNormalGeometry(QRect screenGeometry = QRect());
 
     WindowSystem::AbstractWindowInterface::Slide slideLocation(Plasma::Types::Location location);
 

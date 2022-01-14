@@ -564,7 +564,10 @@ void Positioner::immediateSyncGeometry()
                 freeRegion = latteCorona->availableScreenRegionWithCriteria(fixedScreen, activityid, ignoreModes, ignoreEdges);
             }
 
-            maximumRect = maximumNormalGeometry();
+            //! On startup when offscreen use offscreen screen geometry.
+            //! This way vertical docks and panels are not showing are shrinked that
+            //! need to be expanded after sliding-in in startup
+            maximumRect = maximumNormalGeometry(m_inStartup ? availableScreenRect : QRect());
             QRegion availableRegion = freeRegion.intersected(maximumRect);
 
             availableScreenRect = freeRegion.intersected(maximumRect).boundingRect();
@@ -634,23 +637,25 @@ void Positioner::setCanvasGeometry(const QRect &geometry)
 //! this is used mainly from vertical panels in order to
 //! to get the maximum geometry that can be used from the dock
 //! based on their alignment type and the location dock
-QRect Positioner::maximumNormalGeometry()
+QRect Positioner::maximumNormalGeometry(QRect screenGeometry)
 {
+    QRect currentScrGeometry = screenGeometry.isEmpty() ? m_view->screen()->geometry() : screenGeometry;
+
     int xPos = 0;
-    int yPos = m_view->screen()->geometry().y();;
-    int maxHeight = m_view->screen()->geometry().height();
+    int yPos = currentScrGeometry.y();;
+    int maxHeight = currentScrGeometry.height();
     int maxWidth = m_view->maxNormalThickness();
     QRect maxGeometry;
     maxGeometry.setRect(0, 0, maxWidth, maxHeight);
 
     switch (m_view->location()) {
     case Plasma::Types::LeftEdge:
-        xPos = m_view->screen()->geometry().x();
+        xPos = currentScrGeometry.x();
         maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
         break;
 
     case Plasma::Types::RightEdge:
-        xPos = m_view->screen()->geometry().right() - maxWidth + 1;
+        xPos = currentScrGeometry.right() - maxWidth + 1;
         maxGeometry.setRect(xPos, yPos, maxWidth, maxHeight);
         break;
 
