@@ -190,6 +190,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
             emit inEditModeChanged();
         });
 
+        connect(this->containment(), &Plasma::Containment::destroyedChanged, this, [&]() {
+            m_inDelete = containment()->destroyed();
+        });
+
         if (m_corona->viewSettingsFactory()->hasOrphanSettings()
                 && m_corona->viewSettingsFactory()->hasVisibleSettings()
                 && m_corona->viewSettingsFactory()->lastContainment() == containment()) {
@@ -523,8 +527,6 @@ void View::newView(const QString &templateFile)
 void View::removeView()
 {
     if (m_layout) {
-        m_inDelete = true;
-
         QAction *removeAct = action("remove");
 
         if (removeAct) {
