@@ -591,6 +591,14 @@ void View::showConfigurationInterface(Plasma::Applet *applet)
     } else {
         m_appletConfigView = new PlasmaQuick::ConfigView(applet);
         m_appletConfigView.data()->init();
+
+        //! center applet config window
+        m_appletConfigView->setScreen(screen());
+        QRect scrgeometry = screenGeometry();
+        QPoint position{scrgeometry.center().x() - m_appletConfigView->width() / 2, scrgeometry.center().y() - m_appletConfigView->height() / 2 };
+        //!under wayland probably needs another workaround
+        m_appletConfigView->setPosition(position);
+
         m_appletConfigView->show();
     }
 }
