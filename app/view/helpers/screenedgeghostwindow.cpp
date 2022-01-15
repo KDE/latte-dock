@@ -7,6 +7,7 @@
 
 // local
 #include "../view.h"
+#include "../positioner.h"
 
 // Qt
 #include <QDebug>
@@ -40,6 +41,8 @@ ScreenEdgeGhostWindow::ScreenEdgeGhostWindow(Latte::View *view) :
     }
 
     setColor(m_showColor);
+
+    connect(m_latteView->positioner(), &Latte::ViewPart::Positioner::slideOffsetChanged, this, &ScreenEdgeGhostWindow::updateGeometry);
 
     //! this timer is used in order to avoid fast enter/exit signals during first
     //! appearing after edge activation
@@ -95,12 +98,12 @@ void ScreenEdgeGhostWindow::updateGeometry()
 
     if (m_latteView->formFactor() == Plasma::Types::Horizontal) {
         int leftF = qMax(m_latteView->screenGeometry().left(), m_latteView->absoluteGeometry().left() - lengthDifference);
-        int rightF = qMin(m_latteView->screenGeometry().right(), m_latteView->absoluteGeometry().right() + lengthDifference);
+        int rightF = qMax(m_latteView->screenGeometry().left(), qMin(m_latteView->screenGeometry().right(), m_latteView->absoluteGeometry().right() + lengthDifference));
         newGeometry.setLeft(leftF);
         newGeometry.setRight(rightF);
     } else {
         int topF = qMax(m_latteView->screenGeometry().top(), m_latteView->absoluteGeometry().top() - lengthDifference);
-        int bottomF = qMin(m_latteView->screenGeometry().bottom(), m_latteView->absoluteGeometry().bottom() + lengthDifference);
+        int bottomF = qMax(m_latteView->screenGeometry().top(), qMin(m_latteView->screenGeometry().bottom(), m_latteView->absoluteGeometry().bottom() + lengthDifference));
         newGeometry.setTop(topF);
         newGeometry.setBottom(bottomF);
     }
