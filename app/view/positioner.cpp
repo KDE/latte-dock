@@ -972,10 +972,16 @@ void Positioner::initSignalingForLocationChangeSliding()
 
     //! SCREEN
     connect(m_view, &QQuickView::screenChanged, this, [&]() {
+        if (!m_view || !m_nextScreen) {
+            return;
+        }
+        //if panels are not excluded from confirmed geometry check then they are stuck in sliding out end
+        //and they do not switch to new screen geometry
+        bool confirmedgeometry = m_view->behaveAsPlasmaPanel() || (!m_view->behaveAsPlasmaPanel() && m_nextScreen->geometry().contains(m_view->geometry().center()));
+
         if (m_nextScreen
                 && m_nextScreen == m_view->screen()
-                && m_nextScreen->geometry().contains(m_view->geometry().center())) {
-
+                && confirmedgeometry) {
             bool isrelocationlastevent = isLastHidingRelocationEvent();
             m_nextScreen = nullptr;
             m_nextScreenName = "";
