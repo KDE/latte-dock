@@ -673,7 +673,7 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
 
     if (availableScreenRect.top() != m_view->screenGeometry().top()) {
         //! check top border
-        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right();
+        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right() - edgeMargin + 1;
         QRegion fitInRegion = QRect(x, availableScreenRect.y()-1, edgeMargin, 1);
         QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
 
@@ -690,7 +690,7 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
 
     if (availableScreenRect.bottom() != m_view->screenGeometry().bottom()) {
         //! check top border
-        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right();
+        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right()  - edgeMargin + 1;
         QRegion fitInRegion = QRect(x, availableScreenRect.bottom()+1, edgeMargin, 1);
         QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
 
