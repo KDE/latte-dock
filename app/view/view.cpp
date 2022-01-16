@@ -301,6 +301,16 @@ void View::init(Plasma::Containment *plasma_containment)
     connect(this, &View::activitiesChanged, this, &View::applyActivitiesToWindows);
     connect(m_positioner, &ViewPart::Positioner::winIdChanged, this, &View::applyActivitiesToWindows);
 
+    connect(this, &View::alignmentChanged, this, [&](){
+        // inform neighbour vertical docks/panels to adjust their positioning
+        if (m_inDelete || formFactor() == Plasma::Types::Vertical) {
+            return;
+        }
+
+        emit availableScreenRectChangedFrom(this);
+        emit availableScreenRegionChangedFrom(this);
+    });
+
     connect(this, &View::maxLengthChanged, this, [&]() {
         if (m_inDelete) {
             return;

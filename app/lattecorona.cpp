@@ -612,7 +612,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                         break;
 
                     case Latte::Types::Right:
-                        x = view->geometry().right() - w - offsetW;
+                        x = view->geometry().right() + 1 - w - offsetW;
                         break;
                     }
                 }

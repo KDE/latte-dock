@@ -587,7 +587,6 @@ void Positioner::immediateSyncGeometry()
             }
 
             validateTopBottomBorders(availableScreenRect, freeRegion);
-
             m_lastAvailableScreenRegion = freeRegion;
         } else {
             m_view->effects()->setForceTopBorder(false);
@@ -674,7 +673,8 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
 
     if (availableScreenRect.top() != m_view->screenGeometry().top()) {
         //! check top border
-        QRegion fitInRegion = QRect(m_view->screenGeometry().x(), availableScreenRect.y()-1, edgeMargin, 1);
+        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right();
+        QRegion fitInRegion = QRect(x, availableScreenRect.y()-1, edgeMargin, 1);
         QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
 
         if (subtracted.isNull()) {
@@ -690,7 +690,8 @@ void Positioner::validateTopBottomBorders(QRect availableScreenRect, QRegion ava
 
     if (availableScreenRect.bottom() != m_view->screenGeometry().bottom()) {
         //! check top border
-        QRegion fitInRegion = QRect(m_view->screenGeometry().x(), availableScreenRect.bottom()+1, edgeMargin, 1);
+        int x = m_view->location() == Plasma::Types::LeftEdge ? m_view->screenGeometry().x() : m_view->screenGeometry().right();
+        QRegion fitInRegion = QRect(x, availableScreenRect.bottom()+1, edgeMargin, 1);
         QRegion subtracted = fitInRegion.subtracted(availableScreenRegion);
 
         if (subtracted.isNull()) {
