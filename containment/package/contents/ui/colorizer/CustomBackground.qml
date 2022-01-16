@@ -188,7 +188,7 @@ Item{
                         return 0;
                     }
                     anchors.verticalCenterOffset: {
-                        if (allBorders || (noOfBorders>=2 && bothHorizontals) || (noOfBorders==2 && !bothVerticals && borderWidth===0)) {
+                        if (allBorders || (noOfBorders>=2 && bothHorizontals)) {
                             return 0;
                         }
 
@@ -217,7 +217,7 @@ Item{
                         return 0;
                     }
                     anchors.horizontalCenterOffset: {
-                        if (allBorders || (noOfBorders>=2 && bothVerticals) || (noOfBorders==2 && !bothHorizontals && borderWidth===0)) {
+                        if (allBorders || (noOfBorders>=2 && bothVerticals)) {
                             return 0;
                         }
 
