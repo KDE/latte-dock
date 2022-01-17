@@ -11,6 +11,8 @@
 
 namespace Latte {
 
+const int ClonedView::ERRORAPPLETID;
+
 QStringList ClonedView::CONTAINMENTMANUALSYNCEDPROPERTIES = QStringList()
         << QString("appletOrder")
         << QString("lockedZoomApplets")

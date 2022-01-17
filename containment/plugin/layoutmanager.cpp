@@ -25,6 +25,8 @@
 namespace Latte{
 namespace Containment{
 
+const int LayoutManager::JUSTIFYSPLITTERID;
+
 LayoutManager::LayoutManager(QObject *parent)
     : QObject(parent)
 {
