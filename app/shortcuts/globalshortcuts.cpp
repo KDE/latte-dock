@@ -103,8 +103,8 @@ void GlobalShortcuts::init()
     //show the layouts editor
     QAction *layoutsAction = generalActions->addAction(QStringLiteral("show latte global settings"));
     layoutsAction->setText(i18n("Show Latte Global Settings"));
-    layoutsAction->setShortcut(QKeySequence(Qt::META + Qt::Key_W));
-    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence(Qt::META + Qt::Key_W));
+    layoutsAction->setShortcut(QKeySequence());
+    KGlobalAccel::setGlobalShortcut(layoutsAction, QKeySequence());
     connect(layoutsAction, &QAction::triggered, this, [this]() {
         m_modifierTracker->cancelMetaPressed();
         m_corona->layoutsManager()->showLatteSettingsDialog(Settings::Dialog::PreferencesPage, true);
