@@ -110,6 +110,14 @@ Item {
             return;
         }
 
+        if (wrapper.zoomScale === 1 && (appletItem.firstAppletInContainer || appletItem.lastAppletInContainer)) {
+            //! first hover of first or last items in container
+            //! this way we make sure that neighbour items will increase their zoom faster
+            var substep = length/4;
+            var center = length/2;
+            currentMousePosition = Math.min(Math.max(currentMousePosition, center-substep), center+substep);
+        }
+
         //use the new parabolic effect manager in order to handle all parabolic effect messages
         var scales = parabolic.applyParabolicEffect(index, currentMousePosition, length);
 

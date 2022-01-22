@@ -118,6 +118,9 @@ Item{
         return PlasmaCore.Types.BottomEdge;
     }
 
+    readonly property bool isFirstItemInContainer: abilityItem.abilities.containment.isFirstAppletInContainment && (index === abilityItem.abilities.indexer.firstVisibleItemIndex)
+    readonly property bool isLastItemInContainer: abilityItem.abilities.containment.isLastAppletInContainment && (index === abilityItem.abilities.indexer.lastVisibleItemIndex)
+
     readonly property int itemIndex: index
     readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
     readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX

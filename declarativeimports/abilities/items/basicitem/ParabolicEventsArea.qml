@@ -130,16 +130,24 @@ Item {
             return;
         }
 
+        if (abilityItem.parabolicItem.zoom === 1 && (abilityItem.isFirstItemInContainer || abilityItem.isLastItemInContainer)) {
+            //! first hover of first or last items in container
+            //! this way we make sure that neighbour items will increase their zoom faster
+            var substep = length/4;
+            var center = length/2;
+            currentMousePosition = Math.min(Math.max(currentMousePosition, center-substep), center+substep);
+        }
+
         //use the new parabolic ability in order to handle all parabolic effect messages
         var scales = abilityItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, length);
 
         //Left hiddenSpacer for first task
-        if((index === abilityItem.abilities.indexer.firstVisibleItemIndex) && abilityItem.abilities.containment.isFirstAppletInContainment) {
+        if(abilityItem.isFirstItemInContainer) {
             hiddenSpacerLeft.nScale = scales.leftScale - 1;
         }
 
         //Right hiddenSpacer for last task
-        if((index === abilityItem.abilities.indexer.lastVisibleItemIndex) && abilityItem.abilities.containment.isLastAppletInContainment) {
+        if(abilityItem.isLastItemInContainer) {
             hiddenSpacerRight.nScale =  scales.rightScale - 1;
         }
 
