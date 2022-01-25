@@ -1,5 +1,14 @@
 #**CHANGELOG**#
 
+#### Version 0.10.8
+* multi-screen: fix docks/panels screen repositioning when the user specifies different screen for dock or panel
+* fix borders identification for autopositioning vertical docks/panels
+* fix vertical docks/panels autopositioning which is relevant to top and bottom panels
+* position kwin edges helper window properly on startup after offscreen positioning
+* x11: center applets config window on screen
+* do not shrink vertical docks/panels on startup after switching from offscreen to onscreen
+* make dock and panel work properly when they undo their removal
+
 #### Version 0.10.7
 * multi-screen: always trust KWin under X11 in order to set correct struts for panels and docks
 * automatically offset centered applets when the left or right widgets overlap the centered one
