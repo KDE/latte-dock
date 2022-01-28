@@ -167,7 +167,7 @@ BackgroundProperties{
             }
         }
 
-        return root.offset;// (myView.alignment === LatteCore.Types.Center ? root.offset : 0);
+        return root.offset + layoutsContainer.parabolicOffset;// (myView.alignment === LatteCore.Types.Center ? root.offset : 0);
     }
 
     totals.visualThickness: {

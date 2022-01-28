@@ -25,6 +25,7 @@ Item{
     opacity: !(latteView && latteView.visibility.isHidden) ? 1 : 0
 
     readonly property bool isHidden: root.inStartup || (latteView && latteView.visibility && latteView.visibility.isHidden)
+    readonly property int parabolicOffset: _mainLayout.parabolicOffset
 
     property int currentSpot: -1000
 
@@ -278,7 +279,7 @@ Item{
         border.color: "black"
     }*/
 
-    AppletsContainer {
+    AppletsParabolicableContainer {
         id: _mainLayout
         z:10 //be on top of start and end layouts
         beginIndex: 100
