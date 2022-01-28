@@ -27,7 +27,7 @@ Item{
             return 0;
         }
 
-        return (nScale > 0) ? (appletItem.spacersMaxSize * nScale) + separatorSpace : separatorSpace
+        return separatorSpace;
     }
 
     property bool isRightSpacer: false

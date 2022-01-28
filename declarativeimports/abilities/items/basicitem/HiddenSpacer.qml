@@ -38,7 +38,7 @@ Item{
             if (abilityItem.isHidden) {
                 return 0;
             } else if (!abilityItem.parabolicItem.isUpdatingOnlySpacers) {
-                return (nScale > 0) ? (maxSize * nScale) + separatorSpace : separatorSpace;
+                return separatorSpace;
             } else {
                 return (nScale > 0) ? (abilityItem.abilities.metrics.iconSize * nScale) + separatorSpace : separatorSpace;
             }

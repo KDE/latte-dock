@@ -9,19 +9,15 @@ import org.kde.latte.core 0.2 as LatteCore
 AppletsContainer {
     id: parabolicContainer
 
-    property real parabolicOffset: root.myView.alignment === LatteCore.Types.Center ? tailOffsetLength - headOffsetLength : 0
-
-    property real tailFactor: 0
-    property real headFactor: 0
+    property real parabolicOffset: root.myView.alignment === LatteCore.Types.Center ? (tailOffsetLength - headOffsetLength) / 2 : 0
+    property real tailOffsetLength: 0
+    property real headOffsetLength: 0
 
     readonly property int hiddenItemsCount: (parabolic.spread - 1)/2
     readonly property int animationTime: animations.speedFactor.normal * (1.2*animations.duration.small)
-    readonly property real normalHiddenLength: hiddenItemsCount * metrics.totals.length
-    readonly property real tailOffsetLength: (tailFactor * normalHiddenLength) / 2
-    readonly property real headOffsetLength: (headFactor * normalHiddenLength) / 2
 
-    Behavior on tailFactor {
-        id: animatedTailFactorBehavior
+    Behavior on tailOffsetLength {
+        id: animatedTailLengthBehavior
         enabled: !parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation {
             duration: 3 * parabolicContainer.animationTime
@@ -29,13 +25,13 @@ AppletsContainer {
         }
     }
 
-    Behavior on tailFactor {
-        enabled: !animatedTailFactorBehavior.enabled
+    Behavior on tailOffsetLength {
+        enabled: !animatedTailLengthBehavior.enabled
         NumberAnimation { duration: 0 }
     }
 
-    Behavior on headFactor {
-        id: animatedHeadFactorBehavior
+    Behavior on headOffsetLength {
+        id: animatedHeadLengthBehavior
         enabled: !parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation {
             duration: 3 * parabolicContainer.animationTime
@@ -43,8 +39,8 @@ AppletsContainer {
         }
     }
 
-    Behavior on headFactor {
-        enabled: !animatedHeadFactorBehavior.enabled
+    Behavior on headOffsetLength {
+        enabled: !animatedHeadLengthBehavior.enabled
         NumberAnimation { duration: 0 }
     }
 
@@ -53,34 +49,35 @@ AppletsContainer {
 
         PropertyAnimation {
             target: parabolicContainer
-            property: "tailFactor"
+            property: "tailOffsetLength"
             to: 0
-            duration: 3 * parabolicContainer.animationTime
+            duration: 4 * parabolicContainer.animationTime
             easing.type: Easing.InCubic
         }
 
         PropertyAnimation {
             target: parabolicContainer
-            property: "headFactor"
+            property: "headOffsetLength"
             to: 0
-            duration: 3 * parabolicContainer.animationTime
+            duration: 4 * parabolicContainer.animationTime
             easing.type: Easing.InCubic
         }
     }
 
-    function updateFactor(istail, newScales) {
+    function updateLength(istail, newScales) {
         var nextFactor = 0;
 
+        var nextLength = 0;
         for (var i=0; i<hiddenItemsCount; ++i) {
             if (i<newScales.length) {
-                nextFactor += ((newScales[i] - 1) / hiddenItemsCount);
+                nextLength += (newScales[i] - 1)  * metrics.totals.length;
             }
         }
 
         if (istail) {
-            tailFactor = nextFactor;
+            tailOffsetLength = nextLength + 1; //1px. added because it was missing from calculations for some reason
         } else {
-            headFactor = nextFactor;
+            headOffsetLength = nextLength + 1; //1px. added because it was missing from calculations for some reason
         }
     }
 
@@ -90,7 +87,7 @@ AppletsContainer {
         }
 
         var istail = true;
-        updateFactor(true, newScales);
+        updateLength(true, newScales);
     }
 
     function sltUpdateHigherItemScale(delegateIndex, newScales) {
@@ -99,7 +96,7 @@ AppletsContainer {
         }
 
         var ishead = false;
-        updateFactor(ishead, newScales);
+        updateLength(ishead, newScales);
     }
 
     function sltClearZoom(){
