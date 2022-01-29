@@ -9,7 +9,7 @@ import org.kde.latte.core 0.2 as LatteCore
 AppletsContainer {
     id: parabolicContainer
 
-    property real parabolicOffset: root.myView.alignment === LatteCore.Types.Center ? (tailOffsetLength - headOffsetLength) / 2 : 0
+    property real parabolicOffset: root.myView.alignment === LatteCore.Types.Center ? Math.floor((tailOffsetLength - headOffsetLength) / 2) : 0
     property real tailOffsetLength: 0
     property real headOffsetLength: 0
 
@@ -61,9 +61,9 @@ AppletsContainer {
         }
 
         if (istail) {
-            tailOffsetLength = nextLength + 1; //1px. added because it was missing from calculations for some reason
+            tailOffsetLength = nextLength;
         } else {
-            headOffsetLength = nextLength + 1; //1px. added because it was missing from calculations for some reason
+            headOffsetLength = nextLength;
         }
     }
 
