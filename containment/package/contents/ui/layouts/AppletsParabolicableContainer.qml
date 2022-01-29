@@ -16,8 +16,8 @@ AppletsContainer {
     readonly property int hiddenItemsCount: (parabolic.spread - 1)/2
     readonly property int animationTime: animations.speedFactor.normal * (1.2*animations.duration.small)
 
-    Behavior on tailOffsetLength {
-        id: animatedTailLengthBehavior
+    Behavior on parabolicOffset {
+        id: animatedParabolicOffsetBehavior
         enabled: !parabolic.directRenderingEnabled || restoreAnimation.running
         NumberAnimation {
             duration: 3 * parabolicContainer.animationTime
@@ -25,22 +25,8 @@ AppletsContainer {
         }
     }
 
-    Behavior on tailOffsetLength {
-        enabled: !animatedTailLengthBehavior.enabled
-        NumberAnimation { duration: 0 }
-    }
-
-    Behavior on headOffsetLength {
-        id: animatedHeadLengthBehavior
-        enabled: !parabolic.directRenderingEnabled || restoreAnimation.running
-        NumberAnimation {
-            duration: 3 * parabolicContainer.animationTime
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    Behavior on headOffsetLength {
-        enabled: !animatedHeadLengthBehavior.enabled
+    Behavior on parabolicOffset {
+        enabled: !animatedParabolicOffsetBehavior.enabled
         NumberAnimation { duration: 0 }
     }
 

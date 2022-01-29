@@ -133,16 +133,6 @@ Item {
         //use the new parabolic ability in order to handle all parabolic effect messages
         var scales = abilityItem.abilities.parabolic.applyParabolicEffect(index, currentMousePosition, length);
 
-        //Left hiddenSpacer for first task
-        if(abilityItem.isFirstItemInContainer) {
-            hiddenSpacerLeft.nScale = scales.leftScale - 1;
-        }
-
-        //Right hiddenSpacer for last task
-        if(abilityItem.isLastItemInContainer) {
-            hiddenSpacerRight.nScale =  scales.rightScale - 1;
-        }
-
         if (!parabolicItem.isUpdatingOnlySpacers) {
             abilityItem.parabolicItem.zoom = abilityItem.abilities.parabolic.factor.zoom;
         } else {
