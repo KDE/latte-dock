@@ -51,6 +51,8 @@ AbilityHost.Metrics {
     //! based on background / plasma theme minimum thickness requirements; behaveAsPlasmaPanel and floating is a good scenario for this
     readonly property int marginMinThickness: Math.max(0, (background.totals.minThickness - _maxIconSize) / 2)
 
+    readonly property int maxThicknessForView: Math.max(mask.maxScreenEdge + ((maxIconSize+2*margin.maxTailThickness)*2) + extraThicknessForZoomed,
+                                                        384)
 
     //! Thickness Private Calculations
 

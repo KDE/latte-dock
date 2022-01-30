@@ -23,7 +23,7 @@ Item {
         property:"maxThickness"
         //! prevents updating window geometry during closing window in wayland and such fixes a crash
         when: latteView && !visibilityManager.inRelocationHiding && !visibilityManager.inClientSideScreenEdgeSliding //&& !inStartup
-        value: root.behaveAsPlasmaPanel ? visibilityManager.thicknessAsPanel : metrics.mask.thickness.maxZoomed
+        value: root.behaveAsPlasmaPanel ? visibilityManager.thicknessAsPanel : metrics.maxThicknessForView
     }
 
     Binding{
@@ -49,7 +49,7 @@ Item {
                 return 0;
             }
 
-            return metrics.mask.thickness.maxZoomed - metrics.mask.thickness.maxNormalForItems;
+            return metrics.maxThicknessForView - metrics.mask.thickness.maxNormalForItems;
         }
     }
 
