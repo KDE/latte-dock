@@ -317,18 +317,15 @@ Item{
 
         //! Input Mask
         if (updateIsEnabled) {
-            var animated = (animations.needBothAxis.count>0);
-
-            if (animated) {
-                //! clear input mask
-                latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
-            } else {
-                updateInputGeometry();
-            }
+            updateInputGeometry();
         }
     }
 
     function updateInputGeometry() {
+        // VisibilityManager.qml tries to workaround faulty onEntered() signals from ParabolicMouseArea
+        // by specifying inputThickness when ParabolicEffect is applied. (inputThickness->animated scenario)
+        var animated = (animations.needBothAxis.count>0);
+
         if (!LatteCore.WindowSystem.compositingActive || latteView.behaveAsPlasmaPanel) {
             //! clear input mask
             latteView.effects.inputMask = Qt.rect(0, 0, -1, -1);
@@ -339,9 +336,9 @@ Item{
             if (latteView.visibility.isHidden) {
                 inputThickness = metrics.mask.thickness.hidden;
             } else if (root.hasFloatingGapInputEventsDisabled) {
-                inputThickness = metrics.totals.thickness;
+                inputThickness = animated ? metrics.mask.thickness.zoomedForItems - metrics.margins.screenEdge : metrics.totals.thickness;
             } else {
-                inputThickness = metrics.mask.screenEdge + metrics.totals.thickness;
+                inputThickness = animated ? metrics.mask.thickness.zoomedForItems : metrics.mask.screenEdge + metrics.totals.thickness;
             }
 
             var subtractedScreenEdge = root.hasFloatingGapInputEventsDisabled && !latteView.visibility.isHidden ? metrics.mask.screenEdge : 0;
@@ -350,29 +347,37 @@ Item{
 
             //!use view.localGeometry for length properties
             if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                inputGeometry.x = latteView.localGeometry.x;
+                if (!animated) {
+                    inputGeometry.x = latteView.localGeometry.x;
+                    inputGeometry.width = latteView.localGeometry.width;
+                }
+
                 inputGeometry.y = subtractedScreenEdge;
-
-                inputGeometry.width = latteView.localGeometry.width;
-                inputGeometry.height = inputThickness ;
+                inputGeometry.height = inputThickness;
             } else if (plasmoid.location === PlasmaCore.Types.BottomEdge) {
-                inputGeometry.x = latteView.localGeometry.x;
-                inputGeometry.y = root.height - inputThickness - subtractedScreenEdge;
+                if (!animated) {
+                    inputGeometry.x = latteView.localGeometry.x;
+                    inputGeometry.width = latteView.localGeometry.width;
+                }
 
-                inputGeometry.width = latteView.localGeometry.width;
+                inputGeometry.y = root.height - inputThickness - subtractedScreenEdge;
                 inputGeometry.height = inputThickness;
             } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                if (!animated) {
+                    inputGeometry.y = latteView.localGeometry.y;
+                    inputGeometry.height = latteView.localGeometry.height;
+                }
+
                 inputGeometry.x = subtractedScreenEdge;
-                inputGeometry.y = latteView.localGeometry.y;
-
                 inputGeometry.width = inputThickness;
-                inputGeometry.height = latteView.localGeometry.height;
             } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                inputGeometry.x = root.width - inputThickness - subtractedScreenEdge;
-                inputGeometry.y = latteView.localGeometry.y;
+                if (!animated) {
+                    inputGeometry.y = latteView.localGeometry.y;
+                    inputGeometry.height = latteView.localGeometry.height;
+                }
 
+                inputGeometry.x = root.width - inputThickness - subtractedScreenEdge;
                 inputGeometry.width = inputThickness;
-                inputGeometry.height = latteView.localGeometry.height;
             }
 
             //set the boundaries for latteView local geometry

@@ -29,6 +29,16 @@ Item {
                  && !communicator.indexerIsSupported
                  && appletItem.parabolic.currentParabolicItem !== _parabolicArea
 
+        // VisibilityManager.qml tries to workaround faulty onEntered() signals from this MouseArea
+        // by specifying inputThickness when ParabolicEffect is applied. (inputThickness->animated scenario)
+        //
+        // Such is a case is when dock is at the bottom and user moves its
+        // mouse at top edge of parabolized item. When mouse exits
+        // slightly ParabolicMouseArea this mousearea here gets a mouseEntered
+        // signal even though it should not and immediately gets also
+        // a mouseExited signal to correct things. This happens exactly
+        // after Paraboli.sglClearZoom() signal has been triggered.
+
         onEntered: {
             appletItem.parabolic.setCurrentParabolicItem(_parabolicArea);
 
