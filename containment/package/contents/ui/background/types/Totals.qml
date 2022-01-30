@@ -12,6 +12,7 @@ Item{
     id: totalsItem
     property int visualThickness: 0
     property int visualLength: 0
+    property int visualMaxThickness: 0
 
     readonly property int shadowsLength: {
         if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {

@@ -171,8 +171,20 @@ BackgroundProperties{
     }
 
     totals.visualThickness: {
-        var itemMargins = metrics.totals.thicknessEdges
+        var itemMargins = 2*metrics.margin.tailThickness;
         var maximumItem = metrics.iconSize + itemMargins;
+
+        if (totals.minThickness < maximumItem) {
+            maximumItem = maximumItem - totals.minThickness;
+        }
+
+        var percentage = LatteCore.WindowSystem.compositingActive ? plasmoid.configuration.panelSize/100 : 1;
+        return Math.max(totals.minThickness, totals.minThickness + (percentage*maximumItem));
+    }
+
+    totals.visualMaxThickness: {
+        var itemMargins = 2*metrics.margin.maxTailThickness;
+        var maximumItem = metrics.maxIconSize + itemMargins;
 
         if (totals.minThickness < maximumItem) {
             maximumItem = maximumItem - totals.minThickness;

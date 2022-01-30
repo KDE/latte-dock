@@ -26,8 +26,8 @@ Ability.MetricsPrivate {
     margin.length: fraction.lengthMargin * iconSize
     margin.tailThickness: marginMinThickness + fraction.thicknessMargin * Math.max(0, _iconSize - marginMinThickness)
     margin.maxTailThickness: marginMinThickness + fraction.thicknessMargin * Math.max(0, _maxIconSize - marginMinThickness)
-    margin.headThickness: margin.tailThickness
-    margin.maxHeadThickness: margin.maxTailThickness
+    margin.headThickness: (background.isGreaterThanItemThickness ? (background.totals.visualThickness - _iconSize - margin.tailThickness) : margin.tailThickness)
+    margin.maxHeadThickness: (background.isGreaterThanItemThickness ? (background.totals.visualMaxThickness - _maxIconSize - margin.maxTailThickness) : margin.maxTailThickness)
     //margin.thickness: fraction.thicknessMargin * iconSize
    // margin.maxThickness: fraction.thicknessMargin * maxIconSize
     margin.screenEdge: (root.screenEdgeMarginEnabled && root.behaveAsPlasmaPanel)
@@ -36,23 +36,43 @@ Ability.MetricsPrivate {
                            0 : plasmoid.configuration.screenEdgeMargin
 
     //! MarginsAra
+    marginsArea.tailThickness: {
+        if (!themeExtended) {
+            return metrics.margin.tailThickness;
+        }
+
+        var areamargin = 0;
+        if (plasmoid.location === PlasmaCore.Types.TopEdge) {
+            areamargin = themeExtended.marginsAreaTop;
+        } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
+            areamargin = themeExtended.marginsAreaLeft;
+        } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
+            areamargin = themeExtended.marginsAreaRight;
+        } else {
+            areamargin = themeExtended.marginsAreaBottom;
+        }
+
+        return areamargin + metrics.margin.tailThickness;
+    }
+
     marginsArea.headThickness: {
         if (!themeExtended) {
             return metrics.margin.headThickness;
         }
 
+        var areamargin = 0;
         if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-            return themeExtended.marginsAreaBottom + metrics.margin.headThickness;
+            areamargin = themeExtended.marginsAreaBottom;
         } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-            return themeExtended.marginsAreaRight + metrics.margin.headThickness;
+            areamargin = themeExtended.marginsAreaRight;
         } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-            return themeExtended.marginsAreaLeft + metrics.margin.headThickness;
+            areamargin = themeExtended.marginsAreaLeft;
+        } else {
+            areamargin = themeExtended.marginsAreaTop;
         }
 
-        return themeExtended.marginsAreaTop + metrics.margin.headThickness;
+        return areamargin + metrics.margin.headThickness;
     }
-
-    marginsArea.tailThickness: marginsArea.headThickness
 
     //! Mask
     mask.maxScreenEdge : root.behaveAsDockWithMask ? Math.max(0, plasmoid.configuration.screenEdgeMargin) : 0
