@@ -158,9 +158,9 @@ SequentialAnimation {
         }
 
         PropertyAnimation {
-            target: taskItem.parabolicItem
-            property: "zoomThickness"
-            to: 0
+            target: taskItem
+            property: taskItem.isVertical ? "iconAnimatedOffsetX" : "iconAnimatedOffsetY"
+            to: -0.7*taskItem.abilities.metrics.iconSize
             duration: taskRealRemovalAnimation.enabledAnimation ? 1.35*showWindowAnimation.speed : 0
             easing.type: Easing.InQuad
         }

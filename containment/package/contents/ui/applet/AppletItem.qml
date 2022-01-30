@@ -833,10 +833,12 @@ Item {
                 readonly property int badgeThickness: {
                     if (plasmoid.location === PlasmaCore.Types.BottomEdge
                             || plasmoid.location === PlasmaCore.Types.RightEdge) {
-                        return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale) + appletItem.metrics.margin.screenEdge;
+                        var marginthickness = appletItem.metrics.margin.tailThickness * wrapper.zoomMarginScale;
+                        return (appletItem.metrics.iconSize * wrapper.zoomScale) + marginthickness + appletItem.metrics.margin.screenEdge;
                     }
 
-                    return ((appletItem.metrics.iconSize + appletItem.metrics.margin.thickness) * wrapper.zoomScale);
+                    var marginthickness = appletItem.metrics.margin.headThickness * wrapper.zoomMarginScale;
+                    return (appletItem.metrics.iconSize * wrapper.zoomScale) + marginthickness;
                 }
 
                 ShortcutBadge{

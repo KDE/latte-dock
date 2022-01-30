@@ -38,17 +38,21 @@ Item{
     property real scaleLength: hasZoomPerAxis ? zoomLength : zoom
     property real scaleThickness: hasZoomPerAxis ? zoomThickness : zoom
 
+    readonly property real marginZoom: 1 + ((zoom-1) * abilityItem.abilities.parabolic.factor.marginThicknessZoomInPercentage)
+    readonly property real marginScaleThickness: 1 + ((scaleThickness-1) * abilityItem.abilities.parabolic.factor.marginThicknessZoomInPercentage)
+
     property real cleanScalingLength: abilityItem.abilities.metrics.totals.length * zoom
-    property real cleanScalingThickness: abilityItem.abilities.metrics.totals.thickness * zoom
+    property real cleanScalingThickness: (abilityItem.abilities.metrics.iconSize * zoom) + (abilityItem.abilities.metrics.totals.thicknessEdges * marginZoom)
 
     property real basicScalingLength: hasZoomPerAxis ? abilityItem.abilities.metrics.totals.length * scaleLength : cleanScalingLength
-    property real basicScalingThickness: hasZoomPerAxis ? abilityItem.abilities.metrics.totals.thickness * scaleThickness : cleanScalingThickness
+    property real basicScalingThickness: hasZoomPerAxis ? (abilityItem.abilities.metrics.iconSize * scaleThickness) + (abilityItem.abilities.metrics.totals.thicknessEdges * marginScaleThickness) :
+                                                          cleanScalingThickness
 
     property real regulatorLength: abilityItem.isSeparator ? (abilityItem.isHorizontal ? width : height) : basicScalingLength
     property real regulatorThickness: abilityItem.isSeparator ? (abilityItem.isHorizontal ? height : width) : basicScalingThickness
 
     property real visualScaledLength: (abilityItem.abilities.metrics.iconSize + abilityItem.abilities.metrics.totals.lengthPaddings) * zoom
-    property real visualScaledThickness: abilityItem.abilities.metrics.totals.thickness * zoom
+    property real visualScaledThickness: cleanScalingThickness
     /// end of Scalers///////  
 
     readonly property alias contentItemContainer: _contentItemContainer
@@ -95,7 +99,7 @@ Item{
 
         TitleTooltipParent{
             id: _titleTooltipVisualParent
-            thickness: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.totals.thickness
+            thickness: abilityItem.abilities.metrics.mask.thickness.zoomedForItems - abilityItem.abilities.metrics.margin.screenEdge
         }
 
         //fix bug #478, when changing form factor sometimes the tasks are not positioned
@@ -138,9 +142,22 @@ Item{
         //! Main contented item
         Item {
             id: _contentItemContainer
-            anchors.centerIn: parent
-            anchors.horizontalCenterOffset: abilityItem.iconOffsetX
-            anchors.verticalCenterOffset: abilityItem.iconOffsetY
+            anchors.bottom: (abilityItem.location === PlasmaCore.Types.BottomEdge) ? parent.bottom : undefined
+            anchors.top: (abilityItem.location === PlasmaCore.Types.TopEdge) ? parent.top : undefined
+            anchors.left: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? parent.left : undefined
+            anchors.right: (abilityItem.location === PlasmaCore.Types.RightEdge) ? parent.right : undefined
+
+            anchors.horizontalCenter: abilityItem.isHorizontal ? parent.horizontalCenter : undefined
+            anchors.verticalCenter: abilityItem.isHorizontal ? undefined : parent.verticalCenter
+
+            anchors.bottomMargin: (abilityItem.location === PlasmaCore.Types.BottomEdge) ? tailMargin + abilityItem.iconOffsetY : 0
+            anchors.topMargin: (abilityItem.location === PlasmaCore.Types.TopEdge) ? tailMargin + abilityItem.iconOffsetY : 0
+            anchors.leftMargin: (abilityItem.location === PlasmaCore.Types.LeftEdge) ? tailMargin + abilityItem.iconOffsetX : 0
+            anchors.rightMargin: (abilityItem.location === PlasmaCore.Types.RightEdge) ? tailMargin + abilityItem.iconOffsetX : 0
+
+            anchors.horizontalCenterOffset: abilityItem.isHorizontal ? abilityItem.iconOffsetX : 0
+            anchors.verticalCenterOffset: abilityItem.isVertical ? abilityItem.iconOffsetY : 0
+
             transformOrigin: abilityItem.iconTransformOrigin
             opacity: abilityItem.iconOpacity
             rotation: abilityItem.iconRotation
@@ -152,11 +169,17 @@ Item{
 
             property int zoomedSize: abilityItem.abilities.parabolic.factor.zoom * abilityItem.abilities.metrics.iconSize
             property real basicScalingLength: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleLength : parabolicItem.zoom)
-            property real basicScalingThickness: proposedItemThickness * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
+            property real basicScalingThickness: proposedItemThickness * appliedZoom
+
+            readonly property real appliedZoom: (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
+            readonly property real marginAppliedZoom: 1 + ((appliedZoom-1) * abilityItem.abilities.parabolic.factor.marginThicknessZoomInPercentage)
 
             readonly property int proposedItemThickness: abilityItem.abilities.indexer.inMarginsArea ?
                                                              Math.max(16, abilityItem.abilities.metrics.marginsArea.iconSize) :
                                                              abilityItem.abilities.metrics.iconSize
+
+            readonly property int itemNormalTailMargin: abilityItem.abilities.indexer.inMarginsArea ? abilityItem.abilities.metrics.marginsArea.tailThickness : abilityItem.abilities.metrics.margin.tailThickness
+            readonly property real tailMargin: Math.round(itemNormalTailMargin * marginAppliedZoom)
 
             property real newTempSize: {
                 if (parabolicItem.opacity === 1 ) {
@@ -202,6 +225,18 @@ Item{
             anchors.centerIn: parent
             width: abilityItem.abilities.metrics.iconSize * (parabolicItem.hasZoomPerAxis ? parabolicItem.scaleThickness : parabolicItem.zoom)
             height: width
+        }
+
+        Loader{
+            anchors.fill: _contentItemContainer
+            active: abilityItem.abilities.debug.graphicsEnabled
+
+            sourceComponent: Rectangle{
+                anchors.fill: parent
+                color: "transparent"
+                border.color:  "yellow"
+                border.width: 1
+            }
         }
     }
 

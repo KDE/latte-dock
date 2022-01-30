@@ -858,7 +858,7 @@ Item {
             width: root.isHorizontal ? parent.length : parent.thickness - metrics.margin.screenEdge
             height: root.isHorizontal ? parent.thickness - metrics.margin.screenEdge : parent.length
 
-            property int thickMargin: metrics.margin.screenEdge //+ metrics.margin.thickness
+            property int thickMargin: metrics.margin.screenEdge
 
             LatteComponents.AddItem{
                 id: dndSpacerAddItem

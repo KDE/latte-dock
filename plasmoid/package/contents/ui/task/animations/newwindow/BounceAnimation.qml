@@ -11,6 +11,8 @@ SequentialAnimation{
     alwaysRunToEnd: true
     loops: newWindowAnimation.isDemandingAttention ? 20 : 1
 
+    readonly property string bouncePropertyName: taskItem.isVertical ? "iconAnimatedOffsetX" : "iconAnimatedOffsetY"
+
     Component.onCompleted: {
         if (newWindowAnimation.inDelayedStartup) {
             newWindowAnimation.inDelayedStartup = false;
@@ -19,30 +21,20 @@ SequentialAnimation{
         }
     }
 
-    ParallelAnimation{
+    ParallelAnimation {
         PropertyAnimation {
-            target: taskItem.parabolicItem
-            property: "zoomThickness"
-            to: 1 + (thickPercentage * 2 * (taskItem.abilities.animations.requirements.zoomFactor-1))
-            duration: newWindowAnimation.speed
-            easing.type: Easing.OutQuad
-
-            property real thickPercentage: taskItem.inAttentionBuiltinAnimation ? 0.8 : 0.6
-        }
-
-        PropertyAnimation {
-            target: taskItem.parabolicItem
-            property: "zoomLength"
-            to: 1
+            target: taskItem
+            property: bouncePropertyName
+            to: 0.6 * taskItem.abilities.metrics.iconSize
             duration: newWindowAnimation.speed
             easing.type: Easing.OutQuad
         }
     }
 
     PropertyAnimation {
-        target: taskItem.parabolicItem
-        property: "zoomThickness"
-        to: 1
+        target: taskItem
+        property: bouncePropertyName
+        to: 0
         duration: 4.4*newWindowAnimation.speed
         easing.type: Easing.OutBounce
     }

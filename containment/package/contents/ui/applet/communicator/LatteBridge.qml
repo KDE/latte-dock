@@ -91,7 +91,7 @@ Item{
     //   USE CASE: it can be used from applets that want to be informed what is the thickness padding
     //       currently applied
     // @since: 0.10
-    readonly property int thicknessPadding: appletItem.metrics.margin.thickness
+    readonly property int thicknessPadding: appletItem.metrics.margin.tailThickness
 
     // NAME: lengthMargin
     //   USAGE: read-only

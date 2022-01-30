@@ -83,9 +83,6 @@ Item{
                 }
             }
         }
-
-        taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
-        taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
     }
 
     function startLauncherAnimation(){

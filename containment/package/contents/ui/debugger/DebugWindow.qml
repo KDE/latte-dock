@@ -482,11 +482,19 @@ Window{
             }
 
             Text{
-                text: "Thickness Margin"+space
+                text: "Head Thickness Margin"+space
             }
 
             Text{
-                text: metrics.margin.thickness
+                text: metrics.margin.headThickness
+            }
+
+            Text{
+                text: "Tail Thickness Margin"+space
+            }
+
+            Text{
+                text: metrics.margin.tailThickness
             }
 
             Text{

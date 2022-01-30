@@ -140,7 +140,7 @@ Item{
                                      ? 0 : appletItem.lengthAppletFullMargins
 
     property real scaledLength: zoomScaleLength * (layoutLength + marginsLength)
-    property real scaledThickness: zoomScaleThickness * (layoutThickness + marginsThickness)
+    property real scaledThickness: zoomScaleThickness * layoutThickness + (zoomMarginScale*marginsThickness)
 
     property real zoomScaleLength: disableLengthScale ? 1 : zoomScale
     property real zoomScaleThickness: disableThicknessScale ? 1 : zoomScale
@@ -149,6 +149,7 @@ Item{
     property real layoutThickness: 0
 
     property real zoomScale: 1
+    readonly property real zoomMarginScale: 1 + (zoomScale - 1) * parabolic.factor.marginThicknessZoomInPercentage
 
     readonly property alias headThicknessMargin: _wrapperContainer.headThicknessMargin
     readonly property alias tailThicknessMargin: _wrapperContainer.tailThicknessMargin
@@ -458,20 +459,20 @@ Item{
             } else if (appletItem.canFillThickness) {
                 return appliedEdgeMargin;
             } else if (appletItem.inMarginsArea) {
-                return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.marginsArea.marginThickness);
+                return appliedEdgeMargin + (wrapper.zoomMarginScale * appletItem.metrics.marginsArea.tailThickness);
             }
 
-            return appliedEdgeMargin + (wrapper.zoomScaleThickness * appletItem.metrics.margin.thickness);
+            return appliedEdgeMargin + (wrapper.zoomMarginScale * appletItem.metrics.margin.tailThickness);
         }
 
         readonly property int headThicknessMargin: {
             if (appletItem.canFillThickness || appletItem.canFillScreenEdge) {
                 return 0;
             } else if (appletItem.inMarginsArea) {
-                return (wrapper.zoomScaleThickness * appletItem.metrics.marginsArea.marginThickness);
+                return (wrapper.zoomMarginScale * appletItem.metrics.marginsArea.headThickness);
             }
 
-            return (wrapper.zoomScaleThickness * appletItem.metrics.margin.thickness);
+            return wrapper.zoomMarginScale * appletItem.metrics.margin.headThickness;
         }
 
         readonly property real zoomScaleThickness: wrapper.zoomScaleThickness

@@ -6,7 +6,8 @@
 import QtQuick 2.0
 
 Item {
-    property int marginThickness: 8
+    property int headThickness: 8
+    property int tailThickness: 8
     readonly property int iconSize: _metrics.totals.thickness - thicknessEdges
-    readonly property int thicknessEdges: 2*marginThickness
+    readonly property int thicknessEdges: headThickness + tailThickness
 }

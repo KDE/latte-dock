@@ -50,10 +50,6 @@ Item{
 
     function clear(){
         newWindowAnimationLoader.item.stop();
-
-        taskItem.parabolicItem.zoomLength = 1.0;
-        taskItem.parabolicItem.zoomThickness = 1.0;
-
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionBuiltinAnimation = false;
         taskItem.inNewWindowBuiltinAnimation = false;
@@ -80,12 +76,7 @@ Item{
     function init(){
         taskItem.setBlockingAnimation(true);
         taskItem.inNewWindowBuiltinAnimation = true;
-
-        taskItem.parabolicItem.zoomLength = taskItem.parabolicItem.zoom;
-        taskItem.parabolicItem.zoomThickness = taskItem.parabolicItem.zoom;
-
         taskItem.inAttentionBuiltinAnimation = isDemandingAttention;
-
         taskItem.abilities.animations.needThickness.addEvent(needThicknessEvent);
     }
 

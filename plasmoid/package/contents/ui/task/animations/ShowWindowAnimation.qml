@@ -65,6 +65,15 @@ SequentialAnimation{
             duration: showWindowAnimation.speed
             easing.type: Easing.OutQuad
         }
+
+        PropertyAnimation {
+            target: taskItem
+            property: taskItem.isVertical ? "iconAnimatedOffsetX" : "iconAnimatedOffsetY"
+            from: -taskItem.abilities.metrics.iconSize
+            to: 0
+            duration: showWindowAnimation.speed
+            easing.type: Easing.OutQuad
+        }
     }
 
     onStopped: {

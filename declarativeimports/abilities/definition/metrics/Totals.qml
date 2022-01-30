@@ -11,5 +11,5 @@ Item {
     readonly property int lengthEdges: 2 * lengthEdge
     readonly property int lengthPaddings: 2 * padding.length
     readonly property int thickness: iconSize + thicknessEdges
-    readonly property int thicknessEdges: 2 * margin.thickness
+    readonly property int thicknessEdges: margin.tailThickness + margin.headThickness
 }

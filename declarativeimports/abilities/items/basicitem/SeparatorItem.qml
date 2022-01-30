@@ -34,7 +34,7 @@ Loader {
 
     opacity: 0.4
 
-    readonly property int margin: abilityItem.abilities.metrics.margin.screenEdge + abilityItem.abilities.metrics.margin.thickness
+    readonly property int margin: abilityItem.abilities.metrics.margin.screenEdge + abilityItem.abilities.metrics.margin.tailThickness
 
     active: abilityItem.isSeparatorVisible
 

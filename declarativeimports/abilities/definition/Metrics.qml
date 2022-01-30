@@ -14,14 +14,17 @@ Item {
     property int backgroundThickness: 16
 
     property MetricsTypes.Margin margin: MetricsTypes.Margin{
-        thickness: 4
-        maxThickness: 4
+        tailThickness: 4
+        maxTailThickness: 4
+        headThickness: 4
+        maxHeadThickness: 4
         length: 4
         screenEdge: 0
     }
 
     property MetricsTypes.MarginsArea marginsArea: MetricsTypes.MarginsArea{
-        marginThickness: 8 //margin.thickness + 4
+        tailThickness: 8 //margin.thickness + 4
+        headThickness: 8 //margin.thickness + 4
         //readonly property int iconSize: _metrics.totals.thickness - thicknessEdges
         //readonly property int thicknessEdges: 2*marginThickness
     }

@@ -235,7 +235,7 @@ BackgroundProperties{
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
     //! Metrics related
-    readonly property bool isGreaterThanItemThickness: root.useThemePanel && (totals.visualThickness >= (metrics.iconSize + metrics.margin.thickness))
+    readonly property bool isGreaterThanItemThickness: root.useThemePanel && (totals.visualThickness >= (metrics.iconSize + metrics.margin.tailThickness))
 
     //! CustomShadowedRectangle  properties
     readonly property bool customShadowedRectangleIsEnabled: customRadiusIsEnabled || (customDefShadowIsEnabled || customUserShadowIsEnabled)

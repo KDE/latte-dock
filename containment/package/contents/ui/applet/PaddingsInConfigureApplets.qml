@@ -11,23 +11,37 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Item {
     id: paddingsVisual
 
-    readonly property int thickness: {
+    readonly property int headThickness: {
         if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator && !communicator.indexerIsSupported)
                 || (appletItem.canFillScreenEdge && !communicator.indexerIsSupported) ) {
             return 1;
         } else if (appletItem.isMarginsAreaSeparator) {
-            return appletItem.metrics.marginsArea.marginThickness + maxMarginAreaSeparatorGap;
+            return appletItem.metrics.marginsArea.headThickness + maxMarginAreaSeparatorGap;
         } else if (appletItem.inMarginsArea) {
-            return appletItem.metrics.marginsArea.marginThickness;
+            return appletItem.metrics.marginsArea.headThickness;
         }
 
-        return appletItem.metrics.margin.thickness;
+        return appletItem.metrics.margin.headThickness;
     }
+
+    readonly property int tailThickness: {
+        if ((appletItem.canFillThickness && !appletItem.isMarginsAreaSeparator && !communicator.indexerIsSupported)
+                || (appletItem.canFillScreenEdge && !communicator.indexerIsSupported) ) {
+            return 1;
+        } else if (appletItem.isMarginsAreaSeparator) {
+            return appletItem.metrics.marginsArea.tailThickness + maxMarginAreaSeparatorGap;
+        } else if (appletItem.inMarginsArea) {
+            return appletItem.metrics.marginsArea.tailThickness;
+        }
+
+        return appletItem.metrics.margin.tailThickness;
+    }
+
     readonly property int length: root.isHorizontal ? wrapper.width : wrapper.height
 
     readonly property int parentThickness: root.isHorizontal ? wrapper.height : wrapper.width
     readonly property int maxMarginAreaSeparatorCenteredRectLength: Math.max(0.6 * paddingsVisual.length, 4)
-    readonly property int marginAreaSeparatorFreeThickness: ((parentThickness - 2*appletItem.metrics.marginsArea.marginThickness - maxMarginAreaSeparatorCenteredRectLength - 10) / 2)
+    readonly property int marginAreaSeparatorFreeThickness: ((parentThickness - appletItem.metrics.marginsArea.headThickness - appletItem.metrics.marginsArea.tailThickness - maxMarginAreaSeparatorCenteredRectLength - 10) / 2)
     readonly property int maxMarginAreaSeparatorGap: Math.max(3, 0.5 * marginAreaSeparatorFreeThickness)
 
     property color color: "blue"
@@ -39,8 +53,8 @@ Item {
         anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? appletItem.metrics.margin.screenEdge : 0
         anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? appletItem.metrics.margin.screenEdge : 0
 
-        width: root.isHorizontal ? length : thickness
-        height: root.isHorizontal ? thickness : length
+        width: root.isHorizontal ? length : tailThickness
+        height: root.isHorizontal ? tailThickness : length
 
         color: parent.color
 
@@ -95,11 +109,11 @@ Item {
         anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? normalMargin : 0
         anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? normalMargin : 0
 
-        width: root.isHorizontal ? length : thickness
-        height: root.isHorizontal ? thickness : length
+        width: root.isHorizontal ? length : headThickness
+        height: root.isHorizontal ? headThickness : length
         color: parent.color
 
-        readonly property int normalMargin: appletItem.metrics.mask.thickness.normalForItems - thickness
+        readonly property int normalMargin: appletItem.metrics.mask.thickness.normalForItems - headThickness
 
         states:[
             State{

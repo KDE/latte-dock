@@ -19,6 +19,7 @@ Item {
     property ParabolicEffectTypes.Factor factor: ParabolicEffectTypes.Factor{
         zoom: 1.6
         maxZoom: 1.6
+        marginThicknessZoomInPercentage: 1.0
     }
 
     readonly property ParabolicEffectTypes.PrivateProperties _privates: ParabolicEffectTypes.PrivateProperties {

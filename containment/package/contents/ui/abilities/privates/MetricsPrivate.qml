@@ -74,8 +74,8 @@ AbilityHost.Metrics {
         shadowMaxNeededMargin = (shadowMaxNeededMargin * shadowOpacity);
 
         //! give some more space when items shadows are enabled and extremely big
-        if (root.myView.itemShadow.isEnabled && metrics.margin.maxThickness < shadowMaxNeededMargin) {
-            return shadowMaxNeededMargin - metrics.margin.maxThickness;
+        if (root.myView.itemShadow.isEnabled && metrics.margin.maxHeadThickness < shadowMaxNeededMargin) {
+            return shadowMaxNeededMargin - metrics.margin.maxHeadThickness;
         }
 
         return 0;
@@ -83,6 +83,9 @@ AbilityHost.Metrics {
 
     readonly property int extraThicknessFromIndicators: indicators.info.extraMaskThickness
 
+    readonly property real mediumFactor: (1 + (0.65 * (parabolic.factor.maxZoom-1)))
+    readonly property real mediumMarginsFactor: 1 + ((mediumFactor-1) * parabolic.factor.marginThicknessZoomInPercentage)
+    readonly property real maxMarginsFactor: 1 + ((parabolic.factor.maxZoom-1) * parabolic.factor.marginThicknessZoomInPercentage)
 
     //! BEHAVIORS
     Behavior on iconSize {
@@ -113,7 +116,14 @@ AbilityHost.Metrics {
             }
         }
 
-        Behavior on thickness {
+        Behavior on tailThickness {
+            NumberAnimation {
+                duration: 0.8 * animations.duration.proposed
+                easing.type: Easing.OutCubic
+            }
+        }
+
+        Behavior on headThickness {
             NumberAnimation {
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic

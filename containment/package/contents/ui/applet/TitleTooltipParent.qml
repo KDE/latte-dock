@@ -20,7 +20,7 @@ Item{
     property int size: 1
     property int thickness: Math.min(Math.max(minimumThickness, preferredThickness), maximumThickness)
     property int minimumThickness: 0
-    readonly property int preferredThickness: (parabolic.factor.zoom * metrics.totals.thickness) + metrics.margin.screenEdge
+    readonly property int preferredThickness: (parabolic.factor.zoom * metrics.iconSize) + (parabolic.factor.marginThicknessZoom * metrics.totals.thicknessEdges) + metrics.margin.screenEdge
     property int maximumThickness: 9999
 
     property Item metrics: null

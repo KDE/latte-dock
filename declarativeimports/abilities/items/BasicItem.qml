@@ -123,8 +123,10 @@ Item{
 
     readonly property int itemIndex: index
     readonly property int animationTime: (abilityItem.abilities.animations.active ? abilityItem.abilities.animations.speedFactor.current : 2) * (1.2 * abilityItem.abilities.animations.duration.small)
-    readonly property int iconOffsetX: indicatorBackLayer.level.requested.iconOffsetX
-    readonly property int iconOffsetY: indicatorBackLayer.level.requested.iconOffsetY
+    property int iconAnimatedOffsetX: 0
+    property int iconAnimatedOffsetY: 0
+    readonly property int iconOffsetX: iconAnimatedOffsetX + indicatorBackLayer.level.requested.iconOffsetX
+    readonly property int iconOffsetY: iconAnimatedOffsetY + indicatorBackLayer.level.requested.iconOffsetY
     readonly property int iconTransformOrigin: indicatorBackLayer.level.requested.iconTransformOrigin
     readonly property real iconOpacity: indicatorBackLayer.level.requested.iconOpacity
     readonly property real iconRotation: indicatorBackLayer.level.requested.iconRotation
