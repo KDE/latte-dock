@@ -433,8 +433,8 @@ const CornerRegions &Theme::cornersMask(const int &radius)
     int axis = (2 * radius) + 2;
     QImage cornerimage(axis, axis, QImage::Format_ARGB32);
     QPainter painter(&cornerimage);
-    //!does not provide valid masks
-    //painter.setRenderHints(QPainter::Antialiasing);
+    //!does not provide valid masks ?
+    painter.setRenderHints(QPainter::Antialiasing);
 
     QPen pen(Qt::black);
     pen.setStyle(Qt::SolidLine);
@@ -454,7 +454,7 @@ const CornerRegions &Theme::cornersMask(const int &radius)
         for(int x=0; x<radius; ++x) {
             QRgb point = line[x];
 
-            if (QColor(point) == Qt::black) {
+            if (QColor(point) != Qt::white) {
                 bits = bits + "1 ";
                 width = qMax(0, x);
                 break;
