@@ -186,7 +186,7 @@ PlasmaComponents.Page {
                         Layout.fillWidth: true
                         value: Number(1 + plasmoid.configuration.zoomLevel / 20).toFixed(2)
                         from: 1
-                        to: 2
+                        to: 2.25
                         stepSize: 0.05
                         wheelEnabled: false
 
