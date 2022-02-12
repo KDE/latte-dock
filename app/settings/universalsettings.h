@@ -49,6 +49,7 @@ class UniversalSettings : public QObject
     Q_PROPERTY(bool showInfoWindow READ showInfoWindow WRITE setShowInfoWindow NOTIFY showInfoWindowChanged)
 
     Q_PROPERTY(int parabolicSpread READ parabolicSpread WRITE setParabolicSpread NOTIFY parabolicSpreadChanged)
+    Q_PROPERTY(float thicknessMarginInfluence READ thicknessMarginInfluence WRITE setThicknessMarginInfluence NOTIFY thicknessMarginInfluenceChanged)
 
     Q_PROPERTY(QString singleModeLayoutName READ singleModeLayoutName WRITE setSingleModeLayoutName NOTIFY singleModeLayoutNameChanged)
 
@@ -103,6 +104,9 @@ public:
     int screenTrackerInterval() const;
     void setScreenTrackerInterval(int duration);
 
+    float thicknessMarginInfluence() const;
+    void setThicknessMarginInfluence(const float &influence);
+
     QString singleModeLayoutName() const;
     void setSingleModeLayoutName(QString layoutName);
 
@@ -151,6 +155,7 @@ signals:
     void screenTrackerIntervalChanged();
     void showInfoWindowChanged();
     void singleModeLayoutNameChanged();
+    void thicknessMarginInfluenceChanged();
     void versionChanged();
 
 private slots:
@@ -190,6 +195,7 @@ private:
 
     int m_screenTrackerInterval{2500};
     int m_parabolicSpread{Data::Preferences::PARABOLICSPREAD};
+    float m_thicknessMarginInfluence{Data::Preferences::THICKNESSMARGININFLUENCE};
 
     QString m_singleModeLayoutName;
 

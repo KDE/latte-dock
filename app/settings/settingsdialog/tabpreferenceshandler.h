@@ -69,8 +69,8 @@ private:
     Ui::SettingsDialog *m_ui{nullptr};
     Latte::Corona *m_corona{nullptr};
 
-    QButtonGroup *m_mouseSensitivityButtons;
     QButtonGroup *m_parabolicSpreadButtons;
+    QButtonGroup *m_thicknessMarginInfluenceButtons;
 
     //! current data
     Data::Preferences m_preferences;

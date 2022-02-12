@@ -34,34 +34,38 @@ TabPreferences::TabPreferences(Latte::Settings::Dialog::SettingsDialog *parent)
 void TabPreferences::initUi()
 {
     //! exclusive groups
-    m_mouseSensitivityButtons = new QButtonGroup(this);
-    m_mouseSensitivityButtons->addButton(m_ui->lowSensitivityBtn, Latte::Settings::LowMouseSensitivity);
-    m_mouseSensitivityButtons->addButton(m_ui->mediumSensitivityBtn, Latte::Settings::MediumMouseSensitivity);
-    m_mouseSensitivityButtons->addButton(m_ui->highSensitivityBtn, Latte::Settings::HighMouseSensitivity);
-    m_mouseSensitivityButtons->setExclusive(true);
-
     m_parabolicSpreadButtons = new QButtonGroup(this);
     m_parabolicSpreadButtons->addButton(m_ui->smallParabolicBtn, Data::Preferences::PARABOLICSPREAD);
     m_parabolicSpreadButtons->addButton(m_ui->mediumParabolicBtn, 5);
     m_parabolicSpreadButtons->addButton(m_ui->largeParabolicBtn, 7);
     m_parabolicSpreadButtons->setExclusive(true);
 
+    m_thicknessMarginInfluenceButtons = new QButtonGroup(this);
+    m_thicknessMarginInfluenceButtons->addButton(m_ui->noMarginInfluenceBtn, 0); // 0%
+    m_thicknessMarginInfluenceButtons->addButton(m_ui->halfMarginInfluenceBtn, 50); // 50%
+    m_thicknessMarginInfluenceButtons->addButton(m_ui->fullMarginInfluenceBtn, 100); // 100%
+    m_thicknessMarginInfluenceButtons->setExclusive(true);
+
+    m_ui->noMarginInfluenceBtn->setText(i18nc("number in percentage, e.g. 85%","%1%").arg(0));
+    m_ui->halfMarginInfluenceBtn->setText(i18nc("number in percentage, e.g. 85%","%1%").arg(50));
+    m_ui->fullMarginInfluenceBtn->setText(i18nc("number in percentage, e.g. 85%","%1%").arg(100));
+
     //! Buttons
     connect(m_ui->contextMenuActionsBtn, &QPushButton::clicked, this, &TabPreferences::onActionsBtnPressed);
 
     //! signals
-    connect(m_mouseSensitivityButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
-            [ = ](int id, bool checked) {
-        if (checked) {
-            m_preferences.mouseSensitivity = static_cast<Latte::Settings::MouseSensitivity>(id);
-            emit dataChanged();
-        }
-    });
-
     connect(m_parabolicSpreadButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
             [ = ](int id, bool checked) {
         if (checked) {
             m_preferences.parabolicSpread = id;
+            emit dataChanged();
+        }
+    });
+
+    connect(m_thicknessMarginInfluenceButtons, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
+            [ = ](int id, bool checked) {
+        if (checked) {
+            m_preferences.thicknessMarginInfluence = (id / 100.0f);
             emit dataChanged();
         }
     });
@@ -124,8 +128,8 @@ void TabPreferences::initSettings()
     o_preferences.metaPressForAppLauncher = m_corona->universalSettings()->kwin_metaForwardedToLatte();
     o_preferences.metaHoldForBadges = m_corona->universalSettings()->metaPressAndHoldEnabled();
     o_preferences.borderlessMaximized = m_corona->universalSettings()->canDisableBorders();
-    o_preferences.mouseSensitivity = m_corona->universalSettings()->sensitivity();
     o_preferences.parabolicSpread = m_corona->universalSettings()->parabolicSpread();
+    o_preferences.thicknessMarginInfluence = m_corona->universalSettings()->thicknessMarginInfluence();
     o_preferences.screensDelay = m_corona->universalSettings()->screenTrackerInterval();
 
     m_preferences = o_preferences;
@@ -160,20 +164,20 @@ void TabPreferences::updateUi()
     m_ui->noBordersForMaximizedChkBox->setChecked(m_preferences.borderlessMaximized);
     m_ui->screenTrackerSpinBox->setValue(m_preferences.screensDelay);
 
-    if (m_preferences.mouseSensitivity == Settings::LowMouseSensitivity) {
-        m_ui->lowSensitivityBtn->setChecked(true);
-    } else if (m_preferences.mouseSensitivity == Settings::MediumMouseSensitivity) {
-        m_ui->mediumSensitivityBtn->setChecked(true);
-    } else if (m_preferences.mouseSensitivity == Settings::HighMouseSensitivity) {
-        m_ui->highSensitivityBtn->setChecked(true);
-    }
-
     if (m_preferences.parabolicSpread == Data::Preferences::PARABOLICSPREAD) {
         m_ui->smallParabolicBtn->setChecked(true);
     } else if (m_preferences.parabolicSpread == 5) {
         m_ui->mediumParabolicBtn->setChecked(true);
     } else if (m_preferences.parabolicSpread == 7) {
         m_ui->largeParabolicBtn->setChecked(true);
+    }
+
+    if (m_preferences.thicknessMarginInfluence == 0.0f) {
+        m_ui->noMarginInfluenceBtn->setChecked(true);
+    } else if (m_preferences.thicknessMarginInfluence == 0.5f) {
+        m_ui->halfMarginInfluenceBtn->setChecked(true);
+    } else if (m_preferences.thicknessMarginInfluence == Data::Preferences::THICKNESSMARGININFLUENCE) {
+        m_ui->fullMarginInfluenceBtn->setChecked(true);
     }
 
     emit dataChanged();
@@ -209,7 +213,6 @@ void TabPreferences::resetDefaults()
 
 void TabPreferences::save()
 {
-    m_corona->universalSettings()->setSensitivity(m_preferences.mouseSensitivity);
     m_corona->universalSettings()->setAutostart(m_preferences.autostart);
     m_corona->universalSettings()->setBadges3DStyle(m_preferences.badgeStyle3D);
     m_corona->universalSettings()->setContextMenuActionsAlwaysShown(m_preferences.contextMenuAlwaysActions);
@@ -219,6 +222,7 @@ void TabPreferences::save()
     m_corona->universalSettings()->setShowInfoWindow(m_preferences.layoutsInformationWindow);
     m_corona->universalSettings()->setCanDisableBorders(m_preferences.borderlessMaximized);
     m_corona->universalSettings()->setParabolicSpread(m_preferences.parabolicSpread);
+    m_corona->universalSettings()->setThicknessMarginInfluence(m_preferences.thicknessMarginInfluence);
     m_corona->universalSettings()->setScreenTrackerInterval(m_preferences.screensDelay);
 
     o_preferences = m_preferences;
