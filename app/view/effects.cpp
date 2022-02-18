@@ -461,7 +461,7 @@ QRegion Effects::maskCombinedRegion()
 
 void Effects::updateBackgroundCorners()
 {
-    if (m_backgroundRadius<=0) {
+    if (m_backgroundRadius<0) {
         return;
     }
 
