@@ -40,14 +40,14 @@ Item {
         //! left scales
         var leftScales = [];
         for (var i=_spreadSteps; i>=1; --i) {
-            leftScales.push(linearEffect(1-percentage, i, _spreadSteps));
+            leftScales.push(scaleForItem(1-percentage, i, _spreadSteps));
         }
         leftScales.push(1); //! clearing
 
         //! right scales
         var rightScales = [];
         for (var j=_spreadSteps; j>=1; --j) {
-            rightScales.push(linearEffect(percentage, j, _spreadSteps));
+            rightScales.push(scaleForItem(percentage, j, _spreadSteps));
         }
         rightScales.push(1); //! clearing
 
@@ -65,12 +65,18 @@ Item {
         return {leftScale:leftScales[0], rightScale:rightScales[0]};
     }
 
-    function linearEffect(mousePosPercentage, partIndex, partsCount) {
-        var part = 1/partsCount;
-        var min = (partIndex-1) * part;
-        var max = partIndex * part;
-        var x = min + (max-min) * mousePosPercentage;
-        var yl = (factor.zoom - 1) * x;
-        return 1+yl;
+    function scaleForItem(mousePosPercentage, itemIndex, itemsCount) {
+        //! split x axis to different slices and find for the current slice its minimum and maximum x values
+        var xSliceLength = 1/itemsCount;
+        var minX = (itemIndex-1) * xSliceLength;
+        var maxX = itemIndex * xSliceLength;
+        //! use minimum and maximum values in order to adjust mousePorPercentage and provide the current x for that slice
+        var curX = minX + (maxX-minX) * mousePosPercentage;
+        return 1+scaleLinear(curX);
+    }
+
+    function scaleLinear(x) {
+        //! just a simple linear function y=a*x where [a = maxZoom - 1]
+        return (factor.zoom - 1) * x;
     }
 }
