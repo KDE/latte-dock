@@ -925,7 +925,7 @@ PlasmaComponents.Page {
                         enabled: showBackground.checked //&& !blockOpacityAdjustment
 
                         value: plasmoid.configuration.panelTransparency
-                        from: 0
+                        from: -1
                         to: 100
                         stepSize: 1
                         wheelEnabled: false
@@ -950,7 +950,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: transparencySlider.enabled
-                        text: i18nc("number in percentage, e.g. 85 %","%1 %", transparencySlider.value)
+                        text: transparencySlider.value >= 0 ? i18nc("number in percentage, e.g. 85 %","%1 %", transparencySlider.value) : i18nc("Default word abbreviation", "Def.")
                         horizontalAlignment: Text.AlignRight
                         Layout.minimumWidth: theme.mSize(theme.defaultFont).width * 4
                         Layout.maximumWidth: theme.mSize(theme.defaultFont).width * 4

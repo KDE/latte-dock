@@ -103,7 +103,7 @@
       <default>false</default>
     </entry>
     <entry name="panelTransparency" type="Int">
-      <default>100</default>
+      <default>-1</default>
     </entry>
     <entry name="panelOutline" type="Bool">
       <default>false</default>
