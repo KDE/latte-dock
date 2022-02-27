@@ -24,7 +24,7 @@ Item {
     readonly property int hiddenItemsCount: (parabolic.spread - 1)/2
 
     property int index: -1
-    property int length: 0
+    property real length: 0
 
     Behavior on length {
         id: animatedLengthBehavior

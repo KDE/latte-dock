@@ -298,7 +298,7 @@ Item{
 
         readonly property bool centered: (root.myView.alignment === LatteCore.Types.Center) || (root.myView.alignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
-        readonly property int parabolicOffsetting: Math.round((startParabolicSpacer.length - endParabolicSpacer.length) / 2)
+        readonly property real parabolicOffsetting: (startParabolicSpacer.length - endParabolicSpacer.length) / 2
         property int inJustifyCenterOffset: 0
 
         alignment: {

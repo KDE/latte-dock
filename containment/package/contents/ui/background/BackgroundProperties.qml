@@ -25,8 +25,8 @@ Item{
         return (hasLeftBorder && hasRightBorder);
     }
 
-    property int offset: 0
-    property int length: 0
+    property real offset: 0
+    property real length: 0
     property int thickness: 0
     property int screenEdgeMargin: 0
     property real currentOpacity: 0
