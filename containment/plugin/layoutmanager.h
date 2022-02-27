@@ -136,6 +136,7 @@ private slots:
 
     void updateOrder();
     void cleanupOptions();
+    void reorderParabolicSpacers();
 
 private:
     void restoreOptions();
@@ -148,6 +149,7 @@ private:
 
     void insertAtLayoutTail(QQuickItem *layout, QQuickItem *item);
     void insertAtLayoutHead(QQuickItem *layout, QQuickItem *item);
+    void insertAtLayoutIndex(QQuickItem *layout, QQuickItem *item, const int &index);
 
     void setSplitterPosition(const int &position);
     void setSplitterPosition2(const int &position);
@@ -171,6 +173,8 @@ private:
     QQuickItem *lastSplitter();
     QQuickItem *appletItem(const int &id);
     QQuickItem *appletItemInLayout(QQuickItem *layout, const int &id);
+
+    void printAppletList(QList<QQuickItem *> list);
 
     QList<int> toIntList(const QString &serialized);
     QString toStr(const QList<int> &list);

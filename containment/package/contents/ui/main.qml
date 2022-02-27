@@ -462,6 +462,7 @@ Item {
                 layouter.appletsInParentChange = false;
             }
 
+            root.updateIndexes();
             plasmoid.configuration.alignment = latteView.alignment;
             fastLayoutManager.save();
         }

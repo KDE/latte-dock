@@ -171,13 +171,9 @@ Item {
             //console.log("------Entered check-----");
             //console.log("max length: "+ maxLength);
 
-            if (root.isVertical) {
-                layoutLength = (plasmoid.configuration.alignment === LatteCore.Types.Justify) ?
-                            layouts.startLayout.height+layouts.mainLayout.height+layouts.endLayout.height : layouts.mainLayout.height
-            } else {
-                layoutLength = (plasmoid.configuration.alignment === LatteCore.Types.Justify) ?
-                            layouts.startLayout.width+layouts.mainLayout.width+layouts.endLayout.width : layouts.mainLayout.width
-            }
+            layoutLength = (plasmoid.configuration.alignment === LatteCore.Types.Justify) ?
+                        layouts.startLayout.length+layouts.mainLayout.length+layouts.endLayout.length : layouts.mainLayout.length
+
 
             var itemLength = metrics.totals.length;
 

@@ -130,17 +130,6 @@ Item {
 
         //use the new parabolic effect manager in order to handle all parabolic effect messages
         var scales = parabolic.applyParabolicEffect(index, currentMousePosition, length);
-
-        //Left hiddenSpacer
-        if(appletItem.firstAppletInContainer){
-            hiddenSpacerLeft.nScale = scales.leftScale - 1;
-        }
-
-        //Right hiddenSpacer  ///there is one more item in the currentLayout ????
-        if(appletItem.lastAppletInContainer){
-            hiddenSpacerRight.nScale =  scales.rightScale - 1;
-        }
-
         wrapper.zoomScale = parabolic.factor.zoom;
     } //scale
 

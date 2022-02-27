@@ -55,6 +55,7 @@ Item {
     //! Fill Applet(s)
     property bool inFillCalculations: false //temp record, is used in calculations for fillWidth,fillHeight applets
     property bool isAutoFillApplet:  isRequestingFill
+    property bool isParabolicEdgeSpacer: false
 
     property bool isRequestingFill: {
         if (!applet || !applet.Layout) {
@@ -481,7 +482,7 @@ Item {
         for(var i=0; i<appletItem.layouter.mainLayout.count; ++i){
             var child = layoutsContainer.mainLayout.children[i];
             if (child === appletItem){
-                index = layoutsContainer.mainLayout.beginIndex + i;
+                index = layoutsContainer.mainLayout.beginIndex + i - 1; //we remove one item because at start of main layout there is a ParabolicEdgeSpacer
                 break;
             }
         }

@@ -131,11 +131,7 @@ BackgroundProperties{
             return root.maxLength;
         }
 
-        if (root.isVertical) {
-            return Math.max(root.minLength, layoutsContainerItem.mainLayout.height + totals.paddingsLength);
-        } else {
-            return Math.max(root.minLength, layoutsContainerItem.mainLayout.width + totals.paddingsLength);
-        }
+        return Math.max(root.minLength, layoutsContainerItem.mainLayout.length + totals.paddingsLength);
     }
 
     thickness: {
@@ -167,7 +163,8 @@ BackgroundProperties{
             }
         }
 
-        return root.offset;// (myView.alignment === LatteCore.Types.Center ? root.offset : 0);
+        var parabolicOffseting = myView.alignment === LatteCore.Types.Center ? layoutsContainerItem.mainLayout.parabolicOffsetting : 0;
+        return root.offset + parabolicOffseting;
     }
 
     totals.visualThickness: {

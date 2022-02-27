@@ -133,7 +133,7 @@ MouseArea {
         } else {
             var item = hoveredItem(mouse.x, mouse.y);
 
-            if (root.dragOverlay) {
+            if (root.dragOverlay && item && !item.isParabolicEdgeSpacer) {
                 root.dragOverlay.currentApplet = item;
             } else {
                 currentApplet = null;
@@ -212,8 +212,6 @@ MouseArea {
         fastLayoutManager.insertBefore(placeHolder, currentApplet);
         placeHolder.parent = configurationArea;
         currentApplet.z = 1;
-
-        var relevantLayout = mapFromItem(layoutsContainer.mainLayout, 0, 0);
 
         if (root.myView.alignment === LatteCore.Types.Justify) {
             fastLayoutManager.moveAppletsBasedOnJustifyAlignment();

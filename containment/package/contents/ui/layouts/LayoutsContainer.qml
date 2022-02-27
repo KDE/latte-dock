@@ -288,11 +288,17 @@ Item{
                 return background.offset + lengthTailPadding;
             }
 
-            return (root.myView.alignment === LatteCore.Types.Justify) ? inJustifyCenterOffset : background.offset
+            return (root.myView.alignment === LatteCore.Types.Justify) ? inJustifyCenterOffset : background.offset - parabolicOffsetting
         }
+
+        ignoredLength: startParabolicSpacer.length + endParabolicSpacer.length
+
+        readonly property alias startParabolicSpacer: _startParabolicSpacer
+        readonly property alias endParabolicSpacer: _endParabolicSpacer
 
         readonly property bool centered: (root.myView.alignment === LatteCore.Types.Center) || (root.myView.alignment === LatteCore.Types.Justify)
         readonly property bool reversed: Qt.application.layoutDirection === Qt.RightToLeft
+        readonly property int parabolicOffsetting: Math.round((startParabolicSpacer.length - endParabolicSpacer.length) / 2)
         property int inJustifyCenterOffset: 0
 
         alignment: {
@@ -345,6 +351,16 @@ Item{
                 duration: 0.8 * animations.duration.proposed
                 easing.type: Easing.OutCubic
             }
+        }
+
+        ParabolicEdgeSpacer {
+            id: _startParabolicSpacer
+            index: mainLayout.beginIndex - 1
+        }
+
+        ParabolicEdgeSpacer {
+            id: _endParabolicSpacer
+            index: mainLayout.beginIndex + mainLayout.children.length - 2
         }
 
         Binding{

@@ -40,7 +40,7 @@ Item {
         value: {
             var space = 0;
             for (var i=0; i<grid.children.length; ++i){
-                if (grid.children[i] && (grid.children[i].isPlaceHolder || (!grid.children[i].isAutoFillApplet && !grid.children[i].isHidden))) {
+                if (grid.children[i] && (grid.children[i].isPlaceHolder || (!grid.children[i].isAutoFillApplet && !grid.children[i].isHidden && !grid.children[i].isParabolicEdgeSpacer))) {
 
                     if (!grid.children[i].isPlaceHolder && grid.children[i].isInternalViewSplitter) {
                         space += root.maxJustifySplitterSize;
@@ -100,6 +100,7 @@ Item {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
+                        && !grid.children[i].isParabolicEdgeSpacer
                         && !grid.children[i].isPlaceHolder
                         && grid.children[i].isAutoFillApplet
                         && !grid.children[i].isHidden) {
@@ -120,6 +121,7 @@ Item {
             var no = 0;
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
+                        && !grid.children[i].isParabolicEdgeSpacer
                         && !grid.children[i].isPlaceHolder
                         && grid.children[i].isRequestingFill
                         && grid.children[i].applet
@@ -182,6 +184,7 @@ Item {
 
             for (var i=0; i<grid.children.length; ++i){
                 if (grid.children[i]
+                        && !grid.children[i].isParabolicEdgeSpacer
                         && !grid.children[i].isPlaceHolder
                         && grid.children[i].isInternalViewSplitter
                         && !grid.children[i].isHidden) {
