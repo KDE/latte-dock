@@ -63,7 +63,7 @@ Item {
         }
 
         if ((root.isHorizontal && applet.Layout.fillWidth===true)
-             || (root.isVertical && applet.Layout.fillHeight===true)) {
+                || (root.isVertical && applet.Layout.fillHeight===true)) {
             return !isHidden;
         }
 
@@ -471,28 +471,46 @@ Item {
     function checkIndex(){
         index = -1;
 
+        var startAppletIndex = -1;
         for(var i=0; i<appletItem.layouter.startLayout.count; ++i){
             var child = layoutsContainer.startLayout.children[i];
+            if (child.isParabolicEdgeSpacer || child.isInternalViewSplitter) {
+                continue;
+            }
+
+            startAppletIndex++;
             if (child === appletItem){
-                index = layoutsContainer.startLayout.beginIndex + i;
+                index = layoutsContainer.startLayout.beginIndex + startAppletIndex;
                 break;
             }
         }
 
+        var mainAppletIndex = -1;
         for(var i=0; i<appletItem.layouter.mainLayout.count; ++i){
             var child = layoutsContainer.mainLayout.children[i];
+            if (child.isParabolicEdgeSpacer || child.isInternalViewSplitter) {
+                continue;
+            }
+
+            mainAppletIndex++;
             if (child === appletItem){
-                index = layoutsContainer.mainLayout.beginIndex + i - 1; //we remove one item because at start of main layout there is a ParabolicEdgeSpacer
+                index = layoutsContainer.mainLayout.beginIndex + mainAppletIndex;
                 break;
             }
         }
 
+        var endAppletIndex = -1;
         for(var i=0; i<appletItem.layouter.endLayout.count; ++i){
             var child = layoutsContainer.endLayout.children[i];
+            if (child.isParabolicEdgeSpacer || child.isInternalViewSplitter) {
+                continue;
+            }
+
+            endAppletIndex++;
             if (child === appletItem){
                 //create a very high index in order to not need to exchange hovering messages
                 //between layoutsContainer.mainLayout and layoutsContainer.endLayout
-                index = layoutsContainer.endLayout.beginIndex + i;
+                index = layoutsContainer.endLayout.beginIndex + endAppletIndex;
                 break;
             }
         }
@@ -575,6 +593,7 @@ Item {
     }
 
     onIsAutoFillAppletChanged: updateParabolicEffectIsSupported();
+    onParentChanged: checkIndex()
 
     Component.onCompleted: {
         checkIndex();
@@ -686,7 +705,7 @@ Item {
         onExpandedAppletStateChanged: {
             if (latteView.extendedInterface.hasExpandedApplet && appletItem.applet) {
                 appletItem.isExpanded = latteView.extendedInterface.appletIsExpandable(appletItem.applet.id)
-                        && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);                                                                                
+                        && latteView.extendedInterface.appletIsExpanded(appletItem.applet.id);
             } else {
                 appletItem.isExpanded = false;
             }
