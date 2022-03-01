@@ -164,11 +164,7 @@ bool ContextMenu::mousePressEventForContainmentMenu(QQuickView *view, QMouseEven
                 }
             };
 
-            if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
-                QTimer::singleShot(0, this, ungrabMouseHack);
-            } else {
-                ungrabMouseHack();
-            }
+            QTimer::singleShot(0, this, ungrabMouseHack);
 
             emit m_latteView->containment()->contextualActionsAboutToShow();
             addContainmentActions(desktopMenu, event);
@@ -347,13 +343,8 @@ bool ContextMenu::mousePressEvent(QMouseEvent *event)
                     }
                 };
 
-                //pre 5.8.0 QQuickWindow code is "item->grabMouse(); sendEvent(item, mouseEvent)"
                 //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
-                if (QVersionNumber::fromString(qVersion()) > QVersionNumber(5, 8, 0)) {
-                    QTimer::singleShot(0, this, ungrabMouseHack);
-                } else {
-                    ungrabMouseHack();
-                }
+                QTimer::singleShot(0, this, ungrabMouseHack);
 
                 //end workaround
                 //!end of plasma official code(workaround)

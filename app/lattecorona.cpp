@@ -1332,18 +1332,6 @@ inline void Corona::qmlRegisterTypes() const
 
     qmlRegisterType<Latte::BackgroundTracker>("org.kde.latte.private.app", 0, 1, "BackgroundTracker");
     qmlRegisterType<Latte::Interfaces>("org.kde.latte.private.app", 0, 1, "Interfaces");
-
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    qmlRegisterType<QScreen>();
-    qmlRegisterType<Latte::View>();
-    qmlRegisterType<Latte::ViewPart::WindowsTracker>();
-    qmlRegisterType<Latte::ViewPart::TrackerPart::CurrentScreenTracker>();
-    qmlRegisterType<Latte::ViewPart::TrackerPart::AllScreensTracker>();
-    qmlRegisterType<Latte::WindowSystem::SchemeColors>();
-    qmlRegisterType<Latte::WindowSystem::Tracker::LastActiveWindow>();
-    qmlRegisterType<Latte::Types>();
-#else
     qmlRegisterAnonymousType<QScreen>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::View>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::ViewPart::WindowsTracker>("latte-dock", 1);
@@ -1352,7 +1340,7 @@ inline void Corona::qmlRegisterTypes() const
     qmlRegisterAnonymousType<Latte::WindowSystem::SchemeColors>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::WindowSystem::Tracker::LastActiveWindow>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::Types>("latte-dock", 1);
-#endif
+
 }
 
 }

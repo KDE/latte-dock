@@ -541,13 +541,8 @@ void Theme::saveConfig()
 
 void Theme::qmlRegisterTypes()
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    qmlRegisterType<Latte::PlasmaExtended::Theme>();
-    qmlRegisterType<Latte::PlasmaExtended::PanelBackground>();
-#else
     qmlRegisterAnonymousType<Latte::PlasmaExtended::Theme>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::PlasmaExtended::PanelBackground>("latte-dock", 1);
-#endif
 }
 
 }

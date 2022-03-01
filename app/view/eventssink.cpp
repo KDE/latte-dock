@@ -184,12 +184,7 @@ QEvent *EventsSink::onEvent(QEvent *e)
 
     case QEvent::Wheel:
         if (auto we = dynamic_cast<QWheelEvent *>(e)) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-            QPoint pos = QPoint(we->x(), we->y());
-#else
             QPoint pos = we->position().toPoint();
-#endif
-
             if (originSinksContain(pos)) {
                 auto positionadjusted = positionAdjustedForDestination(pos);
                 auto we2 = new QWheelEvent(positionadjusted,

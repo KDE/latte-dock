@@ -29,11 +29,7 @@ IndicatorUiManager::IndicatorUiManager(ViewPart::PrimaryConfigView *parent)
     : QObject(parent),
       m_primary(parent)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    qmlRegisterType<Latte::ViewPart::Config::IndicatorUiManager>();
-#else
     qmlRegisterAnonymousType<Latte::ViewPart::Config::IndicatorUiManager>("latte-dock", 1);
-#endif
 }
 
 IndicatorUiManager::~IndicatorUiManager()
