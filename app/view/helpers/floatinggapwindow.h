@@ -4,7 +4,7 @@
 */
 
 #ifndef FLOATINGGAPWINDOW_H
-#define FLOATINGWINDOW_H
+#define FLOATINGGAPWINDOW_H
 
 // local
 #include "subwindow.h"
