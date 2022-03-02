@@ -4,7 +4,7 @@
 */
 
 #ifndef COLORSMODEL_H
-#define COLROSMODEL_H
+#define COLORSMODEL_H
 
 // local
 #include "../../lattecorona.h"
