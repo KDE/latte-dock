@@ -30,8 +30,9 @@ Item {
 
     property bool __isLoadedDuringViewStartup: false
 
+    property string appletIndex: bridge && bridge.indexer ? String(bridge.indexer.appletIndex) : ""
     property int group: LatteCore.Types.UniqueLaunchers
-    property int groupId: view && group === LatteCore.Types.UniqueLaunchers ? view.groupId : -1
+    property string groupId: view && group === LatteCore.Types.UniqueLaunchers ? String(view.groupId) + "#" + appletIndex : ""
 
     property Item bridge: null
     property Item layout: null

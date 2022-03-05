@@ -78,13 +78,13 @@ QQuickItem *SyncedLaunchers::client(const int &id)
     return nullptr;
 }
 
-QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, int groupId)
+QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, QString groupId)
 {
     QList<QQuickItem *> items;
 
     for(const auto client: m_clients) {
         QString cLayoutName = layoutName.isEmpty() ? QString() : client->property("layoutName").toString();
-        int gid = client->property("syncedGroupId").toInt();
+        QString gid = client->property("syncedGroupId").toString();
         if (cLayoutName == layoutName && gid == groupId) {
             items << client;
         }
@@ -93,11 +93,11 @@ QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, int groupId)
     return items;
 }
 
-QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, uint senderId, Latte::Types::LaunchersGroup launcherGroup, int launcherGroupId)
+QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, uint senderId, Latte::Types::LaunchersGroup launcherGroup, QString launcherGroupId)
 {
     QList<QQuickItem *> temclients;
 
-    if (launcherGroup == Types::UniqueLaunchers && launcherGroupId < 0) {
+    if (launcherGroup == Types::UniqueLaunchers && launcherGroupId.isEmpty()) {
         //! on its own, single taskmanager
         auto c = client(senderId);
         if (c) {
@@ -110,7 +110,7 @@ QList<QQuickItem *> SyncedLaunchers::clients(QString layoutName, uint senderId, 
     return temclients;
 }
 
-void SyncedLaunchers::addLauncher(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QString launcher)
+void SyncedLaunchers::addLauncher(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QString launcher)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
@@ -130,7 +130,7 @@ void SyncedLaunchers::addLauncher(QString layoutName, uint senderId, int launche
     }
 }
 
-void SyncedLaunchers::removeLauncher(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QString launcher)
+void SyncedLaunchers::removeLauncher(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QString launcher)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
@@ -150,7 +150,7 @@ void SyncedLaunchers::removeLauncher(QString layoutName, uint senderId, int laun
     }
 }
 
-void SyncedLaunchers::addLauncherToActivity(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QString launcher, QString activity)
+void SyncedLaunchers::addLauncherToActivity(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QString launcher, QString activity)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
@@ -170,7 +170,7 @@ void SyncedLaunchers::addLauncherToActivity(QString layoutName, uint senderId, i
     }
 }
 
-void SyncedLaunchers::removeLauncherFromActivity(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QString launcher, QString activity)
+void SyncedLaunchers::removeLauncherFromActivity(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QString launcher, QString activity)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
@@ -190,7 +190,7 @@ void SyncedLaunchers::removeLauncherFromActivity(QString layoutName, uint sender
     }
 }
 
-void SyncedLaunchers::urlsDropped(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QStringList urls)
+void SyncedLaunchers::urlsDropped(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QStringList urls)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";
@@ -210,7 +210,7 @@ void SyncedLaunchers::urlsDropped(QString layoutName, uint senderId, int launche
     }
 }
 
-void SyncedLaunchers::validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, int launcherGroupId, QStringList launchers)
+void SyncedLaunchers::validateLaunchersOrder(QString layoutName, uint senderId, int launcherGroup, QString launcherGroupId, QStringList launchers)
 {
     Types::LaunchersGroup group = static_cast<Types::LaunchersGroup>(launcherGroup);
     QString lName = (group == Types::LayoutLaunchers) ? layoutName : "";

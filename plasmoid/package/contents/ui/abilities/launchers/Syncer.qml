@@ -16,7 +16,7 @@ Item {
     readonly property int clientId: plasmoid.id
     // used to identify launchers that need to be synced event though their launchers group type
     // does not support it e.g. taskmanagers synced in different screens
-    readonly property int syncedGroupId: _launchers.groupId
+    readonly property string syncedGroupId: _launchers.groupId
 
     //! Connections
     Component.onCompleted: {
