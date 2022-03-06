@@ -19,6 +19,7 @@ Item {
     readonly property bool isThinTooltipEnabled: parabolicAreaLoader.isThinTooltipEnabled    
 
     property real length: root.isHorizontal ? appletItem.width : appletItem.height
+    property var lastMousePoint: { "x": 0, "y": 0 }
 
     MouseArea {
         id: parabolicMouseArea
@@ -53,6 +54,9 @@ Item {
     }
 
     onParabolicEntered: {
+        lastMousePoint.x = mouseX;
+        lastMousePoint.y = mouseY;
+
         if (isThinTooltipEnabled && !(isSeparator || isSpacer || isMarginsAreaSeparator)) {
             appletItem.thinTooltip.show(appletItem.tooltipVisualParent, applet.title);
         }
@@ -81,6 +85,9 @@ Item {
     }
 
     onParabolicMove: {
+        lastMousePoint.x = mouseX;
+        lastMousePoint.y = mouseY;
+
         if (!appletItem.myView.isShownFully
                 || appletItem.originalAppletBehavior
                 || !appletItem.parabolicEffectIsSupported
@@ -112,6 +119,20 @@ Item {
     onParabolicExited: {
         if (isThinTooltipEnabled) {
             appletItem.thinTooltip.hide(appletItem.tooltipVisualParent);
+        }
+    }
+
+    Connections{
+        target: appletItem.myView
+
+        //! During dock sliding-in because the parabolic effect isnt trigerred
+        //! immediately but we wait first the dock to go to its final normal
+        //! place we might miss the activation of the parabolic effect.
+        //! By catching that signal we are trying to solve this.
+        onIsShownFullyChanged: {
+            if (appletItem.myView.isShownFully && _parabolicArea.containsMouse) {
+                _parabolicArea.parabolicMove(_parabolicArea.lastMousePoint.x, _parabolicArea.lastMousePoint.y);
+            }
         }
     }
 
