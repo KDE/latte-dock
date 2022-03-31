@@ -514,83 +514,38 @@ void LayoutManager::save()
 
     reorderParabolicSpacers();
 
-    int startChilds{0};
-    for(int i=0; i<m_startLayout->childItems().count(); ++i) {
-        QQuickItem *item = m_startLayout->childItems()[i];
-        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
-        bool isParabolicEdgeSpacer = item->property("isParabolicEdgeSpacer").toBool();
-        if (!isInternalSplitter && !isParabolicEdgeSpacer) {
-            QVariant appletVariant = item->property("applet");
-            if (!appletVariant.isValid()) {
-                continue;
-            }
+    auto collectLayoutAppletIds = [](QQuickItem *layout, QList<int> &appletIds) {
+        int childCount = 0;
+        for (int i=0; i<layout->childItems().count(); ++i) {
+            QQuickItem *item = layout->childItems()[i];
+            bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
+            bool isParabolicEdgeSpacer = item->property("isParabolicEdgeSpacer").toBool();
+            if (!isInternalSplitter && !isParabolicEdgeSpacer) {
+                QVariant appletVariant = item->property("applet");
+                if (!appletVariant.isValid()) {
+                    continue;
+                }
 
-            QObject *applet = appletVariant.value<QObject *>();
+                QObject *applet = appletVariant.value<QObject *>();
 
-            if (!applet) {
-                continue;
-            }
+                if (!applet) {
+                    continue;
+                }
 
-            uint id = applet->property("id").toUInt();
+                uint id = applet->property("id").toUInt();
 
-            if (id>0) {
-                startChilds++;
-                appletIds << id;
-            }
-        }
-    }
-
-    int mainChilds{0};
-    for(int i=0; i<m_mainLayout->childItems().count(); ++i) {
-        QQuickItem *item = m_mainLayout->childItems()[i];
-        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
-        bool isParabolicEdgeSpacer = item->property("isParabolicEdgeSpacer").toBool();
-        if (!isInternalSplitter && !isParabolicEdgeSpacer) {
-            QVariant appletVariant = item->property("applet");
-            if (!appletVariant.isValid()) {
-                continue;
-            }
-
-            QObject *applet = appletVariant.value<QObject *>();
-
-            if (!applet) {
-                continue;
-            }
-
-            uint id = applet->property("id").toUInt();
-
-            if (id>0) {
-                mainChilds++;
-                appletIds << id;
+                if (id>0) {
+                    childCount++;
+                    appletIds << id;
+                }
             }
         }
-    }
+        return childCount;
+    };
 
-    int endChilds{0};
-    for(int i=0; i<m_endLayout->childItems().count(); ++i) {
-        QQuickItem *item = m_endLayout->childItems()[i];
-        bool isInternalSplitter = item->property("isInternalViewSplitter").toBool();
-        bool isParabolicEdgeSpacer = item->property("isParabolicEdgeSpacer").toBool();
-        if (!isInternalSplitter && !isParabolicEdgeSpacer) {
-            QVariant appletVariant = item->property("applet");
-            if (!appletVariant.isValid()) {
-                continue;
-            }
-
-            QObject *applet = appletVariant.value<QObject *>();
-
-            if (!applet) {
-                continue;
-            }
-
-            uint id = applet->property("id").toUInt();
-
-            if (id>0) {
-                endChilds++;
-                appletIds << id;
-            }
-        }
-    }
+    int startChilds = collectLayoutAppletIds(m_startLayout, appletIds);
+    int mainChilds  = collectLayoutAppletIds(m_mainLayout,  appletIds);
+    int endChilds   = collectLayoutAppletIds(m_endLayout,   appletIds);
 
     Latte::Types::Alignment alignment = static_cast<Latte::Types::Alignment>((*m_configuration)["alignment"].toInt());
 
