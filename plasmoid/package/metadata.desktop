@@ -2,7 +2,7 @@
 Name=Latte Tasks
 Name[az]=Latte Tapşırıqları
 Name[ca]=Tasques del Latte
-Name[ca@valencia]=Tasques del Latte
+Name[ca@valencia]=Tasques de Latte
 Name[cs]=Úlohy Latte
 Name[el]=Εργασίες Latte
 Name[en_GB]=Latte Tasks
