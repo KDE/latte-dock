@@ -16,6 +16,7 @@ Item{
     property int speed: 0.9 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large
 
     readonly property bool running: launcherAnimationLoader.item ? launcherAnimationLoader.item.running : false
+    readonly property bool paused: launcherAnimationLoader.active ? launcherAnimationLoader.item.paused : false
 
     readonly property string needThicknessEvent: launcherAnimation + "_launcher"
 

@@ -21,6 +21,7 @@ Item{
     property bool inDelayedStartup: false
 
     readonly property bool running: newWindowAnimationLoader.active ? newWindowAnimationLoader.item.running : false
+    readonly property bool paused: newWindowAnimationLoader.active ? newWindowAnimationLoader.item.paused : false
     readonly property string needThicknessEvent: newWindowAnimation + "_newwindow"
 
     Loader {
@@ -42,8 +43,7 @@ Item{
 
         onInAttentionChanged:{
             if (!taskItem.inAttention && newWindowAnimation.running && taskItem.inAttentionBuiltinAnimation) {
-                newWindowAnimation.pause();
-                fastRestoreAnimation.start();
+                clear();
             }
         }
     }
@@ -53,12 +53,6 @@ Item{
         taskItem.setBlockingAnimation(false);
         taskItem.inAttentionBuiltinAnimation = false;
         taskItem.inNewWindowBuiltinAnimation = false;
-    }
-
-    function pause() {
-        if (running) {
-            newWindowAnimationLoader.item.pause();
-        }
     }
 
     function stop() {

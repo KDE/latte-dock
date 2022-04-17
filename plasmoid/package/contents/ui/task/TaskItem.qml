@@ -28,9 +28,8 @@ AbilityItem.BasicItem {
 
     isHidden: !visible || isForcedHidden
 
-    isHiddenSpacerForcedShow: taskItem.inAttentionBuiltinAnimation || taskItem.inFastRestoreAnimation
-    isHiddenSpacerAnimated: taskItem.inFastRestoreAnimation
-                            || showWindowAnimation.running
+    isHiddenSpacerForcedShow: taskItem.inAttentionBuiltinAnimation
+    isHiddenSpacerAnimated: showWindowAnimation.running
                             || root.inActivityChange
                             || taskItem.inRemoveStage
                             || (taskItem.containsMouse && inAttentionBuiltinAnimation && taskItem.parabolicItem.zoom!==taskItem.abilities.parabolic.factor.zoom)
@@ -56,7 +55,7 @@ AbilityItem.BasicItem {
                                            || !hoverEnabled
                                            || !taskItem.abilities.myView.isShownFully
                                            || inAnimation
-                                           || (inBlockingAnimation && !(inAttentionBuiltinAnimation || inFastRestoreAnimation))
+                                           || (inBlockingAnimation && !inAttentionBuiltinAnimation)
     parabolicItem.isUpdatingOnlySpacers: inAttentionBuiltinAnimation || inBouncingAnimation
 
     property alias hoverEnabled: taskMouseArea.hoverEnabled
@@ -75,7 +74,6 @@ AbilityItem.BasicItem {
     property bool inAttentionBuiltinAnimation: false
     property bool inBlockingAnimation: false
     property bool inBouncingAnimation: false
-    property bool inFastRestoreAnimation: false
     property bool inNewWindowBuiltinAnimation: false
     property bool inPopup: false
     property bool inRemoveStage: false

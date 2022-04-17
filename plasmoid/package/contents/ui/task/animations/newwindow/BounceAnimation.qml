@@ -8,7 +8,6 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 SequentialAnimation{
-    alwaysRunToEnd: true
     loops: newWindowAnimation.isDemandingAttention ? 20 : 1
 
     readonly property string bouncePropertyName: taskItem.isVertical ? "iconAnimatedOffsetX" : "iconAnimatedOffsetY"
@@ -30,14 +29,12 @@ SequentialAnimation{
         }
     }
 
-    ParallelAnimation {
-        PropertyAnimation {
-            target: taskItem
-            property: bouncePropertyName
-            to: 0.6 * taskItem.abilities.metrics.iconSize
-            duration: newWindowAnimation.speed
-            easing.type: Easing.OutQuad
-        }
+    PropertyAnimation {
+        target: taskItem
+        property: bouncePropertyName
+        to: 0.6 * taskItem.abilities.metrics.iconSize
+        duration: newWindowAnimation.speed
+        easing.type: Easing.OutQuad
     }
 
     PropertyAnimation {

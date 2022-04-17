@@ -102,7 +102,7 @@ Item {
 
             State{
                 name: "animating"
-                when: !taskItem.inAddRemoveAnimation && (launcherAnimation.running || newWindowAnimation.running || fastRestoreAnimation.running)
+                when: !taskItem.inAddRemoveAnimation && (launcherAnimation.running || newWindowAnimation.running)
 
                 AnchorChanges{
                     target: taskIconItem;
@@ -121,8 +121,6 @@ Item {
             Transition{
                 from: "animating"
                 to: "*"
-                enabled: !fastRestoreAnimation.running
-
                 AnchorAnimation { duration: 1.5 * taskItem.abilities.animations.speedFactor.current * taskItem.abilities.animations.duration.large }
             }
         ]
@@ -438,8 +436,6 @@ Item {
     TaskAnimations.NewWindowAnimation { id: newWindowAnimation }
 
     TaskAnimations.RemoveWindowFromGroupAnimation { id: removingAnimation }
-
-    TaskAnimations.FastRestoreAnimation { id: fastRestoreAnimation }
     //! Animations
 
     Component.onDestruction: {
