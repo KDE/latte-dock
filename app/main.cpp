@@ -25,9 +25,11 @@
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDir>
+#include <QFile>
 #include <QLockFile>
 #include <QSessionManager>
 #include <QSharedMemory>
+#include <QTextStream>
 
 // KDE
 #include <KCrash>
@@ -50,6 +52,7 @@ inline void detectPlatform(int argc, char **argv);
 inline void filterDebugMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
 QString filterDebugMessageText;
+QString filterDebugLogFile;
 
 int main(int argc, char **argv)
 {
@@ -171,6 +174,12 @@ int main(int argc, char **argv)
     filterDebugEventSinkMask.setDescription(QStringLiteral("Show visual indicators for areas of EventsSink."));
     filterDebugEventSinkMask.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(filterDebugEventSinkMask);
+
+    QCommandLineOption filterDebugLogCmd(QStringList() << QStringLiteral("log-file"));
+    filterDebugLogCmd.setDescription(QStringLiteral("Forward debug output in a log text file."));
+    filterDebugLogCmd.setFlags(QCommandLineOption::HiddenFromHelp);
+    filterDebugLogCmd.setValueName(i18nc("command line: log-filepath", "filter_log_filepath"));
+    parser.addOption(filterDebugLogCmd);
     //! END: Hidden options
 
     parser.process(app);
@@ -398,6 +407,11 @@ int main(int argc, char **argv)
         filterDebugMessageText = parser.value(QStringLiteral("debug-text"));
     }
 
+    //! log file for debug output
+    if (parser.isSet(QStringLiteral("log-file")) && !parser.value(QStringLiteral("log-file")).isEmpty()) {
+        filterDebugLogFile = parser.value(QStringLiteral("log-file"));
+    }
+
     //! debug/mask options
     if (parser.isSet(QStringLiteral("debug")) || parser.isSet(QStringLiteral("mask")) || parser.isSet(QStringLiteral("debug-text"))) {
         qInstallMessageHandler(filterDebugMessageOutput);
@@ -405,7 +419,6 @@ int main(int argc, char **argv)
         const auto noMessageOutput = [](QtMsgType, const QMessageLogContext &, const QString &) {};
         qInstallMessageHandler(noMessageOutput);
     }
-
 
     auto signal_handler = [](int) {
         qGuiApp->exit();
@@ -469,11 +482,19 @@ inline void filterDebugMessageOutput(QtMsgType type, const QMessageLogContext &c
         TypeColor = CIGREEN;
     }
 
-    qDebug().nospace() << TypeColor << "[" << typeStr.toStdString().c_str() << " : " << CGREEN << QTime::currentTime().toString("h:mm:ss.zz").toStdString().c_str() << TypeColor << "]" << CNORMAL
-                      #ifndef QT_NO_DEBUG
-                       << CIRED << " [" << CCYAN << function << CIRED << ":" << CCYAN << context.line << CIRED << "]"
-                      #endif
-                       << CICYAN << " - " << CNORMAL << msg;
+    if (filterDebugLogFile.isEmpty()) {
+        qDebug().nospace() << TypeColor << "[" << typeStr.toStdString().c_str() << " : " << CGREEN << QTime::currentTime().toString("h:mm:ss.zz").toStdString().c_str() << TypeColor << "]" << CNORMAL
+                          #ifndef QT_NO_DEBUG
+                           << CIRED << " [" << CCYAN << function << CIRED << ":" << CCYAN << context.line << CIRED << "]"
+                          #endif
+                           << CICYAN << " - " << CNORMAL << msg;
+    } else {
+        QFile logfile(filterDebugLogFile);
+        logfile.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream logts(&logfile);
+        logts << "[" << typeStr.toStdString().c_str() << " : " << QTime::currentTime().toString("h:mm:ss.zz").toStdString().c_str() << "]"
+              <<  " - " << msg << Qt::endl;
+    }
 }
 
 inline void configureAboutData()
