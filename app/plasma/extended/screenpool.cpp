@@ -27,8 +27,8 @@ namespace PlasmaExtended {
 ScreenPool::ScreenPool(QObject *parent)
     : QObject(parent)
 {
-    KSharedConfigPtr plasmaPtr = KSharedConfig::openConfig(PLASMARC);
-    m_screensGroup = KConfigGroup(plasmaPtr, "ScreenConnectors");
+    m_plasmarcConfig = KSharedConfig::openConfig(PLASMARC);
+    m_screensGroup = KConfigGroup(m_plasmarcConfig, "ScreenConnectors");
 
     load();
 
@@ -62,12 +62,14 @@ void ScreenPool::load()
     m_connectorForId.clear();
     m_idForConnector.clear();
 
+    m_plasmarcConfig->reparseConfiguration();
+
     bool updated{false};
 
     for (const auto &screenId : m_screensGroup.keyList()) {
         QString screenName =  m_screensGroup.readEntry(screenId, QString());
-        if (screenId != 0) {
-            int scrId = screenId.toInt();
+        int scrId = screenId.toInt();
+        if (scrId != 0) {
             insertScreenMapping(scrId, screenName);
 
             if (!connectorForId.contains(scrId) || connectorForId[scrId] != m_connectorForId[scrId]) {

@@ -13,6 +13,7 @@
 
 // KDE
 #include <KConfigGroup>
+#include <KSharedConfig>
 
 namespace Latte {
 namespace PlasmaExtended {
@@ -42,6 +43,7 @@ private:
     QMap<int, QString> m_connectorForId;
     QHash<QString, int> m_idForConnector;
 
+    KSharedConfig::Ptr m_plasmarcConfig;
     KConfigGroup m_screensGroup;
 };
 

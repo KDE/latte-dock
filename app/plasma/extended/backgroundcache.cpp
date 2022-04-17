@@ -52,6 +52,7 @@ BackgroundCache::BackgroundCache(QObject *parent)
 
     if (!m_pool) {
         m_pool = new ScreenPool(this);
+        connect(m_pool, &ScreenPool::idsChanged, this, &BackgroundCache::reload);
     }
 
     reload();
