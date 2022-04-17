@@ -21,6 +21,15 @@ SequentialAnimation{
         }
     }
 
+    Component.onDestruction: {
+        //! make sure to return on initial position even when the animation is destroyed in the middle
+        if (taskItem.isVertical) {
+            taskItem.iconAnimatedOffsetX = 0;
+        } else {
+            taskItem.iconAnimatedOffsetY = 0;
+        }
+    }
+
     ParallelAnimation {
         PropertyAnimation {
             target: taskItem
@@ -37,5 +46,14 @@ SequentialAnimation{
         to: 0
         duration: 4.4*newWindowAnimation.speed
         easing.type: Easing.OutBounce
+    }
+
+    onStopped: {
+        //! make sure to return on initial position even when the animation is destroyed in the middle
+        if (taskItem.isVertical) {
+            taskItem.iconAnimatedOffsetX = 0;
+        } else {
+            taskItem.iconAnimatedOffsetY = 0;
+        }
     }
 }
