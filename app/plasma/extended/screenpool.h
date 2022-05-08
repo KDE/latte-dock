@@ -15,6 +15,8 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+class PrimaryOutputWatcher;
+
 namespace Latte {
 namespace PlasmaExtended {
 
@@ -45,6 +47,8 @@ private:
 
     KSharedConfig::Ptr m_plasmarcConfig;
     KConfigGroup m_screensGroup;
+
+    PrimaryOutputWatcher *m_primaryWatcher;
 };
 
 }

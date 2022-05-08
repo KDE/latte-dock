@@ -209,7 +209,7 @@ void Positioner::init()
     });
 
     connect(qGuiApp, &QGuiApplication::screenAdded, this, &Positioner::onScreenChanged);
-    connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Positioner::onScreenChanged);
+    connect(m_corona->screenPool(), &ScreenPool::primaryScreenChanged, this, &Positioner::onScreenChanged);
 
     connect(m_view, &Latte::View::visibilityChanged, this, &Positioner::initDelayedSignals);
 
@@ -435,11 +435,12 @@ void Positioner::reconsiderScreen()
     }
 
     bool screenExists{false};
+    QScreen *primaryScreen{m_corona->screenPool()->primaryScreen()};
 
     //!check if the associated screen is running
     for (const auto scr : qGuiApp->screens()) {
         if (m_screenNameToFollow == scr->name()
-                || (m_view->onPrimary() && scr == qGuiApp->primaryScreen())) {
+                || (m_view->onPrimary() && scr == primaryScreen)) {
             screenExists = true;
         }
     }
@@ -447,12 +448,12 @@ void Positioner::reconsiderScreen()
     qDebug() << "dock screen exists  ::: " << screenExists;
 
     //! 1.a primary dock must be always on the primary screen
-    if (m_view->onPrimary() && (m_screenNameToFollow != qGuiApp->primaryScreen()->name()
-                                || m_screenToFollow != qGuiApp->primaryScreen()
-                                || m_view->screen() != qGuiApp->primaryScreen())) {
+    if (m_view->onPrimary() && (m_screenNameToFollow != primaryScreen->name()
+                                || m_screenToFollow != primaryScreen
+                                || m_view->screen() != primaryScreen)) {
         //! case 1
         qDebug() << "reached case 1: of updating dock primary screen...";
-        setScreenToFollow(qGuiApp->primaryScreen());
+        setScreenToFollow(primaryScreen);
     } else if (!m_view->onPrimary()) {
         //! 2.an explicit dock must be always on the correct associated screen
         //! there are cases that window manager misplaces the dock, this function
@@ -1028,7 +1029,7 @@ void Positioner::initSignalingForLocationChangeSliding()
         //! SCREEN
         if (!m_nextScreenName.isEmpty()) {
             bool nextonprimary = (m_nextScreenName == Latte::Data::Screen::ONPRIMARYNAME);
-            m_nextScreen = qGuiApp->primaryScreen();
+            m_nextScreen = m_corona->screenPool()->primaryScreen();
 
             if (!nextonprimary) {
                 for (const auto scr : qGuiApp->screens()) {
@@ -1210,7 +1211,7 @@ void Positioner::setNextLocation(const QString layoutName, const int screensGrou
              || (!m_view->onPrimary() && nextonprimary) /*explicit -> primary*/
              || (!m_view->onPrimary() && !nextonprimary && screenName != currentScreenName()) ) { /*explicit -> new_explicit*/
 
-            QString nextscreenname = nextonprimary ? qGuiApp->primaryScreen()->name() : screenName;
+            QString nextscreenname = nextonprimary ? m_corona->screenPool()->primaryScreen()->name() : screenName;
 
             if (currentScreenName() == nextscreenname) {
                 m_view->setOnPrimary(nextonprimary);

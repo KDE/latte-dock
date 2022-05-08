@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(VERSION 0.10.76)
+set(VERSION 0.10.77)
 set(AUTHOR "Michail Vourlakos, Smith Ar")
 set(EMAIL "mvourlakos@gmail.com, audoban@openmailbox.org")
 set(WEBSITE "https://userbase.kde.org/LatteDock")
@@ -11,7 +11,7 @@ set(BUG_ADDRESS "https://bugs.kde.org/enter_bug.cgi?product=lattedock")
 set(FAQS "https://userbase.kde.org/LatteDock/FAQ")
 
 set(QT_MIN_VERSION "5.15.0")
-set(KF5_MIN_VERSION "5.71.0")
+set(KF5_MIN_VERSION "5.82.0")
 
 set(KF5_LOCALE_PREFIX "")
 
@@ -45,6 +45,12 @@ endif()
 if(X11_FOUND AND XCB_XCB_FOUND)
     set(HAVE_X11 ON)
 endif()
+
+
+find_package(QtWaylandScanner REQUIRED)
+find_package(Qt${QT_MAJOR_VERSION}WaylandClient)
+find_package(PlasmaWaylandProtocols 1.6 REQUIRED)
+find_package(Wayland REQUIRED COMPONENTS Client)
 
 string(REGEX MATCH "\\.([^]]+)\\." KF5_VERSION_MINOR ${KF5_VERSION})
 string(REGEX REPLACE "\\." "" KF5_VERSION_MINOR ${KF5_VERSION_MINOR})

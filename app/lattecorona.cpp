@@ -225,10 +225,9 @@ void Corona::load()
         m_templatesManager->init();
         m_layoutsManager->init();
 
-        connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged);
-        connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged);
-        connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &Corona::primaryOutputChanged, Qt::UniqueConnection);
-        connect(m_screenPool, &ScreenPool::primaryPoolChanged, this, &Corona::screenCountChanged);
+        connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged, Qt::UniqueConnection);
+        connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged, Qt::UniqueConnection);
+        connect(m_screenPool, &ScreenPool::primaryScreenChanged, this, &Corona::onScreenCountChanged, Qt::UniqueConnection);
 
         QString loadLayoutName = "";
 
@@ -270,7 +269,7 @@ void Corona::load()
         //! load screens signals such screenGeometryChanged in order to support
         //! plasmoid.screenGeometry properly
         for (QScreen *screen : qGuiApp->screens()) {
-            addOutput(screen);
+            onScreenAdded(screen);
         }
 
         connect(m_layoutsManager->synchronizer(), &Layouts::Synchronizer::initializationFinished, [this]() {
@@ -284,8 +283,8 @@ void Corona::load()
 
         m_inStartup = false;
 
-        connect(qGuiApp, &QGuiApplication::screenAdded, this, &Corona::addOutput, Qt::UniqueConnection);
-        connect(qGuiApp, &QGuiApplication::screenRemoved, this, &Corona::screenRemoved, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::screenAdded, this, &Corona::onScreenAdded, Qt::UniqueConnection);
+        connect(qGuiApp, &QGuiApplication::screenRemoved, this, &Corona::onScreenRemoved, Qt::UniqueConnection);
     }
 }
 
@@ -494,7 +493,7 @@ int Corona::numScreens() const
 QRect Corona::screenGeometry(int id) const
 {
     const auto screens = qGuiApp->screens();
-    const QScreen *screen{qGuiApp->primaryScreen()};
+    const QScreen *screen{m_screenPool->primaryScreen()};
 
     QString screenName;
 
@@ -851,7 +850,7 @@ QRect Corona::availableScreenRectWithCriteria(int id,
     return available;
 }
 
-void Corona::addOutput(QScreen *screen)
+void Corona::onScreenAdded(QScreen *screen)
 {
     Q_ASSERT(screen);
 
@@ -861,35 +860,42 @@ void Corona::addOutput(QScreen *screen)
         m_screenPool->insertScreenMapping(screen->name());
     }
 
-    connect(screen, &QScreen::geometryChanged, this, [ = ]() {
-        const int id = m_screenPool->id(screen->name());
-
-        if (id >= 0) {
-            emit screenGeometryChanged(id);
-            emit availableScreenRegionChanged();
-            emit availableScreenRectChanged();
-        }
-    });
+    connect(screen, &QScreen::geometryChanged, this, &Corona::onScreenGeometryChanged);
 
     emit availableScreenRectChanged();
     emit screenAdded(m_screenPool->id(screen->name()));
 
-    screenCountChanged();
+    onScreenCountChanged();
 }
 
-void Corona::primaryOutputChanged()
+void Corona::onScreenRemoved(QScreen *screen)
+{
+    disconnect(screen, &QScreen::geometryChanged, this, &Corona::onScreenGeometryChanged);
+    onScreenCountChanged();
+}
+
+void Corona::onScreenCountChanged()
 {
     m_viewsScreenSyncTimer.start();
 }
 
-void Corona::screenRemoved(QScreen *screen)
+void Corona::onScreenGeometryChanged(const QRect &geometry)
 {
-    screenCountChanged();
-}
+    Q_UNUSED(geometry);
 
-void Corona::screenCountChanged()
-{
-    m_viewsScreenSyncTimer.start();
+    QScreen *screen = qobject_cast<QScreen *>(sender());
+
+    if (!screen) {
+        return;
+    }
+
+    const int id = m_screenPool->id(screen->name());
+
+    if (id >= 0) {
+        emit screenGeometryChanged(id);
+        emit availableScreenRegionChanged();
+        emit availableScreenRectChanged();
+    }
 }
 
 //! the central functions that updates loading/unloading latteviews
@@ -901,7 +907,7 @@ void Corona::syncLatteViewsToScreens()
 
 int Corona::primaryScreenId() const
 {
-    return m_screenPool->id(qGuiApp->primaryScreen()->name());
+    return m_screenPool->primaryScreenId();
 }
 
 void Corona::quitApplication()

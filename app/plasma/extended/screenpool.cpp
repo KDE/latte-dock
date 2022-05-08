@@ -6,6 +6,7 @@
 #include "screenpool.h"
 
 // local
+#include "../../primaryoutputwatcher.h"
 #include "../../tools/commontools.h"
 
 // Qt
@@ -25,7 +26,8 @@ namespace Latte {
 namespace PlasmaExtended {
 
 ScreenPool::ScreenPool(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_primaryWatcher(new PrimaryOutputWatcher(this))
 {
     m_plasmarcConfig = KSharedConfig::openConfig(PLASMARC);
     m_screensGroup = KConfigGroup(m_plasmarcConfig, "ScreenConnectors");
@@ -108,7 +110,7 @@ int ScreenPool::id(const QString &connector) const
 {
     if (!m_idForConnector.contains(connector)) {
         //! return 0 for primary screen, -1 for not found
-        return qGuiApp->primaryScreen()->name() == connector ? 0 : -1;
+        return m_primaryWatcher->primaryScreen()->name() == connector ? 0 : -1;
     }
 
     return m_idForConnector.value(connector);

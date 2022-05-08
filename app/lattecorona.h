@@ -189,10 +189,10 @@ private slots:
 
     void onAboutToQuit();
 
-    void addOutput(QScreen *screen);
-    void primaryOutputChanged();
-    void screenRemoved(QScreen *screen);
-    void screenCountChanged();
+    void onScreenAdded(QScreen *screen);
+    void onScreenRemoved(QScreen *screen);
+    void onScreenCountChanged();
+    void onScreenGeometryChanged(const QRect &geometry);
     void syncLatteViewsToScreens();
 
 private:

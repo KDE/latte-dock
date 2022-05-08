@@ -8,6 +8,7 @@
 
 // local
 #include <config-latte.h>
+#include "primaryoutputwatcher.h"
 
 // Qt
 #include <QDebug>
@@ -17,6 +18,7 @@
 
 // KDE
 #include <KLocalizedString>
+#include <KWindowSystem>
 
 // X11
 #if HAVE_X11
@@ -32,10 +34,9 @@ const int ScreenPool::FIRSTSCREENID;
 
 ScreenPool::ScreenPool(KSharedConfig::Ptr config, QObject *parent)
     : QObject(parent),
-      m_configGroup(KConfigGroup(config, QStringLiteral("ScreenConnectors")))
+      m_configGroup(KConfigGroup(config, QStringLiteral("ScreenConnectors"))),
+      m_primaryWatcher(new PrimaryOutputWatcher(this))
 {
-    qApp->installNativeEventFilter(this);
-
     m_configSaveTimer.setSingleShot(true);
     connect(&m_configSaveTimer, &QTimer::timeout, this, [this]() {
         m_configGroup.sync();
@@ -52,14 +53,7 @@ ScreenPool::~ScreenPool()
 
 void ScreenPool::load()
 {
-    m_lastPrimaryConnector = QString();
     m_screensTable.clear();
-
-    QScreen *primary = qGuiApp->primaryScreen();
-
-    if (primary) {
-        m_lastPrimaryConnector = primary->name();
-    }
 
     //restore the known ids to connector mappings
     for (const QString &key : m_configGroup.keyList()) {
@@ -94,6 +88,20 @@ void ScreenPool::load()
 
         onScreenAdded(screen);
     }
+
+    if (KWindowSystem::isPlatformX11()) {
+        connect(qGuiApp, &QGuiApplication::primaryScreenChanged, this, &ScreenPool::primaryScreenChanged, Qt::UniqueConnection);
+    }
+
+    connect(m_primaryWatcher, &PrimaryOutputWatcher::primaryOutputNameChanged, this, &ScreenPool::onPrimaryOutputNameChanged, Qt::UniqueConnection);
+}
+
+void ScreenPool::onPrimaryOutputNameChanged(const QString &oldOutputName, const QString &newOutputName)
+{
+    Q_UNUSED(oldOutputName);
+    Q_UNUSED(newOutputName);
+
+    emit primaryScreenChanged(m_primaryWatcher->primaryScreen());
 }
 
 void ScreenPool::onScreenAdded(const QScreen *screen)
@@ -165,15 +173,17 @@ void ScreenPool::removeScreens(const Latte::Data::ScreensTable &obsoleteScreens)
 
 int ScreenPool::primaryScreenId() const
 {
-    return id(qGuiApp->primaryScreen()->name());
+    return id(primaryScreen()->name());
 }
 
 QList<int> ScreenPool::secondaryScreenIds() const
 {
     QList<int> secondaryscreens;
 
+    QScreen *primary{primaryScreen()};
+
     for (const auto scr : qGuiApp->screens()) {
-        if (scr == qGuiApp->primaryScreen()) {
+        if (scr == primary) {
             continue;
         }
 
@@ -274,10 +284,15 @@ bool ScreenPool::isScreenActive(int screenId) const
     return false;
 }
 
+QScreen *ScreenPool::primaryScreen() const
+{
+    return m_primaryWatcher->primaryScreen();
+}
+
 QScreen *ScreenPool::screenForId(int id)
 {
     const auto screens = qGuiApp->screens();
-    QScreen *screen{qGuiApp->primaryScreen()};
+    QScreen *screen{primaryScreen()};
 
     if (hasScreenId(id)) {
         QString scrName = connector(id);
@@ -292,41 +307,4 @@ QScreen *ScreenPool::screenForId(int id)
     return screen;
 }
 
-bool ScreenPool::nativeEventFilter(const QByteArray &eventType, void *message, long int *result)
-{
-    Q_UNUSED(result);
-#if HAVE_X11
-
-    // a particular edge case: when we switch the only enabled screen
-    // we don't have any signal about it, the primary screen changes but we have the same old QScreen* getting recycled
-    // see https://bugs.kde.org/show_bug.cgi?id=373880
-    // if this slot will be invoked many times, their//second time on will do nothing as name and primaryconnector will be the same by then
-    if (eventType != "xcb_generic_event_t") {
-        return false;
-    }
-
-    xcb_generic_event_t *ev = static_cast<xcb_generic_event_t *>(message);
-
-    const auto responseType = XCB_EVENT_RESPONSE_TYPE(ev);
-
-    const xcb_query_extension_reply_t *reply = xcb_get_extension_data(QX11Info::connection(), &xcb_randr_id);
-
-    if (responseType == reply->first_event + XCB_RANDR_SCREEN_CHANGE_NOTIFY) {
-        if (qGuiApp->primaryScreen()->name() != m_lastPrimaryConnector) {
-            //new screen?
-            if (id(qGuiApp->primaryScreen()->name()) < 0) {
-                insertScreenMapping(qGuiApp->primaryScreen()->name());
-            }
-
-            m_lastPrimaryConnector = qGuiApp->primaryScreen()->name();
-            emit primaryPoolChanged();
-        }
-    }
-
-#endif
-    return false;
 }
-
-}
-
-#include "moc_screenpool.cpp"

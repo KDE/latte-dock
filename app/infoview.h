@@ -32,7 +32,7 @@ class InfoView : public QQuickView
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
 public:
-    InfoView(Latte::Corona *corona, QString message, QScreen *screen = qGuiApp->primaryScreen(), QWindow *parent = nullptr);
+    InfoView(Latte::Corona *corona, QString message, QScreen *screen, QWindow *parent = nullptr);
     ~InfoView() override;
 
     QString validTitle() const;

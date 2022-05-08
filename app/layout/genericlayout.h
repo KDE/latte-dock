@@ -88,9 +88,9 @@ public:
     Plasma::Containment *containmentForId(uint id) const;
     QList<Plasma::Containment *> subContainmentsOf(uint id) const;
 
-    static bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base);
+    static bool viewAtLowerScreenPriority(Latte::View *test, Latte::View *base, QScreen *primaryScreen);
     static bool viewAtLowerEdgePriority(Latte::View *test, Latte::View *base);
-    static QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views);
+    static QList<Latte::View *> sortedLatteViews(QList<Latte::View *> views, QScreen *primaryScreen);
 
     QList<Latte::View *> sortedLatteViews();
     virtual QList<Latte::View *> viewsWithPlasmaShortcuts();

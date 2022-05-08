@@ -482,10 +482,11 @@ QList<Latte::View *> GenericLayout::onlyOriginalViews()
 
 QList<Latte::View *> GenericLayout::sortedLatteViews()
 {
-    return sortedLatteViews(latteViews());
+    QScreen *primaryScreen = (m_corona ? m_corona->screenPool()->primaryScreen() : nullptr);
+    return sortedLatteViews(latteViews(), primaryScreen);
 }
 
-QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views)
+QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views, QScreen *primaryScreen)
 {
     QList<Latte::View *> sortedViews = views;
 
@@ -501,7 +502,7 @@ QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views)
     //! Bottom,Left,Top,Right
     for (int i = 0; i < sortedViews.size(); ++i) {
         for (int j = 0; j < sortedViews.size() - i - 1; ++j) {
-            if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1])
+            if (viewAtLowerScreenPriority(sortedViews[j], sortedViews[j + 1], primaryScreen)
                     || (sortedViews[j]->screen() == sortedViews[j + 1]->screen()
                         && viewAtLowerEdgePriority(sortedViews[j], sortedViews[j + 1]))) {
                 Latte::View *temp = sortedViews[j + 1];
@@ -534,7 +535,7 @@ QList<Latte::View *> GenericLayout::sortedLatteViews(QList<Latte::View *> views)
     return sortedViews;
 }
 
-bool GenericLayout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base)
+bool GenericLayout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *base, QScreen *primaryScreen)
 {
     if (!base || ! test) {
         return true;
@@ -542,9 +543,9 @@ bool GenericLayout::viewAtLowerScreenPriority(Latte::View *test, Latte::View *ba
 
     if (base->screen() == test->screen()) {
         return false;
-    } else if (base->screen() != qGuiApp->primaryScreen() && test->screen() == qGuiApp->primaryScreen()) {
+    } else if (base->screen() != primaryScreen && test->screen() == primaryScreen) {
         return false;
-    } else if (base->screen() == qGuiApp->primaryScreen() && test->screen() != qGuiApp->primaryScreen()) {
+    } else if (base->screen() == primaryScreen && test->screen() != primaryScreen) {
         return true;
     } else {
         int basePriority = -1;
@@ -873,7 +874,7 @@ void GenericLayout::addView(Plasma::Containment *containment)
 
     qDebug() << "Adding View:" << containment->id() << "- Step 3...";
 
-    QScreen *nextScreen{qGuiApp->primaryScreen()};
+    QScreen *nextScreen{m_corona->screenPool()->primaryScreen()};
     Data::View viewdata = Layouts::Storage::self()->view(this, containment);
     viewdata.screen = Layouts::Storage::self()->expectedViewScreenId(m_corona, viewdata);
 
@@ -953,7 +954,7 @@ void GenericLayout::toggleHiddenState(QString viewName, QString screenName, Plas
         return;
     }
 
-    QString validScreenName = qGuiApp->primaryScreen()->name();
+    QString validScreenName = m_corona->screenPool()->primaryScreen()->name();
     if (!screenName.isEmpty()) {
         validScreenName = screenName;
     }
@@ -1276,7 +1277,7 @@ Layout::ViewsMap GenericLayout::validViewsMap()
         return map;
     }
 
-    QString prmScreenName = qGuiApp->primaryScreen()->name();
+    QString prmScreenName = m_corona->screenPool()->primaryScreen()->name();
 
     for (const auto containment : m_containments) {
         if (Layouts::Storage::self()->isLatteContainment(containment)
@@ -1338,7 +1339,7 @@ void GenericLayout::syncLatteViewsToScreens()
     //! use valid views map based on active screens
     Layout::ViewsMap viewsMap = validViewsMap();
 
-    QString prmScreenName = qGuiApp->primaryScreen()->name();
+    QString prmScreenName = m_corona->screenPool()->primaryScreen()->name();
 
     qDebug() << "PRIMARY SCREEN :: " << prmScreenName;
     qDebug() << "LATTEVIEWS MAP :: " << viewsMap;

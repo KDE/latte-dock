@@ -10,6 +10,7 @@
 #include "importer.h"
 #include "manager.h"
 #include "../apptypes.h"
+#include "../screenpool.h"
 #include "../data/layoutdata.h"
 #include "../lattecorona.h"
 #include "../layout/centrallayout.h"
@@ -383,12 +384,12 @@ QList<Latte::View *> Synchronizer::currentViewsWithPlasmaShortcuts() const
 
 QList<Latte::View *> Synchronizer::sortedCurrentViews() const
 {
-    return Layout::GenericLayout::sortedLatteViews(currentViews());
+    return Layout::GenericLayout::sortedLatteViews(currentViews(), m_manager->corona()->screenPool()->primaryScreen());
 }
 
 QList<Latte::View *> Synchronizer::sortedCurrentOriginalViews() const
 {
-    return Layout::GenericLayout::sortedLatteViews(currentOriginalViews());
+    return Layout::GenericLayout::sortedLatteViews(currentOriginalViews(), m_manager->corona()->screenPool()->primaryScreen());
 }
 
 QList<Latte::View *> Synchronizer::viewsBasedOnActivityId(const QString &id) const

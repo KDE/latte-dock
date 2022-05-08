@@ -24,7 +24,8 @@ Installation
 ## Requirements
 
 We recommend to use at least:
- **Plasma >= 5.18.0**
+ **Plasma >= 5.24.0**
+ **PlasmaWaylandProtocols >= 1.6.0**
  **Qt >= 5.15**
 
 
@@ -41,28 +42,28 @@ Minimum requirements:
  Qt5Gui >= 5.15.0
  Qt5Dbus >= 5.15.0
 
- KF5Plasma >= 5.71.0
- KF5PlasmaQuick >= 5.71.0
- KF5Activities >= 5.71.0
- KF5CoreAddons >= 5.71.0
- KF5GuiAddons >= 5.71.0
- KF5DBusAddons >= 5.71.0
- KF5Declarative >= 5.71.0
- KF5Kirigami2 >= 5.71.0
- KF5Wayland >= 5.71.0
- KF5Package >= 5.71.0
- KF5XmlGui >= 5.71.0
- KF5IconThemes >= 5.71.0
- KF5KIO >= 5.71.0
- KF5I18n >= 5.71.0
- KF5Notifications >= 5.71.0
- KF5NewStuff >= 5.71.0
- KF5Archive >= 5.71.0
- KF5GlobalAccel >= 5.71.0
- KF5Crash >= 5.71.0
+ KF5Plasma >= 5.82.0
+ KF5PlasmaQuick >= 5.82.0
+ KF5Activities >= 5.82.0
+ KF5CoreAddons >= 5.82.0
+ KF5GuiAddons >= 5.82.0
+ KF5DBusAddons >= 5.82.0
+ KF5Declarative >= 5.82.0
+ KF5Kirigami2 >= 5.82.0
+ KF5Wayland >= 5.82.0
+ KF5Package >= 5.82.0
+ KF5XmlGui >= 5.82.0
+ KF5IconThemes >= 5.82.0
+ KF5KIO >= 5.82.0
+ KF5I18n >= 5.82.0
+ KF5Notifications >= 5.82.0
+ KF5NewStuff >= 5.82.0
+ KF5Archive >= 5.82.0
+ KF5GlobalAccel >= 5.82.0
+ KF5Crash >= 5.82.0
 
   For X11 support:
-    KF5WindowSystem >= 5.71.0
+    KF5WindowSystem >= 5.82.0
     Qt5X11Extras >= 5.7.0
     libxcb
     libxcb-randr

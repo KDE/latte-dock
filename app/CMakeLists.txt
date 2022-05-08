@@ -4,7 +4,8 @@ set(lattedock-app_SRCS
     infoview.cpp
     lattecorona.cpp
     screenpool.cpp
-    main.cpp
+    primaryoutputwatcher.cpp
+    main.cpp    
     coretypes.h
 )
 
@@ -49,6 +50,11 @@ ki18n_wrap_ui(lattedock-app_SRCS settings/screensdialog/screensdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog/settingsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/viewsdialog/viewsdialog.ui)
 
+ecm_add_qtwayland_client_protocol(lattedock-app_SRCS
+    PROTOCOL ${PLASMA_WAYLAND_PROTOCOLS_DIR}/kde-primary-output-v1.xml
+    BASENAME kde-primary-output-v1
+)
+
 add_executable(latte-dock ${lattedock-app_SRCS})
 
 include(FakeTarget.cmake)
@@ -75,6 +81,7 @@ target_link_libraries(latte-dock
     KF5::PlasmaQuick
     KF5::WaylandClient
     KF5::XmlGui
+    Wayland::Client
 )
 
 

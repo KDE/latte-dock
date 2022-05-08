@@ -76,6 +76,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     //this is disabled because under wayland breaks Views positioning
     //setVisible(false);
 
+    m_corona = qobject_cast<Latte::Corona *>(corona);
+
     //! needs to be created after Effects because it catches some of its signals
     //! and avoid a crash from View::winId() at the same time
     m_positioner = new ViewPart::Positioner(this);
@@ -110,7 +112,8 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     if (targetScreen) {
         m_positioner->setScreenToFollow(targetScreen);
     } else {
-        m_positioner->setScreenToFollow(qGuiApp->primaryScreen());
+        qDebug() << "org.kde.view :::: corona was found properly!!!";
+        m_positioner->setScreenToFollow(m_corona->screenPool()->primaryScreen());
     }
 
     m_releaseGrabTimer.setInterval(400);
@@ -205,8 +208,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
 
         emit containmentActionsChanged();
     }, Qt::DirectConnection);
-
-    m_corona = qobject_cast<Latte::Corona *>(this->corona());
 
     if (m_corona) {
         connect(m_corona, &Latte::Corona::viewLocationChanged, this, &View::dockLocationChanged);
