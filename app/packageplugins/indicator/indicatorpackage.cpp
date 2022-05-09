@@ -36,6 +36,6 @@ void IndicatorPackage::initPackage(KPackage::Package *package)
 
 }
 
-K_EXPORT_KPACKAGE_PACKAGE_WITH_JSON(Latte::IndicatorPackage, "latte-packagestructure-indicator.json")
+K_PLUGIN_CLASS_WITH_JSON(Latte::IndicatorPackage, "latte-packagestructure-indicator.json")
 
 #include "indicatorpackage.moc"

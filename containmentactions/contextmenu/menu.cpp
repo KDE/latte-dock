@@ -503,6 +503,6 @@ void Menu::quitApplication()
     }
 }
 
-K_EXPORT_PLASMA_CONTAINMENTACTIONS_WITH_JSON(lattecontextmenu, Menu, "plasma-containmentactions-lattecontextmenu.json")
+K_PLUGIN_CLASS_WITH_JSON(Menu, "plasma-containmentactions-lattecontextmenu.json")
 
 #include "menu.moc"
