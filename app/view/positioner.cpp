@@ -978,9 +978,11 @@ void Positioner::initSignalingForLocationChangeSliding()
         if (!m_view || !m_nextScreen) {
             return;
         }
-        //if panels are not excluded from confirmed geometry check then they are stuck in sliding out end
+
+        //[1] if panels are not excluded from confirmed geometry check then they are stuck in sliding out end
         //and they do not switch to new screen geometry
-        bool confirmedgeometry = m_view->behaveAsPlasmaPanel() || (!m_view->behaveAsPlasmaPanel() && m_nextScreen->geometry().contains(m_view->geometry().center()));
+        //[2] under wayland view geometry may be delayed to be updated even though the screen has been updated correctly
+        bool confirmedgeometry = KWindowSystem::isPlatformWayland() || m_view->behaveAsPlasmaPanel() || (!m_view->behaveAsPlasmaPanel() && m_nextScreen->geometry().contains(m_view->geometry().center()));
 
         if (m_nextScreen
                 && m_nextScreen == m_view->screen()
