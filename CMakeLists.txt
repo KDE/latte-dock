@@ -11,12 +11,24 @@ set(BUG_ADDRESS "https://bugs.kde.org/enter_bug.cgi?product=lattedock")
 set(FAQS "https://userbase.kde.org/LatteDock/FAQ")
 
 set(QT_MIN_VERSION "5.15.0")
-set(KF5_MIN_VERSION "5.82.0")
+set(KF5_MIN_VERSION "5.88.0")
+set(KDE_COMPILERSETTINGS_LEVEL "5.84.0")
 
 set(KF5_LOCALE_PREFIX "")
 
-find_package(ECM ${KF5_MIN_VER} REQUIRED NO_MODULE)
+find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+
+include(KDEInstallDirs)
+include(CheckIncludeFiles)
+include(CMakePackageConfigHelpers)
+include(ECMOptionalAddSubdirectory)
+include(ECMQtDeclareLoggingCategory)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(KDEPackageAppTemplates)
+include(WriteBasicConfigVersionFile)
+
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
 
@@ -68,16 +80,6 @@ ecm_find_qmlmodule(QtGraphicalEffects 1.0)
 ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0)
 ecm_find_qmlmodule(org.kde.plasma.core 2.0)
 ecm_find_qmlmodule(org.kde.plasma.components 2.0)
-
-include(CheckIncludeFiles)
-include(CMakePackageConfigHelpers)
-include(ECMOptionalAddSubdirectory)
-include(ECMQtDeclareLoggingCategory)
-include(KDECMakeSettings)
-include(KDECompilerSettings NO_POLICY_SCOPE)
-include(KDEInstallDirs)
-include(KDEPackageAppTemplates)
-include(WriteBasicConfigVersionFile)
 
 include(Definitions.cmake)
 
