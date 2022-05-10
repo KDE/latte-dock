@@ -1,7 +1,3 @@
-set(indicator_SRCS
-    
-)
-
 kcoreaddons_add_plugin(latte_packagestructure_indicator SOURCES indicatorpackage.cpp INSTALL_NAMESPACE kpackage/packagestructure)
 set_target_properties(latte_packagestructure_indicator PROPERTIES OUTPUT_NAME latte_indicator)
 

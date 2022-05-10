@@ -19,11 +19,9 @@ class IndicatorPackage : public KPackage::PackageStructure
     Q_OBJECT
 
 public:
-    explicit IndicatorPackage(QObject *parent = 0, const QVariantList &args = QVariantList());
-    ~IndicatorPackage() override;
+    explicit IndicatorPackage(QObject *parent, const QVariantList &args );
 
     void initPackage(KPackage::Package *package) override;
-    //void pathChanged(KPackage::Package *package) override;
 };
 
 }

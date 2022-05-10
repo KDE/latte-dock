@@ -19,10 +19,6 @@ IndicatorPackage::IndicatorPackage(QObject *parent, const QVariantList &args)
 {
 }
 
-IndicatorPackage::~IndicatorPackage()
-{
-}
-
 void IndicatorPackage::initPackage(KPackage::Package *package)
 {
     package->setDefaultPackageRoot(QStringLiteral("latte/indicators"));
