@@ -946,14 +946,6 @@ void Synchronizer::syncMultipleLayoutsToActivities(QStringList preloadedLayouts)
 
     //! discover layouts assigned to explicit activities based on running activities
     for (const auto &activity : runningActivities()) {
-#if KF5_VERSION_MINOR < 81
-        if (KWindowSystem::isPlatformWayland() && (m_activitiesController->currentActivity() != activity)){
-            //! Wayland Protection: Plasma wayland does not support Activities for windows before kde frameworks 5.81
-            //! In that scenario we can load the layouts that belong OnAllActivities + (ForFreeActivities OR SpecificActivity)
-            continue;
-        }
-#endif
-
         if (m_assignedLayouts.contains(activity)) {
             layoutNamesToLoad << m_assignedLayouts[activity];
         }

@@ -158,11 +158,7 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
         if (QFileInfo(settingsFile).exists()) {
             KSharedConfigPtr filePtr = KSharedConfig::openConfig(settingsFile);
             KConfigGroup generalGroup = KConfigGroup(filePtr, "General");
-#if KF5_VERSION_MINOR >= 78
             tempScheme = generalGroup.readEntry("ColorScheme", "BreezeLight");
-#else
-            tempScheme = generalGroup.readEntry("ColorScheme", "Breeze");
-#endif
         }
     }
 

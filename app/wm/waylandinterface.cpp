@@ -366,7 +366,6 @@ void WaylandInterface::switchToPreviousVirtualDesktop()
 
 void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringList &nextactivities)
 {
-#if KF5_VERSION_MINOR >= 81
     auto winfo = requestInfo(wid);
     auto w = windowFor(wid);
 
@@ -407,7 +406,6 @@ void WaylandInterface::setWindowOnActivities(const WindowId &wid, const QStringL
             w->requestEnterActivity(requestenter[i]);
         }
     }
-#endif
 }
 
 void WaylandInterface::removeViewStruts(QWindow &view)
@@ -530,11 +528,7 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
         winfoWrap.setIsFullscreen(w->isFullscreen());
         winfoWrap.setIsShaded(w->isShaded());
         winfoWrap.setIsOnAllDesktops(w->isOnAllDesktops());
-#if KF5_VERSION_MINOR >= 81
         winfoWrap.setIsOnAllActivities(w->plasmaActivities().isEmpty());
-#else
-        winfoWrap.setIsOnAllActivities(true);
-#endif
         winfoWrap.setIsKeepAbove(w->isKeepAbove());
         winfoWrap.setIsKeepBelow(w->isKeepBelow());
         winfoWrap.setGeometry(w->geometry());
@@ -554,12 +548,8 @@ WindowInfoWrap WaylandInterface::requestInfo(WindowId wid)
 
         winfoWrap.setDisplay(w->title());
         winfoWrap.setDesktops(w->plasmaVirtualDesktops());
-
-#if KF5_VERSION_MINOR >= 81
         winfoWrap.setActivities(w->plasmaActivities());
-#else
-        winfoWrap.setActivities(QStringList());
-#endif
+
     } else {
         winfoWrap.setIsValid(false);
     }
@@ -908,14 +898,8 @@ void WaylandInterface::trackWindow(KWayland::Client::PlasmaWindow *w)
     connect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
-
-
-#if KF5_VERSION_MINOR >= 81
     connect(w, &PlasmaWindow::plasmaActivityEntered, this, &WaylandInterface::updateWindow);
     connect(w, &PlasmaWindow::plasmaActivityLeft, this, &WaylandInterface::updateWindow);
-#endif
-
-
     connect(w, &PlasmaWindow::unmapped, this, &WaylandInterface::windowUnmapped);
 }
 
@@ -937,13 +921,8 @@ void WaylandInterface::untrackWindow(KWayland::Client::PlasmaWindow *w)
     disconnect(w, &PlasmaWindow::parentWindowChanged, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::plasmaVirtualDesktopEntered, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::plasmaVirtualDesktopLeft, this, &WaylandInterface::updateWindow);
-
-
-#if KF5_VERSION_MINOR >= 81
     disconnect(w, &PlasmaWindow::plasmaActivityEntered, this, &WaylandInterface::updateWindow);
     disconnect(w, &PlasmaWindow::plasmaActivityLeft, this, &WaylandInterface::updateWindow);
-#endif
-
     disconnect(w, &PlasmaWindow::unmapped, this, &WaylandInterface::windowUnmapped);
 }
 
