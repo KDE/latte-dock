@@ -8,40 +8,44 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.5 as QQC2
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 2.0 as PC2 // for DialogStatus, ModelCOntextMenu, and Highlight
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kwindowsystem 1.0
+import org.kde.kirigami 2.19 as Kirigami
 
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.1
 
 import org.kde.plasma.private.shell 2.0 as PlasmaShell
 
-Item {
+PC3.Page {
     id: main
-    width: Math.max(heading.paintedWidth, units.iconSizes.enormous * 3 + units.smallSpacing * 4 + units.gridUnit * 2)
+    width: Math.max(heading.paintedWidth, PlasmaCore.Units.iconSizes.enormous * 3 + PlasmaCore.Units.smallSpacing * 4 + PlasmaCore.Units.gridUnit * 2)
   //  height: 800//Screen.height
     opacity: draggingWidget ? 0.3 : 1
     visible: viewConfig.visible
 
     //property QtObject containment
 
+    property PlasmaCore.Dialog sidePanel
+
     //external drop events can cause a raise event causing us to lose focus and
     //therefore get deleted whilst we are still in a drag exec()
     //this is a clue to the owning dialog that hideOnWindowDeactivate should be deleted
     //See https://bugs.kde.org/show_bug.cgi?id=332733
-    property bool preventWindowHide: draggingWidget
-                                     || categoriesDialog.status !== PlasmaComponents.DialogStatus.Closed
-                                     || getWidgetsDialog.status !== PlasmaComponents.DialogStatus.Closed
+    property bool preventWindowHide: draggingWidget || categoriesDialog.status !== PC2.DialogStatus.Closed
+                                  || getWidgetsDialog.status !== PC2.DialogStatus.Closed
 
     property bool outputOnly: draggingWidget
 
     property Item categoryButton
-    property QtObject widgetExplorer: widgetExplorerLoader.active ? widgetExplorerLoader.item : null
 
     property bool draggingWidget: false
+
+    property QtObject widgetExplorer: widgetExplorerLoader.active ? widgetExplorerLoader.item : null
 
     signal closed();
 
@@ -56,12 +60,6 @@ Item {
     onVisibleChanged: {
         if (!visible) {
             kwindowsystem.showingDesktop = false;
-            if (widgetExplorer) {
-                widgetExplorer.widgetsModel.filterQuery = "";
-                widgetExplorer.widgetsModel.filterType = "";
-                widgetExplorer.widgetsModel.searchTerm = "";
-            }
-            searchInput.text = "";
         }
     }
 
@@ -104,20 +102,9 @@ Item {
     }
 
     QQC2.Action {
-        shortcut: "Up"
-        onTriggered: list.currentIndex = (list.count + list.currentIndex - 1) % list.count
-    }
-
-    QQC2.Action {
-        shortcut: "Down"
-        onTriggered: list.currentIndex = (list.currentIndex + 1) % list.count
-    }
-
-    QQC2.Action {
         shortcut: "Enter"
         onTriggered: addCurrentApplet()
     }
-
     QQC2.Action {
         shortcut: "Return"
         onTriggered: addCurrentApplet()
@@ -125,9 +112,14 @@ Item {
 
     PlasmaCore.FrameSvgItem{
         id: backgroundFrameSvgItem
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.topMargin: -headerMargin
+        width: parent.width
+        height: parent.height + headerMargin
         imagePath: "dialogs/background"
         enabledBorders: viewConfig.enabledBorders
+
+        readonly property int headerMargin: header.height + 50 /*magical number in order to fill the top gap*/
 
         onEnabledBordersChanged: viewConfig.updateEffects()
         Component.onCompleted: viewConfig.updateEffects()
@@ -144,8 +136,7 @@ Item {
         }
     }
 
-
-    PlasmaComponents.ModelContextMenu {
+    PC2.ModelContextMenu {
         id: categoriesDialog
         visualParent: categoryButton
         // model set on first invocation
@@ -159,7 +150,7 @@ Item {
         }
     }
 
-    PlasmaComponents.ModelContextMenu {
+    PC2.ModelContextMenu {
         id: getWidgetsDialog
         visualParent: getWidgetsButton
         placement: PlasmaCore.Types.TopPosedLeftAlignedPopup
@@ -187,7 +178,7 @@ Item {
         }
         mainItem: Tooltip { id: tooltipWidget }
         Behavior on y {
-            NumberAnimation { duration: units.longDuration }
+            NumberAnimation { duration: PlasmaCore.Units.longDuration }
         }
     }
     Timer {
@@ -207,16 +198,7 @@ Item {
     */
 
 
-    PlasmaExtras.PlasmoidHeading {
-        id: topArea
-        implicitWidth: header.implicitWidth
-        implicitHeight: header.implicitHeight
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-
+    header: PlasmaExtras.PlasmoidHeading {
         ColumnLayout {
             id: header
             anchors.fill: parent
@@ -230,50 +212,52 @@ Item {
 
                     Layout.fillWidth: true
                 }
-                PlasmaComponents.ToolButton {
+                PC3.ToolButton {
                     id: getWidgetsButton
-                    iconSource: "get-hot-new-stuff"
-                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Widgets...")
+                    icon.name: "get-hot-new-stuff"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Widgets…")
                     onClicked: {
                         getWidgetsDialog.model = widgetExplorer.widgetsMenuActions
                         getWidgetsDialog.openRelative()
                     }
                 }
-                PlasmaComponents.ToolButton {
+                PC3.ToolButton {
                     id: closeButton
-                    iconSource: "window-close"
+                    icon.name: "window-close"
                     onClicked: main.closed()
                 }
             }
 
             RowLayout {
-                PlasmaComponents.TextField {
+                PC3.TextField {
                     id: searchInput
                     Layout.fillWidth: true
                     clearButtonShown: true
-                    placeholderText: i18nd("plasma_shell_org.kde.plasma.desktop", "Search...")
+                    placeholderText: i18nd("plasma_shell_org.kde.plasma.desktop", "Search…")
+
+                    inputMethodHints: Qt.ImhNoPredictiveText
+
                     onTextChanged: {
                         list.positionViewAtBeginning()
                         list.currentIndex = -1
                         widgetExplorer.widgetsModel.searchTerm = text
                     }
 
-                    Component.onCompleted: forceActiveFocus()
+                    Component.onCompleted: if (Kirigami.InputMethod && !Kirigami.InputMethod.willShowOnActive) { forceActiveFocus() }
                 }
-                PlasmaComponents.ToolButton {
+                PC3.ToolButton {
                     id: categoryButton
-                    tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Categories")
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "All Widgets")
-                    iconSource: "view-filter"
+                    icon.name: "view-filter"
                     onClicked: {
                         categoriesDialog.model = widgetExplorer.filterModel
                         categoriesDialog.open(0, categoryButton.height)
                     }
-                }
-            }
 
-            Item {
-                height: units.smallSpacing
+                    PC3.ToolTip {
+                        text: i18nd("plasma_shell_org.kde.plasma.desktop", "Categories")
+                    }
+                }
             }
         }
     }
@@ -289,21 +273,18 @@ Item {
         }
     }
 
-    PlasmaExtras.ScrollArea {
-        anchors {
-            top: topArea.bottom
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
+    PC3.ScrollView {
+        anchors.fill: parent
+        //anchors.rightMargin: - main.sidePanel.margins.right
 
-        verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+        // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
+        PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
 
         // hide the flickering by fading in nicely
         opacity: setModelTimer.running ? 0 : 1
         Behavior on opacity {
             OpacityAnimator {
-                duration: units.longDuration
+                duration: PlasmaCore.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -315,11 +296,11 @@ Item {
 
             activeFocusOnTab: true
             keyNavigationWraps: true
-            cellWidth: Math.floor((width - units.smallSpacing) / 3)
-            cellHeight: cellWidth + units.gridUnit * 4 + units.smallSpacing * 2
+            cellWidth: Math.floor(width / 3)
+            cellHeight: cellWidth + PlasmaCore.Units.gridUnit * 4 + PlasmaCore.Units.smallSpacing * 2
 
             delegate: AppletDelegate {}
-            highlight: PlasmaComponents.Highlight {}
+            highlight: PC2.Highlight {}
             highlightMoveDuration: 0
             //highlightResizeDuration: 0
 
@@ -328,7 +309,7 @@ Item {
                 NumberAnimation {
                     properties: "x"
                     from: -list.width
-                    duration: units.shortDuration
+                    duration: PlasmaCore.Units.shortDuration
                 }
             }
 
@@ -337,7 +318,7 @@ Item {
                 NumberAnimation {
                     properties: "x"
                     to: list.width
-                    duration: units.shortDuration
+                    duration: PlasmaCore.Units.shortDuration
                 }
             }
 
@@ -350,22 +331,17 @@ Item {
             displaced: Transition {
                 NumberAnimation {
                     properties: "x,y"
-                    duration: units.shortDuration
+                    duration: PlasmaCore.Units.shortDuration
                 }
             }
-
-            PlasmaExtras.Heading {
-                anchors.fill: parent
-                anchors.margins: units.largeSpacing
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.WordWrap
-                level: 2
-                text: searchInput.text.length > 0 ? i18n("No widgets matched the search terms") : i18n("No widgets available")
-                enabled: false
-                visible: list.count == 0
-            }
         }
+    }
+
+    PlasmaExtras.PlaceholderMessage {
+        anchors.centerIn: parent
+        width: parent.width - (PlasmaCore.Units.largeSpacing * 4)
+        text: searchInput.text.length > 0 ? i18n("No widgets matched the search terms") : i18n("No widgets available")
+        visible: list.count == 0
     }
 
     //! Bindings
