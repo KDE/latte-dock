@@ -81,7 +81,8 @@ ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0)
 ecm_find_qmlmodule(org.kde.plasma.core 2.0)
 ecm_find_qmlmodule(org.kde.plasma.components 2.0)
 
-include(Definitions.cmake)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/app/config-latte.h.cmake
+               ${CMAKE_CURRENT_BINARY_DIR}/app/config-latte.h)
 
 #hide warnings
 string(REPLACE "-Wall" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
