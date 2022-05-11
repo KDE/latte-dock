@@ -4,14 +4,12 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef PANELSHADOWS_P_H
-#define PANELSHADOWS_P_H
+#pragma once
 
 #include <QSet>
 
 #include "plasma/framesvg.h"
 #include "plasma/svg.h"
-
 
 class PanelShadows : public Plasma::Svg
 {
@@ -23,17 +21,12 @@ public:
 
     static PanelShadows *self();
 
-    void addWindow(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
-    void removeWindow(const QWindow *window);
+    void addWindow(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
+    void removeWindow(QWindow *window);
 
-    void setEnabledBorders(const QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
-
-    bool hasShadows() const;
+    void setEnabledBorders(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
 
 private:
     class Private;
-    Private * const d;
+    Private *const d;
 };
-
-#endif
-
