@@ -29,7 +29,7 @@
 #include <KArchive/KZip>
 #include <KArchive/KArchiveEntry>
 #include <KArchive/KArchiveDirectory>
-#include <KNewStuff3/KNS3/DownloadDialog>
+#include <KNewStuff3/KNS3/QtQuickDialogWrapper>
 
 namespace Latte {
 namespace Indicator {
@@ -387,8 +387,7 @@ void Factory::removeIndicator(QString id)
 
 void Factory::downloadIndicator()
 {
-    KNS3::DownloadDialog dialog(QStringLiteral("latte-indicators.knsrc"), m_parentWidget);
-
+    KNS3::QtQuickDialogWrapper dialog(QStringLiteral("latte-indicators.knsrc"), m_parentWidget);
     dialog.exec();
 }
 
