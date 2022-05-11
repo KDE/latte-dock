@@ -23,12 +23,11 @@ Installation
 
 ## Requirements
 
-We recommend to use at least:
-```
- **Plasma >= 5.24.0**
- **PlasmaWaylandProtocols >= 1.6.0**
- **Qt >= 5.15**
-```
+We need to use at least:
+
+- **Plasma >= 5.24.0**
+- **PlasmaWaylandProtocols >= 1.6.0**
+- **Qt >= 5.15**
 
 Minimum requirements:
  
