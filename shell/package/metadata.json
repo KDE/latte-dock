@@ -75,7 +75,6 @@
         "ServiceTypes": [
             "Plasma/Shell"
         ],
-        "Version": "0.10.77",
         "Website": "https://userbase.kde.org/LatteDock"
     },
     "Keywords": "shell",

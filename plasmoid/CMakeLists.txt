@@ -1,5 +1,10 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_applet_org.kde.latte.plasmoid\")
 
+configure_file(metadata.json.in ${CMAKE_CURRENT_BINARY_DIR}/metadata.json @ONLY)
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/metadata.json"
+    DESTINATION ${PLASMA_DATA_INSTALL_DIR}/plasmoids/org.kde.latte.plasmoid
+)
 plasma_install_package(package org.kde.latte.plasmoid)
 
 set(tasks_SRCS

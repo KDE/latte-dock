@@ -72,7 +72,6 @@
             "Plasma/Applet",
             "Plasma/Containment"
         ],
-        "Version": "0.10.77",
         "Website": "https://userbase.kde.org/LatteDock"
     },
     "NoDisplay": true,

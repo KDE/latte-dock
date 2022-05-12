@@ -75,8 +75,8 @@
         "ServiceTypes": [
             "Plasma/Applet"
         ],
-        "Version": "0.10.77",
-        "Website": "https://userbase.kde.org/LatteDock"
+        "Version": "@VERSION@",
+        "Website": "@WEBSITE@"
     },
     "X-Plasma-API": "declarativeappletscript",
     "X-Plasma-MainScript": "ui/main.qml",
