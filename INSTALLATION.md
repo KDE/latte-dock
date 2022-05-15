@@ -25,7 +25,7 @@ sudo apt install cmake extra-cmake-modules qtdeclarative5-dev libqt5x11extras5-d
 
 ```
 sudo pacman -Syu
-sudo pacman -S cmake extra-cmake-modules python plasma-framework plasma-desktop
+sudo pacman -S cmake extra-cmake-modules python plasma-framework plasma-desktop plasma-wayland-protocols
 ```
 
 ### Fedora/RHEL
