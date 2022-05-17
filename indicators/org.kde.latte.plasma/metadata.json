@@ -3,11 +3,23 @@
         "Authors": [
             {
                 "Email": "mvourlakos@gmail.com",
-                "Name": "Michail Vourlakos"
+                "Name": "Michail Vourlakos",
+                "Name[ca@valencia]": "Michail Vourlakos",
+                "Name[ca]": "Michail Vourlakos",
+                "Name[pt]": "Michail Vourlakos",
+                "Name[sv]": "Michail Vourlakos",
+                "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
+                "Name[x-test]": "xxMichail Vourlakosxx"
             }
         ],
         "Category": "Latte Indicator",
         "Description": "Latte Plasma style indicator",
+        "Description[ca@valencia]": "Indicador a l'estil Plasma de Latte",
+        "Description[ca]": "Indicador a l'estil Plasma del Latte",
+        "Description[pt]": "Indicador de estilo do Plasma no Latte",
+        "Description[sv]": "Latte Plasmastilindikator",
+        "Description[uk]": "Індикатор стилю Плазми Латте",
+        "Description[x-test]": "xxLatte Plasma style indicatorxx",
         "EnabledByDefault": true,
         "Icon": "latte-dock",
         "Id": "org.kde.latte.plasma",

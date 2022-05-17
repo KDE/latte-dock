@@ -3,11 +3,23 @@
         "Authors": [
             {
                 "Email": "mvourlakos@gmail.com, audoban@openmailbox.org",
-                "Name": "Michail Vourlakos, Smith Ar"
+                "Name": "Michail Vourlakos, Smith Ar",
+                "Name[ca@valencia]": "Michail Vourlakos, Smith Ar",
+                "Name[ca]": "Michail Vourlakos, Smith Ar",
+                "Name[pt]": "Michail Vourlakos, Smith Ar",
+                "Name[sv]": "Michail Vourlakos, Smith Ar",
+                "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
+                "Name[x-test]": "xxMichail Vourlakos, Smith Arxx"
             }
         ],
         "Category": "Windows and Tasks",
         "Description": "Tasks plasmoid from Latte Dock",
+        "Description[ca@valencia]": "Plasmoide de tasques de Latte Dock",
+        "Description[ca]": "Plasmoide de tasques del Latte Dock",
+        "Description[pt]": "Plasmóide de tarefas da Área Acoplável do Latte",
+        "Description[sv]": "Aktivitetsplasmoid för Latte dockningsfönster",
+        "Description[uk]": "Плазмоїд завдань з панелі Латте",
+        "Description[x-test]": "xxTasks plasmoid from Latte Dockxx",
         "EnabledByDefault": true,
         "Icon": "latte-dock",
         "Id": "org.kde.latte.plasmoid",

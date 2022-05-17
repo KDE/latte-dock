@@ -3,11 +3,23 @@
         "Authors": [
             {
                 "Email": "mvourlakos@gmail.com",
-                "Name": "Michail Vourlakos"
+                "Name": "Michail Vourlakos",
+                "Name[ca@valencia]": "Michail Vourlakos",
+                "Name[ca]": "Michail Vourlakos",
+                "Name[pt]": "Michail Vourlakos",
+                "Name[sv]": "Michail Vourlakos",
+                "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
+                "Name[x-test]": "xxMichail Vourlakosxx"
             }
         ],
         "Dependencies": [],
         "Description": "The latte menu that normally shows on right-click",
+        "Description[ca@valencia]": "El menú Latte que es mostra normalment amb un clic del botó dret",
+        "Description[ca]": "El menú Latte que es mostra normalment amb un clic del botó dret",
+        "Description[pt]": "O menu do Latte que normalmente aparece com o botão direito do rato",
+        "Description[sv]": "Menyn i Latte som normalt visas vid högerklick",
+        "Description[uk]": "Меню Латте, яке буде показано у відповідь на клацання правою кнопкою миші",
+        "Description[x-test]": "xxThe latte menu that normally shows on right-clickxx",
         "EnabledByDefault": true,
         "Icon": "help-contextual",
         "Id": "org.kde.latte.contextmenu",
