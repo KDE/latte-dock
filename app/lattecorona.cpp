@@ -16,6 +16,7 @@
 #include "data/generictable.h"
 #include "data/layouticondata.h"
 #include "declarativeimports/interfaces.h"
+#include "declarativeimports/contextmenulayerquickitem.h"
 #include "indicator/factory.h"
 #include "layout/abstractlayout.h"
 #include "layout/centrallayout.h"
@@ -1338,6 +1339,7 @@ inline void Corona::qmlRegisterTypes() const
 
     qmlRegisterType<Latte::BackgroundTracker>("org.kde.latte.private.app", 0, 1, "BackgroundTracker");
     qmlRegisterType<Latte::Interfaces>("org.kde.latte.private.app", 0, 1, "Interfaces");
+    qmlRegisterType<Latte::ContextMenuLayerQuickItem>("org.kde.latte.private.app", 0, 1, "ContextMenuLayer");
     qmlRegisterAnonymousType<QScreen>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::View>("latte-dock", 1);
     qmlRegisterAnonymousType<Latte::ViewPart::WindowsTracker>("latte-dock", 1);

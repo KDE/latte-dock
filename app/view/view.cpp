@@ -363,8 +363,6 @@ void View::init(Plasma::Containment *plasma_containment)
         emit availableScreenRectChangedFrom(this);
     });
 
-    connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::contextMenuIsShownChanged);
-
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::verticalUnityViewHasFocus);
 
     //! View sends this signal in order to avoid crashes from ViewPart::Indicator when the view is recreated
@@ -844,15 +842,6 @@ void View::setContainsDrag(bool contains)
 bool View::containsMouse() const
 {
     return m_containsMouse;
-}
-
-bool View::contextMenuIsShown() const
-{
-    if (!m_contextMenu) {
-        return false;
-    }
-
-    return m_contextMenu->menu();
 }
 
 int View::normalThickness() const
@@ -1732,13 +1721,14 @@ void View::verticalUnityViewHasFocus()
 //!BEGIN overriding context menus behavior
 void View::mousePressEvent(QMouseEvent *event)
 {
-    bool result = m_contextMenu->mousePressEvent(event);
+    //bool result = m_contextMenu->mousePressEvent(event);
 
-    if (result) {
-        PlasmaQuick::ContainmentView::mousePressEvent(event);
-        updateTransientWindowsTracking();
-    }
+    //if (result) {
+       // PlasmaQuick::ContainmentView::mousePressEvent(event);
+        //updateTransientWindowsTracking();
+    //}
 
+    PlasmaQuick::ContainmentView::mousePressEvent(event);
     verticalUnityViewHasFocus();
 }
 //!END overriding context menus behavior

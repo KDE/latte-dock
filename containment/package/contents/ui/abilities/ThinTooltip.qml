@@ -13,5 +13,5 @@ import "./privates" as Ability
 
 Ability.ThinTooltipPrivate {
     isEnabled: plasmoid.configuration.titleTooltips
-    showIsBlocked: !myView.isShownFully || showIsBlockedFromApplet || (view && view.contextMenuIsShown)
+    showIsBlocked: !myView.isShownFully || showIsBlockedFromApplet || layouts.contextMenuIsShown
 }

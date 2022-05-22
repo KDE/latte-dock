@@ -11,6 +11,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import org.kde.latte.private.app 0.1 as LatteApp
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
@@ -31,6 +32,7 @@ Item{
     readonly property alias startLayout : _startLayout
     readonly property alias mainLayout: _mainLayout
     readonly property alias endLayout: _endLayout
+    readonly property alias contextMenuIsShown: contextMenuLayer.menuIsShown
 
     signal contentsLengthChanged();
 
@@ -251,8 +253,15 @@ Item{
     onYChanged: root.updateEffectsArea();
 
     EnvironmentActions {
+        id: environmentActions
         active: root.scrollAction !== LatteContainment.Types.ScrollNone || root.dragActiveWindowEnabled || root.closeActiveWindowEnabled
         alignment: _mainLayout.alignment
+    }
+
+    LatteApp.ContextMenuLayer {
+        id: contextMenuLayer
+        anchors.fill: parent
+        view: latteView
     }
 
     AppletsContainer {

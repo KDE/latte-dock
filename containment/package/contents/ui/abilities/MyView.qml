@@ -21,7 +21,7 @@ Ability.MyViewPrivate {
     isShownPartially:  isReady && (inSlidingIn || inSlidingOut)
     isShownFully: isReady && !isHidden && !inSlidingIn && !inSlidingOut
 
-    isHidingBlocked: isHidingBlockedFromApplet || (view && view.contextMenuIsShown)
+    isHidingBlocked: isHidingBlockedFromApplet || layouts.contextMenuIsShown
 
     inEditMode: root.editMode
     inConfigureAppletsMode: root.inConfigureAppletsMode
