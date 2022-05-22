@@ -207,7 +207,6 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
         }*/
     //FIXME: very inefficient appletAt() implementation
     Plasma::Applet *applet = 0;
-    bool inSystray = false;
 
     //! initialize the appletContainsMethod on the first right click
     if (!m_appletContainsMethod.isValid()) {
@@ -225,40 +224,16 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
                                           , Q_ARG(QVariant, appletTemp->id()), Q_ARG(QVariant, event->pos()));
             appletContainsMouse = retVal.toBool();
         } else {
-            appletContainsMouse = ai->contains(ai->mapFromItem(m_latteView->contentItem(), event->pos()));
+            appletContainsMouse = ai->contains(ai->mapFromItem(this, event->pos()));
         }
 
         if (ai && ai->isVisible() && appletContainsMouse) {
             applet = ai->applet();
-
-            if (m_latteView && Layouts::Storage::self()->isSubContainment(m_latteView->corona(), applet)) {
-                Plasma::Containment *subContainment = Layouts::Storage::self()->subContainmentOf(m_latteView->corona(), applet);
-
-                if (subContainment) {
-                    Plasma::Applet *internalApplet{nullptr};
-
-                    for (const Plasma::Applet *appletCont : subContainment->applets()) {
-                        PlasmaQuick::AppletQuickItem *ai2 = appletCont->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
-
-                        if (ai2 && ai2->isVisible() && ai2->contains(ai2->mapFromItem(m_latteView->contentItem(), event->pos()))) {
-                            internalApplet = ai2->applet();
-                            break;
-                        }
-                    }
-
-                    if (internalApplet) {
-                        applet = internalApplet;
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                ai = 0;
-            }
+            break;
         }
     }
 
-    if (!applet && !inSystray) {
+    if (!applet) {
         applet = m_latteView->containment();
     }
 
