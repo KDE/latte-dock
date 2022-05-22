@@ -52,7 +52,8 @@ void Dialog::setEdge(const Plasma::Types::Location &edge)
 bool Dialog::isRespectingAppletsLayoutGeometry() const
 {
     //! As it appears plasma applets popups are defining their popups to Normal window.
-    return (type() == Dialog::Normal || type() == Dialog::PopupMenu || type() == Dialog::Tooltip);
+    //! Dock type is needed from wayland scenario. In wayland after a while popups from Normal become Dock types
+    return (type() == Dialog::Normal || type() == Dialog::PopupMenu || type() == Dialog::Tooltip || type() == Dialog::Dock);
 }
 
 QRect Dialog::appletsLayoutGeometryFromContainment() const
