@@ -284,7 +284,6 @@ protected slots:
 
 protected:
     bool event(QEvent *ev) override;
-    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
     void eventTriggered(QEvent *ev);

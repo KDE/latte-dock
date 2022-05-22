@@ -721,16 +721,27 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         m_visibility->addBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
+        if (m_shellSurface) {
+            m_shellSurface->setPanelTakesFocus(false);
+        }
     } else if (status == Plasma::Types::AcceptingInputStatus) {
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() & ~Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
-        KWindowSystem::forceActiveWindow(winId());
+        if (KWindowSystem::isPlatformX11()) {
+            KWindowSystem::forceActiveWindow(winId());
+        }
+        if (m_shellSurface) {
+            m_shellSurface->setPanelTakesFocus(true);
+        }
     } else {
         updateTransientWindowsTracking();
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
+        if (m_shellSurface) {
+            m_shellSurface->setPanelTakesFocus(false);
+        }
     }
 }
 
@@ -1536,6 +1547,7 @@ bool View::event(QEvent *e)
             if (auto me = dynamic_cast<QMouseEvent *>(e)) {
                 emit mousePressed(me->pos(), me->button());
                 sinkableevent = true;
+                verticalUnityViewHasFocus();
             }
             break;
 
@@ -1705,14 +1717,6 @@ void View::verticalUnityViewHasFocus()
     }
 }
 //! END: WORKAROUND
-
-//!BEGIN overriding context menus behavior
-void View::mousePressEvent(QMouseEvent *event)
-{
-    PlasmaQuick::ContainmentView::mousePressEvent(event);
-    verticalUnityViewHasFocus();
-}
-//!END overriding context menus behavior
 
 //!BEGIN configuration functions
 void View::saveConfig()
