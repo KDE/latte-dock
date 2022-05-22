@@ -16,9 +16,12 @@
 #include <QMouseEvent>
 #include <QObject>
 
+#include <Plasma>
+
 namespace Plasma {
 class Applet;
 class Containment;
+class Types;
 }
 
 namespace Latte {
@@ -45,7 +48,7 @@ signals:
     void menuChanged();
 
 private slots:
-    void menuAboutToHide();
+    void onMenuAboutToHide();
 
 private:
     void addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event);
@@ -61,6 +64,8 @@ private:
 
 
 private:
+    Plasma::Types::ItemStatus m_lastContainmentStatus;
+
     QPointer<QMenu> m_contextMenu;
     QMetaMethod m_appletContainsMethod;
     QQuickItem *m_appletContainsMethodItem{nullptr};
