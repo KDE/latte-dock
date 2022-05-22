@@ -7,7 +7,6 @@
 
 // local
 #include "primaryconfigview.h"
-#include "../contextmenu.h"
 #include "../panelshadows_p.h"
 #include "../view.h"
 #include "../../lattecorona.h"
