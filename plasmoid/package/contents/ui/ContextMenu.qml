@@ -360,14 +360,9 @@ PlasmaComponents.ContextMenu {
 
         Connections {
             target: virtualDesktopInfo
-
-            onNumberOfDesktopsChanged: Qt.callLater(virtualDesktopsMenu.refresh)
-            onDesktopNamesChanged: Qt.callLater(virtualDesktopsMenu.refresh)
-        }
-
-        Connections {
-            target: virtualDesktopInfo
             onDesktopIdsChanged: Qt.callLater(virtualDesktopsMenu.refresh)
+            onDesktopNamesChanged: Qt.callLater(virtualDesktopsMenu.refresh)
+            onNumberOfDesktopsChanged: Qt.callLater(virtualDesktopsMenu.refresh)
         }
 
         PlasmaComponents.ContextMenu {
