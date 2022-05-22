@@ -246,14 +246,12 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
                         }
                     }
 
-                    if (!internalApplet) {
-                        return;
-                    } else {
+                    if (internalApplet) {
                         applet = internalApplet;
+                    } else {
+                        break;
                     }
                 }
-
-                break;
             } else {
                 ai = 0;
             }
@@ -276,21 +274,28 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
         //end workaround
 
         if (desktopMenu->winId()) {
-            desktopMenu->windowHandle()->setTransientParent(m_latteView);
+            desktopMenu->windowHandle()->setTransientParent(window());
         }
-        desktopMenu->windowHandle()->setTransientParent(m_latteView);
 
         desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
         m_contextMenu = desktopMenu;
         emit menuChanged();
 
-        //! deprecated old code that can be removed if the following plasma approach doesn't
-        //! create any issues with context menu creation in Latte
-        /*if (m_latteView->mouseGrabberItem()) {
-                    //workaround, this fixes for me most of the right click menu behavior
-                    m_latteView->mouseGrabberItem()->ungrabMouse();
-                    return;
-                }*/
+        //end workaround
+        //!end of plasma official code(workaround)
+
+        //qDebug() << "5 ...";
+
+        emit m_latteView->containment()->contextualActionsAboutToShow();
+
+        if (applet && applet != m_latteView->containment()) {
+            //qDebug() << "5.3 ...";
+            emit applet->contextualActionsAboutToShow();
+            addAppletActions(desktopMenu, applet, event);
+        } else {
+            //qDebug() << "5.6 ...";
+            addContainmentActions(desktopMenu, event);
+        }
 
         //!plasma official code
         //this is a workaround where Qt will fail to realize a mouse has been released
@@ -302,28 +307,13 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
 
         //by releasing manually we avoid that situation
         auto ungrabMouseHack = [this]() {
-            if (m_latteView->mouseGrabberItem()) {
-                m_latteView->mouseGrabberItem()->ungrabMouse();
+            if (window() && window()->mouseGrabberItem()) {
+                window()->mouseGrabberItem()->ungrabMouse();
             }
         };
 
         //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
         QTimer::singleShot(0, this, ungrabMouseHack);
-
-        //end workaround
-        //!end of plasma official code(workaround)
-
-        //qDebug() << "5 ...";
-
-        if (applet && applet != m_latteView->containment()) {
-            //qDebug() << "5.3 ...";
-            emit applet->contextualActionsAboutToShow();
-            addAppletActions(desktopMenu, applet, event);
-        } else {
-            //qDebug() << "5.6 ...";
-            emit m_latteView->containment()->contextualActionsAboutToShow();
-            addContainmentActions(desktopMenu, event);
-        }
 
         //this is a workaround where Qt now creates the menu widget
         //in .exec before oxygen can polish it and set the following attribute
@@ -349,7 +339,13 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
             return;
         }
 
+        // Bug 344205 keep panel visible while menu is open
+        m_lastContainmentStatus = m_latteView->containment()->status();
+        m_latteView->containment()->setStatus(Plasma::Types::RequiresAttentionStatus);
+
         connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(onMenuAboutToHide()));
+
+        KAcceleratorManager::manage(desktopMenu);
 
         for (auto action : desktopMenu->actions()) {
             if (action->menu()) {
@@ -366,10 +362,10 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
         desktopMenu->popup(globalPos);
         event->setAccepted(true);
         return;
+    } else {
+        //qDebug() << "10 ...";
+        event->setAccepted(false);
     }
-
-    //qDebug() << "10 ...";
-    event->setAccepted(false);
 }
 
 //! update the appletContainsPos method from Panel view
@@ -517,7 +513,7 @@ void ContextMenuLayerQuickItem::addContainmentActions(QMenu *desktopMenu, QEvent
 
     QList<QAction *> actions = plugin->contextualActions();
 
-    for (const QAction *act : actions) {
+ /*   for (const QAction *act : actions) {
         if (act->menu()) {
             //this is a workaround where Qt now creates the menu widget
             //in .exec before oxygen can polish it and set the following attribute
@@ -528,11 +524,9 @@ void ContextMenuLayerQuickItem::addContainmentActions(QMenu *desktopMenu, QEvent
                 act->menu()->windowHandle()->setTransientParent(m_latteView);
             }
         }
-    }
+    }*/
 
     desktopMenu->addActions(actions);
-
-    return;
 }
 
 Plasma::Containment *ContextMenuLayerQuickItem::containmentById(uint id)
