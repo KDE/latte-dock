@@ -8,7 +8,6 @@
 #include "view.h"
 
 // local
-#include "contextmenu.h"
 #include "effects.h"
 #include "positioner.h"
 #include "visibilitymanager.h"
@@ -67,7 +66,6 @@ namespace Latte {
 //! are needed in order for window flags to be set correctly
 View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     : PlasmaQuick::ContainmentView(corona),
-      m_contextMenu(new ViewPart::ContextMenu(this)),
       m_effects(new ViewPart::Effects(this)),
       m_interface(new ViewPart::ContainmentInterface(this)),
       m_parabolic(new ViewPart::Parabolic(this)),
@@ -120,7 +118,6 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     m_releaseGrabTimer.setSingleShot(true);
     connect(&m_releaseGrabTimer, &QTimer::timeout, this, &View::releaseGrab);
 
-    connect(m_contextMenu, &ViewPart::ContextMenu::menuChanged, this, &View::updateTransientWindowsTracking);
     connect(m_interface, &ViewPart::ContainmentInterface::hasExpandedAppletChanged, this, &View::updateTransientWindowsTracking);
 
     connect(this, &View::containmentChanged, this, &View::groupIdChanged);
@@ -249,10 +246,6 @@ View::~View()
 
     if (m_appletConfigView) {
         delete m_appletConfigView;
-    }
-
-    if (m_contextMenu) {
-        delete m_contextMenu;
     }
 
     //needs to be deleted before Effects because it catches some of its signals
@@ -1443,11 +1436,6 @@ ViewPart::Indicator *View::indicator() const
     return m_indicator;
 }
 
-ViewPart::ContextMenu *View::contextMenu() const
-{
-    return m_contextMenu;
-}
-
 ViewPart::ContainmentInterface *View::extendedInterface() const
 {
     return m_interface;
@@ -1721,13 +1709,6 @@ void View::verticalUnityViewHasFocus()
 //!BEGIN overriding context menus behavior
 void View::mousePressEvent(QMouseEvent *event)
 {
-    //bool result = m_contextMenu->mousePressEvent(event);
-
-    //if (result) {
-       // PlasmaQuick::ContainmentView::mousePressEvent(event);
-        //updateTransientWindowsTracking();
-    //}
-
     PlasmaQuick::ContainmentView::mousePressEvent(event);
     verticalUnityViewHasFocus();
 }

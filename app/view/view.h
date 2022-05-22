@@ -58,10 +58,6 @@ namespace Latte {
 class Corona;
 class Interfaces;
 class GenericLayout;
-
-namespace ViewPart {
-class ContextMenu;
-}
 }
 
 namespace Latte {
@@ -241,7 +237,6 @@ public:
     virtual Latte::Data::View data() const;
 
     ViewPart::Effects *effects() const;   
-    ViewPart::ContextMenu *contextMenu() const;
     ViewPart::ContainmentInterface *extendedInterface() const;
     virtual ViewPart::Indicator *indicator() const;
     ViewPart::Parabolic *parabolic() const;
@@ -448,7 +443,6 @@ private:
     QPointer<PlasmaQuick::ConfigView> m_appletConfigView;
     QPointer<ViewPart::PrimaryConfigView> m_primaryConfigView;
 
-    QPointer<ViewPart::ContextMenu> m_contextMenu;
     QPointer<ViewPart::Effects> m_effects;
     QPointer<ViewPart::Indicator> m_indicator;
     QPointer<ViewPart::ContainmentInterface> m_interface;

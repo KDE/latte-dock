@@ -102,18 +102,6 @@ void CanvasConfigView::syncGeometry()
     }
 }
 
-void CanvasConfigView::mousePressEvent(QMouseEvent *event)
-{
-    if (!m_latteView) {
-        return;
-    }
-
-    bool result = m_latteView->contextMenu()->mousePressEventForContainmentMenu(this, event);
-
-    QQuickView::mousePressEvent(event);
-
-}
-
 bool CanvasConfigView::event(QEvent *e)
 {
     bool result = SubConfigView::event(e);

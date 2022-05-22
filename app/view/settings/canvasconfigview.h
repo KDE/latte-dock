@@ -68,7 +68,6 @@ protected:
     void showEvent(QShowEvent *ev) override;
     void focusOutEvent(QFocusEvent *ev) override;
     bool event(QEvent *ev) override;
-    void mousePressEvent(QMouseEvent *event) override;
 
     void init() override;
     void initParentView(Latte::View *view) override;
