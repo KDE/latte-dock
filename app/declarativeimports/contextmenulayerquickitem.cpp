@@ -75,6 +75,10 @@ QPoint ContextMenuLayerQuickItem::popUpRelevantToParent(const QRect &parentItem,
 {
     QPoint resultPoint;
 
+    if (!m_latteView) {
+        return resultPoint;
+    }
+
     if (m_latteView->location() == Plasma::Types::TopEdge) {
         resultPoint.setX(parentItem.left());
         resultPoint.setY(parentItem.bottom());
@@ -95,6 +99,10 @@ QPoint ContextMenuLayerQuickItem::popUpRelevantToParent(const QRect &parentItem,
 QPoint ContextMenuLayerQuickItem::popUpRelevantToGlobalPoint(const QRect &parentItem, const QRect popUpRect)
 {
     QPoint resultPoint;
+
+    if (!m_latteView) {
+        return resultPoint;
+    }
 
     if (m_latteView->location() == Plasma::Types::TopEdge) {
         resultPoint.setX(popUpRect.x());
@@ -151,7 +159,7 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "Step -1 ...";
 
-    if (!event || !m_latteView->containment()) {
+    if (!event || !m_latteView || !m_latteView->containment()) {
         return;
     }
 
@@ -367,6 +375,10 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
 //! update the appletContainsPos method from Panel view
 void ContextMenuLayerQuickItem::updateAppletContainsMethod()
 {
+    if (!m_latteView) {
+        return;
+    }
+
     for (QQuickItem *item : m_latteView->contentItem()->childItems()) {
         if (auto *metaObject = item->metaObject()) {
             // not using QMetaObject::invokeMethod to avoid warnings when calling
@@ -388,7 +400,7 @@ void ContextMenuLayerQuickItem::updateAppletContainsMethod()
 
 void ContextMenuLayerQuickItem::addAppletActions(QMenu *desktopMenu, Plasma::Applet *applet, QEvent *event)
 {
-    if (!m_latteView->containment()) {
+    if (!m_latteView || !m_latteView->containment()) {
         return;
     }
 
@@ -475,7 +487,7 @@ void ContextMenuLayerQuickItem::addAppletActions(QMenu *desktopMenu, Plasma::App
 
 void ContextMenuLayerQuickItem::addContainmentActions(QMenu *desktopMenu, QEvent *event)
 {
-    if (!m_latteView->containment()) {
+    if (!m_latteView || !m_latteView->containment()) {
         return;
     }
 
@@ -525,13 +537,17 @@ void ContextMenuLayerQuickItem::addContainmentActions(QMenu *desktopMenu, QEvent
 
 Plasma::Containment *ContextMenuLayerQuickItem::containmentById(uint id)
 {
+    if (!m_latteView) {
+        return nullptr;
+    }
+
     for (const auto containment : m_latteView->corona()->containments()) {
         if (id == containment->id()) {
             return containment;
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 }
