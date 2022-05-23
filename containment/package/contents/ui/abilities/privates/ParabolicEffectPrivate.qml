@@ -57,9 +57,9 @@ AbilityHost.ParabolicEffect {
     }
 
     Connections {
-        target: parabolic.view
+        target: parabolic.layouts
         onContextMenuIsShownChanged: {
-            if (!parabolic.view.contextMenuIsShown && !restoreZoomTimer.running) {
+            if (!parabolic.layouts.contextMenuIsShown && !restoreZoomTimer.running) {
                 parabolic.startRestoreZoomTimer();
             }
         }
