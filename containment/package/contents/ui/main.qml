@@ -174,7 +174,7 @@ Item {
     readonly property bool hasUserSpecifiedBackground: (latteView && latteView.layout && latteView.layout.background.startsWith("/")) ?
                                                            true : false
 
-    readonly property bool inConfigureAppletsMode: root.editMode && plasmoid.configuration.inConfigureAppletsMode
+    readonly property bool inConfigureAppletsMode: root.editMode && universalSettings && universalSettings.inConfigureAppletsMode
 
     property bool closeActiveWindowEnabled: plasmoid.configuration.closeActiveWindowEnabled
     property bool dragActiveWindowEnabled: plasmoid.configuration.dragActiveWindowEnabled

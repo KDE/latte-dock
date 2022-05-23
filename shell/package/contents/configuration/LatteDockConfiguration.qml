@@ -36,7 +36,7 @@ Loader {
         readonly property bool basicLevel: !advancedLevel
         readonly property bool advancedLevel: universalSettings.inAdvancedModeForEditSettings
 
-        readonly property bool inConfigureAppletsMode: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
+        readonly property bool inConfigureAppletsMode: universalSettings.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive
 
         readonly property bool kirigamiLibraryIsFound: LatteCore.Environment.frameworksVersion >= LatteCore.Environment.makeVersion(5,69,0)
 

@@ -27,7 +27,7 @@ Loader {
         property int panelAlignment: plasmoid.configuration.alignment
 
         readonly property real appliedOpacity: imageTiler.opacity
-        readonly property real maxOpacity: plasmoid.configuration.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive ?
+        readonly property real maxOpacity: universalSettings.inConfigureAppletsMode || !LatteCore.WindowSystem.compositingActive ?
                                                1 : plasmoid.configuration.editBackgroundOpacity
 
         property real offset: {
@@ -92,7 +92,7 @@ Loader {
         MouseArea {
             id: editBackMouseArea
             anchors.fill: imageTiler
-            visible: !plasmoid.configuration.inConfigureAppletsMode
+            visible: !universalSettings.inConfigureAppletsMode
             hoverEnabled: true
 
             property bool wheelIsBlocked: false;

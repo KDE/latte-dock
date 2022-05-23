@@ -107,14 +107,14 @@ Item {
 
         text: i18n("Rearrange and configure your widgets")
         tooltip: i18n("Feel free to move around your widgets and configure them from their tooltips")
-        checked: plasmoid.configuration.inConfigureAppletsMode
+        checked: universalSettings.inConfigureAppletsMode
         iconPositionReversed: plasmoid.location === PlasmaCore.Types.RightEdge
 
         icon: SettingsControls.RearrangeIcon{}
 
         onPressedChanged: {
             if (pressed) {
-                plasmoid.configuration.inConfigureAppletsMode = !plasmoid.configuration.inConfigureAppletsMode;
+                universalSettings.inConfigureAppletsMode = !universalSettings.inConfigureAppletsMode;
             }
         }
     }

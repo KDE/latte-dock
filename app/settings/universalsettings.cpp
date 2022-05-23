@@ -46,6 +46,7 @@ UniversalSettings::UniversalSettings(KSharedConfig::Ptr config, QObject *parent)
     connect(this, &UniversalSettings::badges3DStyleChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::canDisableBordersChanged, this, &UniversalSettings::saveConfig);  
     connect(this, &UniversalSettings::inAdvancedModeForEditSettingsChanged, this, &UniversalSettings::saveConfig);
+    connect(this, &UniversalSettings::inConfigureAppletsModeChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::isAvailableGeometryBroadcastedToPlasmaChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::launchersChanged, this, &UniversalSettings::saveConfig);
     connect(this, &UniversalSettings::layoutsMemoryUsageChanged, this, &UniversalSettings::saveConfig);
@@ -131,6 +132,21 @@ void UniversalSettings::setInAdvancedModeForEditSettings(const bool &inAdvanced)
 
     m_inAdvancedModeForEditSettings = inAdvanced;
     emit inAdvancedModeForEditSettingsChanged();
+}
+
+bool UniversalSettings::inConfigureAppletsMode() const
+{
+    return m_inConfigureAppletsMode;
+}
+
+void UniversalSettings::setInConfigureAppletsMode(const bool enabled)
+{
+    if (m_inConfigureAppletsMode == enabled) {
+        return;
+    }
+
+    m_inConfigureAppletsMode = enabled;
+    emit inConfigureAppletsModeChanged();
 }
 
 bool UniversalSettings::isAvailableGeometryBroadcastedToPlasma() const
@@ -555,6 +571,7 @@ void UniversalSettings::loadConfig()
     m_canDisableBorders = m_universalGroup.readEntry("canDisableBorders", false);
     m_contextMenuActionsAlwaysShown = m_universalGroup.readEntry("contextMenuActionsAlwaysShown", Latte::Data::ContextMenu::ACTIONSALWAYSVISIBLE);
     m_inAdvancedModeForEditSettings = m_universalGroup.readEntry("inAdvancedModeForEditSettings", false);
+    m_inConfigureAppletsMode = m_universalGroup.readEntry("inConfigureAppletsMode", false);
     m_isAvailableGeometryBroadcastedToPlasma = m_universalGroup.readEntry("isAvailableGeometryBroadcastedToPlasma", true);
     m_launchers = m_universalGroup.readEntry("launchers", QStringList());
     m_metaPressAndHoldEnabled = m_universalGroup.readEntry("metaPressAndHoldEnabled", true);
@@ -580,6 +597,7 @@ void UniversalSettings::saveConfig()
     m_universalGroup.writeEntry("canDisableBorders", m_canDisableBorders);
     m_universalGroup.writeEntry("contextMenuActionsAlwaysShown", m_contextMenuActionsAlwaysShown);
     m_universalGroup.writeEntry("inAdvancedModeForEditSettings", m_inAdvancedModeForEditSettings);
+    m_universalGroup.writeEntry("inConfigureAppletsMode", m_inConfigureAppletsMode);
     m_universalGroup.writeEntry("isAvailableGeometryBroadcastedToPlasma", m_isAvailableGeometryBroadcastedToPlasma);
     m_universalGroup.writeEntry("launchers", m_launchers);
     m_universalGroup.writeEntry("metaPressAndHoldEnabled", m_metaPressAndHoldEnabled);
