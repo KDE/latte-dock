@@ -68,7 +68,7 @@
   <summary xml:lang="sk">Dok pre masy</summary>
   <summary xml:lang="sl">Dok za množice</summary>
   <summary xml:lang="sv">Dockningsfönster för alla</summary>
-  <summary xml:lang="tr">Kitleler için kilitleme</summary>
+  <summary xml:lang="tr">Kitleler için rıhtım</summary>
   <summary xml:lang="uk">Панель для усіх</summary>
   <summary xml:lang="x-test">xxDock for the massesxx</summary>
   <summary xml:lang="zh-CN">给大众使用的停靠栏</summary>
@@ -103,7 +103,7 @@
     <p xml:lang="sk">Latte je dok založený na frameworkoch plasma, ktorý poskytuje elegantné a intuitívne rozhranie pre vaše úlohy a plazmoidy. Animuje svoj obsah použitím parabolického efektu priblíženia a snaží sa by tam len vtedy, keď je to treba.</p>
     <p xml:lang="sl">Latte je dok, ki temelji v okolju Plasma Frameworka, ki zagotavlja elegantno in intuitivno izkušnjo za vaše naloge in plazmoide. Svojo vsebino animiraz uporabo učinka paraboličnega povečevanja in poskuša biti tam le, kadar je to potrebno.</p>
     <p xml:lang="sv">Latte är ett dockningsfönster baserat på Plasma ramverk som erbjuder en elegant och intuitiv upplevelse för aktiviteter och Plasmoider. Det animerar innehållet genom att använda en paraboleffekt för zoomning, och försöker bara vara där när det behövs.</p>
-    <p xml:lang="tr">Latte, görevleriniz ve plasmoidleriniz için zarif ve sezgisel bir deneyim sağlayan plazma çerçevelerine dayalı bir yuvadır. İçeriğini parabolik yakınlaştırma efekti kullanarak canlandırır ve sadece ihtiyaç duyulduğunda orada olmaya çalışır.</p>
+    <p xml:lang="tr">Latte, görevleriniz ve Plasmoid'leriniz için zarif ve sezgisel bir deneyim sağlayan Plasma kod kitaplıklarını kullanan bir rıhtımdır. İçeriğini parabolik yakınlaştırma efekti kullanarak canlandırır ve yalnızca gereksinim duyulduğunda orada olmaya çalışır.</p>
     <p xml:lang="uk">Латте — панель на основі бібліотек Плазми, яка забезпечує елегантний і інтуїтивно зрозумілий доступ до ваших завдань та плазмоїдів. Вміст панелі анімується за допомогою ефекту параболічного збільшення і показується лише тоді, коли це потрібно.</p>
     <p xml:lang="x-test">xxLatte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.xx</p>
     <p xml:lang="zh-CN">Latte 是一个基于 plasma 框架的停靠栏，它为您的任务及 plasmoid 提供了优雅直观的体验。它为它的内容赋予抛物线缩放动画效果，并尽可能仅在它被需要时出现。</p>
