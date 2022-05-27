@@ -13,6 +13,7 @@
                 "Name[pt]": "Michail Vourlakos, Smith Ar",
                 "Name[sl]": "Michail Vourlakos, Smith Ar",
                 "Name[sv]": "Michail Vourlakos, Smith Ar",
+                "Name[tr]": "Michail Vourlakos, Smith Ar",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
                 "Name[x-test]": "xxMichail Vourlakos, Smith Arxx"
             }
@@ -27,6 +28,7 @@
         "Description[pt]": "Consola oferecida para a área acoplável do Latte",
         "Description[sl]": "Shell za Latte Dock",
         "Description[sv]": "Skal tillhandahållet för Latte dockningsfönster",
+        "Description[tr]": "Latte Rıhtım için sağlanan kabuk",
         "Description[uk]": "Оболонка панелі Латте",
         "Description[x-test]": "xxShell provided for the Latte Dockxx",
         "Id": "org.kde.latte.shell",
@@ -60,6 +62,7 @@
         "Name[sk]": "Latte Shell",
         "Name[sl]": "Shell Latte",
         "Name[sv]": "Latte skal",
+        "Name[tr]": "Latte Kabuk",
         "Name[uk]": "Оболонка Латте",
         "Name[x-test]": "xxLatte Shellxx",
         "Name[zh_CN]": "Latte Shell",

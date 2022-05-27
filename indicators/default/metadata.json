@@ -13,6 +13,7 @@
                 "Name[pt]": "Michail Vourlakos",
                 "Name[sl]": "Michail Vourlakos",
                 "Name[sv]": "Michail Vourlakos",
+                "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
                 "Name[x-test]": "xxMichail Vourlakosxx"
             }
@@ -28,6 +29,7 @@
         "Description[pt]": "Indicador predefinido do Latte",
         "Description[sl]": "Privzeti kazalnik Latte",
         "Description[sv]": "Latte standardindikator",
+        "Description[tr]": "Latte öntanımlı göstergesi",
         "Description[uk]": "Типовий індикатор Латте",
         "Description[x-test]": "xxLatte default indicatorxx",
         "EnabledByDefault": true,
@@ -66,6 +68,7 @@
         "Name[sk]": "Latte",
         "Name[sl]": "Latte",
         "Name[sv]": "Latte",
+        "Name[tr]": "Latte",
         "Name[uk]": "Латте",
         "Name[x-test]": "xxLattexx",
         "Name[zh_CN]": "Latte",

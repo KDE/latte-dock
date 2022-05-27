@@ -13,6 +13,7 @@
                 "Name[pt]": "Michail Vourlakos",
                 "Name[sl]": "Michail Vourlakos",
                 "Name[sv]": "Michail Vourlakos",
+                "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
                 "Name[x-test]": "xxMichail Vourlakosxx"
             }
@@ -28,6 +29,7 @@
         "Description[pt]": "Indicador de estilo do Plasma no Latte",
         "Description[sl]": "Kazalnik sloga Latte Plasma",
         "Description[sv]": "Latte Plasmastilindikator",
+        "Description[tr]": "Latte Plasma biçemli gösterge",
         "Description[uk]": "Індикатор стилю Плазми Латте",
         "Description[x-test]": "xxLatte Plasma style indicatorxx",
         "EnabledByDefault": true,
