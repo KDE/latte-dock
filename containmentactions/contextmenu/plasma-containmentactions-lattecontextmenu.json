@@ -15,7 +15,8 @@
                 "Name[sv]": "Michail Vourlakos",
                 "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
-                "Name[x-test]": "xxMichail Vourlakosxx"
+                "Name[x-test]": "xxMichail Vourlakosxx",
+                "Name[zh_CN]": "Michail Vourlakos"
             }
         ],
         "Dependencies": [],
@@ -32,6 +33,7 @@
         "Description[tr]": "Normalde sağ tıklama ile gösterilen Latte menüsü",
         "Description[uk]": "Меню Латте, яке буде показано у відповідь на клацання правою кнопкою миші",
         "Description[x-test]": "xxThe latte menu that normally shows on right-clickxx",
+        "Description[zh_CN]": "通常在右键点击时显示的 latte 菜单",
         "EnabledByDefault": true,
         "Icon": "help-contextual",
         "Id": "org.kde.latte.contextmenu",
