@@ -20,7 +20,7 @@
             }
         ],
         "Description": "Shell provided for the Latte Dock",
-        "Description[ca@valencia]": "Intèrpret d'ordres proporcionat per Latte Dock",
+        "Description[ca@valencia]": "Intérpret d'ordres proporcionat per Latte Dock",
         "Description[ca]": "Intèrpret d'ordres proporcionat pel Latte Dock",
         "Description[es]": "Shell proporcionada para Latte Dock",
         "Description[fr]": "Interpréteur de commandes fourni pour le panneau de Latte",
@@ -38,7 +38,7 @@
         "Name": "Latte Shell",
         "Name[ar]": "صدفة لاتيه",
         "Name[az]": "Latte Üzlüyü",
-        "Name[ca@valencia]": "Intèrpret d'ordres de Latte",
+        "Name[ca@valencia]": "Intérpret d'ordres de Latte",
         "Name[ca]": "Intèrpret d'ordres del Latte",
         "Name[cs]": "Shell Latte",
         "Name[da]": "Latte-skal",
