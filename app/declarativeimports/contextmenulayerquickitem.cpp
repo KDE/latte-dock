@@ -239,108 +239,101 @@ void ContextMenuLayerQuickItem::mousePressEvent(QMouseEvent *event)
 
     //qDebug() << "3 ...";
 
-    if (applet) {
-        //qDebug() << "4...";
-        QMenu *desktopMenu = new QMenu;
+    QMenu *desktopMenu = new QMenu;
 
-        //this is a workaround where Qt now creates the menu widget
-        //in .exec before oxygen can polish it and set the following attribute
-        desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
-        //end workaround
+    //this is a workaround where Qt now creates the menu widget
+    //in .exec before oxygen can polish it and set the following attribute
+    desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+    //end workaround
 
-        if (desktopMenu->winId()) {
-            desktopMenu->windowHandle()->setTransientParent(window());
-        }
-
-        desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
-        m_contextMenu = desktopMenu;
-        emit menuChanged();
-
-        //end workaround
-        //!end of plasma official code(workaround)
-
-        //qDebug() << "5 ...";
-
-        emit m_latteView->containment()->contextualActionsAboutToShow();
-
-        if (applet && applet != m_latteView->containment()) {
-            //qDebug() << "5.3 ...";
-            emit applet->contextualActionsAboutToShow();
-            addAppletActions(desktopMenu, applet, event);
-        } else {
-            //qDebug() << "5.6 ...";
-            addContainmentActions(desktopMenu, event);
-        }
-
-        //!plasma official code
-        //this is a workaround where Qt will fail to realize a mouse has been released
-
-        // this happens if a window which does not accept focus spawns a new window that takes focus and X grab
-        // whilst the mouse is depressed
-        // https://bugreports.qt.io/browse/QTBUG-59044
-        // this causes the next click to go missing
-
-        //by releasing manually we avoid that situation
-        auto ungrabMouseHack = [this]() {
-            if (window() && window()->mouseGrabberItem()) {
-                window()->mouseGrabberItem()->ungrabMouse();
-            }
-        };
-
-        //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
-        QTimer::singleShot(0, this, ungrabMouseHack);
-
-        //this is a workaround where Qt now creates the menu widget
-        //in .exec before oxygen can polish it and set the following attribute
-        desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
-        //end workaround
-        QPoint globalPos = event->globalPos();
-        desktopMenu->adjustSize();
-
-        QRect popUpRect(globalPos.x(), globalPos.y(), desktopMenu->width(), desktopMenu->height());
-
-        if (applet) {
-            globalPos = popUpTopLeft(applet, popUpRect);
-        } else {
-            globalPos = popUpRelevantToGlobalPoint(QRect(0,0,0,0), popUpRect);
-        }
-
-        //qDebug() << "7...";
-
-        if (desktopMenu->isEmpty()) {
-            //qDebug() << "7.5 ...";
-            delete desktopMenu;
-            event->accept();
-            return;
-        }
-
-        // Bug 344205 keep panel visible while menu is open
-        m_lastContainmentStatus = m_latteView->containment()->status();
-        m_latteView->containment()->setStatus(Plasma::Types::RequiresAttentionStatus);
-
-        connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(onMenuAboutToHide()));
-
-        KAcceleratorManager::manage(desktopMenu);
-
-        for (auto action : desktopMenu->actions()) {
-            if (action->menu()) {
-                connect(action->menu(), &QMenu::aboutToShow, desktopMenu, [action, desktopMenu] {
-                    if (action->menu()->windowHandle()) {
-                        // Need to add the transient parent otherwise Qt will create a new toplevel
-                        action->menu()->windowHandle()->setTransientParent(desktopMenu->windowHandle());
-                    }
-                });
-            }
-        }
-
-        //qDebug() << "8 ...";
-        desktopMenu->popup(globalPos);
-        event->setAccepted(true);
-        return;
-    } else {
-        //qDebug() << "10 ...";
-        event->setAccepted(false);
+    if (desktopMenu->winId()) {
+        desktopMenu->windowHandle()->setTransientParent(window());
     }
+
+    desktopMenu->setAttribute(Qt::WA_DeleteOnClose);
+    m_contextMenu = desktopMenu;
+    emit menuChanged();
+
+    //end workaround
+    //!end of plasma official code(workaround)
+
+    //qDebug() << "5 ...";
+
+    emit m_latteView->containment()->contextualActionsAboutToShow();
+
+    if (applet && applet != m_latteView->containment()) {
+        //qDebug() << "5.3 ...";
+        emit applet->contextualActionsAboutToShow();
+        addAppletActions(desktopMenu, applet, event);
+    } else {
+        //qDebug() << "5.6 ...";
+        addContainmentActions(desktopMenu, event);
+    }
+
+    //!plasma official code
+    //this is a workaround where Qt will fail to realize a mouse has been released
+
+    // this happens if a window which does not accept focus spawns a new window that takes focus and X grab
+    // whilst the mouse is depressed
+    // https://bugreports.qt.io/browse/QTBUG-59044
+    // this causes the next click to go missing
+
+    //by releasing manually we avoid that situation
+    auto ungrabMouseHack = [this]() {
+        if (window() && window()->mouseGrabberItem()) {
+            window()->mouseGrabberItem()->ungrabMouse();
+        }
+    };
+
+    //post 5.8.0 QQuickWindow code is sendEvent(item, mouseEvent); item->grabMouse()
+    QTimer::singleShot(0, this, ungrabMouseHack);
+
+    //this is a workaround where Qt now creates the menu widget
+    //in .exec before oxygen can polish it and set the following attribute
+    desktopMenu->setAttribute(Qt::WA_TranslucentBackground);
+    //end workaround
+    QPoint globalPos = event->globalPos();
+    desktopMenu->adjustSize();
+
+    QRect popUpRect(globalPos.x(), globalPos.y(), desktopMenu->width(), desktopMenu->height());
+
+    if (applet) {
+        globalPos = popUpTopLeft(applet, popUpRect);
+    } else {
+        globalPos = popUpRelevantToGlobalPoint(QRect(0,0,0,0), popUpRect);
+    }
+
+    //qDebug() << "7...";
+
+    if (desktopMenu->isEmpty()) {
+        //qDebug() << "7.5 ...";
+        delete desktopMenu;
+        event->accept();
+        return;
+    }
+
+    // Bug 344205 keep panel visible while menu is open
+    m_lastContainmentStatus = m_latteView->containment()->status();
+    m_latteView->containment()->setStatus(Plasma::Types::RequiresAttentionStatus);
+
+    connect(desktopMenu, SIGNAL(aboutToHide()), this, SLOT(onMenuAboutToHide()));
+
+    KAcceleratorManager::manage(desktopMenu);
+
+    for (auto action : desktopMenu->actions()) {
+        if (action->menu()) {
+            connect(action->menu(), &QMenu::aboutToShow, desktopMenu, [action, desktopMenu] {
+                if (action->menu()->windowHandle()) {
+                    // Need to add the transient parent otherwise Qt will create a new toplevel
+                    action->menu()->windowHandle()->setTransientParent(desktopMenu->windowHandle());
+                }
+            });
+        }
+    }
+
+    //qDebug() << "8 ...";
+    desktopMenu->popup(globalPos);
+    event->setAccepted(true);
 }
 
 //! update the appletContainsPos method from Panel view
@@ -488,7 +481,7 @@ void ContextMenuLayerQuickItem::addContainmentActions(QMenu *desktopMenu, QEvent
 
     QList<QAction *> actions = plugin->contextualActions();
 
- /*   for (const QAction *act : actions) {
+    /*   for (const QAction *act : actions) {
         if (act->menu()) {
             //this is a workaround where Qt now creates the menu widget
             //in .exec before oxygen can polish it and set the following attribute
