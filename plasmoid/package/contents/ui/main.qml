@@ -50,6 +50,7 @@ Item {
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
     property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
     property bool plasmaGreaterThan522: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,21,75)
+    property bool plasmaAtLeast525: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,24,75)
 
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
@@ -205,6 +206,7 @@ Item {
     signal draggingFinished();
     signal hiddenTasksUpdated();
     signal presentWindows(variant winIds);
+    signal activateWindowView(variant winIds);
     signal requestLayout;
     signal signalPreviewsShown();
     //signal signalDraggingState(bool value);
@@ -1295,14 +1297,24 @@ Item {
     }
 
     Component.onCompleted:  {
-        root.presentWindows.connect(backend.presentWindows);
+        if (root.plasmaAtLeast525) {
+            root.activateWindowView.connect(backend.activateWindowView);
+        } else {
+            root.presentWindows.connect(backend.presentWindows);
+        }
+
         root.windowsHovered.connect(backend.windowsHovered);
         dragHelper.dropped.connect(resetDragSource);
         updateListViewParent();
     }
 
     Component.onDestruction: {
-        root.presentWindows.disconnect(backend.presentWindows);
+        if (root.plasmaAtLeast525) {
+            root.activateWindowView.disconnect(backend.activateWindowView);
+        } else {
+            root.presentWindows.disconnect(backend.presentWindows);
+        }
+
         root.windowsHovered.disconnect(backend.windowsHovered);
         dragHelper.dropped.disconnect(resetDragSource);
     }
