@@ -428,9 +428,18 @@ AbilityItem.BasicItem {
             activateLauncher();
         } else{
             if (model.IsGroupParent) {
-                var canPresentWindowsIsSupported = LatteCore.WindowSystem.compositingActive && (root.plasmaGreaterThan522 ? backend.canPresentWindows : backend.canPresentWindows());
-                if (canPresentWindowsIsSupported) {
-                    root.presentWindows(root.plasma515 ? model.WinIdList: model.LegacyWinIdList );
+                if (root.plasmaAtLeast525) {
+                    //! At least Plasma 5.25 case
+                    var isWindowViewAvailable = LatteCore.WindowSystem.compositingActive && backend.windowViewAvailable;
+                    if (isWindowViewAvailable) {
+                        root.activateWindowView(model.WinIdList);
+                    }
+                } else {
+                    //! Plasma 5.24 case
+                    var isPresentWindowsAvailable = LatteCore.WindowSystem.compositingActive && backend.canPresentWindows;
+                    if (isPresentWindowsAvailable) {
+                        root.presentWindows(model.WinIdList);
+                    }
                 }
             } else {
                 if (windowsPreviewDlg.visible) {
