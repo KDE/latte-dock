@@ -865,7 +865,7 @@ PlasmaComponents.Page {
 
                     PlasmaComponents.Label {
                         enabled: showBackground.checked
-                        text: i18n("Size")
+                        text: i18n("Thickness")
                         horizontalAlignment: Text.AlignLeft
                     }
 

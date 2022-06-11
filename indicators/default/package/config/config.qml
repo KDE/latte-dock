@@ -78,7 +78,7 @@ ColumnLayout {
         spacing: units.smallSpacing
 
         PlasmaComponents.Label {
-            text: i18n("Size")
+            text: i18n("Thickness")
             horizontalAlignment: Text.AlignLeft
         }
 
