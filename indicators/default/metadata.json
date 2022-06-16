@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com",
                 "Name": "Michail Vourlakos",
+                "Name[az]": "Michail Vourlakos",
                 "Name[ca@valencia]": "Michail Vourlakos",
                 "Name[ca]": "Michail Vourlakos",
                 "Name[es]": "Michail Vourlakos",
@@ -21,6 +22,7 @@
         ],
         "Category": "Latte Indicator",
         "Description": "Latte default indicator",
+        "Description[az]": "Latte standart göstəricisi",
         "Description[ca@valencia]": "Indicador predeterminat de Latte",
         "Description[ca]": "Indicador predeterminat del Latte",
         "Description[es]": "Indicador por omisión de Latte",

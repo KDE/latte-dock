@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com",
                 "Name": "Michail Vourlakos",
+                "Name[az]": "Michail Vourlakos",
                 "Name[ca@valencia]": "Michail Vourlakos",
                 "Name[ca]": "Michail Vourlakos",
                 "Name[es]": "Michail Vourlakos",
@@ -21,6 +22,7 @@
         ],
         "Dependencies": [],
         "Description": "The latte menu that normally shows on right-click",
+        "Description[az]": "Latte menyusu sağ düyməyə vurduqda normal göstərilir",
         "Description[ca@valencia]": "El menú Latte que es mostra normalment amb un clic del botó dret",
         "Description[ca]": "El menú Latte que es mostra normalment amb un clic del botó dret",
         "Description[es]": "Este es el menú de Latte que normalmente se muestra tras un clic derecho",
