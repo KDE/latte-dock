@@ -71,7 +71,7 @@ message(STATUS "KF5 VERSION : ${KF5_VERSION}")
 message(STATUS "KF5 VERSION MINOR : ${KF5_VERSION_MINOR}")
 
 
-include(ECMQMLModules)
+include(ECMFindQmlModule)
 ecm_find_qmlmodule(QtQuick 2.7)
 ecm_find_qmlmodule(QtQuick.Layouts 1.3)
 ecm_find_qmlmodule(QtQuick.Controls 1.4)
