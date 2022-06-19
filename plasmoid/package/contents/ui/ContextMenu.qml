@@ -97,42 +97,30 @@ PlasmaComponents.ContextMenu {
     }
 
     function loadDynamicLaunchActions(launcherUrl) {
-        var sections = [];
+        var sections = [
+                    {
+                        title:   i18n("Places"),
+                        group:   "places",
+                        actions: backend.placesActions(launcherUrl, showAllPlaces, menu)
+                    },
+                    {
+                        title:   i18n("Recent Files"),
+                        group:   "recents",
+                        actions: backend.recentDocumentActions(launcherUrl, menu)
+                    },
+                    {
+                        title:   i18n("Actions"),
+                        group:   "actions",
+                        actions: backend.jumpListActions(launcherUrl, menu)
+                    }
+                ]
 
-        //From Plasma 5.10 and frameworks 5.34, places are also supported
-        if (LatteCore.Environment.frameworksVersion >= 336384
-                && (typeof backend.placesActions === "function")) {
-            sections = [
-                        {
-                            title:   i18n("Places"),
-                            group:   "places",
-                            actions: backend.placesActions(launcherUrl, showAllPlaces, menu)
-                        },
-                        {
-                            title:   i18n("Recent Documents"),
-                            group:   "recents",
-                            actions: backend.recentDocumentActions(launcherUrl, menu)
-                        },
-                        {
-                            title:   i18n("Actions"),
-                            group:   "actions",
-                            actions: backend.jumpListActions(launcherUrl, menu)
-                        }
-                    ];
-        } else {
-            sections = [
-                        {
-                            title:   i18n("Recent Documents"),
-                            group:   "recents",
-                            actions: backend.recentDocumentActions(launcherUrl, menu)
-                        },
-                        {
-                            title:   i18n("Actions"),
-                            group:   "actions",
-                            actions: backend.jumpListActions(launcherUrl, menu)
-                        }
-                    ];
-        }
+        // C++ can override section heading by returning a QString as first action
+        sections.forEach((section) => {
+                             if (typeof section.actions[0] === "string") {
+                                 section.title = section.actions.shift(); // take first
+                             }
+                         });
 
         // QMenu does not limit its width automatically. Even if we set a maximumWidth
         // it would just cut off text rather than eliding. So we do this manually.
@@ -140,13 +128,18 @@ PlasmaComponents.ContextMenu {
         var maximumWidth = theme.mSize(theme.defaultFont).width * 22;
 
         sections.forEach(function (section) {
-            // Always show the "Actions:" header, since we visually merge
-            // This section with the one beneath it that shows universal actions
             if (section["actions"].length > 0 || section["group"] == "actions") {
-                var sectionHeader = newMenuItem(menu);
-                sectionHeader.text = section["title"];
-                sectionHeader.section = true;
-                menu.addMenuItem(sectionHeader, startNewInstanceItem);
+                // Don't add the "Actions" header if the menu has nothing but actions
+                // in it, because then it's redundant (all menus have actions)
+                if (
+                        (section["group"] != "actions") ||
+                        (section["group"] == "actions" && (sections[0]["actions"].length > 0 || sections[1]["actions"].length > 0))
+                        ) {
+                    var sectionHeader = newMenuItem(menu);
+                    sectionHeader.text = section["title"];
+                    sectionHeader.section = true;
+                    menu.addMenuItem(sectionHeader, startNewInstanceItem);
+                }
             }
 
             for (var i = 0; i < section["actions"].length; ++i) {
@@ -165,7 +158,7 @@ PlasmaComponents.ContextMenu {
                 }
 
                 if (elided) {
-                    item.action.text += "...";
+                    item.action.text += "…";
                 }
 
                 menu.addMenuItem(item, startNewInstanceItem);
@@ -380,11 +373,11 @@ PlasmaComponents.ContextMenu {
                 var menuItem = menu.newMenuItem(virtualDesktopsMenu);
                 menuItem.text = i18n("Move &To Current Desktop");
                 menuItem.enabled = Qt.binding(function() {
-                        var vds = menu.get(atm.VirtualDesktops);
-                        return menu.visualParent && (vds !== undefined) && vds.indexOf(virtualDesktopInfo.currentDesktop) == -1;
+                    var vds = menu.get(atm.VirtualDesktops);
+                    return menu.visualParent && (vds !== undefined) && vds.indexOf(virtualDesktopInfo.currentDesktop) == -1;
                 });
                 menuItem.clicked.connect(function() {
-                        tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.currentDesktop]);
+                    tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.currentDesktop]);
                 });
 
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
@@ -394,7 +387,7 @@ PlasmaComponents.ContextMenu {
                     return menu.visualParent && menu.visualParent.m.IsOnAllVirtualDesktops === true;
                 });
                 menuItem.clicked.connect(function() {
-                        tasksModel.requestVirtualDesktops(menu.modelIndex, []);
+                    tasksModel.requestVirtualDesktops(menu.modelIndex, []);
                 });
                 backend.setActionGroup(menuItem.action);
 
@@ -407,12 +400,12 @@ PlasmaComponents.ContextMenu {
                     menuItem.checkable = true;
                     menuItem.checked = Qt.binding((function(i) {
                         return function() {
-                                return (menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
+                            return (menu.visualParent && menu.get(atm.VirtualDesktops).indexOf(virtualDesktopInfo.desktopIds[i]) > -1);
                         };
                     })(i));
                     menuItem.clicked.connect((function(i) {
                         return function() {
-                                return tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.desktopIds[i]]);
+                            return tasksModel.requestVirtualDesktops(menu.modelIndex, [virtualDesktopInfo.desktopIds[i]]);
                         };
                     })(i));
                     backend.setActionGroup(menuItem.action);
@@ -423,7 +416,7 @@ PlasmaComponents.ContextMenu {
                 menuItem = menu.newMenuItem(virtualDesktopsMenu);
                 menuItem.text = i18n("&New Desktop");
                 menuItem.clicked.connect(function() {
-                        tasksModel.requestNewVirtualDesktop(menu.modelIndex);
+                    tasksModel.requestNewVirtualDesktop(menu.modelIndex);
                 });
             }
 
