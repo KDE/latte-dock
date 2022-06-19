@@ -15,6 +15,7 @@
 
 // Qt
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QLatin1String>
 
 // KDE
@@ -243,9 +244,7 @@ void Indicator::load(QString type)
 
         m_metadata = metadata;
         m_type = type;
-
-        QString path = m_metadata.fileName();
-        m_pluginPath = path.remove("metadata.desktop");
+        m_pluginPath = QFileInfo(m_metadata.fileName()).absolutePath();
 
         if (m_corona && m_corona->indicatorFactory()->isCustomType(type)) {
             setCustomType(type);
@@ -271,7 +270,7 @@ void Indicator::updateComponent()
     QString uiPath = m_metadata.value("X-Latte-MainScript");
 
     if (!uiPath.isEmpty()) {
-        uiPath = m_pluginPath + "package/" + uiPath;
+        uiPath = m_pluginPath + "/package/" + uiPath;
         m_component = new QQmlComponent(m_view->engine(), uiPath);
     }
 
@@ -288,10 +287,7 @@ void Indicator::loadPlasmaComponent()
     QString uiPath = metadata.value("X-Latte-MainScript");
 
     if (!uiPath.isEmpty()) {
-        QString path = metadata.fileName();
-        path = path.remove("metadata.desktop");
-
-        uiPath = path + "package/" + uiPath;
+        uiPath = QFileInfo(metadata.fileName()).absolutePath() + "/package/" + uiPath;
         m_plasmaComponent = new QQmlComponent(m_view->engine(), uiPath);
     }
 
@@ -315,7 +311,7 @@ void Indicator::updateScheme()
     QString xmlPath = m_metadata.value("X-Latte-ConfigXml");
 
     if (!xmlPath.isEmpty()) {
-        QFile file(m_pluginPath + "package/" + xmlPath);
+        QFile file(m_pluginPath + "/package/" + xmlPath);
         m_configLoader = new KConfigLoader(m_view->containment()->config().group("Indicator").group(m_metadata.pluginId()), &file);
         m_configuration = new KDeclarative::ConfigPropertyMap(m_configLoader, this);
     } else {

@@ -115,10 +115,10 @@ void Factory::reload(const QString &indicatorPath)
     QString pluginChangedId;
 
     if (!indicatorPath.isEmpty() && indicatorPath != "." && indicatorPath != "..") {
-        QString metadataFile = indicatorPath + "/metadata.desktop";
+        QString metadataFile = metadataFileAbsolutePath(indicatorPath);
 
         if(QFileInfo(metadataFile).exists()) {
-            KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
+            KPluginMetaData metadata = KPluginMetaData(metadataFile);
 
             if (metadataAreValid(metadata)) {
                 pluginChangedId = metadata.pluginId();
@@ -244,7 +244,7 @@ bool Factory::metadataAreValid(KPluginMetaData &metadata)
 bool Factory::metadataAreValid(QString &file)
 {
     if (QFileInfo(file).exists()) {
-        KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(file);
+        KPluginMetaData metadata(file);
         return metadata.isValid();
     }
 
@@ -258,6 +258,23 @@ QString Factory::uiPath(QString pluginName) const
     }
 
     return m_pluginUiPaths[pluginName];
+}
+
+QString Factory::metadataFileAbsolutePath(const QString &directoryPath)
+{
+    QString metadataFile = directoryPath + "/metadata.json";
+
+    if(QFileInfo(metadataFile).exists()) {
+        return metadataFile;
+    }
+
+    metadataFile = directoryPath + "/metadata.desktop";
+
+    if(QFileInfo(metadataFile).exists()) {
+        return metadataFile;
+    }
+
+    return QString();
 }
 
 Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
@@ -303,7 +320,7 @@ Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
 
     //metadata file
     QString packagePath = archiveTempDir.path();
-    QString metadataFile = archiveTempDir.path() + "/metadata.desktop";
+    QString metadataFile = metadataFileAbsolutePath(archiveTempDir.path());
 
     if (!QFileInfo(metadataFile).exists()){
         QDirIterator iter(archiveTempDir.path(), QDir::Dirs | QDir::NoDotAndDotDot);
@@ -311,7 +328,7 @@ Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
         while(iter.hasNext() ) {
             QString currentPath = iter.next();
 
-            QString tempMetadata = currentPath + "/metadata.desktop";
+            QString tempMetadata = metadataFileAbsolutePath(currentPath);
 
             if (QFileInfo(tempMetadata).exists()) {
                 metadataFile = tempMetadata;
@@ -320,7 +337,7 @@ Latte::ImportExport::State Factory::importIndicatorFile(QString compressedFile)
         }
     }
 
-    KPluginMetaData metadata = KPluginMetaData::fromDesktopFile(metadataFile);
+    KPluginMetaData metadata = KPluginMetaData(metadataFile);
 
     if (metadataAreValid(metadata)) {
         QStringList standardPaths = Latte::Layouts::Importer::standardPaths();

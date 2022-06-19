@@ -42,6 +42,8 @@ public:
 
     QString uiPath(QString pluginName) const;
 
+    static QString metadataFileAbsolutePath(const QString &directoryPath);
+
     //! metadata record
     static bool metadataAreValid(KPluginMetaData &metadata);
     //! metadata file
