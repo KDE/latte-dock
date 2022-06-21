@@ -146,23 +146,42 @@ void SchemeColors::setSchemeFile(QString file)
 
 QString SchemeColors::possibleSchemeFile(QString scheme)
 {
-    if (scheme.startsWith("/") && scheme.endsWith("colors") && QFileInfo(scheme).exists()) {
+    if (scheme == QLatin1String("kdeglobals")
+            || (scheme.endsWith("kdeglobals") && QFileInfo(scheme).exists()) ) {
+        // do nothing, accept kdeglobals case
+    } else if (scheme.startsWith("/") && scheme.endsWith("colors") && QFileInfo(scheme).exists()) {
         return scheme;
     }
 
+    QString schemePath;
     QString tempScheme = scheme;
 
-    if (scheme == QLatin1String("kdeglobals")) {
+    if (scheme == QLatin1String("kdeglobals")
+            || (scheme.endsWith("kdeglobals") && QFileInfo(scheme).exists()) ) {
         QString settingsFile = Latte::configPath() + "/kdeglobals";
+
+        bool supportsAutoAccentColor{false}; // introduced on plasma 5.25
 
         if (QFileInfo(settingsFile).exists()) {
             KSharedConfigPtr filePtr = KSharedConfig::openConfig(settingsFile);
+            KConfigGroup wmGroup = KConfigGroup(filePtr, "WM");
             KConfigGroup generalGroup = KConfigGroup(filePtr, "General");
-            tempScheme = generalGroup.readEntry("ColorScheme", "BreezeLight");
-        }
-    }
 
-    QString schemePath = Layouts::Importer::standardPath("color-schemes/" + tempScheme + ".colors");
+            if (wmGroup.hasKey("activeBackground")) {
+                supportsAutoAccentColor = true;
+            } else {
+                tempScheme = generalGroup.readEntry("ColorScheme", "BreezeLight");
+            }
+        }
+
+        if (supportsAutoAccentColor) {
+            schemePath = Latte::configPath() + "/kdeglobals";
+        } else {
+            schemePath = Layouts::Importer::standardPath("color-schemes/" + tempScheme + ".colors");
+        }
+    } else {
+        schemePath = Layouts::Importer::standardPath("color-schemes/" + tempScheme + ".colors");
+    }
 
     if (schemePath.isEmpty() || !QFileInfo(schemePath).exists()) {
         //! remove all whitespaces and "-" from scheme in order to access correctly its file
@@ -180,6 +199,10 @@ QString SchemeColors::possibleSchemeFile(QString scheme)
 
 QString SchemeColors::schemeName(QString originalFile)
 {
+    if (originalFile.endsWith("kdeglobals") && QFileInfo(originalFile).exists()) {
+        return "kdeglobals";
+    }
+
     if (!(originalFile.startsWith("/") && originalFile.endsWith("colors") && QFileInfo(originalFile).exists())) {
         return "";
     }
