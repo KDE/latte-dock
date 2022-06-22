@@ -48,6 +48,10 @@ MouseArea {
                 } else if (windowsPreviewDlg.visible) {
                     //! when the previews are already shown, update them immediately
                     taskItem.showPreviewWindow();
+
+                    if (taskItem.isWindow && root.highlightWindows) {
+                        root.windowsHovered(model.WinIdList, taskItem.containsMouse);
+                    }
                 }
             }
         }
@@ -94,7 +98,7 @@ MouseArea {
 
         ////disable hover effect///
         if (isWindow && root.highlightWindows && !containsMouse) {
-            root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , false);
+            root.windowsHovered(model.WinIdList, false);
         }
     }
 
@@ -333,7 +337,7 @@ MouseArea {
                 }
 
                 if (taskItem.isWindow && root.highlightWindows) {
-                    root.windowsHovered( root.plasma515 ? model.WinIdList : model.LegacyWinIdList , taskItem.containsMouse);
+                    root.windowsHovered(model.WinIdList, taskItem.containsMouse);
                 }
             }
         }
