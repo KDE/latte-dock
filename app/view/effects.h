@@ -52,6 +52,8 @@ class Effects: public QObject
 
     Q_PROPERTY(Plasma::FrameSvg::EnabledBorders enabledBorders READ enabledBorders NOTIFY enabledBordersChanged)
 
+    Q_PROPERTY(QQuickItem *panelBackgroundSvg READ panelBackgroundSvg WRITE setPanelBackgroundSvg NOTIFY panelBackgroundSvgChanged)
+
 public:
     Effects(Latte::View *parent);
     virtual ~Effects();
@@ -102,6 +104,9 @@ public:
 
     Plasma::FrameSvg::EnabledBorders enabledBorders() const;
 
+    QQuickItem *panelBackgroundSvg() const;
+    void setPanelBackgroundSvg(QQuickItem *quickitem);
+
 public slots:
     Q_INVOKABLE void forceMaskRedraw();
     Q_INVOKABLE void setSubtractedMaskRegion(const QString &regionid, const QRegion &region);
@@ -130,6 +135,7 @@ signals:
     void maskChanged();
     void innerShadowChanged();
     void inputMaskChanged();
+    void panelBackgroundSvgChanged();
     void popUpMarginChanged();
     void rectChanged();
 
@@ -185,11 +191,12 @@ private:
     PlasmaExtended::CornerRegions m_cornersMaskRegion;
 
     Plasma::Theme m_theme;
-    //only for the mask on disabled compositing, not to actually paint
-    Plasma::FrameSvg *m_background{nullptr};
 
     //only for the mask, not to actually paint
     Plasma::FrameSvg::EnabledBorders m_enabledBorders{Plasma::FrameSvg::AllBorders};
+
+    //assigned from qml side in order to access the official panel background svg
+    QQuickItem *m_panelBackgroundSvg{nullptr};
 
     //! Subtracted and United Mask regions
     QHash<QString, QRegion> m_subtractedMaskRegions;

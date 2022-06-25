@@ -22,6 +22,8 @@ import "../colorizer" as Colorizer
 BackgroundProperties{
     id:barLine
 
+    readonly property alias panelBackgroundSvg: solidBackground
+
     //! Layer 0: Multi-Layer container in order to provide a consistent final element that acts
     //! as a single entity/background
     width: root.isHorizontal ? totals.visualLength : 16
@@ -312,6 +314,7 @@ BackgroundProperties{
 
     onXChanged: solidBackground.updateEffectsArea();
     onYChanged: solidBackground.updateEffectsArea();
+    onScreenEdgeMarginChanged: solidBackground.updateEffectsArea();
 
     //! Layer 1: Shadows that are drawn around the background but always inside the View window (these are internal drawn shadows).
     //!          When the container has chosen external shadows (these are shadows that are drawn out of the View window from the compositor)

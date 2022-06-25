@@ -226,6 +226,13 @@ Item {
 
     Binding{
         target: latteView && latteView.effects ? latteView.effects : null
+        property: "panelBackgroundSvg"
+        when: latteView && latteView.effects
+        value: background.panelBackgroundSvg
+    }
+
+    Binding{
+        target: latteView && latteView.effects ? latteView.effects : null
         property:"appletsLayoutGeometry"
         when: latteView && latteView.effects && visibilityManager.inNormalState
         value: {

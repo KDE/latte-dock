@@ -91,17 +91,6 @@ void Effects::init()
     connect(m_view, &Latte::View::layoutChanged, this, &Effects::onPopUpMarginChanged);
 
     connect(&m_theme, &Plasma::Theme::themeChanged, this, [&]() {
-        auto background = m_background;
-        m_background = new Plasma::FrameSvg(this);
-
-        if (background) {
-            background->deleteLater();
-        }
-
-        if (m_background->imagePath() != "widgets/panel-background") {
-            m_background->setImagePath(QStringLiteral("widgets/panel-background"));
-        }
-
         updateBackgroundContrastValues();
         updateEffects();
     });
@@ -353,6 +342,21 @@ void Effects::setAppletsLayoutGeometry(const QRect &geom)
     emit appletsLayoutGeometryChanged();
 }
 
+QQuickItem *Effects::panelBackgroundSvg() const
+{
+    return m_panelBackgroundSvg;
+}
+
+void Effects::setPanelBackgroundSvg(QQuickItem *quickitem)
+{
+    if (m_panelBackgroundSvg == quickitem) {
+        return;
+    }
+
+    m_panelBackgroundSvg = quickitem;
+    emit panelBackgroundSvgChanged();
+}
+
 void Effects::onPopUpMarginChanged()
 {
     m_view->setProperty("_applets_popup_margin", QVariant(popUpMargin()));
@@ -360,14 +364,6 @@ void Effects::onPopUpMarginChanged()
 
 void Effects::forceMaskRedraw()
 {
-    if (m_background) {
-        delete m_background;
-    }
-
-    m_background = new Plasma::FrameSvg(this);
-    m_background->setImagePath(QStringLiteral("widgets/panel-background"));
-    m_background->setEnabledBorders(m_enabledBorders);
-
     updateMask();
 }
 
@@ -499,21 +495,14 @@ void Effects::updateMask()
             //! rounded corners to be shown correctly
             //! the enabledBorders check was added because there was cases
             //! that the mask region wasn't calculated correctly after location changes
-            if (!m_background) {
-                if (m_background && m_background->enabledBorders() != m_enabledBorders) {
-                    delete m_background;
-                }
-
-                m_background = new Plasma::FrameSvg(this);
+            if (!m_panelBackgroundSvg) {
+                return;
             }
 
-            if (m_background->imagePath() != "widgets/panel-background") {
-                m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+            const QVariant maskProperty = m_panelBackgroundSvg->property("mask");
+            if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
+                fixedMask = maskProperty.value<QRegion>();
             }
-
-            m_background->setEnabledBorders(m_enabledBorders);
-            m_background->resizeFrame(maskRect.size());
-            fixedMask = m_background->mask();
         }
 
         fixedMask.translate(maskRect.x(), maskRect.y());
@@ -564,18 +553,18 @@ void Effects::updateEffects()
                     //! this is used when compositing is disabled and provides
                     //! the correct way for the mask to be painted in order for
                     //! rounded corners to be shown correctly
-                    if (!m_background) {
-                        m_background = new Plasma::FrameSvg(this);
+                    if (!m_panelBackgroundSvg) {
+                        return;
                     }
 
-                    if (m_background->imagePath() != "widgets/panel-background") {
-                        m_background->setImagePath(QStringLiteral("widgets/panel-background"));
+                    if (m_rect == VisibilityManager::ISHIDDENMASK) {
+                        clearEffects = true;
+                    } else {
+                        const QVariant maskProperty = m_panelBackgroundSvg->property("mask");
+                        if (static_cast<QMetaType::Type>(maskProperty.type()) == QMetaType::QRegion) {
+                            backMask = maskProperty.value<QRegion>();
+                        }
                     }
-
-                    m_background->setEnabledBorders(m_enabledBorders);
-                    m_background->resizeFrame(m_rect.size());
-
-                    backMask = m_background->mask();
                 }
 
                 //! adjust mask coordinates based on local coordinates
