@@ -102,7 +102,7 @@ ColumnLayout {
     LatteComponents.CheckBoxesColumn {
         Layout.topMargin: 1.5 * units.smallSpacing
 
-        LatteComponents.CheckBox {
+       /* LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
             text: i18n("Reverse indicator style")
             value: indicator.configuration.reversed
@@ -110,7 +110,7 @@ ColumnLayout {
             onClicked: {
                 indicator.configuration.reversed = !indicator.configuration.reversed;
             }
-        }
+        }*/
 
         LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
@@ -122,7 +122,7 @@ ColumnLayout {
             }
         }
 
-        LatteComponents.CheckBox {
+      /*  LatteComponents.CheckBox {
             Layout.maximumWidth: dialog.optionsWidth
             text: i18n("Show indicators for applets")
             tooltip: i18n("Indicators are shown for applets")
@@ -131,6 +131,6 @@ ColumnLayout {
             onClicked: {
                 indicator.configuration.enabledForApplets = !indicator.configuration.enabledForApplets;
             }
-        }
+        }*/
     }
 }

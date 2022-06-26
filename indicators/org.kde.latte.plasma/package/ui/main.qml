@@ -18,8 +18,9 @@ LatteComponents.IndicatorItem {
     providesFrontLayer: true
     svgImagePaths: ["widgets/tasks"]
 
-    enabledForApplets: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
-                           indicator.configuration.enabledForApplets : true
+    enabledForApplets: true
+    /*enabledForApplets: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
+                           indicator.configuration.enabledForApplets : true*/
     lengthPadding: configurationIsReady && indicator.configuration.clickedAnimationEnabled !== undefined ?
                        indicator.configuration.lengthPadding : 0.08
 
@@ -31,9 +32,9 @@ LatteComponents.IndicatorItem {
                                                     && indicator.configuration.clickedAnimationEnabled !== undefined
                                                     && indicator.configuration.clickedAnimationEnabled
 
-    readonly property bool reversedEnabled: configurationIsReady
+    /*readonly property bool reversedEnabled: configurationIsReady
                                             && indicator.configuration.reversed !== undefined
-                                            && indicator.configuration.reversed
+                                            && indicator.configuration.reversed*/
 
 
     readonly property bool configurationIsReady: indicator && indicator.configuration
@@ -47,8 +48,21 @@ LatteComponents.IndicatorItem {
         anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? indicator.screenEdgeMargin : 0
         anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? indicator.screenEdgeMargin : 0
 
-        active: level.isBackground && !indicator.isEmptySpace
+        active: level.isBackground && indicator.isTask && !indicator.isEmptySpace
         sourceComponent: BackLayer{}
+    }
+
+    //! Applet Background Layer
+    Loader{
+        id: appletBackLayer
+        anchors.fill: parent
+        anchors.topMargin: plasmoid.location === PlasmaCore.Types.TopEdge ? indicator.screenEdgeMargin : 0
+        anchors.bottomMargin: plasmoid.location === PlasmaCore.Types.BottomEdge ? indicator.screenEdgeMargin : 0
+        anchors.leftMargin: plasmoid.location === PlasmaCore.Types.LeftEdge ? indicator.screenEdgeMargin : 0
+        anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? indicator.screenEdgeMargin : 0
+
+        active: level.isBackground && indicator.isApplet && !indicator.isEmptySpace
+        sourceComponent: AppletBackLayer{}
     }
 
     /* progress overlay for BackLayer*/
@@ -112,5 +126,18 @@ LatteComponents.IndicatorItem {
         }
 
         return [effectivePrefix, prefix];
+    }
+
+    function taskPrefixHovered(prefix) {
+        var effectivePrefix = taskPrefix(prefix);
+
+        if ("" !== prefix)
+            effectivePrefix = [
+                ...taskPrefix(prefix + "-hover"),
+                ...taskPrefix("hover"),
+                ...effectivePrefix
+            ];
+
+        return effectivePrefix;
     }
 }

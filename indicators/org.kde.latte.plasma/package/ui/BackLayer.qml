@@ -5,6 +5,7 @@
 
 import QtQuick 2.0
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 PlasmaCore.FrameSvgItem {
@@ -12,29 +13,19 @@ PlasmaCore.FrameSvgItem {
     property string basePrefix: "normal"
 
     imagePath: "widgets/tasks"
-    rotation: root.reversedEnabled ? 180 : 0
-
+    //rotation: root.reversedEnabled ? 180 : 0
     opacity: 1
-
-    prefix: root.taskPrefix(basePrefix)
+    prefix: indicator.isHovered ? root.taskPrefixHovered(basePrefix) : root.taskPrefix(basePrefix)
+    visible: indicator.isTask || indicator.isLauncher || indicator.isGroup
 
     states: [
         State {
             name: "launcher"
-            when: indicator.isLauncher || (indicator.isApplet && !indicator.isActive)
+            when: indicator.isLauncher
 
             PropertyChanges {
                 target: frame
                 basePrefix: ""
-            }
-        },
-        State {
-            name: "hovered"
-            when: indicator.isHovered && frame.hasElementPrefix("hover")
-
-            PropertyChanges {
-                target: frame
-                basePrefix: "hover"
             }
         },
         State {
