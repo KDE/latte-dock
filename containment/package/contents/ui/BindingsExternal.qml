@@ -191,7 +191,7 @@ Item {
         target: latteView && latteView.effects ? latteView.effects : null
         property: "backgroundOpacity"
         when: latteView && latteView.effects
-        value: background.currentOpacity
+        value: plasmoid.configuration.panelTransparency===-1 /*Default option*/ ? -1 : background.currentOpacity
     }
 
     Binding{

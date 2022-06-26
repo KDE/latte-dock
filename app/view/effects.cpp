@@ -40,6 +40,7 @@ Effects::~Effects()
 void Effects::init()
 {
     connect(this, &Effects::backgroundOpacityChanged, this, &Effects::updateEffects);
+    connect(this, &Effects::backgroundOpacityChanged, this, &Effects::updateBackgroundContrastValues);
     connect(this, &Effects::backgroundCornersMaskChanged, this, &Effects::updateEffects);
     connect(this, &Effects::backgroundRadiusEnabledChanged, this, &Effects::updateEffects);
     connect(this, &Effects::drawEffectsChanged, this, &Effects::updateEffects);
@@ -652,15 +653,21 @@ qreal Effects::currentMidValue(const qreal &max, const qreal &factor, const qrea
 void Effects::updateBackgroundContrastValues()
 {
     if (!m_theme.backgroundContrastEnabled()) {
-        m_backEffectContrast = 1;
-        m_backEffectIntesity = 1;
-        m_backEffectSaturation = 1;
+        m_backEffectContrast = 1.0;
+        m_backEffectIntesity = 1.0;
+        m_backEffectSaturation = 1.0;
         return;
     }
 
-    m_backEffectContrast = currentMidValue(m_theme.backgroundContrast(), m_backgroundOpacity, 1);
-    m_backEffectIntesity = currentMidValue(m_theme.backgroundIntensity(), m_backgroundOpacity, 1);
-    m_backEffectSaturation = currentMidValue(m_theme.backgroundSaturation(), m_backgroundOpacity, 1);
+    if (m_backgroundOpacity == -1 /*Default plasma opacity option*/) {
+        m_backEffectContrast = m_theme.backgroundContrast();
+        m_backEffectIntesity = m_theme.backgroundIntensity();
+        m_backEffectSaturation = m_theme.backgroundSaturation();
+    } else {
+        m_backEffectContrast = currentMidValue(m_theme.backgroundContrast(), m_backgroundOpacity, 1);
+        m_backEffectIntesity = currentMidValue(m_theme.backgroundIntensity(), m_backgroundOpacity, 1);
+        m_backEffectSaturation = currentMidValue(m_theme.backgroundSaturation(), m_backgroundOpacity, 1);
+    }
 }
 
 void Effects::updateEnabledBorders()
