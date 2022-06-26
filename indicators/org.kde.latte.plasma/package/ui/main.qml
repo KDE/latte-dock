@@ -49,7 +49,7 @@ LatteComponents.IndicatorItem {
         anchors.rightMargin: plasmoid.location === PlasmaCore.Types.RightEdge ? indicator.screenEdgeMargin : 0
 
         active: level.isBackground && indicator.isTask && !indicator.isEmptySpace
-        sourceComponent: BackLayer{}
+        sourceComponent: TaskBackLayer{}
     }
 
     //! Applet Background Layer
