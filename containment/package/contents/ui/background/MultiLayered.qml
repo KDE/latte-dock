@@ -245,6 +245,9 @@ BackgroundProperties{
 
     property int animationTime: 6*animations.speedFactor.current*animations.duration.small
 
+    //! Opacity related
+    readonly property bool isDefaultOpacityEnabled: plasmoid.configuration.panelTransparency===-1
+
     //! Metrics related
     readonly property bool isGreaterThanItemThickness: root.useThemePanel && (totals.visualThickness >= (metrics.iconSize + metrics.margin.tailThickness))
 

@@ -140,6 +140,12 @@ void PanelBackground::updateMaxOpacity(Plasma::Svg *svg)
 
     m_maxOpacity = alphasum / (float)(2 * CENTERWIDTH);
 
+    //! minimum acceptable panel background opacity is 1%. Such is a case is when
+    //! panel background is fully transparent but it provides a border. In such case
+    //! previous approach was identifying as background max opacity 0% and in such case
+    //! all the upcoming calculations where returning a fully transparent plasma svg to the user
+    m_maxOpacity = qMax(0.01f, m_maxOpacity);
+
     emit maxOpacityChanged();
 }
 
