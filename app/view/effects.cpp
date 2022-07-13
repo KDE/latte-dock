@@ -543,7 +543,7 @@ void Effects::updateEffects()
 
     if (m_drawEffects) {
         if (!m_view->behaveAsPlasmaPanel()) {
-            if (!m_rect.isNull() && !m_rect.isEmpty()) {
+            if (!m_rect.isNull() && !m_rect.isEmpty() && m_rect != VisibilityManager::ISHIDDENMASK) {
                 QRegion backMask;
 
                 if (m_backgroundRadiusEnabled) {
