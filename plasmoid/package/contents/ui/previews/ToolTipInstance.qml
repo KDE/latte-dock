@@ -192,7 +192,19 @@ Column {
                 anchors.margins: Math.max(2, previewShadow.radius)
                 active: LatteCore.WindowSystem.isPlatformX11 || (root.plasma520 && LatteCore.WindowSystem.isPlatformWayland)
                 visible: !albumArtImage.visible && !thumbnailSourceItem.isMinimized
-                source: root.plasma520 && LatteCore.WindowSystem.isPlatformWayland ? "PipeWireThumbnail.qml" : "PlasmaCoreThumbnail.qml"
+                source:  {
+                    if (LatteCore.WindowSystem.isPlatformWayland) {
+                        if (root.plasmaAtLeast526) {
+                            return "PipeWireThumbnail.5.26.qml";
+                        } else if (root.plasmaAtLeast525) {
+                            return "PipeWireThumbnail.5.25.qml";
+                        } else if (root.plasmaAtLeast524) {
+                            return "PipeWireThumbnail.5.24.qml";
+                        }
+                    }
+
+                    return "PlasmaCoreThumbnail.qml";
+                }
 
                 DropShadow {
                     id: previewShadow

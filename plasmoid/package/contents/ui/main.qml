@@ -50,7 +50,9 @@ Item {
     property bool plasma518: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,18,0)
     property bool plasma520: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,20,0)
     property bool plasmaGreaterThan522: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,21,75)
+    property bool plasmaAtLeast524: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,24,0)
     property bool plasmaAtLeast525: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,24,75)
+    property bool plasmaAtLeast526: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,25,75)
 
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
