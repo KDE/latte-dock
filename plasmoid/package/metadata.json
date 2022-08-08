@@ -45,7 +45,7 @@
         "Description[tr]": "Latte Rıhtım'dan görevler Plasmoid'i",
         "Description[uk]": "Плазмоїд завдань з панелі Латте",
         "Description[x-test]": "xxTasks plasmoid from Latte Dockxx",
-        "Description[zh_CN]": "Latte 停靠栏的任务管理 Plasma 部件",
+        "Description[zh_CN]": "Latte 停靠栏的任务管理 Plasma 小程序",
         "EnabledByDefault": true,
         "Icon": "latte-dock",
         "Id": "org.kde.latte.plasmoid",
