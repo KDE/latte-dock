@@ -106,7 +106,7 @@
     <p xml:lang="tr">Latte, görevleriniz ve Plasmoid'leriniz için zarif ve sezgisel bir deneyim sağlayan Plasma kod kitaplıklarını kullanan bir rıhtımdır. İçeriğini parabolik yakınlaştırma efekti kullanarak canlandırır ve yalnızca gereksinim duyulduğunda orada olmaya çalışır.</p>
     <p xml:lang="uk">Латте — панель на основі бібліотек Плазми, яка забезпечує елегантний і інтуїтивно зрозумілий доступ до ваших завдань та плазмоїдів. Вміст панелі анімується за допомогою ефекту параболічного збільшення і показується лише тоді, коли це потрібно.</p>
     <p xml:lang="x-test">xxLatte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.xx</p>
-    <p xml:lang="zh-CN">Latte 是一个基于 plasma 框架的停靠栏，它为您的任务及 plasmoid 提供了优雅直观的体验。它为它的内容赋予抛物线缩放动画效果，并尽可能仅在它被需要时出现。</p>
+    <p xml:lang="zh-CN">Latte 是一款基于 Plasma 框架的停靠栏程序，它为您的任务和 Plasma 小程序提供了简洁优雅、直观易懂的使用体验。它能够以抛物线缩放动效显示其内容，并尽可能在不需要的时候降低存在感，减少对用户的干扰。</p>
     <p xml:lang="zh-TW">Latte 是一個基於 Plasma 框架並提供您的工作與 plasmoid 優雅與直觀體驗的 dock。它使用拋物線縮放效果來讓您的內容動畫化，並試著只在您需要它時出現。</p>
     <p> "Art In Coffee" </p>
     <p xml:lang="ar">”الفنّ في القهوة“</p>
