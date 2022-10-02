@@ -1,0 +1,148 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Frederik Schwarzer <schwarzer@kde.org>, 2018, 2022.
+# Burkhard Lück <lueck@hube-lueck.de>, 2019, 2020, 2021.
+#
+# Jan Neumann <neum dot ja at gmail dot com>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2022-03-13 10:17+0100\n"
+"Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
+"Language-Team: German <kde-i18n-doc@kde.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 21.12.3\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "&Miniprogramme hinzufügen ..."
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Plasma-Miniprogramme anzeigen"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "&Latte beenden"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "&Profile"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Zu anderem Profil wechseln"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "Kontrollleiste &hinzufügen"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr ""
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr ""
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "Latte einri&chten ..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr ""
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr ""
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Dock..."
+msgstr ""
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Panel..."
+msgstr ""
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr ""
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr ""
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr ""
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr ""
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr ""
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "&Kontrollleiste entfernen"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "&Profile bearbeiten ..."
+
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "[Aktuell]"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "&Ansichtseinstellungen..."
+
+#~ msgctxt "dock settings window"
+#~ msgid "Dock &Settings..."
+#~ msgstr "Ein&stellungen für Dock ..."
+
+#~ msgctxt "panel settings window"
+#~ msgid "Panel &Settings..."
+#~ msgstr "Ein&stellungen für Leiste"

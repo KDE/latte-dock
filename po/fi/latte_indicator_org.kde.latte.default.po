@@ -1,0 +1,175 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Tommi Nieminen <translator@legisign.org>, 2018, 2019, 2020, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-12 00:46+0000\n"
+"PO-Revision-Date: 2022-07-21 19:01+0300\n"
+"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.12.0\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr "Tyyli"
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "Viiva"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "Osoita aktiiviset kohteet viivalla"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr "Pisteet"
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "Osoita aktiiviset kohteet pisteellä"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr "Paksuus"
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr "Sijainti"
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr "Täyte"
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr "Kulmareunus"
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "Hohto"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "Hehkuta ilmaisinta tai poista hehkutus käytöstä"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "Aktiiviseen"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "Lisää hohto vain aktiivisen tehtävän tai sovelman ilmaisimeen"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "Kaikkiin"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "Lisää hohto kaikkiin tehtävien ja sovelmien ilmaisimiin"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "Peittävyys"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "Tehtävät"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Eri väri pienennetyille ikkunoille"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr "Osoita aktiiviset ikkunaryhmät ylimääräisellä pisteellä"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"Ryhmitetyt ikkunat osoitetaan sekä viivalla että pisteellä, kun jokin niistä "
+"on aktiivinen ja aktiivisuuden viivailmaisin on käytössä"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "Valinnat"
+
+#: default/package/config/config.qml:380
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "Näytä sovelmille ilmaisimet"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "Sovelmille näytetään ilmaisimet"
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "Käänteinen ilmaisintyyli"
+
+#~ msgid "Size"
+#~ msgstr "Koko"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#, fuzzy
+#~| msgid "Length"
+#~ msgid "Length padding"
+#~ msgstr "Pituus"
+
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Aktiivisen ilmaisimen tyyli"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Piste"

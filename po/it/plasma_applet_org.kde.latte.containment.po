@@ -1,0 +1,110 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the latte-dock package.
+# Ivan Bordoni <ivan.mail@fastwebnet.it>, 2017.
+# Paolo Zamponi <zapaolo@email.it>, 2018, 2019, 2020.
+#
+# Jan Neumann <neum dot ja at gmail dot com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-03-10 09:42+0100\n"
+"Last-Translator: Paolo Zamponi <zapaolo@email.it>\n"
+"Language-Team: Italian <kde-i18n-it@kde.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.2\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Giustifica divisore"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Configura applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Abilita il disegno per questa applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Disabilita l'effetto parabolico per questa applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Rimuovi applet"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Area Processi"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "Puoi usare le rotellina del mouse per cambiare l'opacità dello sfondo "
+#~ "dello %0%"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Incolla in alto"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Incolla il massimo spazio disponibile sul bordo superiore dello schermo "
+#~ "ed ignora eventuali aree di aggancio o pannelli superiori"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Riordina e configura gli oggetti"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Sentiti libero di spostare gli oggetti e di configurarli partendo dai "
+#~ "loro suggerimenti"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Incolla in basso"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Incolla il massimo spazio disponibile sul bordo inferiore dello schermo "
+#~ "ed ignora eventuali aree di aggancio o pannelli inferiori"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr ""
+#~ "Puoi usare le rotella del mouse per cambiare la lunghezza massima dello "
+#~ "%0%"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Lunghezza massima"
+
+#~ msgid ""
+#~ "Forces Plasma original applet behavior and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+#~ msgstr ""
+#~ "Forza al comportamento e ai suggerimenti dell'applet originale per "
+#~ "Plasma.\n"
+#~ "L'effetto parabolico verrà disabilitato."
+
+#~ msgid "Launchers Area"
+#~ msgstr "Area Lanciatori"
+
+#~ msgid "Latte"
+#~ msgstr "Latte"
+
+#~ msgid "Containment provided for the Latte Dock"
+#~ msgstr "Contenitore per Latte Dock"

@@ -1,0 +1,86 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Vasco Antunes <vasco.antunes@sapo.pt>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-03-03 09:35+0000\n"
+"Last-Translator: Vasco Antunes <vasco.antunes@sapo.pt>\n"
+"Language-Team: \n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Justificar o Separador"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Configurar o elemento"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Activar a pintura deste elemento"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Desactivar a pintura deste elemento"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Remover o elemento"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Área de Tarefas"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "Poderá usar a roda do rato para mudar a opacidade do fundo de %0%"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Fixar no Topo"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Fixar o espaço máximo disponível no topo do ecrã e ignora as áreas e "
+#~ "painéis de topo"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Reorganize e configure os seus elementos gráficos"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Sinta-se à vontade para mover os seus elementos e configurá-los a partir "
+#~ "das suas dicas"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Fixar no Fundo"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Fixar o espaço máximo disponível no fundo do ecrã e ignora as áreas e "
+#~ "painéis no fundo"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "Poderá usar a roda do rato para mudar a largura máxima de %0%"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Largura Máxima"

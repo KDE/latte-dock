@@ -1,0 +1,96 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Shinjo Park <kde@peremen.name>, 2018, 2019, 2020.
+# Jung Hee Lee <daemul72@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-03-26 16:17+0100\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 19.04.3\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "구분자 균등 배치"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "애플릿 설정"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "이 애플릿의 그리기 사용"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "이 애플릿의 포물선 효과 사용 안 함"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "애플릿 삭제"
+
+#~ msgid "Tasks Area"
+#~ msgstr "작업 영역"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "마우스 휠을 사용하여 배경 불투명도를 %0%로 변경할 수 있습니다"
+
+#~ msgid "Stick On Top"
+#~ msgstr "화면 위쪽에 표시"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "화면 위쪽에 있는 도구줄이나 패널을 무시하고 화면 위쪽 모서리에 최대 공간"
+#~ "을 사용하여 표시"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "위젯 재배열 및 설정"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr "위젯을 자유롭게 이동하고 풍선 도움말을 통해서 설정할 수 있습니다"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "화면 아래쪽에 표시"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "화면 아래쪽에 있는 도구줄이나 패널을 무시하고 화면 아래쪽 모서리에 최대 공"
+#~ "간을 사용하여 표시"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "마우스 휠을 사용하여 %0%의 최대 길이를 변경할 수 있습니다"
+
+#~ msgid "Maximum Length"
+#~ msgstr "최대 길이"
+
+#~ msgid ""
+#~ "Forces Plasma original applet behavior and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+#~ msgstr ""
+#~ "Plasma 애플릿의 원래 행동과 풍선 도움말을 강제합니다.\n"
+#~ "상직적인 효과를 비활성화합니다."
+
+#~ msgid "Launchers Area"
+#~ msgstr "실행기 영역"

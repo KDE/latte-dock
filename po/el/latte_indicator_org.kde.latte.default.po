@@ -1,0 +1,170 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Stelios <sstavra@gmail.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-12 00:46+0000\n"
+"PO-Revision-Date: 2019-07-31 08:57+0300\n"
+"Last-Translator: Stelios <sstavra@gmail.com>\n"
+"Language-Team: Greek <kde-i18n-el@kde.org>\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 18.12.3\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr ""
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "Γραμμή"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "Εμφανίζει έναν δείκτη γραμμής για ενεργά αντικείμενα"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr ""
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "ιEmfan;izei ;enan de;ikth tele;iaw gia energ;a antike;imena"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr ""
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr ""
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr ""
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr ""
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "Λάμψη"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "(Απ)ενεργοποίηση λάμψης δείκτη"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "Σε ενεργό"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "Προσθήκη λάμψης μόνο σε ενεργό δείκτη εργασιών/μικροεφαρμογών"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "Όλοι"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "Προσθήκη λάμψης σε όλους τους δείκτες εργασιών/μικροεφαρμογών"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "Αδιαφάνεια"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "Εργασίες"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr ""
+"Να εμφανίζεται μια επιπλέον τελεία για ομαδοποιημένα παράθυρα όταν είναι "
+"ενεργό"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"Οι ομάδες παραθύρων εμφανίζουν και γραμμή και τελεία όταν ένα είναι ενεργό "
+"και ο ενεργός δείκτης γραμμής είναι ενεργός"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "Επιλογές"
+
+#: default/package/config/config.qml:380
+#, fuzzy, kde-format
+#| msgid "Show a dot indicator for active items"
+msgid "Show indicators for applets"
+msgstr "ιEmfan;izei ;enan de;ikth tele;iaw gia energ;a antike;imena"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr ""
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "Στιλ αντίστροφου δείκτη"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Στιλ για ενεργό"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Τελεία"

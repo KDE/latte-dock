@@ -1,0 +1,70 @@
+# Translation of latte_indicator_org.kde.latte.plasma.po to Euskara/Basque (eu).
+# Copyright (C) 2019-2020, This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# KDE euskaratzeko proiektuko arduraduna <xalba@euskalnet.net>.
+#
+# Translators:
+# Ander Elortondo <ander.elor@gmail.com>, 2019.
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-27 00:45+0000\n"
+"PO-Revision-Date: 2020-04-09 10:07+0200\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.3\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr ""
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "Betegarria"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr ""
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "Aukerak"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "Klik egitean hazten den zirkuluaren animazioa"
+
+#~ msgid "Reverse indicator style"
+#~ msgstr "Alderantzizko adierazle estiloa"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "Erakutsi aplikaziotxoen adierazleak"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "Aplikaziotxoen adierazleak erakusten dira"
+
+#~ msgid "Length"
+#~ msgstr "Luzera"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "% %0"

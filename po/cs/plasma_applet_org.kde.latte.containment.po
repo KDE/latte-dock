@@ -1,0 +1,44 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Vít Pelčák <vit@pelcak.org>, 2017, 2018, 2019, 2020.
+# Vit Pelcak <vpelcak@suse.cz>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2021-08-19 15:14+0200\n"
+"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 21.08.0\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Zarovnat rozdělovač do bloku"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Nastavit applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Povolit kreslení pro tento applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Zakázat parabolický efekt pro tento applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Odstranit applet"

@@ -1,0 +1,169 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Wantoyo <wantoyek@gmail.com>, 2019, 2020, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-12 00:46+0000\n"
+"PO-Revision-Date: 2022-09-27 18:12+0700\n"
+"Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
+"Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 21.12.3\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr ""
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "Baris"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "Tampilkan sebuah indikator baris untuk butir(-butir) yang aktif"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr ""
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "Tampilkan sebuah indikator titik untuk butir(-butir) yang aktif"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr ""
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr ""
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr ""
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr ""
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "Cahaya"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "Fungsikan/Nonfungsikan cahaya indikator"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "Saat Aktif"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "Tambahkan cahaya hanya untuk mengaktifkan indikator applet/tugas"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "Semua"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "Tambahkan cahaya hanya untuk semua indikator applet/tugas"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "Opasitas"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "Tugas"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Warna yang berbeda untuk jendela yang diminimalkan"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr ""
+"Tampilkan sebuah titik ekstra untuk jendela yang dikelompokkan ketika aktif"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"Jendela yang dikelompokkan tampil sebuah baris dan sebuah titik ketika "
+"salahsatunya aktif dan si Indikator Aktif Baris telah difungsikan"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "Opsi"
+
+#: default/package/config/config.qml:380
+#, fuzzy, kde-format
+#| msgid "Show a dot indicator for active items"
+msgid "Show indicators for applets"
+msgstr "Tampilkan sebuah indikator titik untuk item-item yang aktif"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr ""
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "Kebalikan gaya indikator"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Gaya Untuk Aktif"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Titik"

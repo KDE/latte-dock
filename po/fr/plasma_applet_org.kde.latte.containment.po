@@ -1,0 +1,92 @@
+# Xavier Besnard <xavier.besnard@neuf.fr>, 2020.
+# Christophe Moulin <mevouillon.corp@gmail.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.kde.latte.containment\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-06-20 10:56+0100\n"
+"Last-Translator: Christophe Moulin <mevouillon.corp@gmail.com>\n"
+"Language-Team: French <kde-francophone@kde.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 2.0\n"
+"X-Environment: kde\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Justifier le séparateur"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Configurer un composant graphique"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Activer le dessin pour ce composant graphique"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Désactiver l'effet parabolique pour ce composant graphique"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Supprimer un composant graphique"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Zone des tâches"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "Vous pouvez utiliser la roulette de la souris pour modifier l'opacité de "
+#~ "l'arrière-plan de %0 %"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Déplacer au sommet"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Déplacer l'espace maximum disponible au sommet de l'écran et ne pas tenir "
+#~ "compte de panneaux ou barre des tâches"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Ré-arranger et configurer vos composants graphiques"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Déplacer vos composants graphiques comme vous le souhaitez et les "
+#~ "configurer à partir de leurs infobulles"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Coller en bas"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Coller l'espace maximum disponible en bas de l'écran et ne pas tenir "
+#~ "compte de panneaux ou barre des tâches"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr ""
+#~ "Vous pouvez utiliser la roulette de la souris pour modifier la longueur "
+#~ "maximale de %0 %"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Longueur maximale"

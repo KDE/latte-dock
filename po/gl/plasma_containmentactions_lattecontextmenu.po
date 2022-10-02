@@ -1,0 +1,163 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Adrian Chaves <adrian@chaves.io>, 2018, 2019, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2020-03-07 18:13+0100\n"
+"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 19.08.3\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "Eng&adir trebellos…"
+
+#: menu.cpp:92
+#, fuzzy, kde-format
+#| msgid "Show Plasma Widget Explorer"
+msgid "Show Widget Explorer"
+msgstr "Mostrar o explorador de trebellos de Plasma"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "Saír de &Latte"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "&Disposicións"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Cambiar a outra disposición"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr ""
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr ""
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr ""
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "&Configurar Latte…"
+
+#: menu.cpp:239
+#, fuzzy, kde-format
+#| msgctxt "dock settings window"
+#| msgid "&Edit Dock..."
+msgid "&Edit Dock..."
+msgstr "&Editar a doca…"
+
+#: menu.cpp:239
+#, fuzzy, kde-format
+#| msgctxt "panel settings window"
+#| msgid "&Edit Panel..."
+msgid "&Edit Panel..."
+msgstr "&Editar o panel…"
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgctxt "dock settings window"
+#| msgid "&Edit Dock..."
+msgid "&Edit Original Dock..."
+msgstr "&Editar a doca…"
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgctxt "panel settings window"
+#| msgid "&Edit Panel..."
+msgid "&Edit Original Panel..."
+msgstr "&Editar o panel…"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr ""
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr ""
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr ""
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr ""
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr ""
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr ""
+
+#: menu.cpp:363
+#, fuzzy, kde-format
+#| msgid "Manage &Layouts..."
+msgid "Edit &Layouts..."
+msgstr "Xestionar as &disposicións…"
+
+#, fuzzy
+#~| msgctxt "current layout"
+#~| msgid "(Current)"
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "(actual)"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "Configuración da vi&sta…"
+
+#~ msgctxt "dock settings window"
+#~ msgid "Dock &Settings..."
+#~ msgstr "Configuración da d&oca…"
+
+#~ msgctxt "panel settings window"
+#~ msgid "Panel &Settings..."
+#~ msgstr "Configuración do &panel…"
+
+#~ msgctxt "dock/panel settings window"
+#~ msgid "Dock/Panel Settings"
+#~ msgstr "Configuración de docas e paneis"

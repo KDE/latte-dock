@@ -1,0 +1,97 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Steve Allewell <steve.allewell@gmail.com>, 2017, 2018, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-03-30 17:20+0100\n"
+"Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
+"Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 19.07.70\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Justify Splitter"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Configure applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Enable painting  for this applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Disable parabolic effect for this applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Remove applet"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Tasks Area"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "You can use mouse wheel to change background opacity of %0%"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Stick On Top"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Rearrange and configure your widgets"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Stick On Bottom"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "You can use mouse wheel to change maximum length of %0%"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Maximum Length"
+
+#~ msgid ""
+#~ "Forces Plasma original applet behavior and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+#~ msgstr ""
+#~ "Forces Plasma original applet behaviour and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+
+#~ msgid "Launchers Area"
+#~ msgstr "Launchers Area"

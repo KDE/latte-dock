@@ -1,0 +1,67 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Jung Hee Lee <daemul72@gmail.com>, 2019.
+# Shinjo Park <kde@peremen.name>, 2019, 2020, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-27 00:45+0000\n"
+"PO-Revision-Date: 2021-11-12 00:58+0100\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 21.08.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr "스타일"
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "안쪽 여백"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1%"
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr "모서리 여백"
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "옵션"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "클릭할 때 커지는 원 애니메이션 사용"
+
+#~ msgid "Reverse indicator style"
+#~ msgstr "표시기 스타일 반전"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "애플릿에 표시기 표시"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "애플릿에 표시기 표시됨"
+
+#~ msgid "Length"
+#~ msgstr "길이"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0%"

@@ -1,0 +1,66 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Paolo Zamponi <zapaolo@email.it>, 2019, 2020, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-27 00:45+0000\n"
+"PO-Revision-Date: 2022-01-10 16:05+0100\n"
+"Last-Translator: Paolo Zamponi <zapaolo@email.it>\n"
+"Language-Team: Italian <kde-i18n-it@kde.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 21.12.0\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr "Stile"
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "Spaziatura"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr "Margine dell'angolo"
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "Opzioni"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "Animazione circolare crescente quando ci si fa clic"
+
+#~ msgid "Reverse indicator style"
+#~ msgstr "Inverti lo stile dell'indicatore"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "Mostra gli indicatori per le applet"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "Gli indicatori sono mostrati per le applet"
+
+#~ msgid "Length"
+#~ msgstr "Lunghezza"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"

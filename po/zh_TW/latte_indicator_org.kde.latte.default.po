@@ -1,0 +1,177 @@
+# Language None translations for latte-dock package.
+# Copyright (C) 2019 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Automatically generated, 2019.
+# pan93412 <pan93412@gmail.com>, 2019, 2020.
+# Jeff Huang <s8321414@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-12 00:46+0000\n"
+"PO-Revision-Date: 2021-08-12 21:10+0800\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
+"Language-Team: Chinese <zh-l10n@lists.slat.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 21.04.3\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr "樣式"
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "線"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "作用中的項目顯示線指示器"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr "點"
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "作用中的項目顯示點指示器"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr ""
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr "位置"
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr "邊距"
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "發光"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "啟用／停用指示器發光"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "作用中"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "僅在作用中的工作／小型應用程式指示器上加入發光"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "全部"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "將發光加到所有的工作／小型應用程式指示器"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "不透明"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "工作"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "最小化視窗的顏色不同"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr "已分組的視窗作用中時顯示額外的點"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"當已分組的視窗其中之一為作用中時，且啟用線作用中指示器時，同時顯示線與點"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "選項"
+
+#: default/package/config/config.qml:380
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "對小工具顯示指示器"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "指示器會對小工具顯示"
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "反轉指示器樣式"
+
+#~ msgid "Size"
+#~ msgstr "大小"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#, fuzzy
+#~| msgid "Length"
+#~ msgid "Length padding"
+#~ msgstr "長度"
+
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "作用中的樣式"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "點"

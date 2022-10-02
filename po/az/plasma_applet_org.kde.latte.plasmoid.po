@@ -1,0 +1,464 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Kheyyam Gojayev <xxmn77@gmail.com>, 2020, 2021, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"PO-Revision-Date: 2022-07-03 14:46+0400\n"
+"Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
+"Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 22.04.2\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Xarici görünüş"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Panel"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Qarşılıqlı əlaqə"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "Maksimum Nişan Ölçüsü: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Nişanın kölgəsini aktiv etmək"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Pəncərə nöqtələri ətrafında işıqlanmanı göstərmək"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Kiçildilmiş pəncərə üçün müxtəlif rənglər"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Aktiv pəncərə qrupu üçün indikator"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Animasiyalar: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "müddət"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "söndürülüb"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Miqyas"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Səviyyə: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Animasiyalar üçün lazımi həddə qırmızı cizgi göstərmək"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr ""
+"Söndürülmüş ayarlar üçün Latte Dok Tənzimləmə Pəncərəsi istifadə etməlisiniz"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Siçanın diyircəyi ilə tapşırıqlar arası dairəvi keçid"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Kontekst menyuda pəncərə fəaliyyətlərini göstərmək"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Tapşırıqlarda icra olunan əməlin gedişini göstərmək"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "Orta düymə kliki"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Heç nə"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Pəncərəni və ya Pəncərələr Qrupunu Bağlamaq"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Yeni Tətbiq Nümunəsini Başlatmaq"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Pəncərə və ya Pəncərələr Qruplarını Yığmaq/Qaytarmaq"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "Kursorun işarələməsi"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Heç nə"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "Pəncərə Miniatürlərini Göstərmək"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Pəncərəni Vurğulamaq"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Pəncərəni Vurğulamaq və Önizlənməsi"
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Süzgəclər"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Yalnız cari ekrandan tapşırıqları göstərmək"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Yalnız cari iş masasından tapşırıqları göstərmək"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Yalnız cari otaqdan tapşırıqları göstərmək"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Tapşırıqlar üçün sütun panelini göstərmək"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Plasma mövzusu panelini istifadə etmək"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Paneldə şəffaflıqdan istifadə etmək"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Ölçü: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr "Üst ayırıcı"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr "Sol ayırıcı"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr "Sağ ayırıcı"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr "Alt ayırıcı"
+
+#: package/contents/ui/ContextMenu.qml:102
+#, kde-format
+msgid "Places"
+msgstr "Yerlər"
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Recent Files"
+msgstr "Sonuncu fayllar"
+
+#: package/contents/ui/ContextMenu.qml:112
+#, kde-format
+msgid "Actions"
+msgstr "Fəaliyyətlər"
+
+#: package/contents/ui/ContextMenu.qml:178
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Əvvəlki Trek"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Fasilə"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Başlatmaq"
+
+#: package/contents/ui/ContextMenu.qml:205
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Növbəti Trek"
+
+#: package/contents/ui/ContextMenu.qml:216
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Dayandırmaq"
+
+#: package/contents/ui/ContextMenu.qml:233
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Çıxmaq"
+
+#: package/contents/ui/ContextMenu.qml:248
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Bərpa etmək"
+
+#: package/contents/ui/ContextMenu.qml:274
+#, kde-format
+msgid "Mute"
+msgstr "Susdurmaq"
+
+#: package/contents/ui/ContextMenu.qml:336
+#, kde-format
+msgid "Start New Instance"
+msgstr "Yeni nümunəni başlatmaq"
+
+#: package/contents/ui/ContextMenu.qml:352
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "İş &masasına Köçürmək"
+
+#: package/contents/ui/ContextMenu.qml:374
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "&Cari İş masasına köçürmək"
+
+#: package/contents/ui/ContextMenu.qml:384
+#, kde-format
+msgid "&All Desktops"
+msgstr "&Bütün İş Masaları"
+
+#: package/contents/ui/ContextMenu.qml:417
+#, kde-format
+msgid "&New Desktop"
+msgstr "Ye&ni İş masası"
+
+#: package/contents/ui/ContextMenu.qml:438
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Bütün Otaqlara Köçürmək"
+
+#: package/contents/ui/ContextMenu.qml:459
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Cari Otağa Köçürmək"
+
+#: package/contents/ui/ContextMenu.qml:469
+#, kde-format
+msgid "All Activities"
+msgstr "Bütün Otaqlar"
+
+#: package/contents/ui/ContextMenu.qml:536
+#, kde-format
+msgid "More Actions"
+msgstr "Başqa Fəaliyyətlər"
+
+#: package/contents/ui/ContextMenu.qml:545
+#, kde-format
+msgid "&Move"
+msgstr "Köçür&mək"
+
+#: package/contents/ui/ContextMenu.qml:554
+#, kde-format
+msgid "Re&size"
+msgstr "Ölçü&sünü dəyişmək"
+
+#: package/contents/ui/ContextMenu.qml:572
+#, kde-format
+msgid "Ma&ximize"
+msgstr "Bö&yütmək"
+
+#: package/contents/ui/ContextMenu.qml:590
+#, kde-format
+msgid "Mi&nimize"
+msgstr "&Yığmaq"
+
+#: package/contents/ui/ContextMenu.qml:600
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Digərilərinin üzərində tutm&aq"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Digərilərinin ar&xasında tutmaq"
+
+#: package/contents/ui/ContextMenu.qml:622
+#, kde-format
+msgid "&Fullscreen"
+msgstr "&Tam ekran"
+
+#: package/contents/ui/ContextMenu.qml:634
+#, kde-format
+msgid "&Shade"
+msgstr "&Başlığa endirmək"
+
+#: package/contents/ui/ContextMenu.qml:650
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Bu proqramın qruplaşmasına icazə vermək"
+
+#: package/contents/ui/ContextMenu.qml:680
+#: package/contents/ui/ContextMenu.qml:695
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "Başladıcını Sa&ncaqlamaq"
+
+#: package/contents/ui/ContextMenu.qml:748
+#, kde-format
+msgid "On All Activities"
+msgstr "Bütün Otaqlarda"
+
+#: package/contents/ui/ContextMenu.qml:754
+#, kde-format
+msgid "On The Current Activity"
+msgstr "Cari Otaqda"
+
+#: package/contents/ui/ContextMenu.qml:776
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Başladıcını Sərbəst Buraxmaq"
+
+#: package/contents/ui/ContextMenu.qml:791
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "%1 əlavə edin"
+
+#: package/contents/ui/ContextMenu.qml:809
+#: package/contents/ui/ContextMenu.qml:823
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "%1 silin"
+
+#: package/contents/ui/ContextMenu.qml:867
+#, kde-format
+msgid "Window"
+msgstr "Pəncərə"
+
+#: package/contents/ui/ContextMenu.qml:879
+#, kde-format
+msgid "&Close"
+msgstr "&Bağlayın"
+
+#: package/contents/ui/main.qml:1064
+#, kde-format
+msgid "Tasks Area"
+msgstr "Tapşırıqlar Sahəsi"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:477
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "%1 -də(da)"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:488
+#: package/contents/ui/task/TaskItem.qml:561
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Bütün otaqlarda mövcuddur"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:510
+#: package/contents/ui/task/TaskItem.qml:580
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Həmçinin %1-də(da) mövcuddur"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:514
+#: package/contents/ui/task/TaskItem.qml:584
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "%1-də(da) mövcuddur"
+
+#: package/contents/ui/task/TaskItem.qml:552
+#, kde-format
+msgid "On %1"
+msgstr "%1 -də(da)"
+
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Sonluq ayırıcını silmək"
+
+#~ msgid "Remove Head Separator"
+#~ msgstr "Başlıq ayırıcını silmək"

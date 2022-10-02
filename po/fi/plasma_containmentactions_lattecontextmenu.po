@@ -1,0 +1,149 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Tommi Nieminen <translator@legisign.org>, 2018, 2019, 2020, 2021, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2022-02-21 19:34+0200\n"
+"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.04.2\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "&Lisää sovelmia…"
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Näytä sovelmaselain"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "L&opeta Latte"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "&Asettelut"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Vaihda toiseen asetteluun"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "L&isää telakka/paneeli"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "Lisää tiettyyn malliin pohjautuvan telakan tai paneelin"
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "Siirrä telakka tai paneeli toiseen asetteluun"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "&Latten asetukset…"
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "&Muokkaa telakkaa…"
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "&Muokkaa paneelia…"
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Dock..."
+msgstr "&Muokkaa alkuperäistä telakkaa…"
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Panel..."
+msgstr "&Muokkaa alkuperäistä paneelia…"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "M&onista telakka"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "M&onista paneeli"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "&Vie telakka malliksi"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "&Vie paneeli malliksi"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "&Siirrä telakka asetteluun"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "&Siirrä paneeli asetteluun"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr "&Poista telakka"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "&Poista paneeli"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "Muokkaa &asetteluja…"
+
+#, fuzzy
+#~| msgctxt "current layout"
+#~| msgid "(Current)"
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "(nykyinen)"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "&Näkymäasetukset…"
+
+#~ msgctxt "dock settings window"
+#~ msgid "Dock &Settings..."
+#~ msgstr "&Telakan asetukset…"
+
+#~ msgctxt "panel settings window"
+#~ msgid "Panel &Settings..."
+#~ msgstr "&Paneelin asetukset…"

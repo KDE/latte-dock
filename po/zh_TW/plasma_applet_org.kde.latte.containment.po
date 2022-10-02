@@ -1,0 +1,68 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jeff Huang <s8321414@gmail.com>, 2017, 2018.
+# pan93412 <pan93412@gmail.com>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-02-15 19:56+0800\n"
+"Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
+"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 19.12.2\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "分開對齊"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "設定元件"
+
+# * 待 Painting 功能已知並找到新翻譯後，請填入翻譯並移除 fuzzy 標記。
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "啟用此元件的繪圖功能"
+
+# * 待 Painting 功能已知並找到新翻譯後，請填入翻譯並移除 fuzzy 標記。
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "停用此元件的繪圖功能"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "移除元件"
+
+#~ msgid "Tasks Area"
+#~ msgstr "工作區塊"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "您可以使用滑鼠滾輪來變更 %0% 的背景不透明度"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "重新排列與設定您的小工具"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr "隨意移動您的小工具並從它們的工具提示設定它們"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "您可以使用滑鼠滾輪來變更 %0% 的最大長度"
+
+#~ msgid "Maximum Length"
+#~ msgstr "最大長度"

@@ -1,0 +1,176 @@
+# Translation of latte_indicator_org.kde.latte.default.po to Euskara/Basque (eu).
+# Copyright (C) 2019-2020, This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# KDE euskaratzeko proiektuko arduraduna <xalba@euskalnet.net>.
+#
+# Translators:
+# Ander Elortondo <ander.elor@gmail.com>, 2019.
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-12 00:46+0000\n"
+"PO-Revision-Date: 2020-04-09 10:08+0200\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.3\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr ""
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "Lerroa"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "Erakutsi lerro adierazle bat elementu aktiboetan"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr ""
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "Erakutsi puntu adierazle bat elementu aktiboetan"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr ""
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr ""
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr ""
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr "Betegarria"
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "Distira"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "Gaitu/ezgaitu adierazlearen distira"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "Aktiboetan"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "Gehitu distira bakarrik ataza/aplikaziotxo aktiboen adierazleei"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "Guztiak"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "Gehitu distira atazen/aplikaziotxoen adierazle guztiei"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "Opakutasuna"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "Atazak"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Kolore ezberdina minimizatutako leihoei"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr "Erakutsi puntu gehigarri bat taldekatutako leihotan aktibo daudenean"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"Taldekatutako leihoek biak erakutsiko dituzte, lerro bat eta puntu bat "
+"haietako bat aktibo dagoenean eta lerro aktiboko adierazlea gaitua dagoenean"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "Aukerak"
+
+#: default/package/config/config.qml:380
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "Erakutsi aplikaziotxoen adierazleak"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "Aplikaziotxoen adierazleak erakusten dira"
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "Alderantzizko adierazle estiloa"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "% %0"
+
+#, fuzzy
+#~| msgid "Length"
+#~ msgid "Length padding"
+#~ msgstr "Luzera"
+
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Aktiboaren estiloa"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Puntua"

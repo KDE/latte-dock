@@ -1,0 +1,88 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Matjaž Jeran <matjaz.jeran@amis.net>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2021-05-11 09:28+0200\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Razdelilnik"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Nastavi applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Omogoči barvanje za ta applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Onemogoči parabolične učinke za ta applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Odstrani applet"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Področje nalog"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "Z miškinim kolesom lahko spremenite neprosojnost ozadja %0%"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Zadržuj se na vrhu"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Pri zgornjem robu zaslona vstavite največ prostora in prezrite morebitne "
+#~ "zgornje doke ali plošče"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Preuredite in nastavite svoje gradnike"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Svobodno se lahko premikate po svojih gradnikih in jih nastavljate iz "
+#~ "njihovih orodnih namigov"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Zadržuj se na dnu"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Pripni največji razpoložljivi prostor na spodnji rob zaslona in prezri "
+#~ "kateri koli dok ali ploščo na dnu"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "Z miškinim koleščkom lahko spremenite največjo dolžino %0%"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Maksimalna dolžina"

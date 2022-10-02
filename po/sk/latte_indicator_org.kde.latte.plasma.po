@@ -1,0 +1,61 @@
+# translation of latte_indicator_org.kde.latte.plasma.po to Slovak
+# Roman Paholik <wizzardsk@gmail.com>, 2019.
+# Matej Mrenica <matejm98mthw@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte_indicator_org.kde.latte.plasma\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-27 00:45+0000\n"
+"PO-Revision-Date: 2021-07-20 17:41+0200\n"
+"Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
+"Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 21.07.80\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr ""
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "Výplň"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr ""
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "Možnosti"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "Animácia zväčšujúceho sa kruhu po kliknutí"
+
+#~ msgid "Reverse indicator style"
+#~ msgstr "Reverzný štýl indikátora"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "Zobraziť indikátory pre applety"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "Indikátory sa zobrazujú pre applety"
+
+#~ msgid "Length"
+#~ msgstr "Dĺžka"

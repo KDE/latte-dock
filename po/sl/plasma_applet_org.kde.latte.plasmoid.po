@@ -1,0 +1,464 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Matjaž Jeran <matjaz.jeran@amis.net>, 2020, 2021, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"PO-Revision-Date: 2022-06-21 06:33+0200\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 22.04.1\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Videz"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Plošča"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Interakcija"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "Maksimalna velikost ikone: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Omogoči sence ikon"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Prikaži sijaj okrog okenskih točk"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Različne barve za strnjena okna"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Indikator za aktivno skupino oken"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Animacije: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "trajanje"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "onemogočeno"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Zoom"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Raven: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Pokaži rdečo črto na omejitvi, ki je potrebna za animacije"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr "Za onemogočene nastavitve uporabite okno za nastavitev Latte Dock"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Pojdite v zanki po nalogah z miškinim koleščkom"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Pokaži dejanja okna v kontekstnem meniju"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Pokaži informacije o napredku za naloge"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "Srednji klik"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Noben"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Zapri okno ali skupino"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Nov pojavek"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Strni/obnovi okno ali skupino"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "Miška nad"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Noben"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "Predogled oken"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Osvetli okna"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Predogled in osvetli okna"
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Filtri"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Pokaži samo opravila trenutnega zaslona"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Pokaži samo opravila trenutnega namizja"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Pokaži samo opravila trenutne dejavnosti"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Prikaži letvico nalog"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Uporabite Plasma ploščo s temami"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Uporabi prosojnost na plošči"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Velikost: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr "Vrhnji ločilnik"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr "Levi ločilnik"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr "Desni ločilnik"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr "Spodnji ločilnik"
+
+#: package/contents/ui/ContextMenu.qml:102
+#, kde-format
+msgid "Places"
+msgstr "Mesta"
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Recent Files"
+msgstr "Nedavne datoteke"
+
+#: package/contents/ui/ContextMenu.qml:112
+#, kde-format
+msgid "Actions"
+msgstr "Aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:178
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Prejšnja sled"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Premor"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Predvajaj"
+
+#: package/contents/ui/ContextMenu.qml:205
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Naslednja sled"
+
+#: package/contents/ui/ContextMenu.qml:216
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Ustavi"
+
+#: package/contents/ui/ContextMenu.qml:233
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Zapusti"
+
+#: package/contents/ui/ContextMenu.qml:248
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Obnovi"
+
+#: package/contents/ui/ContextMenu.qml:274
+#, kde-format
+msgid "Mute"
+msgstr "Utišaj"
+
+#: package/contents/ui/ContextMenu.qml:336
+#, kde-format
+msgid "Start New Instance"
+msgstr "Zaženi nov pojavek"
+
+#: package/contents/ui/ContextMenu.qml:352
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "Prenesi na namizje"
+
+#: package/contents/ui/ContextMenu.qml:374
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "Prenesi na trenutno namizje"
+
+#: package/contents/ui/ContextMenu.qml:384
+#, kde-format
+msgid "&All Desktops"
+msgstr "Vsa namizja"
+
+#: package/contents/ui/ContextMenu.qml:417
+#, kde-format
+msgid "&New Desktop"
+msgstr "Novo namizje"
+
+#: package/contents/ui/ContextMenu.qml:438
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Prenesi v aktivnost"
+
+#: package/contents/ui/ContextMenu.qml:459
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Dodaj trenutni aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:469
+#, kde-format
+msgid "All Activities"
+msgstr "Vse aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:536
+#, kde-format
+msgid "More Actions"
+msgstr "Več aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:545
+#, kde-format
+msgid "&Move"
+msgstr "Prenesi"
+
+#: package/contents/ui/ContextMenu.qml:554
+#, kde-format
+msgid "Re&size"
+msgstr "Spremeni velikost"
+
+#: package/contents/ui/ContextMenu.qml:572
+#, kde-format
+msgid "Ma&ximize"
+msgstr "Razširi"
+
+#: package/contents/ui/ContextMenu.qml:590
+#, kde-format
+msgid "Mi&nimize"
+msgstr "Strni"
+
+#: package/contents/ui/ContextMenu.qml:600
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Ohranjaj nad drugimi"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Ohranjaj pod drugimi"
+
+#: package/contents/ui/ContextMenu.qml:622
+#, kde-format
+msgid "&Fullscreen"
+msgstr "Celotni zaslon"
+
+#: package/contents/ui/ContextMenu.qml:634
+#, kde-format
+msgid "&Shade"
+msgstr "Senca"
+
+#: package/contents/ui/ContextMenu.qml:650
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Dovolj da je ta program v grupi"
+
+#: package/contents/ui/ContextMenu.qml:680
+#: package/contents/ui/ContextMenu.qml:695
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "Pripni zaganjalnik"
+
+#: package/contents/ui/ContextMenu.qml:748
+#, kde-format
+msgid "On All Activities"
+msgstr "Vse aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:754
+#, kde-format
+msgid "On The Current Activity"
+msgstr "Na trenutni aktivnosti"
+
+#: package/contents/ui/ContextMenu.qml:776
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Odpni zaganjalnik"
+
+#: package/contents/ui/ContextMenu.qml:791
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "Dodaj %1"
+
+#: package/contents/ui/ContextMenu.qml:809
+#: package/contents/ui/ContextMenu.qml:823
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "Odstrani %1"
+
+#: package/contents/ui/ContextMenu.qml:867
+#, kde-format
+msgid "Window"
+msgstr "Okno"
+
+#: package/contents/ui/ContextMenu.qml:879
+#, kde-format
+msgid "&Close"
+msgstr "Zapri"
+
+#: package/contents/ui/main.qml:1064
+#, kde-format
+msgid "Tasks Area"
+msgstr "Področje nalog"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:477
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "Na %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:488
+#: package/contents/ui/task/TaskItem.qml:561
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Na voljo na vseh aktivnostih"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:510
+#: package/contents/ui/task/TaskItem.qml:580
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Tudi na voljo na %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:514
+#: package/contents/ui/task/TaskItem.qml:584
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "Na voljo na %1"
+
+#: package/contents/ui/task/TaskItem.qml:552
+#, kde-format
+msgid "On %1"
+msgstr "Na %1"
+
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Odstrani končni ločilnik"
+
+#~ msgid "Remove Head Separator"
+#~ msgstr "Odstrani začetni ločilnik"

@@ -1,0 +1,70 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Wantoyo <wantoyek@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2019-07-24 19:59+0700\n"
+"Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
+"Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Pembelah Sejajar-Kanan-Kiri"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Konfigurasikan applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Fungsikan pelukisan untuk applet ini"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Nonfungsikan efek parabolik untuk applet ini"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Buang applet"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Area Tugas"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "Kamu bisa menggunakan roda mouse untuk mengubah opasitas latarbelakang "
+#~ "seopasitas %0%"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Mengatur kembali dan mengkonfigurasikan widget-mu"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Terasa bebas untuk bergerak di sekitar widget-mu dan mengonfigurasinya "
+#~ "dari tip-alat mereka"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr ""
+#~ "Kamu bisa menggunakan roda mouse untuk mengubah panjang maksimum "
+#~ "sepanjang %0%"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Panjang Maksimum"

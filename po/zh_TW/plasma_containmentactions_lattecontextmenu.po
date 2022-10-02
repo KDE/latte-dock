@@ -1,0 +1,152 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# pan93412 <pan93412@gmail.com>, 2019, 2020.
+# Jeff Huang <s8321414@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2021-08-12 21:17+0800\n"
+"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
+"Language-Team: Chinese <zh-l10n@lists.slat.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 21.04.3\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "新增元件(&A)……"
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "顯示元件瀏覽器"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "離開 &Latte"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "版面配置(&L)"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "切換到其他版面"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "新增 Dock／面板"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "以特定的範本為基礎新增 dock 或面板"
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "移動 dock 或面板到不同的佈局"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "設定 Latte(&C)…"
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "編輯 Dock(&E)……"
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "編輯面板(&E)……"
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgid "&Edit Dock..."
+msgid "&Edit Original Dock..."
+msgstr "編輯 Dock(&E)……"
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgid "&Edit Panel..."
+msgid "&Edit Original Panel..."
+msgstr "編輯面板(&E)……"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "再製 Dock(&D)"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "再製面板(&D)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "將 Dock 匯出為範本(&X)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "將面板匯出為範本(&X)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "移動 Dock 到佈局(&M)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "移動面板到佈局(&M)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr "移除 Dock(&R)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "移除面板(&R)"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "編輯佈局(&L)……"
+
+#, fuzzy
+#~| msgctxt "current layout"
+#~| msgid "(Current)"
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "（目前）"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "檢視設定(&S)…"
+
+#~ msgctxt "dock settings window"
+#~ msgid "Dock &Settings..."
+#~ msgstr "Dock 設定(&S)…"
+
+#~ msgctxt "panel settings window"
+#~ msgid "Panel &Settings..."
+#~ msgstr "面板設定(&S)…"

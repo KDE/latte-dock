@@ -1,0 +1,150 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Shinjo Park <kde@peremen.name>, 2018, 2019, 2020, 2021, 2022.
+# Jung Hee Lee <daemul72@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2022-04-16 01:19+0200\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 21.08.1\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "위젯 추가(&A)..."
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "위젯 탐색기 표시"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "Latte 끝내기(&L)"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "레이아웃(&L)"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "다른 레이아웃으로 전환"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "독/패널 추가(&A)"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "템플릿에 따라서 독이나 패널 추가"
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "다른 레이아웃으로 독이나 패널 이동"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "Latte 설정(&C)..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "독 편집(&E)..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "패널 편집(&E)..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Dock..."
+msgstr "원본 독 편집(&E)..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Panel..."
+msgstr "원본 패널 편집(&E)..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "독 복제(&D)"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "패널 복제(&D)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "독을 템플릿으로 내보내기(&X)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "패널을 템플릿으로 내보내기(&X)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "독을 레이아웃으로 이동(&M)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "패널을 레이아웃으로 이동(&M)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr "독 삭제(&R)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "패널 삭제(&R)"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "레이아웃 편집(&L)..."
+
+#, fuzzy
+#~| msgctxt "current layout"
+#~| msgid "(Current)"
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "(현재)"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "설정 보기(&S)..."
+
+#~ msgctxt "dock settings window"
+#~ msgid "Dock &Settings..."
+#~ msgstr "도구집 설정(&S)..."
+
+#~ msgctxt "panel settings window"
+#~ msgid "Panel &Settings..."
+#~ msgstr "패널 설정(&S)..."

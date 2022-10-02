@@ -1,0 +1,81 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Tommi Nieminen <translator@legisign.org>, 2018, 2019, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-06-18 19:09+0300\n"
+"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 20.04.2\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Tasaa jakopalkki"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Sovelman asetukset"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Ota käyttöön tämän sovelman maalaus"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Poista käytöstä tämän sovelman parabolitehoste"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Poista sovelma"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Tehtäväalue"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr "Hiiren rullalla voi muuttaa taustan peittävyyttä (%0 %)"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Kiinnitä ylös"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Sovelmien järjestäminen ja asetukset"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr "Siirrä ja aseta sovelmiasi vapaasti niiden työkaluvihjeistä"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Kiinnitä alas"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "Voit hiiren rullalla muuttaa %0 % enimmäisleveyttä"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Enimmäisleveys"
+
+#~ msgid ""
+#~ "Forces Plasma original applet behavior and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+#~ msgstr ""
+#~ "Pakottaa alkuperäisen Plasma-sovelman toiminnan ja työkaluvihjeet.\n"
+#~ "Parabolitehoste poistetaan käytöstä."
+
+#~ msgid "Launchers Area"
+#~ msgstr "Käynnistinalue"

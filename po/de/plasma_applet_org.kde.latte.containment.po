@@ -1,0 +1,70 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Jan Neumann <neum dot ja at gmail dot com>, 2017, 2018.
+# Burkhard Lück <lueck@hube-lueck.de>, 2018, 2021.
+# Frederik Schwarzer <schwarzer@kde.org>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2021-05-28 11:06+0200\n"
+"Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Teiler ausrichten"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Miniprogramm konfigurieren"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, fuzzy, kde-format
+#| msgid "Lock/Unlock the parabolic effect for this applet"
+msgid "Enable painting  for this applet"
+msgstr "Für dieses Miniprogramm parabolischen Zoom ein/aus "
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Für dieses Miniprogramm parabolischen Zoom deaktivieren"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Miniprogramm entfernen"
+
+#, fuzzy
+#~| msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~| msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "Sie können das Mausrad benutzen, um die maximale Länge von %0 % zu ändern"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr ""
+#~ "Sie können das Mausrad benutzen, um die maximale Länge von %0 % zu ändern"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Maximale Länge"
+
+#~ msgid "Launchers Area"
+#~ msgstr "Anwendungsbereich"
+
+#~ msgid "Latte"
+#~ msgstr "Latte"
+
+#~ msgid "Containment provided for the Latte Dock"
+#~ msgstr "Behälter für Latte Dock"

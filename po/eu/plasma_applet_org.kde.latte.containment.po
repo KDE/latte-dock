@@ -1,0 +1,97 @@
+# Translation of plasma_applet_org.kde.latte.containment.po to Euskara/Basque (eu).
+# Copyright (C) 2018, Free Software Foundation.
+# Copyright (C) 2019-2020, This file is copyright:
+# This package is distributed under the same license as the latte-dock package.
+# KDE euskaratzeko proiektuko arduraduna <xalba@euskalnet.net>.
+#
+# Translators:
+# Ander Elortondo <ander.elor@gmail.com>, 2018, 2019.
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2020-04-09 09:59+0200\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.12.3\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Justifikatu zatitzailea"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Konfiguratu aplikaziotxoa"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Gaitu marraztea aplikaziotxo honi"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Ezgaitu efektu parabolikoa aplikaziotxo honi"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Kendu aplikaziotxoa"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Atazen eremua"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "Saguaren gurpila erabil dezakezu %%0-ren atzeko planoaren opakutasuna "
+#~ "aldatzeko"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Itsatsi gainaldean"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Itsatsi pantailako goiko ertzean erabilgarri dagoen gehienezko lekua "
+#~ "hartuz ez-ikusi egin goian dagoen beste kai eta panelei"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Berrantolatu eta konfiguratu zure trepetak"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Izan libre trepetak mugitzeko eta konfigura itzazu beren argibideetatik"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Itsatsi azpialdean"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Itsatsi pantailako beheko ertzean erabilgarri dagoen gehienezko lekua "
+#~ "hartuz ez-ikusi egin goian dagoen beste kai eta panelei"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr ""
+#~ "Saguaren gurpila erabil dezakezu %%0-ren gehienezko luzera aldatzeko"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Gehinezko luzera"
+
+#~ msgid "Launchers Area"
+#~ msgstr "Abiarazleen gunea"

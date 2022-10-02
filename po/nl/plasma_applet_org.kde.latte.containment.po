@@ -1,0 +1,101 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2017, 2018, 2019, 2020.
+# pieter <pieterkristensen@gmail.com>, 2021.
+# Luc Castermans <luc.castermans@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2021-11-12 18:34+0100\n"
+"Last-Translator: Luc Castermans <luc.castermans@gmail.com>\n"
+"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 21.08.0\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr "Splitter passend maken"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Widget configureren"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, kde-format
+msgid "Enable painting  for this applet"
+msgstr "Tekenen voor deze widget inschakelen"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, kde-format
+msgid "Disable parabolic effect for this applet"
+msgstr "Parabolisch effect voor dit widget uitschakelen"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Verwijder widget"
+
+#~ msgid "Tasks Area"
+#~ msgstr "Takengebied"
+
+#~ msgctxt "opacity for background under edit mode, %0% is opacity percentage"
+#~ msgid "You can use mouse wheel to change background opacity of %0%"
+#~ msgstr ""
+#~ "U kunt het muiswiel gebruiken om dekking van achtergrond van %0% te "
+#~ "wijzigen"
+
+#~ msgid "Stick On Top"
+#~ msgstr "Bovenaan blijven"
+
+#~ msgid ""
+#~ "Stick maximum available space at top screen edge and ignore any top docks "
+#~ "or panels"
+#~ msgstr ""
+#~ "Blijf op maximaal beschikbare ruimte bovenaan de schermrand en negeer "
+#~ "enige verankering of panelen bovenaan"
+
+#~ msgid "Rearrange and configure your widgets"
+#~ msgstr "Uw widgets herschikken en configureren"
+
+#~ msgid ""
+#~ "Feel free to move around your widgets and configure them from their "
+#~ "tooltips"
+#~ msgstr ""
+#~ "Voel u vrij om uw widgets te verplaatsen en configureer ze vanaf hun "
+#~ "tekstballonnen"
+
+#~ msgid "Stick On Bottom"
+#~ msgstr "Onderaan blijven"
+
+#~ msgid ""
+#~ "Stick maximum available space at bottom screen edge and ignore any bottom "
+#~ "docks or panels"
+#~ msgstr ""
+#~ "Blijf op maximaal beschikbare ruimte onderaan de schermrand en negeer "
+#~ "enige verankering of panelen onderaan"
+
+#~ msgctxt "maximum length tooltip, %0% is maximum length percentage"
+#~ msgid "You can use mouse wheel to change maximum length of %0%"
+#~ msgstr "U kunt het muiswiel gebruiken om maximum lengte van %0% te wijzigen"
+
+#~ msgid "Maximum Length"
+#~ msgstr "Maximale lengte"
+
+#~ msgid ""
+#~ "Forces Plasma original applet behavior and tooltips.\n"
+#~ "Parabolic effect will be disabled."
+#~ msgstr ""
+#~ "Dwingt het originele gedrag van Plasma-applet en tekstballonnen af.\n"
+#~ "Parabolisch effect zal uitgeschakeld worden."
+
+#~ msgid "Launchers Area"
+#~ msgstr "Startgebied"

@@ -1,0 +1,46 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# scootergrisen, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-28 00:45+0000\n"
+"PO-Revision-Date: 2017-11-13 20:11+0200\n"
+"Last-Translator: scootergrisen\n"
+"Language-Team: Danish\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:420
+#, kde-format
+msgid "Justify Splitter"
+msgstr ""
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:447
+#, kde-format
+msgid "Configure applet"
+msgstr "Indstil applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:469
+#, fuzzy, kde-format
+#| msgid "Lock/Unlock the parabolic effect for this applet"
+msgid "Enable painting  for this applet"
+msgstr "Lås/lås op for den parabolske effekt for dette applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:480
+#, fuzzy, kde-format
+#| msgid "Lock/Unlock the parabolic effect for this applet"
+msgid "Disable parabolic effect for this applet"
+msgstr "Lås/lås op for den parabolske effekt for dette applet"
+
+#: package/contents/ui/editmode/ConfigOverlay.qml:491
+#, kde-format
+msgid "Remove applet"
+msgstr "Fjern applet"
+
+#~ msgid "Launchers Area"
+#~ msgstr "Opstartsområde"

@@ -1,0 +1,131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: kdeorg\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2022-09-20 01:56\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: kdeorg\n"
+"X-Crowdin-Project-ID: 269464\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /kf5-trunk/messages/latte-dock/"
+"plasma_containmentactions_lattecontextmenu.pot\n"
+"X-Crowdin-File-ID: 6909\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "添加挂件(&A)..."
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "显示挂件浏览器"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "退出 Latte(&L)"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "布局(&L)"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "切换到另一个布局"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "添加停靠栏/面板(&A)"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "基于特定模板添加停靠栏或面板"
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "移动停靠栏或面板到其他布局"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "配置 Latte...(&C)"
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "编辑停靠栏 (&E)..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "编辑面板(&E)..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Dock..."
+msgstr "编辑原始停靠栏(&E)..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Panel..."
+msgstr "编辑原始面板(&E)..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "复制停靠栏(&D)"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "复制面板(&D)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "导出停靠栏为模板(&X)"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "导出面板为模板(&X)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "移动停靠栏到布局(&M)"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "移动面板到布局(&M)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr "移除停靠栏(&R)"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "移除面板(&R)"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "编辑布局(&L)..."

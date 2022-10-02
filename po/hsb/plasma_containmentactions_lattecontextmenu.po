@@ -1,0 +1,132 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Edward Wornar <edi.werner@gmx.de>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-01-17 00:44+0000\n"
+"PO-Revision-Date: 2021-11-24 15:52+0100\n"
+"Last-Translator: Edward Wornar <edi.werner@gmx.de>\n"
+"Language-Team: Upper Sorbian <kde-i18n-doc@kde.org>\n"
+"Language: hsb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3;\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "Widget dod&ać..."
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Widget Explorer pokazać"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "Latte wop&ušćić"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "&Layouty"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Na druhi layout přešaltować"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "Pas/panel dod&ać"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr ""
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "Pas/panel do druheho layouta přesunyć"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr ""
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "Pas wo&bdźěłać..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "Panel w&obdźěłać..."
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgid "&Edit Dock..."
+msgid "&Edit Original Dock..."
+msgstr "Pas wo&bdźěłać..."
+
+#: menu.cpp:241
+#, fuzzy, kde-format
+#| msgid "&Edit Panel..."
+msgid "&Edit Original Panel..."
+msgstr "Panel w&obdźěłać..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "Pas &duplicěrować"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "Panel &duplicěrować"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "Pas jako šablonu e&ksportować"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "Panel jako šablonu eks&portować"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr ""
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr ""
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr ""
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr ""

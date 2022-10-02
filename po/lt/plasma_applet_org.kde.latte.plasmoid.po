@@ -1,0 +1,491 @@
+# Lithuanian translations for latte-dock package.
+# Copyright (C) 2019 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# Automatically generated, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"PO-Revision-Date: 2021-08-21 18:46+0300\n"
+"Last-Translator: Moo\n"
+"Language-Team: lt\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
+"%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
+"X-Generator: Poedit 3.0\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Išvaizda"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Skydelis"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Sąveika"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "Didžiausias piktogramų dydis: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Įjungti piktogramų šešėlius"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Rodyti švytėjimą aplink langų taškus"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Suskleistiems langams naudoti kitokią spalvą"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Aktyvios langų grupės indikatorius"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Animacijos: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "trukmė"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "išjungta"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Mastelis"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Lygis: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Rodyti raudoną liniją ties animacijoms reikalinga riba"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr "Išjungtoms nuostatoms naudokite Latte doko konfigūracijos langą"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Perjunginėti užduotis naudojant pelės ratuką"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Rodyti kontekstiniame meniu langų veiksmus"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Rodyti užduočių eigos informaciją"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "Vidurinysis spustelėjimas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Nėra"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Užverti langą ar grupę"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Naujas egzempliorius"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Suskleisti/Atkurti langą ar grupę"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "Pelės užvedimas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Nėra"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "Rodyti langų peržiūrą"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Paryškinti langus"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Langų peržiūra ir paryškinimas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Filtrai"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Rodyti užduotis tik iš esamo ekrano"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Rodyti užduotis tik iš esamo darbalaukio"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Rodyti užduotis tik iš esamos veiklos"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Rodyti užduočių juostos linija"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Naudoti Plasma apipavidalinimo skydelį"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Naudoti skydelyje permatomumą"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Dydis: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr "Viršutinis skirtukas"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr "Kairysis skirtukas"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr "Dešinysis skirtukas"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr "Apatinis skirtukas"
+
+#: package/contents/ui/ContextMenu.qml:102
+#, kde-format
+msgid "Places"
+msgstr "Vietos"
+
+#: package/contents/ui/ContextMenu.qml:107
+#, fuzzy, kde-format
+#| msgid "Recent Documents"
+msgid "Recent Files"
+msgstr "Paskiausiai naudoti dokumentai"
+
+#: package/contents/ui/ContextMenu.qml:112
+#, kde-format
+msgid "Actions"
+msgstr "Veiksmai"
+
+#: package/contents/ui/ContextMenu.qml:178
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Ankstesnis takelis"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Pristabdyti"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Atkurti"
+
+#: package/contents/ui/ContextMenu.qml:205
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Kitas takelis"
+
+#: package/contents/ui/ContextMenu.qml:216
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Stabdyti"
+
+#: package/contents/ui/ContextMenu.qml:233
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Išeiti"
+
+#: package/contents/ui/ContextMenu.qml:248
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Atkurti programos langą"
+
+#: package/contents/ui/ContextMenu.qml:274
+#, kde-format
+msgid "Mute"
+msgstr "Nutildyti"
+
+#: package/contents/ui/ContextMenu.qml:336
+#, kde-format
+msgid "Start New Instance"
+msgstr "Paleisti naują egzempliorių"
+
+#: package/contents/ui/ContextMenu.qml:352
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "Perkelti į &darbalaukį"
+
+#: package/contents/ui/ContextMenu.qml:374
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "Perkelti į &dabartinį darbalaukį"
+
+#: package/contents/ui/ContextMenu.qml:384
+#, kde-format
+msgid "&All Desktops"
+msgstr "&Visi darbalaukiai"
+
+#: package/contents/ui/ContextMenu.qml:417
+#, kde-format
+msgid "&New Desktop"
+msgstr "&Naujas darbalaukis"
+
+#: package/contents/ui/ContextMenu.qml:438
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Perkelti į &veiklą"
+
+#: package/contents/ui/ContextMenu.qml:459
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Pridėti į dabartinę veiklą"
+
+#: package/contents/ui/ContextMenu.qml:469
+#, kde-format
+msgid "All Activities"
+msgstr "Visos veiklos"
+
+#: package/contents/ui/ContextMenu.qml:536
+#, kde-format
+msgid "More Actions"
+msgstr "Daugiau veiksmų"
+
+#: package/contents/ui/ContextMenu.qml:545
+#, kde-format
+msgid "&Move"
+msgstr "&Perkelti"
+
+#: package/contents/ui/ContextMenu.qml:554
+#, kde-format
+msgid "Re&size"
+msgstr "Kei&sti dydį"
+
+#: package/contents/ui/ContextMenu.qml:572
+#, kde-format
+msgid "Ma&ximize"
+msgstr "Išs&kleisti"
+
+#: package/contents/ui/ContextMenu.qml:590
+#, kde-format
+msgid "Mi&nimize"
+msgstr "Susk&leisti"
+
+#: package/contents/ui/ContextMenu.qml:600
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Laikyti &virš kitų"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Laikyti &po kitais"
+
+#: package/contents/ui/ContextMenu.qml:622
+#, kde-format
+msgid "&Fullscreen"
+msgstr "&Visas ekranas"
+
+#: package/contents/ui/ContextMenu.qml:634
+#, kde-format
+msgid "&Shade"
+msgstr "P&ridengti"
+
+#: package/contents/ui/ContextMenu.qml:650
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Leisti grupuoti šią programą"
+
+#: package/contents/ui/ContextMenu.qml:680
+#: package/contents/ui/ContextMenu.qml:695
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "&Prisegti paleidyklę"
+
+#: package/contents/ui/ContextMenu.qml:748
+#, kde-format
+msgid "On All Activities"
+msgstr "Visose veiklose"
+
+#: package/contents/ui/ContextMenu.qml:754
+#, kde-format
+msgid "On The Current Activity"
+msgstr "Dabartinėje veikloje"
+
+#: package/contents/ui/ContextMenu.qml:776
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Atsegti paleidyklę"
+
+#: package/contents/ui/ContextMenu.qml:791
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "Pridėti %1"
+
+#: package/contents/ui/ContextMenu.qml:809
+#: package/contents/ui/ContextMenu.qml:823
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "Šalinti %1"
+
+#: package/contents/ui/ContextMenu.qml:867
+#, kde-format
+msgid "Window"
+msgstr "Langas"
+
+#: package/contents/ui/ContextMenu.qml:879
+#, kde-format
+msgid "&Close"
+msgstr "&Užverti"
+
+#: package/contents/ui/main.qml:1064
+#, kde-format
+msgid "Tasks Area"
+msgstr "Užduočių sritis"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:477
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "Darbalaukiuose: %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:488
+#: package/contents/ui/task/TaskItem.qml:561
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Prieinamas visose veiklose"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:510
+#: package/contents/ui/task/TaskItem.qml:580
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Taip pat prieinamas veiklose: %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:514
+#: package/contents/ui/task/TaskItem.qml:584
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "Prieinamas veiklose: %1"
+
+#: package/contents/ui/task/TaskItem.qml:552
+#, kde-format
+msgid "On %1"
+msgstr "Ties %1"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Šalinti skirtuką"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Head Separator"
+#~ msgstr "Šalinti skirtuką"
+
+#~ msgid "Position: "
+#~ msgstr "Pozicija: "
+
+#~ msgid "Center"
+#~ msgstr "Centre"
+
+#~ msgid "Left"
+#~ msgstr "Kairėje"
+
+#~ msgid "Right"
+#~ msgstr "Dešinėje"
+
+#~ msgid "Top"
+#~ msgstr "Viršuje"
+
+#~ msgid "Bottom"
+#~ msgstr "Apačioje"
+
+#~ msgid "Configure"
+#~ msgstr "Konfigūruoti"

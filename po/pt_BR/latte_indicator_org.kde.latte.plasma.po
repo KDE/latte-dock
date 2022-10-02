@@ -1,0 +1,68 @@
+# Translation of latte_indicador_org.kde.latte.plasma.po to Brazilian Portuguese
+# Copyright (C) 2019-2020 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# André Marcelo Alvarenga <alvarenga@kde.org>, 2019, 2020.
+# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-27 00:45+0000\n"
+"PO-Revision-Date: 2021-10-05 16:51-0300\n"
+"Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
+"Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 20.04.2\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr "Estilo"
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "Preenchimento"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr "Margem do canto"
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "Opções"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "Animação de círculo crescente quando clicado"
+
+#~ msgid "Reverse indicator style"
+#~ msgstr "Estilo inverso do indicador"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "Mostrar indicadores para miniaplicativos"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "São apresentados indicadores para os miniaplicativos"
+
+#~ msgid "Length"
+#~ msgstr "Comprimento"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"

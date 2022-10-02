@@ -1,0 +1,5256 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Michail Vοurlakos <mvourlakos@gmail.com>, 2016, 2017, 2018.
+# Stelios <sstavra@gmail.com>, 2017, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"PO-Revision-Date: 2019-07-31 08:26+0300\n"
+"Last-Translator: Stelios <sstavra@gmail.com>\n"
+"Language-Team: Greek <kde-i18n-el@kde.org>\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 18.12.3\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Michail Vourlakos"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "mvourlakos@gmail.com"
+
+#: app/declarativeimports/contextmenulayerquickitem.cpp:400
+#, kde-format
+msgctxt "%1 is the name of the containment"
+msgid "%1 Options"
+msgstr "Επιλογές του %1"
+
+#: app/indicator/factory.cpp:284
+#, kde-format
+msgid "Failed to import indicator"
+msgstr "Αποτυχία εισαγωγής ένδειξης"
+
+#: app/indicator/factory.cpp:290
+#, fuzzy, kde-format
+#| msgctxt "indicator_name, imported updated"
+#| msgid "%0 indicator updated successfully"
+msgctxt "indicator_name, imported updated"
+msgid "%1 indicator updated successfully"
+msgstr "%0 ένδειξη ενημερώθηκε επιτυχώς"
+
+#: app/indicator/factory.cpp:291
+#, fuzzy, kde-format
+#| msgctxt "indicator_name, imported success"
+#| msgid "%0 indicator installed successfully"
+msgctxt "indicator_name, imported success"
+msgid "%1 indicator installed successfully"
+msgstr "%0 ένδειξη εγκαταστάθηκε επιτυχώς"
+
+#: app/indicator/factory.cpp:371
+#, fuzzy, kde-format
+#| msgid "Remove Indicator"
+msgid "Remove Indicator Confirmation"
+msgstr "Αφαίρεση ένδειξης"
+
+#: app/indicator/factory.cpp:380
+#, fuzzy, kde-format
+#| msgid "Do you want to remove <b>%0</b> indicator from your system?"
+msgid "Do you want to remove completely <b>%1</b> indicator from your system?"
+msgstr "Θέλετε να αφαιρέσετε την <b>%0</b> ένδειξη από το σύστημά σας;"
+
+#: app/indicator/factory.cpp:390
+#, fuzzy, kde-format
+#| msgctxt "indicator_name, removed success"
+#| msgid "<b>%0</b> indicator removed successfully"
+msgctxt "indicator_name, removed success"
+msgid "<b>%1</b> indicator removed successfully"
+msgstr "Επιτυχής αφίρεσης της <b>%0</b> ένδειξης"
+
+#: app/lattecorona.cpp:1130 app/lattecorona.cpp:1153
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgid "The layout cannot be imported from file :: "
+msgstr "Δεν μπορεί να γίνει εισαγωγή του προφίλ"
+
+#: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
+#: app/layouts/manager.cpp:78 app/layouts/manager.cpp:85
+#: app/layouts/manager.cpp:97
+#, kde-format
+msgid "My Layout"
+msgstr "Η διάταξή μου"
+
+#: app/layouts/importer.cpp:64
+#, kde-format
+msgid "Alternative"
+msgstr "Εναλλακτικό"
+
+#: app/layouts/importer.cpp:324
+#, kde-format
+msgctxt "import/export config"
+msgid "The extracted file could not be copied!!!"
+msgstr "Το εξαχθέν αρχείο δεν αντιγράφηκε!!!"
+
+#: app/layouts/importer.cpp:329
+#, kde-format
+msgctxt "import/export config"
+msgid "The file has a wrong format!!!"
+msgstr "Το αρχείο δεν έχει την απαιτούμενη μορφή!!!"
+
+#: app/layouts/importer.cpp:335
+#, kde-format
+msgctxt "import/export config"
+msgid "The temp directory could not be created!!!"
+msgstr "Δεν μπόρεσε να δημιουργηθεί ο προσωρινός φάκελος!!!"
+
+#: app/layouts/storage.cpp:49
+#, fuzzy, kde-format
+#| msgid "Different applets with same id ::: "
+msgid "Different Applets With Same Id"
+msgstr "Διαφορετικές μικροεφαρμογές με ίδια ταυτότητα ::: "
+
+#: app/layouts/storage.cpp:50
+#, fuzzy, kde-format
+#| msgid "Orphan Systrays:"
+msgid "Orphaned Parent Applet Of Subcontainment"
+msgstr "Ορφανά πλαίσια συστήματος"
+
+#: app/layouts/storage.cpp:51
+#, fuzzy, kde-format
+#| msgid "Different applets with same id ::: "
+msgid "Different Applet And Containment With Same Id"
+msgstr "Διαφορετικές μικροεφαρμογές με ίδια ταυτότητα ::: "
+
+#: app/layouts/storage.cpp:52
+#, fuzzy, kde-format
+#| msgid "Orphan Systrays:"
+msgid "Orphaned Subcontainment"
+msgstr "Ορφανά πλαίσια συστήματος"
+
+#: app/layouts/synchronizer.cpp:1012
+#, fuzzy, kde-format
+#| msgid "Activating layout: <b>%0</b> ..."
+msgid "Activating layout: <b>%2</b> ..."
+msgid_plural "Activating layouts: <b>%2</b> ..."
+msgstr[0] "Ενεργοποίηση προφίλ: <b>%0</b> ..."
+msgstr[1] "Ενεργοποίηση προφίλ: <b>%0</b> ..."
+
+#: app/main.cpp:98
+#, kde-format
+msgctxt "command line"
+msgid "Replace the current Latte instance."
+msgstr "Αντικατάσταση της τρέχουσας εφαρμογής Latte."
+
+#: app/main.cpp:99
+#, kde-format
+msgctxt "command line"
+msgid "Show the debugging messages on stdout."
+msgstr "Εμφάνιση των μηνυμάτων αποσφαλμάτωσης στην τρέχουσα έξοδο."
+
+#: app/main.cpp:100
+#, kde-format
+msgctxt "command line"
+msgid "Clear qml cache. It can be useful after system upgrades."
+msgstr ""
+"Καθαρισμός qml μνήμης. Μπορεί να είναι χρήσιμη μετά από αναβαθμίσεις του "
+"συστήματος."
+
+#: app/main.cpp:101
+#, fuzzy, kde-format
+#| msgid "Enable autostart during startup"
+msgctxt "command line"
+msgid "Enable autostart for this application"
+msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
+
+#: app/main.cpp:102
+#, kde-format
+msgctxt "command line"
+msgid "Disable autostart for this application"
+msgstr ""
+
+#: app/main.cpp:103
+#, kde-format
+msgctxt "command line"
+msgid "Import and load default layout on startup."
+msgstr ""
+"Εισαγωγή και ενεργοποίηση του προκαθορισμένου προφίλ κατά την εκκίνηση."
+
+#: app/main.cpp:104
+#, kde-format
+msgctxt "command line"
+msgid "Print available layouts"
+msgstr "Εμφάνιση διαθέσιμων προφίλ"
+
+#: app/main.cpp:105
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Print available layouts"
+msgctxt "command line"
+msgid "Print available dock templates"
+msgstr "Εμφάνιση διαθέσιμων προφίλ"
+
+#: app/main.cpp:106
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Print available layouts"
+msgctxt "command line"
+msgid "Print available layout templates"
+msgstr "Εμφάνιση διαθέσιμων προφίλ"
+
+#: app/main.cpp:107
+#, kde-format
+msgctxt "command line"
+msgid "Load specific layout on startup."
+msgstr "Ενεργοποίηση συγκεκριμένου προφίλ κατά την εκκίνηση."
+
+#: app/main.cpp:107
+#, kde-format
+msgctxt "command line: load"
+msgid "layout_name"
+msgstr "όνομα_προφίλ"
+
+#: app/main.cpp:108
+#, kde-format
+msgctxt "command line"
+msgid "Import and load a layout."
+msgstr "Εισαγωγή και ενεργοποίηση ενός προφίλ."
+
+#: app/main.cpp:108
+#, kde-format
+msgctxt "command line: import"
+msgid "absolute_filepath"
+msgstr ""
+
+#: app/main.cpp:109
+#, kde-format
+msgctxt "command line"
+msgid "Suggested layout name when importing a layout file"
+msgstr ""
+
+#: app/main.cpp:109
+#, kde-format
+msgctxt "command line: import"
+msgid "suggested_name"
+msgstr ""
+
+#: app/main.cpp:110
+#, kde-format
+msgctxt "command line"
+msgid "Import full configuration."
+msgstr "Εισαγωγή αρχείου πλήρων ρυθμίσεων."
+
+#: app/main.cpp:110
+#, kde-format
+msgctxt "command line: import"
+msgid "file_name"
+msgstr "όνομα_αρχείου"
+
+#: app/main.cpp:111
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "command line"
+msgid "Add Dock/Panel"
+msgstr "Docks/Πίνακες"
+
+#: app/main.cpp:111
+#, fuzzy, kde-format
+#| msgctxt "command line: load"
+#| msgid "layout_name"
+msgctxt "command line: add"
+msgid "template_name"
+msgstr "όνομα_προφίλ"
+
+#: app/main.cpp:112
+#, kde-format
+msgctxt "command line"
+msgid "Single layout memory mode. Only one layout is active at any case."
+msgstr ""
+"Μοναδικό προφίλ στη μνήμη. Μόνο ένα προφίλ είναι ενεργό κάθε φορά για όλες "
+"τις περιπτώσεις."
+
+#: app/main.cpp:113
+#, kde-format
+msgctxt "command line"
+msgid ""
+"Multiple layouts memory mode. Multiple layouts can be active at any time "
+"based on Activities running."
+msgstr ""
+"Πολλαπλά προφίλ στη μνήμη. Πολλαπλά προφίλ μπορεί να είναι ενεργά κάθε φορά "
+"με βάση τις Δραστηριότητες που τρέχουν."
+
+#: app/main.cpp:165
+#, kde-format
+msgctxt "command line: debug-text"
+msgid "filter_debug_text"
+msgstr ""
+
+#: app/main.cpp:181
+#, kde-format
+msgctxt "command line: log-filepath"
+msgid "filter_log_filepath"
+msgstr ""
+
+#: app/main.cpp:202
+#, kde-format
+msgid "Available layouts that can be used to start Latte:"
+msgstr "Διαθέσιμα προφίλ για την εκκίνηση του Latte:"
+
+#: app/main.cpp:208
+#, kde-format
+msgid "There are no available layouts, during startup Default will be used."
+msgstr ""
+"Δεν υπάρχουν διαθέσιμα προφίλ, το Προκαθορισμένο θα χρησιμοποιηθεί κατά την "
+"εκκίνηση."
+
+#: app/main.cpp:220
+#, fuzzy, kde-format
+#| msgid "Available layouts that can be used to start Latte:"
+msgid "Available layout templates found in your system:"
+msgstr "Διαθέσιμα προφίλ για την εκκίνηση του Latte:"
+
+#: app/main.cpp:226
+#, fuzzy, kde-format
+#| msgid "There are no available layouts, during startup Default will be used."
+msgid "There are no available layout templates in your system."
+msgstr ""
+"Δεν υπάρχουν διαθέσιμα προφίλ, το Προκαθορισμένο θα χρησιμοποιηθεί κατά την "
+"εκκίνηση."
+
+#: app/main.cpp:238
+#, kde-format
+msgid "Available dock templates found in your system:"
+msgstr ""
+
+#: app/main.cpp:244
+#, kde-format
+msgid "There are no available dock templates in your system."
+msgstr ""
+
+#: app/main.cpp:276
+#, kde-format
+msgctxt "layout missing"
+msgid "This layout doesn't exist in the system."
+msgstr "Αυτό το προφίλ δεν υπάρχει στο σύστημα."
+
+#: app/main.cpp:331
+#, kde-format
+msgid "An instance is already running!, use --replace to restart Latte"
+msgstr ""
+"Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του "
+"Latte"
+
+#: app/main.cpp:353
+#, kde-format
+msgid "The configuration cannot be imported"
+msgstr "Δεν μπορεί να γίνει εισαγωγή των ρυθμίσεων"
+
+#: app/main.cpp:365 app/main.cpp:393
+#, kde-format
+msgid "The layout cannot be imported"
+msgstr "Δεν μπορεί να γίνει εισαγωγή του προφίλ"
+
+#: app/main.cpp:505
+#, kde-format
+msgid ""
+"Latte is a dock based on plasma frameworks that provides an elegant and "
+"intuitive experience for your tasks and plasmoids. It animates its contents "
+"by using parabolic zoom effect and tries to be there only when it is "
+"needed.\n"
+"\n"
+"\"Art in Coffee\""
+msgstr ""
+"Το Latte είναι ένας πίνακας εφαρμογών βασισμένος στα plasma frameworks που "
+"εστιάζει στην καλαισθησία και παρέχει ένα όμορφο περιβάλλον για τις εργασίες "
+"και τα γραφικά συστατικά σας. Χρησιμοποιεί ένα παραβολικό εφέ έτσι ώστε να "
+"απεικονίσει τα περιεχόμενα του και προσπαθεί να είναι εκεί μόνο όταν το "
+"χρειάζεστε.\n"
+"\n"
+"\"Τέχνη στον Καφέ\""
+
+#: app/package/lattepackage.cpp:34
+#, kde-format
+msgid "Latte Dock defaults"
+msgstr "Προκαθορισμένες ρυθμίσεις Latte"
+
+#: app/package/lattepackage.cpp:35
+#, kde-format
+msgid "Latte Dock panel"
+msgstr "Πίνακας Latte"
+
+#: app/package/lattepackage.cpp:36
+#, fuzzy, kde-format
+#| msgid "Show Plasma Widget Explorer"
+msgid "Widget Explorer"
+msgstr "Εμφάνιση Πίνακα Γραφικών Συστατικών"
+
+#: app/package/lattepackage.cpp:38
+#, kde-format
+msgid "Dock configuration UI"
+msgstr "Παράθυρο διαμόρφωσης"
+
+#: app/package/lattepackage.cpp:39
+#, kde-format
+msgid "Dock secondary configuration UI"
+msgstr "Διεπαφή δευτερευόντων ρυθμίσεων"
+
+#: app/package/lattepackage.cpp:40
+#, fuzzy, kde-format
+#| msgid "Dock configuration UI"
+msgid "Dock canvas configuration UI"
+msgstr "Παράθυρο διαμόρφωσης"
+
+#: app/package/lattepackage.cpp:41
+#, kde-format
+msgid "Config model"
+msgstr "Μοντέλο διαμόρφωσης"
+
+#: app/package/lattepackage.cpp:42
+#, kde-format
+msgid "Splitter"
+msgstr "Διαχωριστικό"
+
+#: app/package/lattepackage.cpp:43
+#, kde-format
+msgid "Latte Trademark"
+msgstr "Λογότυπο Latte"
+
+#: app/package/lattepackage.cpp:44
+#, fuzzy, kde-format
+#| msgid "Latte Trademark"
+msgid "Latte Trademark Icon"
+msgstr "Λογότυπο Latte"
+
+#: app/package/lattepackage.cpp:45
+#, kde-format
+msgid "Info View Window"
+msgstr "Παράθυρο Πληροφοριών"
+
+#: app/package/lattepackage.cpp:47
+#, kde-format
+msgid "default layout file"
+msgstr "αρχείο προκαθορισμένου προφίλ"
+
+#: app/package/lattepackage.cpp:48
+#, kde-format
+msgid "plasma layout file"
+msgstr "αρχείο προφίλ plasma"
+
+#: app/package/lattepackage.cpp:49
+#, kde-format
+msgid "unity layout file"
+msgstr "αρχείο προφίλ unity"
+
+#: app/package/lattepackage.cpp:50
+#, kde-format
+msgid "extended layout file"
+msgstr "αρχείο εκτεταμένου προφίλ"
+
+#: app/package/lattepackage.cpp:52
+#, kde-format
+msgid "system templates directory"
+msgstr ""
+
+#: app/package/lattepackage.cpp:54
+#, kde-format
+msgid "default preset file"
+msgstr "αρχείο προκαθορισμένου προφίλ"
+
+#: app/package/lattepackage.cpp:55
+#, kde-format
+msgid "plasma preset file"
+msgstr "αρχείο προφίλ plasma"
+
+#: app/package/lattepackage.cpp:56
+#, kde-format
+msgid "unity preset file"
+msgstr "αρχείο προφίλ unity"
+
+#: app/package/lattepackage.cpp:57
+#, kde-format
+msgid "extended preset file"
+msgstr "αρχείο εκτεταμένου προφίλ"
+
+#: app/package/lattepackage.cpp:58
+#, kde-format
+msgid "multiple layouts hidden file"
+msgstr "κρυμμένο αρχείο πολλαπλών προφίλ"
+
+#: app/package/lattepackage.cpp:61
+#, kde-format
+msgid "QML component that shows an applet in a popup"
+msgstr ""
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:26
+#, kde-format
+msgid "Configuration Definitions"
+msgstr "Ορισμοί διαμόρφωσης"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:27
+#, kde-format
+msgid "User Interface"
+msgstr "Περιβάλλον χρήστη"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:28
+#, kde-format
+msgid "Data Files"
+msgstr "Αρχεία δεδομένων"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:29
+#, kde-format
+msgid "Executable Scripts"
+msgstr "Εκτελέσιμα σενάρια"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:30
+#, kde-format
+msgid "Translations"
+msgstr "Μεταφράσεις"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
+#: app/settings/actionsdialog/actionsdialog.ui:14
+#, fuzzy, kde-format
+#| msgid "Extra Actions"
+msgid "Context Menu Actions"
+msgstr "Πρόσθετες Ενέργειες"
+
+#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:24
+#, kde-format
+msgctxt "actions shown only in edit mode"
+msgid "Accessible only in edit mode:"
+msgstr ""
+
+#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:27
+#, kde-format
+msgctxt "actions shown always"
+msgid "Accessible always:"
+msgstr ""
+
+#: app/settings/actionsdialog/actionshandler.cpp:61
+#, kde-format
+msgid "Layouts"
+msgstr "Προφίλ"
+
+#: app/settings/actionsdialog/actionshandler.cpp:68
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgctxt "global settings window"
+msgid "Configure Latte..."
+msgstr "Διαμόρφωση..."
+
+#: app/settings/actionsdialog/actionshandler.cpp:75
+#, fuzzy, kde-format
+#| msgid "&Quit Latte"
+msgctxt "quit application"
+msgid "Quit Latte"
+msgstr "Έ&ξοδος από το Latte"
+
+#: app/settings/actionsdialog/actionshandler.cpp:82
+#, kde-format
+msgid " --- separator --- "
+msgstr ""
+
+#: app/settings/actionsdialog/actionshandler.cpp:89
+#, fuzzy, kde-format
+#| msgid "Add Widgets..."
+msgid "Add Widgets..."
+msgstr "Προσθήκη συστατικών..."
+
+#: app/settings/actionsdialog/actionshandler.cpp:96
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgid "Add Dock/Panel"
+msgstr "Docks/Πίνακες"
+
+#: app/settings/actionsdialog/actionshandler.cpp:103
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Move Dock/Panel To Layout"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/actionsdialog/actionshandler.cpp:110
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Dock/Panel as Template..."
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/actionsdialog/actionshandler.cpp:117
+#, fuzzy, kde-format
+#| msgid "Empty Now Dock Panel"
+msgid "Remove Dock/Panel"
+msgstr "Κενός Now Dock"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:35
+#, kde-format
+msgid "Blue"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:36
+#, kde-format
+msgid "Brown"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:37
+#, kde-format
+msgid "Dark Grey"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:38
+#, kde-format
+msgid "Gold"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:39
+#, fuzzy, kde-format
+#| msgid "Screen"
+msgid "Green"
+msgstr "Οθόνη"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:40
+#, kde-format
+msgid "Light Sky Blue"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:41
+#, kde-format
+msgid "Orange"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:42
+#, kde-format
+msgid "Pink"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:43
+#, kde-format
+msgid "Purple"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:44
+#, kde-format
+msgid "Red"
+msgstr ""
+
+#: app/settings/detailsdialog/colorsmodel.cpp:45
+#, kde-format
+msgid "Wheat"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
+#: app/settings/detailsdialog/detailsdialog.ui:14
+#, kde-format
+msgid "Details"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:57
+#: app/settings/settingsdialog/settingsdialog.ui:869
+#, fuzzy, kde-format
+#| msgid "Behavior"
+msgid "Behavior:"
+msgstr "Συμπεριφορά"
+
+#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
+#: app/settings/detailsdialog/detailsdialog.ui:66
+#, fuzzy, kde-format
+#| msgid "Hide background shadow for maximized windows"
+msgid "Hide window borders for maximized windows"
+msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
+
+#. i18n: ectx: property (text), widget (QLabel, iconLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:115
+#, kde-format
+msgid "Icon:"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
+#: app/settings/detailsdialog/detailsdialog.ui:157
+#, fuzzy, kde-format
+#| msgid "Window actions in the context menu"
+msgid "Show in layouts context menu when possible"
+msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
+
+#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:182
+#, fuzzy, kde-format
+#| msgid "Margins"
+msgid "PopUp Margin:"
+msgstr "Περιθώρια"
+
+#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:201
+#, fuzzy, kde-format
+#| msgid "Background"
+msgid "Background..."
+msgstr "Φόντο"
+
+#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:214
+#, fuzzy, kde-format
+#| msgid "Custom text color..."
+msgid "Text Color..."
+msgstr "Προσαρμοσμένο χρώμα κειμένου..."
+
+#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:388
+#: app/settings/viewsdialog/viewsdialog.ui:47
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgid "Layout:"
+msgstr "Προφίλ"
+
+#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:418
+#, fuzzy, kde-format
+#| msgid "Background"
+msgid "Background:"
+msgstr "Φόντο"
+
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:507
+#, fuzzy, kde-format
+#| msgid "Disabled"
+msgid "disabled"
+msgstr "Ανενεργό"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:510
+#, kde-format
+msgid " px."
+msgstr " px."
+
+#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:678
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgid "Custom Colors:"
+msgstr "Χρώματα"
+
+#: app/settings/detailsdialog/detailshandler.cpp:446
+#, kde-format
+msgctxt "<layout name> Details"
+msgid "%1 Details"
+msgstr ""
+
+#: app/settings/detailsdialog/detailshandler.cpp:453
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
+"changes or discard them?"
+msgstr ""
+
+#: app/settings/detailsdialog/patternwidget.cpp:48
+#, kde-format
+msgid "Sample Text"
+msgstr ""
+
+#: app/settings/detailsdialog/schemesmodel.cpp:123
+#, fuzzy, kde-format
+#| msgid "Custom text color..."
+msgid "System Colors"
+msgstr "Προσαρμοσμένο χρώμα κειμένου..."
+
+#: app/settings/exporttemplatedialog/appletsmodel.cpp:225
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgctxt "column for current applets"
+msgid "Current Applets"
+msgstr "Ενεργό παράθυρο"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export your selected layout as template"
+msgstr "Εξαγωγή επιλεγμένου προφίλ ή πλήρων ρυθμίσεων σε ένα αρχείο"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:48
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export your selected dock or panel as template"
+msgstr "Εξαγωγή επιλεγμένου προφίλ ή πλήρων ρυθμίσεων σε ένα αρχείο"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:62
+#, kde-format
+msgid "Export your selected view as template"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:104
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export template"
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:129
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export template"
+msgid "Export Again"
+msgstr "Εξαγωγή"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
+#, kde-format
+msgid "Select All"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
+#: app/settings/screensdialog/screensdialog.ui:58
+#, kde-format
+msgid "Deselect All"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
+#, fuzzy, kde-format
+#| msgid "File"
+msgid "File:"
+msgstr "Αρχείο"
+
+#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
+#, kde-format
+msgid "Choose..."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
+#, kde-format
+msgid ""
+"<b>Select only</b> applets that you would like to keep their settings in the "
+"extracted template. Make sure to not include any applets that contain "
+"personal data such as email credentials, calendar etc. "
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Layout Template"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:63
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Dock/Panel Template"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
+#, fuzzy, kde-format
+#| msgctxt "dock type"
+#| msgid "Dock"
+msgid "Dock"
+msgstr "Μπάρα"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
+#, fuzzy, kde-format
+#| msgctxt "panel type"
+#| msgid "Panel"
+msgid "Panel"
+msgstr "Πίνακας"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:78
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export %1 Template"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Choose Layout Template file"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
+#, kde-format
+msgid "Choose View Template file"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:151
+#, kde-format
+msgctxt "choose file"
+msgid "Choose"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "layout template"
+msgid "Latte Dock Layout Template file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "view template"
+msgid "Latte Dock View Template file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:176
+#, kde-format
+msgid ""
+"<i>%1</i> does not end with <i>.layout.latte</i> extension. Selected file "
+"<b>rejected</b>."
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:186
+#, kde-format
+msgid ""
+"<i>%1</i> does not end with <i>.view.latte</i> extension. Selected file "
+"<b>rejected</b>."
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:213
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:template export fail"
+msgid "Template <b>%1</b> export <b>failed</b>..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:222
+#: app/settings/settingsdialog/settingsdialog.cpp:348
+#: app/settings/settingsdialog/tablayoutshandler.cpp:669
+#: app/settings/settingsdialog/tablayoutshandler.cpp:694
+#: app/settings/viewsdialog/viewshandler.cpp:376
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Open location"
+msgid "Open Location..."
+msgstr "Άνοιγμα τοποθεσίας"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:template export success"
+msgid "Template <b>%1</b> export succeeded..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
+#, kde-format
+msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
+#, kde-format
+msgid "Overwrite File?"
+msgstr ""
+
+#: app/settings/generic/genericdialog.cpp:69
+#, kde-format
+msgid ""
+"The settings have changed.<br/>Do you want to apply the changes or discard "
+"them?"
+msgstr ""
+
+#: app/settings/generic/genericdialog.cpp:73
+#, fuzzy, kde-format
+#| msgctxt "latte settings window"
+#| msgid "Settings"
+msgid "Apply Settings"
+msgstr "Ρυθμίσεις"
+
+#: app/settings/generic/genericdialog.cpp:107
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:602
+#, kde-format
+msgid "Hide"
+msgstr "Απόκρυψη"
+
+#: app/settings/screensdialog/screensdialog.cpp:69
+#, fuzzy, kde-format
+#| msgid "Remove"
+msgctxt "remove selected screens"
+msgid "Remove Now"
+msgstr "Αφαίρεση"
+
+#: app/settings/screensdialog/screensdialog.cpp:71
+#, fuzzy, kde-format
+#| msgid "Remove selected layout"
+msgid "Remove selected screen references"
+msgstr "Αφαίρεση επιλεγμένου προφίλ"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
+#: app/settings/screensdialog/screensdialog.ui:14
+#, fuzzy, kde-format
+#| msgid "Screen"
+msgid "Screens"
+msgstr "Οθόνη"
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/screensdialog/screensdialog.ui:67
+#, kde-format
+msgid ""
+"<b>Select only</b> screens that are obsolete and you would like to remove "
+"their reference. Active screens or screens used in your layouts can not be "
+"removed."
+msgstr ""
+
+#: app/settings/screensdialog/screenshandler.cpp:133
+#, kde-format
+msgid ""
+"You are going to <b>remove %2</b> reference completely.<br/>Would you like "
+"to continue?"
+msgid_plural ""
+"You are going to <b>remove %2</b> references completely.<br/>Would you like "
+"to continue?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/screensdialog/screenshandler.cpp:137
+#: app/settings/viewsdialog/viewshandler.cpp:527
+#, kde-format
+msgid "Approve Removal"
+msgstr ""
+
+#: app/settings/screensdialog/screensmodel.cpp:238
+#, fuzzy, kde-format
+#| msgid "Screen"
+msgctxt "column for screens"
+msgid "Screens"
+msgstr "Οθόνη"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:599
+#, kde-format
+msgctxt "settings:counted layout with errors"
+msgid "<b>Error:</b> There is <b>1 layout</b> that has reported errors."
+msgid_plural ""
+"<b>Error:</b> There are <b>%1 layouts</b> that have reported errors."
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:612
+#, kde-format
+msgctxt "settings:counted layout with warnings"
+msgid "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."
+msgid_plural ""
+"<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings."
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:622
+#, kde-format
+msgid "Examine..."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:640
+#, kde-format
+msgctxt "settings:named layout with warnings"
+msgid ""
+"<b>Warning: %2</b> layout has reported <b>1 warning</b> that need your "
+"attention."
+msgid_plural ""
+"<b>Warning: %2</b> layout has reported <b>%1 warnings</b> that need your "
+"attention."
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:650
+#, kde-format
+msgctxt "settings:named layout with errors"
+msgid ""
+"<b>Error: %2</b> layout has reported <b>1 error</b> that you need to repair."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:660
+#, kde-format
+msgctxt "errors count"
+msgid "1 error"
+msgid_plural "%1 errors"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:664
+#, fuzzy, kde-format
+#| msgid "Layout Warning"
+msgctxt "warnings count"
+msgid "1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "Προειδοποίηση Προφίλ"
+msgstr[1] "Προειδοποίηση Προφίλ"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:669
+#, kde-format
+msgctxt "settings: named layout with %2 errors and %3 warnings"
+msgid ""
+"<b>Error: %1</b> layout has reported <b>%2</b> and <b>%3</b> that you need "
+"to repair."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:788
+#, kde-format
+msgid "Dropped Raw Layout"
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:876
+#, kde-format
+msgctxt "layout"
+msgid "Alternative"
+msgstr "Εναλλακτικό"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:884
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgid "Layout <b>%2</b> imported successfully..."
+msgid_plural "Layouts <b>%2</b> imported successfully..."
+msgstr[0] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+msgstr[1] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:1097
+#, kde-format
+msgctxt "settings: layout name used"
+msgid "Layout <b>%1</b> is already used, please provide a different name..."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:338
+#, kde-format
+msgctxt "column for layout name"
+msgid "Name"
+msgstr "Όνομα"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:345
+#, kde-format
+msgctxt "column for layout to show in menu"
+msgid "In Menu"
+msgstr "Μενού"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:352
+#, kde-format
+msgctxt "column for layout to hide borders for maximized windows"
+msgid "Borderless"
+msgstr "Χωρίς Περιγράμματα"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:359
+#, kde-format
+msgctxt "column for layout to show which activities is assigned to"
+msgid "Activities"
+msgstr "Δραστηριότητες"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:901
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "All Activities"
+msgstr "Δραστηριότητες"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:908
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "Free Activities"
+msgstr "Δραστηριότητες"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:915
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Current Activity"
+msgstr "Ενεργό παράθυρο"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:29
+#: app/settings/settingsdialog/layoutstableview.cpp:67
+#, fuzzy, kde-format
+#| msgid "plasma layout file"
+msgid "Drop layout files here..."
+msgstr "αρχείο προφίλ plasma"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:69
+#, fuzzy, kde-format
+#| msgid "plasma layout file"
+msgid "Drop raw layout text here..."
+msgstr "αρχείο προφίλ plasma"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:71
+#, kde-format
+msgid "Unsupported data!"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:126
+#, kde-format
+msgid "File"
+msgstr "Αρχείο"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:130
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Import configuration"
+msgid "Import Configuration..."
+msgstr "Εισαγωγή ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:133
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Import your full configuration from previous backup"
+msgstr "Εισαγωγή ενός προφίλ ή ενός αρχείου πλήρων ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:136
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Export configuration"
+msgid "Export Configuration..."
+msgstr "Εξαγωγή ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:139
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Export your full configuration to create backup"
+msgstr "Εισαγωγή ενός προφίλ ή ενός αρχείου πλήρων ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:144
+#, fuzzy, kde-format
+#| msgid "Sc&reens..."
+msgid "&Screens..."
+msgstr "Οθό&νες..."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:147
+#, kde-format
+msgid "Examing your screens and remove deprecated references"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:150
+#, kde-format
+msgid "&Quit Latte"
+msgstr "Έ&ξοδος από το Latte"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:258
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Import full configuration."
+msgctxt "import full configuration"
+msgid "Import Full Configuration"
+msgstr "Εισαγωγή αρχείου πλήρων ρυθμίσεων."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:263
+#: app/settings/settingsdialog/settingsdialog.cpp:292
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgctxt "import full configuration"
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:269
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Latte Dock Full Configuration file v0.2"
+msgctxt "import full configuration"
+msgid "Latte Dock Full Configuration file"
+msgstr "Αρχείο πλήρων ρυθμίσεων Latte εκ.0.2"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:282
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Import full configuration."
+msgid "Import: Full Configuration File"
+msgstr "Εισαγωγή αρχείου πλήρων ρυθμίσεων."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:283
+#, kde-format
+msgid ""
+"You are importing full configuration file. Be careful, all <b>current "
+"settings and layouts will be lost</b>. It is advised to <b>take backup</b> "
+"first!<br>"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:287
+#, fuzzy, kde-format
+#| msgid "Backup"
+msgctxt "export full configuration"
+msgid "Take Backup..."
+msgstr "Αντίγραφα ασφαλείας"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:289
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Export your full configuration in order to take backup"
+msgstr "Εισαγωγή ενός προφίλ ή ενός αρχείου πλήρων ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:294
+#, kde-format
+msgid ""
+"Import your full configuration and drop all your current settings and layouts"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:322
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Export configuration"
+msgid "Export Full Configuration"
+msgstr "Εξαγωγή ρυθμίσεων"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:326
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export full configuration"
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:332
+#, kde-format
+msgctxt "export full configuration"
+msgid "Latte Dock Full Configuration file v0.2"
+msgstr "Αρχείο πλήρων ρυθμίσεων Latte εκ.0.2"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:342
+#: app/settings/settingsdialog/tablayoutshandler.cpp:688
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgid "Full configuration export <b>failed</b>..."
+msgstr "Επιτυχής εξαγωγή πλήρους διαμόρφωσης"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:362
+#: app/settings/settingsdialog/tablayoutshandler.cpp:708
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgid "Full configuration export succeeded..."
+msgstr "Επιτυχής εξαγωγή πλήρους διαμόρφωσης"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:477
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
+"changes or discard them?"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
+#: app/settings/settingsdialog/settingsdialog.ui:26
+#, kde-format
+msgctxt "latte settings window"
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
+#: app/settings/settingsdialog/settingsdialog.ui:36
+#, kde-format
+msgid "Layouts Editor"
+msgstr "Επεξεργαστής Προφίλ"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:67
+#, fuzzy, kde-format
+#| msgid "Only one layout can be present in memory at all cases"
+msgid "Only one layout is applied at all times for all activities"
+msgstr "Μόνο ένα προφίλ μπορεί να βρίσκεται στη μνήμη για όλες τις περιπτώσεις"
+
+#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:70
+#, fuzzy, kde-format
+#| msgctxt "import only the layouts"
+#| msgid "Only Layouts"
+msgctxt "single layout"
+msgid "Single layout at all times"
+msgstr "Μόνο Προφίλ"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:84
+#, fuzzy, kde-format
+#| msgid ""
+#| "Multiple layouts can be present and active in memory at the same time"
+msgid ""
+"Multiple layouts can be present and active in memory at the same time for "
+"different activities"
+msgstr "Πολλαπλά προφίλ μπορεί να είναι ταυτόχρονα ενεργά στη μνήμη"
+
+#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:87
+#, fuzzy, kde-format
+#| msgid "multiple layouts hidden file"
+msgctxt "multiple layouts"
+msgid "Multiple layouts based on activities"
+msgstr "κρυμμένο αρχείο πολλαπλών προφίλ"
+
+#. i18n: ectx: property (text), widget (QPushButton, switchButton)
+#: app/settings/settingsdialog/settingsdialog.ui:177
+#, fuzzy, kde-format
+#| msgctxt "switch to layout"
+#| msgid "Switch"
+msgid "Switch"
+msgstr "Εναλλαγή"
+
+#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
+#: app/settings/settingsdialog/settingsdialog.ui:191
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "Activities..."
+msgstr "Δραστηριότητες"
+
+#. i18n: ectx: property (text), widget (QPushButton, newButton)
+#: app/settings/settingsdialog/settingsdialog.ui:247
+#, fuzzy, kde-format
+#| msgctxt "new layout"
+#| msgid "New"
+msgid "New"
+msgstr "Νέο"
+
+#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
+#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
+#: app/settings/settingsdialog/settingsdialog.ui:258
+#: app/settings/viewsdialog/viewsdialog.ui:148
+#, fuzzy, kde-format
+#| msgid "Latte Dock"
+msgid "Duplicate"
+msgstr "Πίνακας Latte"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeButton)
+#: app/settings/settingsdialog/settingsdialog.ui:272
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
+#: app/settings/settingsdialog/settingsdialog.ui:299
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Ενεργό"
+
+#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
+#: app/settings/settingsdialog/settingsdialog.ui:310
+#, kde-format
+msgid "Read Only"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
+#: app/settings/settingsdialog/settingsdialog.ui:356
+#, kde-format
+msgid "Details..."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, importButton)
+#: app/settings/settingsdialog/settingsdialog.ui:438
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgid "Import..."
+msgstr "Εισαγωγή"
+
+#. i18n: ectx: property (text), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:452
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgid "Export..."
+msgstr "Εξαγωγή"
+
+#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:459
+#, kde-format
+msgid "Ctrl+S"
+msgstr ""
+
+#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
+#: app/settings/settingsdialog/settingsdialog.ui:499
+#, kde-format
+msgid "Preferences"
+msgstr "Προτιμήσεις"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:540
+#, kde-format
+msgid "Provide visual feedback when layouts are activated automatically"
+msgstr "Οπτικό μήνυμα όταν κάποια προφίλ ενεργοποιούνται αυτόματα"
+
+#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:543
+#, kde-format
+msgid "Show informative window for layouts automatic activation"
+msgstr "Εμφάνιση πληροφοριών για αυτόματη ενεργοποίηση προφίλ"
+
+#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:571
+#, fuzzy, kde-format
+#| msgid "Parabolic Effect"
+msgid "Parabolic Effect:"
+msgstr "Παραβολικό Εφέ"
+
+#. i18n: ectx: property (text), widget (QToolButton, smallParabolicBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:603
+#, kde-format
+msgctxt "small spread"
+msgid "Small"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:631
+#, fuzzy, kde-format
+#| msgctxt "medium sensitivity"
+#| msgid "Medium"
+msgctxt "medium spread"
+msgid "Medium"
+msgstr "Μέτρια"
+
+#. i18n: ectx: property (text), widget (QToolButton, largeParabolicBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:659
+#, kde-format
+msgctxt "large spread"
+msgid "Large"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:669
+#, kde-format
+msgid "spread"
+msgstr ""
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:726
+#, kde-format
+msgid "Start the application automatically after each relogin"
+msgstr "Εκκίνηση της εφαρμογής αυτόματα σε κάθε επανασύνδεση"
+
+#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:729
+#, kde-format
+msgid "Enable autostart during startup"
+msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:752
+#, kde-format
+msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+msgstr ""
+"Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων για "
+"μικροεφαρμογές και εργασίες"
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:755
+#, kde-format
+msgid "Press and Hold ⌘ to show shortcuts badges"
+msgstr "Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων"
+
+#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:762
+#, kde-format
+msgid "Use 3D style for notification and shortcut badges"
+msgstr "Χρήση τρισδιάσττου στιλ για σήματα ειδοποιήσεων και συντομεύσεων"
+
+#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:841
+#, kde-format
+msgid "Inform Plasma desktop for available desktop space"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:912
+#, kde-format
+msgid "Context Menu:"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:936
+#, fuzzy, kde-format
+#| msgid "Actions"
+msgid "Actions:"
+msgstr "Ενέργειες"
+
+#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:968
+#, fuzzy, kde-format
+#| msgid "Actions"
+msgid "Actions..."
+msgstr "Ενέργειες"
+
+#. i18n: ectx: property (text), widget (QLabel, screensLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1011
+#, fuzzy, kde-format
+#| msgid "Screen"
+msgid "Screens:"
+msgstr "Οθόνη"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
+#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1044
+#: app/settings/settingsdialog/settingsdialog.ui:1079
+#, kde-format
+msgid ""
+"Different hardware can have different delays during screen changes.\n"
+"This tracker is used in order to not lose any screen related update."
+msgstr ""
+"Διαφορετικό υλικό μπορεί να έχεις διαφορετικές καθυστερήσεις μεταξύ\n"
+"αλλαγών στις ρυθμίσεις οθονών. Αυτή η καθυστέρηση χρησιμοποιείται\n"
+"έτσι ώστε να μην χαθεί κάποια σχετική αλλαγή."
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1053
+#, kde-format
+msgid " ms."
+msgstr "ms."
+
+#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1082
+#, fuzzy, kde-format
+#| msgid "Raise on desktop change"
+msgid "reaction delay for changes"
+msgstr "Ανύψωση σε κάθε αλλαγή επιφάνειας εργασίας"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1107
+#, kde-format
+msgid ""
+"Activate support for borderless maximized windows between different layouts"
+msgstr ""
+"Ενεργοποίηση υπηρεσίας για μεγιστοποιημένα παράθυρα που έχουν ή δεν έχουν \n"
+"περιγράμματα για διαφορετικά προφίλ"
+
+#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1110
+#, kde-format
+msgid "Support borderless maximized windows in different layouts"
+msgstr "Υποστήριξη παραθύρων χωρίς περιγράμματα για διαφορετικά προφίλ"
+
+#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1132
+#, fuzzy, kde-format
+#| msgid "Appearance"
+msgid "Appearance:"
+msgstr "Εμφάνιση"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1179
+#, kde-format
+msgid ""
+"Forward ⌘ press from KWin to Latte in order to activate Application "
+"Launcher. It is suggested to disable that option if you remove Latte."
+msgstr ""
+"Να προωθείται η πίεση πλήκτρου από το KWin στο Latte για την ενεργοποίηση "
+"του εκτελεστή εφαρμογών. Προτείνεται να απενεργοποιήσετε αυτήν την επιλογή "
+"αν αφαιρέσετε το Latte."
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1182
+#, kde-format
+msgid "Press ⌘ to activate Application Launcher"
+msgstr "Πιέστε ⌘ για να ενεργοποιηθεί ο εκτελεστής εφαρμογών"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:112
+#, kde-format
+msgid "Layout"
+msgstr "Προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:116
+#, fuzzy, kde-format
+#| msgctxt "switch to layout"
+#| msgid "Switch"
+msgctxt "switch layout"
+msgid "Switch"
+msgstr "Εναλλαγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:117
+#, kde-format
+msgid "Switch to selected layout"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:123
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "&Activities"
+msgstr "Δραστηριότητες"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:124
+#, kde-format
+msgid "Show Plasma Activities manager"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:132
+#, kde-format
+msgctxt "new layout"
+msgid "&New"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:133
+#, kde-format
+msgid "New layout"
+msgstr "Νέο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:145
+#, fuzzy, kde-format
+#| msgid "Latte Dock"
+msgctxt "duplicate layout"
+msgid "&Duplicate"
+msgstr "Πίνακας Latte"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:146
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Duplicate selected layout"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:152
+#: app/settings/viewsdialog/viewshandler.cpp:91
+#, kde-format
+msgctxt "remove layout"
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:153
+#, kde-format
+msgid "Remove selected layout"
+msgstr "Αφαίρεση επιλεγμένου προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:162
+#, fuzzy, kde-format
+#| msgid "Enabled"
+msgid "Ena&bled"
+msgstr "Ενεργό"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:163
+#, kde-format
+msgid "Assign in activities in order to be activated through Plasma Activities"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:170
+#, kde-format
+msgctxt "read only layout"
+msgid "&Read Only"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:171
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Make selected layout read-only"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:178
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "layout docks / panels"
+msgid "Docks, &Panels..."
+msgstr "Docks/Πίνακες"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:179
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Show selected layouts docks and panels"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:185
+#, kde-format
+msgctxt "layout details"
+msgid "De&tails..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:186
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Show selected layout details"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:196
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgctxt "import layout"
+msgid "&Import"
+msgstr "Εισαγωγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:197
+#, kde-format
+msgid "Import layout from various resources"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:208
+#: app/settings/viewsdialog/viewshandler.cpp:108
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export layout"
+msgid "&Export"
+msgstr "Εξαγωγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:209
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export selected layout at your system"
+msgstr "Εξαγωγή επιλεγμένου προφίλ ή πλήρων ρυθμίσεων σε ένα αρχείο"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:229
+#, kde-format
+msgctxt "import layout"
+msgid "&Import From Local File..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:234
+#, kde-format
+msgctxt "download layout"
+msgid "Import From K&DE Online Store..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:249
+#: app/settings/viewsdialog/viewshandler.cpp:188
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export for backup"
+msgid "&Export For Backup..."
+msgstr "Εξαγωγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:254
+#: app/settings/viewsdialog/viewshandler.cpp:193
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgctxt "export as template"
+msgid "Export As &Template..."
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:290
+#: app/settings/viewsdialog/viewshandler.cpp:169
+#, kde-format
+msgid "Templates..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:291
+#: app/settings/viewsdialog/viewshandler.cpp:170
+#, kde-format
+msgid "Open templates directory"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:367
+#, kde-format
+msgctxt "settings:not permitted switching layout"
+msgid ""
+"You need to <b>apply</b> your changes first to switch layout afterwards..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:444
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout added successfully"
+msgid "Layout <b>%1</b> added successfully..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:480
+#, fuzzy, kde-format
+#| msgctxt "indicator_name, removed success"
+#| msgid "<b>%0</b> indicator removed successfully"
+msgctxt "settings:layout downloaded successfully"
+msgid "Layout <b>%1</b> downloaded successfully..."
+msgstr "Επιτυχής αφίρεσης της <b>%0</b> ένδειξης"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:506
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgctxt "settings: active layout remove"
+msgid "<b>Active</b> layouts can not be removed..."
+msgstr "Δεν μπορεί να γίνει εισαγωγή του προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:512
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgctxt "settings: locked layout remove"
+msgid "Locked layouts can not be removed..."
+msgstr "Δεν μπορεί να γίνει εισαγωγή του προφίλ"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:541
+#, fuzzy, kde-format
+#| msgctxt "import layout/configuration"
+#| msgid "Import Layout/Configuration"
+msgctxt "import layout"
+msgid "Import Layout"
+msgstr "Εισαγωγή Προφίλ/Ρυθμίσεων"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:544
+#, kde-format
+msgctxt "import layout"
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:550
+#, kde-format
+msgctxt "import latte layout"
+msgid "Latte Dock Layout file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:551
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "import older latte layout"
+msgid "Latte Dock Layout file v0.1"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:562
+#: app/settings/settingsdialog/tablayoutshandler.cpp:784
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout imported successfully"
+msgid "Layout <b>%1</b> imported successfully..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:566
+#, kde-format
+msgctxt "settings:deprecated layouts import failed"
+msgid "Import layouts from deprecated version <b>failed</b>..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:622
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Layout For Backup"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:624
+#, kde-format
+msgctxt "export layout"
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:630
+#, kde-format
+msgctxt "export layout"
+msgid "Latte Dock Layout file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:640
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout export fail"
+msgid "Layout <b>%1</b> export <b>failed</b>..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:682
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout export success"
+msgid "Layout <b>%1</b> export succeeded..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:773
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout imported successfully"
+msgid "Layout <b>%2</b> imported successfully..."
+msgid_plural "Layouts <b>%2</b> imported successfully..."
+msgstr[0] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+msgstr[1] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
+#: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
+#: app/settings/settingsdialog/tabpreferenceshandler.cpp:51
+#, kde-format
+msgctxt "number in percentage, e.g. 85%"
+msgid "%1%"
+msgstr ""
+
+#: app/settings/viewsdialog/delegates/namedelegate.cpp:55
+#, fuzzy, kde-format
+#| msgid "Options"
+msgid "optional"
+msgstr "Επιλογές"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:103
+#, kde-format
+msgid "Cut"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:107
+#, fuzzy, kde-format
+#| msgctxt "copy layout"
+#| msgid "Copy"
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:111
+#, kde-format
+msgid "Paste"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:115
+#, fuzzy, kde-format
+#| msgid "Latte Dock"
+msgid "Duplicate Here"
+msgstr "Πίνακας Latte"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:319
+#, kde-format
+msgid ""
+"Docks and panels from <b>Paste</b> action are already present in current "
+"layout"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:574
+#, kde-format
+msgid ""
+"Really nice! You are good to go, your layout does not report any errors or "
+"warnings."
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:593
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgid "Edit Layout"
+msgstr "Προφίλ"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:622
+#, kde-format
+msgid "Validate"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:641
+#, kde-format
+msgid ""
+"After you have made your layout file changes, please click <b>Validate</b> "
+"to confirm them."
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:657
+#, kde-format
+msgctxt "error id and title"
+msgid "<b>Error #%1: %2</b> <br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:659
+#, kde-format
+msgid ""
+"In your layout there are two or more applets with same id. Such situation "
+"can create crashes, abnormal behavior and data loss when you activate and "
+"use this layout.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:662
+#: app/settings/viewsdialog/viewscontroller.cpp:753
+#, kde-format
+msgid "<b>Applets:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:670
+#, kde-format
+msgctxt ""
+"applets with same id error, applet name, applet id, containment name, "
+"containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:678
+#: app/settings/viewsdialog/viewscontroller.cpp:734
+#: app/settings/viewsdialog/viewscontroller.cpp:789
+#: app/settings/viewsdialog/viewscontroller.cpp:828
+#, kde-format
+msgid "<b>Possible Solutions:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:679
+#, kde-format
+msgid "&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:680
+#, kde-format
+msgid "&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:681
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;3. Update manually the applets id when the layout is <b>not "
+"active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:682
+#, kde-format
+msgid "&nbsp;&nbsp;4. Remove this layout totally<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:694
+#, kde-format
+msgctxt "error id and title"
+msgid "<b>Error #%1: %2</b> <br/><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:695
+#, kde-format
+msgid ""
+"In your layout there are orphaned pseudo applets that link to unexistent "
+"subcontainments. Such case is for example a systemtray that has lost "
+"connection with its child applets. Such situation can create crashes, "
+"abnormal behavior and data loss when you activate and use this layout.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:698
+#, kde-format
+msgid "<b>Pseudo Applets:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:710
+#, kde-format
+msgctxt ""
+"orphaned pseudo applets, applet name, applet id, containment name, "
+"containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:718
+#: app/settings/viewsdialog/viewscontroller.cpp:810
+#, fuzzy, kde-format
+#| msgid "Orphan Systrays:"
+msgid "<b>Orphaned Subcontainments:</b><br/>"
+msgstr "Ορφανά πλαίσια συστήματος"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:728
+#: app/settings/viewsdialog/viewscontroller.cpp:820
+#, kde-format
+msgctxt "orphaned subcontainments, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:735
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Update manually the subcontainment id inside pseudo applet "
+"settings when the layout is <b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:736
+#, kde-format
+msgid "&nbsp;&nbsp;2. Remove this layout totally<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:749
+#: app/settings/viewsdialog/viewscontroller.cpp:806
+#, kde-format
+msgctxt "warning id and title"
+msgid "<b>Warning #%1: %2</b> <br/><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:750
+#, kde-format
+msgid ""
+"In your layout there are applets and containments with the same id. Such "
+"situation is not dangerous but it should not occur.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:765
+#, kde-format
+msgctxt "applets, applet name, applet id, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:773
+#, kde-format
+msgid "<b>Containments:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:783
+#, kde-format
+msgctxt "containments, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:790
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Update manually the containments or applets id when the "
+"layout is <b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:791
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with "
+"each other<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:807
+#, kde-format
+msgid ""
+"In your layout there are orphaned subcontainments that are not used by any "
+"dock or panel. Such situation is not dangerous but it is advised to remove "
+"them in order to reduce memory usage.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:829
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned "
+"subcontainments<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:830
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is "
+"<b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:833
+#, kde-format
+msgid "Repair"
+msgstr ""
+
+#: app/settings/viewsdialog/viewsdialog.cpp:33
+#, fuzzy, kde-format
+#| msgid "Applet shadows"
+msgid "Apply Now"
+msgstr "Σκιές Συστατικών"
+
+#: app/settings/viewsdialog/viewsdialog.cpp:34
+#, kde-format
+msgid "Apply all dock, panels changes now"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
+#: app/settings/viewsdialog/viewsdialog.ui:14
+#, kde-format
+msgid "Docks/Panels"
+msgstr "Docks/Πίνακες"
+
+#: app/settings/viewsdialog/viewshandler.cpp:69
+#, kde-format
+msgctxt "new view"
+msgid "&New"
+msgstr ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:70
+#, fuzzy, kde-format
+#| msgid "Latte Dock panel"
+msgid "New dock or panel"
+msgstr "Πίνακας Latte"
+
+#: app/settings/viewsdialog/viewshandler.cpp:83
+#, fuzzy, kde-format
+#| msgid "Latte Dock"
+msgctxt "duplicate dock or panel"
+msgid "&Duplicate"
+msgstr "Πίνακας Latte"
+
+#: app/settings/viewsdialog/viewshandler.cpp:84
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Duplicate selected dock or panel"
+msgstr "Εναλλαγή στο επιλεγμένο προφίλ"
+
+#: app/settings/viewsdialog/viewshandler.cpp:92
+#, fuzzy, kde-format
+#| msgid "Remove selected layout"
+msgid "Remove selected view"
+msgstr "Αφαίρεση επιλεγμένου προφίλ"
+
+#: app/settings/viewsdialog/viewshandler.cpp:100
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgctxt "import dock/panel"
+msgid "&Import..."
+msgstr "Εισαγωγή"
+
+#: app/settings/viewsdialog/viewshandler.cpp:101
+#, kde-format
+msgid "Import dock or panel from local file"
+msgstr ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:109
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export selected dock or panel at your system"
+msgstr "Εξαγωγή επιλεγμένου προφίλ ή πλήρων ρυθμίσεων σε ένα αρχείο"
+
+#: app/settings/viewsdialog/viewshandler.cpp:305
+#, fuzzy, kde-format
+#| msgctxt "indicator_name, removed success"
+#| msgid "<b>%0</b> indicator removed successfully"
+msgctxt "settings:dock/panel added successfully"
+msgid "<b>%1</b> added successfully..."
+msgstr "Επιτυχής αφίρεσης της <b>%0</b> ένδειξης"
+
+#: app/settings/viewsdialog/viewshandler.cpp:328
+#: app/settings/viewsdialog/viewshandler.cpp:407
+#, kde-format
+msgid ""
+"<b>Export</b> functionality is supported only for one dock or panel each "
+"time."
+msgstr ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:342
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Dock/Panel For Backup"
+msgstr "Εξαγωγή Προφίλ/διαμόρφωσης"
+
+#: app/settings/viewsdialog/viewshandler.cpp:344
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Export"
+msgctxt "export view"
+msgid "Export"
+msgstr "Εξαγωγή"
+
+#: app/settings/viewsdialog/viewshandler.cpp:350
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "export view"
+msgid "Latte Dock/Panel file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/viewsdialog/viewshandler.cpp:360
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:view export fail"
+msgid "Export in file <b>%1</b> <b>failed</b>..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/viewsdialog/viewshandler.cpp:389
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:view export success"
+msgid "Export in file <b>%1</b> succeeded..."
+msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#: app/settings/viewsdialog/viewshandler.cpp:431
+#, fuzzy, kde-format
+#| msgid "Empty Now Dock Panel"
+msgctxt "import dock/panel"
+msgid "Import Dock/Panel"
+msgstr "Κενός Now Dock"
+
+#: app/settings/viewsdialog/viewshandler.cpp:434
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#: app/settings/viewsdialog/viewshandler.cpp:440
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "import dock panel"
+msgid "Latte Dock or Panel file v0.2"
+msgstr "Latte Αρχείο Προφίλ εκ.0.2"
+
+#: app/settings/viewsdialog/viewshandler.cpp:512
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "<layout name> Docks/Panels"
+msgid "%1 Docks/Panels"
+msgstr "Docks/Πίνακες"
+
+#: app/settings/viewsdialog/viewshandler.cpp:524
+#, kde-format
+msgid ""
+"You are going to <b>remove 1</b> dock or panel completely from your layout."
+"<br/>Would you like to continue?"
+msgid_plural ""
+"You are going to <b>remove %1</b> docks and panels completely from your "
+"layout.<br/>Would you like to continue?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:537
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
+"changes <b>now</b> or discard them?"
+msgstr ""
+
+#: app/settings/viewsdialog/viewsmodel.cpp:190
+#, kde-format
+msgctxt "top edge"
+msgid "Top"
+msgstr "Κορυφή"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:195
+#, kde-format
+msgctxt "left edge"
+msgid "Left"
+msgstr "Αριστερό άκρο"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:200
+#, kde-format
+msgctxt "bottom edge"
+msgid "Bottom"
+msgstr "Βάση"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:205
+#, kde-format
+msgctxt "right edge"
+msgid "Right"
+msgstr "Δεξί άκρο"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:216
+#: app/settings/viewsdialog/viewsmodel.cpp:936
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:293
+#, kde-format
+msgctxt "left alignment"
+msgid "Left"
+msgstr "Αριστερή"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:220
+#: app/settings/viewsdialog/viewsmodel.cpp:940
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:293
+#, kde-format
+msgctxt "top alignment"
+msgid "Top"
+msgstr "Πάνω"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:225
+#: app/settings/viewsdialog/viewsmodel.cpp:934
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:310
+#, kde-format
+msgctxt "center alignment"
+msgid "Center"
+msgstr "Κεντρική"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:234
+#: app/settings/viewsdialog/viewsmodel.cpp:938
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:327
+#, kde-format
+msgctxt "right alignment"
+msgid "Right"
+msgstr "Δεξιά"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:238
+#: app/settings/viewsdialog/viewsmodel.cpp:942
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:327
+#, kde-format
+msgctxt "bottom alignment"
+msgid "Bottom"
+msgstr "Κάτω"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:243
+#: app/settings/viewsdialog/viewsmodel.cpp:944
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:345
+#, kde-format
+msgctxt "justify alignment"
+msgid "Justify"
+msgstr "Πλήρης"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:499
+#, fuzzy, kde-format
+#| msgid "On Primary"
+msgid " - On Primary Screen - "
+msgstr "Κύρια Οθόνη"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:500
+#, fuzzy, kde-format
+#| msgctxt "track from all screens"
+#| msgid "All Screens"
+msgid " - On All Screens - "
+msgstr "Όλες οι οθόνες"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:501
+#, kde-format
+msgid " - On All Secondary Screens - "
+msgstr ""
+
+#: app/settings/viewsdialog/viewsmodel.cpp:592
+#, fuzzy, kde-format
+#| msgctxt "column for layout name"
+#| msgid "Name"
+msgid "Name"
+msgstr "Όνομα"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:597
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
+#, kde-format
+msgid "Screen"
+msgstr "Οθόνη"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:605
+#, kde-format
+msgctxt "screen edge"
+msgid "Edge"
+msgstr "Άκρο"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:613
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:272
+#, kde-format
+msgid "Alignment"
+msgstr "Στοίχιση"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:621
+#, kde-format
+msgid "Includes"
+msgstr ""
+
+#: app/settings/viewsdialog/viewsmodel.cpp:787
+#: app/settings/viewsdialog/viewsmodel.cpp:877
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown screen"
+msgid "Unknown: [%1]"
+msgstr "Άγνωστες οθόνες: "
+
+#: app/settings/viewsdialog/viewsmodel.cpp:867
+#, kde-format
+msgctxt "primary screen"
+msgid "Primary"
+msgstr "Κύρια"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:869
+#, fuzzy, kde-format
+#| msgctxt "track from all screens"
+#| msgid "All Screens"
+msgid "All Screens"
+msgstr "Όλες οι οθόνες"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:871
+#, fuzzy, kde-format
+#| msgctxt "secondary screen"
+#| msgid "Secondary"
+msgid "Secondary Screens"
+msgstr "Δευτερεύουσα"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:907
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:190
+#, kde-format
+msgctxt "bottom location"
+msgid "Bottom"
+msgstr "Κάτω"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:909
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:228
+#, kde-format
+msgctxt "top location"
+msgid "Top"
+msgstr "Πάνω"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:911
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:209
+#, kde-format
+msgctxt "left location"
+msgid "Left"
+msgstr "Αριστερά"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:913
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:247
+#, kde-format
+msgctxt "right location"
+msgid "Right"
+msgstr "Δεξιά"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:916
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown location"
+msgid "Unknown"
+msgstr "Άγνωστες οθόνες: "
+
+#: app/settings/viewsdialog/viewsmodel.cpp:947
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown alignment"
+msgid "Unknown"
+msgstr "Άγνωστες οθόνες: "
+
+#: app/shortcuts/globalshortcuts.cpp:87
+#, kde-format
+msgid "Show Latte Dock/Panel"
+msgstr "Εμφάνιση Dock/Πίνακα Latte"
+
+#: app/shortcuts/globalshortcuts.cpp:96
+#, kde-format
+msgid "Cycle Through Dock/Panel Settings Windows"
+msgstr "Κυκλική εναλλαγή παραθύρων ρυθμίσεων Dock/Πίνακα"
+
+#: app/shortcuts/globalshortcuts.cpp:105
+#, kde-format
+msgid "Show Latte Global Settings"
+msgstr "Εμφάνιση καθολικών ρυθμίσεων Latte"
+
+#: app/shortcuts/globalshortcuts.cpp:121 app/shortcuts/globalshortcuts.cpp:137
+#, kde-format
+msgid "Activate Entry %1"
+msgstr "Ενεργοποίηση Εφαρμογής %1"
+
+#: app/shortcuts/globalshortcuts.cpp:152 app/shortcuts/globalshortcuts.cpp:164
+#, kde-format
+msgid "New Instance for Entry %1"
+msgstr "Νέο Στιγμιότυπο για την Εφαρμογή %1"
+
+#: app/templates/templatesmanager.cpp:337
+#, fuzzy, kde-format
+#| msgid "Default"
+msgctxt "default layout template name"
+msgid "Default"
+msgstr "Προκαθορισμένο"
+
+#: app/templates/templatesmanager.cpp:338
+#, fuzzy, kde-format
+#| msgid "Empty Area"
+msgctxt "empty layout template name"
+msgid "Empty"
+msgstr "Κενή περιοχή"
+
+#: app/templates/templatesmanager.cpp:341
+#, fuzzy, kde-format
+#| msgid "Default"
+msgctxt "view template name"
+msgid "Default Dock"
+msgstr "Προκαθορισμένο"
+
+#: app/templates/templatesmanager.cpp:342
+#, fuzzy, kde-format
+#| msgid "Now Dock Default Panel"
+msgctxt "view template name"
+msgid "Default Panel"
+msgstr "Προκαθορισμένος Now Dock"
+
+#: app/templates/templatesmanager.cpp:343
+#, fuzzy, kde-format
+#| msgid "Copy Panel"
+msgctxt "view template name"
+msgid "Empty Panel"
+msgstr "Αντιγραφή πίνακα"
+
+#: app/view/originalview.cpp:126
+#, kde-format
+msgctxt "clone of original dock panel, name"
+msgid "Clone of %1"
+msgstr ""
+
+#: app/view/settings/indicatoruimanager.cpp:167
+#, kde-format
+msgctxt "add indicator"
+msgid "Add Indicator"
+msgstr "Προσθήκη ένδειξης"
+
+#: app/view/settings/indicatoruimanager.cpp:176
+#, kde-format
+msgctxt "add indicator file"
+msgid "Latte Indicator"
+msgstr "Ένδειξη Latta"
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:67
+#, kde-format
+msgid "Stick On Top"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:68
+#, kde-format
+msgid ""
+"Stick maximum available space at top screen edge and ignore any top docks or "
+"panels"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:108
+#, kde-format
+msgid "Rearrange and configure your widgets"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:109
+#, kde-format
+msgid ""
+"Feel free to move around your widgets and configure them from their tooltips"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:126
+#, kde-format
+msgid "Stick On Bottom"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:127
+#, kde-format
+msgid ""
+"Stick maximum available space at bottom screen edge and ignore any bottom "
+"docks or panels"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:27
+#, kde-format
+msgctxt "maximum length tooltip, %1 is maximum length percentage"
+msgid "You can use mouse wheel to change maximum length of %1%"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
+#, fuzzy, kde-format
+#| msgid "Maximum"
+msgid "Maximum Length"
+msgstr "Μέγιστο"
+
+#: shell/package/contents/configuration/CanvasConfiguration.qml:101
+#, kde-format
+msgctxt "opacity for background under edit mode, %1 is opacity percentage"
+msgid "You can use mouse wheel to change background opacity of %1%"
+msgstr ""
+
+#: shell/package/contents/configuration/config.qml:13
+#, kde-format
+msgid "General"
+msgstr "Γενικά"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:140
+#, fuzzy, kde-format
+#| msgid "Width"
+msgctxt "view settings width scale"
+msgid "Width %1%"
+msgstr "Πλάτος"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:141
+#, kde-format
+msgctxt "view settings width scale"
+msgid "Width %1% / Height %2%"
+msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:245
+#, kde-format
+msgctxt "advanced settings"
+msgid "Advanced"
+msgstr "Προχωρημένες"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:301
+#, kde-format
+msgid "Behavior"
+msgstr "Συμπεριφορά"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:321
+#, kde-format
+msgid "Appearance"
+msgstr "Εμφάνιση"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:331
+#, kde-format
+msgid "Effects"
+msgstr "Εφέ"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:347
+#, fuzzy, kde-format
+#| msgid "Tasks"
+msgctxt "tasks header and index"
+msgid "Tasks <%1>"
+msgstr "Εργασίες"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:347
+#, kde-format
+msgid "Tasks"
+msgstr "Εργασίες"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:498
+#, kde-format
+msgid "Add..."
+msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:500
+#, kde-format
+msgid "Add new docks and panels from various templates"
+msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:603
+#, fuzzy, kde-format
+#| msgid "Latte Dock"
+msgid "Duplicate Dock"
+msgstr "Πίνακας Latte"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:603
+#, kde-format
+msgid "Duplicate Panel"
+msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:619
+#, kde-format
+msgid "Remove current dock"
+msgstr "Αφαίρεση αυτού του πίνακα"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:628
+#, kde-format
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:630
+#, kde-format
+msgid "Close settings window"
+msgstr "Αποκρύπτει το παράθυρο ρυθμίσεων"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:51
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:771
+#, kde-format
+msgid "Items"
+msgstr "Αντικείμενα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
+#, fuzzy, kde-format
+#| msgctxt "absolute size"
+#| msgid "Absolute"
+msgctxt "absolute size"
+msgid "Absolute size"
+msgstr "Απόλυτο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#, fuzzy, kde-format
+#| msgctxt "number in pixels, e.g. 12 px."
+#| msgid "%0 px."
+msgctxt "number in pixels, e.g. 12 px."
+msgid "%1 px."
+msgstr "%0 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
+#, fuzzy, kde-format
+#| msgctxt "relative size"
+#| msgid "Relative"
+msgctxt "relative size"
+msgid "Relative size"
+msgstr "Σχετικό"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:159
+#, fuzzy, kde-format
+#| msgctxt "number in pixels, e.g. 12 px."
+#| msgid "%0 px."
+msgctxt "number in pixels, e.g. 64 px."
+msgid "%1 px."
+msgstr "%0 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:321
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:404
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:534
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:619
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:665
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:903
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:101
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:149
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:161
+#, kde-format
+msgctxt "no value in percentage"
+msgid "--- %"
+msgstr "--- %"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:180
+#, fuzzy, kde-format
+#| msgid "Zoom On Hover"
+msgid "Zoom on hover"
+msgstr "Εστίαση"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:231
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:595
+#, kde-format
+msgid "Length"
+msgstr "Μήκος"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:251
+#, kde-format
+msgid "Maximum"
+msgstr "Μέγιστο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:362
+#, fuzzy, kde-format
+#| msgid "Maximum"
+msgid "Minimum"
+msgstr "Μέγιστο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:445
+#, kde-format
+msgid "Offset"
+msgstr "Θέση"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:580
+#, kde-format
+msgid "Margins"
+msgstr "Περιθώρια"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
+#, fuzzy, kde-format
+#| msgctxt "number in pixels, e.g. 12 px."
+#| msgid "%0 px."
+msgctxt "number in pixels, e.g. 8 px."
+msgid "%1 px."
+msgstr "%0 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
+#, kde-format
+msgid "Thickness"
+msgstr "Πάχος"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#, kde-format
+msgid "Floating gap"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
+#, fuzzy, kde-format
+#| msgctxt "number in pixels, e.g. 12 px."
+#| msgid "%0 px."
+msgctxt "number in pixels, e.g. 85 px."
+msgid "%1 px."
+msgstr "%0 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
+#, kde-format
+msgid "Colors"
+msgstr "Χρώματα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
+#, kde-format
+msgid "Palette"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
+#, fuzzy, kde-format
+#| msgid "Plasma Theme"
+msgctxt "plasma theme colors"
+msgid "Plasma Theme Colors"
+msgstr "Θέμα του Plasma"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgctxt "dark theme colors"
+msgid "Dark Colors"
+msgstr "Χρώματα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgctxt "light theme colors"
+msgid "Light Colors"
+msgstr "Χρώματα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
+#, kde-format
+msgctxt "layout custom colors"
+msgid "Layout Custom Colors"
+msgstr ""
+
+#. i18nc("reverse plasma theme colors", "Reverse"),
+#. value: LatteContainment.Types.ReverseThemeColors
+#. }
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:768
+#, kde-format
+msgctxt "smart theme colors"
+msgid "Smart Colors Based On Desktop Background"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
+#, kde-format
+msgid "From Window"
+msgstr "Από παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:802
+#: shell/package/contents/configuration/pages/TasksConfig.qml:497
+#, kde-format
+msgid "Disabled"
+msgstr "Ανενεργό"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Current Active Window"
+msgstr "Ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:809
+#, kde-format
+msgid "Colors are going to be based on the active window"
+msgstr "Τα χρώματα θα βασιστούν στο ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:810
+#, fuzzy, kde-format
+#| msgid ""
+#| "Colors are going to be based on the active window.\n"
+#| "Notice: For optimal experience you are advised to install Colors KWin "
+#| "Script from KDE Store"
+msgid ""
+"Colors are going to be based on the active window.\n"
+"Warning: You need to install Colors KWin Script from KDE Store"
+msgstr ""
+"Τα χρώματα θα βασιστούν στο ενεργό παράθυρο.\n"
+"Σημείωση: Για βέλτιστη εμπειρία συνιστάται να εγκαταστήσετε το σενάριο "
+"Colors του KWin από το KDE Store"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Any Touching Window"
+msgstr "Ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:815
+#, kde-format
+msgid "Colors are going to be based on windows that are touching the view"
+msgstr "Τα χρώματα θα βασιστούν σε παράθυρα που είναι σε επαφή με την προβολή"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:816
+#, fuzzy, kde-format
+#| msgid ""
+#| "Colors are going to be based on windows that are touching the view.\n"
+#| "Notice: For optimal experience you are advised to install Colors KWin "
+#| "Script from KDE Store"
+msgid ""
+"Colors are going to be based on windows that are touching the view.\n"
+"Warning: You need to install Colors KWin Script from KDE Store"
+msgstr ""
+"Τα χρώματα θα βασιστούν σε παράθυρα που είναι σε επαφή με την προβολή.\n"
+"Σημείωση: Για βέλτιστη εμπειρία συνιστάται να εγκαταστήσετε το σενάριο "
+"Colors του KWin από το KDE Store"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:848
+#, kde-format
+msgid "Background"
+msgstr "Φόντο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:849
+#, kde-format
+msgid "Enable/disable background"
+msgstr "(Απ)ενεργοποίηση παρασκηνίου"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:114
+#, kde-format
+msgid "Opacity"
+msgstr "Αδιαφάνεια"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#, kde-format
+msgctxt "opacity when desktop background is busy from contrast point of view"
+msgid "Busy Opacity"
+msgstr "απασχολημένη αδιαφάνεια"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#, kde-format
+msgctxt "Default word abbreviation"
+msgid "Def."
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
+#, kde-format
+msgid "Radius"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1009
+#, fuzzy, kde-format
+#| msgid "Shadows"
+msgid "Shadow"
+msgstr "Σκιές"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1058
+#, kde-format
+msgid "Blur"
+msgstr "Θόλωμα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1061
+#, kde-format
+msgid "Background is blurred underneath"
+msgstr "Το φόντο είναι θολωμένο από κάτω"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1076
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:50
+#, kde-format
+msgid "Shadows"
+msgstr "Σκιές"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1079
+#, kde-format
+msgid "Background shows its shadows"
+msgstr "Το φόντο εμφανίζει τις σκιάσεις του"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1094
+#, kde-format
+msgid "Outline"
+msgstr "Περίγραμμα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
+#, kde-format
+msgid ""
+"Background draws a line for its borders. You can set the line size from "
+"Latte Preferences"
+msgstr ""
+"Το φόντο σχεδιάζει μια γραμμή για τα όριά του. Μπορείτε να ρυθμίσετε το "
+"μέγεθος της γραμμής από τις Προτιμήσεις του Latte"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
+#, fuzzy, kde-format
+#| msgctxt "track from all screens"
+#| msgid "All Screens"
+msgid "All Corners"
+msgstr "Όλες οι οθόνες"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
+#, kde-format
+msgid "Background draws all corners at all cases."
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
+#, kde-format
+msgctxt "dynamic visibility for background"
+msgid "Dynamic Visibility"
+msgstr "Δυναμική ορατότητα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
+#, kde-format
+msgid "Prefer opaque background when touching any window"
+msgstr "Να προτιμάται αδιαφανές φόντο στην επαφή με παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
+#, kde-format
+msgid "Background removes its transparency setting when a window is touching"
+msgstr ""
+"Το φόντο του πίνακα αφαιρεί τη ρύθμιση διαφάνειας όταν υπάρχει επαφή με "
+"παράθυρο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1150
+#, kde-format
+msgid "Hide background when not needed"
+msgstr "Απόκρυψη φόντου όταν δεν απαιτείται"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1151
+#, kde-format
+msgid ""
+"Background becomes hidden except when a window is touching or the desktop "
+"background is busy"
+msgstr ""
+"Το φόντο γίνεται κρυφό εκτός αν ένα παράθυρο είναι σε επαφή ή το φόντο του "
+"παραθύρου είναι απασχολημένο"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1164
+#, kde-format
+msgid "Hide background shadow for maximized windows"
+msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1165
+#, kde-format
+msgid ""
+"Background shadows become hidden when an active maximized window is touching "
+"the view"
+msgstr ""
+"Η σκίαση του φόντου γίνεται κρυφή όταν ένα ενεργό μεγιστοποιημένο παράθυρο "
+"είναι σε επαφή με την προβολή"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1178
+#, kde-format
+msgid "Exceptions"
+msgstr "Εξαιρέσεις"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1185
+#, kde-format
+msgid "Prefer Plasma background and colors for expanded applets"
+msgstr ""
+"Να προτιμάται το φόντο του Plasma και τα χρώματα για εκτεταμένες "
+"μικροεφαρμογές"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
+#, kde-format
+msgid "Background becomes opaque in plasma style when applets are expanded"
+msgstr ""
+"Το φόντο γίνεται αδιαφανές στο στιλ του plasma όταν οι μικροεφαρμογές "
+"επεκτείνονται"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
+#, kde-format
+msgid "Type"
+msgstr "Τύπος"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
+#, kde-format
+msgid "Location"
+msgstr "Τοποθεσία"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
+#, fuzzy, kde-format
+#| msgid "On Primary"
+msgid "On Primary Screen"
+msgstr "Κύρια Οθόνη"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
+#, fuzzy, kde-format
+#| msgctxt "track from all screens"
+#| msgid "All Screens"
+msgid "On All Screens"
+msgstr "Όλες οι οθόνες"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
+#, fuzzy, kde-format
+#| msgctxt "track from all screens"
+#| msgid "All Screens"
+msgid "On All Secondary Screens"
+msgstr "Όλες οι οθόνες"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
+#, kde-format
+msgid "Visibility"
+msgstr "Ορατότητα"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:392
+#, kde-format
+msgid "Always Visible"
+msgstr "Πάντα Ορατό"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:408
+#, kde-format
+msgid "Auto Hide"
+msgstr "Αυτόματη Απόκρυψη"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:424
+#, kde-format
+msgid "Dodge Active"
+msgstr "Αποφυγή Ενεργό"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:452
+#, kde-format
+msgid "Dodge Maximized"
+msgstr "Αποφυγή Μεγιστοποίησης"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:457
+#, kde-format
+msgid "Dodge All Windows"
+msgstr "Αποφυγή Παραθύρων"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:479
+#, kde-format
+msgid "Windows Go Below"
+msgstr "Παράθυρα από Κάτω"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:484
+#, fuzzy, kde-format
+#| msgid "Windows Go Below"
+msgid "Windows Can Cover"
+msgstr "Παράθυρα από Κάτω"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:489
+#, kde-format
+msgid "Windows Always Cover"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:511
+#, kde-format
+msgid "On Demand Sidebar"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:512
+#, kde-format
+msgid ""
+"Sidebar can be shown and become hidden only through an external applet, "
+"shortcut or script"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:516
+#, fuzzy, kde-format
+#| msgid "Auto Hide"
+msgid "Auto Hide Sidebar"
+msgstr "Αυτόματη Απόκρυψη"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:517
+#, kde-format
+msgid ""
+"Sidebar can be shown only through an external applet, shortcut or script but "
+"it can also autohide itself when it does not contain mouse"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:539
+#, kde-format
+msgid "Delay"
+msgstr "Καθυστέρηση"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:571
+#, kde-format
+msgid "Show "
+msgstr "Εμφάνιση "
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:626
+#: shell/package/contents/configuration/pages/TasksConfig.qml:522
+#, kde-format
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:648
+#, fuzzy, kde-format
+#| msgid "Track From"
+msgctxt "track active window"
+msgid "Track"
+msgstr "Κομμάτι από"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:654
+#, kde-format
+msgctxt "track from current screen"
+msgid "Active Window From Current Screen"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:655
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgctxt "track from all screens"
+msgid "Active Window From All Screens"
+msgstr "Ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:680
+#, kde-format
+msgid "Left Button"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:685
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Drag Active Window"
+msgstr "Ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:687
+#, fuzzy, kde-format
+#| msgid "Drag and maximize/restore active window"
+msgid ""
+"The user can use left mouse button to drag and maximized/restore last active "
+"window from empty areas"
+msgstr "Έλκυση και μεγιστοποίηση/επαναφορά του ενεργού παραθύρου"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:705
+#, kde-format
+msgid "Middle Button"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:710
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Close Active Window"
+msgstr "Ενεργό παράθυρο"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:712
+#, fuzzy, kde-format
+#| msgid "Drag and maximize/restore active window"
+msgid ""
+"The user can use middle mouse button to close last active window from empty "
+"areas"
+msgstr "Έλκυση και μεγιστοποίηση/επαναφορά του ενεργού παραθύρου"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:732
+#, kde-format
+msgid "Mouse wheel"
+msgstr "Ροδέλα ποντικιού"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:738
+#, fuzzy, kde-format
+#| msgctxt "none scroll actions"
+#| msgid "None Action"
+msgctxt "none scroll actions"
+msgid "No Action"
+msgstr "Καμία ενέργεια"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:739
+#, kde-format
+msgid "Cycle Through Desktops"
+msgstr "Κυκλική εναλλαγή Επιφανειών εργασίας"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:740
+#, kde-format
+msgid "Cycle Through Activities"
+msgstr "Κυκλική εναλλαγή δραστηριοτήτων"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:741
+#: shell/package/contents/configuration/pages/TasksConfig.qml:547
+#: shell/package/contents/configuration/pages/TasksConfig.qml:591
+#: shell/package/contents/configuration/pages/TasksConfig.qml:655
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Cycle Through Tasks"
+msgstr "Κυκλική Εναλλαγή Εργασιών"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:742
+#: shell/package/contents/configuration/pages/TasksConfig.qml:656
+#, kde-format
+msgid "Cycle And Minimize Tasks"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:778
+#, fuzzy, kde-format
+#| msgid "Show title tooltips on hovering"
+msgid "Thin title tooltips on hovering"
+msgstr "Εμφάνιση βοηθητικών τίτλων σε αιώρηση"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:779
+#, fuzzy, kde-format
+#| msgid ""
+#| "Show thinner tooltips produced by Latte for items.\n"
+#| "These tooltips are not drawn when applets zoom effect is disabled"
+msgid ""
+"Show narrow tooltips produced by Latte for items.\n"
+"These tooltips are not drawn when applets zoom effect is disabled"
+msgstr ""
+"Εμφάνιση λεπτότερων πλαισίων συμβουλών από το Latte για αντικείμενα.\n"
+"Αυτές οι συμβουλές δεν παρουσιάζονται όταν το εφέ εστίασης των "
+"μικροεφαρμογών είναι ανενεργό"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:790
+#, fuzzy, kde-format
+#| msgid "Activate through mouse wheel"
+msgid "Expand popup through mouse wheel"
+msgstr "Ενεργοποίηση με τη ροδέλα του ποντικιού"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:791
+#, kde-format
+msgid "Show or Hide applet popup through mouse wheel action"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:803
+#, fuzzy, kde-format
+#| msgid "Decrease applets size when it is needed"
+msgid "Adjust size automatically when needed"
+msgstr "Μείωση μεγέθους εφαρμογών όταν χρειάζεται"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:804
+#, kde-format
+msgid ""
+"Items decrease their size when exceed maximum length and increase it when "
+"they can fit in"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:816
+#, fuzzy, kde-format
+#| msgid "🅰 Activate based on position through global shortcuts"
+msgid "Activate based on position global shortcuts"
+msgstr "🅰 Να γίνει ενεργοποίηση με βάση τη θέση μέσω καθολικών συντομεύσεων"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:817
+#, kde-format
+msgid ""
+"This view is used for based on position global shortcuts. Take note that "
+"only one view can have that option enabled for each layout"
+msgstr ""
+"Αυτή η προβολή βασίζεται στις καθολικές συντομεύσεις θέσης. Να σημειωθεί ότι "
+"μόνο μία προβολή μπορεί να εει αυτήν την επιλογή ενεργοποιημένη για κάθε "
+"προφίλ"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:832
+#, kde-format
+msgid "Floating"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:844
+#, kde-format
+msgid "Always use floating gap for user interaction"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:845
+#, kde-format
+msgid "Floating gap is always used for applets and window interaction"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:856
+#, fuzzy, kde-format
+#| msgid "Hide background shadow for maximized windows"
+msgid "Hide floating gap for maximized windows"
+msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:857
+#, kde-format
+msgid "Floating gap is disabled when there are maximized windows"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:868
+#, kde-format
+msgid "Delay floating gap hiding until mouse leaves"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:869
+#, kde-format
+msgid "to avoid clicking on adjacent items accidentally in some cases"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:880
+#, fuzzy, kde-format
+#| msgid "Hide background shadow for maximized windows"
+msgid "Mirror floating gap when it is shown"
+msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:881
+#, kde-format
+msgid "Floating gap is mirrored when it is shown in Always Visible mode"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:904
+#, kde-format
+msgid "Environment"
+msgstr "Περιβάλλον"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:913
+#, kde-format
+msgid "Activate KWin edge after hiding"
+msgstr "Ενεργοποίηση άκρης KWin μετά το κρύψιμο"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:914
+#, kde-format
+msgid ""
+"After the view becomes hidden, KWin is informed to track user feedback. For "
+"example an edge visual hint is shown whenever the mouse approaches the "
+"hidden view"
+msgstr ""
+"Αφού η προβολή γίνεται κρυφή, το KWin ενημερώνεται να ιχνηλατεί την απόκριση "
+"του χρήστη. Για παράδειγμα μια οπτική συμβουλή εμφανίζεται όποτε το ποντίκι "
+"πλησιάζει την κρυμμένη προβολή"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:928
+#, kde-format
+msgid "Can be above fullscreen windows"
+msgstr "Μπορεί να είναι πάνω από τα παράθυρα πλήρους οθόνης"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:929
+#, kde-format
+msgid ""
+"BypassWindowManagerHint flag for the window. The view will be above all "
+"windows even those set as 'Always On Top'"
+msgstr ""
+"Σήμανση BypassWindowManagerHint για το παράθυρο. Η προβολή θα βρίσκεται πάνω "
+"από όλα τα παράθυρα ακόμη και από εκείνα που έχουν ορισθεί ως 'πάντα στην "
+"κορυφή'"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:939
+#, kde-format
+msgid "Raise on desktop change"
+msgstr "Ανύψωση σε κάθε αλλαγή επιφάνειας εργασίας"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:949
+#, kde-format
+msgid "Raise on activity change"
+msgstr "Ανύψωση σε κάθε αλλαγή Δραστηριότητας"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:51
+#, kde-format
+msgid "Enable/disable applet shadows"
+msgstr "(Απ)ενεργοποίηση σκιάσεων μικροεφαρμογών"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:66
+#, kde-format
+msgid "Size"
+msgstr "Μέγεθος"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:178
+#, fuzzy, kde-format
+#| msgctxt "default shadow"
+#| msgid "Default"
+msgctxt "default shadow"
+msgid "Default Color"
+msgstr "Προκαθορισμένη"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:182
+#, kde-format
+msgid "Default shadow for applets"
+msgstr "Προκαθορισμένη σκίαση για μικροεφαρμογές"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:197
+#, fuzzy, kde-format
+#| msgid "Custom text color..."
+msgctxt "theme shadow"
+msgid "Theme Color"
+msgstr "Προσαρμοσμένο χρώμα κειμένου..."
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:201
+#, kde-format
+msgid "Shadow from theme color palette"
+msgstr "Σκίαση από παλέττα χρωμάτων θέματος"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:222
+#, kde-format
+msgid "Use set shadow color"
+msgstr "Χρήση χρώματος από σύνολο σκιάσεων"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:265
+#, kde-format
+msgid "Please choose shadow color"
+msgstr "Παρακαλώ επιλέχτε χρώμα σκιάς"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:307
+#: shell/package/contents/configuration/pages/TasksConfig.qml:280
+#, kde-format
+msgid "Animations"
+msgstr "Γραφικά"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:308
+#, kde-format
+msgid "Enable/disable all animations"
+msgstr "(Απ)ενεργοποίηση όλων των γραφικών"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:337
+#, kde-format
+msgid "x1"
+msgstr "x1"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:352
+#, kde-format
+msgid "x2"
+msgstr "x2"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:367
+#, kde-format
+msgid "x3"
+msgstr "x3"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:396
+#, kde-format
+msgid "Indicators"
+msgstr "Ενδείξεις"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:397
+#, kde-format
+msgid "Enable/disable indicators"
+msgstr "(Απ)ενεργοποίηση ενδείξεων"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:426
+#, kde-format
+msgctxt "latte indicator style"
+msgid "Latte"
+msgstr "Latte"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:437
+#, kde-format
+msgctxt "plasma indicator style"
+msgid "Plasma"
+msgstr "Plasma"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:51
+#, kde-format
+msgid "Badges"
+msgstr "Σήματα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:60
+#, kde-format
+msgid "Notifications from tasks"
+msgstr "Ειδοποιήσεις από εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:61
+#, kde-format
+msgid "Show unread messages or notifications from tasks"
+msgstr "Εμφάνιση μη αναγνωσμένων μηνυμάτων ή ειδοποιήσεων από εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:71
+#, kde-format
+msgid "Progress information for tasks"
+msgstr "Πληροφορίες προόδου για εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:72
+#, kde-format
+msgid ""
+"Show a progress animation for tasks e.g. when copying files with Dolphin"
+msgstr ""
+"Να εμφανίζεται ένα γραφικό προόδου για εργασίες π.χ. σε αντιγραφή αρχείων με "
+"το Dolphin"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:82
+#, kde-format
+msgid "Audio playing from tasks"
+msgstr "Αναπαραγωγή ήχου από εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:83
+#, kde-format
+msgid "Show audio playing from tasks"
+msgstr "Εμφάνιση αναπαραγωγής ήχου από εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:93
+#, kde-format
+msgid "Prominent color for notification badge"
+msgstr "Διακεκριμένο χρώμα για σήμα ειδοποιήσεων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:95
+#, kde-format
+msgid ""
+"Notification badge uses a more prominent background which is usually red"
+msgstr ""
+"Το σήμα ειδοποιήσεων χρησιμοποιεί ένα πιο διακεκριμένο φόντο το οποίο είναι "
+"συνήθως κόκκινο"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:105
+#, kde-format
+msgid "Change volume when scrolling audio badge"
+msgstr "Αλλαγή έντασης στην κύλιση σήματος ήχου"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:107
+#, kde-format
+msgid ""
+"The user is able to mute/unmute with click or change the volume with mouse "
+"wheel"
+msgstr ""
+"Ο χρήστης μπορεί να (απ)ενεργοποιεί τον ήχο με κλικ ή να αλλάζει την ένταση "
+"με τη ροδέλα του ποντικιού"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:124
+#, kde-format
+msgid "Interaction"
+msgstr "Αλληλεπίδραση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:133
+#, fuzzy, kde-format
+#| msgid ""
+#| "Launchers are added only in the taskmanager and not as plasma applets"
+msgid "Launchers are added only in current tasks applet"
+msgstr "Εκτελεστές μόνο στην περιοχή εργασιών και ποτέ ως εφαρμογές plasma"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:134
+#, fuzzy, kde-format
+#| msgid ""
+#| "Launchers are added only in the taskmanager and not as plasma applets"
+msgid ""
+"Launchers are added only in current tasks applet and not as regular applets "
+"or in any other applet"
+msgstr "Εκτελεστές μόνο στην περιοχή εργασιών και ποτέ ως εφαρμογές plasma"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:145
+#, kde-format
+msgid "Window actions in the context menu"
+msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:158
+#, fuzzy, kde-format
+#| msgid "Preview Windows"
+msgid "Preview window behaves as popup"
+msgstr "Προεπισκόπηση παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:171
+#, fuzzy, kde-format
+#| msgid "🅰 Based on position shortcuts apply only for tasks"
+msgid "Based on position shortcuts apply only on current tasks"
+msgstr "🅰 Η βάση για τις συντομεύσεις θέσης εφρμόζεται μόνο για εργασίες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:173
+#, fuzzy, kde-format
+#| msgid ""
+#| "Based on position global shortcuts are enabled only for tasks and not for "
+#| "applets"
+msgid ""
+"Based on position global shortcuts are enabled only for current tasks and "
+"not for other applets"
+msgstr ""
+"Οι καθολικές συντομεύσεις θέσης ενεργοποιούνται μόνο για εργασίες και όχι "
+"για μικροεφαρμογές"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:192
+#, kde-format
+msgid "Filters"
+msgstr "Φίλτρα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:201
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Εργασίες μόνο της τρέχουσας οθόνης"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:212
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Εργασίες μόνο της τρέχουσας επιφάνειας εργασίας"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:223
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Εργασίες μόνο της τρέχουσας δραστηριότητας"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:234
+#, kde-format
+msgid "Show only tasks from launchers"
+msgstr "Εμφάνιση μόνο παραθύρων που έχουν παρόντες εκκινητές"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:246
+#, fuzzy, kde-format
+#| msgid "Sync launchers between all docks"
+msgid "Show only launchers and hide all tasks"
+msgstr "Συγχρονισμός των εκκινητών σε όλους τους πίνακες"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:247
+#, kde-format
+msgid "Tasks become hidden and only launchers are shown"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:258
+#, fuzzy, kde-format
+#| msgid "Group tasks of the same application"
+msgid "Show only grouped tasks for same application"
+msgstr "Ομαδοποίηση παραθύρων της ίδιας εφαρμογής"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:259
+#, kde-format
+msgid "By default group tasks of the same application"
+msgstr "Προκαθορισμένη επιλογή η ομαδοποίηση παραθύρων της ίδιας εφαρμογής"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:289
+#, kde-format
+msgid "Bounce launchers when triggered"
+msgstr "Να γίνεται αναπήδηση των εκτελεστών όταν ενεργοποιούνται"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:300
+#, kde-format
+msgid "Bounce tasks that need attention"
+msgstr "Να γίνεται αναπήδηση εργασιών που απαιτούν προσοχή"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:311
+#, kde-format
+msgid "Slide in and out single windows"
+msgstr "Ανοίξτε και κλείστε μονά παράθυρα με εφέ ολίσθησης"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:321
+#, kde-format
+msgid "Grouped tasks bounce their new windows"
+msgstr "Στις ομαδοποιημένες εργασίες αναπηδούν τα νέα παράθυρα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:332
+#, kde-format
+msgid "Grouped tasks slide out their closed windows"
+msgstr ""
+"Οι ομαδοποιημένες εργασίες απομακρύνουν με ολίσθηση τα κλειστά παράθυρα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:351
+#, kde-format
+msgid "Launchers"
+msgstr "Εκτελεστές"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:376
+#, fuzzy, kde-format
+#| msgctxt "unique launchers group"
+#| msgid "Unique"
+msgctxt "unique launchers group"
+msgid "Unique Group"
+msgstr "Ξεχωριστή"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:380
+#, kde-format
+msgid ""
+"Use a unique set of launchers for this view which is independent from any "
+"other view"
+msgstr ""
+"Χρήση μίας μοναδικής ομάδας εκτελεστών για αυτήν την προβολή που είναι "
+"ανεξάρτητη από οποιαδήποτε άλλη"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:395
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgctxt "layout launchers group"
+msgid "Layout Group"
+msgstr "Προφίλ"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:399
+#, kde-format
+msgid ""
+"Use the current layout set of launchers for this latteView. This group "
+"provides launchers <b>synchronization</b> between different views in the "
+"<b>same layout</b>"
+msgstr ""
+"Χρήση του τρέχοντος συνόλου εκτελεστών για αυτήν την προβολή latte. Αυτή η "
+"ομάδα παρέχει <b>συγχρονισμό</b> εκτελεστών ανάμεσα σε διαφορετικές προβολές "
+"στο <b>ίδιο προφίλ</b>"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:415
+#, fuzzy, kde-format
+#| msgctxt "global launchers group"
+#| msgid "Global"
+msgctxt "global launchers group"
+msgid "Global Group"
+msgstr "Καθολικό"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:419
+#, kde-format
+msgid ""
+"Use the global set of launchers for this latteView. This group provides "
+"launchers <b>synchronization</b> between different views and between "
+"<b>different layouts</b>"
+msgstr ""
+"Χρήση του καθολικού συνόλου εκτελεστών για αυτήν την προβολή latte. Αυτή η "
+"ομάδα παρέχει <b>συγχρονισμό</b> εκτελεστών ανάμεσα σε διαφορετικές προβολές "
+"και σε <b>διαφορετικά προφίλ</b>"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:448
+#, kde-format
+msgid "Scrolling"
+msgstr "Κύλιση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:449
+#, kde-format
+msgid ""
+"Enable tasks scrolling when they overflow and exceed the available space"
+msgstr ""
+"Ενεργοποιεί την κύλιση εργασιών όταν υπερχειλίζουν και υπερβαίνουν τον "
+"διαθέσιμο χώρο"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:471
+#, kde-format
+msgid "Manual"
+msgstr "Χειροκίνητα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:478
+#, kde-format
+msgctxt "disabled manual scrolling"
+msgid "Disabled scrolling"
+msgstr "Ανενεργή κύλιση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:479
+#, kde-format
+msgid "Only vertical scrolling"
+msgstr "Μόνο κατακόρυφη κύλιση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:479
+#, kde-format
+msgid "Only horizontal scrolling"
+msgstr "Μόνο οριζόντια κύλιση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:480
+#, kde-format
+msgid "Horizontal and vertical scrolling"
+msgstr "Οριζόντια και κατακόρυφη κύλιση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:489
+#, kde-format
+msgid "Automatic"
+msgstr "Αυτόματα"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:540
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Left Click"
+msgstr "Αριστερό κλικ"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:546
+#, kde-format
+msgctxt "present windows action"
+msgid "Present Windows"
+msgstr "Παρουσίαση παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:548
+#: shell/package/contents/configuration/pages/TasksConfig.qml:608
+#, kde-format
+msgid "Preview Windows"
+msgstr "Προεπισκόπηση παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:580
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Middle Click"
+msgstr "Μεσαίο κλικ"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:587
+#: shell/package/contents/configuration/pages/TasksConfig.qml:707
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Καμία"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:588
+#: shell/package/contents/configuration/pages/TasksConfig.qml:707
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Κλείσιμο Παραθύρου ή Ομάδας"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:589
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "New Instance"
+msgstr "Νέο Στιγμιότυπο"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:590
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Απόκρυψη/Επαναφορά Παραθύρου ή Ομάδας"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:592
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Toggle Task Grouping"
+msgstr "Εναλλαγή Ομαδοποίησης Παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:600
+#, kde-format
+msgid "Hover"
+msgstr "Αιώρηση"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:607
+#: shell/package/contents/configuration/pages/TasksConfig.qml:654
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Καμία"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:609
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Τονισμός παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:610
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Προεπισκόπηση και τονισμός παραθύρων"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:647
+#, kde-format
+msgid "Wheel"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Right Click"
+msgstr "Δεξί κλικ"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:18
+#, kde-format
+msgid "Install indicators from KDE Online Store or local files"
+msgstr ""
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:19
+#, fuzzy, kde-format
+#| msgid "Use %0 style for your indicators"
+msgid "Use %1 style for your indicators"
+msgstr "Χρήση %0 στιλ για ενδείξεις"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:114
+#, kde-format
+msgid "Install..."
+msgstr ""
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:143
+#, fuzzy, kde-format
+#| msgid "Remove Indicator"
+msgid "Remove indicator"
+msgstr "Αφαίρεση ένδειξης"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:197
+#, fuzzy, kde-format
+#| msgctxt "add indicator"
+#| msgid "Add Indicator"
+msgid "Add Indicator..."
+msgstr "Προσθήκη ένδειξης"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:207
+#, fuzzy, kde-format
+#| msgctxt "add indicator file"
+#| msgid "Latte Indicator"
+msgid "Get New Indicators..."
+msgstr "Ένδειξη Latta"
+
+#: shell/package/contents/controls/TypeSelection.qml:55
+#, kde-format
+msgctxt "dock type"
+msgid "Dock"
+msgstr "Μπάρα"
+
+#: shell/package/contents/controls/TypeSelection.qml:57
+#, kde-format
+msgid "Change the behavior and appearance to Dock type"
+msgstr "Αλλαγή της συμπεριφοράς και εμφάνισης σε Μπάρα"
+
+#: shell/package/contents/controls/TypeSelection.qml:99
+#, kde-format
+msgctxt "panel type"
+msgid "Panel"
+msgstr "Πίνακας"
+
+#: shell/package/contents/controls/TypeSelection.qml:101
+#, kde-format
+msgid "Change the behavior and appearance to Panel type"
+msgstr "Αλλαγή της συμπεριφοράς και εμφάνισης σε Πίνακα"
+
+#: shell/package/contents/views/AppletDelegate.qml:168
+#, kde-format
+msgid "Undo uninstall"
+msgstr ""
+
+#: shell/package/contents/views/AppletDelegate.qml:169
+#, kde-format
+msgid "Uninstall widget"
+msgstr ""
+
+#: shell/package/contents/views/WidgetExplorer.qml:147
+#: shell/package/contents/views/WidgetExplorer.qml:250
+#, fuzzy, kde-format
+#| msgid "Add Widgets..."
+msgid "All Widgets"
+msgstr "Προσθήκη συστατικών..."
+
+#: shell/package/contents/views/WidgetExplorer.qml:210
+#, fuzzy, kde-format
+#| msgid "Add Widgets..."
+msgid "Widgets"
+msgstr "Προσθήκη συστατικών..."
+
+#: shell/package/contents/views/WidgetExplorer.qml:218
+#, fuzzy, kde-format
+#| msgctxt "add indicator file"
+#| msgid "Latte Indicator"
+msgid "Get New Widgets…"
+msgstr "Ένδειξη Latta"
+
+#: shell/package/contents/views/WidgetExplorer.qml:236
+#, kde-format
+msgid "Search…"
+msgstr ""
+
+#: shell/package/contents/views/WidgetExplorer.qml:258
+#, kde-format
+msgid "Categories"
+msgstr ""
+
+#: shell/package/contents/views/WidgetExplorer.qml:343
+#, kde-format
+msgid "No widgets matched the search terms"
+msgstr ""
+
+#: shell/package/contents/views/WidgetExplorer.qml:343
+#, kde-format
+msgid "No widgets available"
+msgstr ""
+
+#~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+#~ msgstr ""
+#~ "Χαμηλή ευαισθησία στο παραβολικό εφέ (χαμηλή χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "low sensitivity"
+#~ msgid "Low"
+#~ msgstr "Χαμηλή"
+
+#~ msgid ""
+#~ "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+#~ msgstr ""
+#~ "Μέτρια ευαισθησία στο παραβολικό εφέ (κανονική χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "medium sensitivity"
+#~ msgid "Medium"
+#~ msgstr "Μέτρια"
+
+#~ msgid ""
+#~ "High sensitivity for parabolic effect (high cpu usage and performance)"
+#~ msgstr ""
+#~ "Υψηλή ευαισθησία στο παραβολικό εφέ (υψηλή χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "high sensitivity"
+#~ msgid "High"
+#~ msgstr "Υψηλή"
+
+#, fuzzy
+#~| msgid "Mouse Sensitivity"
+#~ msgid "mouse sensitivity"
+#~ msgstr "Ευαισθησία ποντικιού"
+
+#, fuzzy
+#~| msgid "Multiple Layouts Warning"
+#~ msgid "Multiple Layouts Startup Warning"
+#~ msgstr "Προειδοποίηση για Πολλαπλά Προφίλ"
+
+#, fuzzy
+#~| msgid ""
+#~| "Latte did not close properly in the previous session. The following "
+#~| "layout(s) <b>[%0]</b> were updated for consistency!!!"
+#~ msgid ""
+#~ "<b>Multiple Layouts based on Activities</b> mode did not close properly "
+#~ "during the last session.<br/><br/>The following layout <b>[ %2 ]</b> had "
+#~ "to be updated for consistency!"
+#~ msgid_plural ""
+#~ "<b>Multiple Layouts based on Activities</b> mode did not close properly "
+#~ "during the last session.<br/><br/>The following layouts <b>[ %2 ]</b> had "
+#~ "to be updated for consistency!"
+#~ msgstr[0] ""
+#~ "Το Latte δεν έκλεισε σωστά στην τελευταία συνεδρία. Τα παρακάτω προφίλ "
+#~ "<b>[%0]</b> ενημερώθηκαν για να είναι συνεπή!!!"
+#~ msgstr[1] ""
+#~ "Το Latte δεν έκλεισε σωστά στην τελευταία συνεδρία. Τα παρακάτω προφίλ "
+#~ "<b>[%0]</b> ενημερώθηκαν για να είναι συνεπή!!!"
+
+#, fuzzy
+#~| msgid "Screen"
+#~ msgid "Screen edge"
+#~ msgstr "Οθόνη"
+
+#~ msgid "Theme"
+#~ msgstr "θέμα"
+
+#, fuzzy
+#~| msgid "Plasma"
+#~ msgctxt "plasma theme colors"
+#~ msgid "Plasma"
+#~ msgstr "Plasma"
+
+#, fuzzy
+#~| msgctxt "right edge"
+#~| msgid "Right"
+#~ msgctxt "light theme colors"
+#~ msgid "Light"
+#~ msgstr "Δεξί άκρο"
+
+#, fuzzy
+#~| msgid "Reverse"
+#~ msgctxt "reverse plasma theme colors"
+#~ msgid "Reverse"
+#~ msgstr "Αντίστροφα"
+
+#, fuzzy
+#~| msgid "Smart"
+#~ msgctxt "smart theme colors"
+#~ msgid "Smart"
+#~ msgstr "Έξυπνη"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgid "Layout <b>%1</b> imported successfully..."
+#~ msgid_plural "Layouts <b>%2</b> imported successfully..."
+#~ msgstr[0] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+#~ msgstr[1] "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#~ msgid "Outline width used from background to draw its borders"
+#~ msgstr ""
+#~ "Πλάτος περιγράμματος που χρησιμοποιεί το φόντο για να σχεδιάσει όρια"
+
+#, fuzzy
+#~| msgid "Outline width"
+#~ msgid "outline width "
+#~ msgstr "Πλάτος περιγράμματος"
+
+#~ msgid "Download indicator styles from the internet"
+#~ msgstr "Λήψη στιλ ενδείξεων από το Διαδίκτυο"
+
+#~ msgid "Download"
+#~ msgstr "Λήψη"
+
+#, fuzzy
+#~| msgid "Activating layout: <b>%0</b> ..."
+#~ msgid "Activating layouts: <b>%0</b> ..."
+#~ msgstr "Ενεργοποίηση προφίλ: <b>%0</b> ..."
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgid "Layouts <b>%0</b> imported successfully..."
+#~ msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layout imported successfully"
+#~ msgid "Layout <b>%0</b> imported successfully..."
+#~ msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layouts imported successfully"
+#~ msgid "Layouts <b>%0</b> imported successfully..."
+#~ msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#~ msgid "Yes"
+#~ msgstr "Ναι"
+
+#, fuzzy
+#~| msgid "None"
+#~ msgid "No"
+#~ msgstr "Κανένα"
+
+#, fuzzy
+#~| msgid "Layout"
+#~ msgid "Open Layout"
+#~ msgstr "Προφίλ"
+
+#~ msgid "Same applet and containment id found ::: "
+#~ msgstr "Βρέθηκε ίδια μικροεφαρμογή και ταυτότητα πλαισίου ::: "
+
+#~ msgid "Different applets with same id ::: "
+#~ msgstr "Διαφορετικές μικροεφαρμογές με ίδια ταυτότητα ::: "
+
+#, fuzzy
+#~| msgid ""
+#~| "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please "
+#~| "<b>remove them</b> to improve the system stability..."
+#~ msgctxt "settings:broken layout"
+#~ msgid ""
+#~ "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> it to improve "
+#~ "stability..."
+#~ msgstr ""
+#~ "Το(α) προφίλ <b>%0</b> έχουν <i>άκυρες ρυθμίσεις</i>!!! Παρακαλώ "
+#~ "<b>αφαιρέστε τα</b> για να βελτιώσετε την απόδοση του συστήματος..."
+
+#, fuzzy
+#~| msgid ""
+#~| "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please "
+#~| "<b>remove them</b> to improve the system stability..."
+#~ msgctxt "settings:broken layouts"
+#~ msgid ""
+#~ "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> them to improve "
+#~ "stability..."
+#~ msgstr ""
+#~ "Το(α) προφίλ <b>%0</b> έχουν <i>άκυρες ρυθμίσεις</i>!!! Παρακαλώ "
+#~ "<b>αφαιρέστε τα</b> για να βελτιώσετε την απόδοση του συστήματος..."
+
+#, fuzzy
+#~| msgctxt "download layout"
+#~| msgid "Download"
+#~ msgid "Download..."
+#~ msgstr "Λήψη"
+
+#, fuzzy
+#~| msgctxt "download layout"
+#~| msgid "Download"
+#~ msgctxt "download layout"
+#~ msgid "&Download..."
+#~ msgstr "Λήψη"
+
+#, fuzzy
+#~| msgid "Download community layouts from the Internet"
+#~ msgid "Download community layouts from KDE Store"
+#~ msgstr "Λήψη προφίλ από την κοινότητα στο Διαδίκτυο"
+
+#~ msgctxt "active docks panels"
+#~ msgid "Active Views:"
+#~ msgstr "Ενεργές προβολές:"
+
+#~ msgctxt "view id"
+#~ msgid "ID"
+#~ msgstr "Ταυτότητα"
+
+#~ msgctxt "active dock/panel"
+#~ msgid "Active"
+#~ msgstr "ενεργό"
+
+#~ msgid "No errors were identified for this layout..."
+#~ msgstr "Δε βρέθηκαν γνωστά σφάλματα γισ αυτό το προφίλ ..."
+
+#~ msgid "Errors:"
+#~ msgstr "Σφάλματα:"
+
+#, fuzzy
+#~| msgctxt "copy layout"
+#~| msgid "Copy"
+#~ msgctxt "copy layout"
+#~ msgid "&Copy"
+#~ msgstr "Αντιγραφή"
+
+#~ msgid "Copy selected layout"
+#~ msgstr "Αντιγραφή επιλεγμένου προφίλ"
+
+#, fuzzy
+#~| msgid "Move to: %0"
+#~ msgid "Move to %0"
+#~ msgstr "Μετακίνηση σε: %0"
+
+#~ msgid "Copy Dock"
+#~ msgstr "Αντιγραφή"
+
+#~ msgid "New Dock"
+#~ msgstr "Νέο"
+
+#~ msgid "Add a new dock"
+#~ msgstr "Προσθήκη ενός νέου πίνακα"
+
+#~ msgctxt "screen id"
+#~ msgid "ID"
+#~ msgstr "Ταυτότητα"
+
+#~ msgctxt "screen name"
+#~ msgid "Name"
+#~ msgstr "Όνομα"
+
+#~ msgctxt "screen type"
+#~ msgid "Type"
+#~ msgstr "Τύπος"
+
+#~ msgctxt "inactive screen"
+#~ msgid "inactive"
+#~ msgstr "ανενεργή"
+
+#~ msgctxt "it has not latte docks/panels"
+#~ msgid "none"
+#~ msgstr "Κανένα"
+
+#, fuzzy
+#~| msgid "Multiple Layouts Warning"
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple Layouts"
+#~ msgstr "Προειδοποίηση για Πολλαπλά Προφίλ"
+
+#~ msgid "Pause"
+#~ msgstr "Παύση"
+
+#, fuzzy
+#~| msgid "Pause"
+#~ msgctxt "pause layout"
+#~ msgid "&Pause"
+#~ msgstr "Παύση"
+
+#~ msgctxt "view settings width scale"
+#~ msgid "Width scale at %0%"
+#~ msgstr "Κλίμακα πλάτους σε %0%"
+
+#~ msgctxt "view settings height scale"
+#~ msgid "Height scale at %0%"
+#~ msgstr "Κλίμακα ύψους σε %0%"
+
+#~ msgctxt "items effects"
+#~ msgid "Size"
+#~ msgstr "Μέγεθος"
+
+#~ msgctxt "items effects"
+#~ msgid "Effects"
+#~ msgstr "Εφέ"
+
+#~ msgid "Enable/disable thickness margins"
+#~ msgstr "(Απ)ενεργοποίηση παριθωρίων πάχους"
+
+#~ msgid "Height"
+#~ msgstr "Ύψος"
+
+#~ msgctxt "track from current screen"
+#~ msgid "Current Screen"
+#~ msgstr "Τρέχουσα οθόνη"
+
+#~ msgid "Empty Area"
+#~ msgstr "Κενή περιοχή"
+
+#~ msgid "Color"
+#~ msgstr "Χρώμα"
+
+#~ msgctxt "theme shadow"
+#~ msgid "Theme"
+#~ msgstr "Θέμα"
+
+#~ msgid "Speed"
+#~ msgstr "Ταχύτητα"
+
+#~ msgid "Style"
+#~ msgstr "Στιλ"
+
+#~ msgid "Use Latte style for your indicators"
+#~ msgstr "Χρήση στιλ Latte για τις ενδείξεις"
+
+#~ msgid "Use Plasma style for your indicators"
+#~ msgstr "Χρήση στιλ Plasma για τις ενδείξεις"
+
+#~ msgctxt "launchers group"
+#~ msgid "Group"
+#~ msgstr "Ομάδα"
+
+#~ msgctxt "layout launchers group"
+#~ msgid "Layout"
+#~ msgstr "Προφίλ"
+
+#~ msgid "Add launchers only in the Tasks Area"
+#~ msgstr "Προσθήκη εκτελεστών μόνο στην περιοχή εργασιών"
+
+#~ msgid "Switching to layout <b>%0</b> ..."
+#~ msgstr "Εναλλαγή στο προφίλ <b>%0</b> ..."
+
+#, fuzzy
+#~| msgid "Alternative"
+#~ msgctxt "alternative layout"
+#~ msgid "Alternative"
+#~ msgstr "Εναλλακτικό"
+
+#, fuzzy
+#~| msgctxt "locked layout"
+#~| msgid "Locked"
+#~ msgctxt "locked layout"
+#~ msgid "&Locked"
+#~ msgstr "Κλείδωμα"
+
+#, fuzzy
+#~| msgid "Lock layout and make it read-only"
+#~ msgid "Lock/Unlock selected layout and make it read-only"
+#~ msgstr "Κλείδωμα του προφίλ και λειτουργία μόνο ανάγνωσης."
+
+#, fuzzy
+#~| msgid "Share that layout with other central layouts"
+#~ msgid "Share selected layout with other central layouts"
+#~ msgstr "Κοινή χρήση αυτού του προφίλ με άλλα κεντρικά προφίλ"
+
+#~ msgctxt "column for shared layout to show which layouts is assigned to"
+#~ msgid "Shared To"
+#~ msgstr "Κοινή χρήση με"
+
+#~ msgid "Plasma theme color palette is going to be used"
+#~ msgstr "Η παλέττα χρωμάτων του θέματος του Plasma θα χρησιμοποιηθεί"
+
+#~ msgid "Reverse color palette from plasma theme is going to be used"
+#~ msgstr ""
+#~ "Η αντίστροφη παλέττα χρωμάτων από το θέμα του πλάσματος θα χρησιμοποιηθεί"
+
+#~ msgid ""
+#~ "Smart color palette is going to provide best contrast after taking into "
+#~ "account the environment such as the underlying background"
+#~ msgstr ""
+#~ "Η έξυπνη παλέττα χρωμάτων θα παρέχει καλύτερη αντίθεση αφού ληφθεί υπόψη "
+#~ "το περιβάλλον όπως το υπογραμμισμένο φόντο"
+
+#~ msgid "Colors are not going to be based on any window"
+#~ msgstr "Χρώματα θα χρσιμοποιηθούν σε οποιοδήποτε παράθυρο"
+
+#~ msgid "Active"
+#~ msgstr "Ενεργό"
+
+#~ msgid "Touching"
+#~ msgstr "Σε επαφή"
+
+#~ msgid "Systrays"
+#~ msgstr "Πλαίσια συστήματος"
+
+#~ msgid "Unity"
+#~ msgstr "Unity"
+
+#~ msgid "Extended"
+#~ msgstr "Εκτεταμένο"
+
+#, fuzzy
+#~| msgid "Color"
+#~ msgid "Color..."
+#~ msgstr "Χρώμα"
+
+#, fuzzy
+#~| msgctxt "latte indicator style"
+#~| msgid "Latte"
+#~ msgid "Latte"
+#~ msgstr "Latte"
+
+#~ msgctxt "opens the layout manager window"
+#~ msgid "Configure..."
+#~ msgstr "Διαμόρφωση..."
+
+#~ msgid "a qml file that is used to publish broadcasted backgrounds"
+#~ msgstr "ένα qml αρχείο για τη δημοσίευση μεταδόσεων φόντου"
+
+#~ msgid "Enable/Disable the mouse wheel action"
+#~ msgstr "(Απ)ενεργοποίηση της ενέργειας της ροδέλας του ποντικιού"
+
+#~ msgid "Open Latte settings window"
+#~ msgstr "Εμφάνιση των ρυθμίσεων του Latte"
+
+#~ msgid "React to screen changes after"
+#~ msgstr "Αντίδραση σε αλλαγή ρυθμίσεων οθονών μετά από"
+
+#~ msgctxt "import latte layouts/configuration"
+#~ msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
+#~ msgstr "Αρχείο πλήρων ρυθμίσεων Latte (εκ.0.1, εκ.0.2)"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layout imported successfully"
+#~ msgid "<b>%0</b> was imported successfully..."
+#~ msgstr "Προφίλ: <b>%0</b> εισήχθη επιτυχώς<br>"
+
+#~ msgid "Import: Configuration file version v0.1"
+#~ msgstr "Εισαγωγή: Αρχείο ρυθμίσεων εκ.0.1"
+
+#~ msgid ""
+#~ "You are going to import an old version <b>v0.1</b> configuration file."
+#~ "<br><b>Be careful</b>, importing the entire configuration <b>will erase "
+#~ "all</b> your current configuration!!!<br><br> <i>Alternative, you can "
+#~ "<b>import safely</b> from this file<br><b>only the contained layouts...</"
+#~ "b></i>"
+#~ msgstr ""
+#~ "Πρόκειται να εισάγετε ένα παλαιότερο αρχείο πλήρων ρυθμίσεων <b>εκ.0.1</"
+#~ "b> .<br><b>Προσοχή</b>, εάν συνεχίσετε <b>θα διαγραφούν όλες </b> οι "
+#~ "τρέχοντες ρυθμίσεις!!!.<br><br> <i>Εναλλακτικά, μπορείτε <b>να εισάγετε "
+#~ "με ασφάλεια</b> από αυτό το αρχείο <b>μόνο τα προφίλ...</b></i>"
+
+#~ msgctxt "import full configuration"
+#~ msgid "Full Configuration"
+#~ msgstr "Πλήρης διαμόρφωση"
+
+#~ msgid "Import: Configuration file version v0.2"
+#~ msgstr "Εισαγωγή: Αρχείο ρυθμίσεων εκ.0.2"
+
+#~ msgid ""
+#~ "You are going to import a <b>v0.2</b> configuration file.<br><b>Be "
+#~ "careful</b>, importing <b>will erase all</b> your current configuration!!!"
+#~ "<br><br><i>Would you like to proceed?</i>"
+#~ msgstr ""
+#~ "Πρόκειται να εισάγετε ένα αρχείο ρυθμίσεων <b>εκ.0.2</b> .<br> "
+#~ "<b>Προσοχήl</b>, εάν συνεχίσετε <b>θα διαγράψετε όλες</b> τις τρέχοντες "
+#~ "ρυθμίσεις!!!<br><br><i>Θέλετε να συνεχίσετε;</i>"
+
+#~ msgctxt "single layout"
+#~ msgid "Single"
+#~ msgstr "Μοναδικό"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple"
+#~ msgstr "Πολλαπλά"
+
+#~ msgctxt "switch to layout"
+#~ msgid "Switch"
+#~ msgstr "Εναλλαγή"
+
+#~ msgctxt "locked layout"
+#~ msgid "Locked"
+#~ msgstr "Κλείδωμα"
+
+#~ msgid "Shared"
+#~ msgstr "Κοινή χρήση"
+
+#~ msgctxt "download layout"
+#~ msgid "Download"
+#~ msgstr "Λήψη"
+
+#~ msgid "Custom background..."
+#~ msgstr "Προσαρμοσμένο φόντο..."
+
+#~ msgctxt "edit layout"
+#~ msgid "&Edit..."
+#~ msgstr "&Επεξεργασία..."
+
+#~ msgctxt "layout information"
+#~ msgid "&Information..."
+#~ msgstr "&Πληροφορίες..."
+
+#~ msgctxt "export layout"
+#~ msgid "Failed to export layout"
+#~ msgstr "Αποτυχία εξαγωγής προφίλ"
+
+#~ msgctxt "export layout"
+#~ msgid "Layout exported successfully"
+#~ msgstr "Επιτυχής εξαγωγή προφίλ"
+
+#~ msgctxt "import/export config"
+#~ msgid "Failed to export configuration"
+#~ msgstr "Αποτυχία εξαγωγής ρυθμίσεων"
+
+#~ msgctxt "import/export config"
+#~ msgid "Open location"
+#~ msgstr "Άνοιγμα τοποθεσίας"
+
+#~ msgctxt "column for layout background"
+#~ msgid "Background"
+#~ msgstr "Φόντο"
+
+#~ msgid ""
+#~ "There are layouts with the same name, that is not permitted!!! Please "
+#~ "update these names to re-apply the changes..."
+#~ msgstr ""
+#~ "Υπάρχουν προφίλ με το ίδιο όνομα, αυτό δεν επιτρέπεται!!! Παρακαλώ "
+#~ "ενημερώστε τα αντίστοιχα ονόμα και ξαναπροσπαθήστε..."
+
+#~ msgid "Screens Information"
+#~ msgstr "Πληροφορίες οθονών"
+
+#~ msgid "Pause all activities from the selected layout"
+#~ msgstr "Παύση όλων των Δραστηριοτήτων για το επιλεγμένο προφίλ"
+
+#~ msgid "Paddings"
+#~ msgstr "Αποστάσεις επιπέδων"
+
+#~ msgid "Show indicators for applets"
+#~ msgstr "Εμφάνιση ενδείξεων για μικροεφαρμογές"
+
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "Εμφανίζονται ενδείξεις για μικροεφαρμογές"
+
+#~ msgid "%0 Indicator Options"
+#~ msgstr "%0 επιλογές ενδείξεων"
+
+#~ msgid "Recycling"
+#~ msgstr "Κυκλική εναλλαγή"
+
+#~ msgid "Remove Latte Tasks Applet"
+#~ msgstr "Αφαίρεση Συστατικού Εργασιών Latte"
+
+#~ msgid "Remove Latte Tasks plasmoid"
+#~ msgstr "Αφαίρεση Προσθέτου Εργασιών Latte"
+
+#~ msgid "Help"
+#~ msgstr "Βοήθεια"
+
+#~ msgid "About Latte"
+#~ msgstr "Για το Latte"
+
+#~ msgid "You can use Ctrl/Meta + Scroll Wheel to alter the window size"
+#~ msgstr ""
+#~ "Μπορείτε να χρησιμοποιήσετε Ctrl/Meta + κύλιση ροδέλας για να αλλάξετε το "
+#~ "μέγεθος του παραθύρου"
+
+#~ msgid ""
+#~ "Drag/Maximize/Restore active window with double-click and dragging actions"
+#~ msgstr ""
+#~ "Έλκυση και μεγιστοποίηση/επαναφορά του ενεργού παραθύρου με διπλό κλικ "
+#~ "και ενέργειες έλκυσης"
+
+#, fuzzy
+#~| msgid "Show Latte Settings"
+#~ msgid "Show Latte View"
+#~ msgstr "Εμφάνιση Ρυθμίσεων Latte"
+
+#~ msgid "Show Layout Settings"
+#~ msgstr "Εμφάνιση Ρυθμίσεων Προφίλ "
+
+#~ msgid "Select image..."
+#~ msgstr "Επιλογή εικόνας..."
+
+#, fuzzy
+#~| msgid "Reverse position for lines and dots"
+#~ msgid "Reverse indicator style"
+#~ msgstr "Αντίστροφη θέση για γραμμές και τελείες"
+
+#, fuzzy
+#~| msgid ""
+#~| "Reverse the position of the active indicator e.g. from bottom to top"
+#~ msgid "Reverse indicator style e.g. from bottom to top"
+#~ msgstr ""
+#~ "Αντιστρέφει τη θέση της ενεργής ένδειξης π.χ. από το κάτω μέρος στο πάνω"
+
+#, fuzzy
+#~| msgid "Background"
+#~ msgid "Background roundness"
+#~ msgstr "Παρασκήνιο"
+
+#, fuzzy
+#~| msgctxt "active indicator only to in-house latte applets"
+#~| msgid "Internals"
+#~ msgid "Internal"
+#~ msgstr "Εσωτερικά"
+
+#, fuzzy
+#~| msgid "Unity"
+#~ msgctxt "unity indicator style"
+#~ msgid "Unity"
+#~ msgstr "Unity"
+
+#, fuzzy
+#~| msgid "Reverse position for lines and dots"
+#~ msgid "Use Unity style for your indicators"
+#~ msgstr "Αντίστροφη θέση για γραμμές και τελείες"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Δραστηριότητες"
+
+#~ msgctxt "line indicator"
+#~ msgid "Line"
+#~ msgstr "Γραμμή"
+
+#, fuzzy
+#~| msgid "Show a line indicator for active tasks/applets"
+#~ msgid "Show a line indicator for active items"
+#~ msgstr "Εμφάνιση γραμμής ως ένδειξη των ενεργών εφαρμογών"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Τελεία"
+
+#, fuzzy
+#~| msgid "Show a dot indicator for active tasks/applets"
+#~ msgid "Show a dot indicator for active items"
+#~ msgstr "Εμφάνιση τελείας ως ένδειξη των ενεργών εφαρμογών"
+
+#~ msgid "Glow"
+#~ msgstr "Λάμψη"
+
+#, fuzzy
+#~| msgid "Enable/Disable Alternative Session"
+#~ msgid "Enable/disable indicator glow"
+#~ msgstr "Εμφάνιση Εναλλακτικής Συνεδρίας στο μενού επιλογών"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "glow only to active task/applet indicators"
+#~ msgid "On Active"
+#~ msgstr "Δραστηριότητες"
+
+#~ msgid "Add glow only to active task/applet indicator"
+#~ msgstr "Προσθήκη λάμψης μόνο στην ένδειξη ενεργής εφαρμογής"
+
+#, fuzzy
+#~| msgctxt "active indicator to all applets"
+#~| msgid "All"
+#~ msgctxt "glow to all task/applet indicators"
+#~ msgid "All"
+#~ msgstr "Παντού"
+
+#~ msgid "Add glow to all task/applet indicators"
+#~ msgstr "Προσθήκη λάμψης σε όλες τις ενδείξεις εφαρμογών και προσθέτων"
+
+#~ msgid "Different color for minimized windows"
+#~ msgstr "Διαφορετικό χρώμα για ελαχιστοποιημένα παράθυρα"
+
+#, fuzzy
+#~| msgid ""
+#~| "Grouped windows show both a line and a dot when \n"
+#~| "one of them is active and the Line Active Indicator \n"
+#~| "is enabled"
+#~ msgid ""
+#~ "Grouped windows show both a line and a dot when one of them is active and "
+#~ "the Line Active Indicator is enabled"
+#~ msgstr ""
+#~ "Τα ομαδοποιημένα παράθυρα εμφανίζουν μία γραμμή και \n"
+#~ "και μία τελεία όταν κάποιο από αυτά είναι ενεργό και έχετε \n"
+#~ "ενεργοποιήσει επίσης την Ενεργή Ένδειξη Γραμμής"
+
+#~ msgid "ms."
+#~ msgstr "ms."
+
+#, fuzzy
+#~| msgid "Solid"
+#~ msgid "Solid Style"
+#~ msgstr "Συμπαγές"
+
+#, fuzzy
+#~| msgid "Interaction"
+#~ msgid "Duration"
+#~ msgstr "Αλληλεπίδραση"
+
+#, fuzzy
+#~| msgid "New Instance"
+#~ msgid "Instant"
+#~ msgstr "Νέο Στιγμιότυπο"
+
+#, fuzzy
+#~| msgctxt ""
+#~| "reverse the position of the active indicator e.g. from bottom to top"
+#~| msgid "Reverse"
+#~ msgctxt "reversed indicators"
+#~ msgid "Reverse"
+#~ msgstr "Αντίστροφα"
+
+#~ msgid "Applets"
+#~ msgstr "Εφαρμογές"
+
+#, fuzzy
+#~| msgid "Show a line indicator for active tasks/applets"
+#~ msgid "Show or hide indicators for applets"
+#~ msgstr "Εμφάνιση γραμμής ως ένδειξη των ενεργών εφαρμογών"
+
+#, fuzzy
+#~| msgid "Applets Distance"
+#~ msgid "Distance"
+#~ msgstr "Απόσταση Εφαρμογών:"
+
+#, fuzzy
+#~| msgctxt "active indicator only to in-house latte applets"
+#~| msgid "Internals"
+#~ msgid "External"
+#~ msgstr "Εσωτερικά"
+
+#, fuzzy
+#~| msgid "Screen Height Proportion"
+#~ msgid "From Screen Height"
+#~ msgstr "Με βάση το ύψος της οθόνης"
+
+#, fuzzy
+#~| msgid "Automatic"
+#~ msgctxt "automatic options"
+#~ msgid "Automatic"
+#~ msgstr "Αυτόματα"
+
+#, fuzzy
+#~| msgid ""
+#~| "Applets size is decreased automatically when the contents \n"
+#~| "exceed the maximum length \n"
+#~| "\n"
+#~| "Hint: this option is disabled when only plasma taskmanagers are present"
+#~ msgid ""
+#~ "Items size is decreased automatically when the contents exceed the "
+#~ "maximum length \n"
+#~ "\n"
+#~ "Hint: this option is disabled when plasma taskmanagers are present"
+#~ msgstr ""
+#~ "Το μέγεθος των εφαρμογών μειώνεται αυτόματα όταν τα περιεχόμενα \n"
+#~ "υπερκαλύπτουν το μέγιστο μήκος \n"
+#~ "\n"
+#~ "Σημείωση: αυτή η επιλογή απενεργοποιείται όταν υπάρχουν μόνο "
+#~ "διαχειριστές\n"
+#~ "εργασιών του Plasma περιβάλλοντος"
+
+#, fuzzy
+#~| msgid "None"
+#~ msgctxt "none glow"
+#~ msgid "None"
+#~ msgstr "Καμία"
+
+#, fuzzy
+#~| msgid "Add glow to all task/applet indicators"
+#~ msgid "Do not show any glow for task/applet indicators"
+#~ msgstr "Προσθήκη λάμψης σε όλες τις ενδείξεις εφαρμογών και προσθέτων"
+
+#~ msgid "Shrink thickness margins to minimum"
+#~ msgstr "Ελαχιστοποίηση περιθωρίων πλάτους"
+
+#~ msgid "Dynamic Background"
+#~ msgstr "Δυναμικό Παρασκήνιο"
+
+#, fuzzy
+#~| msgid "Monochrome contents when panel is transparent"
+#~ msgid "Monochrome contents when not touching any window"
+#~ msgstr "Μονόχρωμη εμφάνιση όταν ο πίνακας είναι διαφανής"
+
+#, fuzzy
+#~| msgid ""
+#~| "The panel contents are colorized in order to improve contrast \n"
+#~| "with the underlying desktop background when the panel is transparent"
+#~ msgid ""
+#~ "Contents are colorized in order to improve contrast with the underlying "
+#~ "desktop background"
+#~ msgstr ""
+#~ "Τα περιεχόμενα του πίνακα χρωματίζονται ώστε να βελτιώσουν την \n"
+#~ "αντίθεση με το παρασκήνιο της επιφάνειας εργασίας όταν ο πίνακας \n"
+#~ "είναι διάφανος"
+
+#, fuzzy
+#~| msgid "Opacity"
+#~ msgid "Glow Opacity"
+#~ msgstr "Αδιαφάνεια"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "active indicator style"
+#~ msgid "Active Style"
+#~ msgstr "Δραστηριότητες"
+
+#~ msgid "Show Dock"
+#~ msgstr "Εμφάνιση Πίνακα"
+
+#~ msgid "Show Dock Settings"
+#~ msgstr "Εμφάνιση Ρυθμίσεων Πίνακα"
+
+#, fuzzy
+#~| msgid "Show indicator for audio streams"
+#~ msgid "Indicator for audio streams"
+#~ msgstr "Εμφάνιση ένδειξης ροών ήχου"
+
+#~ msgid "Audio indicator from which the user can mute/unmute an app"
+#~ msgstr ""
+#~ "Ένδειξη ήχου με την οποία ο χρήστης μπορεί να ενεργοποιήσει ή όχι τη "
+#~ "σίγαση σε μία εφαρμογή"
+
+#~ msgid "Indicator for active window group"
+#~ msgstr "Δείκτης ομάδας ενεργού παραθύρου"
+
+#~ msgid "On middle-click"
+#~ msgstr "Στο μεσαίο κλικ"
+
+#~ msgctxt "active indicator to no applets"
+#~ msgid "None"
+#~ msgstr "Καμία"
+
+#, fuzzy
+#~| msgid ""
+#~| "Latte will not show any active applet indicator on its own\n"
+#~| " except those the plasma theme provides"
+#~ msgid ""
+#~ "Latte will not show any active applet indicator on its own except those "
+#~ "the plasma theme provides"
+#~ msgstr ""
+#~ "Το Latte δεν θα εμφανίσει καμία ένδειξη ενεργής εφαρμογής από\n"
+#~ "μόνο του, εκτώς από εκείνες που παρέχει το θέμα του plasma"
+
+#, fuzzy
+#~| msgid ""
+#~| "Latte will show active applet indicators only for applets that have been "
+#~| "adjusted\n"
+#~| " by it for hovering capabilities e.g. folderview"
+#~ msgid ""
+#~ "Latte will show active applet indicators only for applets that have been "
+#~ "adjusted by it for hovering capabilities e.g. folderview"
+#~ msgstr ""
+#~ "Το Latte θα εμφανίζει ενδείξεις ενεργών εφαρμογών μόνο για εκείνες που\n"
+#~ "έχουν προσαρμοστεί έτσι ώστε να λειτουργούν σωστά με το παραβολικό\n"
+#~ "εφέ π.χ. εφαρμογή φακέλου"
+
+#~ msgctxt "active indicator to all applets"
+#~ msgid "All"
+#~ msgstr "Παντού"
+
+#~ msgid "Latte will show active applet indicators for all applets"
+#~ msgstr ""
+#~ "Το Latte θα εμφανίζει ενδείξεις ενεργών εφαρμογών για όλες τις εφαρμογές"
+
+#, fuzzy
+#~| msgctxt "add glow only to active task/applet indicators"
+#~| msgid "Only On Active"
+#~ msgctxt "glow only to active task/applet indicators"
+#~ msgid "Only On Active"
+#~ msgstr "Μόνο Για Ενεργά"
+
+#~ msgid "Use a 3D style glow"
+#~ msgstr "Λάμψη με τρισδιάστατο στυλ"
+
+#~ msgctxt "show panel"
+#~ msgid "Show"
+#~ msgstr "Εμφάνιση"
+
+#~ msgctxt "Clear applet shadow settings"
+#~ msgid "Clear"
+#~ msgstr "Επαναφορά"
+
+#~ msgid "Blur for panel background"
+#~ msgstr "Θόλωμα στο παρασκήνιο"
+
+#~ msgctxt "show applet shadow"
+#~ msgid "Show"
+#~ msgstr "Εμφάνιση"
+
+#~ msgctxt "show glow"
+#~ msgid "Show"
+#~ msgstr "Εμφάνιση"
+
+#~ msgctxt "Add glow to all task/applet indicators"
+#~ msgid "All"
+#~ msgstr "Παντού"
+
+#~ msgid "3D"
+#~ msgstr "3D"
+
+#~ msgid "Tweaks"
+#~ msgstr "Προχωρημένα"
+
+#~ msgid "Add Spacer"
+#~ msgstr "Προσθήκη Κενού"
+
+#~ msgid "Add a spacer to separate applets"
+#~ msgstr "Προσθήκη κενού για να διαχωρίσετε τις εφαρμογές"
+
+#~ msgid "Behave as a normal dock window"
+#~ msgstr "Λειτουργία ως παράθυρο κανονικού πίνακα"
+
+#~ msgid "Logo and Icons"
+#~ msgstr "Εικονίδια και Logo"
+
+#~ msgid "Many bug reports"
+#~ msgstr "Πολλές δηλώσεις προβλημάτων"
+
+#~ msgid "Reviews for Latte Dock, CandilDock and NowDock"
+#~ msgstr "Αξιολογήσεις των Latte Dock, CandilDock και NowDock"
+
+#~ msgid "Size: "
+#~ msgstr "Μέγεθος: "
+
+#, fuzzy
+#~| msgid "Applets Size"
+#~ msgid "Applets:"
+#~ msgstr "Μέγεθος Εφαρμογών"
+
+#~ msgid "Offset: "
+#~ msgstr "Θέση: "
+
+#~ msgid "Show:"
+#~ msgstr "Εμφάνιση:"
+
+#~ msgid "Zoom Factor"
+#~ msgstr "Συντελεστής Εστίασης"
+
+#, fuzzy
+#~| msgid "My Layout"
+#~ msgid "Copy layout"
+#~ msgstr "Το Προφίλ Μου"
+
+#~ msgid "Quit"
+#~ msgstr "Έξοδος"
+
+#~ msgid "Tangerine Font"
+#~ msgstr "Γραμματοσειρά Tangerine"
+
+#~ msgid "Switch to another layout"
+#~ msgstr "Εναλλαγή σε διαφορετικό προφίλ"
+
+#~ msgctxt "command line"
+#~ msgid "Draw boxes around of the applets."
+#~ msgstr "Εμφάνιση τετραγώνων γύρο από τις εφαρμογές. "
+
+#~ msgctxt "command line"
+#~ msgid "Open a window with much debug information."
+#~ msgstr "Εμφάνιση παραθύρου με πληροφορίες αποσφαλμάτωσης."
+
+#~ msgctxt "command line"
+#~ msgid "Show messages of debugging for the mask (Only useful to devs)."
+#~ msgstr ""
+#~ "Εμφάνιση μηνυμάτων αποσφαλμάτωσης της μάσκας (χρήσιμο μόνο στους "
+#~ "προγραμματιστές)."
+
+#~ msgctxt "command line"
+#~ msgid "Show messages for debugging the timers (Only useful to devs)."
+#~ msgstr ""
+#~ "Εμφάνιση μηνυμάτων αποσφαλμάτωσης των χρονομέτρων (χρήσιμο μόνο στους "
+#~ "προγραμματιστές)."
+
+#, fuzzy
+#~| msgctxt "command line"
+#~| msgid "Show messages for debugging the timers (Only useful to devs)."
+#~ msgctxt "command line"
+#~ msgid "Show visual indicators for debugging spacers (Only useful to devs)."
+#~ msgstr ""
+#~ "Εμφάνιση μηνυμάτων αποσφαλμάτωσης των χρονομέτρων (χρήσιμο μόνο στους "
+#~ "προγραμματιστές)."
+
+#~ msgid "Use the current layout set of launchers for this dock"
+#~ msgstr "Χρήση ομάδας εκκινητών από το τρέχον προφίλ"
+
+#~ msgid "Use the global set of launchers for this dock"
+#~ msgstr "Χρήση του καθολικού σετ εκκινητών"
+
+#~ msgid "It shows a Latte specific info window"
+#~ msgstr "Εμφανίζει ένα παράθυρο του Latte"
+
+#~ msgctxt "remove button"
+#~ msgid "Remove"
+#~ msgstr "Αφαίρεση"
+
+#~ msgid "Applets Size"
+#~ msgstr "Μέγεθος Εφαρμογών"
+
+#~ msgid "Show glow around windows points"
+#~ msgstr "Λάμψη στα σημεία κατάστασης των παραθύρων"
+
+#~ msgid "tasks plasmoid separator"
+#~ msgstr "διαχωριστής καταχωρήσεων εφαρμογών"
+
+#~ msgid "Dock for the masses"
+#~ msgstr "Πίνακας για όλον τον κόσμο"
+
+#~ msgid "Configuration exported successfully"
+#~ msgstr "Επιτυχής εξαγωγή ρυθμίσεων"
+
+#~ msgid "Failed to export configuration"
+#~ msgstr "Αποτυχία εξαγωγής ρυθμίσεων"
+
+#~ msgctxt "layout launchers"
+#~ msgid "Layout"
+#~ msgstr "Προφίλ"
+
+#~ msgctxt "import/export config"
+#~ msgid "Failed to import configuration"
+#~ msgstr "Αποτυχία εισαγωγής ρυθμίσεων"
+
+#~ msgctxt "import/export config"
+#~ msgid "Configuration imported successfully"
+#~ msgstr "Επιτυχής εισαγωγή ρυθμίσεων"
+
+#~ msgid "Activate Layout"
+#~ msgstr "Ενεργοποίηση Προφίλ"
+
+#~ msgid ""
+#~ "You are going to activate a layout called <b>%1</b>, <br>by doing so the "
+#~ "current layout will be lost... <br>Do you want to proceed?"
+#~ msgstr ""
+#~ "Πρόκειται να ενεργοποιήσετε το προφίλ <b>%1</b>, <br> αυτή σας η ενέργεια "
+#~ "θα διαγράψει όλες τις τρέχοντες ρυθμίσεις... <br>Θέλετε να συνεχίσετε;"
+
+#~ msgctxt "import/export config"
+#~ msgid "The file has a wrong format, do you want open other file?"
+#~ msgstr ""
+#~ "Το αρχείο δεν έχει την απαιτούμενη μορφή, θέλετε να ανοίξετε κάποιο άλλο "
+#~ "αρχείο;"
+
+#~ msgid "Transparency: "
+#~ msgstr "Αδιαφάνεια: "
+
+#~ msgid ""
+#~ "When this option is activated, it copies the current dock launchers\n"
+#~ "and makes them global launchers for all docks"
+#~ msgstr ""
+#~ "Όταν ενεργοποιείται αυτή η επιλογή, οι εκκινητές αυτού του πίνακα\n"
+#~ "μετατρέπονται σε καθολικοί και χρησιμοποιούνται από όλους τους πίνακες"
+
+#~ msgid "Show Alternative Session in the context menu"
+#~ msgstr "Εμφάνιση Εναλλακτικής Συνεδρίας στο μενού επιλογών"
+
+#~ msgid "Session"
+#~ msgstr "Συνεδρία"
+
+#~ msgid ""
+#~ "Sometimes the current layout of your panels is not sufficient \n"
+#~ "for example when you are travelling. Latte provides you with a full \n"
+#~ "alternative sessionn to work on."
+#~ msgstr ""
+#~ "Μερικές φορές η ταξινόμηση των πινάκων σας δεν είναι επαρκής \n"
+#~ "για παράδειγμα όταν ταξιδεύετε. Σε μία τέτοια περίπτωση το Latte \n"
+#~ "σας προσφέρει μία πλήρη εναλλακτική συνεδρία για να εργαστείτε."
+
+#~ msgid "Add"
+#~ msgstr "Προσθήκη"
+
+#~ msgid "Tasks Separator"
+#~ msgstr "Διαχωριστής Εργασιών"
+
+#~ msgctxt "import/export config"
+#~ msgid "Do you want to open other file?"
+#~ msgstr "Θα θέλατε να ανοίξετε διαφορετικό αρχείο;"
+
+#~ msgid "Show Panel Background"
+#~ msgstr "Εμφάνιση Παρασκηνίου"
+
+#~ msgid "ver:"
+#~ msgstr "εκδ: "
+
+#~ msgid "Only for locked applets"
+#~ msgstr "Μόνο κλειδωμένες εφαρμογές"
+
+#~ msgid "All applets"
+#~ msgstr "Παντού"
+
+#~ msgid "atte"
+#~ msgstr "atte"
+
+#~ msgid "Applets Alignment"
+#~ msgstr "Στοίχιση Εφαρμογών"
+
+#~ msgid "Shell provided for the Latte Dock"
+#~ msgstr "Κέλυφος που παρέχεται από το Latte"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Top"
+#~ msgstr "Πάνω"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Bottom"
+#~ msgstr "Κάτω"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Left"
+#~ msgstr "Αριστερά"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, location"
+#~ msgid "Right"
+#~ msgstr "Δεξιά"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, alignment"
+#~ msgid "Center"
+#~ msgstr "Κέντρο"
+
+#, fuzzy
+#~ msgctxt "@label:listbox config ui"
+#~ msgid "Visibility:"
+#~ msgstr "Ορατότητα"
+
+#, fuzzy
+#~ msgctxt "@item:inlistbox config ui, visibility"
+#~ msgid "Auto hide"
+#~ msgstr "Αυτόματη Απόκρυψη"
+
+#~ msgid "A plasma panel that tries to animate its plasmoid on hovering"
+#~ msgstr ""
+#~ "Ένας πίνακας του Plasma που χρησιμοποιεί ποικίλα εφέ για τις εφαρμογές του"
+
+#~ msgid "Small steps for icon sizes in automatic modes"
+#~ msgstr "Μικρά βήματα στην αυτόματη εναλλαγή μεγέθους"
