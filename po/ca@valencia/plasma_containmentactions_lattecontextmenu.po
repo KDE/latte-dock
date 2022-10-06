@@ -23,7 +23,7 @@ msgstr ""
 #: menu.cpp:91
 #, kde-format
 msgid "&Add Widgets..."
-msgstr "&Afig ginys..."
+msgstr "Afi&g ginys..."
 
 #: menu.cpp:92
 #, kde-format
@@ -49,7 +49,7 @@ msgstr "Canvia a una altra disposició"
 #: menu.cpp:129
 #, kde-format
 msgid "&Add Dock/Panel"
-msgstr "&Afig un acoblador/quadro"
+msgstr "Afi&g un acoblador/quadro"
 
 #: menu.cpp:131
 #, kde-format

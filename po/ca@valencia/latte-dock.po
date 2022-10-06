@@ -314,7 +314,7 @@ msgstr "No hi ha disponible cap plantilla d'acoblador en este sistema."
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
-msgstr "Esta disposició no existix al sistema."
+msgstr "Esta disposició no existix en el sistema."
 
 #: app/main.cpp:331
 #, kde-format
