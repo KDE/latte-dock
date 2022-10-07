@@ -22,6 +22,7 @@
   <name xml:lang="ia">Latte</name>
   <name xml:lang="id">Latte</name>
   <name xml:lang="it">Latte</name>
+  <name xml:lang="ka">Latte</name>
   <name xml:lang="ko">Latte</name>
   <name xml:lang="lt">Latte</name>
   <name xml:lang="nl">Latte</name>
@@ -127,6 +128,7 @@
     <p xml:lang="gl">«Arte en café».</p>
     <p xml:lang="id">"Art In Coffee"</p>
     <p xml:lang="it">«Art In Coffee»</p>
+    <p xml:lang="ka">"ხელოვნება ყავაში"</p>
     <p xml:lang="ko">"커피 안의 예술"</p>
     <p xml:lang="lt">"Menas kavoje"</p>
     <p xml:lang="nl">"Kunst in koffie"</p>
@@ -169,6 +171,7 @@
   <developer_name xml:lang="ia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="id">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="it">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ka">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ko">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="lt">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="nl">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
