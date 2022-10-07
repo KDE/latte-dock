@@ -91,6 +91,7 @@ GenericName[ia]=Bassino
 GenericName[id]=Dok
 GenericName[it]=Aggancio
 GenericName[ja]=ドック
+GenericName[ka]=მიმაგრება
 GenericName[ko]=독
 GenericName[lt]=Dokas
 GenericName[nl]=Dock
