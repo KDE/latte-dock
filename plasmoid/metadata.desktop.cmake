@@ -15,6 +15,7 @@ Name[gl]=Tarefas de Latte
 Name[id]=Tugas-tugas Latte
 Name[it]=Processi di Latte
 Name[ja]=Latte タスク
+Name[ka]=Latte -ის ამოცანები
 Name[ko]=Latte 작업
 Name[lt]=Latte užduotys
 Name[nl]=Latte-taken
