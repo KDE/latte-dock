@@ -52,12 +52,3 @@ msgstr "Opcions"
 #, kde-format
 msgid "Growing circle animation when clicked"
 msgstr "Animació de cercle creixent en fer clic"
-
-#~ msgid "Reverse indicator style"
-#~ msgstr "Estil invers de l'indicador"
-
-#~ msgid "Show indicators for applets"
-#~ msgstr "Mostra els indicadors per a les miniaplicacions"
-
-#~ msgid "Indicators are shown for applets"
-#~ msgstr "Els indicadors seran mostrats per a les miniaplicacions"
