@@ -2175,8 +2175,8 @@ msgid ""
 "<b>Export</b> functionality is supported only for one dock or panel each "
 "time."
 msgstr ""
-"La funcionalitat <b>Exporta</b> només està permesa per un acoblador o quadro "
-"cada vegada."
+"La característica <b>Exporta</b> només està permesa per un acoblador o "
+"quadro cada vegada."
 
 #: app/settings/viewsdialog/viewshandler.cpp:342
 #, kde-format
