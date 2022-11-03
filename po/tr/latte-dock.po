@@ -2625,7 +2625,7 @@ msgstr "Ayarlar penceresini kapat"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:771
 #, kde-format
 msgid "Items"
-msgstr "Öğeler"
+msgstr "Ögeler"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
 #, kde-format

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-12 00:46+0000\n"
-"PO-Revision-Date: 2022-06-12 11:10+0300\n"
+"PO-Revision-Date: 2022-11-02 11:21+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.04.1\n"
+"X-Generator: Lokalize 22.08.2\n"
 
 #: default/package/config/config.qml:23
 #, kde-format
@@ -33,7 +33,7 @@ msgstr "Çizgi"
 #: default/package/config/config.qml:46
 #, kde-format
 msgid "Show a line indicator for active items"
-msgstr "Etkin öğeler için bir çizgi göstergesi göster"
+msgstr "Etkin ögeler için bir çizgi göstergesi göster"
 
 #: default/package/config/config.qml:60
 #, kde-format
@@ -44,7 +44,7 @@ msgstr "Noktalar"
 #: default/package/config/config.qml:64
 #, kde-format
 msgid "Show a dot indicator for active items"
-msgstr "Etkin öğeler için bir nokta göstergesi göster"
+msgstr "Etkin ögeler için bir nokta göstergesi göster"
 
 #: default/package/config/config.qml:81
 #, kde-format
