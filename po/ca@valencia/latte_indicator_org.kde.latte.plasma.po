@@ -41,7 +41,7 @@ msgstr "%1 %"
 #: org.kde.latte.plasma/package/config/config.qml:67
 #, kde-format
 msgid "Corner Margin"
-msgstr "Marge de les cantonades"
+msgstr "Marge dels cantons"
 
 #: org.kde.latte.plasma/package/config/config.qml:99
 #, kde-format

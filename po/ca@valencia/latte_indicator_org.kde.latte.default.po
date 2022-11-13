@@ -75,7 +75,7 @@ msgstr "Farciment"
 #: default/package/config/config.qml:191
 #, kde-format
 msgid "Corner Margin"
-msgstr "Marge de les cantonades"
+msgstr "Marge dels cantons"
 
 #: default/package/config/config.qml:230
 #, kde-format

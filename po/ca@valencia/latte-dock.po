@@ -2932,12 +2932,12 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
 #, kde-format
 msgid "All Corners"
-msgstr "Totes les cantonades"
+msgstr "Tots els cantons"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
 #, kde-format
 msgid "Background draws all corners at all cases."
-msgstr "El fons dibuixa totes les cantonades en tots els casos."
+msgstr "El fons dibuixa tots els cantons en tots els casos."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
 #, kde-format
