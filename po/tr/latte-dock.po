@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-20 00:47+0000\n"
-"PO-Revision-Date: 2022-06-11 11:03+0300\n"
+"PO-Revision-Date: 2022-11-14 14:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.04.1\n"
+"X-Generator: Lokalize 22.08.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -1507,7 +1507,7 @@ msgstr "Farklı yerleşimlerde kenarlıksız büyütülmüş pencereleri destekl
 #: app/settings/settingsdialog/settingsdialog.ui:1132
 #, kde-format
 msgid "Appearance:"
-msgstr "Görünüm:"
+msgstr "Görünüş:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1179
@@ -2568,7 +2568,7 @@ msgstr "Davranış"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:321
 #, kde-format
 msgid "Appearance"
-msgstr "Görünüm"
+msgstr "Görünüş"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:331
 #, kde-format
@@ -3461,7 +3461,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:105
 #, kde-format
 msgid "Change volume when scrolling audio badge"
-msgstr "Ses rozetini kaydırırken ses seviyesini değiştirin"
+msgstr "Ses rozetini sararken ses düzeyini değiştir"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:107
 #, kde-format
@@ -3642,15 +3642,15 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:448
 #, kde-format
 msgid "Scrolling"
-msgstr "Kaydırma"
+msgstr "Sarma"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:449
 #, kde-format
 msgid ""
 "Enable tasks scrolling when they overflow and exceed the available space"
 msgstr ""
-"Görevleri taştıklarında ve kullanılabilir alanı aştıklarında kaydırmayı "
-"etkinleştirin"
+"Görevleri taştıklarında ve kullanılabilir alanı aştıklarında sarmayı "
+"etkinleştir"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:471
 #, kde-format
@@ -3661,22 +3661,22 @@ msgstr "El ile"
 #, kde-format
 msgctxt "disabled manual scrolling"
 msgid "Disabled scrolling"
-msgstr "Kaydırma devre dışı"
+msgstr "Sarma devre dışı"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:479
 #, kde-format
 msgid "Only vertical scrolling"
-msgstr "Yalnızca dikey kaydırma"
+msgstr "Yalnızca dikey sarma"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:479
 #, kde-format
 msgid "Only horizontal scrolling"
-msgstr "Yalnızca yatay kaydırma"
+msgstr "Yalnızca yatay sarma"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:480
 #, kde-format
 msgid "Horizontal and vertical scrolling"
-msgstr "Dikey ve yatay kaydırma"
+msgstr "Dikey ve yatay sarma"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:489
 #, kde-format
