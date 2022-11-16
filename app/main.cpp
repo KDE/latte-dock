@@ -73,9 +73,11 @@ int main(int argc, char **argv)
 
     QQuickWindow::setDefaultAlphaBuffer(true);
 
+    qputenv("QT_WAYLAND_DISABLE_FIXED_POSITIONS", {});
     const bool qpaVariable = qEnvironmentVariableIsSet("QT_QPA_PLATFORM");
     detectPlatform(argc, argv);
     QApplication app(argc, argv);
+    qunsetenv("QT_WAYLAND_DISABLE_FIXED_POSITIONS");
 
     if (!qpaVariable) {
         // don't leak the env variable to processes we start
