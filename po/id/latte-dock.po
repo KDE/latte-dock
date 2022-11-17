@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-10-27 14:01+0700\n"
 "Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
@@ -131,128 +131,128 @@ msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "Mengaktifkan tata letak: <b>%2</b> ..."
 msgstr[1] "Mengaktifkan tata letak: <b>%2</b> ..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "Ganti instansi Latte saat ini."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Tampilkan pesan pengawakutu saat stdout."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr "Bersihkan cache qml. Ini bisa berguna sesudah peningkatan sistem."
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "Fungsikan automulai untuk aplikasi ini"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr ""
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr "Impor dan muat tataletak baku saat pemuaian."
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "Cetak tataletak yang tersedia"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "Cetak templat dock yang tersedia"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "Cetak template tataletak yang tersedia"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "Muat tata letak spesifik saat pemulaian."
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "nama_tataletak"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "Impor dan muat tataletak."
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr ""
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "Impor konfigurasi selengkapnya."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "nama_file"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "Tambahkan Dock/Panel"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line: add"
 msgid "template_name"
 msgstr "nama_template"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
 "Mode memori tataletak tunggal. Hanya satu-satunya tataletak yang aktif."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -262,73 +262,73 @@ msgstr ""
 "Mode memori tataletak multipel. Tataletak multipel bisa aktif kapan pun "
 "berdasarkan pada Activities yang berjalan."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr ""
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr ""
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Tata letak tersedia yang dapat digunakan untuk memulai Latte:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr ""
 "Tidak ada tata letak yang tersedia, selagi pemulaian yang Baku akan "
 "digunakan."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
 msgstr "Templat tata letak yang tersedia di sistem Anda:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
 msgstr "Tidak ada templat tata letak yang tersedia di sistem Anda."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr ""
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr ""
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "Tata letak ini tidak ada di sistem."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "Sebuah instansi sudah berjalan!, gunakan --replace untuk memulai ulang Latte"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "Konfigurasinya tidak dapat diimpor"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "Tata letak tidak dapat diimpor"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

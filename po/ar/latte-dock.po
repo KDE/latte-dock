@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-01-22 22:25+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -146,7 +146,7 @@ msgstr[3] "يبدّل إلى التّخطيط <b>%0</b>..."
 msgstr[4] "يبدّل إلى التّخطيط <b>%0</b>..."
 msgstr[5] "يبدّل إلى التّخطيط <b>%0</b>..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Replace the current dock instance."
@@ -154,92 +154,92 @@ msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "استبدل سيرورة الرّصيف الحاليّة."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "أظهر رسائل التّنقيح في stdout."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr ""
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, fuzzy, kde-format
 #| msgid "Enable autostart during startup"
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "فعّل البدء الآليّ عند البدء"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr ""
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr ""
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr ""
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
 msgstr ""
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
 msgstr ""
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr ""
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr ""
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr ""
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr ""
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Import configuration."
@@ -247,20 +247,20 @@ msgctxt "command line"
 msgid "Import full configuration."
 msgstr "استورد ضبطًا."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "اسم_الملفّ"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgid "Show Latte Dock"
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "أظهر «رصيف لاتيه»"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgctxt "command line: import"
 #| msgid "file_name"
@@ -268,13 +268,13 @@ msgctxt "command line: add"
 msgid "template_name"
 msgstr "اسم_الملفّ"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -282,71 +282,71 @@ msgid ""
 "based on Activities running."
 msgstr ""
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr ""
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr ""
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr ""
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr ""
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
 msgstr ""
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
 msgstr ""
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr ""
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr ""
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr ""
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr "هناك سيرورة تعمل بالفعل! جربّ ‎--replace لإعادة تشغيل «لاتيه»k"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "تعذّر استيراد الضّبط"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, fuzzy, kde-format
 #| msgid "The configuration cannot be imported"
 msgid "The layout cannot be imported"
 msgstr "تعذّر استيراد الضّبط"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

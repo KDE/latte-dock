@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-05-14 17:21+0200\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -130,121 +130,121 @@ msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "Activando distribución: <b>%2</b>..."
 msgstr[1] "Activando distribuciones: <b>%2</b>..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "Remplazar la instancia Latte actual."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Mostrar mensajes de depuración en la salida estándar."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr "Limpiar caché qml. Puede ser útil tras actualizaciones del sistema."
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "Activar inicio automático para esta aplicación"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr "Desactivar el inicio automático de esta aplicación"
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr "Importar y cargar la distribución por omisión al inicio."
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "Mostrar distribuciones disponibles"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "Mostrar plantillas de dock disponibles"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "Mostrar plantillas de distribución disponibles"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "Cargar una distribución específica al inicio."
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "nombre_distribución"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "Importar y cargar una distribución."
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr "ruta_absoluta_del_archivo"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr "Nombre de distribución sugerido al importar un archivo de distribución"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr "nombre_sugerido"
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "Importar configuración completa."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "nombre_archivo"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "Añadir Dock/Panel"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line: add"
 msgid "template_name"
 msgstr "nombre_plantilla"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
@@ -252,7 +252,7 @@ msgstr ""
 "Modo de memoria de distribución única. Solo una distribución está activa en "
 "cada momento."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -262,74 +262,74 @@ msgstr ""
 "Modo de memoria de distribución múltiple. Varias distribuciones pueden estar "
 "activas a la vez dependiendo de las actividades en ejecución."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr "filtro_texto_depuración"
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr "ruta_de_archivo_del_filtro_de_registros"
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Distribuciones disponibles que pueden usarse para iniciar Latte:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr ""
 "No hay distribuciones disponibles, durante el inicio se usará la "
 "distribución por omisión."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
 msgstr "Plantillas de distribución disponibles encontradas en sus sistema:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
 msgstr "No hay plantillas de distribución disponibles en su sistema."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr "Plantillas de dock disponibles en su sistema:"
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr "No hay plantillas de dock disponibles en su sistema."
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "Esta distribución no existe en el sistema."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "¡Una instancia esta actualmente en ejecución!, use «--replace» para "
 "reiniciar Latte"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "La configuración no pudo ser importada"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "La distribución no pudo ser importada"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

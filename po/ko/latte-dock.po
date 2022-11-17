@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-05-16 00:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -128,127 +128,127 @@ msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "레이아웃 활성화 중: <b>%2</b>..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "현재 Latte 인스턴스를 교체합니다."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "표준 출력으로 디버깅 메시지를 표시합니다."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr "QML 캐시를 비웁니다. 시스템 업그레이드 후 유용할 수 있습니다."
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "이 프로그램의 자동 시작 활성화"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr "이 프로그램의 자동 시작 비활성화"
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr "시작할 때 기본 레이아웃을 가져오고 불러옵니다."
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "사용 가능한 레이아웃 표시"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "사용 가능한 독 템플릿 표시"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "사용 가능한 레이아웃 템플릿 표시"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "시작할 때 지정한 레이아웃을 불러옵니다."
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "레이아웃_이름"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "레이아웃을 가져오고 불러옵니다."
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr "absolute_filepath"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr "레이아웃 파일을 가져올 때 제안할 레이아웃 이름"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr "suggested_name"
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "전체 설정을 가져옵니다."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "파일_이름"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "독/패널 추가"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line: add"
 msgid "template_name"
 msgstr "템플릿 _이름"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr "단일 레이아웃 메모리 모드. 항상 단일 레이아웃만 활성화됩니다."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -258,72 +258,72 @@ msgstr ""
 "다중 레이아웃 메모리 모드. 실행 중인 활동에 따라 언제든지 여러 레이아웃을 활"
 "성화할 수 있습니다."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr "필터_디버그_텍스트"
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr "filter_log_filepath"
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Latte를 시작할 때 사용할 수 있는 레이아웃:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr "사용 가능한 레이아웃이 없으며, 시작 시 기본값을 사용합니다."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
 msgstr "시스템에 설치된 사용 가능한 레이아웃 템플릿:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
 msgstr "시스템에 사용 가능한 레이아웃 템플릿이 없습니다."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr "사용 가능한 독 템플릿:"
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr "시스템에 사용 가능한 독 템플릿이 없습니다."
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "이 레이아웃은 시스템에 없습니다."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "인스턴스가 이미 실행 중입니다! Latte를 다시 시작하려면 --replace 옵션을 사용"
 "하십시오"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "설정을 가져올 수 없음"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "레이아웃을 가져올 수 없음"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

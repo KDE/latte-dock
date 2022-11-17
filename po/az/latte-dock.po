@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-07-06 09:32+0400\n"
 "Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
@@ -128,121 +128,121 @@ msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "Maketin tətbiqi: <b>%2</b> ..."
 msgstr[1] "Maketlərin tətbiqi: <b>%2</b> ..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "Mövcud Latte nümunəsini yenisi ilə əvəzləmək."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Xəta aşkarlama ismarıclarını stdout'da göstərmək."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr "QML keşini təmizləmək. Bu sistem yeniləndikdən sonra lazım ola bilər."
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "Bu tətbiq üçün avtomatik başlatmanı aktiv edin"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr "Bu tətbiq üçün avtomatik başlatmanı söndürün"
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr "Başlanğıcda standart maketi idxal etmək və yükləmək"
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "Mövcud maketlərin siyahısı"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "Mövcud dok nümunələrinin siyahısı"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "Mövcud maket nümunələrinin siyahısı"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "Verilmiş maketi başlanğıcda yükləmək."
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "Maketin adı"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "Maketi idxal etmək və yükləmək."
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr "mütləq_fayl yolu"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr "Maket faylının idxalı zamanı maketin təklif olunan adı"
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr "təklif_olunan_ad"
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "Bütün tənzimləmələri idxalı."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "fayl_adı"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "Dok/Panel əlavə edin"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, kde-format
 msgctxt "command line: add"
 msgid "template_name"
 msgstr "şablon_adı"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
@@ -250,7 +250,7 @@ msgstr ""
 "Yaddaşın yalnız bir maket üçün istifadə olunması rejimi. Yalnız bir maket "
 "istifadə oluna bilər."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -260,71 +260,71 @@ msgstr ""
 "Yaddaşın birdən çox maketlər üçün istifadə olunması rejimi. Maketlər eyni "
 "zamanda müxtəlif İş otaqlarında aktiv ola bilər."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr "filtr_diaqnostika_mətn"
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr "süzgəc_jurnalı_faylı_yolu"
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Latte'ni işə salmaq üçün istifadə də biləcəyiniz mövcud maketlər:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr "Mövcud maket tapılmadə, standart maket istifadə olunacaq."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
 msgstr "Sisteminizdə əlçatan maket nümunələri tapıldı:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
 msgstr "Sisteminizdə əlçatan maket nümunələri yoxdur."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr "Sisteminizdə əlçatan dok nümunələri tapıldı:"
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr "Sisteminizdə əlçatan dok nümunələri yoxdur."
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "bu maket sistemdə mövcud deyil."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "Dok nümunəsi artıq başladılıb! \"--replace\" ilə Latte'ni yenidən başladın"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "Tənzimləmə idxal edilə bilmir"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "Maket idxal edilə bilmir"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

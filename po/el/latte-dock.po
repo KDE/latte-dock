@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2019-07-31 08:26+0300\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -143,19 +143,19 @@ msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "Ενεργοποίηση προφίλ: <b>%0</b> ..."
 msgstr[1] "Ενεργοποίηση προφίλ: <b>%0</b> ..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "Αντικατάσταση της τρέχουσας εφαρμογής Latte."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Εμφάνιση των μηνυμάτων αποσφαλμάτωσης στην τρέχουσα έξοδο."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
@@ -163,33 +163,33 @@ msgstr ""
 "Καθαρισμός qml μνήμης. Μπορεί να είναι χρήσιμη μετά από αναβαθμίσεις του "
 "συστήματος."
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, fuzzy, kde-format
 #| msgid "Enable autostart during startup"
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr ""
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr ""
 "Εισαγωγή και ενεργοποίηση του προκαθορισμένου προφίλ κατά την εκκίνηση."
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "Εμφάνιση διαθέσιμων προφίλ"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Print available layouts"
@@ -197,7 +197,7 @@ msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "Εμφάνιση διαθέσιμων προφίλ"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Print available layouts"
@@ -205,62 +205,62 @@ msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "Εμφάνιση διαθέσιμων προφίλ"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "Ενεργοποίηση συγκεκριμένου προφίλ κατά την εκκίνηση."
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "όνομα_προφίλ"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "Εισαγωγή και ενεργοποίηση ενός προφίλ."
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr ""
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "Εισαγωγή αρχείου πλήρων ρυθμίσεων."
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "όνομα_αρχείου"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgid "Docks/Panels"
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "Docks/Πίνακες"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgctxt "command line: load"
 #| msgid "layout_name"
@@ -268,7 +268,7 @@ msgctxt "command line: add"
 msgid "template_name"
 msgstr "όνομα_προφίλ"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
@@ -276,7 +276,7 @@ msgstr ""
 "Μοναδικό προφίλ στη μνήμη. Μόνο ένα προφίλ είναι ενεργό κάθε φορά για όλες "
 "τις περιπτώσεις."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -286,37 +286,37 @@ msgstr ""
 "Πολλαπλά προφίλ στη μνήμη. Πολλαπλά προφίλ μπορεί να είναι ενεργά κάθε φορά "
 "με βάση τις Δραστηριότητες που τρέχουν."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr ""
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr ""
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Διαθέσιμα προφίλ για την εκκίνηση του Latte:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr ""
 "Δεν υπάρχουν διαθέσιμα προφίλ, το Προκαθορισμένο θα χρησιμοποιηθεί κατά την "
 "εκκίνηση."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, fuzzy, kde-format
 #| msgid "Available layouts that can be used to start Latte:"
 msgid "Available layout templates found in your system:"
 msgstr "Διαθέσιμα προφίλ για την εκκίνηση του Latte:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, fuzzy, kde-format
 #| msgid "There are no available layouts, during startup Default will be used."
 msgid "There are no available layout templates in your system."
@@ -324,40 +324,40 @@ msgstr ""
 "Δεν υπάρχουν διαθέσιμα προφίλ, το Προκαθορισμένο θα χρησιμοποιηθεί κατά την "
 "εκκίνηση."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr ""
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr ""
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "Αυτό το προφίλ δεν υπάρχει στο σύστημα."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "Η εφαρμογή εκτελείται ήδη!, χρησιμοποιήστε --replace για επανεκκίνηση του "
 "Latte"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "Δεν μπορεί να γίνει εισαγωγή των ρυθμίσεων"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "Δεν μπορεί να γίνει εισαγωγή του προφίλ"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "

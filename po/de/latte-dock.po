@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-06-20 00:47+0000\n"
+"POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2021-06-30 09:55+0200\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -135,50 +135,50 @@ msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] "Profil <b>%2</b> wird aktiviert ..."
 msgstr[1] "Profile <b>%2</b> werden aktiviert ..."
 
-#: app/main.cpp:98
+#: app/main.cpp:100
 #, kde-format
 msgctxt "command line"
 msgid "Replace the current Latte instance."
 msgstr "Ersetzt die aktuelle Instanz von Latte."
 
-#: app/main.cpp:99
+#: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
 msgstr "Sendet Debug-Informationen zu stdout."
 
-#: app/main.cpp:100
+#: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr ""
 
-#: app/main.cpp:101
+#: app/main.cpp:103
 #, fuzzy, kde-format
 #| msgid "Enable autostart during startup"
 msgctxt "command line"
 msgid "Enable autostart for this application"
 msgstr "Automatisch beim Anmelden starten"
 
-#: app/main.cpp:102
+#: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
 msgstr ""
 
-#: app/main.cpp:103
+#: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
 msgstr "Standard-Profil beim Starten importieren und anwenden"
 
-#: app/main.cpp:104
+#: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
 msgstr "Verfügbare Profile anzeigen"
 
-#: app/main.cpp:105
+#: app/main.cpp:107
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Print available layouts"
@@ -186,7 +186,7 @@ msgctxt "command line"
 msgid "Print available dock templates"
 msgstr "Verfügbare Profile anzeigen"
 
-#: app/main.cpp:106
+#: app/main.cpp:108
 #, fuzzy, kde-format
 #| msgctxt "command line"
 #| msgid "Print available layouts"
@@ -194,62 +194,62 @@ msgctxt "command line"
 msgid "Print available layout templates"
 msgstr "Verfügbare Profile anzeigen"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
 msgstr "Beim Start ein bestimmtes Profil anwenden"
 
-#: app/main.cpp:107
+#: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
 msgstr "Profilname"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
 msgstr "Profil importieren und anwenden"
 
-#: app/main.cpp:108
+#: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
 msgstr ""
 
-#: app/main.cpp:109
+#: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
 msgstr ""
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
 msgstr "Hauptkonfiguration importieren"
 
-#: app/main.cpp:110
+#: app/main.cpp:112
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
 msgstr "Dateiname"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgid "Show Latte Settings"
 msgctxt "command line"
 msgid "Add Dock/Panel"
 msgstr "Latte-Einstellungen anzeigen"
 
-#: app/main.cpp:111
+#: app/main.cpp:113
 #, fuzzy, kde-format
 #| msgctxt "command line: load"
 #| msgid "layout_name"
@@ -257,13 +257,13 @@ msgctxt "command line: add"
 msgid "template_name"
 msgstr "Profilname"
 
-#: app/main.cpp:112
+#: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr "Einfach-Profil-Modus. Nur ein Profil kann aktiviert werden."
 
-#: app/main.cpp:113
+#: app/main.cpp:115
 #, kde-format
 msgctxt "command line"
 msgid ""
@@ -273,73 +273,73 @@ msgstr ""
 "Mehrfach-Profil-Modus. Basierend auf den verwendeten Aktivitäten können "
 "mehrere Profile gleichzeitig aktiviert werden."
 
-#: app/main.cpp:165
+#: app/main.cpp:167
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
 msgstr ""
 
-#: app/main.cpp:181
+#: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
 msgstr ""
 
-#: app/main.cpp:202
+#: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
 msgstr "Latte kann mit diesen Profilen gestartet werden:"
 
-#: app/main.cpp:208
+#: app/main.cpp:210
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr "Keine verfügbaren Profile gefunden, Standard-Profil wird geladen."
 
-#: app/main.cpp:220
+#: app/main.cpp:222
 #, fuzzy, kde-format
 #| msgid "Available layouts that can be used to start Latte:"
 msgid "Available layout templates found in your system:"
 msgstr "Latte kann mit diesen Profilen gestartet werden:"
 
-#: app/main.cpp:226
+#: app/main.cpp:228
 #, fuzzy, kde-format
 #| msgid "There are no available layouts, during startup Default will be used."
 msgid "There are no available layout templates in your system."
 msgstr "Keine verfügbaren Profile gefunden, Standard-Profil wird geladen."
 
-#: app/main.cpp:238
+#: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
 msgstr ""
 
-#: app/main.cpp:244
+#: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
 msgstr ""
 
-#: app/main.cpp:276
+#: app/main.cpp:278
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
 msgstr "Dieses Profil existiert nicht im System."
 
-#: app/main.cpp:331
+#: app/main.cpp:333
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
 "Latte-Dock läuft bereits, verwenden Sie „--replace“, um es neu zu starten"
 
-#: app/main.cpp:353
+#: app/main.cpp:355
 #, kde-format
 msgid "The configuration cannot be imported"
 msgstr "Konfiguration kann nicht importiert werden"
 
-#: app/main.cpp:365 app/main.cpp:393
+#: app/main.cpp:367 app/main.cpp:395
 #, kde-format
 msgid "The layout cannot be imported"
 msgstr "Das Profil kann nicht importiert werden"
 
-#: app/main.cpp:505
+#: app/main.cpp:507
 #, kde-format
 msgid ""
 "Latte is a dock based on plasma frameworks that provides an elegant and "
