@@ -636,7 +636,7 @@ msgstr "Icona:"
 #: app/settings/detailsdialog/detailsdialog.ui:157
 #, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "Mostra a les disposicions del menú contextual quan siga possible"
+msgstr "Mostra en les disposicions del menú contextual quan siga possible"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
@@ -934,7 +934,7 @@ msgid ""
 msgstr ""
 "<b>Només seleccioneu</b> les pantalles que siguen obsoletes i que voldríeu "
 "eliminar la seua referència. Les pantalles actives o les pantalles "
-"utilitzades a les disposicions no es poden eliminar."
+"utilitzades en les disposicions no es poden eliminar."
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1862,7 +1862,7 @@ msgid ""
 "Docks and panels from <b>Paste</b> action are already present in current "
 "layout"
 msgstr ""
-"Els acobladors i quadros de l'acció <b>Apega</b> ja estan presents a la "
+"Els acobladors i quadros de l'acció <b>Apega</b> ja estan presents en la "
 "disposició actual"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:574
@@ -1889,7 +1889,7 @@ msgid ""
 "After you have made your layout file changes, please click <b>Validate</b> "
 "to confirm them."
 msgstr ""
-"Després d'haver fet els canvis a la disposició, feu clic en <b>Valida</b> "
+"Després d'haver fet els canvis en la disposició, feu clic en <b>Valida</b> "
 "per a confirmar-los."
 
 #: app/settings/viewsdialog/viewscontroller.cpp:657
