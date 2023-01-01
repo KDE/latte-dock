@@ -524,10 +524,9 @@ msgid "Accessible always:"
 msgstr ""
 
 #: app/settings/actionsdialog/actionshandler.cpp:61
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layouts"
-msgstr "Disposición"
+msgstr "Disposicións"
 
 #: app/settings/actionsdialog/actionshandler.cpp:68
 #, fuzzy, kde-format
