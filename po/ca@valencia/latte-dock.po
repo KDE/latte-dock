@@ -3527,7 +3527,7 @@ msgstr "Interacció"
 #, kde-format
 msgid "Launchers are added only in current tasks applet"
 msgstr ""
-"Els llançadors només s'afegiran a la miniaplicació de les tasques actuals"
+"Els iniciadors només s'afegiran a la miniaplicació de les tasques actuals"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:134
 #, kde-format
@@ -3535,7 +3535,7 @@ msgid ""
 "Launchers are added only in current tasks applet and not as regular applets "
 "or in any other applet"
 msgstr ""
-"Els llançadors només s'afegiran a la miniaplicació de les tasques actuals i "
+"Els iniciadors només s'afegiran a la miniaplicació de les tasques actuals i "
 "no com a miniaplicacions normals o en qualsevol altra miniaplicació"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:145
@@ -3586,17 +3586,17 @@ msgstr "Mostra només les tasques de l'activitat actual"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:234
 #, kde-format
 msgid "Show only tasks from launchers"
-msgstr "Mostra només les tasques dels llançadors"
+msgstr "Mostra només les tasques dels iniciadors"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:246
 #, kde-format
 msgid "Show only launchers and hide all tasks"
-msgstr "Mostra només els llançadors i oculta totes les tasques"
+msgstr "Mostra només els iniciadors i oculta totes les tasques"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:247
 #, kde-format
 msgid "Tasks become hidden and only launchers are shown"
-msgstr "Les tasques esdevenen ocultes i només es mostren els llançadors"
+msgstr "Les tasques esdevenen ocultes i només es mostren els iniciadors"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:258
 #, kde-format
@@ -3611,7 +3611,7 @@ msgstr "De manera predeterminada, el grup de tasques de la mateixa aplicació"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:289
 #, kde-format
 msgid "Bounce launchers when triggered"
-msgstr "Rebota els llançadors quan s'activen"
+msgstr "Rebota els iniciadors quan s'activen"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:300
 #, kde-format
@@ -3636,7 +3636,7 @@ msgstr "Les tasques agrupades llisquen en les seues finestres tancades"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:351
 #, kde-format
 msgid "Launchers"
-msgstr "Llançadors"
+msgstr "Iniciadors"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:376
 #, kde-format
@@ -3651,7 +3651,7 @@ msgid ""
 "Use a unique set of launchers for this view which is independent from any "
 "other view"
 msgstr ""
-"Utilitza un conjunt únic de llançadors per a esta vista, el qual serà "
+"Utilitza un conjunt únic d'iniciadors per a esta vista, el qual serà "
 "independent de qualsevol altra vista"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:395
@@ -3668,9 +3668,9 @@ msgid ""
 "provides launchers <b>synchronization</b> between different views in the "
 "<b>same layout</b>"
 msgstr ""
-"Utilitza la disposició actual del conjunt de llançadors per a esta "
-"«latteView». Este grup proporciona <b>sincronització</b> dels llançadors "
-"entre diferents vistes amb la <b>mateixa disposició</b>"
+"Utilitza la disposició actual del conjunt d'iniciadors per a esta "
+"«latteView». Este grup proporciona <b>sincronització</b> dels iniciadors "
+"entre vistes diferents amb la <b>mateixa disposició</b>"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:415
 #, kde-format
@@ -3686,9 +3686,9 @@ msgid ""
 "launchers <b>synchronization</b> between different views and between "
 "<b>different layouts</b>"
 msgstr ""
-"Utilitza el conjunt global de llançadors per a esta «latteView». Este grup "
-"proporciona <b>sincronització</b> dels llançadors entre diferents vistes i "
-"entre <b>diferents disposicions</b>"
+"Utilitza el conjunt global d'iniciadors per a esta «latteView». Este grup "
+"proporciona <b>sincronització</b> dels iniciadors entre vistes i "
+"<b>disposicions diferents</b>"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:448
 #, kde-format

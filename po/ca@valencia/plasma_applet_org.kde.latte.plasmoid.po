@@ -359,7 +359,7 @@ msgstr "Mi&nimitza"
 #: package/contents/ui/ContextMenu.qml:600
 #, kde-format
 msgid "Keep &Above Others"
-msgstr "Mantín sobre les &altres"
+msgstr "Mantín damunt les &altres"
 
 #: package/contents/ui/ContextMenu.qml:610
 #, kde-format

@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
-# Wantoyo <wantoyek@gmail.com>, 2019, 2020, 2022.
+# Wantoyo <wantoyek@gmail.com>, 2019, 2020, 2022, 2023.
 # Linerly <linerly@protonmail.com>, 2022.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2022-10-27 14:01+0700\n"
+"PO-Revision-Date: 2023-01-02 07:27+0700\n"
 "Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
 "Language: id\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.08.1\n"
+"X-Generator: Lokalize 22.08.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -1332,7 +1332,8 @@ msgstr "Preferensi"
 #: app/settings/settingsdialog/settingsdialog.ui:540
 #, kde-format
 msgid "Provide visual feedback when layouts are activated automatically"
-msgstr "Sediakan tanggapan visual ketika tata letak diaktifkan secara otomatis"
+msgstr ""
+"Sediakan umpan balik visual ketika tata letak diaktifkan secara otomatis"
 
 #. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:543
