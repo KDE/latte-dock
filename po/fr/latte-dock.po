@@ -1,20 +1,21 @@
 # Simon Depiets <sdepiets@gmail.com>, 2019.
 # Christophe Moulin <mevouillon.corp@gmail.com>, 2020.
 # Xavier Besnard <xavier.besnard@neuf.fr>, 2020, 2021, 2022.
+# Xavier BESNARD <xavier.besnard]neuf.fr>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2022-05-11 11:12+0200\n"
-"Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
-"Language-Team: French <kde-francophone@kde.org>\n"
+"PO-Revision-Date: 2023-01-06 16:14+0100\n"
+"Last-Translator: Xavier BESNARD <xavier.besnard]neuf.fr>\n"
+"Language-Team: fr\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.04.0\n"
+"X-Generator: Lokalize 22.12.0\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -151,7 +152,7 @@ msgstr "Afficher les messages de débogage sur stdout."
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr ""
-"Effacer le cache qml. Peut être utile après des mises à jours du système."
+"Effacer le cache de Qml. Peut être utile après des mises à jour du système."
 
 #: app/main.cpp:103
 #, kde-format
@@ -422,7 +423,7 @@ msgstr "fichier de disposition plasma"
 #: app/package/lattepackage.cpp:49
 #, kde-format
 msgid "unity layout file"
-msgstr "fichier de disposition unity"
+msgstr "fichier de disposition pour Unity"
 
 #: app/package/lattepackage.cpp:50
 #, kde-format
@@ -447,7 +448,7 @@ msgstr "fichier de préréglage pour plasma"
 #: app/package/lattepackage.cpp:56
 #, kde-format
 msgid "unity preset file"
-msgstr "fichier de préréglage pour unity"
+msgstr "fichier de préréglages pour Unity"
 
 #: app/package/lattepackage.cpp:57
 #, kde-format
@@ -2852,7 +2853,7 @@ msgid ""
 msgstr ""
 "Les couleurs seront créées à partir de la fenêtre active.\n"
 "Remarque : vous avez besoin d'installer le script « Colors » de KWin à "
-"partir de KDE Store."
+"partir du KDE Store."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
 #, kde-format
