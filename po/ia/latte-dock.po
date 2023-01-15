@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
 #
-# giovanni <g.sora@tiscali.it>, 2020, 2021, 2022.
+# giovanni <g.sora@tiscali.it>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2022-01-21 22:47+0100\n"
+"PO-Revision-Date: 2023-01-14 23:22+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"X-Generator: Lokalize 22.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2209,7 +2209,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewsmodel.cpp:500
 #, kde-format
 msgid " - On All Screens - "
-msgstr ""
+msgstr " - Sur Omne Schermos - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:501
 #, kde-format
@@ -3687,16 +3687,14 @@ msgid "Widgets"
 msgstr "Widgets"
 
 #: shell/package/contents/views/WidgetExplorer.qml:218
-#, fuzzy, kde-format
-#| msgid "Get New Widgets..."
+#, kde-format
 msgid "Get New Widgets…"
-msgstr "Obtener Nove widgets ..."
+msgstr "Obtene Nove widgets ..."
 
 #: shell/package/contents/views/WidgetExplorer.qml:236
-#, fuzzy, kde-format
-#| msgid "Search..."
+#, kde-format
 msgid "Search…"
-msgstr "Cerca..."
+msgstr "Cerca…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:258
 #, kde-format
