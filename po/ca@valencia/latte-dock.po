@@ -2443,7 +2443,7 @@ msgstr "Mostra l'acoblador/quadro de Latte"
 #: app/shortcuts/globalshortcuts.cpp:96
 #, kde-format
 msgid "Cycle Through Dock/Panel Settings Windows"
-msgstr "Circula entre les finestres d'Configuració de l'acoblable/quadro"
+msgstr "Circula entre les finestres de Configureu l'acoblable/quadro"
 
 #: app/shortcuts/globalshortcuts.cpp:105
 #, kde-format
