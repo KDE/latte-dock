@@ -1,0 +1,129 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Matjaž Jeran <matjaz.jeran@amis.net>, 2020, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-08-28 01:44+0000\n"
+"PO-Revision-Date: 2021-04-03 20:30+0200\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 20.08.1\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
+
+#: menu.cpp:97
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "Dodaj gradnike..."
+
+#: menu.cpp:98
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Pokaži raziskovalec gradnikov"
+
+#: menu.cpp:117
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "Zapusti Latte"
+
+#: menu.cpp:124
+#, kde-format
+msgid "&Layouts"
+msgstr "Postavitve"
+
+#: menu.cpp:126
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Preklopi na naslednjo postavitev"
+
+#: menu.cpp:135
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "Dodaj dok/panel"
+
+#: menu.cpp:137
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "Dodaj dok ali panel na specifično predlogo"
+
+#: menu.cpp:148
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "Prenesi dok ali panel v drugo postavitev"
+
+#: menu.cpp:155
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "Nastavi Latte..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "Uredi dok..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "Uredi panel..."
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "Dupliciraj dok"
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "Dupliciraj panel"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "Izvozi dok kot predlogo"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "Izvozi panel kot predlogo"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "Prenesi dok v postavitev"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "Prenesi panel v postavitev"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Dock"
+msgstr "Odstrani dok"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Panel"
+msgstr "Odstrani panel"
+
+#: menu.cpp:359
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "Uredi postavitve..."
+
+#~ msgctxt "current layout"
+#~ msgid "[Current]"
+#~ msgstr "[Trenutno]"
+
+#~ msgctxt "view settings window"
+#~ msgid "View &Settings..."
+#~ msgstr "Pogled in nastavitve"

@@ -1,0 +1,518 @@
+# Translation of plasma_applet_org.kde.latte.plasmoid.po to Ukrainian
+# Copyright (C) 2017-2021 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Yuri Chornoivan <yurchor@ukr.net>, 2017, 2018, 2019, 2020, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.kde.latte.plasmoid\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-07 03:05+0000\n"
+"PO-Revision-Date: 2021-05-05 08:33+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 20.12.0\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Вигляд"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Панель"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Взаємодія"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "Максимальний розмір піктограм: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Увімкнути тілі для піктограм"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Увімкнути сяйво навколо точок вікна"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Інший колір для мінімізованих вікон"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Індикатор для групи активного вікна"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Анімація: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "тривалість"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "вимкнено"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Масштаб"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Рівень: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Показувати червону лінію на межі, яка потрібна для анімації"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr ""
+"Для зміни вимкнених параметрів вам доведеться скористатися вікном "
+"налаштовування панелі Латте"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Циклічний перехід завданнями прокручуванням коліщатка миші"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Показувати дії з вікном у контекстному меню"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Показувати дані щодо поступу для завдань"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "Клацання середньою"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Немає"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Закрити вікно або групу"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Новий екземпляр"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Мінімізувати/Відновити вікно або групу"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "Наведення"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Немає"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "Попередній перегляд вікон"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Підсвічувати вікна"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Попередній перегляд і підсвічування вікон"
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Фільтри"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Показувати лише завдання з поточного екрана"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Показувати лише завдання з поточної стільниці"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Показувати тільки завдання з поточного простору дій"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Показувати лінію-стовпчик для завдань"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Використовувати панель тем Плазми"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Використовувати прозорість на панелі"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Розмір: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr "Верхній роздільник"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr "Лівий роздільник"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr "Правий роздільник"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr "Нижній роздільник"
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Places"
+msgstr "Місця"
+
+#: package/contents/ui/ContextMenu.qml:112
+#: package/contents/ui/ContextMenu.qml:125
+#, kde-format
+msgid "Recent Documents"
+msgstr "Недавні документи"
+
+#: package/contents/ui/ContextMenu.qml:117
+#: package/contents/ui/ContextMenu.qml:130
+#, kde-format
+msgid "Actions"
+msgstr "Дії"
+
+#: package/contents/ui/ContextMenu.qml:185
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Попередня композиція"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Пауза"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Пуск"
+
+#: package/contents/ui/ContextMenu.qml:212
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Наступна композиція"
+
+#: package/contents/ui/ContextMenu.qml:223
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Стоп"
+
+#: package/contents/ui/ContextMenu.qml:240
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Вийти"
+
+#: package/contents/ui/ContextMenu.qml:255
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Відновити"
+
+#: package/contents/ui/ContextMenu.qml:281
+#, kde-format
+msgid "Mute"
+msgstr "Вимкнути звук"
+
+#: package/contents/ui/ContextMenu.qml:343
+#, kde-format
+msgid "Start New Instance"
+msgstr "Запустити новий екземпляр"
+
+#: package/contents/ui/ContextMenu.qml:360
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "Пересунути на с&тільницю"
+
+#: package/contents/ui/ContextMenu.qml:388
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "Пересунути &на поточну стільницю"
+
+#: package/contents/ui/ContextMenu.qml:406
+#, kde-format
+msgid "&All Desktops"
+msgstr "&Всі стільниці"
+
+#: package/contents/ui/ContextMenu.qml:451
+#, kde-format
+msgid "&New Desktop"
+msgstr "С&творити стільницю"
+
+#: package/contents/ui/ContextMenu.qml:476
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Пересунути до п&ростору дій"
+
+#: package/contents/ui/ContextMenu.qml:497
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Додати до поточного простору дій"
+
+#: package/contents/ui/ContextMenu.qml:507
+#, kde-format
+msgid "All Activities"
+msgstr "Усі простори дій"
+
+#: package/contents/ui/ContextMenu.qml:574
+#, kde-format
+msgid "More Actions"
+msgstr "Додаткові дії"
+
+#: package/contents/ui/ContextMenu.qml:583
+#, kde-format
+msgid "&Move"
+msgstr "&Пересунути"
+
+#: package/contents/ui/ContextMenu.qml:592
+#, kde-format
+msgid "Re&size"
+msgstr "Змінити &розмір"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Ma&ximize"
+msgstr "&Максимізувати"
+
+#: package/contents/ui/ContextMenu.qml:628
+#, kde-format
+msgid "Mi&nimize"
+msgstr "Мін&імізувати"
+
+#: package/contents/ui/ContextMenu.qml:638
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Утримувати &понад іншими"
+
+#: package/contents/ui/ContextMenu.qml:648
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Утримувати п&ід іншими"
+
+#: package/contents/ui/ContextMenu.qml:660
+#, kde-format
+msgid "&Fullscreen"
+msgstr "&На весь екран"
+
+#: package/contents/ui/ContextMenu.qml:672
+#, kde-format
+msgid "&Shade"
+msgstr "З&горнути"
+
+#: package/contents/ui/ContextMenu.qml:688
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Дозволити групування для цієї програми"
+
+#: package/contents/ui/ContextMenu.qml:718
+#: package/contents/ui/ContextMenu.qml:733
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "При&шпилити кнопку запуску"
+
+#: package/contents/ui/ContextMenu.qml:786
+#, kde-format
+msgid "On All Activities"
+msgstr "На усіх просторах дій"
+
+#: package/contents/ui/ContextMenu.qml:792
+#, kde-format
+msgid "On The Current Activity"
+msgstr "На поточному просторі дій"
+
+#: package/contents/ui/ContextMenu.qml:814
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Відшпилити кнопку запуску"
+
+#: package/contents/ui/ContextMenu.qml:829
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "Додати %1"
+
+#: package/contents/ui/ContextMenu.qml:847
+#: package/contents/ui/ContextMenu.qml:861
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "Вилучити %1"
+
+#: package/contents/ui/ContextMenu.qml:905
+#, kde-format
+msgid "Window"
+msgstr "Вікно"
+
+#: package/contents/ui/ContextMenu.qml:917
+#, kde-format
+msgid "&Close"
+msgstr "&Закрити"
+
+#: package/contents/ui/main.qml:1061
+#, kde-format
+msgid "Tasks Area"
+msgstr "Область завдань"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:465
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "На %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:476
+#: package/contents/ui/task/TaskItem.qml:563
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Доступне у всіх просторах дій"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:498
+#: package/contents/ui/task/TaskItem.qml:582
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Також доступне у %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:502
+#: package/contents/ui/task/TaskItem.qml:586
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "Доступне у %1"
+
+#: package/contents/ui/task/TaskItem.qml:554
+#, kde-format
+msgid "On %1"
+msgstr "На %1"
+
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Вилучити кінцевий роздільник"
+
+#~ msgid "Remove Head Separator"
+#~ msgstr "Вилучити початковий роздільник"
+
+#~ msgid "Position: "
+#~ msgstr "Розташування: "
+
+#~ msgid "Center"
+#~ msgstr "За центром"
+
+#~ msgid "Left"
+#~ msgstr "Ліворуч"
+
+#~ msgid "Right"
+#~ msgstr "Праворуч"
+
+#~ msgid "Top"
+#~ msgstr "Вгорі"
+
+#~ msgid "Bottom"
+#~ msgstr "Внизу"
+
+#~ msgid "Configure"
+#~ msgstr "Налаштувати"
+
+#~ msgid "Reverse position for lines and dots"
+#~ msgstr "Обмін позиціями для ліній і крапок"
+
+#~ msgctxt ""
+#~ "Toggle action for showing a launcher button while the application is not "
+#~ "running"
+#~ msgid "&Pin"
+#~ msgstr "При&шпилити"
+
+#~ msgid "&Pin"
+#~ msgstr "При&шпилити"
+
+#~ msgctxt ""
+#~ "Remove launcher button for application shown while it is not running"
+#~ msgid "Unpin"
+#~ msgstr "Прибрати шпильку"
+
+#~ msgid "Layouts"
+#~ msgstr "Компонування"
+
+#~ msgctxt "current layout"
+#~ msgid "(Current)"
+#~ msgstr "(поточне)"
+
+#~ msgid "Add Widgets..."
+#~ msgstr "Додати віджети…"

@@ -1,0 +1,127 @@
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# Volkan Gezer <volkangezer@gmail.com>, 2021.
+# Emir SARI <emir_sari@icloud.com>, 2022.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-08-28 01:44+0000\n"
+"PO-Revision-Date: 2022-11-21 22:03+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 22.08.3\n"
+
+#: menu.cpp:97
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "&Araç Takımları Ekle..."
+
+#: menu.cpp:98
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Araç Takımı Gezginini Göster"
+
+#: menu.cpp:117
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "&Latte'den Çık"
+
+#: menu.cpp:124
+#, kde-format
+msgid "&Layouts"
+msgstr "Yer&leşimler"
+
+#: menu.cpp:126
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Başka yerleşime geç"
+
+#: menu.cpp:135
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "Rıhtım/P&anel Ekle"
+
+#: menu.cpp:137
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "Belirli şablonu temel alan rıhtım veya panel ekle"
+
+#: menu.cpp:148
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "Rihtım veya paneli başka yerleşime taşı"
+
+#: menu.cpp:155
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "Latte'yi &Yapılandır..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "Rıhtımı Dü&zenle..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "Paneli Dü&zenle..."
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "Rıhtımı Ç&oğalt"
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "Paneli Ç&oğalt"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "Rıhtımı Şablon Olarak Dışa A&ktar"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "Paneli Şablon Olarak Dışa A&ktar"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "Rıhtımı Yerleşi&me Taşı"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "Paneli Yerleşi&me Taşı"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Dock"
+msgstr "&Rıhtımı Kaldır"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Panel"
+msgstr "Paneli Kaldı&r"
+
+#: menu.cpp:359
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "Yer&leşimleri Düzenle..."
+
+#~ msgid "&Edit Original Dock..."
+#~ msgstr "Özgün Rıhtımı Düz&enle..."
+
+#~ msgid "&Edit Original Panel..."
+#~ msgstr "Özgün Paneli Düz&enle..."

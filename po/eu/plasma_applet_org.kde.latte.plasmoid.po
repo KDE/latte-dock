@@ -1,0 +1,522 @@
+# Translation of plasma_applet_org.kde.latte.plasmoid.po to Euskara/Basque (eu).
+# Copyright (C) 2018, Free Software Foundation.
+# Copyright (C) 2019, This file is copyright:
+# This file is distributed under the same license as latte-dock package.
+# KDE euskaratzeko proiektuaren arduraduna <xalba@euskalnet.net>.
+#
+# Translators:
+# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2018, 2019.
+# Ander Elortondo <ander.elor@gmail.com>, 2018, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-07 03:05+0000\n"
+"PO-Revision-Date: 2019-11-03 09:36+0100\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.08.2\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Itxura"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Panela"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Elkarrekintza"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, fuzzy, kde-format
+#| msgid "Icon size: "
+msgid "Maximum icon size: "
+msgstr "Ikonoen neurria:"
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Gaitu itzalak ikonoentzat"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Erakutsi distira leiho puntu inguruan"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Kolore ezberdina minimizatutako leihoei"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Leiho talde aktiboari adierazlea"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Animazioak:"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "iraupena"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "Desgaituta"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Zooma"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Maila: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Erakutsi lerro gorri bat animazioetarako behar den limitean"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr ""
+"Ezgaitutako ezarpenetarako Latte Dock konfigurazio leihoa erabili behar duzu"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Atazatik atazara iragan saguaren gurpila erabiliz"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Erakutsi leihoen ekintzak laster-menuan"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Erakutsi atazen aurrerapenaren informazioa"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, fuzzy, kde-format
+#| msgid "On middle-click:"
+msgid "Middle Click"
+msgstr "Erdiko klik egitean:"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Bat ere ez"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Itxi leihoa edo taldea"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Instantzia berria"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Ikonotu/lehengoratu leihoa edo taldea"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, fuzzy, kde-format
+#| msgctxt "The click action"
+#| msgid "None"
+msgctxt "none action"
+msgid "None"
+msgstr "Bat ere ez"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, fuzzy, kde-format
+#| msgid "Preview windows on hovering"
+msgid "Preview Windows"
+msgstr "Aurreikusi leihoak gainetik igarotzean"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, fuzzy, kde-format
+#| msgid "Highlight windows on hovering"
+msgid "Highlight Windows"
+msgstr "Nabarmendu leihoak gainetik igarotzean"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Iragazkiak"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Erakutsi soilik uneko pantailako atazak"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Erakutsi soilik uneko mahaigaineko atazak"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Erakutsi soilik uneko jarduerako atazak"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Erakutsi barra lerroa atazetan"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Erabili plasma gaiaren panela"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Erabili gardentasuna panelean"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Neurria: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Top Separator"
+msgstr "Gehitu bereizlea"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Left Separator"
+msgstr "Gehitu bereizlea"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Right Separator"
+msgstr "Gehitu bereizlea"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Places"
+msgstr "Tokiak"
+
+#: package/contents/ui/ContextMenu.qml:112
+#: package/contents/ui/ContextMenu.qml:125
+#, kde-format
+msgid "Recent Documents"
+msgstr "Azken dokumentuak"
+
+#: package/contents/ui/ContextMenu.qml:117
+#: package/contents/ui/ContextMenu.qml:130
+#, kde-format
+msgid "Actions"
+msgstr "Ekintzak"
+
+#: package/contents/ui/ContextMenu.qml:185
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Aurreko aztarna"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Eten"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Jo"
+
+#: package/contents/ui/ContextMenu.qml:212
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Hurrengo aztarna"
+
+#: package/contents/ui/ContextMenu.qml:223
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Gelditu"
+
+#: package/contents/ui/ContextMenu.qml:240
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Irten"
+
+#: package/contents/ui/ContextMenu.qml:255
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Lehengoratu"
+
+#: package/contents/ui/ContextMenu.qml:281
+#, kde-format
+msgid "Mute"
+msgstr "Isilarazi"
+
+#: package/contents/ui/ContextMenu.qml:343
+#, kde-format
+msgid "Start New Instance"
+msgstr "Abiarazi instantzia berria"
+
+#: package/contents/ui/ContextMenu.qml:360
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "Eraman &mahaigainera"
+
+#: package/contents/ui/ContextMenu.qml:388
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "Eraman &uneko mahaigainera"
+
+#: package/contents/ui/ContextMenu.qml:406
+#, kde-format
+msgid "&All Desktops"
+msgstr "Mahaigain &denak"
+
+#: package/contents/ui/ContextMenu.qml:451
+#, kde-format
+msgid "&New Desktop"
+msgstr "Mahaigain &berria"
+
+#: package/contents/ui/ContextMenu.qml:476
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Eraman &jarduerara"
+
+#: package/contents/ui/ContextMenu.qml:497
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Gehitu uneko jarduerara"
+
+#: package/contents/ui/ContextMenu.qml:507
+#, kde-format
+msgid "All Activities"
+msgstr "Jarduera guztiak"
+
+#: package/contents/ui/ContextMenu.qml:574
+#, kde-format
+msgid "More Actions"
+msgstr "Ekintza gehiago"
+
+#: package/contents/ui/ContextMenu.qml:583
+#, kde-format
+msgid "&Move"
+msgstr "&Lekuz aldatu"
+
+#: package/contents/ui/ContextMenu.qml:592
+#, kde-format
+msgid "Re&size"
+msgstr "&Neurria aldatu"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Ma&ximize"
+msgstr "Ma&ximizatu"
+
+#: package/contents/ui/ContextMenu.qml:628
+#, kde-format
+msgid "Mi&nimize"
+msgstr "M&inimizatu"
+
+#: package/contents/ui/ContextMenu.qml:638
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Mantendu besteen &gainean"
+
+#: package/contents/ui/ContextMenu.qml:648
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Mantendu besteen a&zpian"
+
+#: package/contents/ui/ContextMenu.qml:660
+#, kde-format
+msgid "&Fullscreen"
+msgstr "Pantaila-&osoa"
+
+#: package/contents/ui/ContextMenu.qml:672
+#, kde-format
+msgid "&Shade"
+msgstr "Itza&la"
+
+#: package/contents/ui/ContextMenu.qml:688
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Baimendu programa hau taldekatu dadin"
+
+#: package/contents/ui/ContextMenu.qml:718
+#: package/contents/ui/ContextMenu.qml:733
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "&finkatu abiarazlea"
+
+#: package/contents/ui/ContextMenu.qml:786
+#, kde-format
+msgid "On All Activities"
+msgstr "Jarduera guztietan"
+
+#: package/contents/ui/ContextMenu.qml:792
+#, kde-format
+msgid "On The Current Activity"
+msgstr "Uneko jardueran"
+
+#: package/contents/ui/ContextMenu.qml:814
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Finkatzea kendu abiarazleari"
+
+#: package/contents/ui/ContextMenu.qml:829
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:847
+#: package/contents/ui/ContextMenu.qml:861
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:905
+#, kde-format
+msgid "Window"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:917
+#, kde-format
+msgid "&Close"
+msgstr "&Itxi"
+
+#: package/contents/ui/main.qml:1061
+#, kde-format
+msgid "Tasks Area"
+msgstr "Atazen eremua"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:465
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "%1(e)(a)n"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:476
+#: package/contents/ui/task/TaskItem.qml:563
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Erabilgarri jarduera guztietan"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:498
+#: package/contents/ui/task/TaskItem.qml:582
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "%1(e)(a)n ere erabilgarri"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:502
+#: package/contents/ui/task/TaskItem.qml:586
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "%1(e)(a)n erabilgarri"
+
+#: package/contents/ui/task/TaskItem.qml:554
+#, kde-format
+msgid "On %1"
+msgstr "%1(e)(a)n"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Kendu bereizlea"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Head Separator"
+#~ msgstr "Kendu bereizlea"
+
+#~ msgid "Position: "
+#~ msgstr "Kokalekua:"
+
+#~ msgid "Center"
+#~ msgstr "Erdian"
+
+#~ msgid "Left"
+#~ msgstr "Ezkerrean"
+
+#~ msgid "Right"
+#~ msgstr "Eskuinean"
+
+#~ msgid "Top"
+#~ msgstr "Goian"
+
+#~ msgid "Bottom"
+#~ msgstr "Behean"
+
+#~ msgid "Configure"
+#~ msgstr "Konfiguratu"
+
+#~ msgid "Reverse position for lines and dots"
+#~ msgstr "Lerroen eta puntuen tokia alderantzikatu"
+
+#~ msgctxt ""
+#~ "Toggle action for showing a launcher button while the application is not "
+#~ "running"
+#~ msgid "&Pin"
+#~ msgstr "I&ltzatu"
+
+#~ msgid "&Pin"
+#~ msgstr "I&ltzatu"
+
+#~ msgctxt ""
+#~ "Remove launcher button for application shown while it is not running"
+#~ msgid "Unpin"
+#~ msgstr "Iltzea kendu"

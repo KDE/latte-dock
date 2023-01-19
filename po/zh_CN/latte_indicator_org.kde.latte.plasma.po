@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: kdeorg\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-10-04 01:38+0000\n"
+"PO-Revision-Date: 2023-01-15 15:27\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: kdeorg\n"
+"X-Crowdin-Project-ID: 269464\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /kf5-stable/messages/latte-dock/latte_indicator_org.kde."
+"latte.plasma.pot\n"
+"X-Crowdin-File-ID: 10734\n"
+
+#: org.kde.latte.plasma/package/config/config.qml:21
+#, kde-format
+msgid "Style"
+msgstr "风格"
+
+#: org.kde.latte.plasma/package/config/config.qml:29
+#, kde-format
+msgid "Padding"
+msgstr "内边距"
+
+#: org.kde.latte.plasma/package/config/config.qml:53
+#: org.kde.latte.plasma/package/config/config.qml:89
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: org.kde.latte.plasma/package/config/config.qml:67
+#, kde-format
+msgid "Corner Margin"
+msgstr "四角外边距"
+
+#: org.kde.latte.plasma/package/config/config.qml:99
+#, kde-format
+msgid "Options"
+msgstr "选项"
+
+#: org.kde.latte.plasma/package/config/config.qml:107
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "反转指示器风格"
+
+#: org.kde.latte.plasma/package/config/config.qml:117
+#, kde-format
+msgid "Growing circle animation when clicked"
+msgstr "单击时显示水波纹动画"
+
+#: org.kde.latte.plasma/package/config/config.qml:127
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "显示小程序的指示器"
+
+#: org.kde.latte.plasma/package/config/config.qml:128
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "指示器将在小程序活动时显示"

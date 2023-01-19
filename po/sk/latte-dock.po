@@ -1,0 +1,4818 @@
+# translation of latte-dock.po to Slovak
+# Roman Paholik <wizzardsk@gmail.com>, 2017, 2022.
+# Mthw <jari_45@hotmail.com>, 2018.
+# Matej Mrenica <matejm98mthw@gmail.com>, 2019, 2021.
+# Dusan Kazik <prescott66@gmail.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-11-17 02:27+0000\n"
+"PO-Revision-Date: 2022-04-09 11:17+0200\n"
+"Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
+"Language-Team: Slovak <kde-sk@linux.sk>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 21.12.3\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Roman Paholík,Dušan Kazik"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "wizzardsk@gmail.com,prescott66@gmail.com"
+
+#: app/indicator/factory.cpp:267
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Failed to export configuration"
+msgid "Failed to import indicator"
+msgstr "Zlyhalo exportovanie konfigurácie"
+
+#: app/indicator/factory.cpp:273
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgctxt "indicator_name, imported updated"
+msgid "%1 indicator updated successfully"
+msgstr "Kompletná konfigurácia úspešne exportovaná"
+
+#: app/indicator/factory.cpp:274
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "Layout exported successfully"
+msgctxt "indicator_name, imported success"
+msgid "%1 indicator installed successfully"
+msgstr "Rozloženie exportované úspešne"
+
+#: app/indicator/factory.cpp:354
+#, fuzzy, kde-format
+#| msgid "Remove Indicator"
+msgid "Remove Indicator Confirmation"
+msgstr "Odstrániť Indikátor"
+
+#: app/indicator/factory.cpp:363
+#, fuzzy, kde-format
+#| msgid "Do you want to remove <b>%0</b> indicator from your system?"
+msgid "Do you want to remove completely <b>%1</b> indicator from your system?"
+msgstr "Chcete odstrániť <b>%0</b> indikátor z vášho systému?"
+
+#: app/indicator/factory.cpp:373
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgctxt "indicator_name, removed success"
+msgid "<b>%1</b> indicator removed successfully"
+msgstr "Kompletná konfigurácia úspešne exportovaná"
+
+#: app/lattecorona.cpp:1118 app/lattecorona.cpp:1141
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgid "The layout cannot be imported from file :: "
+msgstr "Rozloženie nemohlo byť importované"
+
+#: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
+#: app/layouts/manager.cpp:73 app/layouts/manager.cpp:80
+#: app/layouts/manager.cpp:92
+#, kde-format
+msgid "My Layout"
+msgstr "Moje rozloženie"
+
+#: app/layouts/importer.cpp:64
+#, kde-format
+msgid "Alternative"
+msgstr "Alternatívne"
+
+#: app/layouts/importer.cpp:324
+#, kde-format
+msgctxt "import/export config"
+msgid "The extracted file could not be copied!!!"
+msgstr "Extrahovaný súbor sa nepodarilo skopírovať!!!!"
+
+#: app/layouts/importer.cpp:329
+#, kde-format
+msgctxt "import/export config"
+msgid "The file has a wrong format!!!"
+msgstr "Súbor je nesprávneho formátu."
+
+#: app/layouts/importer.cpp:335
+#, kde-format
+msgctxt "import/export config"
+msgid "The temp directory could not be created!!!"
+msgstr "Dočasný priečinok sa nepodarilo vytvoriť!!!"
+
+#: app/layouts/manager.cpp:238
+#, fuzzy, kde-format
+#| msgid "Multiple Layouts Warning"
+msgid "Multiple Layouts Startup Warning"
+msgstr "Varovanie viacerých rozložení"
+
+#: app/layouts/manager.cpp:247
+#, fuzzy, kde-format
+#| msgid ""
+#| "Latte did not close properly in the previous session. The following "
+#| "layout(s) <b>[%0]</b> were updated for consistency!!!"
+msgid ""
+"<b>Multiple Layouts based on Activities</b> mode did not close properly "
+"during the last session.<br/><br/>The following layout <b>[ %2 ]</b> had to "
+"be updated for consistency!"
+msgid_plural ""
+"<b>Multiple Layouts based on Activities</b> mode did not close properly "
+"during the last session.<br/><br/>The following layouts <b>[ %2 ]</b> had to "
+"be updated for consistency!"
+msgstr[0] ""
+"Latte nebol správne ukončený v predchádzajúcom sedení. Nasledujúce "
+"rozloženie(a) <b>[%0]</b> boli aktualizované pre dôslednosť!!!"
+msgstr[1] ""
+"Latte nebol správne ukončený v predchádzajúcom sedení. Nasledujúce "
+"rozloženie(a) <b>[%0]</b> boli aktualizované pre dôslednosť!!!"
+msgstr[2] ""
+"Latte nebol správne ukončený v predchádzajúcom sedení. Nasledujúce "
+"rozloženie(a) <b>[%0]</b> boli aktualizované pre dôslednosť!!!"
+
+#: app/layouts/storage.cpp:48
+#, kde-format
+msgid "Different Applets With Same Id"
+msgstr ""
+
+#: app/layouts/storage.cpp:49
+#, kde-format
+msgid "Orphaned Parent Applet Of Subcontainment"
+msgstr ""
+
+#: app/layouts/storage.cpp:50
+#, kde-format
+msgid "Different Applet And Containment With Same Id"
+msgstr ""
+
+#: app/layouts/storage.cpp:51
+#, kde-format
+msgid "Orphaned Subcontainment"
+msgstr ""
+
+#: app/layouts/synchronizer.cpp:955
+#, fuzzy, kde-format
+#| msgid "Activating layout: <b>%0</b> ..."
+msgid "Activating layout: <b>%2</b> ..."
+msgid_plural "Activating layouts: <b>%2</b> ..."
+msgstr[0] "Aktivujem rozloženie <b>%0</b> ..."
+msgstr[1] "Aktivujem rozloženie <b>%0</b> ..."
+msgstr[2] "Aktivujem rozloženie <b>%0</b> ..."
+
+#: app/main.cpp:97
+#, kde-format
+msgctxt "command line"
+msgid "Replace the current Latte instance."
+msgstr "Nahradiť existujúcu inštanciu Latte."
+
+#: app/main.cpp:98
+#, kde-format
+msgctxt "command line"
+msgid "Show the debugging messages on stdout."
+msgstr "Zobraziť správy ladenia na stdout."
+
+#: app/main.cpp:99
+#, kde-format
+msgctxt "command line"
+msgid "Clear qml cache. It can be useful after system upgrades."
+msgstr ""
+
+#: app/main.cpp:100
+#, fuzzy, kde-format
+#| msgid "Enable autostart during startup"
+msgctxt "command line"
+msgid "Enable autostart for this application"
+msgstr "Povoliť automatické spustenie počas štartu systému"
+
+#: app/main.cpp:101
+#, kde-format
+msgctxt "command line"
+msgid "Disable autostart for this application"
+msgstr ""
+
+#: app/main.cpp:102
+#, kde-format
+msgctxt "command line"
+msgid "Import and load default layout on startup."
+msgstr "Importovať a načítať predvolené rozloženie pri štarte."
+
+#: app/main.cpp:103
+#, kde-format
+msgctxt "command line"
+msgid "Print available layouts"
+msgstr "Vypísať dostupné rozloženia"
+
+#: app/main.cpp:104
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Print available layouts"
+msgctxt "command line"
+msgid "Print available dock templates"
+msgstr "Vypísať dostupné rozloženia"
+
+#: app/main.cpp:105
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Print available layouts"
+msgctxt "command line"
+msgid "Print available layout templates"
+msgstr "Vypísať dostupné rozloženia"
+
+#: app/main.cpp:106
+#, kde-format
+msgctxt "command line"
+msgid "Load specific layout on startup."
+msgstr "Načítať určité rozloženie pri štarte"
+
+#: app/main.cpp:106
+#, kde-format
+msgctxt "command line: load"
+msgid "layout_name"
+msgstr "layout_name"
+
+#: app/main.cpp:107
+#, kde-format
+msgctxt "command line"
+msgid "Import and load a layout."
+msgstr "Importovať a načítať rozloženie."
+
+#: app/main.cpp:107
+#, kde-format
+msgctxt "command line: import"
+msgid "absolute_filepath"
+msgstr ""
+
+#: app/main.cpp:108
+#, kde-format
+msgctxt "command line"
+msgid "Suggested layout name when importing a layout file"
+msgstr ""
+
+#: app/main.cpp:108
+#, kde-format
+msgctxt "command line: import"
+msgid "suggested_name"
+msgstr ""
+
+#: app/main.cpp:109
+#, kde-format
+msgctxt "command line"
+msgid "Import full configuration."
+msgstr "Importovať kompletnú konfiguráciu."
+
+#: app/main.cpp:109
+#, kde-format
+msgctxt "command line: import"
+msgid "file_name"
+msgstr "názov_súboru"
+
+#: app/main.cpp:110
+#, kde-format
+msgctxt "command line"
+msgid "Add Dock/Panel"
+msgstr "Pridať dok/panel"
+
+#: app/main.cpp:110
+#, fuzzy, kde-format
+#| msgctxt "command line: load"
+#| msgid "layout_name"
+msgctxt "command line: add"
+msgid "template_name"
+msgstr "layout_name"
+
+#: app/main.cpp:111
+#, kde-format
+msgctxt "command line"
+msgid "Single layout memory mode. Only one layout is active at any case."
+msgstr ""
+"Režim jedného rozloženia v pamäti. Vždy je aktívne iba jedno rozloženie."
+
+#: app/main.cpp:112
+#, kde-format
+msgctxt "command line"
+msgid ""
+"Multiple layouts memory mode. Multiple layouts can be active at any time "
+"based on Activities running."
+msgstr ""
+"Režim viacerých rozložení v pamäti. Viac rozložení môže byť aktívnych na "
+"základe bežiacich aktivít."
+
+#: app/main.cpp:164
+#, kde-format
+msgctxt "command line: debug-text"
+msgid "filter_debug_text"
+msgstr ""
+
+#: app/main.cpp:195
+#, kde-format
+msgid "Available layouts that can be used to start Latte:"
+msgstr "Dostupné rozloženia, ktoré sa dajú použiť na spustenie Latte:"
+
+#: app/main.cpp:201
+#, kde-format
+msgid "There are no available layouts, during startup Default will be used."
+msgstr "Nie sú dostupné žiadne rozloženia, počas štartu sa použije Predvolený."
+
+#: app/main.cpp:213
+#, fuzzy, kde-format
+#| msgid "Available layouts that can be used to start Latte:"
+msgid "Available layout templates found in your system:"
+msgstr "Dostupné rozloženia, ktoré sa dajú použiť na spustenie Latte:"
+
+#: app/main.cpp:219
+#, fuzzy, kde-format
+#| msgid "There are no available layouts, during startup Default will be used."
+msgid "There are no available layout templates in your system."
+msgstr "Nie sú dostupné žiadne rozloženia, počas štartu sa použije Predvolený."
+
+#: app/main.cpp:231
+#, kde-format
+msgid "Available dock templates found in your system:"
+msgstr ""
+
+#: app/main.cpp:237
+#, kde-format
+msgid "There are no available dock templates in your system."
+msgstr ""
+
+#: app/main.cpp:269
+#, kde-format
+msgctxt "layout missing"
+msgid "This layout doesn't exist in the system."
+msgstr "Toto rozloženie neexistuje v systéme."
+
+#: app/main.cpp:324
+#, kde-format
+msgid "An instance is already running!, use --replace to restart Latte"
+msgstr "Inštancia už beží!, použite --replace na reštartovanie Latte"
+
+#: app/main.cpp:346
+#, kde-format
+msgid "The configuration cannot be imported"
+msgstr "Konfigurácia nemohla byť importovaná"
+
+#: app/main.cpp:358 app/main.cpp:386
+#, kde-format
+msgid "The layout cannot be imported"
+msgstr "Rozloženie nemohlo byť importované"
+
+#: app/main.cpp:486
+#, kde-format
+msgid ""
+"Latte is a dock based on plasma frameworks that provides an elegant and "
+"intuitive experience for your tasks and plasmoids. It animates its contents "
+"by using parabolic zoom effect and tries to be there only when it is "
+"needed.\n"
+"\n"
+"\"Art in Coffee\""
+msgstr ""
+"Latte je dok postavený na Plasma frameworkoch, ktorý poskytuje elegantný a "
+"intuitývny zážitok pre vaše úlohy a plasmoidy. Oživuje svoj obsah pomocou "
+"parabolického efektu priblíženia a pokúša sa byť tam iba keď je to "
+"potrebné.\n"
+"\n"
+"\"Umenie v Káve\""
+
+#: app/package/lattepackage.cpp:34
+#, kde-format
+msgid "Latte Dock defaults"
+msgstr "Latte Dock predvolené"
+
+#: app/package/lattepackage.cpp:35
+#, kde-format
+msgid "Latte Dock panel"
+msgstr "Latte Dock panel"
+
+#: app/package/lattepackage.cpp:36
+#, kde-format
+msgid "Widget Explorer"
+msgstr ""
+
+#: app/package/lattepackage.cpp:38
+#, kde-format
+msgid "Dock configuration UI"
+msgstr "UI pre konfiguráciu Doku"
+
+#: app/package/lattepackage.cpp:39
+#, kde-format
+msgid "Dock secondary configuration UI"
+msgstr "UI pre konfiguráciu vedľajšieho doku"
+
+#: app/package/lattepackage.cpp:40
+#, fuzzy, kde-format
+#| msgid "Dock configuration UI"
+msgid "Dock canvas configuration UI"
+msgstr "UI pre konfiguráciu Doku"
+
+#: app/package/lattepackage.cpp:41
+#, kde-format
+msgid "Config model"
+msgstr "Konfiguračný model"
+
+#: app/package/lattepackage.cpp:42
+#, kde-format
+msgid "Splitter"
+msgstr "Konfiguračný model"
+
+#: app/package/lattepackage.cpp:43
+#, kde-format
+msgid "Latte Trademark"
+msgstr "Latte Ocranná známka"
+
+#: app/package/lattepackage.cpp:44
+#, fuzzy, kde-format
+#| msgid "Latte Trademark"
+msgid "Latte Trademark Icon"
+msgstr "Latte Ocranná známka"
+
+#: app/package/lattepackage.cpp:45
+#, kde-format
+msgid "Info View Window"
+msgstr "Okno zobrazenia Informácií"
+
+#: app/package/lattepackage.cpp:47
+#, kde-format
+msgid "default layout file"
+msgstr "súbor predvoleného rozloženia"
+
+#: app/package/lattepackage.cpp:48
+#, kde-format
+msgid "plasma layout file"
+msgstr "súbor predvoleného rozloženia"
+
+#: app/package/lattepackage.cpp:49
+#, kde-format
+msgid "unity layout file"
+msgstr "súbor plasma rozloženia"
+
+#: app/package/lattepackage.cpp:50
+#, kde-format
+msgid "extended layout file"
+msgstr "rozšírený súbor rozloženia"
+
+#: app/package/lattepackage.cpp:52
+#, kde-format
+msgid "system templates directory"
+msgstr ""
+
+#: app/package/lattepackage.cpp:54
+#, kde-format
+msgid "default preset file"
+msgstr "súbor predvoleného nastavenia"
+
+#: app/package/lattepackage.cpp:55
+#, kde-format
+msgid "plasma preset file"
+msgstr "súbor plasma nastavenia"
+
+#: app/package/lattepackage.cpp:56
+#, kde-format
+msgid "unity preset file"
+msgstr "súbor unity nastavenia"
+
+#: app/package/lattepackage.cpp:57
+#, kde-format
+msgid "extended preset file"
+msgstr "súbor rozšíreného nastavenia"
+
+#: app/package/lattepackage.cpp:58
+#, kde-format
+msgid "multiple layouts hidden file"
+msgstr "skrytý súbor viacerých rozložení"
+
+#: app/package/lattepackage.cpp:61
+#, kde-format
+msgid "QML component that shows an applet in a popup"
+msgstr "QML komponent, ktorý zobrazí applet vo vyskakovacom okne"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:30
+#, kde-format
+msgid "Configuration Definitions"
+msgstr "Definície nastavenia"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:31
+#, kde-format
+msgid "User Interface"
+msgstr "Používateľské rozhranie"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:32
+#, kde-format
+msgid "Data Files"
+msgstr "Dátové súbory"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:33
+#, kde-format
+msgid "Executable Scripts"
+msgstr "Spustiteľné skripty"
+
+#: app/packageplugins/indicator/indicatorpackage.cpp:34
+#, kde-format
+msgid "Translations"
+msgstr "Preklady"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
+#: app/settings/actionsdialog/actionsdialog.ui:14
+#, fuzzy, kde-format
+#| msgid "Extra Actions"
+msgid "Context Menu Actions"
+msgstr "Ďalšie akcie"
+
+#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:24
+#, kde-format
+msgctxt "actions shown only in edit mode"
+msgid "Accessible only in edit mode:"
+msgstr ""
+
+#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:27
+#, kde-format
+msgctxt "actions shown always"
+msgid "Accessible always:"
+msgstr ""
+
+#: app/settings/actionsdialog/actionshandler.cpp:61
+#, kde-format
+msgid "Layouts"
+msgstr "Rozloženia"
+
+#: app/settings/actionsdialog/actionshandler.cpp:68
+#, fuzzy, kde-format
+#| msgid "Configure..."
+msgctxt "global settings window"
+msgid "Configure Latte..."
+msgstr "Nastaviť Latte..."
+
+#: app/settings/actionsdialog/actionshandler.cpp:75
+#, kde-format
+msgctxt "quit application"
+msgid "Quit Latte"
+msgstr "Ukončiť Latte"
+
+#: app/settings/actionsdialog/actionshandler.cpp:82
+#, kde-format
+msgid " --- separator --- "
+msgstr " --- oddeľovač --- "
+
+#: app/settings/actionsdialog/actionshandler.cpp:89
+#, kde-format
+msgid "Add Widgets..."
+msgstr "Pridať widgety..."
+
+#: app/settings/actionsdialog/actionshandler.cpp:96
+#, kde-format
+msgid "Add Dock/Panel"
+msgstr "Pridať dok/panel"
+
+#: app/settings/actionsdialog/actionshandler.cpp:103
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Move Dock/Panel To Layout"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/actionsdialog/actionshandler.cpp:110
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export Dock/Panel as Template..."
+msgstr "Exportovať rozloženie"
+
+#: app/settings/actionsdialog/actionshandler.cpp:117
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgid "Remove Dock/Panel"
+msgstr "Doky/Panely"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:35
+#, kde-format
+msgid "Blue"
+msgstr "Modrá"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:36
+#, kde-format
+msgid "Brown"
+msgstr "Hnedá"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:37
+#, kde-format
+msgid "Dark Grey"
+msgstr "Šedá"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:38
+#, kde-format
+msgid "Gold"
+msgstr "Zlatá"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:39
+#, kde-format
+msgid "Green"
+msgstr "Zelená"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:40
+#, kde-format
+msgid "Light Sky Blue"
+msgstr "Svetlá nebeská modrá"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:41
+#, kde-format
+msgid "Orange"
+msgstr "Oranžová"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:42
+#, kde-format
+msgid "Pink"
+msgstr "Ružová"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:43
+#, kde-format
+msgid "Purple"
+msgstr "Fialová"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:44
+#, kde-format
+msgid "Red"
+msgstr "Červená"
+
+#: app/settings/detailsdialog/colorsmodel.cpp:45
+#, fuzzy, kde-format
+msgid "Wheat"
+msgstr "pšenica"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
+#: app/settings/detailsdialog/detailsdialog.ui:14
+#, kde-format
+msgid "Details"
+msgstr "Podrobnosti"
+
+#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:57
+#: app/settings/settingsdialog/settingsdialog.ui:809
+#, kde-format
+msgid "Behavior:"
+msgstr "Správanie:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
+#: app/settings/detailsdialog/detailsdialog.ui:66
+#, fuzzy, kde-format
+#| msgid "Hide background for not maximized windows"
+msgid "Hide window borders for maximized windows"
+msgstr "Skryť pozadie pre nie maximalizované okná"
+
+#. i18n: ectx: property (text), widget (QLabel, iconLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:115
+#, kde-format
+msgid "Icon:"
+msgstr "Ikona:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
+#: app/settings/detailsdialog/detailsdialog.ui:157
+#, fuzzy, kde-format
+#| msgid "Show window actions in the context menu"
+msgid "Show in layouts context menu when possible"
+msgstr "Zobraziť akcie okna v kontextovej ponuke"
+
+#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:182
+#, fuzzy, kde-format
+#| msgid "Margins"
+msgid "PopUp Margin:"
+msgstr "Okraje"
+
+#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:201
+#, kde-format
+msgid "Background..."
+msgstr "Pozadie..."
+
+#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:214
+#, kde-format
+msgid "Text Color..."
+msgstr "Farba textu..."
+
+#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:388
+#: app/settings/viewsdialog/viewsdialog.ui:47
+#, kde-format
+msgid "Layout:"
+msgstr "Rozloženie:"
+
+#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:418
+#, kde-format
+msgid "Background:"
+msgstr "Pozadie:"
+
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:507
+#, kde-format
+msgid "disabled"
+msgstr "zakázané"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:510
+#, kde-format
+msgid " px."
+msgstr " px."
+
+#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:678
+#, kde-format
+msgid "Custom Colors:"
+msgstr "Vlastné farby:"
+
+#: app/settings/detailsdialog/detailshandler.cpp:446
+#, kde-format
+msgctxt "<layout name> Details"
+msgid "%1 Details"
+msgstr "%1 Podrobnosti"
+
+#: app/settings/detailsdialog/detailshandler.cpp:453
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
+"changes or discard them?"
+msgstr ""
+
+#: app/settings/detailsdialog/patternwidget.cpp:48
+#, kde-format
+msgid "Sample Text"
+msgstr ""
+
+#: app/settings/detailsdialog/schemesmodel.cpp:123
+#, kde-format
+msgid "System Colors"
+msgstr "Systémové farby"
+
+#: app/settings/exporttemplatedialog/appletsmodel.cpp:225
+#, kde-format
+msgctxt "column for current applets"
+msgid "Current Applets"
+msgstr "Aktuálne applety"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export your selected layout as template"
+msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:48
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export your selected dock or panel as template"
+msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:62
+#, kde-format
+msgid "Export your selected view as template"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:104
+#, kde-format
+msgctxt "export template"
+msgid "Export"
+msgstr "Exportovať"
+
+#: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:129
+#, kde-format
+msgctxt "export template"
+msgid "Export Again"
+msgstr "Exportovať znova"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
+#, kde-format
+msgid "Select All"
+msgstr "Vybrať všetky"
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
+#: app/settings/screensdialog/screensdialog.ui:58
+#, kde-format
+msgid "Deselect All"
+msgstr "Zrušiť výber"
+
+#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
+#, kde-format
+msgid "File:"
+msgstr "Súbor:"
+
+#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
+#, kde-format
+msgid "Choose..."
+msgstr "Vybrať..."
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
+#, kde-format
+msgid ""
+"<b>Select only</b> applets that you would like to keep their settings in the "
+"extracted template. Make sure to not include any applets that contain "
+"personal data such as email credentials, calendar etc. "
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export Layout Template"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:63
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export Dock/Panel Template"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
+#, kde-format
+msgid "Dock"
+msgstr "Dok"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
+#, kde-format
+msgid "Panel"
+msgstr "Panel"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:78
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export %1 Template"
+msgstr "Exportovať šablónu"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Choose Layout Template file"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
+#, kde-format
+msgid "Choose View Template file"
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:151
+#, kde-format
+msgctxt "choose file"
+msgid "Choose"
+msgstr "Vybrať"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "layout template"
+msgid "Latte Dock Layout Template file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "view template"
+msgid "Latte Dock View Template file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:176
+#, kde-format
+msgid ""
+"<i>%1</i> does not end with <i>.layout.latte</i> extension. Selected file "
+"<b>rejected</b>."
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:186
+#, kde-format
+msgid ""
+"<i>%1</i> does not end with <i>.view.latte</i> extension. Selected file "
+"<b>rejected</b>."
+msgstr ""
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:213
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:template export fail"
+msgid "Template <b>%1</b> export <b>failed</b>..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:222
+#: app/settings/settingsdialog/settingsdialog.cpp:348
+#: app/settings/settingsdialog/tablayoutshandler.cpp:665
+#: app/settings/settingsdialog/tablayoutshandler.cpp:690
+#: app/settings/viewsdialog/viewshandler.cpp:376
+#, kde-format
+msgid "Open Location..."
+msgstr "Otvoriť umiestnenie..."
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:template export success"
+msgid "Template <b>%1</b> export succeeded..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
+#, kde-format
+msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
+msgstr "Súbor \"%1\" už existuje. Chcete ho prepísať?"
+
+#: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
+#, kde-format
+msgid "Overwrite File?"
+msgstr "Prepísať súbor?"
+
+#: app/settings/generic/genericdialog.cpp:69
+#, kde-format
+msgid ""
+"The settings have changed.<br/>Do you want to apply the changes or discard "
+"them?"
+msgstr ""
+
+#: app/settings/generic/genericdialog.cpp:73
+#, kde-format
+msgid "Apply Settings"
+msgstr "Použiť nastavenia"
+
+#: app/settings/generic/genericdialog.cpp:107
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:588
+#, kde-format
+msgid "Hide"
+msgstr "Skryť"
+
+#: app/settings/screensdialog/screensdialog.cpp:69
+#, kde-format
+msgctxt "remove selected screens"
+msgid "Remove Now"
+msgstr "Odstrániť teraz"
+
+#: app/settings/screensdialog/screensdialog.cpp:71
+#, fuzzy, kde-format
+#| msgid "Remove selected layout"
+msgid "Remove selected screen references"
+msgstr "Odstrániť vybraté rozloženie"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
+#: app/settings/screensdialog/screensdialog.ui:14
+#, kde-format
+msgid "Screens"
+msgstr "Obrazovky"
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/screensdialog/screensdialog.ui:67
+#, kde-format
+msgid ""
+"<b>Select only</b> screens that are obsolete and you would like to remove "
+"their reference. Active screens or screens used in your layouts can not be "
+"removed."
+msgstr ""
+
+#: app/settings/screensdialog/screenshandler.cpp:133
+#, kde-format
+msgid ""
+"You are going to <b>remove %2</b> reference completely.<br/>Would you like "
+"to continue?"
+msgid_plural ""
+"You are going to <b>remove %2</b> references completely.<br/>Would you like "
+"to continue?"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: app/settings/screensdialog/screenshandler.cpp:137
+#: app/settings/viewsdialog/viewshandler.cpp:527
+#, kde-format
+msgid "Approve Removal"
+msgstr ""
+
+#: app/settings/screensdialog/screensmodel.cpp:238
+#, kde-format
+msgctxt "column for screens"
+msgid "Screens"
+msgstr "Obrazovky"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:599
+#, kde-format
+msgctxt "settings:counted layout with errors"
+msgid "<b>Error:</b> There is <b>1 layout</b> that has reported errors."
+msgid_plural ""
+"<b>Error:</b> There are <b>%1 layouts</b> that have reported errors."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:612
+#, kde-format
+msgctxt "settings:counted layout with warnings"
+msgid "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."
+msgid_plural ""
+"<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:622
+#, kde-format
+msgid "Examine..."
+msgstr "Preskúmať..."
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:640
+#, kde-format
+msgctxt "settings:named layout with warnings"
+msgid ""
+"<b>Warning: %2</b> layout has reported <b>1 warning</b> that need your "
+"attention."
+msgid_plural ""
+"<b>Warning: %2</b> layout has reported <b>%1 warnings</b> that need your "
+"attention."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:650
+#, kde-format
+msgctxt "settings:named layout with errors"
+msgid ""
+"<b>Error: %2</b> layout has reported <b>1 error</b> that you need to repair."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:660
+#, kde-format
+msgctxt "errors count"
+msgid "1 error"
+msgid_plural "%1 errors"
+msgstr[0] "1 chyba"
+msgstr[1] "%1 chyba"
+msgstr[2] "%1 chyby"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:664
+#, kde-format
+msgctxt "warnings count"
+msgid "1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "1 upozornenie"
+msgstr[1] "%1 upozornenia"
+msgstr[2] "%1 upozornení"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:669
+#, kde-format
+msgctxt "settings: named layout with %2 errors and %3 warnings"
+msgid ""
+"<b>Error: %1</b> layout has reported <b>%2</b> and <b>%3</b> that you need "
+"to repair."
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:788
+#, kde-format
+msgid "Dropped Raw Layout"
+msgstr ""
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:876
+#, kde-format
+msgctxt "layout"
+msgid "Alternative"
+msgstr "Alternatívne"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:884
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgid "Layout <b>%2</b> imported successfully..."
+msgid_plural "Layouts <b>%2</b> imported successfully..."
+msgstr[0] "Rozloženie: <b>%0</b> úspešne importované<br>"
+msgstr[1] "Rozloženie: <b>%0</b> úspešne importované<br>"
+msgstr[2] "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/settingsdialog/layoutscontroller.cpp:1097
+#, fuzzy, kde-format
+#| msgctxt "settings: layout name used"
+#| msgid "Layout <b>%0</b> is already used, please provide a different name..."
+msgctxt "settings: layout name used"
+msgid "Layout <b>%1</b> is already used, please provide a different name..."
+msgstr "Rozloženie <b>%0</b> sa už používa. Prosím, poskytnite iný názov..."
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:338
+#, kde-format
+msgctxt "column for layout name"
+msgid "Name"
+msgstr "Názov"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:345
+#, kde-format
+msgctxt "column for layout to show in menu"
+msgid "In Menu"
+msgstr "V Ponuke"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:352
+#, kde-format
+msgctxt "column for layout to hide borders for maximized windows"
+msgid "Borderless"
+msgstr "Bez orámovania"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:359
+#, kde-format
+msgctxt "column for layout to show which activities is assigned to"
+msgid "Activities"
+msgstr "Aktivity"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:901
+#, kde-format
+msgid "All Activities"
+msgstr "Všetky aktivity"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:908
+#, kde-format
+msgid "Free Activities"
+msgstr "Voľné aktivity"
+
+#: app/settings/settingsdialog/layoutsmodel.cpp:915
+#, kde-format
+msgid "Current Activity"
+msgstr "Aktuálna aktivita"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:29
+#: app/settings/settingsdialog/layoutstableview.cpp:67
+#, fuzzy, kde-format
+#| msgid "plasma layout file"
+msgid "Drop layout files here..."
+msgstr "súbor predvoleného rozloženia"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:69
+#, fuzzy, kde-format
+#| msgid "plasma layout file"
+msgid "Drop raw layout text here..."
+msgstr "súbor predvoleného rozloženia"
+
+#: app/settings/settingsdialog/layoutstableview.cpp:71
+#, kde-format
+msgid "Unsupported data!"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:126
+#, kde-format
+msgid "File"
+msgstr "Súbor"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:130
+#, kde-format
+msgid "Import Configuration..."
+msgstr "Importovať nastavenie..."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:133
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Import your full configuration from previous backup"
+msgstr "Importovať rozloženie alebo kompletný konfiguračný súbor"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:136
+#, fuzzy, kde-format
+#| msgctxt "export layout/configuration"
+#| msgid "Export Layout/Configuration"
+msgid "Export Configuration..."
+msgstr "Exportovať Rozloženie/Konfiguráciu"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:139
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Export your full configuration to create backup"
+msgstr "Importovať rozloženie alebo kompletný konfiguračný súbor"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:144
+#, kde-format
+msgid "&Screens..."
+msgstr "Obrazovky..."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:147
+#, kde-format
+msgid "Examing your screens and remove deprecated references"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:150
+#, kde-format
+msgid "&Quit Latte"
+msgstr "Ukončiť Latte"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:258
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Import full configuration."
+msgctxt "import full configuration"
+msgid "Import Full Configuration"
+msgstr "Importovať kompletnú konfiguráciu."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:263
+#: app/settings/settingsdialog/settingsdialog.cpp:292
+#, kde-format
+msgctxt "import full configuration"
+msgid "Import"
+msgstr "Importovať"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:269
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Latte Dock Full Configuration file v0.2"
+msgctxt "import full configuration"
+msgid "Latte Dock Full Configuration file"
+msgstr "Latte Dock súbor kompletnej konfigurácie v0.2"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:282
+#, fuzzy, kde-format
+#| msgctxt "command line"
+#| msgid "Import full configuration."
+msgid "Import: Full Configuration File"
+msgstr "Importovať kompletnú konfiguráciu."
+
+#: app/settings/settingsdialog/settingsdialog.cpp:283
+#, kde-format
+msgid ""
+"You are importing full configuration file. Be careful, all <b>current "
+"settings and layouts will be lost</b>. It is advised to <b>take backup</b> "
+"first!<br>"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:287
+#, kde-format
+msgctxt "export full configuration"
+msgid "Take Backup..."
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:289
+#, fuzzy, kde-format
+#| msgid "Import a layout or full configuration file"
+msgid "Export your full configuration in order to take backup"
+msgstr "Importovať rozloženie alebo kompletný konfiguračný súbor"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:294
+#, kde-format
+msgid ""
+"Import your full configuration and drop all your current settings and layouts"
+msgstr ""
+
+#: app/settings/settingsdialog/settingsdialog.cpp:322
+#, fuzzy, kde-format
+#| msgctxt "import full configuration"
+#| msgid "Full Configuration"
+msgid "Export Full Configuration"
+msgstr "kompletná Konfigurácia"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:326
+#, kde-format
+msgctxt "export full configuration"
+msgid "Export"
+msgstr "Exportovať"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:332
+#, kde-format
+msgctxt "export full configuration"
+msgid "Latte Dock Full Configuration file v0.2"
+msgstr "Latte Dock súbor kompletnej konfigurácie v0.2"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:342
+#: app/settings/settingsdialog/tablayoutshandler.cpp:684
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgid "Full configuration export <b>failed</b>..."
+msgstr "Kompletná konfigurácia úspešne exportovaná"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:362
+#: app/settings/settingsdialog/tablayoutshandler.cpp:704
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgid "Full configuration export succeeded..."
+msgstr "Kompletná konfigurácia úspešne exportovaná"
+
+#: app/settings/settingsdialog/settingsdialog.cpp:477
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
+"changes or discard them?"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
+#: app/settings/settingsdialog/settingsdialog.ui:26
+#, kde-format
+msgctxt "latte settings window"
+msgid "Settings"
+msgstr "Nastavenia"
+
+#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
+#: app/settings/settingsdialog/settingsdialog.ui:36
+#, fuzzy, kde-format
+#| msgid "Layouts"
+msgid "Layouts Editor"
+msgstr "Rozloženia"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:67
+#, fuzzy, kde-format
+#| msgid "Only one layout can be present in memory at all cases"
+msgid "Only one layout is applied at all times for all activities"
+msgstr "V každom prípade môže byť naraz prítomné v pamäti iba jedno rozloženie"
+
+#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:70
+#, fuzzy, kde-format
+#| msgctxt "single layout"
+#| msgid "Single Layout"
+msgctxt "single layout"
+msgid "Single layout at all times"
+msgstr "Jedno rozloženie"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:84
+#, fuzzy, kde-format
+#| msgid ""
+#| "Multiple layouts can be present and active in memory at the same time"
+msgid ""
+"Multiple layouts can be present and active in memory at the same time for "
+"different activities"
+msgstr ""
+"Viac rozložení môže byť naraz aktívnych v pamätisúbor predvoleného rozloženia"
+
+#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:87
+#, fuzzy, kde-format
+#| msgid "multiple layouts hidden file"
+msgctxt "multiple layouts"
+msgid "Multiple layouts based on activities"
+msgstr "skrytý súbor viacerých rozložení"
+
+#. i18n: ectx: property (text), widget (QPushButton, switchButton)
+#: app/settings/settingsdialog/settingsdialog.ui:177
+#, kde-format
+msgid "Switch"
+msgstr "Prepnúť"
+
+#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
+#: app/settings/settingsdialog/settingsdialog.ui:191
+#, kde-format
+msgid "Activities..."
+msgstr "Aktivity..."
+
+#. i18n: ectx: property (text), widget (QPushButton, newButton)
+#: app/settings/settingsdialog/settingsdialog.ui:247
+#, kde-format
+msgid "New"
+msgstr "Nové"
+
+#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
+#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
+#: app/settings/settingsdialog/settingsdialog.ui:258
+#: app/settings/viewsdialog/viewsdialog.ui:148
+#, kde-format
+msgid "Duplicate"
+msgstr "Duplikovať"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeButton)
+#: app/settings/settingsdialog/settingsdialog.ui:272
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Odstrániť"
+
+#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
+#: app/settings/settingsdialog/settingsdialog.ui:299
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Povolený"
+
+#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
+#: app/settings/settingsdialog/settingsdialog.ui:310
+#, kde-format
+msgid "Read Only"
+msgstr "Iba na čítanie"
+
+#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
+#: app/settings/settingsdialog/settingsdialog.ui:356
+#, kde-format
+msgid "Details..."
+msgstr "Podrobnosti..."
+
+#. i18n: ectx: property (text), widget (QPushButton, importButton)
+#: app/settings/settingsdialog/settingsdialog.ui:438
+#, kde-format
+msgid "Import..."
+msgstr "Importovať..."
+
+#. i18n: ectx: property (text), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:452
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Export"
+msgid "Export..."
+msgstr "Exportovať..."
+
+#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:459
+#, kde-format
+msgid "Ctrl+S"
+msgstr "Ctrl+S"
+
+#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
+#: app/settings/settingsdialog/settingsdialog.ui:499
+#, kde-format
+msgid "Preferences"
+msgstr "Nastavenia"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
+#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:561
+#: app/settings/settingsdialog/settingsdialog.ui:596
+#, kde-format
+msgid ""
+"Different hardware can have different delays during screen changes.\n"
+"This tracker is used in order to not lose any screen related update."
+msgstr ""
+"Rôzny hardvér môže mať rôzne oneskorenia počas zmien obrazovky.\n"
+"Tento sledovač sa používa na zabezpečenie aby sa nestratila žiadna zmena "
+"obrazovky."
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
+#: app/settings/settingsdialog/settingsdialog.ui:570
+#, kde-format
+msgid " ms."
+msgstr " ms."
+
+#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:599
+#, fuzzy, kde-format
+#| msgid "Raise on desktop change"
+msgid "reaction delay for changes"
+msgstr "Zdvihnúť pre zmene plochy"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:624
+#, kde-format
+msgid "Provide visual feedback when layouts are activated automatically"
+msgstr "Poskytovať vizuálnu odozvu keď rozloženia sú aktivované automaticky"
+
+#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:627
+#, kde-format
+msgid "Show informative window for layouts automatic activation"
+msgstr "Zobrazivať informačné okno pre automatickú aktiváciu okien"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:666
+#, kde-format
+msgid ""
+"Activate support for borderless maximized windows between different layouts"
+msgstr ""
+"Aktivovať podporu pre bezokrajové maximalizované okná medzi rôznymi "
+"rozloženiami"
+
+#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:669
+#, kde-format
+msgid "Support borderless maximized windows in different layouts"
+msgstr "Podporovať bezokrajové maximalizované okná v rôznych rozloženiach"
+
+#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:691
+#, kde-format
+msgid "Actions:"
+msgstr "Akcie:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:703
+#, kde-format
+msgid "Use 3D style for notification and shortcut badges"
+msgstr ""
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:729
+#, fuzzy, kde-format
+#| msgid "Global shortcuts are used both from applets and tasks"
+msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+msgstr "Globálne skratky sú použité z appletov a úloh"
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:732
+#, kde-format
+msgid "Press and Hold ⌘ to show shortcuts badges"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:776
+#, kde-format
+msgid "Parabolic Effect:"
+msgstr "Parabolický efekt:"
+
+#. i18n: ectx: property (text), widget (QLabel, screensLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:842
+#, kde-format
+msgid "Screens:"
+msgstr "Obrazovky:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:873
+#, kde-format
+msgid "Start the application automatically after each relogin"
+msgstr "Spustiť aplikáciu automaticky po každo znovuprihlásení"
+
+#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:876
+#, kde-format
+msgid "Enable autostart during startup"
+msgstr "Povoliť automatické spustenie počas štartu systému"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:903
+#, kde-format
+msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+msgstr "Nízka citlivosť pre parabolický efekt (nízke využitie CPU a výkon)"
+
+#. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:906
+#, kde-format
+msgctxt "low sensitivity"
+msgid "Low"
+msgstr "Nízka"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:934
+#, kde-format
+msgid ""
+"Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+msgstr ""
+"Stredná citlivosť pre parabolický efekt (normálne využitie CPU a výkon)"
+
+#. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:937
+#, kde-format
+msgctxt "medium sensitivity"
+msgid "Medium"
+msgstr "Stredná"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:965
+#, kde-format
+msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
+msgstr "Vysoká citlivosť pre parabolický efekt (vysoké využitie CPU a výkon)"
+
+#. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:968
+#, kde-format
+msgctxt "high sensitivity"
+msgid "High"
+msgstr "Vysoká"
+
+#. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:978
+#, fuzzy, kde-format
+#| msgid "Mouse Sensitivity"
+msgid "mouse sensitivity"
+msgstr "Citlivosť myši"
+
+#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1034
+#, kde-format
+msgid "Appearance:"
+msgstr "Vzhľad:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1046
+#, fuzzy, kde-format
+#| msgid ""
+#| "Forwards Meta key from KWin to Latte. It is suggested to disable that "
+#| "option if you remove Latte."
+msgid ""
+"Forward ⌘ press from KWin to Latte in order to activate Application "
+"Launcher. It is suggested to disable that option if you remove Latte."
+msgstr ""
+"Prepošle Meta klávesu z Kwin do Latte. Je odporúčané zakázať túto možnosť ak "
+"odstránite Latte."
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1049
+#, fuzzy, kde-format
+#| msgid "Forward Meta key to Application Launcher"
+msgid "Press ⌘ to activate Application Launcher"
+msgstr "Preposlať Meta klávesu do spúšťača aplikácií"
+
+#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1071
+#, kde-format
+msgid "Context Menu:"
+msgstr "Kontextová ponuka:"
+
+#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:1100
+#, fuzzy, kde-format
+#| msgid "Actions"
+msgid "Actions..."
+msgstr "Akcie"
+
+#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1122
+#, kde-format
+msgid "Inform Plasma desktop for available desktop space"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:111
+#, kde-format
+msgid "Layout"
+msgstr "Rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:115
+#, kde-format
+msgctxt "switch layout"
+msgid "Switch"
+msgstr "Prepnúť"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:116
+#, kde-format
+msgid "Switch to selected layout"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:122
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "&Activities"
+msgstr "Aktivity"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:123
+#, kde-format
+msgid "Show Plasma Activities manager"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:131
+#, kde-format
+msgctxt "new layout"
+msgid "&New"
+msgstr "&Nové"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:132
+#, kde-format
+msgid "New layout"
+msgstr "Nové rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:144
+#, kde-format
+msgctxt "duplicate layout"
+msgid "&Duplicate"
+msgstr "&Duplikovať"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:145
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Duplicate selected layout"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:151
+#: app/settings/viewsdialog/viewshandler.cpp:91
+#, kde-format
+msgctxt "remove layout"
+msgid "Remove"
+msgstr "Odstrániť"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:152
+#, kde-format
+msgid "Remove selected layout"
+msgstr "Odstrániť vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:161
+#, kde-format
+msgid "Ena&bled"
+msgstr "Povolený"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:162
+#, kde-format
+msgid "Assign in activities in order to be activated through Plasma Activities"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:169
+#, kde-format
+msgctxt "read only layout"
+msgid "&Read Only"
+msgstr "&Iba na čítanie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:170
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Make selected layout read-only"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:177
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "layout docks / panels"
+msgid "Docks, &Panels..."
+msgstr "Doky/Panely"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:178
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Show selected layouts docks and panels"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:184
+#, kde-format
+msgctxt "layout details"
+msgid "De&tails..."
+msgstr "Podrobnosti..."
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:185
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Show selected layout details"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:195
+#, kde-format
+msgctxt "import layout"
+msgid "&Import"
+msgstr "&Importovať"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:196
+#, fuzzy, kde-format
+#| msgid "Import layout file from your system"
+msgid "Import layout from various resources"
+msgstr "Importovať súbor s rozložením z vášho systému"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:207
+#: app/settings/viewsdialog/viewshandler.cpp:108
+#, kde-format
+msgctxt "export layout"
+msgid "&Export"
+msgstr "&Exportovať"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:208
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export selected layout at your system"
+msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:228
+#, kde-format
+msgctxt "import layout"
+msgid "&Import From Local File..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:233
+#, kde-format
+msgctxt "download layout"
+msgid "Import From K&DE Online Store..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:248
+#: app/settings/viewsdialog/viewshandler.cpp:188
+#, fuzzy, kde-format
+#| msgctxt "export layout"
+#| msgid "&Export..."
+msgctxt "export for backup"
+msgid "&Export For Backup..."
+msgstr "&Exportovať..."
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:253
+#: app/settings/viewsdialog/viewshandler.cpp:193
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgctxt "export as template"
+msgid "Export As &Template..."
+msgstr "Exportovať rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:289
+#: app/settings/viewsdialog/viewshandler.cpp:169
+#, kde-format
+msgid "Templates..."
+msgstr "Šablóny"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:290
+#: app/settings/viewsdialog/viewshandler.cpp:170
+#, kde-format
+msgid "Open templates directory"
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:366
+#, kde-format
+msgctxt "settings:not permitted switching layout"
+msgid ""
+"You need to <b>apply</b> your changes first to switch layout afterwards..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:443
+#, fuzzy, kde-format
+#| msgctxt "settings:layout added successfully"
+#| msgid "Layout <b>%0</b> added successfully..."
+msgctxt "settings:layout added successfully"
+msgid "Layout <b>%1</b> added successfully..."
+msgstr "Rozloženie <b>%0</b> bolo úspešne pridané..."
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:479
+#, fuzzy, kde-format
+#| msgctxt "settings:layout downloaded successfully"
+#| msgid "Layout <b>%0</b> downloaded successfully..."
+msgctxt "settings:layout downloaded successfully"
+msgid "Layout <b>%1</b> downloaded successfully..."
+msgstr "Rozloženie <b>%0</b> bolo úspešne prevzaté..."
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:505
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgctxt "settings: active layout remove"
+msgid "<b>Active</b> layouts can not be removed..."
+msgstr "Rozloženie nemohlo byť importované"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:511
+#, fuzzy, kde-format
+#| msgid "The layout cannot be imported"
+msgctxt "settings: locked layout remove"
+msgid "Locked layouts can not be removed..."
+msgstr "Rozloženie nemohlo byť importované"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:540
+#, kde-format
+msgctxt "import layout"
+msgid "Import Layout"
+msgstr "Importovať rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:543
+#, kde-format
+msgctxt "import layout"
+msgid "Import"
+msgstr "Importovať"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:549
+#, kde-format
+msgctxt "import latte layout"
+msgid "Latte Dock Layout file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:550
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "import older latte layout"
+msgid "Latte Dock Layout file v0.1"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:561
+#: app/settings/settingsdialog/tablayoutshandler.cpp:780
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout imported successfully"
+msgid "Layout <b>%1</b> imported successfully..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:565
+#, kde-format
+msgctxt "settings:deprecated layouts import failed"
+msgid "Import layouts from deprecated version <b>failed</b>..."
+msgstr ""
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:621
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export Layout For Backup"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:623
+#, kde-format
+msgctxt "export layout"
+msgid "Export"
+msgstr "Exportovať"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:629
+#, kde-format
+msgctxt "export layout"
+msgid "Latte Dock Layout file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:639
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout export fail"
+msgid "Layout <b>%1</b> export <b>failed</b>..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:678
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout export success"
+msgid "Layout <b>%1</b> export succeeded..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/settingsdialog/tablayoutshandler.cpp:769
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:layout imported successfully"
+msgid "Layout <b>%2</b> imported successfully..."
+msgid_plural "Layouts <b>%2</b> imported successfully..."
+msgstr[0] "Rozloženie: <b>%0</b> úspešne importované<br>"
+msgstr[1] "Rozloženie: <b>%0</b> úspešne importované<br>"
+msgstr[2] "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/viewsdialog/delegates/namedelegate.cpp:55
+#, fuzzy, kde-format
+#| msgid "Options"
+msgid "optional"
+msgstr "Voliteľné"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:107
+#, kde-format
+msgid "Cut"
+msgstr "Vystrihnúť"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:111
+#, fuzzy, kde-format
+#| msgctxt "copy layout"
+#| msgid "Copy"
+msgid "Copy"
+msgstr "Kopírovať"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:115
+#, kde-format
+msgid "Paste"
+msgstr "Vložiť"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:119
+#, kde-format
+msgid "Duplicate Here"
+msgstr "Duplikovať sem"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:323
+#, kde-format
+msgid ""
+"Docks and panels from <b>Paste</b> action are already present in current "
+"layout"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:578
+#, kde-format
+msgid ""
+"Really nice! You are good to go, your layout does not report any errors or "
+"warnings."
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:597
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgid "Edit Layout"
+msgstr "Rozloženie"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:630
+#, kde-format
+msgid "Validate"
+msgstr "Overiť"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:649
+#, kde-format
+msgid ""
+"After you have made your layout file changes, please click <b>Validate</b> "
+"to confirm them."
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:665
+#, fuzzy, kde-format
+msgctxt "error id and title"
+msgid "<b>Error #%1: %2</b> <br/>"
+msgstr "Chyba"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:667
+#, kde-format
+msgid ""
+"In your layout there are two or more applets with same id. Such situation "
+"can create crashes, abnormal behavior and data loss when you activate and "
+"use this layout.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:670
+#: app/settings/viewsdialog/viewscontroller.cpp:761
+#, kde-format
+msgid "<b>Applets:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:678
+#, kde-format
+msgctxt ""
+"applets with same id error, applet name, applet id, containment name, "
+"containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:686
+#: app/settings/viewsdialog/viewscontroller.cpp:742
+#: app/settings/viewsdialog/viewscontroller.cpp:797
+#: app/settings/viewsdialog/viewscontroller.cpp:836
+#, fuzzy, kde-format
+msgid "<b>Possible Solutions:</b><br/>"
+msgstr "Možné riešenia:"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:687
+#, kde-format
+msgid "&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:688
+#, kde-format
+msgid "&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:689
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;3. Update manually the applets id when the layout is <b>not "
+"active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:690
+#, kde-format
+msgid "&nbsp;&nbsp;4. Remove this layout totally<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:702
+#, fuzzy, kde-format
+msgctxt "error id and title"
+msgid "<b>Error #%1: %2</b> <br/><br/>"
+msgstr "Chyba"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:703
+#, kde-format
+msgid ""
+"In your layout there are orphaned pseudo applets that link to unexistent "
+"subcontainments. Such case is for example a systemtray that has lost "
+"connection with its child applets. Such situation can create crashes, "
+"abnormal behavior and data loss when you activate and use this layout.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:706
+#, kde-format
+msgid "<b>Pseudo Applets:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:718
+#, kde-format
+msgctxt ""
+"orphaned pseudo applets, applet name, applet id, containment name, "
+"containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:726
+#: app/settings/viewsdialog/viewscontroller.cpp:818
+#, kde-format
+msgid "<b>Orphaned Subcontainments:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:736
+#: app/settings/viewsdialog/viewscontroller.cpp:828
+#, kde-format
+msgctxt "orphaned subcontainments, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:743
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Update manually the subcontainment id inside pseudo applet "
+"settings when the layout is <b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:744
+#, kde-format
+msgid "&nbsp;&nbsp;2. Remove this layout totally<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:757
+#: app/settings/viewsdialog/viewscontroller.cpp:814
+#, fuzzy, kde-format
+msgctxt "warning id and title"
+msgid "<b>Warning #%1: %2</b> <br/><br/>"
+msgstr "Upozornenie"
+
+#: app/settings/viewsdialog/viewscontroller.cpp:758
+#, kde-format
+msgid ""
+"In your layout there are applets and containments with the same id. Such "
+"situation is not dangerous but it should not occur.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:773
+#, kde-format
+msgctxt "applets, applet name, applet id, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:781
+#, kde-format
+msgid "<b>Containments:</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:791
+#, kde-format
+msgctxt "containments, containment name, containment id"
+msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:798
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Update manually the containments or applets id when the "
+"layout is <b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:799
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with "
+"each other<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:815
+#, kde-format
+msgid ""
+"In your layout there are orphaned subcontainments that are not used by any "
+"dock or panel. Such situation is not dangerous but it is advised to remove "
+"them in order to reduce memory usage.<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:837
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned "
+"subcontainments<br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:838
+#, kde-format
+msgid ""
+"&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is "
+"<b>not active</b><br/>"
+msgstr ""
+
+#: app/settings/viewsdialog/viewscontroller.cpp:841
+#, kde-format
+msgid "Repair"
+msgstr "Opraviť"
+
+#: app/settings/viewsdialog/viewsdialog.cpp:33
+#, kde-format
+msgid "Apply Now"
+msgstr "Použiť teraz"
+
+#: app/settings/viewsdialog/viewsdialog.cpp:34
+#, kde-format
+msgid "Apply all dock, panels changes now"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
+#: app/settings/viewsdialog/viewsdialog.ui:14
+#, kde-format
+msgid "Docks/Panels"
+msgstr "Doky/Panely"
+
+#: app/settings/viewsdialog/viewshandler.cpp:69
+#, fuzzy, kde-format
+#| msgctxt "new layout"
+#| msgid "&New"
+msgctxt "new view"
+msgid "&New"
+msgstr "&Nové"
+
+#: app/settings/viewsdialog/viewshandler.cpp:70
+#, fuzzy, kde-format
+#| msgid "Latte Dock panel"
+msgid "New dock or panel"
+msgstr "Latte Dock panel"
+
+#: app/settings/viewsdialog/viewshandler.cpp:83
+#, kde-format
+msgctxt "duplicate dock or panel"
+msgid "&Duplicate"
+msgstr "&Duplikovať"
+
+#: app/settings/viewsdialog/viewshandler.cpp:84
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Duplicate selected dock or panel"
+msgstr "Prepnúť na vybraté rozloženie"
+
+#: app/settings/viewsdialog/viewshandler.cpp:92
+#, fuzzy, kde-format
+#| msgid "Remove selected layout"
+msgid "Remove selected view"
+msgstr "Odstrániť vybraté rozloženie"
+
+#: app/settings/viewsdialog/viewshandler.cpp:100
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "&Import..."
+msgctxt "import dock/panel"
+msgid "&Import..."
+msgstr "Importovať"
+
+#: app/settings/viewsdialog/viewshandler.cpp:101
+#, kde-format
+msgid "Import dock or panel from local file"
+msgstr ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:109
+#, fuzzy, kde-format
+#| msgid "Export selected layout or full configuration into a file"
+msgid "Export selected dock or panel at your system"
+msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+
+#: app/settings/viewsdialog/viewshandler.cpp:305
+#, fuzzy, kde-format
+#| msgctxt "import/export config"
+#| msgid "Full Configuration exported successfully"
+msgctxt "settings:dock/panel added successfully"
+msgid "<b>%1</b> added successfully..."
+msgstr "Kompletná konfigurácia úspešne exportovaná"
+
+#: app/settings/viewsdialog/viewshandler.cpp:328
+#: app/settings/viewsdialog/viewshandler.cpp:407
+#, kde-format
+msgid ""
+"<b>Export</b> functionality is supported only for one dock or panel each "
+"time."
+msgstr ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:342
+#, fuzzy, kde-format
+#| msgid "Export Layout"
+msgid "Export Dock/Panel For Backup"
+msgstr "Exportovať rozloženie"
+
+#: app/settings/viewsdialog/viewshandler.cpp:344
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Export"
+msgctxt "export view"
+msgid "Export"
+msgstr "Exportovať"
+
+#: app/settings/viewsdialog/viewshandler.cpp:350
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "export view"
+msgid "Latte Dock/Panel file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/viewsdialog/viewshandler.cpp:360
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:view export fail"
+msgid "Export in file <b>%1</b> <b>failed</b>..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/viewsdialog/viewshandler.cpp:389
+#, fuzzy, kde-format
+#| msgctxt "import-done"
+#| msgid "Layout: <b>%0</b> imported successfully<br>"
+msgctxt "settings:view export success"
+msgid "Export in file <b>%1</b> succeeded..."
+msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#: app/settings/viewsdialog/viewshandler.cpp:431
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "import dock/panel"
+msgid "Import Dock/Panel"
+msgstr "Doky/Panely"
+
+#: app/settings/viewsdialog/viewshandler.cpp:434
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "Import"
+msgid "Import"
+msgstr "Importovať"
+
+#: app/settings/viewsdialog/viewshandler.cpp:440
+#, fuzzy, kde-format
+#| msgctxt "import latte layout"
+#| msgid "Latte Dock Layout file v0.2"
+msgctxt "import dock panel"
+msgid "Latte Dock or Panel file v0.2"
+msgstr "Latte Dock Layout súbor v0.2"
+
+#: app/settings/viewsdialog/viewshandler.cpp:512
+#, fuzzy, kde-format
+#| msgid "Docks/Panels"
+msgctxt "<layout name> Docks/Panels"
+msgid "%1 Docks/Panels"
+msgstr "Doky/Panely"
+
+#: app/settings/viewsdialog/viewshandler.cpp:524
+#, kde-format
+msgid ""
+"You are going to <b>remove 1</b> dock or panel completely from your layout."
+"<br/>Would you like to continue?"
+msgid_plural ""
+"You are going to <b>remove %1</b> docks and panels completely from your "
+"layout.<br/>Would you like to continue?"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: app/settings/viewsdialog/viewshandler.cpp:537
+#, kde-format
+msgid ""
+"The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
+"changes <b>now</b> or discard them?"
+msgstr ""
+
+#: app/settings/viewsdialog/viewsmodel.cpp:190
+#, kde-format
+msgctxt "top edge"
+msgid "Top"
+msgstr "Hore"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:195
+#, kde-format
+msgctxt "left edge"
+msgid "Left"
+msgstr "Vľavo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:200
+#, kde-format
+msgctxt "bottom edge"
+msgid "Bottom"
+msgstr "Dole"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:205
+#, kde-format
+msgctxt "right edge"
+msgid "Right"
+msgstr "Vpravo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:216
+#: app/settings/viewsdialog/viewsmodel.cpp:899
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:279
+#, kde-format
+msgctxt "left alignment"
+msgid "Left"
+msgstr "Vľavo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:220
+#: app/settings/viewsdialog/viewsmodel.cpp:903
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:279
+#, kde-format
+msgctxt "top alignment"
+msgid "Top"
+msgstr "Hore"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:225
+#: app/settings/viewsdialog/viewsmodel.cpp:897
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:296
+#, kde-format
+msgctxt "center alignment"
+msgid "Center"
+msgstr "Vycentrovať"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:234
+#: app/settings/viewsdialog/viewsmodel.cpp:901
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:313
+#, kde-format
+msgctxt "right alignment"
+msgid "Right"
+msgstr "Vpravo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:238
+#: app/settings/viewsdialog/viewsmodel.cpp:905
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:313
+#, kde-format
+msgctxt "bottom alignment"
+msgid "Bottom"
+msgstr "Dole"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:243
+#: app/settings/viewsdialog/viewsmodel.cpp:907
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:331
+#, kde-format
+msgctxt "justify alignment"
+msgid "Justify"
+msgstr "Do bloku"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:490
+#, fuzzy, kde-format
+#| msgid "Follow Primary Screen"
+msgctxt "primary screen"
+msgid " - Follow Primary Screen - "
+msgstr "Nasledovať hlavnú obrazovku"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:575
+#, fuzzy, kde-format
+#| msgctxt "column for layout name"
+#| msgid "Name"
+msgid "Name"
+msgstr "Názov"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:580
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
+#, kde-format
+msgid "Screen"
+msgstr "Obrazovka"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:588
+#, kde-format
+msgctxt "screen edge"
+msgid "Edge"
+msgstr "Hrana"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:596
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:258
+#, kde-format
+msgid "Alignment"
+msgstr "Zarovnanie"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:604
+#, kde-format
+msgid "Includes"
+msgstr "Zahŕňa"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:762
+#: app/settings/viewsdialog/viewsmodel.cpp:848
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown screen"
+msgid "Unknown : [%1]"
+msgstr "Neznáme"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:842
+#, kde-format
+msgctxt "primary screen"
+msgid "Primary"
+msgstr "Hlavná"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:870
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:176
+#, kde-format
+msgctxt "bottom location"
+msgid "Bottom"
+msgstr "Dole"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:872
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:214
+#, kde-format
+msgctxt "top location"
+msgid "Top"
+msgstr "Hore"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:874
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:195
+#, kde-format
+msgctxt "left location"
+msgid "Left"
+msgstr "Vľavo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:876
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:233
+#, kde-format
+msgctxt "right location"
+msgid "Right"
+msgstr "Vpravo"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:879
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown location"
+msgid "Unknown"
+msgstr "Neznáme"
+
+#: app/settings/viewsdialog/viewsmodel.cpp:910
+#, fuzzy, kde-format
+#| msgid "Unknown screens: "
+msgctxt "unknown alignment"
+msgid "Unknown"
+msgstr "Neznáme"
+
+#: app/shortcuts/globalshortcuts.cpp:87
+#, kde-format
+msgid "Show Latte Dock/Panel"
+msgstr "Zobraziť Latte Dok/panel"
+
+#: app/shortcuts/globalshortcuts.cpp:96
+#, fuzzy, kde-format
+#| msgid "Show Latte Settings"
+msgid "Cycle Through Dock/Panel Settings Windows"
+msgstr "Zobraziť Latte Nastavenia"
+
+#: app/shortcuts/globalshortcuts.cpp:105
+#, kde-format
+msgid "Show Latte Global Settings"
+msgstr "Zobraziť Latte Globálne nastavenia"
+
+#: app/shortcuts/globalshortcuts.cpp:121 app/shortcuts/globalshortcuts.cpp:137
+#, kde-format
+msgid "Activate Entry %1"
+msgstr "Aktivovať položku správcu úloh %1"
+
+#: app/shortcuts/globalshortcuts.cpp:152 app/shortcuts/globalshortcuts.cpp:164
+#, kde-format
+msgid "New Instance for Entry %1"
+msgstr "Nová inštancia pre Vstup %1"
+
+#: app/templates/templatesmanager.cpp:337
+#, fuzzy, kde-format
+#| msgid "Default"
+msgctxt "default layout template name"
+msgid "Default"
+msgstr "Predvolené"
+
+#: app/templates/templatesmanager.cpp:338
+#, fuzzy, kde-format
+#| msgid "Empty Area"
+msgctxt "empty layout template name"
+msgid "Empty"
+msgstr "Prázdne"
+
+#: app/templates/templatesmanager.cpp:341
+#, fuzzy, kde-format
+#| msgid "Default"
+msgctxt "view template name"
+msgid "Default Dock"
+msgstr "Predvolené"
+
+#: app/templates/templatesmanager.cpp:342
+#, kde-format
+msgctxt "view template name"
+msgid "Default Panel"
+msgstr "Štandardný panel"
+
+#: app/templates/templatesmanager.cpp:343
+#, kde-format
+msgctxt "view template name"
+msgid "Empty Panel"
+msgstr "Prázdny panel"
+
+#: app/view/contextmenu.cpp:472
+#, kde-format
+msgctxt "%1 is the name of the containment"
+msgid "%1 Options"
+msgstr "Voľby %1"
+
+#: app/view/settings/indicatoruimanager.cpp:170
+#, kde-format
+msgctxt "add indicator"
+msgid "Add Indicator"
+msgstr "Pridať Indikátor"
+
+#: app/view/settings/indicatoruimanager.cpp:179
+#, kde-format
+msgctxt "add indicator file"
+msgid "Latte Indicator"
+msgstr "Latte Indikátor"
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:67
+#, kde-format
+msgid "Stick On Top"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:68
+#, kde-format
+msgid ""
+"Stick maximum available space at top screen edge and ignore any top docks or "
+"panels"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:108
+#, kde-format
+msgid "Rearrange and configure your widgets"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:109
+#, kde-format
+msgid ""
+"Feel free to move around your widgets and configure them from their tooltips"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:126
+#, kde-format
+msgid "Stick On Bottom"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/HeaderSettings.qml:127
+#, kde-format
+msgid ""
+"Stick maximum available space at bottom screen edge and ignore any bottom "
+"docks or panels"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:27
+#, kde-format
+msgctxt "maximum length tooltip, %1 is maximum length percentage"
+msgid "You can use mouse wheel to change maximum length of %1%"
+msgstr ""
+
+#: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
+#, fuzzy, kde-format
+#| msgid "Maximum"
+msgid "Maximum Length"
+msgstr "Maximum"
+
+#: shell/package/contents/configuration/CanvasConfiguration.qml:94
+#, kde-format
+msgctxt "opacity for background under edit mode, %1 is opacity percentage"
+msgid "You can use mouse wheel to change background opacity of %1%"
+msgstr ""
+
+#: shell/package/contents/configuration/config.qml:13
+#, kde-format
+msgid "General"
+msgstr "Všeobecné"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:140
+#, fuzzy, kde-format
+#| msgid "Width"
+msgctxt "view settings width scale"
+msgid "Width %1%"
+msgstr "Šírka:"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:141
+#, fuzzy, kde-format
+msgctxt "view settings width scale"
+msgid "Width %1% / Height %2%"
+msgstr "šírka a výška"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:245
+#, kde-format
+msgctxt "advanced settings"
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:301
+#, kde-format
+msgid "Behavior"
+msgstr "Správanie"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:321
+#, kde-format
+msgid "Appearance"
+msgstr "Vzhľad"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:331
+#, kde-format
+msgid "Effects"
+msgstr "Efekty"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:347
+#, fuzzy, kde-format
+#| msgid "Tasks"
+msgctxt "tasks header and index"
+msgid "Tasks <%1>"
+msgstr "Úlohy"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:347
+#, kde-format
+msgid "Tasks"
+msgstr "Úlohy"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:498
+#, kde-format
+msgid "Add..."
+msgstr "Pridať..."
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:500
+#, kde-format
+msgid "Add new docks and panels from various templates"
+msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:603
+#, kde-format
+msgid "Duplicate Dock"
+msgstr "Duplikovať dok"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:603
+#, kde-format
+msgid "Duplicate Panel"
+msgstr "Duplikovať panel"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:619
+#, kde-format
+msgid "Remove current dock"
+msgstr "Odstrániť aktuálny dok"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:628
+#, kde-format
+msgid "Close"
+msgstr "Zatvoriť"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:630
+#, kde-format
+msgid "Close settings window"
+msgstr "Zatvoriť okno nastavení"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:51
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:757
+#, kde-format
+msgid "Items"
+msgstr "Položky"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
+#, kde-format
+msgctxt "absolute size"
+msgid "Absolute size"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#, kde-format
+msgctxt "number in pixels, e.g. 12 px."
+msgid "%1 px."
+msgstr "%1 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
+#, fuzzy, kde-format
+#| msgctxt "relative size"
+#| msgid "Relative"
+msgctxt "relative size"
+msgid "Relative size"
+msgstr "Relatívne"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:159
+#, kde-format
+msgctxt "number in pixels, e.g. 64 px."
+msgid "%1 px."
+msgstr "%1 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:321
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:404
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:534
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:619
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:665
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:903
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:101
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:149
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:161
+#, kde-format
+msgctxt "no value in percentage"
+msgid "--- %"
+msgstr "--- %"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:180
+#, fuzzy, kde-format
+#| msgid "Zoom On Hover"
+msgid "Zoom on hover"
+msgstr "Priblížiť pri prechode myšou"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:231
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:595
+#, kde-format
+msgid "Length"
+msgstr "Dĺžka"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:251
+#, kde-format
+msgid "Maximum"
+msgstr "Maximum"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:362
+#, fuzzy, kde-format
+#| msgid "Maximum"
+msgid "Minimum"
+msgstr "Minimum"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:445
+#, kde-format
+msgid "Offset"
+msgstr "Posun"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:580
+#, kde-format
+msgid "Margins"
+msgstr "Okraje"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
+#, kde-format
+msgctxt "number in pixels, e.g. 8 px."
+msgid "%1 px."
+msgstr "%1 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
+#, kde-format
+msgid "Thickness"
+msgstr "Hrúbka"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#, fuzzy, kde-format
+#| msgid "Screen"
+msgid "Screen edge"
+msgstr "Hrana obrazovky"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
+#, kde-format
+msgctxt "number in pixels, e.g. 85 px."
+msgid "%1 px."
+msgstr "%1 px."
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
+#, kde-format
+msgid "Colors"
+msgstr "Farby"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
+#, kde-format
+msgid "Palette"
+msgstr "Paleta"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
+#, fuzzy, kde-format
+#| msgid "Plasma Theme:"
+msgctxt "plasma theme colors"
+msgid "Plasma Theme Colors"
+msgstr "Téma Plasmy:"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgctxt "dark theme colors"
+msgid "Dark Colors"
+msgstr "Farby"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgctxt "light theme colors"
+msgid "Light Colors"
+msgstr "Farby"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
+#, kde-format
+msgctxt "layout custom colors"
+msgid "Layout Custom Colors"
+msgstr ""
+
+#. i18nc("reverse plasma theme colors", "Reverse"),
+#. value: LatteContainment.Types.ReverseThemeColors
+#. }
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:768
+#, kde-format
+msgctxt "smart theme colors"
+msgid "Smart Colors Based On Desktop Background"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
+#, fuzzy, kde-format
+#| msgid "Preview windows on hovering"
+msgid "From Window"
+msgstr "Náhľad okien pri prechode myšou"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:802
+#: shell/package/contents/configuration/pages/TasksConfig.qml:497
+#, fuzzy, kde-format
+msgid "Disabled"
+msgstr "Zakázané"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Current Active Window"
+msgstr "Aktívne okno"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:809
+#, kde-format
+msgid "Colors are going to be based on the active window"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:810
+#, kde-format
+msgid ""
+"Colors are going to be based on the active window.\n"
+"Warning: You need to install Colors KWin Script from KDE Store"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Any Touching Window"
+msgstr "Aktívne okno"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:815
+#, kde-format
+msgid "Colors are going to be based on windows that are touching the view"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:816
+#, kde-format
+msgid ""
+"Colors are going to be based on windows that are touching the view.\n"
+"Warning: You need to install Colors KWin Script from KDE Store"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:848
+#, kde-format
+msgid "Background"
+msgstr "Pozadie"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:849
+#, fuzzy, kde-format
+#| msgid "Dynamic Background"
+msgid "Enable/disable background"
+msgstr "Dynamické Pozadie"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:66
+#, kde-format
+msgid "Size"
+msgstr "Veľkosť"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:114
+#, kde-format
+msgid "Opacity"
+msgstr "Nepriehľadnosť"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#, fuzzy, kde-format
+#| msgid "Opacity"
+msgctxt "opacity when desktop background is busy from contrast point of view"
+msgid "Busy Opacity"
+msgstr "Nepriehľadnosť"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
+#, kde-format
+msgid "Radius"
+msgstr "Polomer"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#, fuzzy, kde-format
+msgctxt "Default word abbreviation"
+msgid "Def."
+msgstr "Def.: "
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1009
+#, kde-format
+msgid "Shadow"
+msgstr "Tieň"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1058
+#, kde-format
+msgid "Blur"
+msgstr "Rozmazanie"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1061
+#, kde-format
+msgid "Background is blurred underneath"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1076
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:50
+#, kde-format
+msgid "Shadows"
+msgstr "Tiene"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1079
+#, kde-format
+msgid "Background shows its shadows"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1094
+#, kde-format
+msgid "Outline"
+msgstr "Obrys"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
+#, kde-format
+msgid ""
+"Background draws a line for its borders. You can set the line size from "
+"Latte Preferences"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
+#, kde-format
+msgid "All Corners"
+msgstr "Všetky rohy"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
+#, kde-format
+msgid "Background draws all corners at all cases."
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
+#, fuzzy, kde-format
+#| msgid "Visibility"
+msgctxt "dynamic visibility for background"
+msgid "Dynamic Visibility"
+msgstr "Viditeľnosť"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
+#, fuzzy, kde-format
+#| msgid "Force solid background for maximized or snapped windows"
+msgid "Prefer opaque background when touching any window"
+msgstr "Vynútiť plné pozadie pre maximalizované alebo prichytené okná"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
+#, fuzzy, kde-format
+#| msgid ""
+#| "The panel background removes its transparency setting \n"
+#| " when there is a maximized or snapped window"
+msgid "Background removes its transparency setting when a window is touching"
+msgstr ""
+"Pozadie panelu odstráni svoje nastavenia priehľadnosti \n"
+" keď je okno miximalizované alebo prichytené"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1150
+#, fuzzy, kde-format
+#| msgid "Hide background for not maximized windows"
+msgid "Hide background when not needed"
+msgstr "Skryť pozadie pre nie maximalizované okná"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1151
+#, fuzzy, kde-format
+#| msgid ""
+#| "The panel background becomes transparent except if \n"
+#| "there is a maximized or snapped window"
+msgid ""
+"Background becomes hidden except when a window is touching or the desktop "
+"background is busy"
+msgstr ""
+"Pozadie panelu sa stane priehľadným okrem toho ak \n"
+"je okno miximalizované alebo prichytené"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1164
+#, fuzzy, kde-format
+#| msgid "Hide background for not maximized windows"
+msgid "Hide background shadow for maximized windows"
+msgstr "Skryť pozadie pre nie maximalizované okná"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1165
+#, fuzzy, kde-format
+#| msgid ""
+#| "The panel background becomes transparent except if \n"
+#| "there is a maximized or snapped window"
+msgid ""
+"Background shadows become hidden when an active maximized window is touching "
+"the view"
+msgstr ""
+"Pozadie panelu sa stane priehľadným okrem toho ak \n"
+"je okno miximalizované alebo prichytené"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1178
+#, kde-format
+msgid "Exceptions"
+msgstr "Výnimky"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1185
+#, kde-format
+msgid "Prefer Plasma background and colors for expanded applets"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
+#, kde-format
+msgid "Background becomes opaque in plasma style when applets are expanded"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
+#, kde-format
+msgid "Type"
+msgstr "Typ"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
+#, kde-format
+msgid "Location"
+msgstr "Umiestnenie"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
+#, kde-format
+msgid "Follow Primary Screen"
+msgstr "Nasledovať hlavnú obrazovku"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:355
+#, kde-format
+msgid "Visibility"
+msgstr "Viditeľnosť"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:378
+#, kde-format
+msgid "Always Visible"
+msgstr "Vždy viditeľný"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:394
+#, kde-format
+msgid "Auto Hide"
+msgstr "Automaticky skrývať"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:410
+#, kde-format
+msgid "Dodge Active"
+msgstr "Vyhnúť sa aktívnym"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:438
+#, kde-format
+msgid "Dodge Maximized"
+msgstr "Vyhnúť sa maximalizovaným"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:443
+#, kde-format
+msgid "Dodge All Windows"
+msgstr "Vyhnúť sa všetkým oknám"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:465
+#, kde-format
+msgid "Windows Go Below"
+msgstr "Okná idú pod"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:470
+#, kde-format
+msgid "Windows Can Cover"
+msgstr "Okná môžu prekrývať"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:475
+#, kde-format
+msgid "Windows Always Cover"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:497
+#, kde-format
+msgid "On Demand Sidebar"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:498
+#, kde-format
+msgid ""
+"Sidebar can be shown and become hidden only through an external applet, "
+"shortcut or script"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:502
+#, fuzzy, kde-format
+#| msgid "Auto Hide"
+msgid "Auto Hide Sidebar"
+msgstr "Automaticky skrývať"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:503
+#, kde-format
+msgid ""
+"Sidebar can be shown only through an external applet, shortcut or script but "
+"it can also autohide itself when it does not contain mouse"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:525
+#, kde-format
+msgid "Delay"
+msgstr "Oneskorenie"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:557
+#, kde-format
+msgid "Show "
+msgstr "Zobraziť"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:612
+#: shell/package/contents/configuration/pages/TasksConfig.qml:522
+#, kde-format
+msgid "Actions"
+msgstr "Akcie"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:634
+#, fuzzy, kde-format
+msgctxt "track active window"
+msgid "Track"
+msgstr "Stopa"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:640
+#, kde-format
+msgctxt "track from current screen"
+msgid "Active Window From Current Screen"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:641
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgctxt "track from all screens"
+msgid "Active Window From All Screens"
+msgstr "Aktívne okno"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:666
+#, kde-format
+msgid "Left Button"
+msgstr "Ľavé tlačidlo"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:671
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Drag Active Window"
+msgstr "Aktívne okno"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:673
+#, kde-format
+msgid ""
+"The user can use left mouse button to drag and maximized/restore last active "
+"window from empty areas"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:691
+#, kde-format
+msgid "Middle Button"
+msgstr "Stredné tlačidlo"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:696
+#, fuzzy, kde-format
+#| msgid "Active Window"
+msgid "Close Active Window"
+msgstr "Aktívne okno"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:698
+#, kde-format
+msgid ""
+"The user can use middle mouse button to close last active window from empty "
+"areas"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:718
+#, kde-format
+msgid "Mouse wheel"
+msgstr "Koliesko myši"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:724
+#, kde-format
+msgctxt "none scroll actions"
+msgid "No Action"
+msgstr "Žiadna akcia"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:725
+#, fuzzy, kde-format
+#| msgid "Cycle Through Tasks"
+msgid "Cycle Through Desktops"
+msgstr "Prechádzať medzi úlohami"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:726
+#, fuzzy, kde-format
+#| msgid "Cycle Through Tasks"
+msgid "Cycle Through Activities"
+msgstr "Prechádzať medzi úlohami"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:727
+#: shell/package/contents/configuration/pages/TasksConfig.qml:547
+#: shell/package/contents/configuration/pages/TasksConfig.qml:591
+#: shell/package/contents/configuration/pages/TasksConfig.qml:655
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Cycle Through Tasks"
+msgstr "Prechádzať medzi úlohami"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:728
+#: shell/package/contents/configuration/pages/TasksConfig.qml:656
+#, kde-format
+msgid "Cycle And Minimize Tasks"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:764
+#, fuzzy, kde-format
+#| msgid "Show applets/task title tooltips on hovering"
+msgid "Thin title tooltips on hovering"
+msgstr "Zobraziť popisky appletov/úloh pri prechode myšou"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:765
+#, kde-format
+msgid ""
+"Show narrow tooltips produced by Latte for items.\n"
+"These tooltips are not drawn when applets zoom effect is disabled"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:776
+#, fuzzy, kde-format
+#| msgid "Activate tasks through mouse wheel"
+msgid "Expand popup through mouse wheel"
+msgstr "Aktivovať úlohy cez koliesko myši"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:777
+#, kde-format
+msgid "Show or Hide applet popup through mouse wheel action"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:789
+#, fuzzy, kde-format
+#| msgid "Decrease applets size when it is needed"
+msgid "Adjust size automatically when needed"
+msgstr "Zmenšiť applety keď je to potrebné"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:790
+#, kde-format
+msgid ""
+"Items decrease their size when exceed maximum length and increase it when "
+"they can fit in"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:802
+#, kde-format
+msgid "Activate based on position global shortcuts"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:803
+#, kde-format
+msgid ""
+"This view is used for based on position global shortcuts. Take note that "
+"only one view can have that option enabled for each layout"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:818
+#, fuzzy, kde-format
+msgid "Floating"
+msgstr "Plávajúce"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:830
+#, kde-format
+msgid "Always use floating gap for user interaction"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:831
+#, kde-format
+msgid "Floating gap is always used for applets and window interaction"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:842
+#, fuzzy, kde-format
+#| msgid "Hide background for not maximized windows"
+msgid "Hide floating gap for maximized windows"
+msgstr "Skryť pozadie pre nie maximalizované okná"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:843
+#, kde-format
+msgid "Floating gap is disabled when there are maximized windows"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:854
+#, kde-format
+msgid "Delay floating gap hiding until mouse leaves"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:855
+#, kde-format
+msgid "to avoid clicking on adjacent items accidentally in some cases"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:866
+#, fuzzy, kde-format
+#| msgid "Hide background for not maximized windows"
+msgid "Mirror floating gap when it is shown"
+msgstr "Skryť pozadie pre nie maximalizované okná"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:867
+#, kde-format
+msgid "Floating gap is mirrored when it is shown in Always Visible mode"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:890
+#, kde-format
+msgid "Environment"
+msgstr "Prostredie"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:899
+#, kde-format
+msgid "Activate KWin edge after hiding"
+msgstr "Aktivovať Kwin okraj po skrytí"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:900
+#, kde-format
+msgid ""
+"After the view becomes hidden, KWin is informed to track user feedback. For "
+"example an edge visual hint is shown whenever the mouse approaches the "
+"hidden view"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:914
+#, kde-format
+msgid "Can be above fullscreen windows"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:915
+#, fuzzy, kde-format
+#| msgid ""
+#| "Remove the BypassWindowManagerHint flag from the window.\n"
+#| "The dock wont be above windows which are set at 'Always On Top'"
+msgid ""
+"BypassWindowManagerHint flag for the window. The view will be above all "
+"windows even those set as 'Always On Top'"
+msgstr ""
+"Odstrániť BypassWindowManagerHint flag z okna.\n"
+"Dok nebude nad oknami, ktoré sú nastavené ako \"Vždy Navrchu\""
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:925
+#, kde-format
+msgid "Raise on desktop change"
+msgstr "Zdvihnúť pre zmene plochy"
+
+#: shell/package/contents/configuration/pages/BehaviorConfig.qml:935
+#, kde-format
+msgid "Raise on activity change"
+msgstr "Zdvihnúť pri zmene aktivity"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:51
+#, fuzzy, kde-format
+#| msgid "Applet shadows"
+msgid "Enable/disable applet shadows"
+msgstr "Tiene appletu"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:178
+#, fuzzy, kde-format
+#| msgctxt "default shadow"
+#| msgid "Default"
+msgctxt "default shadow"
+msgid "Default Color"
+msgstr "Predvolená farba:"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:182
+#, kde-format
+msgid "Default shadow for applets"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:197
+#, fuzzy, kde-format
+#| msgid "Custom text color..."
+msgctxt "theme shadow"
+msgid "Theme Color"
+msgstr "Vlastná farba textu..."
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:201
+#, kde-format
+msgid "Shadow from theme color palette"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:222
+#, fuzzy, kde-format
+#| msgid "Please choose shadow color"
+msgid "Use set shadow color"
+msgstr "Prosím vyberte farbu tieňa"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:265
+#, kde-format
+msgid "Please choose shadow color"
+msgstr "Prosím vyberte farbu tieňa"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:307
+#: shell/package/contents/configuration/pages/TasksConfig.qml:280
+#, kde-format
+msgid "Animations"
+msgstr "Animácie"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:308
+#, fuzzy, kde-format
+#| msgid "Applet shadows"
+msgid "Enable/disable all animations"
+msgstr "Tiene appletu"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:337
+#, kde-format
+msgid "x1"
+msgstr "x1"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:352
+#, kde-format
+msgid "x2"
+msgstr "x2"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:367
+#, kde-format
+msgid "x3"
+msgstr "x3"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:396
+#, kde-format
+msgid "Indicators"
+msgstr "Indikátory"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:397
+#, fuzzy, kde-format
+#| msgid "Applet shadows"
+msgid "Enable/disable indicators"
+msgstr "Tiene appletu"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:426
+#, kde-format
+msgctxt "latte indicator style"
+msgid "Latte"
+msgstr "Latte"
+
+#: shell/package/contents/configuration/pages/EffectsConfig.qml:437
+#, kde-format
+msgctxt "plasma indicator style"
+msgid "Plasma"
+msgstr "Plasma"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:51
+#, kde-format
+msgid "Badges"
+msgstr "Odznaky"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:60
+#, fuzzy, kde-format
+#| msgid "Show progress information for tasks"
+msgid "Notifications from tasks"
+msgstr "Zobraziť informáciu o priebehu úloh"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:61
+#, fuzzy, kde-format
+#| msgid "Show progress information for tasks"
+msgid "Show unread messages or notifications from tasks"
+msgstr "Zobraziť informáciu o priebehu úloh"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:71
+#, fuzzy, kde-format
+#| msgid "Show progress information for tasks"
+msgid "Progress information for tasks"
+msgstr "Zobraziť informáciu o priebehu úloh"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:72
+#, fuzzy, kde-format
+#| msgid ""
+#| "Show a beautiful progress animation e.g. when copying \n"
+#| "files with Dolphin"
+msgid ""
+"Show a progress animation for tasks e.g. when copying files with Dolphin"
+msgstr ""
+"Zobraziť peknú animáciu posunu napr. pri kopírovaní \n"
+"súborov s Dolphin-om"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:82
+#, kde-format
+msgid "Audio playing from tasks"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:83
+#, fuzzy, kde-format
+#| msgid "Show progress information for tasks"
+msgid "Show audio playing from tasks"
+msgstr "Zobraziť informáciu o priebehu úloh"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:93
+#, kde-format
+msgid "Prominent color for notification badge"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:95
+#, kde-format
+msgid ""
+"Notification badge uses a more prominent background which is usually red"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:105
+#, kde-format
+msgid "Change volume when scrolling audio badge"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:107
+#, kde-format
+msgid ""
+"The user is able to mute/unmute with click or change the volume with mouse "
+"wheel"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:124
+#, kde-format
+msgid "Interaction"
+msgstr "Interakcia"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:133
+#, fuzzy, kde-format
+#| msgid ""
+#| "Launchers are added only in the taskmanager and not as plasma applets"
+msgid "Launchers are added only in current tasks applet"
+msgstr "Spúšťače sú pridávané iba v správcovi úloh a nie ako plasma applety"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:134
+#, fuzzy, kde-format
+#| msgid ""
+#| "Launchers are added only in the taskmanager and not as plasma applets"
+msgid ""
+"Launchers are added only in current tasks applet and not as regular applets "
+"or in any other applet"
+msgstr "Spúšťače sú pridávané iba v správcovi úloh a nie ako plasma applety"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:145
+#, fuzzy, kde-format
+#| msgid "Show window actions in the context menu"
+msgid "Window actions in the context menu"
+msgstr "Zobraziť akcie okna v kontextovej ponuke"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:158
+#, fuzzy, kde-format
+#| msgid "Preview Windows"
+msgid "Preview window behaves as popup"
+msgstr "Náhľad okien"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:171
+#, kde-format
+msgid "Based on position shortcuts apply only on current tasks"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:173
+#, kde-format
+msgid ""
+"Based on position global shortcuts are enabled only for current tasks and "
+"not for other applets"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:192
+#, kde-format
+msgid "Filters"
+msgstr "Filtre"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:201
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Zobraziť iba úlohy z aktuálnej obrazovky"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:212
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Zobraziť iba úlohy z aktuálnej pracovnej plochy"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:223
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Zobraziť iba úlohy z aktuálnej aktivity"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:234
+#, kde-format
+msgid "Show only tasks from launchers"
+msgstr "Zobraziť iba úlohy zo spúšťačov"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:246
+#, kde-format
+msgid "Show only launchers and hide all tasks"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:247
+#, kde-format
+msgid "Tasks become hidden and only launchers are shown"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:258
+#, fuzzy, kde-format
+#| msgid "Group tasks of the same application"
+msgid "Show only grouped tasks for same application"
+msgstr "Skupinové úlohy pre rovnakú aplikáciu"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:259
+#, kde-format
+msgid "By default group tasks of the same application"
+msgstr "Predvolene zoskupovať úlohy rovnakej aplikácie"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:289
+#, kde-format
+msgid "Bounce launchers when triggered"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:300
+#, kde-format
+msgid "Bounce tasks that need attention"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:311
+#, fuzzy, kde-format
+#| msgid "Hide panel shadow for maximized windows"
+msgid "Slide in and out single windows"
+msgstr "Skryť tieň panelu pre maximalizované okná"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:321
+#, fuzzy, kde-format
+#| msgid "Group tasks of the same application"
+msgid "Grouped tasks bounce their new windows"
+msgstr "Skupinové úlohy pre rovnakú aplikáciu"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:332
+#, fuzzy, kde-format
+#| msgid "Group tasks of the same application"
+msgid "Grouped tasks slide out their closed windows"
+msgstr "Skupinové úlohy pre rovnakú aplikáciu"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:351
+#, kde-format
+msgid "Launchers"
+msgstr "Spúšťače"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:376
+#, fuzzy, kde-format
+#| msgctxt "unique launchers group"
+#| msgid "Unique"
+msgctxt "unique launchers group"
+msgid "Unique Group"
+msgstr "Unikátny"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:380
+#, fuzzy, kde-format
+#| msgid ""
+#| "Use a unique set of launchers for this dock which is independent from any "
+#| "other dock"
+msgid ""
+"Use a unique set of launchers for this view which is independent from any "
+"other view"
+msgstr ""
+"Používať jedinečný súbor spúšťačov, ktorý je nezávislý od ostatných dokov"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:395
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgctxt "layout launchers group"
+msgid "Layout Group"
+msgstr "Rozloženie"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:399
+#, fuzzy, kde-format
+#| msgid ""
+#| "Use the current layout set of launchers for this dock. This group "
+#| "provides launchers <b>synchronization</b> between different docks in the "
+#| "<b>same layout</b>"
+msgid ""
+"Use the current layout set of launchers for this latteView. This group "
+"provides launchers <b>synchronization</b> between different views in the "
+"<b>same layout</b>"
+msgstr ""
+"Používať aktuálny súbor rozložení spúšťačov pre tento dok. Táto skupina "
+"poskytuje <b>synchronizáciu</b> spúšťačov medzi rôznymi dokmi v <b>tom istom "
+"rozložení</b>"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:415
+#, fuzzy, kde-format
+#| msgctxt "global launchers group"
+#| msgid "Global"
+msgctxt "global launchers group"
+msgid "Global Group"
+msgstr "Globálne"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:419
+#, fuzzy, kde-format
+#| msgid ""
+#| "Use the global set of launchers for this dock. This group provides "
+#| "launchers <b>synchronization</b> between different docks and between "
+#| "<b>different layouts</b>"
+msgid ""
+"Use the global set of launchers for this latteView. This group provides "
+"launchers <b>synchronization</b> between different views and between "
+"<b>different layouts</b>"
+msgstr ""
+"Používať globálny súbor spúšťačov pre tento dok. Táto skupina poskytuje "
+"<b>synchronizáciu</b> spúšťačov medzi rôznymi dokmi a medzi <b>rôznymi "
+"rozloženiami</b>"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:448
+#, kde-format
+msgid "Scrolling"
+msgstr "Posúvanie"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:449
+#, kde-format
+msgid ""
+"Enable tasks scrolling when they overflow and exceed the available space"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:471
+#, fuzzy, kde-format
+msgid "Manual"
+msgstr "Ručne"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:478
+#, kde-format
+msgctxt "disabled manual scrolling"
+msgid "Disabled scrolling"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:479
+#, kde-format
+msgid "Only vertical scrolling"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:479
+#, kde-format
+msgid "Only horizontal scrolling"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:480
+#, kde-format
+msgid "Horizontal and vertical scrolling"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:489
+#, fuzzy, kde-format
+msgid "Automatic"
+msgstr "Automatické"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:540
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Left Click"
+msgstr "Ľavý klik"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:546
+#, fuzzy, kde-format
+msgctxt "present windows action"
+msgid "Present Windows"
+msgstr "Súčasné okná"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:548
+#: shell/package/contents/configuration/pages/TasksConfig.qml:608
+#, kde-format
+msgid "Preview Windows"
+msgstr "Náhľad okien"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:580
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Middle Click"
+msgstr "Stredný klik"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:587
+#: shell/package/contents/configuration/pages/TasksConfig.qml:707
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Žiadne"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:588
+#: shell/package/contents/configuration/pages/TasksConfig.qml:707
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Zatvoriť okno alebo skupinu"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:589
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "New Instance"
+msgstr "Nová inštancia"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:590
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Minimalizovať/obnoviť okno alebo skupinu"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:592
+#: shell/package/contents/configuration/pages/TasksConfig.qml:708
+#, kde-format
+msgid "Toggle Task Grouping"
+msgstr "Prepnúť zoskupovanie úloh"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:600
+#, kde-format
+msgid "Hover"
+msgstr "Prechod myšou"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:607
+#: shell/package/contents/configuration/pages/TasksConfig.qml:654
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "Žiadne"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:609
+#, kde-format
+msgid "Highlight Windows"
+msgstr "Zvýrazniť okná"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:610
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "Náhľad a zvýraznenie okien"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:647
+#, kde-format
+msgid "Wheel"
+msgstr "Koliesko"
+
+#: shell/package/contents/configuration/pages/TasksConfig.qml:694
+#, kde-format
+msgid "Right Click"
+msgstr "Pravý klik"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:18
+#, kde-format
+msgid "Install indicators from KDE Online Store or local files"
+msgstr ""
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:19
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "reverse the position of the active indicator e.g. from bottom to top"
+#| msgid "Reverse"
+msgid "Use %1 style for your indicators"
+msgstr "Obrátiť"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:114
+#, fuzzy, kde-format
+msgid "Install..."
+msgstr "Inštalovať..."
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:143
+#, kde-format
+msgid "Remove indicator"
+msgstr "Odstrániť indikátor"
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:197
+#, kde-format
+msgid "Add Indicator..."
+msgstr "Pridať indikátor..."
+
+#: shell/package/contents/controls/CustomIndicatorButton.qml:207
+#, kde-format
+msgid "Get New Indicators..."
+msgstr "Získať nové indikátory..."
+
+#: shell/package/contents/controls/TypeSelection.qml:55
+#, kde-format
+msgctxt "dock type"
+msgid "Dock"
+msgstr "Dok"
+
+#: shell/package/contents/controls/TypeSelection.qml:57
+#, kde-format
+msgid "Change the behavior and appearance to Dock type"
+msgstr "Zmeniť správanie a vzhľad pre typ doku"
+
+#: shell/package/contents/controls/TypeSelection.qml:99
+#, kde-format
+msgctxt "panel type"
+msgid "Panel"
+msgstr "Panel"
+
+#: shell/package/contents/controls/TypeSelection.qml:101
+#, kde-format
+msgid "Change the behavior and appearance to Panel type"
+msgstr "Zmeniť správanie a vzhľad pre typ panelu"
+
+#: shell/package/contents/views/AppletDelegate.qml:167
+#, kde-format
+msgid "Undo uninstall"
+msgstr "Vrátiť odinštalovanie"
+
+#: shell/package/contents/views/AppletDelegate.qml:168
+#, kde-format
+msgid "Uninstall widget"
+msgstr "Odinštalovať miniaplikáciu"
+
+#: shell/package/contents/views/WidgetExplorer.qml:155
+#: shell/package/contents/views/WidgetExplorer.qml:265
+#, fuzzy, kde-format
+#| msgid "Add Widgets..."
+msgid "All Widgets"
+msgstr "Všetky widgety"
+
+#: shell/package/contents/views/WidgetExplorer.qml:227
+#, fuzzy, kde-format
+#| msgid "Add Widgets..."
+msgid "Widgets"
+msgstr "Miniaplikácie"
+
+#: shell/package/contents/views/WidgetExplorer.qml:235
+#, kde-format
+msgid "Get New Widgets..."
+msgstr "Získať nové miniaplikácie..."
+
+#: shell/package/contents/views/WidgetExplorer.qml:253
+#, kde-format
+msgid "Search..."
+msgstr "Hľadať..."
+
+#: shell/package/contents/views/WidgetExplorer.qml:264
+#, fuzzy, kde-format
+msgid "Categories"
+msgstr "Kategórie"
+
+#: shell/package/contents/views/WidgetExplorer.qml:363
+#, kde-format
+msgid "No widgets matched the search terms"
+msgstr "Žiadne miniaplikácie nevyhovujú hľadaným výrazom."
+
+#: shell/package/contents/views/WidgetExplorer.qml:363
+#, kde-format
+msgid "No widgets available"
+msgstr "Žiadne miniaplikáciw nie sú dostupné"
+
+#~ msgid "Theme"
+#~ msgstr "Téma"
+
+#, fuzzy
+#~| msgid "Plasma"
+#~ msgctxt "plasma theme colors"
+#~ msgid "Plasma"
+#~ msgstr "Plasma"
+
+#, fuzzy
+#~| msgctxt "right edge"
+#~| msgid "Right"
+#~ msgctxt "light theme colors"
+#~ msgid "Light"
+#~ msgstr "Vpravo"
+
+#, fuzzy
+#~| msgctxt ""
+#~| "reverse the position of the active indicator e.g. from bottom to top"
+#~| msgid "Reverse"
+#~ msgctxt "reverse plasma theme colors"
+#~ msgid "Reverse"
+#~ msgstr "Obrátiť"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgid "Layout <b>%1</b> imported successfully..."
+#~ msgid_plural "Layouts <b>%2</b> imported successfully..."
+#~ msgstr[0] "Rozloženie: <b>%0</b> úspešne importované<br>"
+#~ msgstr[1] "Rozloženie: <b>%0</b> úspešne importované<br>"
+#~ msgstr[2] "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#~ msgid "Download indicator styles from the internet"
+#~ msgstr "Prevziať štýly indikátorov z internetu"
+
+#~ msgid "Download"
+#~ msgstr "Prevziať"
+
+#, fuzzy
+#~| msgid "Activating layout: <b>%0</b> ..."
+#~ msgid "Activating layouts: <b>%0</b> ..."
+#~ msgstr "Aktivujem rozloženie <b>%0</b> ..."
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgid "Layouts <b>%0</b> imported successfully..."
+#~ msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layout imported successfully"
+#~ msgid "Layout <b>%0</b> imported successfully..."
+#~ msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layouts imported successfully"
+#~ msgid "Layouts <b>%0</b> imported successfully..."
+#~ msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#~ msgctxt "number in percentage, e.g. 85 %"
+#~ msgid "%0 %"
+#~ msgstr "%0 %"
+
+#~ msgid "Yes"
+#~ msgstr "Áno"
+
+#, fuzzy
+#~| msgid "None"
+#~ msgid "No"
+#~ msgstr "Žiadne"
+
+#, fuzzy
+#~| msgid "Layout"
+#~ msgid "Open Layout"
+#~ msgstr "Rozloženie"
+
+#, fuzzy
+#~| msgid ""
+#~| "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please "
+#~| "<b>remove them</b> to improve the system stability..."
+#~ msgctxt "settings:broken layout"
+#~ msgid ""
+#~ "Layout <b>%0</b> <i>is broken</i>! Please <b>remove</b> it to improve "
+#~ "stability..."
+#~ msgstr ""
+#~ "Rozloženie(a) <b>%0</b> majú <i>chýbnú konfiguráciu</i>!!! Prosím "
+#~ "<b>odstránte ich</b> na zlepšenie stability systému..."
+
+#, fuzzy
+#~| msgid ""
+#~| "The layout(s) <b>%0</b> have <i>broken configuration</i>!!! Please "
+#~| "<b>remove them</b> to improve the system stability..."
+#~ msgctxt "settings:broken layouts"
+#~ msgid ""
+#~ "Layouts <b>%0</b> <i>are broken</i>! Please <b>remove</b> them to improve "
+#~ "stability..."
+#~ msgstr ""
+#~ "Rozloženie(a) <b>%0</b> majú <i>chýbnú konfiguráciu</i>!!! Prosím "
+#~ "<b>odstránte ich</b> na zlepšenie stability systému..."
+
+#, fuzzy
+#~| msgctxt "download layout"
+#~| msgid "&Download..."
+#~ msgid "Download..."
+#~ msgstr "&Prevziať..."
+
+#~ msgctxt "download layout"
+#~ msgid "&Download..."
+#~ msgstr "&Prevziať..."
+
+#~ msgid "Download community layouts from KDE Store"
+#~ msgstr "Prevziať komunitné rozloženia z Obchodu KDE"
+
+#~ msgctxt "active docks panels"
+#~ msgid "Active Views:"
+#~ msgstr "Aktívne zobrazenia:"
+
+#~ msgctxt "view id"
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgctxt "active dock/panel"
+#~ msgid "Active"
+#~ msgstr "Aktívny"
+
+#~ msgid "Errors:"
+#~ msgstr "Chyby:"
+
+#~ msgctxt "copy layout"
+#~ msgid "&Copy"
+#~ msgstr "&Kopírovať"
+
+#~ msgid "Copy selected layout"
+#~ msgstr "Kopírovať vybraté rozloženie"
+
+#, fuzzy
+#~| msgid "Move to: %0"
+#~ msgid "Move to %0"
+#~ msgstr "Presunúť do: %0"
+
+#~ msgid "Copy Dock"
+#~ msgstr "Kopírovať dok"
+
+#~ msgid "New Dock"
+#~ msgstr "Nový dok:"
+
+#~ msgid "Add a new dock"
+#~ msgstr "Pridať nový dok"
+
+#~ msgctxt "screen id"
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgctxt "screen name"
+#~ msgid "Name"
+#~ msgstr "Názov"
+
+#~ msgctxt "screen type"
+#~ msgid "Type"
+#~ msgstr "Typ"
+
+#~ msgctxt "secondary screen"
+#~ msgid "Secondary"
+#~ msgstr "Vedľajšia"
+
+#~ msgctxt "inactive screen"
+#~ msgid "inactive"
+#~ msgstr "neaktívna"
+
+#~ msgctxt "it has not latte docks/panels"
+#~ msgid "none"
+#~ msgstr "žiadne"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple Layouts"
+#~ msgstr "Viacero rozložení"
+
+#~ msgid "Pause"
+#~ msgstr "Pozastaviť"
+
+#~ msgctxt "pause layout"
+#~ msgid "&Pause"
+#~ msgstr "&Pozastaviť"
+
+#, fuzzy
+#~| msgctxt "dock settings window scale"
+#~| msgid "Window scale at %0%"
+#~ msgctxt "view settings width scale"
+#~ msgid "Width scale at %0%"
+#~ msgstr "Škálovanie okna na %0%"
+
+#, fuzzy
+#~| msgctxt "dock settings window scale"
+#~| msgid "Window scale at %0%"
+#~ msgctxt "view settings height scale"
+#~ msgid "Height scale at %0%"
+#~ msgstr "Škálovanie okna na %0%"
+
+#~ msgctxt "items effects"
+#~ msgid "Size"
+#~ msgstr "Veľkosť"
+
+#~ msgctxt "items effects"
+#~ msgid "Effects"
+#~ msgstr "Efekty"
+
+#, fuzzy
+#~| msgid "Dynamic Background"
+#~ msgid "Enable/disable thickness margins"
+#~ msgstr "Dynamické Pozadie"
+
+#~ msgid "Height"
+#~ msgstr "Výška"
+
+#~ msgctxt "track from current screen"
+#~ msgid "Current Screen"
+#~ msgstr "Aktuálna obrazovka"
+
+#~ msgctxt "track from all screens"
+#~ msgid "All Screens"
+#~ msgstr "Všetky obrazovky"
+
+#~ msgid "Empty Area"
+#~ msgstr "Prázdna oblasť"
+
+#~ msgid "Color"
+#~ msgstr "Farba"
+
+#~ msgctxt "theme shadow"
+#~ msgid "Theme"
+#~ msgstr "Téma"
+
+#~ msgid "Speed"
+#~ msgstr "Rýchlosť"
+
+#~ msgid "Style"
+#~ msgstr "Štýl"
+
+#, fuzzy
+#~| msgctxt ""
+#~| "reverse the position of the active indicator e.g. from bottom to top"
+#~| msgid "Reverse"
+#~ msgid "Use Latte style for your indicators"
+#~ msgstr "Obrátiť"
+
+#~ msgctxt "launchers group"
+#~ msgid "Group"
+#~ msgstr "Skupina"
+
+#~ msgctxt "layout launchers group"
+#~ msgid "Layout"
+#~ msgstr "Rozloženie"
+
+#, fuzzy
+#~| msgid "Add launchers only in the corresponding area"
+#~ msgid "Add launchers only in the Tasks Area"
+#~ msgstr "Pridávať spúšťače iba na miesto na to určené"
+
+#~ msgid "Switching to layout <b>%0</b> ..."
+#~ msgstr "Prepínam na rozloženie <b>%0</b> ..."
+
+#, fuzzy
+#~| msgid "Alternative"
+#~ msgctxt "alternative layout"
+#~ msgid "Alternative"
+#~ msgstr "Alternatívne"
+
+#~ msgctxt "locked layout"
+#~ msgid "&Locked"
+#~ msgstr "&Uzamknuté"
+
+#~ msgid "Lock/Unlock selected layout and make it read-only"
+#~ msgstr ""
+#~ "Uzamknúť alebo odomknúť vybrané rozloženie a zmeniť ho len na čítanie"
+
+#~ msgctxt "shared layout"
+#~ msgid "Sha&red"
+#~ msgstr "Z&dieľané"
+
+#~ msgid "Share selected layout with other central layouts"
+#~ msgstr "Zdieľať vybrané rozloženie iným centrálnym rozloženiam"
+
+#~ msgctxt "column for shared layout to show which layouts is assigned to"
+#~ msgid "Shared To"
+#~ msgstr "Zdieľané s"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgid "Active"
+#~ msgstr "Aktivity"
+
+#~ msgid "Unity"
+#~ msgstr "Unity"
+
+#~ msgid "Extended"
+#~ msgstr "Rozšírené"
+
+#, fuzzy
+#~| msgid "Color"
+#~ msgid "Color..."
+#~ msgstr "Farba"
+
+#, fuzzy
+#~| msgctxt "latte indicator style"
+#~| msgid "Latte"
+#~ msgid "Latte"
+#~ msgstr "Latte"
+
+#~ msgctxt "opens the layout manager window"
+#~ msgid "Configure..."
+#~ msgstr "Nastaviť..."
+
+#, fuzzy
+#~| msgid ""
+#~| "Enable/Disable the mouse wheel actions in order to cycle through tasks"
+#~ msgid "Enable/Disable the mouse wheel action"
+#~ msgstr "Povoliť/Zakázať akcie kolieska myši na prechádzanie úlohami"
+
+#~ msgid "Open Latte settings window"
+#~ msgstr "Otvoriť okno nastavení Latte"
+
+#~ msgid "React to screen changes after"
+#~ msgstr "Reagovať po zmenách obrazovky"
+
+#~ msgctxt "import latte layouts/configuration"
+#~ msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
+#~ msgstr "Latte Dock súbor Kompletnej Konfigurácie (v0.1, v0.2)"
+
+#, fuzzy
+#~| msgctxt "import-done"
+#~| msgid "Layout: <b>%0</b> imported successfully<br>"
+#~ msgctxt "settings:layout imported successfully"
+#~ msgid "<b>%0</b> was imported successfully..."
+#~ msgstr "Rozloženie: <b>%0</b> úspešne importované<br>"
+
+#~ msgid "Import: Configuration file version v0.1"
+#~ msgstr "Import: Konfiguračný súbor verzie v0.1"
+
+#~ msgid ""
+#~ "You are going to import an old version <b>v0.1</b> configuration file."
+#~ "<br><b>Be careful</b>, importing the entire configuration <b>will erase "
+#~ "all</b> your current configuration!!!<br><br> <i>Alternative, you can "
+#~ "<b>import safely</b> from this file<br><b>only the contained layouts...</"
+#~ "b></i>"
+#~ msgstr ""
+#~ "Idete importovať starú verziu <b>v0.1</b> konfiguračného súboru."
+#~ "<br><b>Buďte opatrný</b>, importovanie celej konfigurácie <b>vymaže celú</"
+#~ "b> vašu aktuálnu konfiguráciu!!!<br><br> <i>Alebo, môžete <b>bezpečne "
+#~ "importovať</b> z tohoto súboru <br><b>iba obsiahnuté rozloženia...</b></i>"
+
+#~ msgid "Import: Configuration file version v0.2"
+#~ msgstr "Import: Konfiguračný súbor verzie v0.2"
+
+#~ msgid ""
+#~ "You are going to import a <b>v0.2</b> configuration file.<br><b>Be "
+#~ "careful</b>, importing <b>will erase all</b> your current configuration!!!"
+#~ "<br><br><i>Would you like to proceed?</i>"
+#~ msgstr ""
+#~ "Chystáte sa importovať konfiguračný súbor <b>v0.2</b>.<br><b>Budte "
+#~ "opatrný</b>, importovanie <b>vymaže</b> vašu aktuálnu konfiguráciu!!!"
+#~ "<br><br><i>Chcete pokračovať?</i>"
+
+#~ msgctxt "single layout"
+#~ msgid "Single"
+#~ msgstr "Jeden"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple"
+#~ msgstr "Viac"
+
+#~ msgctxt "switch to layout"
+#~ msgid "Switch"
+#~ msgstr "Prepnúť"
+
+#~ msgctxt "locked layout"
+#~ msgid "Locked"
+#~ msgstr "Zamknutý"
+
+#~ msgid "Shared"
+#~ msgstr "Zdieľané"
+
+#~ msgctxt "download layout"
+#~ msgid "Download"
+#~ msgstr "Stiahnuť"
+
+#~ msgid "Custom background..."
+#~ msgstr "Vlastné pozadie..."
+
+#~ msgctxt "edit layout"
+#~ msgid "&Edit..."
+#~ msgstr "Upraviť..."
+
+#, fuzzy
+#~| msgid "Interaction"
+#~ msgctxt "layout information"
+#~ msgid "&Information..."
+#~ msgstr "Interakcia"
+
+#~ msgctxt "export layout"
+#~ msgid "Failed to export layout"
+#~ msgstr "Zlyhalo exportovanie rozloženia"
+
+#~ msgctxt "export layout"
+#~ msgid "Layout exported successfully"
+#~ msgstr "Rozloženie exportované úspešne"
+
+#~ msgctxt "import/export config"
+#~ msgid "Failed to export configuration"
+#~ msgstr "Zlyhalo exportovanie konfigurácie"
+
+#~ msgctxt "import/export config"
+#~ msgid "Open location"
+#~ msgstr "Otvoriť umiestnenie"
+
+#~ msgctxt "column for layout background"
+#~ msgid "Background"
+#~ msgstr "Pozadie"
+
+#~ msgid ""
+#~ "There are layouts with the same name, that is not permitted!!! Please "
+#~ "update these names to re-apply the changes..."
+#~ msgstr ""
+#~ "Nájdené rozloženia s rovnakým názvom a to nie je povolené!!! Prosím "
+#~ "aktualizujte tieto názvy pre re-aplikovanie zmien..."
+
+#~ msgid "Pause all activities from the selected layout"
+#~ msgstr "Pozastaviť všetky aktivity z vybratého rozloženia"
+
+#~ msgid "On Primary"
+#~ msgstr "Na primárnej"
+
+#~ msgid "Paddings"
+#~ msgstr "Výplne"
+
+#, fuzzy
+#~| msgid "Show a dot indicator for active tasks/applets"
+#~ msgid "Show indicators for applets"
+#~ msgstr "Zobraziť bodový indikátor pre aktívne úlohy-applety"
+
+#, fuzzy
+#~| msgid "Show a dot indicator for active tasks/applets"
+#~ msgid "Indicators are shown for applets"
+#~ msgstr "Zobraziť bodový indikátor pre aktívne úlohy-applety"
+
+#, fuzzy
+#~| msgid "Active Indicator"
+#~ msgid "%0 Indicator Options"
+#~ msgstr "Aktívny Indikátor"
+
+#, fuzzy
+#~| msgid "Remove Tasks Applet"
+#~ msgid "Remove Latte Tasks Applet"
+#~ msgstr "Odstrániť applet úloh"
+
+#~ msgid "Remove Latte Tasks plasmoid"
+#~ msgstr "Odstrániť plasmoid Latte Úlohy"
+
+#~ msgid "Help"
+#~ msgstr "Pomoc"
+
+#~ msgid "About Latte"
+#~ msgstr "O Latte"
+
+#, fuzzy
+#~| msgid "Show Latte Settings"
+#~ msgid "Show Latte View"
+#~ msgstr "Zobraziť Latte Nastavenia"
+
+#~ msgid "Show Layout Settings"
+#~ msgstr "Zobraziť Nastavenia Rozloženia"
+
+#~ msgid "Select image..."
+#~ msgstr "Vybrať obrázok..."
+
+#, fuzzy
+#~| msgid ""
+#~| "Reverse the position of the active indicator e.g. from bottom to top"
+#~ msgid "Reverse indicator style"
+#~ msgstr "Otočiť umiestnenie aktívneho indikátora napr. zdola nahor"
+
+#, fuzzy
+#~| msgid ""
+#~| "Reverse the position of the active indicator e.g. from bottom to top"
+#~ msgid "Reverse indicator style e.g. from bottom to top"
+#~ msgstr "Otočiť umiestnenie aktívneho indikátora napr. zdola nahor"
+
+#, fuzzy
+#~| msgid "Background"
+#~ msgid "Background roundness"
+#~ msgstr "Pozadie"
+
+#, fuzzy
+#~| msgctxt "active indicator only to in-house latte applets"
+#~| msgid "Internals"
+#~ msgid "Internal"
+#~ msgstr "Interné"
+
+#, fuzzy
+#~| msgid "Unity"
+#~ msgctxt "unity indicator style"
+#~ msgid "Unity"
+#~ msgstr "Unity"
+
+#, fuzzy
+#~| msgctxt ""
+#~| "reverse the position of the active indicator e.g. from bottom to top"
+#~| msgid "Reverse"
+#~ msgid "Use Unity style for your indicators"
+#~ msgstr "Obrátiť"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "active indicator style"
+#~ msgid "Style For Active"
+#~ msgstr "Aktivity"
+
+#~ msgctxt "line indicator"
+#~ msgid "Line"
+#~ msgstr "Čiara"
+
+#, fuzzy
+#~| msgid "Show a line indicator for active tasks/applets"
+#~ msgid "Show a line indicator for active items"
+#~ msgstr "Zobraziť čiarový indikátor pre aktívne úlohy-applety"
+
+#~ msgctxt "dot indicator"
+#~ msgid "Dot"
+#~ msgstr "Bodka"
+
+#, fuzzy
+#~| msgid "Show a dot indicator for active tasks/applets"
+#~ msgid "Show a dot indicator for active items"
+#~ msgstr "Zobraziť bodový indikátor pre aktívne úlohy-applety"
+
+#~ msgid "Glow"
+#~ msgstr "Žiara"
+
+#, fuzzy
+#~| msgid "Applet shadows"
+#~ msgid "Enable/disable indicator glow"
+#~ msgstr "Tiene appletu"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "glow only to active task/applet indicators"
+#~ msgid "On Active"
+#~ msgstr "Aktivity"
+
+#~ msgid "Add glow only to active task/applet indicator"
+#~ msgstr "Pridať žiaru iba na aktívne indikátory úloh/appletov"
+
+#, fuzzy
+#~| msgctxt "active indicator to all applets"
+#~| msgid "All"
+#~ msgctxt "glow to all task/applet indicators"
+#~ msgid "All"
+#~ msgstr "Všetko"
+
+#~ msgid "Add glow to all task/applet indicators"
+#~ msgstr "Pridať žiaru pre všetky indikátory úloh/appletov"
+
+#~ msgid "Different color for minimized windows"
+#~ msgstr "Iná faraba pre minimalizované okná"
+
+#, fuzzy
+#~| msgid ""
+#~| "Grouped windows show both a line and a dot when \n"
+#~| "one of them is active and the Line Active Indicator \n"
+#~| "is enabled"
+#~ msgid ""
+#~ "Grouped windows show both a line and a dot when one of them is active and "
+#~ "the Line Active Indicator is enabled"
+#~ msgstr ""
+#~ "Zoskupené okná zobrazujú bodku aj čiaru keď \n"
+#~ "jeden z nich je aktívny a Čiarový Indikátor \n"
+#~ "je zapnutý"
+
+#~ msgid "ms."
+#~ msgstr "ms."
+
+#, fuzzy
+#~| msgid "Solid"
+#~ msgid "Solid Style"
+#~ msgstr "Plný"
+
+#, fuzzy
+#~| msgid "Interaction"
+#~ msgid "Duration"
+#~ msgstr "Interakcia"
+
+#, fuzzy
+#~| msgid "New Instance"
+#~ msgid "Instant"
+#~ msgstr "Nová inštancia"
+
+#~ msgid "Applets"
+#~ msgstr "Applety"
+
+#, fuzzy
+#~| msgid "Show a line indicator for active tasks/applets"
+#~ msgid "Show or hide indicators for applets"
+#~ msgstr "Zobraziť čiarový indikátor pre aktívne úlohy-applety"
+
+#, fuzzy
+#~| msgid "Applets Distance"
+#~ msgid "Distance"
+#~ msgstr "Vzdialenosť Appletov"
+
+#, fuzzy
+#~| msgctxt "active indicator only to in-house latte applets"
+#~| msgid "Internals"
+#~ msgid "External"
+#~ msgstr "Interné"
+
+#, fuzzy
+#~| msgid "Screen Height Proportion"
+#~ msgid "From Screen Height"
+#~ msgstr "Proporcie výšky obrazovky"
+
+#, fuzzy
+#~| msgid ""
+#~| "Applets size is decreased automatically when the contents \n"
+#~| "exceed the maximum length \n"
+#~| "\n"
+#~| "Hint: this option is disabled when only plasma taskmanagers are present"
+#~ msgid ""
+#~ "Items size is decreased automatically when the contents exceed the "
+#~ "maximum length \n"
+#~ "\n"
+#~ "Hint: this option is disabled when plasma taskmanagers are present"
+#~ msgstr ""
+#~ "Veľkosť appletu je automaticky znížená keď obsah \n"
+#~ "prekročí maximálnu dĺžku \n"
+#~ "\n"
+#~ "Tip: táto možnosť je zakázaná iba keď plasma správcovia úloh sú prítomní"
+
+#, fuzzy
+#~| msgid "None"
+#~ msgctxt "none glow"
+#~ msgid "None"
+#~ msgstr "Žiadne"
+
+#, fuzzy
+#~| msgid "Add glow to all task/applet indicators"
+#~ msgid "Do not show any glow for task/applet indicators"
+#~ msgstr "Pridať žiaru pre všetky indikátory úloh/appletov"
+
+#~ msgid "Shrink thickness margins to minimum"
+#~ msgstr "Zúžiť hrúbku okrajov na minimum"
+
+#~ msgid "Dynamic Background"
+#~ msgstr "Dynamické Pozadie"
+
+#, fuzzy
+#~| msgid "Monochrome contents when panel is transparent"
+#~ msgid "Monochrome contents when not touching any window"
+#~ msgstr "Čiernobiely obsah ak je panel priehľadný"
+
+#, fuzzy
+#~| msgid ""
+#~| "The panel contents are colorized in order to improve contrast \n"
+#~| "with the underlying desktop background when the panel is transparent"
+#~ msgid ""
+#~ "Contents are colorized in order to improve contrast with the underlying "
+#~ "desktop background"
+#~ msgstr ""
+#~ "Obsah panelu je farebný na vylepšenie kontrastu \n"
+#~ "so spodným pozadím plochy keď je panel priehľadný"
+
+#, fuzzy
+#~| msgid "Opacity"
+#~ msgid "Glow Opacity"
+#~ msgstr "Nepriehľadnosť"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgctxt "active indicator style"
+#~ msgid "Active Style"
+#~ msgstr "Aktivity"
+
+#, fuzzy
+#~| msgid "Unify global shortcuts with applets"
+#~ msgid "Prefer this view for global shortcuts activation"
+#~ msgstr "Zjednotiť globálne skratky s appletmi"
+
+#~ msgid "Unify global shortcuts with applets"
+#~ msgstr "Zjednotiť globálne skratky s appletmi"
+
+#~ msgid "Show Dock"
+#~ msgstr "Zobraziť Dok"
+
+#~ msgid "Show Dock Settings"
+#~ msgstr "Zobraziť Nastavenia Doku"
+
+#, fuzzy
+#~| msgid "Show indicator for audio streams"
+#~ msgid "Indicator for audio streams"
+#~ msgstr "Zobraziť indikátor pre zvukové prúdy"
+
+#~ msgid "Audio indicator from which the user can mute/unmute an app"
+#~ msgstr "Zvukový indikátor, z ktorého používateľ môže stlmiť aplikáciu"
+
+#~ msgid "Indicator for active window group"
+#~ msgstr "Indikátor pre aktívnu skupiun okien"
+
+#~ msgid "On middle-click"
+#~ msgstr "Pri kliknutí stredného tlačidla"
+
+#~ msgctxt "active indicator to no applets"
+#~ msgid "None"
+#~ msgstr "Žiadne"
+
+#, fuzzy
+#~| msgid ""
+#~| "Latte will not show any active applet indicator on its own\n"
+#~| " except those the plasma theme provides"
+#~ msgid ""
+#~ "Latte will not show any active applet indicator on its own except those "
+#~ "the plasma theme provides"
+#~ msgstr ""
+#~ "Latte nebude zobrazovať žiadne aktívne indikátory appletov sám od seba\n"
+#~ "okrem tých, ktoré poskytuje vzhľad plasma"
+
+#, fuzzy
+#~| msgid ""
+#~| "Latte will show active applet indicators only for applets that have been "
+#~| "adjusted\n"
+#~| " by it for hovering capabilities e.g. folderview"
+#~ msgid ""
+#~ "Latte will show active applet indicators only for applets that have been "
+#~ "adjusted by it for hovering capabilities e.g. folderview"
+#~ msgstr ""
+#~ "Latte bude zobrazovať indikátory aktívných appletov iba pre applety, "
+#~ "ktoré boli na to prispôsobené\n"
+#~ " pre schopnosti prejdenia myši napr. folderview"
+
+#~ msgctxt "active indicator to all applets"
+#~ msgid "All"
+#~ msgstr "Všetko"
+
+#~ msgid "Latte will show active applet indicators for all applets"
+#~ msgstr ""
+#~ "Latte bude zobrazovať indikátory aktívných appletov pre všetky applety"
+
+#, fuzzy
+#~| msgctxt "add glow only to active task/applet indicators"
+#~| msgid "Only On Active"
+#~ msgctxt "glow only to active task/applet indicators"
+#~ msgid "Only On Active"
+#~ msgstr "Iba pre aktívne"
+
+#~ msgid "Use a 3D style glow"
+#~ msgstr "Použiť žiaru s 3D štýlom"
+
+#~ msgctxt "show panel"
+#~ msgid "Show"
+#~ msgstr "Zobraziť"
+
+#~ msgctxt "Clear applet shadow settings"
+#~ msgid "Clear"
+#~ msgstr "Vyčistiť"
+
+#~ msgid "Blur for panel background"
+#~ msgstr "Rozmazanie pozafia panelu"
+
+#~ msgctxt "show applet shadow"
+#~ msgid "Show"
+#~ msgstr "Zobraziť"
+
+#~ msgctxt "show glow"
+#~ msgid "Show"
+#~ msgstr "Zobraziť"
+
+#~ msgctxt "Add glow to all task/applet indicators"
+#~ msgid "All"
+#~ msgstr "Všetko"
+
+#~ msgid "3D"
+#~ msgstr "3D"
+
+#~ msgid "Tweaks"
+#~ msgstr "Vychytávky"
+
+#~ msgid "Add Spacer"
+#~ msgstr "Pridať medzeru"
+
+#~ msgid "Add a spacer to separate applets"
+#~ msgstr "Pridať oddelovač na oddelenie appletov"
+
+#~ msgid "Behave as a normal dock window"
+#~ msgstr "Správať sa ako normálne okno doku"
+
+#~ msgid "Size: "
+#~ msgstr "Veľkosť: "
+
+#~ msgid "Offset: "
+#~ msgstr "Posun: "
+
+#~ msgid "Show:"
+#~ msgstr "Zobraziť:"
+
+#~ msgid "Zoom Factor"
+#~ msgstr "Zväčšenie"
+
+#~ msgid "Quit"
+#~ msgstr "Ukončiť"
+
+#~ msgctxt "remove button"
+#~ msgid "Remove"
+#~ msgstr "Odstrániť"

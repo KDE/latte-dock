@@ -1,0 +1,460 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-07 03:05+0000\n"
+"PO-Revision-Date: 2022-10-16 07:01+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "გარემოს იერსახე"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "ზოლი"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "ხატულის მაქსიმალური ზომა: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "ანიმაციები: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "ხანგრძლივობა"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "გამორთულია"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "გადიდება"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "დონე: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr ""
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "შუა-წკაპი"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "არაფერი"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "ფანჯრის ან ჯგუფის დახურვა"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "ახალი გაშვებული ასლი"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "გადატარება"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "არაფერი"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "ფანჯრების გადახედვა"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "ფანჯრების გამოკვეთა"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "ფილტრები"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr ""
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr ""
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr ""
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr ""
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "ზომა: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Places"
+msgstr "ადგილები"
+
+#: package/contents/ui/ContextMenu.qml:112
+#: package/contents/ui/ContextMenu.qml:125
+#, kde-format
+msgid "Recent Documents"
+msgstr "ახლახანს გასნილი დოკუმენტები"
+
+#: package/contents/ui/ContextMenu.qml:117
+#: package/contents/ui/ContextMenu.qml:130
+#, kde-format
+msgid "Actions"
+msgstr "მოქმედებები"
+
+#: package/contents/ui/ContextMenu.qml:185
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "წინა აუდიობილიკი"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "პაუზა"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "დაკვრა"
+
+#: package/contents/ui/ContextMenu.qml:212
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "შემდეგი აუდიობილიკი"
+
+#: package/contents/ui/ContextMenu.qml:223
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "შეჩერება"
+
+#: package/contents/ui/ContextMenu.qml:240
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "გასვლა"
+
+#: package/contents/ui/ContextMenu.qml:255
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "აღდგენა"
+
+#: package/contents/ui/ContextMenu.qml:281
+#, kde-format
+msgid "Mute"
+msgstr "დადუმება"
+
+#: package/contents/ui/ContextMenu.qml:343
+#, kde-format
+msgid "Start New Instance"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:360
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "&სამუშაო მაგიდაზე გადატანა"
+
+#: package/contents/ui/ContextMenu.qml:388
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "მიმდინარე სამუშაო მაგიდაზე გადატანა"
+
+#: package/contents/ui/ContextMenu.qml:406
+#, kde-format
+msgid "&All Desktops"
+msgstr "&ყველა სამუშაო მაგიდა"
+
+#: package/contents/ui/ContextMenu.qml:451
+#, kde-format
+msgid "&New Desktop"
+msgstr "&ახალი სამუშაო მაგიდა"
+
+#: package/contents/ui/ContextMenu.qml:476
+#, kde-format
+msgid "Move To &Activity"
+msgstr "&აქტივობასთან გადატანა"
+
+#: package/contents/ui/ContextMenu.qml:497
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "მიმდინარე აქტივობაზე დამატება"
+
+#: package/contents/ui/ContextMenu.qml:507
+#, kde-format
+msgid "All Activities"
+msgstr "ყველა აქტივობა"
+
+#: package/contents/ui/ContextMenu.qml:574
+#, kde-format
+msgid "More Actions"
+msgstr "მეტი ქმედება"
+
+#: package/contents/ui/ContextMenu.qml:583
+#, kde-format
+msgid "&Move"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:592
+#, kde-format
+msgid "Re&size"
+msgstr "&ზომის შეცვლა"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Ma&ximize"
+msgstr "&აკეცვა"
+
+#: package/contents/ui/ContextMenu.qml:628
+#, kde-format
+msgid "Mi&nimize"
+msgstr "&ჩაკეცვა"
+
+#: package/contents/ui/ContextMenu.qml:638
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "დანარჩენი ფანჯრების ზემოთ &ქონა"
+
+#: package/contents/ui/ContextMenu.qml:648
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "სხვა ფანჯრების &ქვემოთ ქონა"
+
+#: package/contents/ui/ContextMenu.qml:660
+#, kde-format
+msgid "&Fullscreen"
+msgstr "&მთელ ეკრანზე"
+
+#: package/contents/ui/ContextMenu.qml:672
+#, kde-format
+msgid "&Shade"
+msgstr "&დაჩრდილვა"
+
+#: package/contents/ui/ContextMenu.qml:688
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "პროგრამების დაჯგუფების ჩართვა"
+
+#: package/contents/ui/ContextMenu.qml:718
+#: package/contents/ui/ContextMenu.qml:733
+#, kde-format
+msgid "&Pin Launcher"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:786
+#, kde-format
+msgid "On All Activities"
+msgstr "ყველა აქტივობაზე"
+
+#: package/contents/ui/ContextMenu.qml:792
+#, kde-format
+msgid "On The Current Activity"
+msgstr "მიმდინარე აქტივობაზე"
+
+#: package/contents/ui/ContextMenu.qml:814
+#, kde-format
+msgid "Unpin Launcher"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:829
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "%1-ის დამატება"
+
+#: package/contents/ui/ContextMenu.qml:847
+#: package/contents/ui/ContextMenu.qml:861
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "%1-ის წაშლა"
+
+#: package/contents/ui/ContextMenu.qml:905
+#, kde-format
+msgid "Window"
+msgstr "ფანჯარა"
+
+#: package/contents/ui/ContextMenu.qml:917
+#, kde-format
+msgid "&Close"
+msgstr "დაკე&ტვა"
+
+#: package/contents/ui/main.qml:1061
+#, kde-format
+msgid "Tasks Area"
+msgstr ""
+
+#: package/contents/ui/previews/ToolTipInstance.qml:465
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr ""
+
+#: package/contents/ui/previews/ToolTipInstance.qml:476
+#: package/contents/ui/task/TaskItem.qml:563
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "ხელმისაწვდომია ყველა აქტივობაზე"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:498
+#: package/contents/ui/task/TaskItem.qml:582
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "ასევე ხელმისაწვდომია %1-ზე"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:502
+#: package/contents/ui/task/TaskItem.qml:586
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "ხელმისაწვდომია %1-ზე"
+
+#: package/contents/ui/task/TaskItem.qml:554
+#, kde-format
+msgid "On %1"
+msgstr ""

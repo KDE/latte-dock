@@ -1,0 +1,159 @@
+# Translation of latte_indicator_org.kde.latte.default.po to Catalan
+# Copyright (C) 2019-2021 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Josep M. Ferrer <txemaq@gmail.com>, 2019, 2021.
+# Antoni Bella Pérez <antonibella5@yahoo.com>, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-10-04 01:38+0000\n"
+"PO-Revision-Date: 2021-10-04 10:14+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
+"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Accelerator-Marker: &\n"
+"X-Generator: Lokalize 20.12.0\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr "Estil"
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "Línia"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "Mostra una línia indicadora per als elements actius"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr "Punts"
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "Mostra un punt indicador per als elements actius"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Size"
+msgstr "Mida"
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "%1 %"
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr "Posició"
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr "Farciment"
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr "Marge de les cantonades"
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "Lluïssor"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "Activa/desactiva la llum de l'indicador"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "En els actius"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "Afegeix lluïssor només a l'indicador de la miniaplicació activa"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "Tots"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "Afegeix lluïssor a tots els indicadors de tasca/miniaplicació"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "Opacitat"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "Tasques"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Color diferent per a les finestres minimitzades"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr "Mostra un punt extra per a les finestres agrupades quan estan actives"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"Les finestres agrupades mostren una línia i un punt quan una d'elles està "
+"activa i l'indicador de línia activa està activat"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "Opcions"
+
+#: default/package/config/config.qml:380
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "Mostra els indicadors per a les miniaplicacions"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "Els indicadors seran mostrats per a les miniaplicacions"
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "Estil invers de l'indicador"

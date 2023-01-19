@@ -1,0 +1,517 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Adrian Chaves <adrian@chaves.io>, 2018, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-06-07 03:05+0000\n"
+"PO-Revision-Date: 2019-07-13 15:29+0200\n"
+"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
+"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "Aparencia"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "Panel"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "Interacción"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, fuzzy, kde-format
+#| msgid "Icon size: "
+msgid "Maximum icon size: "
+msgstr "Tamaño das iconas: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "Activar as sombras para iconas"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "Mostrar brillo arredor dos puntos de xanela"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "Cor distinta para as xanelas minimizadas"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "Indicador para os grupos de xanelas activos"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "Animacións: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "duración"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "desactivada"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "Ampliación"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "Nivel: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "Mostrar unha liña vermella no límite necesario para animacións"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr ""
+"Para as opcións desactivadas debería usar a xanela de configuración da doca "
+"Latte"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "Rotar polas tarefas coa roda do rato"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "Mostrar as accións da xanela no menú de contexto"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "Mostrar información de progreso das tarefas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, fuzzy, kde-format
+#| msgid "On middle-click:"
+msgid "Middle Click"
+msgstr "Clic central:"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "Ningunha"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "Pechar a xanela ou grupo"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "Nova instancia"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "Minimizar ou restaurar a xanela ou grupo"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, fuzzy, kde-format
+#| msgctxt "The click action"
+#| msgid "None"
+msgctxt "none action"
+msgid "None"
+msgstr "Ningunha"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, fuzzy, kde-format
+#| msgid "Preview windows on hovering"
+msgid "Preview Windows"
+msgstr "Vista previa das xanelas ao cubrilas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, fuzzy, kde-format
+#| msgid "Highlight windows on hovering"
+msgid "Highlight Windows"
+msgstr "Realzar as xanelas ao cubrilas"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr ""
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "Filtros"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "Mostrar só as tarefas na pantalla actual"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "Mostrar só as tarefas no escritorio actual"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "Mostrar só as tarefas na actividade actual"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "Mostrar a liña de barra para as tarefas"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "Usar o panel do tema de Plasma"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "Usar transparencia no panel"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "Tamaño: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Top Separator"
+msgstr "Engadir un separador"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Left Separator"
+msgstr "Engadir un separador"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, fuzzy, kde-format
+#| msgid "Add Separator"
+msgid "Right Separator"
+msgstr "Engadir un separador"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Places"
+msgstr "Lugares"
+
+#: package/contents/ui/ContextMenu.qml:112
+#: package/contents/ui/ContextMenu.qml:125
+#, kde-format
+msgid "Recent Documents"
+msgstr "Documentos recentes"
+
+#: package/contents/ui/ContextMenu.qml:117
+#: package/contents/ui/ContextMenu.qml:130
+#, kde-format
+msgid "Actions"
+msgstr "Accións"
+
+#: package/contents/ui/ContextMenu.qml:185
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "Pista anterior"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "Pór en pausa"
+
+#: package/contents/ui/ContextMenu.qml:198
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "Reproducir"
+
+#: package/contents/ui/ContextMenu.qml:212
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "Pista seguinte"
+
+#: package/contents/ui/ContextMenu.qml:223
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "Deter"
+
+#: package/contents/ui/ContextMenu.qml:240
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "Saír"
+
+#: package/contents/ui/ContextMenu.qml:255
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "Restaurar"
+
+#: package/contents/ui/ContextMenu.qml:281
+#, kde-format
+msgid "Mute"
+msgstr "Silenciar"
+
+#: package/contents/ui/ContextMenu.qml:343
+#, kde-format
+msgid "Start New Instance"
+msgstr "Iniciar unha nova instancia"
+
+#: package/contents/ui/ContextMenu.qml:360
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "Mover ao &escritorio"
+
+#: package/contents/ui/ContextMenu.qml:388
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "Mover ao escritorio &actual"
+
+#: package/contents/ui/ContextMenu.qml:406
+#, kde-format
+msgid "&All Desktops"
+msgstr "&Todos os escritorios"
+
+#: package/contents/ui/ContextMenu.qml:451
+#, kde-format
+msgid "&New Desktop"
+msgstr "&Novo escritorio"
+
+#: package/contents/ui/ContextMenu.qml:476
+#, kde-format
+msgid "Move To &Activity"
+msgstr "Mover á &actividade"
+
+#: package/contents/ui/ContextMenu.qml:497
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "Engadir á actividade actual"
+
+#: package/contents/ui/ContextMenu.qml:507
+#, kde-format
+msgid "All Activities"
+msgstr "Todas as actividades"
+
+#: package/contents/ui/ContextMenu.qml:574
+#, kde-format
+msgid "More Actions"
+msgstr "Máis accións"
+
+#: package/contents/ui/ContextMenu.qml:583
+#, kde-format
+msgid "&Move"
+msgstr "&Mover"
+
+#: package/contents/ui/ContextMenu.qml:592
+#, kde-format
+msgid "Re&size"
+msgstr "Cambiar de &tamaño"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Ma&ximize"
+msgstr "Ma&ximizar"
+
+#: package/contents/ui/ContextMenu.qml:628
+#, kde-format
+msgid "Mi&nimize"
+msgstr "Mi&nimizar"
+
+#: package/contents/ui/ContextMenu.qml:638
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "Manter enrib&a das outras"
+
+#: package/contents/ui/ContextMenu.qml:648
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "Manter &baixo as outras"
+
+#: package/contents/ui/ContextMenu.qml:660
+#, kde-format
+msgid "&Fullscreen"
+msgstr "Pantalla &completa"
+
+#: package/contents/ui/ContextMenu.qml:672
+#, kde-format
+msgid "&Shade"
+msgstr "&Sombra"
+
+#: package/contents/ui/ContextMenu.qml:688
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "Permitir agrupar este programa"
+
+#: package/contents/ui/ContextMenu.qml:718
+#: package/contents/ui/ContextMenu.qml:733
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "&Fixar o iniciador"
+
+#: package/contents/ui/ContextMenu.qml:786
+#, kde-format
+msgid "On All Activities"
+msgstr "En todas as actividades"
+
+#: package/contents/ui/ContextMenu.qml:792
+#, kde-format
+msgid "On The Current Activity"
+msgstr "Na actividade actual"
+
+#: package/contents/ui/ContextMenu.qml:814
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "Soltar o iniciador"
+
+#: package/contents/ui/ContextMenu.qml:829
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:847
+#: package/contents/ui/ContextMenu.qml:861
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:905
+#, kde-format
+msgid "Window"
+msgstr ""
+
+#: package/contents/ui/ContextMenu.qml:917
+#, kde-format
+msgid "&Close"
+msgstr "&Pechar"
+
+#: package/contents/ui/main.qml:1061
+#, kde-format
+msgid "Tasks Area"
+msgstr "Zona de tarefas"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:465
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "En %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:476
+#: package/contents/ui/task/TaskItem.qml:563
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "Dispoñíbel en todas as actividades"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:498
+#: package/contents/ui/task/TaskItem.qml:582
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "Tamén dispoñíbel en %1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:502
+#: package/contents/ui/task/TaskItem.qml:586
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "Dispoñíbel en %1"
+
+#: package/contents/ui/task/TaskItem.qml:554
+#, kde-format
+msgid "On %1"
+msgstr "En %1"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Tail Separator"
+#~ msgstr "Retirar o separador"
+
+#, fuzzy
+#~| msgid "Remove Separator"
+#~ msgid "Remove Head Separator"
+#~ msgstr "Retirar o separador"
+
+#~ msgid "Position: "
+#~ msgstr "Posición: "
+
+#~ msgid "Center"
+#~ msgstr "Centro"
+
+#~ msgid "Left"
+#~ msgstr "Esquerda"
+
+#~ msgid "Right"
+#~ msgstr "Dereita"
+
+#~ msgid "Top"
+#~ msgstr "Arriba"
+
+#~ msgid "Bottom"
+#~ msgstr "Abaixo"
+
+#~ msgid "Configure"
+#~ msgstr "Configurar"
+
+#~ msgid "Reverse position for lines and dots"
+#~ msgstr "Inverter a posición para a liñas e puntos"
+
+#~ msgctxt ""
+#~ "Toggle action for showing a launcher button while the application is not "
+#~ "running"
+#~ msgid "&Pin"
+#~ msgstr "&Fixar"
+
+#~ msgid "&Pin"
+#~ msgstr "&Fixar"
+
+#~ msgctxt ""
+#~ "Remove launcher button for application shown while it is not running"
+#~ msgid "Unpin"
+#~ msgstr "Soltar"

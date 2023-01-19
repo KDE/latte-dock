@@ -1,0 +1,123 @@
+# Translation of plasma_containmentactions_lattecontextmenu.po to Catalan (Valencian)
+# Copyright (C) 2018-2021 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Josep M. Ferrer <txemaq@gmail.com>, 2018, 2019, 2020, 2021.
+# Antoni Bella Pérez <antonibella5@yahoo.com>, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-08-28 01:44+0000\n"
+"PO-Revision-Date: 2021-04-01 11:06+0100\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
+"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
+"Language: ca@valencia\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: menu.cpp:97
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "Afi&g ginys..."
+
+#: menu.cpp:98
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "Mostra l'explorador de ginys"
+
+#: menu.cpp:117
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "Ix de &Latte"
+
+#: menu.cpp:124
+#, kde-format
+msgid "&Layouts"
+msgstr "&Disposicions"
+
+#: menu.cpp:126
+#, kde-format
+msgid "Switch to another layout"
+msgstr "Canvia a una altra disposició"
+
+#: menu.cpp:135
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "Afi&g un acoblador/quadro"
+
+#: menu.cpp:137
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "Afig un acoblador o un quadro basat en una plantilla específica"
+
+#: menu.cpp:148
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "Mou l'acoblador o el quadro a una disposició diferent"
+
+#: menu.cpp:155
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "&Configura Latte..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "&Edita l'acoblador..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "&Edita el quadro..."
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "&Duplica l'acoblador"
+
+#: menu.cpp:248
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "&Duplica el quadro"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "E&xporta l'acoblador com a plantilla"
+
+#: menu.cpp:251
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "E&xporta el quadro com a plantilla"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "&Mou l'acoblador a una disposició"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "&Mou el quadro a una disposició"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Dock"
+msgstr "&Elimina l'acoblador"
+
+#: menu.cpp:258
+#, kde-format
+msgid "&Remove Panel"
+msgstr "&Elimina el quadro"
+
+#: menu.cpp:359
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "Edita les &disposicions..."
