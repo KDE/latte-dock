@@ -3,13 +3,13 @@
 #
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017, 2018, 2021.
 # pan93412 <pan93412@gmail.com>, 2018, 2019, 2020.
-# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2022.
+# Kisaragi Hiu <mail@kisaragi-hiu.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2022-06-24 02:30+0900\n"
+"PO-Revision-Date: 2023-01-20 00:42+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 22.04.2\n"
+"X-Generator: Lokalize 22.12.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2918,24 +2918,19 @@ msgid "Location"
 msgstr "位置"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
-#, fuzzy, kde-format
-#| msgid "Follow Primary Screen"
+#, kde-format
 msgid "On Primary Screen"
-msgstr "使用主螢幕設定"
+msgstr "主螢幕上"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "On All Screens"
-msgstr "所有螢幕"
+msgstr "所有螢幕上"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "On All Secondary Screens"
-msgstr "所有螢幕"
+msgstr "所有次要螢幕上"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format
@@ -2985,7 +2980,7 @@ msgstr "視窗永可覆蓋"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:511
 #, kde-format
 msgid "On Demand Sidebar"
-msgstr "需要時才出現的側邊藍"
+msgstr "需要時才出現的側邊欄"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:512
 #, kde-format
