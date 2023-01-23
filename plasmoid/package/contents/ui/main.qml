@@ -598,7 +598,9 @@ Item {
     TaskManagerApplet.DragHelper {
         id: dragHelper
 
-        dragIconSize: units.iconSizes.medium
+        Drag.dragType: Drag.Automatic
+        Drag.supportedActions: Qt.CopyAction | Qt.MoveAction | Qt.LinkAction
+        Drag.onDragFinished: root.dragSource = null;
     }
 
     TaskManager.VirtualDesktopInfo {
@@ -1273,11 +1275,6 @@ Item {
         return false;
     }
 
-    function resetDragSource() {
-        dragSource.z = 0;
-        dragSource = null;
-    }
-
     ///REMOVE
     /*function createContextMenu(task) {
         var menu = root.contextMenuComponent.createObject(task);
@@ -1307,7 +1304,6 @@ Item {
         }
 
         root.windowsHovered.connect(backend.windowsHovered);
-        dragHelper.dropped.connect(resetDragSource);
         updateListViewParent();
     }
 
@@ -1319,7 +1315,6 @@ Item {
         }
 
         root.windowsHovered.disconnect(backend.windowsHovered);
-        dragHelper.dropped.disconnect(resetDragSource);
     }
 
     //BEGIN states

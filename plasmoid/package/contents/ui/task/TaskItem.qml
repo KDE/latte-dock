@@ -328,9 +328,15 @@ AbilityItem.BasicItem {
 
     onIsDraggedChanged: {
         if (isDragged){
-            root.dragSource = taskItem;
-            dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,
-                                 model.LauncherUrlWithoutIcon, model.decoration);
+            taskItem.contentItem.monochromizedItem.grabToImage((result) => {
+                root.dragSource = taskItem;
+                dragHelper.Drag.imageSource = result.url;
+                dragHelper.Drag.mimeData = dragHelper.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
+                dragHelper.Drag.active = true;
+            });
+        } else {
+            dragHelper.Drag.active = false;
+            dragHelper.Drag.imageSource = "";
             pressX = -1;
             pressY = -1;
         }

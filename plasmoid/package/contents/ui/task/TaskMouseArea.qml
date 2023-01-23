@@ -81,12 +81,15 @@ MouseArea {
             // mouse.button is always 0 here, hence checking with mouse.buttons
             if (pressX != -1 && mouse.buttons == Qt.LeftButton
                     && isDragged
-                    && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y) ) {
-                root.dragSource = taskItem;
-                dragHelper.startDrag(taskItem, model.MimeType, model.MimeData,
-                                     model.LauncherUrlWithoutIcon, model.decoration);
-                pressX = -1;
-                pressY = -1;
+                    && (Math.abs(pressX - mouse.x) + Math.abs(pressY - mouse.y) >= Qt.styleHints.startDragDistance) ) {
+                taskItem.contentItem.monochromizedItem.grabToImage((result) => {
+                    pressX = -1;
+                    pressY = -1;
+                    root.dragSource = taskItem;
+                    dragHelper.Drag.imageSource = result.url;
+                    dragHelper.Drag.mimeData = dragHelper.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
+                    dragHelper.Drag.active = true;
+                });
             }
         }
     }
