@@ -87,7 +87,7 @@ MouseArea {
                     pressY = -1;
                     root.dragSource = taskItem;
                     dragHelper.Drag.imageSource = result.url;
-                    dragHelper.Drag.mimeData = dragHelper.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
+                    dragHelper.Drag.mimeData = backend.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
                     dragHelper.Drag.active = true;
                 });
             }

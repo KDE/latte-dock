@@ -331,7 +331,7 @@ AbilityItem.BasicItem {
             taskItem.contentItem.monochromizedItem.grabToImage((result) => {
                 root.dragSource = taskItem;
                 dragHelper.Drag.imageSource = result.url;
-                dragHelper.Drag.mimeData = dragHelper.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
+                dragHelper.Drag.mimeData = backend.generateMimeData(model.MimeType, model.MimeData, model.LauncherUrlWithoutIcon);
                 dragHelper.Drag.active = true;
             });
         } else {
