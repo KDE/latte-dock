@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"POT-Creation-Date: 2023-01-24 01:00+0000\n"
 "PO-Revision-Date: 2017-11-13 20:26+0200\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish\n"
@@ -441,7 +441,7 @@ msgstr ""
 msgid "&Close"
 msgstr "Luk"
 
-#: package/contents/ui/main.qml:1064
+#: package/contents/ui/main.qml:1066
 #, kde-format
 msgid "Tasks Area"
 msgstr ""
@@ -454,27 +454,27 @@ msgid "On %1"
 msgstr "På %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:488
-#: package/contents/ui/task/TaskItem.qml:561
+#: package/contents/ui/task/TaskItem.qml:567
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Tilgængelig på alle aktiviteter"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:510
-#: package/contents/ui/task/TaskItem.qml:580
+#: package/contents/ui/task/TaskItem.qml:586
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Også tilgængelig på %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:514
-#: package/contents/ui/task/TaskItem.qml:584
+#: package/contents/ui/task/TaskItem.qml:590
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Tilgængelig på %1"
 
-#: package/contents/ui/task/TaskItem.qml:552
+#: package/contents/ui/task/TaskItem.qml:558
 #, kde-format
 msgid "On %1"
 msgstr "På %1"

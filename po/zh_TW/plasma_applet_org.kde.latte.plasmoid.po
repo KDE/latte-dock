@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"POT-Creation-Date: 2023-01-24 01:00+0000\n"
 "PO-Revision-Date: 2021-08-12 21:13+0800\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.slat.org>\n"
@@ -421,7 +421,7 @@ msgstr "視窗"
 msgid "&Close"
 msgstr "關閉(&C)"
 
-#: package/contents/ui/main.qml:1064
+#: package/contents/ui/main.qml:1066
 #, kde-format
 msgid "Tasks Area"
 msgstr "工作區塊"
@@ -433,27 +433,27 @@ msgid "On %1"
 msgstr "於 %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:488
-#: package/contents/ui/task/TaskItem.qml:561
+#: package/contents/ui/task/TaskItem.qml:567
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "所有活動都可使用"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:510
-#: package/contents/ui/task/TaskItem.qml:580
+#: package/contents/ui/task/TaskItem.qml:586
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "也可在 %1 上使用"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:514
-#: package/contents/ui/task/TaskItem.qml:584
+#: package/contents/ui/task/TaskItem.qml:590
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "於 %1 上使用"
 
-#: package/contents/ui/task/TaskItem.qml:552
+#: package/contents/ui/task/TaskItem.qml:558
 #, kde-format
 msgid "On %1"
 msgstr "於 %1"

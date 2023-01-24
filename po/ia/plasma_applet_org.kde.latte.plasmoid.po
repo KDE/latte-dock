@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-07-14 00:47+0000\n"
+"POT-Creation-Date: 2023-01-24 01:00+0000\n"
 "PO-Revision-Date: 2021-07-29 22:48+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -420,7 +420,7 @@ msgstr "Fenestra"
 msgid "&Close"
 msgstr "&Claude"
 
-#: package/contents/ui/main.qml:1064
+#: package/contents/ui/main.qml:1066
 #, kde-format
 msgid "Tasks Area"
 msgstr ""
@@ -432,27 +432,27 @@ msgid "On %1"
 msgstr "Sur %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:488
-#: package/contents/ui/task/TaskItem.qml:561
+#: package/contents/ui/task/TaskItem.qml:567
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
 msgstr "Disponibile sur omne activitates"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:510
-#: package/contents/ui/task/TaskItem.qml:580
+#: package/contents/ui/task/TaskItem.qml:586
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
 msgstr "Anque disponibile sur %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:514
-#: package/contents/ui/task/TaskItem.qml:584
+#: package/contents/ui/task/TaskItem.qml:590
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
 msgstr "Disponibile sur %1"
 
-#: package/contents/ui/task/TaskItem.qml:552
+#: package/contents/ui/task/TaskItem.qml:558
 #, kde-format
 msgid "On %1"
 msgstr "Sur %1"
