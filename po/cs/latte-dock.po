@@ -1,22 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Vít Pelčák <vit@pelcak.org>, 2017, 2018, 2019, 2020.
-# Vit Pelcak <vit@pelcak.org>, 2021.
+# Vit Pelcak <vit@pelcak.org>, 2021, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2021-09-16 09:18+0200\n"
-"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"PO-Revision-Date: 2023-01-24 17:07+0100\n"
+"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.08.1\n"
+"X-Generator: Lokalize 22.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -152,13 +152,13 @@ msgstr ""
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
-msgstr ""
+msgstr "Povolit automatické spuštění této aplikace"
 
 #: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
-msgstr ""
+msgstr "Zakázat automatické spuštění této aplikace"
 
 #: app/main.cpp:105
 #, kde-format
@@ -176,13 +176,13 @@ msgstr ""
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
-msgstr ""
+msgstr "Vypsat dostupné šablony doků"
 
 #: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr ""
+msgstr "Vypsat dostupné šablony rozložení"
 
 #: app/main.cpp:109
 #, kde-format
@@ -1342,27 +1342,27 @@ msgstr "Parabolický efekt:"
 #, kde-format
 msgctxt "small spread"
 msgid "Small"
-msgstr ""
+msgstr "Malý"
 
 #. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:631
 #, kde-format
 msgctxt "medium spread"
 msgid "Medium"
-msgstr ""
+msgstr "Střední"
 
 #. i18n: ectx: property (text), widget (QToolButton, largeParabolicBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:659
 #, kde-format
 msgctxt "large spread"
 msgid "Large"
-msgstr ""
+msgstr "Velký"
 
 #. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:669
 #, kde-format
 msgid "spread"
-msgstr ""
+msgstr "rozptyl"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:726
@@ -1755,7 +1755,7 @@ msgstr[2] "Rozložení <b>%2</b> byla naimportována úspěšně..."
 #, kde-format
 msgctxt "number in percentage, e.g. 85%"
 msgid "%1%"
-msgstr ""
+msgstr "%1%"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
 #, kde-format
@@ -2215,17 +2215,17 @@ msgstr "Do bloku"
 #: app/settings/viewsdialog/viewsmodel.cpp:499
 #, kde-format
 msgid " - On Primary Screen - "
-msgstr ""
+msgstr " - Na primární obrazovce - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:500
 #, kde-format
 msgid " - On All Screens - "
-msgstr ""
+msgstr " - Na všech obrazovkách - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:501
 #, kde-format
 msgid " - On All Secondary Screens - "
-msgstr ""
+msgstr " - Na sekudárních obrazovkách - "
 
 # Tohle vypadá na název vlastnosti. Jméno bycvh nechal pro lidi a zvířata.
 #: app/settings/viewsdialog/viewsmodel.cpp:592
@@ -2261,7 +2261,7 @@ msgstr "Vložené soubory"
 #, kde-format
 msgctxt "unknown screen"
 msgid "Unknown: [%1]"
-msgstr ""
+msgstr "Neznámý: [%1]"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:867
 #, kde-format
@@ -2272,12 +2272,12 @@ msgstr "Primární"
 #: app/settings/viewsdialog/viewsmodel.cpp:869
 #, kde-format
 msgid "All Screens"
-msgstr ""
+msgstr "Všechny obrazovky"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:871
 #, kde-format
 msgid "Secondary Screens"
-msgstr ""
+msgstr "Sekundární obrazovky"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:907
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:190
@@ -2378,7 +2378,7 @@ msgstr "Prázdný panel"
 #, kde-format
 msgctxt "clone of original dock panel, name"
 msgid "Clone of %1"
-msgstr ""
+msgstr "Klon %1"
 
 #: app/view/settings/indicatoruimanager.cpp:167
 #, kde-format
@@ -2629,7 +2629,7 @@ msgstr "Tloušťka"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
 #, kde-format
 msgid "Floating gap"
-msgstr ""
+msgstr "Plovoucí mezera"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
 #, kde-format
@@ -2876,17 +2876,17 @@ msgstr "Umístění"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
 #, kde-format
 msgid "On Primary Screen"
-msgstr ""
+msgstr "Na primární obrazovce"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
 #, kde-format
 msgid "On All Screens"
-msgstr ""
+msgstr "Na všech obrazovkách"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
 #, kde-format
 msgid "On All Secondary Screens"
-msgstr ""
+msgstr "Na sekudárních obrazovkách"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format

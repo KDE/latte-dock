@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2022-10-06 10:18+0200\n"
+"PO-Revision-Date: 2023-01-24 09:01+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -77,7 +77,7 @@ msgstr ""
 #: app/layouts/manager.cpp:97
 #, kde-format
 msgid "My Layout"
-msgstr ""
+msgstr "ჩემი განლაგება"
 
 #: app/layouts/importer.cpp:64
 #, kde-format
@@ -439,7 +439,7 @@ msgstr ""
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "QML კომპონენტი, რომელიც მხტუნარაში აპლეტს აჩვენებს"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:26
 #, kde-format
@@ -546,7 +546,7 @@ msgstr "ყავისფერი"
 #: app/settings/detailsdialog/colorsmodel.cpp:37
 #, kde-format
 msgid "Dark Grey"
-msgstr ""
+msgstr "მუქი ნაცრისფერი"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:38
 #, kde-format
@@ -586,7 +586,7 @@ msgstr "წითელი"
 #: app/settings/detailsdialog/colorsmodel.cpp:45
 #, kde-format
 msgid "Wheat"
-msgstr ""
+msgstr "ხორბალი"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
@@ -1402,7 +1402,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:936
 #, kde-format
 msgid "Actions:"
-msgstr ""
+msgstr "ქმედებები:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:968
@@ -2200,7 +2200,7 @@ msgstr "ქვედა"
 #, kde-format
 msgctxt "justify alignment"
 msgid "Justify"
-msgstr ""
+msgstr "გადამრთეველი"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:499
 #, kde-format
@@ -2261,7 +2261,7 @@ msgstr "ძირითადი"
 #: app/settings/viewsdialog/viewsmodel.cpp:869
 #, kde-format
 msgid "All Screens"
-msgstr ""
+msgstr "ყველა ეკრანი"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:871
 #, kde-format
@@ -2425,7 +2425,7 @@ msgstr ""
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
 #, kde-format
 msgid "Maximum Length"
-msgstr ""
+msgstr "მაქსიმალური სიგრძე"
 
 #: shell/package/contents/configuration/CanvasConfiguration.qml:101
 #, kde-format
@@ -3195,7 +3195,7 @@ msgstr ""
 #, kde-format
 msgctxt "default shadow"
 msgid "Default Color"
-msgstr ""
+msgstr "ნაგულისხმები ფერი"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
