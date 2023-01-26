@@ -595,7 +595,7 @@ Item {
         }
     }
 
-    TaskManagerApplet.DragHelper {
+    Item {
         id: dragHelper
 
         Drag.dragType: Drag.Automatic
