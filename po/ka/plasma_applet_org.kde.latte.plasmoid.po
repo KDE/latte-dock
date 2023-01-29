@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
-"PO-Revision-Date: 2022-10-16 07:01+0200\n"
+"PO-Revision-Date: 2023-01-28 11:29+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
@@ -31,7 +31,7 @@ msgstr "ზოლი"
 #: package/contents/config/config.qml:23
 #, kde-format
 msgid "Interaction"
-msgstr ""
+msgstr "ურთიერთქმედება"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
 #, kde-format
@@ -41,17 +41,17 @@ msgstr "ხატულის მაქსიმალური ზომა: "
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
 msgid "Enable shadows for icons"
-msgstr ""
+msgstr "ხატულებისთვის ჩრდილების ჩართვა"
 
 #: package/contents/ui/config/ConfigAppearance.qml:145
 #, kde-format
 msgid "Show glow around windows points"
-msgstr ""
+msgstr "ფანჯრების გარშემო ნათებს ჩართვა"
 
 #: package/contents/ui/config/ConfigAppearance.qml:151
 #, kde-format
 msgid "Different color for minimized windows"
-msgstr ""
+msgstr "სხვა ფერები ჩაკეცილი ფანჯრებისვის"
 
 #: package/contents/ui/config/ConfigAppearance.qml:157
 #, kde-format
@@ -205,24 +205,24 @@ msgstr "ზომა: "
 #: package/contents/ui/ContextMenu.qml:51
 #, kde-format
 msgid "Top Separator"
-msgstr ""
+msgstr "ზედაგამყოფი"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Left Separator"
-msgstr ""
+msgstr "მარცხენა გამყოფი"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Right Separator"
-msgstr ""
+msgstr "მარჯვენა გამყოფი"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr ""
+msgstr "ქვედა გამყოფი"
 
 #: package/contents/ui/ContextMenu.qml:107
 #, kde-format
@@ -336,7 +336,7 @@ msgstr "მეტი ქმედება"
 #: package/contents/ui/ContextMenu.qml:583
 #, kde-format
 msgid "&Move"
-msgstr ""
+msgstr "&გადატანა"
 
 #: package/contents/ui/ContextMenu.qml:592
 #, kde-format
@@ -382,7 +382,7 @@ msgstr "პროგრამების დაჯგუფების ჩა�
 #: package/contents/ui/ContextMenu.qml:733
 #, kde-format
 msgid "&Pin Launcher"
-msgstr ""
+msgstr "გამშვების &მიმაგრება"
 
 #: package/contents/ui/ContextMenu.qml:786
 #, kde-format
@@ -397,7 +397,7 @@ msgstr "მიმდინარე აქტივობაზე"
 #: package/contents/ui/ContextMenu.qml:814
 #, kde-format
 msgid "Unpin Launcher"
-msgstr ""
+msgstr "გამშვების მოხსნა"
 
 #: package/contents/ui/ContextMenu.qml:829
 #, kde-format
@@ -425,13 +425,13 @@ msgstr "დაკე&ტვა"
 #: package/contents/ui/main.qml:1061
 #, kde-format
 msgid "Tasks Area"
-msgstr ""
+msgstr "ამოცანების ადგილი"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:465
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
-msgstr ""
+msgstr "%1-ზე"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:476
 #: package/contents/ui/task/TaskItem.qml:563
@@ -457,4 +457,4 @@ msgstr "ხელმისაწვდომია %1-ზე"
 #: package/contents/ui/task/TaskItem.qml:554
 #, kde-format
 msgid "On %1"
-msgstr ""
+msgstr "%1-ზე"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2022-10-16 07:00+0200\n"
+"PO-Revision-Date: 2023-01-28 11:27+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -71,7 +71,7 @@ msgstr ""
 #: app/layouts/manager.cpp:92
 #, kde-format
 msgid "My Layout"
-msgstr ""
+msgstr "ჩემი განლაგება"
 
 #: app/layouts/importer.cpp:64
 #, kde-format
@@ -205,7 +205,7 @@ msgstr ""
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
-msgstr ""
+msgstr "layout_name"
 
 #: app/main.cpp:107
 #, kde-format
@@ -217,7 +217,7 @@ msgstr ""
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
-msgstr ""
+msgstr "absolute_filepath"
 
 #: app/main.cpp:108
 #, kde-format
@@ -229,19 +229,19 @@ msgstr ""
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
-msgstr ""
+msgstr "suggested_name"
 
 #: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Import full configuration."
-msgstr ""
+msgstr "სრული კონფიგურაციის შემოტანა."
 
 #: app/main.cpp:109
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
-msgstr ""
+msgstr "file_name"
 
 #: app/main.cpp:110
 #, kde-format
@@ -253,7 +253,7 @@ msgstr ""
 #, kde-format
 msgctxt "command line: add"
 msgid "template_name"
-msgstr ""
+msgstr "template_name"
 
 #: app/main.cpp:111
 #, kde-format
@@ -273,7 +273,7 @@ msgstr ""
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
-msgstr ""
+msgstr "filter_debug_text"
 
 #: app/main.cpp:195
 #, kde-format
@@ -445,7 +445,7 @@ msgstr ""
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "QML კომპონენტი, რომელიც მხტუნარაში აპლეტს აჩვენებს"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
 #, kde-format
@@ -512,7 +512,7 @@ msgstr ""
 #: app/settings/actionsdialog/actionshandler.cpp:82
 #, kde-format
 msgid " --- separator --- "
-msgstr ""
+msgstr " --- გამყოფი --- "
 
 #: app/settings/actionsdialog/actionshandler.cpp:89
 #, kde-format
@@ -552,7 +552,7 @@ msgstr "ყავისფერი"
 #: app/settings/detailsdialog/colorsmodel.cpp:37
 #, kde-format
 msgid "Dark Grey"
-msgstr ""
+msgstr "მუქი ნაცრისფერი"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:38
 #, kde-format
@@ -592,7 +592,7 @@ msgstr "წითელი"
 #: app/settings/detailsdialog/colorsmodel.cpp:45
 #, kde-format
 msgid "Wheat"
-msgstr ""
+msgstr "ხორბალი"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
@@ -635,7 +635,7 @@ msgstr ""
 #: app/settings/detailsdialog/detailsdialog.ui:201
 #, kde-format
 msgid "Background..."
-msgstr ""
+msgstr "ფონი..."
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
@@ -666,13 +666,13 @@ msgstr "გამორთულია"
 #: app/settings/detailsdialog/detailsdialog.ui:510
 #, kde-format
 msgid " px."
-msgstr ""
+msgstr " პიქსელი."
 
 #. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:678
 #, kde-format
 msgid "Custom Colors:"
-msgstr ""
+msgstr "ფერების ხელით მითითება:"
 
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
@@ -690,18 +690,18 @@ msgstr ""
 #: app/settings/detailsdialog/patternwidget.cpp:48
 #, kde-format
 msgid "Sample Text"
-msgstr ""
+msgstr "ტექსტის მაგალითი"
 
 #: app/settings/detailsdialog/schemesmodel.cpp:123
 #, kde-format
 msgid "System Colors"
-msgstr ""
+msgstr "სისტემის ფერები"
 
 #: app/settings/exporttemplatedialog/appletsmodel.cpp:225
 #, kde-format
 msgctxt "column for current applets"
 msgid "Current Applets"
-msgstr ""
+msgstr "მიმდინარე აპლეტები"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
 #, kde-format
@@ -728,7 +728,7 @@ msgstr ""
 #, kde-format
 msgctxt "export template"
 msgid "Export Again"
-msgstr ""
+msgstr "კიდევ ერთხელ გატანა"
 
 #. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
@@ -1103,7 +1103,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.cpp:144
 #, kde-format
 msgid "&Screens..."
-msgstr ""
+msgstr "&ეკრანები..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
 #, kde-format
@@ -1205,13 +1205,13 @@ msgstr ""
 #, kde-format
 msgctxt "latte settings window"
 msgid "Settings"
-msgstr ""
+msgstr "&მორგება"
 
 #. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
 #: app/settings/settingsdialog/settingsdialog.ui:36
 #, kde-format
 msgid "Layouts Editor"
-msgstr ""
+msgstr "განლაგებების რედაქტორი"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
@@ -1285,7 +1285,7 @@ msgstr "ჩაირთო"
 #: app/settings/settingsdialog/settingsdialog.ui:310
 #, kde-format
 msgid "Read Only"
-msgstr ""
+msgstr "მხოლოდ-კითხვადი"
 
 #. i18n: ectx: property (text), widget (QPushButton, detailsButton)
 #: app/settings/settingsdialog/settingsdialog.ui:356
@@ -1368,7 +1368,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:691
 #, kde-format
 msgid "Actions:"
-msgstr ""
+msgstr "ქმედებები:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:703
@@ -1392,7 +1392,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:776
 #, kde-format
 msgid "Parabolic Effect:"
-msgstr ""
+msgstr "პარაბოლური ეფექტი:"
 
 #. i18n: ectx: property (text), widget (QLabel, screensLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:842
@@ -1482,7 +1482,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:1071
 #, kde-format
 msgid "Context Menu:"
-msgstr ""
+msgstr "კონტექსტური მენიუ:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:1100
@@ -1531,7 +1531,7 @@ msgstr ""
 #: app/settings/settingsdialog/tablayoutshandler.cpp:132
 #, kde-format
 msgid "New layout"
-msgstr ""
+msgstr "ახალი განლაგება"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:144
 #, kde-format
@@ -1559,7 +1559,7 @@ msgstr ""
 #: app/settings/settingsdialog/tablayoutshandler.cpp:161
 #, kde-format
 msgid "Ena&bled"
-msgstr ""
+msgstr "&ჩართულია"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:162
 #, kde-format
@@ -1592,7 +1592,7 @@ msgstr ""
 #, kde-format
 msgctxt "layout details"
 msgid "De&tails..."
-msgstr ""
+msgstr "&დეტალები..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:185
 #, kde-format
@@ -1652,13 +1652,13 @@ msgstr ""
 #: app/settings/viewsdialog/viewshandler.cpp:169
 #, kde-format
 msgid "Templates..."
-msgstr ""
+msgstr "შაბლონები..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:170
 #, kde-format
 msgid "Open templates directory"
-msgstr ""
+msgstr "შაბლონების საქაღალდის გახსნა"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:366
 #, kde-format
@@ -1695,7 +1695,7 @@ msgstr ""
 #, kde-format
 msgctxt "import layout"
 msgid "Import Layout"
-msgstr ""
+msgstr "განლაგების შემოტანა"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:543
 #, kde-format
@@ -1807,7 +1807,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:597
 #, kde-format
 msgid "Edit Layout"
-msgstr ""
+msgstr "განლაგების ჩასწორება"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:630
 #, kde-format
@@ -1825,7 +1825,7 @@ msgstr ""
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/>"
-msgstr ""
+msgstr "<b>შეცდომა #%1: %2</b> <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:667
 #, kde-format
@@ -1847,7 +1847,7 @@ msgctxt ""
 "applets with same id error, applet name, applet id, containment name, "
 "containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] შიგნით  <b>%3</b> [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:686
 #: app/settings/viewsdialog/viewscontroller.cpp:742
@@ -1883,7 +1883,7 @@ msgstr ""
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>შეცდომა #%1: %2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:703
 #, kde-format
@@ -1905,7 +1905,7 @@ msgctxt ""
 "orphaned pseudo applets, applet name, applet id, containment name, "
 "containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] შიგნით  <b>%3</b> [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:726
 #: app/settings/viewsdialog/viewscontroller.cpp:818
@@ -1918,7 +1918,7 @@ msgstr ""
 #, kde-format
 msgctxt "orphaned subcontainments, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:743
 #, kde-format
@@ -1937,7 +1937,7 @@ msgstr ""
 #, kde-format
 msgctxt "warning id and title"
 msgid "<b>Warning #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>გაფრთხილება #%1: %2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:758
 #, kde-format
@@ -1950,7 +1950,7 @@ msgstr ""
 #, kde-format
 msgctxt "applets, applet name, applet id, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] შიგნით  <b>%3</b> [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:781
 #, kde-format
@@ -1961,7 +1961,7 @@ msgstr ""
 #, kde-format
 msgctxt "containments, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:798
 #, kde-format
@@ -2157,7 +2157,7 @@ msgstr "თავში"
 #, kde-format
 msgctxt "left edge"
 msgid "Left"
-msgstr ""
+msgstr "მარცხენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:200
 #, kde-format
@@ -2169,7 +2169,7 @@ msgstr "ქვედა"
 #, kde-format
 msgctxt "right edge"
 msgid "Right"
-msgstr ""
+msgstr "მ&არჯვენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:216
 #: app/settings/viewsdialog/viewsmodel.cpp:899
@@ -2177,7 +2177,7 @@ msgstr ""
 #, kde-format
 msgctxt "left alignment"
 msgid "Left"
-msgstr ""
+msgstr "მარცხენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:220
 #: app/settings/viewsdialog/viewsmodel.cpp:903
@@ -2201,7 +2201,7 @@ msgstr "ცენტრში"
 #, kde-format
 msgctxt "right alignment"
 msgid "Right"
-msgstr ""
+msgstr "მ&არჯვენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:238
 #: app/settings/viewsdialog/viewsmodel.cpp:905
@@ -2285,14 +2285,14 @@ msgstr "თავში"
 #, kde-format
 msgctxt "left location"
 msgid "Left"
-msgstr ""
+msgstr "მარცხენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:876
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:233
 #, kde-format
 msgctxt "right location"
 msgid "Right"
-msgstr ""
+msgstr "მ&არჯვენა"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:879
 #, kde-format
@@ -2423,7 +2423,7 @@ msgstr ""
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
 #, kde-format
 msgid "Maximum Length"
-msgstr ""
+msgstr "მაქსიმალური სიგრძე"
 
 #: shell/package/contents/configuration/CanvasConfiguration.qml:94
 #, kde-format
@@ -2440,13 +2440,13 @@ msgstr "საერთო"
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr ""
+msgstr "სიგანე %1%"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr ""
+msgstr "სიგანე %1% / სიმაღლე %2%"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
@@ -2473,7 +2473,7 @@ msgstr "ეფექტები"
 #, kde-format
 msgctxt "tasks header and index"
 msgid "Tasks <%1>"
-msgstr ""
+msgstr "ამოცანა <%1>"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
 #, kde-format
@@ -2525,26 +2525,26 @@ msgstr "ელემენტები"
 #, kde-format
 msgctxt "absolute size"
 msgid "Absolute size"
-msgstr ""
+msgstr "აბსოლუტური ზომა"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
 #, kde-format
 msgctxt "number in pixels, e.g. 12 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 პიქსელი."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
 #, kde-format
 msgctxt "relative size"
 msgid "Relative size"
-msgstr ""
+msgstr "შედარებითი ზომა"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:159
 #, kde-format
 msgctxt "number in pixels, e.g. 64 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 პიქსელი."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
@@ -2605,7 +2605,7 @@ msgstr "გვერდის ველები"
 #, kde-format
 msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 პიქსელი."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
 #, kde-format
@@ -2621,7 +2621,7 @@ msgstr ""
 #, kde-format
 msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 პიქსელი."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
 #, kde-format
@@ -2669,7 +2669,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
 #, kde-format
 msgid "From Window"
-msgstr ""
+msgstr "ფანჯრიდან"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:802
 #: shell/package/contents/configuration/pages/TasksConfig.qml:497
@@ -3182,7 +3182,7 @@ msgstr ""
 #, kde-format
 msgctxt "default shadow"
 msgid "Default Color"
-msgstr ""
+msgstr "ნაგულისხმები ფერი"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
@@ -3518,7 +3518,7 @@ msgstr "ავტომატური"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
 msgid "Left Click"
-msgstr ""
+msgstr "მარცხენა-წკაპი"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:546
 #, kde-format
@@ -3599,7 +3599,7 @@ msgstr "ბორბალი"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
 msgid "Right Click"
-msgstr ""
+msgstr "მარჯვენა-წკაპი"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:18
 #, kde-format

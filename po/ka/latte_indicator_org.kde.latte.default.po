@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-10-04 01:38+0000\n"
-"PO-Revision-Date: 2022-10-16 06:58+0200\n"
+"PO-Revision-Date: 2023-01-28 11:27+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: default/package/config/config.qml:23
 #, kde-format
@@ -82,13 +82,13 @@ msgstr "ნათება"
 #: default/package/config/config.qml:231
 #, kde-format
 msgid "Enable/disable indicator glow"
-msgstr ""
+msgstr "ინდიკატორის ნათების ჩართ/გამორთ"
 
 #: default/package/config/config.qml:255
 #, kde-format
 msgctxt "glow only to active task/applet indicators"
 msgid "On Active"
-msgstr ""
+msgstr "აქტიურზე"
 
 #: default/package/config/config.qml:259
 #, kde-format
@@ -119,7 +119,7 @@ msgstr "Tasks"
 #: default/package/config/config.qml:351
 #, kde-format
 msgid "Different color for minimized windows"
-msgstr ""
+msgstr "სხვა ფერები ჩაკეცილი ფანჯრებისვის"
 
 #: default/package/config/config.qml:361
 #, kde-format
@@ -141,7 +141,7 @@ msgstr "გამართვა"
 #: default/package/config/config.qml:380
 #, kde-format
 msgid "Show indicators for applets"
-msgstr ""
+msgstr "აპლეტებისთვის ინდიკატორების ჩვენება"
 
 #: default/package/config/config.qml:381
 #, kde-format
