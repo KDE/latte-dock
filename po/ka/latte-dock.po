@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2023-01-25 06:12+0100\n"
+"PO-Revision-Date: 2023-02-03 16:14+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -37,24 +37,24 @@ msgstr "%1-ის მორგება"
 #: app/indicator/factory.cpp:284
 #, kde-format
 msgid "Failed to import indicator"
-msgstr ""
+msgstr "მაჩვენებლის შემოტანის შეცდომა"
 
 #: app/indicator/factory.cpp:290
 #, kde-format
 msgctxt "indicator_name, imported updated"
 msgid "%1 indicator updated successfully"
-msgstr ""
+msgstr "%1 მაჩვენებელი წარმატებით განახლდა"
 
 #: app/indicator/factory.cpp:291
 #, kde-format
 msgctxt "indicator_name, imported success"
 msgid "%1 indicator installed successfully"
-msgstr ""
+msgstr "%1 მაჩვენებლის დაყენება წარმატებულია"
 
 #: app/indicator/factory.cpp:371
 #, kde-format
 msgid "Remove Indicator Confirmation"
-msgstr ""
+msgstr "დაადასტურეთ მაჩვენებლის წაშლა"
 
 #: app/indicator/factory.cpp:380
 #, kde-format
@@ -945,7 +945,7 @@ msgstr[1] ""
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
 msgid "Examine..."
-msgstr ""
+msgstr "გამოცდა..."
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:640
 #, kde-format
@@ -1245,7 +1245,7 @@ msgstr "გადართვა"
 #: app/settings/settingsdialog/settingsdialog.ui:191
 #, kde-format
 msgid "Activities..."
-msgstr ""
+msgstr "ქმედებები..."
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
@@ -1408,13 +1408,13 @@ msgstr "ქმედებები:"
 #: app/settings/settingsdialog/settingsdialog.ui:968
 #, kde-format
 msgid "Actions..."
-msgstr ""
+msgstr "ქმედებები..."
 
 #. i18n: ectx: property (text), widget (QLabel, screensLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1011
 #, kde-format
 msgid "Screens:"
-msgstr ""
+msgstr "ეკრანები:"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
 #. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
@@ -1430,7 +1430,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:1053
 #, kde-format
 msgid " ms."
-msgstr ""
+msgstr " მწმ."
 
 #. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1082
@@ -1490,7 +1490,7 @@ msgstr ""
 #: app/settings/settingsdialog/tablayoutshandler.cpp:123
 #, kde-format
 msgid "&Activities"
-msgstr ""
+msgstr "&ქმედებები"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:124
 #, kde-format
@@ -1822,7 +1822,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:753
 #, kde-format
 msgid "<b>Applets:</b><br/>"
-msgstr ""
+msgstr "<b>აპლეტები:</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:670
 #, kde-format
@@ -1830,7 +1830,7 @@ msgctxt ""
 "applets with same id error, applet name, applet id, containment name, "
 "containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] შიგნით  <b>%3</b> [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:678
 #: app/settings/viewsdialog/viewscontroller.cpp:734
@@ -1838,7 +1838,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:828
 #, kde-format
 msgid "<b>Possible Solutions:</b><br/>"
-msgstr ""
+msgstr "<b>შესაძლო გადაწყვეტილებები</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:679
 #, kde-format
@@ -2574,7 +2574,7 @@ msgstr "--- %"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:180
 #, kde-format
 msgid "Zoom on hover"
-msgstr ""
+msgstr "გადიდება გადატარებისას"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:231
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:595
@@ -2646,13 +2646,13 @@ msgstr ""
 #, kde-format
 msgctxt "dark theme colors"
 msgid "Dark Colors"
-msgstr ""
+msgstr "მუქი ფერები"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
 #, kde-format
 msgctxt "light theme colors"
 msgid "Light Colors"
-msgstr ""
+msgstr "ღია ფერები"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
 #, kde-format
@@ -2728,7 +2728,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:114
 #, kde-format
 msgid "Opacity"
-msgstr "_გაუმჭვირვალობა"
+msgstr "გაუმჭვირვალობა"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
 #, kde-format
@@ -2742,7 +2742,7 @@ msgstr ""
 #, kde-format
 msgctxt "Default word abbreviation"
 msgid "Def."
-msgstr ""
+msgstr "ნაგ."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
 #, kde-format
@@ -3017,7 +3017,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:732
 #, kde-format
 msgid "Mouse wheel"
-msgstr ""
+msgstr "თაგუნას რგოლი"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:738
 #, kde-format
@@ -3206,7 +3206,7 @@ msgstr ""
 #, kde-format
 msgctxt "theme shadow"
 msgid "Theme Color"
-msgstr ""
+msgstr "ფონის ფერი"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:201
 #, kde-format
@@ -3252,7 +3252,7 @@ msgstr "x3"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:396
 #, kde-format
 msgid "Indicators"
-msgstr ""
+msgstr "მაჩვენებლები"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:397
 #, kde-format
@@ -3333,7 +3333,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:124
 #, kde-format
 msgid "Interaction"
-msgstr ""
+msgstr "ურთიერთქმედება"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:133
 #, kde-format
@@ -3448,7 +3448,7 @@ msgstr "გამშვებები"
 #, kde-format
 msgctxt "unique launchers group"
 msgid "Unique Group"
-msgstr ""
+msgstr "უნიკალური ჯგუფი"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:380
 #, kde-format
@@ -3461,7 +3461,7 @@ msgstr ""
 #, kde-format
 msgctxt "layout launchers group"
 msgid "Layout Group"
-msgstr ""
+msgstr "განლაგების ჯგუფი"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:399
 #, kde-format
@@ -3475,7 +3475,7 @@ msgstr ""
 #, kde-format
 msgctxt "global launchers group"
 msgid "Global Group"
-msgstr ""
+msgstr "გლობალური ჯგუფი"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:419
 #, kde-format
@@ -3632,17 +3632,17 @@ msgstr "დაყენება..."
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, kde-format
 msgid "Remove indicator"
-msgstr ""
+msgstr "მაჩვენებლის წაშლა"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:197
 #, kde-format
 msgid "Add Indicator..."
-msgstr ""
+msgstr "მაჩვენებლის დამატება..."
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:207
 #, kde-format
 msgid "Get New Indicators..."
-msgstr ""
+msgstr "ახალი მაჩვენებლების მიღება..."
 
 #: shell/package/contents/controls/TypeSelection.qml:55
 #, kde-format
