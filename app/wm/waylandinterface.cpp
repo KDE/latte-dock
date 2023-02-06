@@ -303,12 +303,12 @@ void WaylandInterface::setViewStruts(QWindow &view, const QRect &rect, Plasma::T
     switch (location) {
     case Plasma::Types::TopEdge:
     case Plasma::Types::BottomEdge:
-        w->setGeometry({rect.x() + rect.width() / 2, rect.y(), 1, rect.height()});
+        w->setGeometry({rect.x() + rect.width() / 2 - rect.height(), rect.y(), rect.height() + 1, rect.height()});
         break;
 
     case Plasma::Types::LeftEdge:
     case Plasma::Types::RightEdge:
-        w->setGeometry({rect.x(), rect.y() + rect.height() / 2, rect.width(), 1});
+        w->setGeometry({rect.x(), rect.y() + rect.height() / 2 - rect.width(), rect.width(), rect.width() + 1});
         break;
 
     default:
