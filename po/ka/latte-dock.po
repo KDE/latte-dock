@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2023-01-29 10:55+0100\n"
+"PO-Revision-Date: 2023-02-08 11:34+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -617,7 +617,7 @@ msgstr ""
 #: app/settings/detailsdialog/detailsdialog.ui:115
 #, kde-format
 msgid "Icon:"
-msgstr "_ხატულა:"
+msgstr "ხატულა:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
@@ -2731,7 +2731,7 @@ msgstr "SIZE"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:114
 #, kde-format
 msgid "Opacity"
-msgstr "_გაუმჭვირვალობა"
+msgstr "გაუმჭვირვალობა"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
 #, kde-format
