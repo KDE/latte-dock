@@ -72,7 +72,7 @@
   <summary xml:lang="tr">Kitleler için rıhtım</summary>
   <summary xml:lang="uk">Панель для усіх</summary>
   <summary xml:lang="x-test">xxDock for the massesxx</summary>
-  <summary xml:lang="zh-CN">给大众使用的停靠栏</summary>
+  <summary xml:lang="zh-CN">符合大多数人使用习惯的停靠栏程序</summary>
   <summary xml:lang="zh-TW">給大眾使用的 Dock</summary>
   <description>
     <p>Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.</p>
