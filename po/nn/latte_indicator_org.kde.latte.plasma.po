@@ -1,12 +1,12 @@
 # Translation of latte_indicator_org.kde.latte.plasma to Norwegian Nynorsk
 #
-# Karl Ove Hufthammer <karl@huftis.org>, 2019, 2020, 2021.
+# Karl Ove Hufthammer <karl@huftis.org>, 2019, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-27 00:45+0000\n"
-"PO-Revision-Date: 2021-09-19 13:15+0200\n"
+"PO-Revision-Date: 2023-02-22 21:24+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
 "Language: nn\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.11.70\n"
+"X-Generator: Lokalize 22.12.2\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: org.kde.latte.plasma/package/config/config.qml:21
 #, kde-format
 msgid "Style"
-msgstr ""
+msgstr "Stil"
 
 #: org.kde.latte.plasma/package/config/config.qml:29
 #, kde-format
@@ -39,7 +39,7 @@ msgstr "%1 %"
 #: org.kde.latte.plasma/package/config/config.qml:67
 #, kde-format
 msgid "Corner Margin"
-msgstr ""
+msgstr "Hjørnemarg"
 
 #: org.kde.latte.plasma/package/config/config.qml:99
 #, kde-format
