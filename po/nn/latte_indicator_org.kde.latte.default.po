@@ -1,12 +1,12 @@
 # Translation of latte_indicator_org.kde.latte.default to Norwegian Nynorsk
 #
-# Karl Ove Hufthammer <karl@huftis.org>, 2018, 2019, 2020.
+# Karl Ove Hufthammer <karl@huftis.org>, 2018, 2019, 2020, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-12 00:46+0000\n"
-"PO-Revision-Date: 2020-02-16 14:47+0100\n"
+"PO-Revision-Date: 2023-02-23 18:39+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
 "Language: nn\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 19.12.2\n"
+"X-Generator: Lokalize 22.12.2\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -23,7 +23,7 @@ msgstr ""
 #, kde-format
 msgctxt "indicator style"
 msgid "Style"
-msgstr ""
+msgstr "Stil"
 
 #: default/package/config/config.qml:42
 #, kde-format
@@ -40,7 +40,7 @@ msgstr "Vis ei linje for program som køyrer"
 #, kde-format
 msgctxt "dots indicator"
 msgid "Dots"
-msgstr ""
+msgstr "Prikkar"
 
 #: default/package/config/config.qml:64
 #, kde-format
@@ -50,7 +50,7 @@ msgstr "Vis ein prikk for program som køyrer"
 #: default/package/config/config.qml:81
 #, kde-format
 msgid "Thickness"
-msgstr ""
+msgstr "Tjukkleik"
 
 #: default/package/config/config.qml:103 default/package/config/config.qml:139
 #: default/package/config/config.qml:177 default/package/config/config.qml:213
@@ -58,12 +58,12 @@ msgstr ""
 #, kde-format
 msgctxt "number in percentage, e.g. 85 %"
 msgid "%1 %"
-msgstr ""
+msgstr "%1 %"
 
 #: default/package/config/config.qml:117
 #, kde-format
 msgid "Position"
-msgstr ""
+msgstr "Plassering"
 
 #: default/package/config/config.qml:153
 #, kde-format
@@ -73,7 +73,7 @@ msgstr "Avstand"
 #: default/package/config/config.qml:191
 #, kde-format
 msgid "Corner Margin"
-msgstr ""
+msgstr "Hjørnemarg"
 
 #: default/package/config/config.qml:230
 #, kde-format

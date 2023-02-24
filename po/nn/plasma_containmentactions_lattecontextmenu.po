@@ -1,12 +1,12 @@
 # Translation of plasma_containmentactions_lattecontextmenu to Norwegian Nynorsk
 #
-# Karl Ove Hufthammer <karl@huftis.org>, 2018, 2019, 2020, 2021.
+# Karl Ove Hufthammer <karl@huftis.org>, 2018, 2019, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-17 00:44+0000\n"
-"PO-Revision-Date: 2021-09-19 13:16+0200\n"
+"PO-Revision-Date: 2023-02-23 18:42+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
 "Language: nn\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.11.70\n"
+"X-Generator: Lokalize 22.12.2\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -48,85 +48,85 @@ msgstr "Byt til anna utforming"
 #: menu.cpp:129
 #, kde-format
 msgid "&Add Dock/Panel"
-msgstr ""
+msgstr "&Legg til dokk/panel"
 
 #: menu.cpp:131
 #, kde-format
 msgid "Add dock or panel based on specific template"
-msgstr ""
+msgstr "Legg til dokk eller panel basert på spesifikk mal"
 
 #: menu.cpp:142
 #, kde-format
 msgid "Move dock or panel to different layout"
-msgstr ""
+msgstr "Flytt dokk eller panel til anna utforming"
 
 #: menu.cpp:149
 #, kde-format
 msgctxt "global settings window"
 msgid "&Configure Latte..."
-msgstr "&Set opp Latte …"
+msgstr "&Set opp Latte …"
 
 #: menu.cpp:239
 #, kde-format
 msgid "&Edit Dock..."
-msgstr ""
+msgstr "&Rediger dokk …"
 
 #: menu.cpp:239
 #, kde-format
 msgid "&Edit Panel..."
-msgstr ""
+msgstr "&Rediger panel …"
 
 #: menu.cpp:241
 #, kde-format
 msgid "&Edit Original Dock..."
-msgstr ""
+msgstr "&Rediger opphavleg dokk …"
 
 #: menu.cpp:241
 #, kde-format
 msgid "&Edit Original Panel..."
-msgstr ""
+msgstr "&Rediger opphavleg panel …"
 
 #: menu.cpp:245
 #, kde-format
 msgid "&Duplicate Dock"
-msgstr ""
+msgstr "&Lag kopi av dokk"
 
 #: menu.cpp:245
 #, kde-format
 msgid "&Duplicate Panel"
-msgstr ""
+msgstr "&Lag kopi av panel"
 
 #: menu.cpp:248
 #, kde-format
 msgid "E&xport Dock as Template"
-msgstr ""
+msgstr "E&ksporter dokk som mal"
 
 #: menu.cpp:248
 #, kde-format
 msgid "E&xport Panel as Template"
-msgstr ""
+msgstr "E&ksporter panel som mal"
 
 #: menu.cpp:252
 #, kde-format
 msgid "&Move Dock To Layout"
-msgstr ""
+msgstr "&Flytt dokk til utforming"
 
 #: menu.cpp:252
 #, kde-format
 msgid "&Move Panel To Layout"
-msgstr ""
+msgstr "&Flytt panel til utforming"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Remove Dock"
-msgstr ""
+msgstr "&Fjern dokk"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Remove Panel"
-msgstr ""
+msgstr "&Fjern panel"
 
 #: menu.cpp:363
 #, kde-format
 msgid "Edit &Layouts..."
-msgstr ""
+msgstr "Rediger &utformingar …"
