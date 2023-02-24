@@ -13,6 +13,7 @@ Name[it]=Contenitore di Latte
 Name[ja]=Latte コンテインメント
 Name[ko]=Latte 컨테이너
 Name[nl]=Latte-container
+Name[nn]=Latte-behaldar
 Name[pl]=Pojemnik Latte
 Name[pt]=Contentor do Latte
 Name[pt_BR]=Contêiner do Latte
