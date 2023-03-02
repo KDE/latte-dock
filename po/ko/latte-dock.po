@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2022-04-16 01:18+0200\n"
+"PO-Revision-Date: 2022-05-16 00:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -3281,7 +3281,7 @@ msgstr "테마 색"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:201
 #, kde-format
 msgid "Shadow from theme color palette"
-msgstr "테마 색 배열의 그림자 색"
+msgstr "테마 색 구성표의 그림자 색"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:222
 #, kde-format
