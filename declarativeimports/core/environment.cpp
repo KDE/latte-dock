@@ -61,35 +61,24 @@ uint Environment::makeVersion(uint major, uint minor, uint release) const
 uint Environment::identifyPlasmaDesktopVersion()
 {
     //! Identify Plasma Desktop version
-    QProcess process;
-    process.start("plasmashell", QStringList() << "-v");
-    process.waitForFinished();
-    QString output(process.readAllStandardOutput());
+    QStringList plasmaDesktopVersionParts = QString(PLASMA_WORKSPACE_VERSION).split(".");
 
-    QStringList stringSplit = output.split(" ");
-
-    if (stringSplit.count() >= 2) {
+    if (plasmaDesktopVersionParts.count() == 3) {
         qDebug() << " /////////////////////////";
-        QString cleanVersionString = stringSplit[1].remove("\n");
-        QStringList plasmaDesktopVersionParts = cleanVersionString.split(".");
+        uint maj = plasmaDesktopVersionParts[0].toUInt();
+        uint min = plasmaDesktopVersionParts[1].toUInt();
+        uint rel = plasmaDesktopVersionParts[2].toUInt();
 
-        if (plasmaDesktopVersionParts.count() == 3) {
-            uint maj = plasmaDesktopVersionParts[0].toUInt();
-            uint min = plasmaDesktopVersionParts[1].toUInt();
-            uint rel = plasmaDesktopVersionParts[2].toUInt();
+        if (maj > 0) {
+            uint desktopVersion = makeVersion(maj, min, rel);
 
-            if (maj > 0) {
+            QString message("Plasma Desktop version:  " + QString::number(maj) + "."
+                    + QString::number(min) + "." + QString::number(rel)
+                    + " (" + QString::number(desktopVersion) + ")");
+            qDebug() << message;
+            qDebug() << " /////////////////////////";
 
-                uint desktopVersion = makeVersion(maj, min, rel);
-
-                QString message("Plasma Desktop version:  " + QString::number(maj) + "."
-                                + QString::number(min) + "." + QString::number(rel)
-                                + " (" + QString::number(desktopVersion) + ")");
-                qDebug() << message;
-                qDebug() << " /////////////////////////";
-
-                return desktopVersion;
-            }
+            return desktopVersion;
         }
 
         qDebug() << " /////////////////////////";

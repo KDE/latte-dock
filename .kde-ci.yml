@@ -26,3 +26,4 @@ Dependencies:
     'frameworks/kwayland': '@latest'
     'frameworks/kwindowsystem': '@latest'
     'frameworks/kxmlgui': '@latest'
+    'plasma/plasma-workspace': '@same'

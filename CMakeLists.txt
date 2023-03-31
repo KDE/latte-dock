@@ -35,6 +35,9 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2
     I18n IconThemes KIO NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
+
+find_package(LibTaskManager REQUIRED)
+add_definitions(-DPLASMA_WORKSPACE_VERSION="${LibTaskManager_VERSION}")
    
 find_package(X11 REQUIRED)
 set_package_properties(X11 PROPERTIES DESCRIPTION "X11 libraries"
