@@ -1424,7 +1424,7 @@ msgstr "Eylemler:"
 #: app/settings/settingsdialog/settingsdialog.ui:703
 #, kde-format
 msgid "Use 3D style for notification and shortcut badges"
-msgstr "Bildirim ve kısayol rozetleri için 3B stili kullanın"
+msgstr "Bildirim ve kısayol rozetleri için 3B biçemi kullanın"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:729
@@ -2747,7 +2747,7 @@ msgstr "Palet"
 #, kde-format
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
-msgstr "Plazma Tema Renkleri"
+msgstr "Plasma Tema Renkleri"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
 #, kde-format
@@ -2924,7 +2924,7 @@ msgstr "Dinamik Görünürlük"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
 #, kde-format
 msgid "Prefer opaque background when touching any window"
-msgstr "Herhangi bir pencereye dokunurken opak arka planı tercih edin"
+msgstr "Herhangi bir pencereye dokunurken mat arka planı tercih edin"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
 #, kde-format
@@ -2967,13 +2967,13 @@ msgstr "İstisnalar"
 #, kde-format
 msgid "Prefer Plasma background and colors for expanded applets"
 msgstr ""
-"Genişletilmiş uygulamalar için Plazma arka planı ve renkleri tercih edin"
+"Genişletilmiş uygulamalar için Plasma arka planını ve renklerini tercih edin"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
 msgstr ""
-"Uygulamalar genişletildiğinde arka plan plazma stilinde opak hale gelir"
+"Uygulamalar genişletildiğinde arka plan Plasma biçeminde mat hale gelir"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
 #, kde-format
@@ -2986,10 +2986,9 @@ msgid "Location"
 msgstr "Konum"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
-#, fuzzy, kde-format
-#| msgid "On Primary Screen"
+#, kde-format
 msgid "Follow Primary Screen"
-msgstr "Birincil Ekranda"
+msgstr "Birincil Ekranı İzle"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:355
 #, kde-format
@@ -3863,47 +3862,3 @@ msgstr "Arama terimi için bir araç takımı eşleşmedi"
 #, kde-format
 msgid "No widgets available"
 msgstr "Kullanılabilir araç takımı yok"
-
-#~ msgctxt "command line: log-filepath"
-#~ msgid "filter_log_filepath"
-#~ msgstr "günlük_dosya_yolu_süz"
-
-#~ msgctxt "small spread"
-#~ msgid "Small"
-#~ msgstr "Küçük"
-
-#~ msgctxt "large spread"
-#~ msgid "Large"
-#~ msgstr "Büyük"
-
-#~ msgid "spread"
-#~ msgstr "saçıntı"
-
-#~ msgctxt "number in percentage, e.g. 85%"
-#~ msgid "%1%"
-#~ msgstr "%​%1"
-
-#~ msgid " - On All Screens - "
-#~ msgstr " - Tüm Ekranlarda - "
-
-#~ msgid " - On All Secondary Screens - "
-#~ msgstr " - Tüm İkincil Ekranlarda - "
-
-#~ msgid "All Screens"
-#~ msgstr "Tüm Ekranlar"
-
-#~ msgid "Secondary Screens"
-#~ msgstr "İkincil Ekranlar"
-
-#~ msgctxt "clone of original dock panel, name"
-#~ msgid "Clone of %1"
-#~ msgstr "%1 Klonu"
-
-#~ msgid "Floating gap"
-#~ msgstr "Yüzen boşluk"
-
-#~ msgid "On All Screens"
-#~ msgstr "Tüm Ekranlarda"
-
-#~ msgid "On All Secondary Screens"
-#~ msgstr "Tüm İkincil Ekranlarda"
