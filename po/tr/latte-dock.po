@@ -1430,7 +1430,7 @@ msgstr "Kısayol rozetlerini göstermek için ⌘ düğmesini basılı tutun"
 #: app/settings/settingsdialog/settingsdialog.ui:762
 #, kde-format
 msgid "Use 3D style for notification and shortcut badges"
-msgstr "Bildirim ve kısayol rozetleri için 3B stili kullanın"
+msgstr "Bildirim ve kısayol rozetleri için 3B biçemi kullanın"
 
 #. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:841
@@ -2744,7 +2744,7 @@ msgstr "Palet"
 #, kde-format
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
-msgstr "Plazma Tema Renkleri"
+msgstr "Plasma Tema Renkleri"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
 #, kde-format
@@ -2916,7 +2916,7 @@ msgstr "Dinamik Görünürlük"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
 #, kde-format
 msgid "Prefer opaque background when touching any window"
-msgstr "Herhangi bir pencereye dokunurken opak arka planı tercih edin"
+msgstr "Herhangi bir pencereye dokunurken mat arka planı tercih edin"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
 #, kde-format
@@ -2959,13 +2959,13 @@ msgstr "İstisnalar"
 #, kde-format
 msgid "Prefer Plasma background and colors for expanded applets"
 msgstr ""
-"Genişletilmiş uygulamalar için Plazma arka planı ve renkleri tercih edin"
+"Genişletilmiş uygulamalar için Plasma arka planını ve renklerini tercih edin"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
 msgstr ""
-"Uygulamalar genişletildiğinde arka plan plazma stilinde opak hale gelir"
+"Uygulamalar genişletildiğinde arka plan plasma biçeminde mat hale gelir"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
 #, kde-format
