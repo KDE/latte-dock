@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the latte-dock package.
 # Smith Ar <audoban@openmailbox.org>, 2017.
 # Ivan Bordoni <ivan.mail@fastwebnet.it>, 2017.
-# Paolo Zamponi <zapaolo@email.it>, 2017, 2018, 2019, 2020, 2021, 2022.
+# Paolo Zamponi <feus73@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022.
 #
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
 "PO-Revision-Date: 2022-06-27 15:23+0200\n"
-"Last-Translator: Paolo Zamponi <zapaolo@email.it>\n"
+"Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Paolo Zamponi,Ivan Bordoni"
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "zapaolo@email.it,"
+msgstr "feus73@gmail.com,"
 
 #: app/declarativeimports/contextmenulayerquickitem.cpp:400
 #, kde-format
