@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the latte-dock package.
 # Smith Ar <audoban@openmailbox.org>, 2017.
 # Ivan Bordoni <ivan.mail@fastwebnet.it>, 2017.
-# Paolo Zamponi <zapaolo@email.it>, 2017, 2018, 2019, 2020, 2021, 2022.
+# Paolo Zamponi <feus73@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022.
 #
 msgid ""
 msgstr ""
