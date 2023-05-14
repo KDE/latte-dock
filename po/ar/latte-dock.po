@@ -1239,7 +1239,7 @@ msgstr "استورد"
 #| msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgctxt "import full configuration"
 msgid "Latte Dock Full Configuration file"
-msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ ٠٫١ و٠٫٢)"
+msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ 0٫1 و0٫2)"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:282
 #, fuzzy, kde-format
@@ -1294,7 +1294,7 @@ msgstr "صدّر"
 #| msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
 msgctxt "export full configuration"
 msgid "Latte Dock Full Configuration file v0.2"
-msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ ٠٫١ و٠٫٢)"
+msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ 0٫1 و0٫2)"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:342
 #: app/settings/settingsdialog/tablayoutshandler.cpp:688
@@ -1839,7 +1839,7 @@ msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة الثّا�
 #, kde-format
 msgctxt "import older latte layout"
 msgid "Latte Dock Layout file v0.1"
-msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة ٠٫١"
+msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة 0٫1"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:562
 #: app/settings/settingsdialog/tablayoutshandler.cpp:784
@@ -4256,7 +4256,7 @@ msgstr "لا تتوفر ودجات"
 
 #~ msgctxt "import latte layouts/configuration"
 #~ msgid "Latte Dock Full Configuration file (v0.1, v0.2)"
-#~ msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ ٠٫١ و٠٫٢)"
+#~ msgstr "ملفّ ضبط «رصيف لاتيه» كاملًا (إصدارتيّ 0٫1 و0٫2)"
 
 #, fuzzy
 #~| msgctxt "import-done"
@@ -4272,7 +4272,7 @@ msgstr "لا تتوفر ودجات"
 #~ "<b>import safely</b> from this file<br><b>only the contained layouts...</"
 #~ "b></i>"
 #~ msgstr ""
-#~ "ستستورد ملفّ ضبط بإصدارة قديمة (<b>إصدارة ٠٫١</b>). <br><b>احترس</b>، "
+#~ "ستستورد ملفّ ضبط بإصدارة قديمة (<b>إصدارة 0٫1</b>). <br><b>احترس</b>، "
 #~ "سيؤدّي استيراد الضّبط كلّه إلى <b>مسح كامل</b> الضّبط الحاليّ!!!<br><br> "
 #~ "<i>بدل ذلك يمكنك <b>ببساطة استيراد التّخطيطات</b> في الملفّ فحسب...</i>"
 
@@ -4281,7 +4281,7 @@ msgstr "لا تتوفر ودجات"
 #~ "careful</b>, importing <b>will erase all</b> your current configuration!!!"
 #~ "<br><br><i>Would you like to proceed?</i>"
 #~ msgstr ""
-#~ "ستستورد ملفّ ضبط <b>بإصدارة ٠٫٢.</b><br>احترس<b>، فسيؤدّي الاستيراد إلى </"
+#~ "ستستورد ملفّ ضبط <b>بإصدارة 0٫2.</b><br>احترس<b>، فسيؤدّي الاستيراد إلى </"
 #~ "b>مسح كامل<b> الضّبط الحاليّ!!!</b><br><br>أتريد المتابعة؟<i>"
 
 #, fuzzy
