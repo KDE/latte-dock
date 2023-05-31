@@ -13,7 +13,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 "X-Generator: Lokalize 22.04.1\n"
@@ -127,7 +127,6 @@ msgstr ""
 msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/main.cpp:100
 #, kde-format
@@ -919,7 +918,6 @@ msgid_plural ""
 "You are going to <b>remove %2</b> references completely.<br/>Would you like "
 "to continue?"
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/screensdialog/screenshandler.cpp:137
 #: app/settings/viewsdialog/viewshandler.cpp:527
@@ -940,7 +938,6 @@ msgid "<b>Error:</b> There is <b>1 layout</b> that has reported errors."
 msgid_plural ""
 "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors."
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:612
 #, kde-format
@@ -949,7 +946,6 @@ msgid "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."
 msgid_plural ""
 "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings."
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
@@ -966,7 +962,6 @@ msgid_plural ""
 "<b>Warning: %2</b> layout has reported <b>%1 warnings</b> that need your "
 "attention."
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:650
 #, kde-format
@@ -981,7 +976,6 @@ msgctxt "errors count"
 msgid "1 error"
 msgid_plural "%1 errors"
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:664
 #, kde-format
@@ -989,7 +983,6 @@ msgctxt "warnings count"
 msgid "1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:669
 #, kde-format
@@ -1015,7 +1008,6 @@ msgstr ""
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
 msgstr[0] ""
-msgstr[1] ""
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
 #, kde-format
@@ -1752,8 +1744,7 @@ msgstr ""
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "レイアウト <b>%2</b> のインポートに成功しました..."
-msgstr[1] "複数のレイアウト <b>%2</b> のインポートに成功しました..."
+msgstr[0] "複数のレイアウト <b>%2</b> のインポートに成功しました..."
 
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
@@ -2136,9 +2127,6 @@ msgid_plural ""
 "You are going to <b>remove %1</b> docks and panels completely from your "
 "layout.<br/>Would you like to continue?"
 msgstr[0] ""
-"ドックまたはパネルがレイアウトから完全に<b>削除</b>されます。<br/>続行します"
-"か？"
-msgstr[1] ""
 "<b>%1 枚</b>のドックまたはパネルがレイアウトから完全に<b>削除</b>されます。"
 "<br/>続行しますか？"
 
