@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2019, 2020.
+# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2019, 2020, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-12 00:46+0000\n"
-"PO-Revision-Date: 2020-03-07 18:13+0100\n"
+"PO-Revision-Date: 2023-06-18 19:37+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -15,13 +15,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 19.08.3\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #: default/package/config/config.qml:23
 #, kde-format
 msgctxt "indicator style"
 msgid "Style"
-msgstr ""
+msgstr "Estilo"
 
 #: default/package/config/config.qml:42
 #, kde-format
@@ -32,23 +32,23 @@ msgstr "Liña"
 #: default/package/config/config.qml:46
 #, kde-format
 msgid "Show a line indicator for active items"
-msgstr "Mostrar un indicador de liña para elementos activos"
+msgstr "Amosar un indicador de liña para elementos activos."
 
 #: default/package/config/config.qml:60
 #, kde-format
 msgctxt "dots indicator"
 msgid "Dots"
-msgstr ""
+msgstr "Puntos"
 
 #: default/package/config/config.qml:64
 #, kde-format
 msgid "Show a dot indicator for active items"
-msgstr "Mostrar un indicador de punto para elementos activos"
+msgstr "Amosar un indicador de punto para elementos activos."
 
 #: default/package/config/config.qml:81
 #, kde-format
 msgid "Thickness"
-msgstr ""
+msgstr "Espesura"
 
 #: default/package/config/config.qml:103 default/package/config/config.qml:139
 #: default/package/config/config.qml:177 default/package/config/config.qml:213
@@ -56,12 +56,12 @@ msgstr ""
 #, kde-format
 msgctxt "number in percentage, e.g. 85 %"
 msgid "%1 %"
-msgstr ""
+msgstr "%1%"
 
 #: default/package/config/config.qml:117
 #, kde-format
 msgid "Position"
-msgstr ""
+msgstr "Posición"
 
 #: default/package/config/config.qml:153
 #, kde-format
@@ -71,7 +71,7 @@ msgstr "Recheo"
 #: default/package/config/config.qml:191
 #, kde-format
 msgid "Corner Margin"
-msgstr ""
+msgstr "Marxe das esquinas"
 
 #: default/package/config/config.qml:230
 #, kde-format
@@ -124,7 +124,7 @@ msgstr "Cor distinta para as xanelas minimizadas"
 #, kde-format
 msgid "Show an extra dot for grouped windows when active"
 msgstr ""
-"Mostrar un punto adicional para as xanelas agrupadas cando estea activo"
+"Amosar un punto adicional para as xanelas agrupadas cando estea activo."
 
 #: default/package/config/config.qml:362
 #, kde-format
@@ -132,8 +132,8 @@ msgid ""
 "Grouped windows show both a line and a dot when one of them is active and "
 "the Line Active Indicator is enabled"
 msgstr ""
-"As xanelas agrupadas mostran tanto unha liña como un punto cando unha delas "
-"está activa e o indicador de activo de liña está cativado"
+"As xanelas agrupadas amosan tanto unha liña como un punto cando unha delas "
+"está activa e o indicador de activo de liña está cativado."
 
 #: default/package/config/config.qml:375
 #, kde-format
@@ -143,12 +143,12 @@ msgstr "Opcións"
 #: default/package/config/config.qml:380
 #, kde-format
 msgid "Show indicators for applets"
-msgstr "Mostrar indicadores para os trebellos"
+msgstr "Amosar indicadores para os trebellos."
 
 #: default/package/config/config.qml:381
 #, kde-format
 msgid "Indicators are shown for applets"
-msgstr "Os indicadores móstranse para trebellos"
+msgstr "Os indicadores amósanse para trebellos."
 
 #: default/package/config/config.qml:391
 #, kde-format
