@@ -9,6 +9,7 @@ Name[en_GB]=Latte Containment
 Name[es]=Contenedor de Latte
 Name[fi]=Latte-säilö
 Name[fr]=Conteneur pour Latte
+Name[gl]=Contedor de Latte
 Name[it]=Contenitore di Latte
 Name[ja]=Latte コンテインメント
 Name[ko]=Latte 컨테이너
