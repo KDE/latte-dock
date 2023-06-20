@@ -151,7 +151,7 @@ msgstr "Substituír a instancia de Latte actual."
 #, kde-format
 msgctxt "command line"
 msgid "Show the debugging messages on stdout."
-msgstr "Mostrar as mensaxes de depuración na saída estándar."
+msgstr "Amosar as mensaxes de depuración na saída estándar."
 
 #: app/main.cpp:102
 #, kde-format
@@ -1473,7 +1473,7 @@ msgstr ""
 #, kde-format
 msgid "Show informative window for layouts automatic activation"
 msgstr ""
-"Mostrar unha xanela informativa para disposicións que se activen "
+"Amosar unha xanela informativa para disposicións que se activen "
 "automaticamente"
 
 #. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
@@ -1529,13 +1529,13 @@ msgstr "Activar o inicio automático no inicio"
 #, kde-format
 msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
 msgstr ""
-"Prema e manteña ⌘ para mostrar as placas de atallos dos trebellos e tarefas"
+"Prema e manteña ⌘ para amosar as placas de atallos dos trebellos e tarefas"
 
 #. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:755
 #, kde-format
 msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Prema e manteña ⌘ para mostrar as placas de atallos"
+msgstr "Prema e manteña ⌘ para amosar as placas de atallos"
 
 #. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:762
@@ -2564,7 +2564,7 @@ msgstr "Pantallas descoñecidas: "
 #: app/shortcuts/globalshortcuts.cpp:87
 #, kde-format
 msgid "Show Latte Dock/Panel"
-msgstr "Mostrar a doca ou panel de Latte"
+msgstr "Amosar a doca ou panel de Latte"
 
 #: app/shortcuts/globalshortcuts.cpp:96
 #, kde-format
@@ -2574,7 +2574,7 @@ msgstr "Pasar polas xanelas de configuración da doca ou panel"
 #: app/shortcuts/globalshortcuts.cpp:105
 #, kde-format
 msgid "Show Latte Global Settings"
-msgstr "Mostrar a configuración global de Latte"
+msgstr "Amosar a configuración global de Latte"
 
 #: app/shortcuts/globalshortcuts.cpp:121 app/shortcuts/globalshortcuts.cpp:137
 #, kde-format
@@ -3268,7 +3268,7 @@ msgstr "Atraso"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:571
 #, kde-format
 msgid "Show "
-msgstr "Mostrar"
+msgstr "Amosar"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:626
 #: shell/package/contents/configuration/pages/TasksConfig.qml:522
@@ -3496,7 +3496,7 @@ msgid ""
 "hidden view"
 msgstr ""
 "Tras agocharse a vista, infórmase a KWin para que faga seguimento da "
-"información ao usuario. Por exemplo, móstrase un consello visual de bordo "
+"información ao usuario. Por exemplo, amósase un consello visual de bordo "
 "cando o rato se achega á vista agochada."
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:928
@@ -3629,7 +3629,7 @@ msgstr "Notificacións das tarefas"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:61
 #, kde-format
 msgid "Show unread messages or notifications from tasks"
-msgstr "Mostrar as mensaxes ou as notificacións sen ler das tarefas"
+msgstr "Amosar as mensaxes ou as notificacións sen ler das tarefas"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:71
 #, kde-format
@@ -3641,7 +3641,7 @@ msgstr "Información de progreso das tarefas"
 msgid ""
 "Show a progress animation for tasks e.g. when copying files with Dolphin"
 msgstr ""
-"Mostrar unha animación de progreso das tarefas, por exemploao copiar "
+"Amosar unha animación de progreso das tarefas, por exemploao copiar "
 "ficheiros con Dolphin"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:82
@@ -3652,7 +3652,7 @@ msgstr "Reprodución automática das tarefas"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:83
 #, kde-format
 msgid "Show audio playing from tasks"
-msgstr "Mostrar a reprodución de son das tarefas"
+msgstr "Amosar a reprodución de son das tarefas"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:93
 #, kde-format
@@ -3743,22 +3743,22 @@ msgstr "Filtros"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:201
 #, kde-format
 msgid "Show only tasks from the current screen"
-msgstr "Mostrar só as tarefas na pantalla actual"
+msgstr "Amosar só as tarefas na pantalla actual"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:212
 #, kde-format
 msgid "Show only tasks from the current desktop"
-msgstr "Mostrar só as tarefas no escritorio actual"
+msgstr "Amosar só as tarefas no escritorio actual"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:223
 #, kde-format
 msgid "Show only tasks from the current activity"
-msgstr "Mostrar só as tarefas na actividade actual"
+msgstr "Amosar só as tarefas na actividade actual"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:234
 #, kde-format
 msgid "Show only tasks from launchers"
-msgstr "Mostrar só tarefas de iniciadores"
+msgstr "Amosar só tarefas de iniciadores"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:246
 #, kde-format
