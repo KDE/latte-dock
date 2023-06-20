@@ -45,7 +45,7 @@ msgstr "Activar as sombras para iconas"
 #: package/contents/ui/config/ConfigAppearance.qml:145
 #, kde-format
 msgid "Show glow around windows points"
-msgstr "Mostrar brillo arredor dos puntos de xanela"
+msgstr "Amosar brillo arredor dos puntos de xanela"
 
 #: package/contents/ui/config/ConfigAppearance.qml:151
 #, kde-format
@@ -85,7 +85,7 @@ msgstr "Nivel: "
 #: package/contents/ui/config/ConfigAppearance.qml:263
 #, kde-format
 msgid "Show a red line on the limit needed for animations"
-msgstr "Mostrar unha liña vermella no límite necesario para animacións"
+msgstr "Amosar unha liña vermella no límite necesario para animacións"
 
 #: package/contents/ui/config/ConfigAppearance.qml:294
 #: package/contents/ui/config/ConfigPanel.qml:144
@@ -104,12 +104,12 @@ msgstr "Rotar polas tarefas coa roda do rato"
 #: package/contents/ui/config/ConfigInteraction.qml:53
 #, kde-format
 msgid "Show window actions in the context menu"
-msgstr "Mostrar as accións da xanela no menú de contexto"
+msgstr "Amosar as accións da xanela no menú de contexto"
 
 #: package/contents/ui/config/ConfigInteraction.qml:59
 #, kde-format
 msgid "Show progress information for tasks"
-msgstr "Mostrar información de progreso das tarefas"
+msgstr "Amosar información de progreso das tarefas"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
 #, fuzzy, kde-format
@@ -176,22 +176,22 @@ msgstr "Filtros"
 #: package/contents/ui/config/ConfigInteraction.qml:143
 #, kde-format
 msgid "Show only tasks from the current screen"
-msgstr "Mostrar só as tarefas na pantalla actual"
+msgstr "Amosar só as tarefas na pantalla actual"
 
 #: package/contents/ui/config/ConfigInteraction.qml:148
 #, kde-format
 msgid "Show only tasks from the current desktop"
-msgstr "Mostrar só as tarefas no escritorio actual"
+msgstr "Amosar só as tarefas no escritorio actual"
 
 #: package/contents/ui/config/ConfigInteraction.qml:153
 #, kde-format
 msgid "Show only tasks from the current activity"
-msgstr "Mostrar só as tarefas na actividade actual"
+msgstr "Amosar só as tarefas na actividade actual"
 
 #: package/contents/ui/config/ConfigPanel.qml:48
 #, kde-format
 msgid "Show bar line for tasks"
-msgstr "Mostrar a liña de barra para as tarefas"
+msgstr "Amosar a liña de barra para as tarefas"
 
 #: package/contents/ui/config/ConfigPanel.qml:55
 #, kde-format
