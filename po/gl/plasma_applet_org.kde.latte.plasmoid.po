@@ -1,20 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
+# Adrian Chaves <adrian@chaves.io>, 2018, 2019, 2023.
 #
-# Adrian Chaves <adrian@chaves.io>, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
-"PO-Revision-Date: 2019-07-13 15:29+0200\n"
+"PO-Revision-Date: 2023-06-21 07:59+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
@@ -32,10 +33,9 @@ msgid "Interaction"
 msgstr "Interacción"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
-#, fuzzy, kde-format
-#| msgid "Icon size: "
+#, kde-format
 msgid "Maximum icon size: "
-msgstr "Tamaño das iconas: "
+msgstr "Tamaño máximo das iconas: "
 
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
@@ -112,10 +112,9 @@ msgid "Show progress information for tasks"
 msgstr "Amosar información de progreso das tarefas"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
-#, fuzzy, kde-format
-#| msgid "On middle-click:"
+#, kde-format
 msgid "Middle Click"
-msgstr "Clic central:"
+msgstr "Clic central"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -141,32 +140,28 @@ msgstr "Minimizar ou restaurar a xanela ou grupo"
 #: package/contents/ui/config/ConfigInteraction.qml:76
 #, kde-format
 msgid "Hover"
-msgstr ""
+msgstr "Pasar por riba"
 
 #: package/contents/ui/config/ConfigInteraction.qml:83
-#, fuzzy, kde-format
-#| msgctxt "The click action"
-#| msgid "None"
+#, kde-format
 msgctxt "none action"
 msgid "None"
 msgstr "Ningunha"
 
 #: package/contents/ui/config/ConfigInteraction.qml:84
-#, fuzzy, kde-format
-#| msgid "Preview windows on hovering"
+#, kde-format
 msgid "Preview Windows"
-msgstr "Vista previa das xanelas ao cubrilas"
+msgstr "Obter unha vista previa das xanelas"
 
 #: package/contents/ui/config/ConfigInteraction.qml:85
-#, fuzzy, kde-format
-#| msgid "Highlight windows on hovering"
+#, kde-format
 msgid "Highlight Windows"
-msgstr "Realzar as xanelas ao cubrilas"
+msgstr "Realzar as xanelas"
 
 #: package/contents/ui/config/ConfigInteraction.qml:86
 #, kde-format
 msgid "Preview and Highlight Windows"
-msgstr ""
+msgstr "Obter unha vista previa e realzar as xanelas"
 
 #: package/contents/ui/config/ConfigInteraction.qml:132
 #, kde-format
@@ -209,29 +204,26 @@ msgid "Size: "
 msgstr "Tamaño: "
 
 #: package/contents/ui/ContextMenu.qml:51
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Top Separator"
-msgstr "Engadir un separador"
+msgstr "Divisoria superior"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Left Separator"
-msgstr "Engadir un separador"
+msgstr "Divisoria esquerda"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Right Separator"
-msgstr "Engadir un separador"
+msgstr "Divisoria dereita"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr ""
+msgstr "Divisoria inferior"
 
 #: package/contents/ui/ContextMenu.qml:107
 #, kde-format
@@ -412,19 +404,19 @@ msgstr "Soltar o iniciador"
 #, kde-format
 msgctxt "add separator"
 msgid "Add %1"
-msgstr ""
+msgstr "Engadir unha %1"
 
 #: package/contents/ui/ContextMenu.qml:847
 #: package/contents/ui/ContextMenu.qml:861
 #, kde-format
 msgctxt "remove separator"
 msgid "Remove %1"
-msgstr ""
+msgstr "Retirar a %1"
 
 #: package/contents/ui/ContextMenu.qml:905
 #, kde-format
 msgid "Window"
-msgstr ""
+msgstr "Xanela"
 
 #: package/contents/ui/ContextMenu.qml:917
 #, kde-format
