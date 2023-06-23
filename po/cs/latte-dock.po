@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2023-01-24 17:07+0100\n"
+"PO-Revision-Date: 2023-06-22 15:01+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2225,7 +2225,7 @@ msgstr " - Na všech obrazovkách - "
 #: app/settings/viewsdialog/viewsmodel.cpp:501
 #, kde-format
 msgid " - On All Secondary Screens - "
-msgstr " - Na sekudárních obrazovkách - "
+msgstr " - Na sekundárních obrazovkách - "
 
 # Tohle vypadá na název vlastnosti. Jméno bycvh nechal pro lidi a zvířata.
 #: app/settings/viewsdialog/viewsmodel.cpp:592
@@ -2886,7 +2886,7 @@ msgstr "Na všech obrazovkách"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
 #, kde-format
 msgid "On All Secondary Screens"
-msgstr "Na sekudárních obrazovkách"
+msgstr "Na sekundárních obrazovkách"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format
