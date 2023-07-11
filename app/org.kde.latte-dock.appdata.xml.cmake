@@ -12,6 +12,7 @@
   <name xml:lang="de">Latte</name>
   <name xml:lang="el">Latte</name>
   <name xml:lang="en-GB">Latte</name>
+  <name xml:lang="eo">Latte</name>
   <name xml:lang="es">Latte</name>
   <name xml:lang="et">Latte</name>
   <name xml:lang="eu">Latte</name>
@@ -48,6 +49,7 @@
   <summary xml:lang="de">Dock für die Massen</summary>
   <summary xml:lang="el">Πίνακες εφαρμογών για όλον τον κόσμο</summary>
   <summary xml:lang="en-GB">Dock for the masses</summary>
+  <summary xml:lang="eo">Doko por la amasoj</summary>
   <summary xml:lang="es">Un dock para las masas</summary>
   <summary xml:lang="et">Dokk massidele</summary>
   <summary xml:lang="eu">Jendartearen kaia</summary>
@@ -116,6 +118,7 @@
     <p xml:lang="de">„Art In Coffee“</p>
     <p xml:lang="el">"Τέχνη στον Καφέ"</p>
     <p xml:lang="en-GB">"Art In Coffee"</p>
+    <p xml:lang="eo">"Arto En Kafo"</p>
     <p xml:lang="es">"El arte en el café"</p>
     <p xml:lang="et">"Kohvikunst"</p>
     <p xml:lang="eu">"Artea kafean"</p>
@@ -157,6 +160,7 @@
   <developer_name xml:lang="de">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="el">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="en-GB">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="eo">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="es">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="et">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="eu">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
