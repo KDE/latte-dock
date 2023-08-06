@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Adrian Chaves <adrian@chaves.io>, 2018, 2019, 2020.
+# Adrian Chaves <adrian@chaves.io>, 2018, 2019, 2020, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-08-28 01:44+0000\n"
-"PO-Revision-Date: 2020-03-07 18:13+0100\n"
+"PO-Revision-Date: 2023-08-05 09:20+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 19.08.3\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: menu.cpp:97
 #, kde-format
@@ -23,10 +23,9 @@ msgid "&Add Widgets..."
 msgstr "Eng&adir trebellos…"
 
 #: menu.cpp:98
-#, fuzzy, kde-format
-#| msgid "Show Plasma Widget Explorer"
+#, kde-format
 msgid "Show Widget Explorer"
-msgstr "Mostrar o explorador de trebellos de Plasma"
+msgstr "Amosar o explorador de trebellos"
 
 #: menu.cpp:117
 #, kde-format
@@ -47,17 +46,17 @@ msgstr "Cambiar a outra disposición"
 #: menu.cpp:135
 #, kde-format
 msgid "&Add Dock/Panel"
-msgstr ""
+msgstr "Eng&adir unha doca ou panel"
 
 #: menu.cpp:137
 #, kde-format
 msgid "Add dock or panel based on specific template"
-msgstr ""
+msgstr "Engadir unha doca un panel baseado no modelo indicado"
 
 #: menu.cpp:148
 #, kde-format
 msgid "Move dock or panel to different layout"
-msgstr ""
+msgstr "Mover a doca ou panel a outra disposición"
 
 #: menu.cpp:155
 #, kde-format
@@ -66,64 +65,59 @@ msgid "&Configure Latte..."
 msgstr "&Configurar Latte…"
 
 #: menu.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "dock settings window"
-#| msgid "&Edit Dock..."
+#, kde-format
 msgid "&Edit Dock..."
 msgstr "&Editar a doca…"
 
 #: menu.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "panel settings window"
-#| msgid "&Edit Panel..."
+#, kde-format
 msgid "&Edit Panel..."
 msgstr "&Editar o panel…"
 
 #: menu.cpp:248
 #, kde-format
 msgid "&Duplicate Dock"
-msgstr ""
+msgstr "&Duplicar a doca"
 
 #: menu.cpp:248
 #, kde-format
 msgid "&Duplicate Panel"
-msgstr ""
+msgstr "&Duplicar o panel"
 
 #: menu.cpp:251
 #, kde-format
 msgid "E&xport Dock as Template"
-msgstr ""
+msgstr "E&xportar a doca como modelo"
 
 #: menu.cpp:251
 #, kde-format
 msgid "E&xport Panel as Template"
-msgstr ""
+msgstr "E&xportar o panel como modelo"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Move Dock To Layout"
-msgstr ""
+msgstr "&Mover a doca á disposición"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Move Panel To Layout"
-msgstr ""
+msgstr "&Mover o panel á disposición"
 
 #: menu.cpp:258
 #, kde-format
 msgid "&Remove Dock"
-msgstr ""
+msgstr "&Retirar a doca"
 
 #: menu.cpp:258
 #, kde-format
 msgid "&Remove Panel"
-msgstr ""
+msgstr "&Retirar o panel"
 
 #: menu.cpp:359
-#, fuzzy, kde-format
-#| msgid "Manage &Layouts..."
+#, kde-format
 msgid "Edit &Layouts..."
-msgstr "Xestionar as &disposicións…"
+msgstr "Editar as &disposicións…"
 
 #, fuzzy
 #~| msgctxt "current layout"
