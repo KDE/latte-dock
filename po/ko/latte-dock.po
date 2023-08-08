@@ -1609,7 +1609,7 @@ msgstr "가져오기(&I)"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:197
 #, kde-format
 msgid "Import layout from various resources"
-msgstr "외부 자원에서 레이아웃 파일 가져오기"
+msgstr "외부 리소스에서 레이아웃 파일 가져오기"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:208
 #: app/settings/viewsdialog/viewshandler.cpp:108
