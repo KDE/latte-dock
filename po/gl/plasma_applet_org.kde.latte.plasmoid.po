@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-01-24 01:00+0000\n"
-"PO-Revision-Date: 2023-06-21 07:59+0200\n"
+"PO-Revision-Date: 2023-09-03 14:10+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.04.2\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
@@ -206,24 +206,24 @@ msgstr "Tamaño: "
 #: package/contents/ui/ContextMenu.qml:51
 #, kde-format
 msgid "Top Separator"
-msgstr "Divisoria superior"
+msgstr "Liña superior"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Left Separator"
-msgstr "Divisoria esquerda"
+msgstr "Liña esquerda"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Right Separator"
-msgstr "Divisoria dereita"
+msgstr "Liña dereita"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr "Divisoria inferior"
+msgstr "Liña inferior"
 
 #: package/contents/ui/ContextMenu.qml:102
 #, kde-format
