@@ -3475,8 +3475,8 @@ msgstr "Informació de progrés per a les tasques"
 msgid ""
 "Show a progress animation for tasks e.g. when copying files with Dolphin"
 msgstr ""
-"Mostra una animació de progrés per a les tasques, p. ex. quan copieu fitxers "
-"amb Dolphin"
+"Mostra una animació de progrés per a les tasques, p. ex., quan copieu "
+"fitxers amb Dolphin"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:82
 #, kde-format
