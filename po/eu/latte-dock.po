@@ -6,21 +6,21 @@
 #
 # Translators:
 # Ander Elortondo <ander.elor@gmail.com>, 2017, 2018, 2019, 2020.
-# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2018, 2019, 2020.
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023 Iñigo Salvador Azurmendi <xalba@euskalnet.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 00:47+0000\n"
-"PO-Revision-Date: 2020-04-09 21:25+0200\n"
-"Last-Translator: Ander Elortondo <ander.elor@gmail.com>\n"
-"Language-Team: Basque <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2023-09-26 23:08+0200\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
+"Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 23.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2551,7 +2551,7 @@ msgstr "Erakutsi Latte Kaia/Panela"
 #: app/shortcuts/globalshortcuts.cpp:96
 #, kde-format
 msgid "Cycle Through Dock/Panel Settings Windows"
-msgstr "Ibili Kai/Panel ezarpen leihoetan zehar"
+msgstr "Kai/Panel ezarpen leihoen arteko zikloa"
 
 #: app/shortcuts/globalshortcuts.cpp:105
 #, kde-format
@@ -3340,12 +3340,12 @@ msgstr "Ekintzarik ez"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:739
 #, kde-format
 msgid "Cycle Through Desktops"
-msgstr "Ibili mahaigainetan zehar"
+msgstr "Mahaigainen arteko zikloa"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:740
 #, kde-format
 msgid "Cycle Through Activities"
-msgstr "Ibili jardueretan zehar"
+msgstr "Jardueren arteko zikloa"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:741
 #: shell/package/contents/configuration/pages/TasksConfig.qml:547
@@ -3354,7 +3354,7 @@ msgstr "Ibili jardueretan zehar"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:708
 #, kde-format
 msgid "Cycle Through Tasks"
-msgstr "Zikloa atazen zehar"
+msgstr "Atazen arteko zikloa"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:742
 #: shell/package/contents/configuration/pages/TasksConfig.qml:656
