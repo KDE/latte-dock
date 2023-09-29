@@ -30,7 +30,7 @@ We need to use at least:
 - **Qt >= 5.15**
 
 Minimum requirements:
- 
+
 **tools:**
 ```
  bash
@@ -38,33 +38,32 @@ Minimum requirements:
 
 **development packages for:**
 ```
- Qt5Core >= 5.15.0
- Qt5Gui >= 5.15.0
- Qt5Dbus >= 5.15.0
+ QtCore >= 6.5.0
+ QtGui >= 6.5.0
+ QtDbus >= 6.5.0
 
- KF5Plasma >= 5.82.0
- KF5PlasmaQuick >= 5.82.0
- KF5Activities >= 5.82.0
- KF5CoreAddons >= 5.82.0
- KF5GuiAddons >= 5.82.0
- KF5DBusAddons >= 5.82.0
- KF5Declarative >= 5.82.0
- KF5Kirigami2 >= 5.82.0
- KF5Wayland >= 5.82.0
- KF5Package >= 5.82.0
- KF5XmlGui >= 5.82.0
- KF5IconThemes >= 5.82.0
- KF5KIO >= 5.82.0
- KF5I18n >= 5.82.0
- KF5Notifications >= 5.82.0
- KF5NewStuff >= 5.82.0
- KF5Archive >= 5.82.0
- KF5GlobalAccel >= 5.82.0
- KF5Crash >= 5.82.0
+ KF5Plasma >= 6.0
+ KF5PlasmaQuick >= 6.0
+ KF5Activities >= 6.0
+ KF5CoreAddons >= 6.0
+ KF5GuiAddons >= 6.0
+ KF5DBusAddons >= 6.0
+ KF5Declarative >= 6.0
+ KF5Kirigami2 >= 6.0
+ KF5Wayland >= 6.0
+ KF5Package >= 6.0
+ KF5XmlGui >= 6.0
+ KF5IconThemes >= 6.0
+ KF5KIO >= 6.0
+ KF5I18n >= 6.0
+ KF5Notifications >= 6.0
+ KF5NewStuff >= 6.0
+ KF5Archive >= 6.0
+ KF5GlobalAccel >= 6.0
+ KF5Crash >= 6.0
 
   For X11 support:
-    KF5WindowSystem >= 5.82.0
-    Qt5X11Extras >= 5.7.0
+    KF6WindowSystem >= 6.0
     libxcb
     libxcb-randr
     libxcb-shape
@@ -109,7 +108,7 @@ See the [installation instruction](./INSTALLATION.md) for others Linux distribut
 
 ## Run Latte-Dock
 
-Latte is now ready to be used by executing 
+Latte is now ready to be used by executing
 ```
 latte-dock
 ```

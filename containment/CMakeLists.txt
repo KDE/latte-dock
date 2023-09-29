@@ -12,12 +12,11 @@ set(containment_SRCS
 add_library(lattecontainmentplugin SHARED ${containment_SRCS})
 
 target_link_libraries(lattecontainmentplugin
-                      Qt5::Core
-                      Qt5::Qml
-                      Qt5::Quick
-                      KF5::Declarative
-                      KF5::Plasma
-                      KF5::PlasmaQuick)
+                      Qt::Core
+                      Qt::Qml
+                      Qt::Quick
+                      KF6::Plasma
+                      KF6::PlasmaQuick)
 
 install(TARGETS lattecontainmentplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/containment)
 install(FILES plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/containment)

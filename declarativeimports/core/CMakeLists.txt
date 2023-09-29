@@ -13,17 +13,16 @@ set(lattecoreplugin_SRCS
 add_library(lattecoreplugin SHARED ${lattecoreplugin_SRCS})
 
 target_link_libraries(lattecoreplugin
-    Qt5::Quick
-    Qt5::Qml
-    KF5::CoreAddons
-    KF5::Plasma
-    KF5::PlasmaQuick
-    KF5::QuickAddons
-    KF5::IconThemes
+    Qt::Quick
+    Qt::Qml
+    KF6::CoreAddons
+    KF6::Plasma
+    KF6::PlasmaQuick
+    KF6::IconThemes
 )
 
 if(HAVE_X11)
-    target_link_libraries(lattecoreplugin KF5::WindowSystem)
+    target_link_libraries(lattecoreplugin KF6::WindowSystem)
 endif()
 
 install(TARGETS lattecoreplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/core)

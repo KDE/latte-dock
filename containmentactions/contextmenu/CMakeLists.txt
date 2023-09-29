@@ -9,10 +9,10 @@ set(contextmenu_SRCS
 add_library(plasma_containmentactions_lattecontextmenu MODULE ${contextmenu_SRCS})
 
 target_link_libraries(plasma_containmentactions_lattecontextmenu
-                        Qt5::DBus
-                        Qt5::Widgets
-                        KF5::I18n
-                        KF5::XmlGui
-                        KF5::Plasma)
+                        Qt::DBus
+                        Qt::Widgets
+                        KF6::I18n
+                        KF6::XmlGui
+                        KF6::Plasma)
 
 install(TARGETS plasma_containmentactions_lattecontextmenu DESTINATION ${KDE_INSTALL_PLUGINDIR}/plasma/containmentactions)
