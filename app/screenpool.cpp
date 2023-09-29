@@ -22,9 +22,9 @@
 
 // X11
 #if HAVE_X11
-#include <QtX11Extras/QX11Info>
-#include <xcb/xcb.h>
+#include <private/qtx11extras_p.h>
 #include <xcb/randr.h>
+#include <xcb/xcb.h>
 #include <xcb/xcb_event.h>
 #endif
 
@@ -141,11 +141,7 @@ void ScreenPool::updateScreenGeometry(const int &screenId, const QRect &screenGe
     emit screenGeometryChanged();
 }
 
-
-Latte::Data::ScreensTable ScreenPool::screensTable()
-{   
-    return m_screensTable;
-}
+Latte::Data::ScreensTable ScreenPool::screensTable() { return m_screensTable; }
 
 void ScreenPool::reload(QString path)
 {
@@ -242,8 +238,7 @@ int ScreenPool::id(const QString &connector) const
     return screenId.isEmpty() ? NOSCREENID : screenId.toInt();
 }
 
-QString ScreenPool::connector(int id) const
-{   
+QString ScreenPool::connector(int id) const {
     QString idStr = QString::number(id);
     return (m_screensTable.containsId(idStr) ? m_screensTable[idStr].name : QString());
 }

@@ -25,9 +25,9 @@
 // Qt
 #include <QAction>
 #include <QDebug>
-#include <QQuickItem>
 #include <QMetaMethod>
-#include <QX11Info>
+#include <QQuickItem>
+#include <private/qtx11extras_p.h>
 
 // KDE
 #include <KActionCollection>

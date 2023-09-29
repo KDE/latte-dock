@@ -16,12 +16,12 @@
 #include "../lattecorona.h"
 
 // Qt
-#include <QDebug>
-#include <QTimer>
 #include <QApplication>
-#include <QtX11Extras/QX11Info>
-#include <QQuickView>
+#include <QDebug>
 #include <QLatin1String>
+#include <QQuickView>
+#include <QTimer>
+#include <private/qtx11extras_p.h>
 
 // KDE
 #include <KWindowSystem>
