@@ -16,7 +16,7 @@
 // Qt
 #include <QDebug>
 #include <QTimer>
-#include <QtX11Extras/QX11Info>
+#include <private/qtx11extras_p.h>
 
 // KDE
 #include <KDesktopFile>

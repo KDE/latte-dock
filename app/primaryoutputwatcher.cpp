@@ -19,11 +19,7 @@
 #include <config-latte.h>
 #if HAVE_X11
 #include <QTimer> //Used only in x11 case
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <private/qtx11extras_p.h>
-#else
-#include <QX11Info>
-#endif
 #include <xcb/randr.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_event.h>

@@ -24,7 +24,7 @@
 #include <QScreen>
 #include <QUrlQuery>
 #if HAVE_X11
-#include <QX11Info>
+#include <private/qtx11extras_p.h>
 #endif
 
 namespace Latte
