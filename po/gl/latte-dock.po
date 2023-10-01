@@ -30,7 +30,7 @@ msgstr "adrian@chaves.io"
 #: app/indicator/factory.cpp:267
 #, kde-format
 msgid "Failed to import indicator"
-msgstr "Non se puido importar o indicador"
+msgstr "Non foi posíbel importar o indicador"
 
 #: app/indicator/factory.cpp:273
 #, fuzzy, kde-format
@@ -89,7 +89,7 @@ msgstr "Alternativa"
 #, kde-format
 msgctxt "import/export config"
 msgid "The extracted file could not be copied!!!"
-msgstr "Non se puido copiar o ficheiro extraído!!!"
+msgstr "Non foi posíbel copiar o ficheiro extraído!!!"
 
 #: app/layouts/importer.cpp:329
 #, kde-format
@@ -101,7 +101,7 @@ msgstr "O ficheiro ten un formato incorrecto!!!"
 #, kde-format
 msgctxt "import/export config"
 msgid "The temp directory could not be created!!!"
-msgstr "Non se puido crear o directorio temporal!!!"
+msgstr "Non foi posíbel crear o directorio temporal!!!"
 
 #: app/layouts/manager.cpp:238
 #, fuzzy, kde-format
@@ -355,12 +355,12 @@ msgstr "Xa hai unha instancia en execución! Use --replace para reiniciar Latte"
 #: app/main.cpp:346
 #, kde-format
 msgid "The configuration cannot be imported"
-msgstr "Non se pode importar a configuración"
+msgstr "Non é posíbel importar a configuración"
 
 #: app/main.cpp:358 app/main.cpp:386
 #, kde-format
 msgid "The layout cannot be imported"
-msgstr "Non se pode importar a disposición"
+msgstr "Non é posíbel importar a disposición"
 
 #: app/main.cpp:486
 #, kde-format
