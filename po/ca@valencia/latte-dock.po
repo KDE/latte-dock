@@ -607,7 +607,7 @@ msgstr "Rosa"
 #: app/settings/detailsdialog/colorsmodel.cpp:43
 #, kde-format
 msgid "Purple"
-msgstr "Púrpura"
+msgstr "Porpra"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:44
 #, kde-format
