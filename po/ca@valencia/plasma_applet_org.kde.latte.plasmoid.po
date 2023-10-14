@@ -299,12 +299,12 @@ msgstr "Inicia una instància nova"
 #: package/contents/ui/ContextMenu.qml:352
 #, kde-format
 msgid "Move To &Desktop"
-msgstr "Mou a l'&escriptori"
+msgstr "Mou cap a l'&escriptori"
 
 #: package/contents/ui/ContextMenu.qml:374
 #, kde-format
 msgid "Move &To Current Desktop"
-msgstr "Mou a l'escriptori ac&tual"
+msgstr "Mou cap a l'escriptori ac&tual"
 
 #: package/contents/ui/ContextMenu.qml:384
 #, kde-format
@@ -319,7 +319,7 @@ msgstr "Escriptori &nou"
 #: package/contents/ui/ContextMenu.qml:438
 #, kde-format
 msgid "Move To &Activity"
-msgstr "Mou a una activitat"
+msgstr "Mou cap a una activitat"
 
 #: package/contents/ui/ContextMenu.qml:459
 #, kde-format
