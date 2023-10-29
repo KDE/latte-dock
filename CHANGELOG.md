@@ -1,5 +1,8 @@
 #**CHANGELOG**#
 
+#### Version 0.10.X (current development build)
+* optionally maximise panel size in presence of maximised windows (https://invent.kde.org/plasma/latte-dock/-/merge_requests/46)
+
 #### Version 0.10.8
 * multi-screen: fix docks/panels screen repositioning when the user specifies different screen for dock or panel
 * fix borders identification for autopositioning vertical docks/panels
