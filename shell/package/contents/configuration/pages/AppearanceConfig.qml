@@ -563,6 +563,28 @@ PlasmaComponents.Page {
                     }
                 }
             }
+            LatteComponents.SubHeader {
+                visible: dialog.advancedLevel
+                text: i18nc("@label dynamic length configuration", "Dynamic Length Adjustments")
+                enabled: true
+            }
+
+            LatteComponents.CheckBoxesColumn {
+                enabled: dialog.advancedLevel;
+                LatteComponents.CheckBox {
+                    id: maximizeWhenMaximizedChk
+                    Layout.maximumWidth: dialog.optionsWidth
+                    text: i18nc("@label", "Maximize panel length in presence of maximized windows")
+                    tooltip: i18n("Change panel length to maximum screen size when there is a maximized window present on the screen")
+                    enabled: showBackground.checked
+                    visible: dialog.advancedLevel
+                    value: plasmoid.configuration.maximizeWhenMaximized
+
+                    onClicked: {
+                        plasmoid.configuration.maximizeWhenMaximized = !plasmoid.configuration.maximizeWhenMaximized;
+                    }
+                }
+            }
         }
         //! END: Length
 

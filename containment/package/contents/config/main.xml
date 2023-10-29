@@ -190,6 +190,10 @@
     <entry name="offset" type="Double">
       <default>0</default>
     </entry>
+    <entry name="maximizeWhenMaximized" type="Bool">
+      <default>false</default>
+      <label>Maximize panel in presense of maximized windows</label>
+    </entry>
     <entry name="dragActiveWindowEnabled" type="Bool">
       <default>false</default>
       <label>Drag and maximize/restore active window from empty areas</label>

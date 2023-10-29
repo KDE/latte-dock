@@ -203,6 +203,7 @@ Item {
     readonly property int minAppletLengthInConfigure: 16
     readonly property int maxJustifySplitterSize: 64
 
+    property bool maximizeWhenMaximized: plasmoid.configuration.maximizeWhenMaximized;
     property real minLengthPerCentage: plasmoid.configuration.minLength
     property real maxLengthPerCentage: hideLengthScreenGaps ? 100 : plasmoid.configuration.maxLength
 
@@ -219,10 +220,12 @@ Item {
     }
 
     property int maxLength: {
+        const maximize = behaveAsPlasmaPanel
+          || (maximizeWhenMaximized && latteView.windowsTracker.currentScreen.existsWindowMaximized);
         if (root.isHorizontal) {
-            return behaveAsPlasmaPanel ? width : width * (maxLengthPerCentage/100)
+            return maximize ? width : width * (maxLengthPerCentage/100)
         } else {
-            return behaveAsPlasmaPanel ? height : height * (maxLengthPerCentage/100)
+            return maximize ? height : height * (maxLengthPerCentage/100)
         }
     }
 
