@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-17 00:47+0000\n"
+"POT-Creation-Date: 2023-10-30 00:44+0000\n"
 "PO-Revision-Date: 2020-11-02 15:38+0200\n"
 "Last-Translator: Moo\n"
 "Language-Team: lt\n"
@@ -2790,7 +2790,7 @@ msgid "Absolute size"
 msgstr "Absoliutus"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1060
 #, fuzzy, kde-format
 #| msgctxt "number in pixels, e.g. 12 px."
 #| msgid "%0 px."
@@ -2819,11 +2819,11 @@ msgstr "%0 piks."
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:321
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:404
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:534
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:619
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:665
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:903
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:641
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:925
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:975
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1017
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:101
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:149
 #, kde-format
@@ -2844,7 +2844,7 @@ msgid "Zoom on hover"
 msgstr "Didinti užvedus pelę"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:231
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:595
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:617
 #, kde-format
 msgid "Length"
 msgstr "Ilgis"
@@ -2864,13 +2864,33 @@ msgstr "Mažiausias"
 msgid "Offset"
 msgstr "Poslinkis"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:580
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:568
+#, kde-format
+msgctxt "@label dynamic length configuration"
+msgid "Dynamic Length Adjustments"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
+#, fuzzy, kde-format
+#| msgid "Hide screen gap for maximized windows"
+msgctxt "@label"
+msgid "Maximize panel length in presence of maximized windows"
+msgstr "Slėpti ekrano tarpą išskleistiems langams"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
+#, kde-format
+msgid ""
+"Change panel length to maximum screen size when there is a maximized window "
+"present on the screen"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format
 msgid "Margins"
 msgstr "Paraštės"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:686
 #, fuzzy, kde-format
 #| msgctxt "number in pixels, e.g. 12 px."
 #| msgid "%0 px."
@@ -2878,19 +2898,19 @@ msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
 msgstr "%0 piks."
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:662
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:890
 #, kde-format
 msgid "Thickness"
 msgstr "Storis"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
 #, fuzzy, kde-format
 #| msgid "Floating"
 msgid "Floating gap"
 msgstr "Slankus"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:731
 #, fuzzy, kde-format
 #| msgctxt "number in pixels, e.g. 85 px."
 #| msgid "%0 px."
@@ -2898,38 +2918,38 @@ msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
 msgstr "%0 piks."
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:750
 #, kde-format
 msgid "Colors"
 msgstr "Spalvos"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:767
 #, kde-format
 msgid "Palette"
 msgstr ""
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:774
 #, fuzzy, kde-format
 #| msgid "Plasma Theme:"
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
 msgstr "Plasma apipavidalinimas:"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:777
 #, fuzzy, kde-format
 #| msgid "Colors"
 msgctxt "dark theme colors"
 msgid "Dark Colors"
 msgstr "Spalvos"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:780
 #, fuzzy, kde-format
 #| msgid "Colors"
 msgctxt "light theme colors"
 msgid "Light Colors"
 msgstr "Spalvos"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:783
 #, kde-format
 msgctxt "layout custom colors"
 msgid "Layout Custom Colors"
@@ -2938,35 +2958,35 @@ msgstr ""
 #. i18nc("reverse plasma theme colors", "Reverse"),
 #. value: LatteContainment.Types.ReverseThemeColors
 #. }
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:768
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:790
 #, kde-format
 msgctxt "smart theme colors"
 msgid "Smart Colors Based On Desktop Background"
 msgstr ""
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:817
 #, kde-format
 msgid "From Window"
 msgstr "Iš lango"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:802
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:824
 #: shell/package/contents/configuration/pages/TasksConfig.qml:497
 #, kde-format
 msgid "Disabled"
 msgstr "Išjungta"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:828
 #, fuzzy, kde-format
 #| msgid "Close Active Window"
 msgid "Current Active Window"
 msgstr "Užverti aktyvų langą"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:809
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:831
 #, kde-format
 msgid "Colors are going to be based on the active window"
 msgstr "Spalvos bus paremtos aktyviu langu"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:810
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:832
 #, fuzzy, kde-format
 #| msgid ""
 #| "Colors are going to be based on the active window.\n"
@@ -2980,18 +3000,18 @@ msgstr ""
 "Pastaba: Optimaliam patyrimui yra patariama įdiegti spalvų KWin scenarijų "
 "(angl. Colors KWin Script) iš KDE parduotuvės"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:834
 #, fuzzy, kde-format
 #| msgid "Active Window"
 msgid "Any Touching Window"
 msgstr "Aktyvus langas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:815
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:837
 #, kde-format
 msgid "Colors are going to be based on windows that are touching the view"
 msgstr "Spalvos bus paremtos langais, kurie liečia rodinį"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:816
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:838
 #, fuzzy, kde-format
 #| msgid ""
 #| "Colors are going to be based on windows that are touching the view.\n"
@@ -3005,74 +3025,74 @@ msgstr ""
 "Pastaba: Optimaliam patyrimui yra patariama įdiegti spalvų KWin scenarijų "
 "(angl. Colors KWin Script) iš KDE parduotuvės"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:848
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:870
 #, kde-format
 msgid "Background"
 msgstr "Fonas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:849
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:871
 #, kde-format
 msgid "Enable/disable background"
 msgstr "Įjungti/išjungti foną"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:939
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:114
 #, kde-format
 msgid "Opacity"
 msgstr "Nepermatomumas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:939
 #, kde-format
 msgctxt "opacity when desktop background is busy from contrast point of view"
 msgid "Busy Opacity"
 msgstr "Užimtumo nepermatomumas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:975
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1017
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1060
 #, kde-format
 msgctxt "Default word abbreviation"
 msgid "Def."
 msgstr ""
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:988
 #, kde-format
 msgid "Radius"
 msgstr ""
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1009
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1031
 #, fuzzy, kde-format
 #| msgid "Shadows"
 msgid "Shadow"
 msgstr "Šešėliai"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1058
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1080
 #, kde-format
 msgid "Blur"
 msgstr "Suliejimas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1061
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1083
 #, kde-format
 msgid "Background is blurred underneath"
 msgstr "Fonas po apačia yra suliejamas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1076
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:50
 #, kde-format
 msgid "Shadows"
 msgstr "Šešėliai"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1079
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1101
 #, kde-format
 msgid "Background shows its shadows"
 msgstr "Fonas rodo savo šešėlius"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1094
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1116
 #, kde-format
 msgid "Outline"
 msgstr "Kontūrai"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1120
 #, kde-format
 msgid ""
 "Background draws a line for its borders. You can set the line size from "
@@ -3081,40 +3101,40 @@ msgstr ""
 "Fonas savo rėmeliui braižys liniją. Galite nustatyti linijos dydį Latte "
 "nuostatose"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1131
 #, fuzzy, kde-format
 #| msgctxt "track from all screens"
 #| msgid "All Screens"
 msgid "All Corners"
 msgstr "Visi ekranai"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1139
 #, kde-format
 msgid "Background draws all corners at all cases."
 msgstr ""
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1149
 #, kde-format
 msgctxt "dynamic visibility for background"
 msgid "Dynamic Visibility"
 msgstr "Dinaminis matomumas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1158
 #, kde-format
 msgid "Prefer opaque background when touching any window"
 msgstr "Liečiant bet kurį langą, teikti pirmenybę nepermatomam fonui"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1159
 #, kde-format
 msgid "Background removes its transparency setting when a window is touching"
 msgstr "Fonas praranda savo permatomumo nuostatą, kai langas liečia Latte"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1150
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1172
 #, kde-format
 msgid "Hide background when not needed"
 msgstr "Slėpti foną, kai jis nereikalingas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1151
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1173
 #, kde-format
 msgid ""
 "Background becomes hidden except when a window is touching or the desktop "
@@ -3123,12 +3143,12 @@ msgstr ""
 "Fonas tampa paslėptas, išskyrus atvejus, kai langas liečia Latte ar yra "
 "užimtas darbalaukio fonas"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1164
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
 #, kde-format
 msgid "Hide background shadow for maximized windows"
 msgstr "Slėpti išskleistų langų foninį šešėlį"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1165
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1187
 #, kde-format
 msgid ""
 "Background shadows become hidden when an active maximized window is touching "
@@ -3136,17 +3156,17 @@ msgid ""
 msgstr ""
 "Foniniai šešėliai bus slepiami, kai aktyvus išskleistas langas lies rodinį"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1178
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1200
 #, kde-format
 msgid "Exceptions"
 msgstr "Išimtys"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1185
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1207
 #, kde-format
 msgid "Prefer Plasma background and colors for expanded applets"
 msgstr "Išskleistoms programėlėms teikti Plasma fono ir spalvų pirmenybę"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1208
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
 msgstr "Išskleidus programėles, fonas Plasma stiliuje taps nepermatomas"

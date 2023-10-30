@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-17 00:47+0000\n"
+"POT-Creation-Date: 2023-10-30 00:44+0000\n"
 "PO-Revision-Date: 2023-01-20 00:42+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -2580,7 +2580,7 @@ msgid "Absolute size"
 msgstr "絕對大小"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1060
 #, kde-format
 msgctxt "number in pixels, e.g. 12 px."
 msgid "%1 px."
@@ -2603,11 +2603,11 @@ msgstr "%1 像素"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:321
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:404
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:534
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:619
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:665
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:903
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:641
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:925
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:975
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1017
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:101
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:149
 #, kde-format
@@ -2627,7 +2627,7 @@ msgid "Zoom on hover"
 msgstr "滑鼠游標置於其上時縮放"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:231
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:595
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:617
 #, kde-format
 msgid "Length"
 msgstr "長度"
@@ -2647,65 +2647,85 @@ msgstr "最小"
 msgid "Offset"
 msgstr "位移"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:580
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:568
+#, kde-format
+msgctxt "@label dynamic length configuration"
+msgid "Dynamic Length Adjustments"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
+#, fuzzy, kde-format
+#| msgid "Hide floating gap for maximized windows"
+msgctxt "@label"
+msgid "Maximize panel length in presence of maximized windows"
+msgstr "為最大化視窗隱藏浮動間隔"
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
+#, kde-format
+msgid ""
+"Change panel length to maximum screen size when there is a maximized window "
+"present on the screen"
+msgstr ""
+
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format
 msgid "Margins"
 msgstr "內邊距"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:686
 #, kde-format
 msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
 msgstr "%1 像素"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:662
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:890
 #, kde-format
 msgid "Thickness"
 msgstr "厚度"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
 #, fuzzy, kde-format
 #| msgid "Floating"
 msgid "Floating gap"
 msgstr "浮動"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:731
 #, kde-format
 msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
 msgstr "%1 像素"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:750
 #, kde-format
 msgid "Colors"
 msgstr "顏色"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:767
 #, kde-format
 msgid "Palette"
 msgstr "調色盤"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:774
 #, kde-format
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
 msgstr "Plasma 主題色彩"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:777
 #, kde-format
 msgctxt "dark theme colors"
 msgid "Dark Colors"
 msgstr "深色"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:780
 #, kde-format
 msgctxt "light theme colors"
 msgid "Light Colors"
 msgstr "淺色"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:783
 #, kde-format
 msgctxt "layout custom colors"
 msgid "Layout Custom Colors"
@@ -2714,34 +2734,34 @@ msgstr "佈局自訂色彩"
 #. i18nc("reverse plasma theme colors", "Reverse"),
 #. value: LatteContainment.Types.ReverseThemeColors
 #. }
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:768
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:790
 #, kde-format
 msgctxt "smart theme colors"
 msgid "Smart Colors Based On Desktop Background"
 msgstr "以桌面背景為基礎的智慧型色彩"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:817
 #, kde-format
 msgid "From Window"
 msgstr "來自視窗"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:802
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:824
 #: shell/package/contents/configuration/pages/TasksConfig.qml:497
 #, kde-format
 msgid "Disabled"
 msgstr "已停用"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:828
 #, kde-format
 msgid "Current Active Window"
 msgstr "目前作用中視窗"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:809
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:831
 #, kde-format
 msgid "Colors are going to be based on the active window"
 msgstr "色彩將會以作用中的視窗為基礎"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:810
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:832
 #, kde-format
 msgid ""
 "Colors are going to be based on the active window.\n"
@@ -2750,17 +2770,17 @@ msgstr ""
 "色彩將會以作用中的視窗為基礎。\n"
 "注意：您必須從 KDE 商店中安裝 Colors KWin Script"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:834
 #, kde-format
 msgid "Any Touching Window"
 msgstr "任何觸碰到的視窗"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:815
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:837
 #, kde-format
 msgid "Colors are going to be based on windows that are touching the view"
 msgstr "色彩將會基於觸碰到檢視的視窗"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:816
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:838
 #, kde-format
 msgid ""
 "Colors are going to be based on windows that are touching the view.\n"
@@ -2769,140 +2789,140 @@ msgstr ""
 "色彩將會基於觸碰到的檢視。\n"
 "注意：您必須從 KDE 商店中安裝 Colors KWin Script"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:848
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:870
 #, kde-format
 msgid "Background"
 msgstr "背景"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:849
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:871
 #, kde-format
 msgid "Enable/disable background"
 msgstr "啟用或停用背景"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:939
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:114
 #, kde-format
 msgid "Opacity"
 msgstr "不透明度"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:939
 #, kde-format
 msgctxt "opacity when desktop background is busy from contrast point of view"
 msgid "Busy Opacity"
 msgstr "忙碌不透明度"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:953
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:975
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1017
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1060
 #, kde-format
 msgctxt "Default word abbreviation"
 msgid "Def."
 msgstr "定義"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:988
 #, kde-format
 msgid "Radius"
 msgstr "半徑"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1009
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1031
 #, kde-format
 msgid "Shadow"
 msgstr "陰影"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1058
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1080
 #, kde-format
 msgid "Blur"
 msgstr "模糊效果"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1061
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1083
 #, kde-format
 msgid "Background is blurred underneath"
 msgstr "背景下方模糊"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1076
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:50
 #, kde-format
 msgid "Shadows"
 msgstr "陰影"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1079
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1101
 #, kde-format
 msgid "Background shows its shadows"
 msgstr "顯示背景陰影"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1094
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1116
 #, kde-format
 msgid "Outline"
 msgstr "輪廓"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1120
 #, kde-format
 msgid ""
 "Background draws a line for its borders. You can set the line size from "
 "Latte Preferences"
 msgstr "背景會為其邊框繪製線條。您可以從 Latte 偏好設定中設定線的大小"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1131
 #, kde-format
 msgid "All Corners"
 msgstr "所有角落"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1139
 #, kde-format
 msgid "Background draws all corners at all cases."
 msgstr "在所有情況下，背景都繪製所有角落。"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1149
 #, kde-format
 msgctxt "dynamic visibility for background"
 msgid "Dynamic Visibility"
 msgstr "動態調整可見度"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1136
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1158
 #, kde-format
 msgid "Prefer opaque background when touching any window"
 msgstr "接觸任何視窗時都偏好不透明的背景"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1137
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1159
 #, kde-format
 msgid "Background removes its transparency setting when a window is touching"
 msgstr "接觸視窗時移除背景畫面的透明度設定"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1150
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1172
 #, kde-format
 msgid "Hide background when not needed"
 msgstr "非必要時隱藏背景畫面"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1151
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1173
 #, kde-format
 msgid ""
 "Background becomes hidden except when a window is touching or the desktop "
 "background is busy"
 msgstr "背景將會隱藏，除非當接觸到視窗或桌面背景忙碌"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1164
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
 #, kde-format
 msgid "Hide background shadow for maximized windows"
 msgstr "為最大化視窗隱藏背景陰影"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1165
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1187
 #, kde-format
 msgid ""
 "Background shadows become hidden when an active maximized window is touching "
 "the view"
 msgstr "當作用中的最大化視窗接處檢視時，背景陰影將會隱藏"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1178
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1200
 #, kde-format
 msgid "Exceptions"
 msgstr "例外"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1185
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1207
 #, kde-format
 msgid "Prefer Plasma background and colors for expanded applets"
 msgstr "拓展的小工具偏好 Plasma 背景與色彩"
 
-#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
+#: shell/package/contents/configuration/pages/AppearanceConfig.qml:1208
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
 msgstr "當小工具拓展時，背景將會在 plasma 樣式中變得不透明"
