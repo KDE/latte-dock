@@ -1,14 +1,14 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2023 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
 #
 # Volkan Gezer <volkangezer@gmail.com>, 2021.
-# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
+# SPDX-FileCopyrightText: 2022, 2023 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-30 00:44+0000\n"
-"PO-Revision-Date: 2023-09-03 21:19+0300\n"
+"PO-Revision-Date: 2023-10-30 05:08+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.11.70\n"
+"X-Generator: Lokalize 23.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2705,14 +2705,13 @@ msgstr "Ofset"
 #, kde-format
 msgctxt "@label dynamic length configuration"
 msgid "Dynamic Length Adjustments"
-msgstr ""
+msgstr "Devingen Aralık Ayarlamaları"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
-#, fuzzy, kde-format
-#| msgid "Hide floating gap for maximized windows"
+#, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr "Ekranı kaplayan pencereler için yüzenr boşluğu gizle"
+msgstr "Ekranı kaplayan pencereler varken panel uzunluğunu en büyük yap"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
@@ -2720,6 +2719,8 @@ msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
 msgstr ""
+"Ekranı kaplayan bir pencere varken panel uzunluğunu en büyük ekran boyutuna "
+"değiştir"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format

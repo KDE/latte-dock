@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-30 00:44+0000\n"
-"PO-Revision-Date: 2022-06-21 06:33+0200\n"
+"PO-Revision-Date: 2023-10-30 06:38+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.1\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100>=3 && n"
+"%100<=4 ? 2 : 3);\n"
+"X-Generator: Poedit 3.4\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2743,14 +2743,13 @@ msgstr "Odmik"
 #, kde-format
 msgctxt "@label dynamic length configuration"
 msgid "Dynamic Length Adjustments"
-msgstr ""
+msgstr "Dinamične prilagoditve dolžine"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
-#, fuzzy, kde-format
-#| msgid "Hide floating gap for maximized windows"
+#, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr "Skrij plavajočo vrzel za razpeta okna"
+msgstr "Razpni dolžino plošče v prisotnosti razpetih oken"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
@@ -2758,6 +2757,8 @@ msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
 msgstr ""
+"Spremeni dolžino plošče na največjo velikost zaslona, ko je na zaslonu "
+"prisotno razpeto okno"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format

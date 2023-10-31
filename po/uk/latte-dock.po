@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2017, 2018, 2019, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-10-30 00:44+0000\n"
-"PO-Revision-Date: 2022-05-11 08:56+0300\n"
+"PO-Revision-Date: 2023-10-30 08:52+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -2742,14 +2742,13 @@ msgstr "Зміщення"
 #, kde-format
 msgctxt "@label dynamic length configuration"
 msgid "Dynamic Length Adjustments"
-msgstr ""
+msgstr "Коригування динамічної довжини"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
-#, fuzzy, kde-format
-#| msgid "Hide floating gap for maximized windows"
+#, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr "Приховувати рухомий інтервал для максимізованих вікон"
+msgstr "Максимізувати довжину панелі, якщо є максимізовані вікна"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
@@ -2757,6 +2756,8 @@ msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
 msgstr ""
+"Змінювати довжину панелі до максимального розміру екрана, якщо на екрані є "
+"максимізоване вікно"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format
