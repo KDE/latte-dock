@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2023-01-24 17:07+0100\n"
+"PO-Revision-Date: 2023-06-22 15:01+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -447,7 +447,7 @@ msgstr ""
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "Komponenta QML, která zobrazuje applet ve vyskakovací nabídce"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
 #, kde-format
