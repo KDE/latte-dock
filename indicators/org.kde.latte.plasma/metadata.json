@@ -27,7 +27,6 @@
                 "Name[sv]": "Michail Vourlakos",
                 "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
-                "Name[x-test]": "xxMichail Vourlakosxx",
                 "Name[zh_CN]": "Michail Vourlakos"
             }
         ],
@@ -55,7 +54,6 @@
         "Description[sv]": "Latte Plasmastilindikator",
         "Description[tr]": "Latte Plasma biçemli gösterge",
         "Description[uk]": "Індикатор стилю Плазми Латте",
-        "Description[x-test]": "xxLatte Plasma style indicatorxx",
         "Description[zh_CN]": "Latte Plasma 风格指示器",
         "EnabledByDefault": true,
         "Icon": "latte-dock",
@@ -94,7 +92,6 @@
         "Name[sv]": "Plasma",
         "Name[tr]": "Plasma",
         "Name[uk]": "Плазма",
-        "Name[x-test]": "xxPlasmaxx",
         "Name[zh_CN]": "Plasma",
         "Name[zh_TW]": "Plasma",
         "ServiceTypes": [

@@ -27,7 +27,6 @@
                 "Name[sv]": "Michail Vourlakos, Smith Ar",
                 "Name[tr]": "Michail Vourlakos, Smith Ar",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
-                "Name[x-test]": "xxMichail Vourlakos, Smith Arxx",
                 "Name[zh_CN]": "Michail Vourlakos, Smith Ar"
             }
         ],
@@ -56,7 +55,6 @@
         "Description[sv]": "Omgivning tillhandahållen för Latte dockningsfönster",
         "Description[tr]": "Latte Rıhtım tarafından sağlanan kapsama",
         "Description[uk]": "Контейнер панелі Латте",
-        "Description[x-test]": "xxContainment provided for the Latte Dockxx",
         "Description[zh_CN]": "用于 Latte 停靠栏的容器",
         "EnabledByDefault": true,
         "Id": "org.kde.latte.containment",
@@ -87,7 +85,6 @@
         "Name[sv]": "Latte-omgivning",
         "Name[tr]": "Latte Kapsama",
         "Name[uk]": "контейнер Латте",
-        "Name[x-test]": "xxLatte Containmentxx",
         "Name[zh_CN]": "Latte 容器",
         "Name[zh_TW]": "Latte Containment",
         "ServiceTypes": [
