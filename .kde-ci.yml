@@ -9,7 +9,6 @@ Dependencies:
     'frameworks/kio': '@latest'
     'frameworks/ki18n': '@latest'
     'frameworks/kwidgetsaddons': '@latest'
-    'frameworks/kactivities': '@latest'
     'frameworks/karchive': '@latest'
     'frameworks/kcoreaddons': '@latest'
     'frameworks/kguiaddons': '@latest'
@@ -27,3 +26,4 @@ Dependencies:
     'frameworks/kwindowsystem': '@latest'
     'frameworks/kxmlgui': '@latest'
     'plasma/plasma-workspace': '@stable'
+    'plasma/kactivities': '@latest'
