@@ -1,0 +1,12 @@
+services:
+  tumbleweed:
+    image: 'opensuse/tumbleweed'
+    command: sh -c '
+        zypper -n install cmake extra-cmake-modules gcc-c++ gcc xcb-util-devel git gettext libSM-devel wayland-devel libQt5DBus-devel libQt5Gui-devel qtdeclarative-imports-provides-qt5 libqt5-qtdeclarative-devel knotifications-devel kactivities5-devel karchive-devel kcoreaddons-devel kcoreaddons-devel kguiaddons-devel kcrash-devel kdbusaddons-devel kdeclarative-devel kglobalaccel-devel kirigami2-devel ki18n-devel kiconthemes-devel kio-devel knewstuff-devel plasma-framework-devel kwayland-devel plasma5-workspace-devel kitemmodels-devel libqt5-qtx11extras-devel plasma-wayland-protocols sudo libqt5-qtwayland;
+        git clone "https://github.com/KDE/latte-dock.git";
+        cd "latte-dock";
+        ./install.sh;
+        cp /usr/bin/latte-dock /tmp/output
+      '
+    volumes:
+      - '/tmp/output:/tmp/output'
