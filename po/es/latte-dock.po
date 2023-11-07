@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Smith Ar <audoban@openmailbox.org>, 2017.
-# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022, %Y.
+# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, %Y.
 # Eloy Cuadra <ecuadra@eloihr.net>, 2017, 2019, 2020, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2022-05-14 17:21+0200\n"
+"PO-Revision-Date: 2023-11-04 11:44+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2718,14 +2718,13 @@ msgstr "Desplazamiento"
 #, kde-format
 msgctxt "@label dynamic length configuration"
 msgid "Dynamic Length Adjustments"
-msgstr ""
+msgstr "Ajustes dinámicos de longitud"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
-#, fuzzy, kde-format
-#| msgid "Hide floating gap for maximized windows"
+#, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr "Ocultar el hueco flotante para las ventanas maximizadas"
+msgstr "Maximizar longitud del panel en presencia de ventanas maximizadas"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
@@ -2733,6 +2732,8 @@ msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
 msgstr ""
+"Cambiar la longitud del panel al tamaño máximo de pantalla cuando hay una "
+"ventana maximizada presente en la misma"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format
