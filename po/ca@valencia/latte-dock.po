@@ -1554,7 +1554,7 @@ msgid ""
 "Launcher. It is suggested to disable that option if you remove Latte."
 msgstr ""
 "Reenvia la tecla ⌘ des de KWin a Latte per tal d'activar l'iniciador "
-"d'aplicacions. Se suggerix desactivar esta opció si elimineu Latte."
+"d'aplicacions. Se suggerix desseleccionar esta opció si elimineu Latte."
 
 #. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1049
@@ -2869,7 +2869,7 @@ msgstr "Fons"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:849
 #, kde-format
 msgid "Enable/disable background"
-msgstr "Activa/desactiva el fons"
+msgstr "Activa o desactiva el fons"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:66
@@ -3368,7 +3368,7 @@ msgstr "Eleva en canviar d'activitat"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:51
 #, kde-format
 msgid "Enable/disable applet shadows"
-msgstr "Activa/desactiva les ombres de la miniaplicació"
+msgstr "Activa o desactiva les ombres de la miniaplicació"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:178
 #, kde-format
@@ -3411,7 +3411,7 @@ msgstr "Animacions"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:308
 #, kde-format
 msgid "Enable/disable all animations"
-msgstr "Activa/desactiva totes les animacions"
+msgstr "Activa o desactiva totes les animacions"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:337
 #, kde-format
@@ -3436,7 +3436,7 @@ msgstr "Indicadors"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:397
 #, kde-format
 msgid "Enable/disable indicators"
-msgstr "Activa/desactiva els indicadors"
+msgstr "Activa o desactiva els indicadors"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:426
 #, kde-format

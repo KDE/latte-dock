@@ -85,7 +85,7 @@ msgstr "Lluïssor"
 #: default/package/config/config.qml:231
 #, kde-format
 msgid "Enable/disable indicator glow"
-msgstr "Activa/desactiva la llum de l'indicador"
+msgstr "Activa o desactiva la llum de l'indicador"
 
 #: default/package/config/config.qml:255
 #, kde-format
