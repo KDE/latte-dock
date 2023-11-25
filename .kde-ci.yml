@@ -24,6 +24,6 @@ Dependencies:
     'frameworks/kwindowsystem': '@latest'
     'frameworks/kxmlgui': '@latest'
     'plasma/kwayland': '@latest'
-    'plasma/plasma-framework': '@latest'
+    'plasma/libplasma': '@latest'
     'plasma/plasma-workspace': '@stable'
-    'plasma/kactivities': '@latest'
+    'plasma/plasma-activities': '@latest'
