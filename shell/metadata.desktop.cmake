@@ -98,7 +98,7 @@ Keywords[sl]=shell
 Keywords[sv]=skal
 Keywords[uk]=оболонка
 Keywords[x-test]=xxshellxx
-Keywords[zh_CN]=shell
+Keywords[zh_CN]=shell;外壳程序;waikechengxu;壳;ke;
 Keywords[zh_TW]=shell
 Type=Service
 
