@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-11-25 02:29\n"
+"PO-Revision-Date: 2023-12-09 09:27\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -372,7 +372,7 @@ msgstr "配置模型"
 #: app/package/lattepackage.cpp:42
 #, kde-format
 msgid "Splitter"
-msgstr "分隔器"
+msgstr "拆分线"
 
 #: app/package/lattepackage.cpp:43
 #, kde-format
@@ -1194,7 +1194,7 @@ msgstr "成功导出完整配置..."
 msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
-msgstr "<b>%1</b> 选项卡的设置已更改。<br/>您想要应用或放弃更改吗？"
+msgstr "<b>%1</b> 标签页的设置已更改。<br/>您想要应用或放弃更改吗？"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
 #: app/settings/settingsdialog/settingsdialog.ui:26
