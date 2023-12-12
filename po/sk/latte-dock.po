@@ -1,5 +1,5 @@
 # translation of latte-dock.po to Slovak
-# Roman Paholik <wizzardsk@gmail.com>, 2017, 2022.
+# SPDX-FileCopyrightText: 2017, 2022, 2023 Roman Paholik <wizzardsk@gmail.com>
 # Mthw <jari_45@hotmail.com>, 2018.
 # Matej Mrenica <matejm98mthw@gmail.com>, 2019, 2021.
 # Dusan Kazik <prescott66@gmail.com>, 2020.
@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2022-04-09 11:17+0200\n"
+"PO-Revision-Date: 2023-12-11 19:22+0100\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.08.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #, kde-format
@@ -1919,10 +1919,9 @@ msgstr[1] "Rozloženie: <b>%0</b> úspešne importované<br>"
 msgstr[2] "Rozloženie: <b>%0</b> úspešne importované<br>"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
-#, fuzzy, kde-format
-#| msgid "Options"
+#, kde-format
 msgid "optional"
-msgstr "Voliteľné"
+msgstr "voliteľné"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:107
 #, kde-format
@@ -2094,7 +2093,7 @@ msgstr ""
 #, fuzzy, kde-format
 msgctxt "warning id and title"
 msgid "<b>Warning #%1: %2</b> <br/><br/>"
-msgstr "Upozornenie"
+msgstr "1 upozornenie"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:758
 #, kde-format
@@ -2215,7 +2214,7 @@ msgstr "Odstrániť vybraté rozloženie"
 #| msgid "&Import..."
 msgctxt "import dock/panel"
 msgid "&Import..."
-msgstr "Importovať"
+msgstr "&Importovať..."
 
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
@@ -2641,7 +2640,7 @@ msgstr "Šírka:"
 #, fuzzy, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr "šírka a výška"
+msgstr "šírka a výška:"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
@@ -3964,7 +3963,7 @@ msgstr "Odinštalovať miniaplikáciu"
 #, fuzzy, kde-format
 #| msgid "Add Widgets..."
 msgid "All Widgets"
-msgstr "Všetky widgety"
+msgstr "Všetky miniaplikácie"
 
 #: shell/package/contents/views/WidgetExplorer.qml:227
 #, fuzzy, kde-format
@@ -3983,7 +3982,7 @@ msgid "Search..."
 msgstr "Hľadať..."
 
 #: shell/package/contents/views/WidgetExplorer.qml:264
-#, fuzzy, kde-format
+#, kde-format
 msgid "Categories"
 msgstr "Kategórie"
 
