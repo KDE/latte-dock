@@ -1,4 +1,4 @@
-# Xavier Besnard <xavier.besnard@neuf.fr>, 2020.
+# Xavier Besnard <xavier.besnard@kde.org>, 2020.
 # Christophe Moulin <mevouillon.corp@gmail.com>, 2020.
 msgid ""
 msgstr ""
