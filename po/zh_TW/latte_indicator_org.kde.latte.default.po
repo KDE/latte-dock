@@ -4,20 +4,21 @@
 #
 # Automatically generated, 2019.
 # pan93412 <pan93412@gmail.com>, 2019, 2020.
+# SPDX-FileCopyrightText: 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-10-04 01:38+0000\n"
-"PO-Revision-Date: 2020-02-15 19:56+0800\n"
-"Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"PO-Revision-Date: 2024-01-29 00:45+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 19.12.2\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #: default/package/config/config.qml:23
 #, kde-format
@@ -73,7 +74,7 @@ msgstr "邊距"
 #: default/package/config/config.qml:191
 #, kde-format
 msgid "Corner Margin"
-msgstr ""
+msgstr "角落邊界"
 
 #: default/package/config/config.qml:230
 #, kde-format

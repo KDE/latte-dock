@@ -3,30 +3,31 @@
 #
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017, 2018.
 # pan93412 <pan93412@gmail.com>, 2018, 2019, 2020.
+# SPDX-FileCopyrightText: 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2020-05-14 23:15+0800\n"
-"Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
+"PO-Revision-Date: 2024-01-29 00:55+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 20.04.0\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Jeff Huang, pan93412"
+msgstr "Jeff Huang, pan93412, Kisaragi Hiu"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "s8321414@gmail.com, pan93412@gmail.com"
+msgstr "s8321414@gmail.com, pan93412@gmail.com, mail@kisaragi-hiu.com"
 
 #: app/indicator/factory.cpp:267
 #, kde-format
@@ -177,17 +178,16 @@ msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr "清除 qml 快取。它在系統升級後可能非常有用。"
 
 #: app/main.cpp:100
-#, fuzzy, kde-format
-#| msgid "Enable autostart during startup"
+#, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
-msgstr "在開機時啟用自動啟動"
+msgstr "啟用這個應用程式的自動啟動"
 
 #: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
-msgstr ""
+msgstr "停用這個應用程式的自動啟動"
 
 #: app/main.cpp:102
 #, kde-format
@@ -202,20 +202,16 @@ msgid "Print available layouts"
 msgstr "印出可用的佈局"
 
 #: app/main.cpp:104
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Print available layouts"
+#, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
-msgstr "印出可用的佈局"
+msgstr "印出可用的 dock 範本"
 
 #: app/main.cpp:105
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Print available layouts"
+#, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr "印出可用的佈局"
+msgstr "印出可用的佈局範本"
 
 #: app/main.cpp:106
 #, kde-format
@@ -227,7 +223,7 @@ msgstr "在啟動時載入特定佈局。"
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
-msgstr "佈局名稱(&N)"
+msgstr "佈局名稱"
 
 #: app/main.cpp:107
 #, kde-format
@@ -239,19 +235,19 @@ msgstr "匯入並載入佈局。"
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
-msgstr ""
+msgstr "絕對路徑"
 
 #: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
-msgstr ""
+msgstr "匯入佈局檔案時建議的佈局名稱"
 
 #: app/main.cpp:108
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
-msgstr ""
+msgstr "建議名稱"
 
 #: app/main.cpp:109
 #, kde-format
@@ -298,7 +294,7 @@ msgstr "多重佈局記憶模式。基於執行的活動可以同時有多種佈
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
-msgstr "filter_debug_text"
+msgstr "過濾器除錯文字"
 
 #: app/main.cpp:195
 #, kde-format
@@ -311,26 +307,24 @@ msgid "There are no available layouts, during startup Default will be used."
 msgstr "沒有可用的佈局，啟動時將會使用預設值。"
 
 #: app/main.cpp:213
-#, fuzzy, kde-format
-#| msgid "Available layouts that can be used to start Latte:"
+#, kde-format
 msgid "Available layout templates found in your system:"
-msgstr "可用於啟動 Latte 的佈局："
+msgstr "您的系統上找到可用的佈局範本："
 
 #: app/main.cpp:219
-#, fuzzy, kde-format
-#| msgid "There are no available layouts, during startup Default will be used."
+#, kde-format
 msgid "There are no available layout templates in your system."
-msgstr "沒有可用的佈局，啟動時將會使用預設值。"
+msgstr "您的系統上沒有可用的佈局範本。"
 
 #: app/main.cpp:231
 #, kde-format
 msgid "Available dock templates found in your system:"
-msgstr ""
+msgstr "您的系統上找到可用的 dock 範本："
 
 #: app/main.cpp:237
 #, kde-format
 msgid "There are no available dock templates in your system."
-msgstr ""
+msgstr "您的系統上沒有可用的 dock 範本。"
 
 #: app/main.cpp:269
 #, kde-format
@@ -817,7 +811,7 @@ msgstr "檔案"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr ""
+msgstr "選擇…"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -1035,7 +1029,7 @@ msgstr[0] ""
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
 msgid "Examine..."
-msgstr ""
+msgstr "檢查…"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:640
 #, kde-format
@@ -1755,13 +1749,13 @@ msgstr "匯出您系統的選取佈局"
 #, kde-format
 msgctxt "import layout"
 msgid "&Import From Local File..."
-msgstr ""
+msgstr "從本機檔案匯入…(&I)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:233
 #, kde-format
 msgctxt "download layout"
 msgid "Import From K&DE Online Store..."
-msgstr ""
+msgstr "從 KDE 線上商店匯入…(&D)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:248
 #: app/settings/viewsdialog/viewshandler.cpp:188
@@ -1784,7 +1778,7 @@ msgstr "匯出佈局"
 #: app/settings/viewsdialog/viewshandler.cpp:169
 #, kde-format
 msgid "Templates..."
-msgstr ""
+msgstr "範本…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:170
@@ -2529,11 +2523,10 @@ msgid "Empty"
 msgstr "清空區域"
 
 #: app/templates/templatesmanager.cpp:341
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "view template name"
 msgid "Default Dock"
-msgstr "預設"
+msgstr "預設 dock"
 
 #: app/templates/templatesmanager.cpp:342
 #, fuzzy, kde-format
@@ -2543,11 +2536,10 @@ msgid "Default Panel"
 msgstr "預設"
 
 #: app/templates/templatesmanager.cpp:343
-#, fuzzy, kde-format
-#| msgid "Copy Panel"
+#, kde-format
 msgctxt "view template name"
 msgid "Empty Panel"
-msgstr "複製面板"
+msgstr "空白面板"
 
 #: app/view/contextmenu.cpp:472
 #, kde-format
@@ -2582,13 +2574,13 @@ msgstr ""
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:108
 #, kde-format
 msgid "Rearrange and configure your widgets"
-msgstr ""
+msgstr "重新排列或設定您的元件"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:109
 #, kde-format
 msgid ""
 "Feel free to move around your widgets and configure them from their tooltips"
-msgstr ""
+msgstr "隨意移動您的元件，或用它們的工具提示進行設定"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:126
 #, kde-format
@@ -2675,7 +2667,7 @@ msgstr "工作"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:498
 #, kde-format
 msgid "Add..."
-msgstr ""
+msgstr "新增…"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:500
 #, kde-format
@@ -3889,7 +3881,7 @@ msgstr "為您的指示器使用 %0 樣式"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
 msgid "Install..."
-msgstr ""
+msgstr "安裝…"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, kde-format
@@ -3936,18 +3928,18 @@ msgstr ""
 #: shell/package/contents/views/AppletDelegate.qml:168
 #, kde-format
 msgid "Uninstall widget"
-msgstr ""
+msgstr "解除安裝元件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:155
 #: shell/package/contents/views/WidgetExplorer.qml:265
 #, kde-format
 msgid "All Widgets"
-msgstr ""
+msgstr "所有元件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:227
 #, kde-format
 msgid "Widgets"
-msgstr ""
+msgstr "元件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:235
 #, fuzzy, kde-format
@@ -3968,12 +3960,12 @@ msgstr ""
 #: shell/package/contents/views/WidgetExplorer.qml:363
 #, kde-format
 msgid "No widgets matched the search terms"
-msgstr ""
+msgstr "無元件符合搜尋條件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:363
 #, kde-format
 msgid "No widgets available"
-msgstr ""
+msgstr "無可用的元件"
 
 #~ msgid "Theme"
 #~ msgstr "主題"
