@@ -5,20 +5,21 @@
 # Automatically generated, 2019.
 # pan93412 <pan93412@gmail.com>, 2019, 2020.
 # Jeff Huang <s8321414@gmail.com>, 2021.
+# SPDX-FileCopyrightText: 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2021-08-12 21:10+0800\n"
-"Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
-"Language-Team: Chinese <zh-l10n@lists.slat.org>\n"
+"PO-Revision-Date: 2024-01-29 00:45+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 21.04.3\n"
+"X-Generator: Lokalize 24.01.95\n"
 
 #: default/package/config/config.qml:23
 #, kde-format
@@ -51,7 +52,7 @@ msgstr "作用中的項目顯示點指示器"
 #: default/package/config/config.qml:81
 #, kde-format
 msgid "Thickness"
-msgstr ""
+msgstr "粗細"
 
 #: default/package/config/config.qml:103 default/package/config/config.qml:139
 #: default/package/config/config.qml:177 default/package/config/config.qml:213
@@ -74,7 +75,7 @@ msgstr "邊距"
 #: default/package/config/config.qml:191
 #, kde-format
 msgid "Corner Margin"
-msgstr ""
+msgstr "角落邊界"
 
 #: default/package/config/config.qml:230
 #, kde-format
