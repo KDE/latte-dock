@@ -28,7 +28,8 @@
                 "Name[tr]": "Michail Vourlakos, Smith Ar",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
                 "Name[x-test]": "xxMichail Vourlakos, Smith Arxx",
-                "Name[zh_CN]": "Michail Vourlakos, Smith Ar"
+                "Name[zh_CN]": "Michail Vourlakos, Smith Ar",
+                "Name[zh_TW]": "Michail Vourlakos, Smith Ar"
             }
         ],
         "Category": "",
@@ -58,6 +59,7 @@
         "Description[uk]": "Контейнер панелі Латте",
         "Description[x-test]": "xxContainment provided for the Latte Dockxx",
         "Description[zh_CN]": "用于 Latte 停靠栏的容器",
+        "Description[zh_TW]": "提供給 Latte Dock 使用的容器",
         "EnabledByDefault": true,
         "Id": "org.kde.latte.containment",
         "License": "GPL",
@@ -89,7 +91,7 @@
         "Name[uk]": "контейнер Латте",
         "Name[x-test]": "xxLatte Containmentxx",
         "Name[zh_CN]": "Latte 容器",
-        "Name[zh_TW]": "Latte Containment",
+        "Name[zh_TW]": "Latte 容器",
         "ServiceTypes": [
             "Plasma/Applet",
             "Plasma/Containment"

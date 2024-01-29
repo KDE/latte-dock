@@ -28,7 +28,8 @@
                 "Name[tr]": "Michail Vourlakos, Smith Ar",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
                 "Name[x-test]": "xxMichail Vourlakos, Smith Arxx",
-                "Name[zh_CN]": "Michail Vourlakos, Smith Ar"
+                "Name[zh_CN]": "Michail Vourlakos, Smith Ar",
+                "Name[zh_TW]": "Michail Vourlakos, Smith Ar"
             }
         ],
         "Description": "Shell provided for the Latte Dock",
@@ -56,6 +57,7 @@
         "Description[uk]": "Оболонка панелі Латте",
         "Description[x-test]": "xxShell provided for the Latte Dockxx",
         "Description[zh_CN]": "用于 Latte 停靠栏的 Shell",
+        "Description[zh_TW]": "提供給 Latte Dock 用的 Shell",
         "Id": "org.kde.latte.shell",
         "License": "GPLv3+",
         "Name": "Latte Shell",
