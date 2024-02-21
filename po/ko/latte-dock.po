@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2022-05-16 00:01+0200\n"
+"PO-Revision-Date: 2024-02-10 00:17+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -485,7 +485,7 @@ msgstr "번역"
 #: app/settings/actionsdialog/actionsdialog.ui:14
 #, kde-format
 msgid "Context Menu Actions"
-msgstr "콘텍스트 메뉴 동작"
+msgstr "상황에 맞는 메뉴 동작"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
@@ -632,7 +632,7 @@ msgstr "아이콘:"
 #: app/settings/detailsdialog/detailsdialog.ui:157
 #, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "사용 가능한 경우 레이아웃 콘텍스트 메뉴에 표시"
+msgstr "사용 가능한 경우 레이아웃 상황에 맞는 메뉴에 표시"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
@@ -1509,7 +1509,7 @@ msgstr "⌘ 키를 눌러서 앱 실행기 활성화"
 #: app/settings/settingsdialog/settingsdialog.ui:1071
 #, kde-format
 msgid "Context Menu:"
-msgstr "콘텍스트 메뉴:"
+msgstr "상황에 맞는 메뉴:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:1100
@@ -3422,7 +3422,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:145
 #, kde-format
 msgid "Window actions in the context menu"
-msgstr "콘텍스트 메뉴에 창 동작 표시"
+msgstr "상황에 맞는 메뉴에 창 동작 표시"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:158
 #, kde-format
