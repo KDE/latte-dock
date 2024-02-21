@@ -103,7 +103,7 @@ msgstr "마우스 휠로 작업 전환"
 #: package/contents/ui/config/ConfigInteraction.qml:53
 #, kde-format
 msgid "Show window actions in the context menu"
-msgstr "콘텍스트 메뉴에 창 동작 표시"
+msgstr "상황에 맞는 메뉴에 창 동작 표시"
 
 #: package/contents/ui/config/ConfigInteraction.qml:59
 #, kde-format

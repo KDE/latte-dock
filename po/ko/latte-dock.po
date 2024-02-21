@@ -478,7 +478,7 @@ msgstr "번역"
 #: app/settings/actionsdialog/actionsdialog.ui:14
 #, kde-format
 msgid "Context Menu Actions"
-msgstr "콘텍스트 메뉴 동작"
+msgstr "상황에 맞는 메뉴 동작"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
@@ -625,7 +625,7 @@ msgstr "아이콘:"
 #: app/settings/detailsdialog/detailsdialog.ui:157
 #, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "사용 가능한 경우 레이아웃 콘텍스트 메뉴에 표시"
+msgstr "사용 가능한 경우 레이아웃 상황에 맞는 메뉴에 표시"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
@@ -1418,7 +1418,7 @@ msgstr "Plasma 데스크톱에 사용 가능한 바탕 화면 크기 알리기"
 #: app/settings/settingsdialog/settingsdialog.ui:912
 #, kde-format
 msgid "Context Menu:"
-msgstr "콘텍스트 메뉴:"
+msgstr "상황에 맞는 메뉴:"
 
 #. i18n: ectx: property (text), widget (QLabel, actionsLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:936
@@ -3453,7 +3453,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:145
 #, kde-format
 msgid "Window actions in the context menu"
-msgstr "콘텍스트 메뉴에 창 동작 표시"
+msgstr "상황에 맞는 메뉴에 창 동작 표시"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:158
 #, kde-format
