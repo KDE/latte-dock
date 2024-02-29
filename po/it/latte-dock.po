@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the latte-dock package.
 # Smith Ar <audoban@openmailbox.org>, 2017.
 # Ivan Bordoni <ivan.mail@fastwebnet.it>, 2017.
-# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2022, 2023 Paolo Zamponi <feus73@gmail.com>
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Paolo Zamponi <feus73@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-11-09 20:04+0100\n"
+"PO-Revision-Date: 2024-02-20 19:28+0100\n"
 "Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.2\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -3337,9 +3337,9 @@ msgid ""
 "example an edge visual hint is shown whenever the mouse approaches the "
 "hidden view"
 msgstr ""
-"Dopo che la vista viene nascosta, KWin viene informato di tenere traccia del "
-"riscontro dell'utente. Per esempio, un suggerimento visivo sul bordo viene "
-"mostrato se il mouse si avvicina alla vista nascosta"
+"Dopo che la vista viene nascosta, KWin viene informato di tenere traccia "
+"delle segnalazioni degli utenti. Per esempio, sul bordo viene mostrato un "
+"suggerimento visivo se il mouse si avvicina alla vista nascosta"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:928
 #, kde-format
