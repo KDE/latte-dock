@@ -1,6 +1,6 @@
 About
 =====
-Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and trys to be there only when it is needed.
+Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.
 
 **"Art in Coffee"**
 
@@ -15,7 +15,7 @@ Development
 ============
 
 - Official KDE repo in which you can also send your MRs is located at: https://invent.kde.org/plasma/latte-dock
-- Bug reports can be send at: https://bugs.kde.org/enter_bug.cgi?product=lattedock
+- Bug reports can be sent at: https://bugs.kde.org/enter_bug.cgi?product=lattedock
 
 
 Installation
@@ -105,7 +105,7 @@ Minimum requirements:
 ### FreeBSD
 - [FreeBSD Port](https://www.freshports.org/deskutils/latte-dock/)
 
-See the [installation instruction](./INSTALLATION.md) for others Linux distribution or development build
+See the [installation instructions](./INSTALLATION.md) for other Linux distributions or development builds
 
 ## Run Latte-Dock
 
@@ -114,7 +114,7 @@ Latte is now ready to be used by executing
 latte-dock
 ```
 
-or activating **Latte Dock** from applications menu.
+or activating **Latte Dock** from the applications menu.
 
 
 Contributors
