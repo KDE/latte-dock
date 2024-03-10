@@ -15,8 +15,8 @@ target_link_libraries(lattecontainmentplugin
                       Qt::Core
                       Qt::Qml
                       Qt::Quick
-                      KF6::Plasma
-                      KF6::PlasmaQuick)
+                      Plasma
+                      PlasmaQuick)
 
 install(TARGETS lattecontainmentplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/containment)
 install(FILES plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/latte/private/containment)

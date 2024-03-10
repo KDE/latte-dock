@@ -1,5 +1,5 @@
-project(lattedock)
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+project(lattedock)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -32,9 +32,17 @@ include(WriteBasicConfigVersionFile)
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
 
+#find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
+#    Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2
+#    I18n IconThemes KIO NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
+
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
-    Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2
-    I18n IconThemes KIO NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
+    Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2
+    I18n IconThemes KIO NewStuff Notifications WindowSystem XmlGui)
+
+find_package(Plasma ${KF6_MIN_VERSION} REQUIRED)
+find_package(PlasmaActivities ${KF6_MIN_VERSION} REQUIRED)
+find_package(PlasmaQuick ${KF6_MIN_VERSION} REQUIRED)
 
 find_package(LibTaskManager REQUIRED)
 add_definitions(-DPLASMA_WORKSPACE_VERSION="${LibTaskManager_VERSION}")
@@ -61,7 +69,7 @@ if(X11_FOUND AND XCB_XCB_FOUND)
 endif()
 
 
-find_package(QtWaylandScanner REQUIRED)
+#find_package(QtWaylandScanner REQUIRED)
 find_package(Qt${QT_MAJOR_VERSION}WaylandClient)
 find_package(PlasmaWaylandProtocols 1.6 REQUIRED)
 find_package(Wayland REQUIRED COMPONENTS Client)

@@ -16,9 +16,9 @@ target_link_libraries(lattecoreplugin
     Qt::Quick
     Qt::Qml
     KF6::CoreAddons
-    KF6::Plasma
-    KF6::PlasmaQuick
     KF6::IconThemes
+    Plasma
+    PlasmaQuick
 )
 
 if(HAVE_X11)

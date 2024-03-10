@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  inherit (pkgs) stdenv libsForQt5;
+  inherit (pkgs) stdenv kdePackages qt6 xorg;
 in
 stdenv.mkDerivation {
   pname = "latte-dock";
@@ -9,9 +9,18 @@ stdenv.mkDerivation {
 
   src = ./.;
 
-  buildInputs = with pkgs; with libsForQt5; [ plasma-framework plasma-wayland-protocols qtwayland xorg.libpthreadstubs xorg.libXdmcp xorg.libSM wayland plasma-workspace plasma-desktop ];
+  buildInputs = with kdePackages; [
+    plasma-activities plasma-sdk
+    plasma-wayland-protocols qt6.full
+    xorg.libpthreadstubs xorg.libXdmcp xorg.libSM
+    wayland plasma-workspace plasma-desktop
+  ];
 
-  nativeBuildInputs = with pkgs; with libsForQt5; [ extra-cmake-modules cmake karchive kwindowsystem qtx11extras kcrash knewstuff wrapQtAppsHook ];
+  nativeBuildInputs = with pkgs; with kdePackages; [
+    extra-cmake-modules cmake
+    karchive kwindowsystem kcrash knewstuff
+    qt6.wrapQtAppsHook
+  ];
 
   postInstall = ''
     mkdir -p $out/etc/xdg/autostart

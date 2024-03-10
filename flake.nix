@@ -2,7 +2,7 @@
   description = "Latte Dock flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/38eff76eca85ed41f0630fe4f50cd92ba78310ff";
   };
 
   outputs = { self, nixpkgs }:
@@ -11,7 +11,7 @@
         latte = import ./default.nix { inherit pkgs; };
     in {
 
-      packages."${system}".latte-dock = latte;
+      packages."${system}".default = latte;
       devShells."${system}".default = latte;
 
     };
