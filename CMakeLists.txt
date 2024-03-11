@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(lattedock)
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(VERSION 0.10.240)
@@ -11,7 +12,7 @@ set(BUG_ADDRESS "https://bugs.kde.org/enter_bug.cgi?product=lattedock")
 set(FAQS "https://userbase.kde.org/LatteDock/FAQ")
 
 set(QT_MIN_VERSION "6.5.0")
-set(KF6_MIN_VERSION "5.240.0")
+set(KF6_MIN_VERSION "6.0.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.84.0")
 
 set(KF6_LOCALE_PREFIX "")
@@ -19,7 +20,7 @@ set(KF6_LOCALE_PREFIX "")
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-include(KDEInstallDirs)
+include(KDEInstallDirs6)
 include(CheckIncludeFiles)
 include(CMakePackageConfigHelpers)
 include(ECMOptionalAddSubdirectory)

@@ -10,6 +10,7 @@ set(lattecoreplugin_SRCS
     types.h
 )
 
+include_directories(${Plasma_INCLUDE_DIRS})
 add_library(lattecoreplugin SHARED ${lattecoreplugin_SRCS})
 
 target_link_libraries(lattecoreplugin
@@ -17,8 +18,8 @@ target_link_libraries(lattecoreplugin
     Qt::Qml
     KF6::CoreAddons
     KF6::IconThemes
-    Plasma
-    PlasmaQuick
+    Plasma::Plasma
+    Plasma::PlasmaQuick
 )
 
 if(HAVE_X11)

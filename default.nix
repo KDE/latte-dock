@@ -13,7 +13,10 @@ stdenv.mkDerivation {
     plasma-activities plasma-sdk
     plasma-wayland-protocols qt6.full
     xorg.libpthreadstubs xorg.libXdmcp xorg.libSM
-    wayland plasma-workspace plasma-desktop
+    wayland
+    plasma-workspace plasma-workspace.dev
+    plasma-desktop plasma-desktop.dev
+    libplasma
   ];
 
   nativeBuildInputs = with pkgs; with kdePackages; [
