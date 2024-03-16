@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2024-03-14 19:30\n"
+"PO-Revision-Date: 2024-03-15 21:03\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
@@ -2622,14 +2622,14 @@ msgstr ""
 #, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr ""
+msgstr "显示最大化窗口时调整面板长度最到最大"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
 msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
-msgstr ""
+msgstr "当屏幕上有最大化窗口时，将面板长度更改为屏幕可显示的最大大小"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
 #, kde-format
