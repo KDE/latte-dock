@@ -15,7 +15,7 @@
 #include <array>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 #include <PlasmaQuick/Dialog>
 
 namespace Latte {

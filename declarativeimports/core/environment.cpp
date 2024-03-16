@@ -9,8 +9,11 @@
 #include <QDebug>
 #include <QProcess>
 
+// KF
+#include <KCoreAddons>
+
 // Plasma
-#include <plasma/version.h>
+#include <Plasma/plasma_version.h>
 
 #define LONGDURATION 240
 #define SHORTDURATION 40
@@ -41,7 +44,7 @@ uint Environment::longDuration() const
 
 uint Environment::frameworksVersion() const
 {
-    return Plasma::version();
+    return KCoreAddons::version();
 }
 
 uint Environment::plasmaDesktopVersion()
@@ -60,29 +63,24 @@ uint Environment::makeVersion(uint major, uint minor, uint release) const
 
 uint Environment::identifyPlasmaDesktopVersion()
 {
-    //! Identify Plasma Desktop version
-    QStringList plasmaDesktopVersionParts = QString(PLASMA_WORKSPACE_VERSION).split(".");
+    uint maj = PLASMA_VERSION_MAJOR;
+    uint min = PLASMA_VERSION_MINOR;
+    uint rel = PLASMA_VERSION_PATCH;
 
-    if (plasmaDesktopVersionParts.count() == 3) {
+    if (maj > 0) {
         qDebug() << " /////////////////////////";
-        uint maj = plasmaDesktopVersionParts[0].toUInt();
-        uint min = plasmaDesktopVersionParts[1].toUInt();
-        uint rel = plasmaDesktopVersionParts[2].toUInt();
+        uint desktopVersion = makeVersion(maj, min, rel);
 
-        if (maj > 0) {
-            uint desktopVersion = makeVersion(maj, min, rel);
-
-            QString message("Plasma Desktop version:  " + QString::number(maj) + "."
-                    + QString::number(min) + "." + QString::number(rel)
-                    + " (" + QString::number(desktopVersion) + ")");
-            qDebug() << message;
-            qDebug() << " /////////////////////////";
-
-            return desktopVersion;
-        }
-
+        QString message("Plasma Desktop version:  " + QString::number(maj) + "."
+                        + QString::number(min) + "." + QString::number(rel)
+                        + " (" + QString::number(desktopVersion) + ")");
+        qDebug() << message;
         qDebug() << " /////////////////////////";
+
+        return desktopVersion;
     }
+
+    qDebug() << " /////////////////////////";
 
     return 0;
 }

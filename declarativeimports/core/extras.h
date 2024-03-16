@@ -24,7 +24,7 @@
 #include <QMetaType>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 //! There are gcc versions that don't support yet that function even though they
 //! publish themselves as C++14 compatible. Such a case is gcc 4.8.x that openSUSE

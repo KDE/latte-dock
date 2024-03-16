@@ -4,13 +4,14 @@ set(lattecoreplugin_SRCS
     lattecoreplugin.cpp
     dialog.cpp
     environment.cpp
+    ManagedTextureNode.cpp
     iconitem.cpp
     quickwindowsystem.cpp
     tools.cpp
     types.h
 )
 
-include_directories(${Plasma_INCLUDE_DIRS})
+#include_directories(${Plasma_INCLUDE_DIRS})
 add_library(lattecoreplugin SHARED ${lattecoreplugin_SRCS})
 
 target_link_libraries(lattecoreplugin
@@ -18,6 +19,7 @@ target_link_libraries(lattecoreplugin
     Qt::Qml
     KF6::CoreAddons
     KF6::IconThemes
+    KF6::Svg
     Plasma::Plasma
     Plasma::PlasmaQuick
 )

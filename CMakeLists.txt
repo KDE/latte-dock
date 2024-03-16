@@ -38,8 +38,23 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui
 #    I18n IconThemes KIO NewStuff Notifications Plasma PlasmaQuick Wayland WindowSystem XmlGui)
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
-    Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2
-    I18n IconThemes KIO NewStuff Notifications WindowSystem XmlGui)
+    Archive
+    CoreAddons
+    Crash
+    DBusAddons
+    Declarative
+    GlobalAccel
+    GuiAddons
+    I18n
+    IconThemes
+    KIO
+    Kirigami2
+    NewStuff
+    Notifications
+    Svg
+    WindowSystem
+    XmlGui
+)
 
 find_package(Plasma ${KF6_MIN_VERSION} REQUIRED)
 find_package(PlasmaActivities ${KF6_MIN_VERSION} REQUIRED)

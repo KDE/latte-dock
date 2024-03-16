@@ -21,8 +21,8 @@
 #include <QImage>
 #include <QPixmap>
 
-// Plasma
-#include <Plasma/Svg>
+// KF
+#include <KSvg/Svg>
 
 // this file is based on PlasmaCore::IconItem class, thanks to KDE
 namespace Latte {
@@ -139,7 +139,7 @@ public:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *updatePaintNodeData) override;
 
     void itemChange(ItemChange change, const ItemChangeData &value) override;
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+    void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
 
     void componentComplete() Q_DECL_OVERRIDE;
 
@@ -185,7 +185,7 @@ private:
     QIcon m_icon;
     QPixmap m_iconPixmap;
     QImage m_imageIcon;
-    std::unique_ptr<Plasma::Svg> m_svgIcon;
+    std::unique_ptr<KSvg::Svg> m_svgIcon;
     QString m_svgIconName;
 
     //! can be used to track changes during source "changes" independent

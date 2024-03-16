@@ -16,7 +16,7 @@ stdenv.mkDerivation {
     wayland
     plasma-workspace plasma-workspace.dev
     plasma-desktop plasma-desktop.dev
-    libplasma
+    libplasma ksvg ksvg.dev
   ];
 
   nativeBuildInputs = with pkgs; with kdePackages; [
