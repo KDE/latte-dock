@@ -40,8 +40,10 @@ IconItem::IconItem(QQuickItem *parent)
       m_textureChanged(false),
       m_sizeChanged(false),
       m_usesPlasmaTheme(false),
-      m_lastValidSourceName(QString()),
-      m_colorGroup(Plasma::Theme::NormalColorGroup)
+      m_lastValidSourceName(QString())
+      // FIXME:
+      // See the comment in the header
+      // m_colorGroup(Plasma::Theme::NormalColorGroup)
 {
     setFlag(ItemHasContents, true);
     connect(KIconLoader::global(), SIGNAL(iconLoaderSettingsChanged()),
@@ -96,7 +98,9 @@ void IconItem::setSource(const QVariant &source)
         } else {
             if (!m_svgIcon) {
                 m_svgIcon = std::make_unique<KSvg::Svg>(this);
-                m_svgIcon->setColorGroup(m_colorGroup);
+                // FIXME:
+                // See the comment in the header
+                //m_svgIcon->setColorGroup(m_colorGroup);
                 m_svgIcon->setStatus(KSvg::Svg::Normal);
                 m_svgIcon->setUsingRenderingCache(false);
                 m_svgIcon->setDevicePixelRatio((window() ? window()->devicePixelRatio() : qApp->devicePixelRatio()));

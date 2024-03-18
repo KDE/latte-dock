@@ -23,6 +23,7 @@
 
 // KF
 #include <KSvg/Svg>
+#include <Plasma/Theme>
 
 // this file is based on PlasmaCore::IconItem class, thanks to KDE
 namespace Latte {
@@ -49,7 +50,10 @@ class IconItem : public QQuickItem
      * Specifies the color group to use for this icon
      * This only applies to icons loaded from the plasma theme
      */
-    Q_PROPERTY(Plasma::Theme::ColorGroup colorGroup READ colorGroup WRITE setColorGroup NOTIFY colorGroupChanged)
+    // FIXME:
+    // this needs to be replaced with ColorSet from Kirigami2
+    // https://api.kde.org/frameworks/kirigami/html/classKirigami_1_1Platform_1_1PlatformTheme.html
+    //Q_PROPERTY(Plasma::Theme::ColorGroup colorGroup READ colorGroup WRITE setColorGroup NOTIFY colorGroupChanged)
 
     /**
       * Specifies the overlay(s) for this icon
