@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2024-02-26 21:30+0100\n"
+"PO-Revision-Date: 2024-03-24 10:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo.org>\n"
 "Language: eo\n"
@@ -33,7 +33,7 @@ msgstr "Linio"
 #: default/package/config/config.qml:46
 #, kde-format
 msgid "Show a line indicator for active items"
-msgstr ""
+msgstr "Montri linion indikilon por aktivaj eroj"
 
 #: default/package/config/config.qml:60
 #, kde-format
@@ -44,7 +44,7 @@ msgstr "Punktoj"
 #: default/package/config/config.qml:64
 #, kde-format
 msgid "Show a dot indicator for active items"
-msgstr ""
+msgstr "Montri punkton indikilon por aktivaj eroj"
 
 #: default/package/config/config.qml:81
 #, kde-format
@@ -82,18 +82,18 @@ msgstr "Brilas"
 #: default/package/config/config.qml:231
 #, kde-format
 msgid "Enable/disable indicator glow"
-msgstr ""
+msgstr "Ebligi/malŝalti indikilon brilon"
 
 #: default/package/config/config.qml:255
 #, kde-format
 msgctxt "glow only to active task/applet indicators"
 msgid "On Active"
-msgstr ""
+msgstr "Sur Aktiva"
 
 #: default/package/config/config.qml:259
 #, kde-format
 msgid "Add glow only to active task/applet indicator"
-msgstr ""
+msgstr "Aldoni brilon nur al aktiva tasko/apleta indikilo"
 
 #: default/package/config/config.qml:273
 #, kde-format
@@ -104,7 +104,7 @@ msgstr "Ĉiuj"
 #: default/package/config/config.qml:277
 #, kde-format
 msgid "Add glow to all task/applet indicators"
-msgstr ""
+msgstr "Aldoni brilon al ĉiuj taskaj/apletaj indikiloj"
 
 #: default/package/config/config.qml:299
 #, kde-format
@@ -119,12 +119,12 @@ msgstr "Taskoj"
 #: default/package/config/config.qml:351
 #, kde-format
 msgid "Different color for minimized windows"
-msgstr ""
+msgstr "Malsama koloro por minimumigitaj fenestroj"
 
 #: default/package/config/config.qml:361
 #, kde-format
 msgid "Show an extra dot for grouped windows when active"
-msgstr ""
+msgstr "Montri kroman punkton por grupigitaj fenestroj kiam aktiva"
 
 #: default/package/config/config.qml:362
 #, kde-format
@@ -141,14 +141,14 @@ msgstr "Elektebloj"
 #: default/package/config/config.qml:380
 #, kde-format
 msgid "Show indicators for applets"
-msgstr ""
+msgstr "Montri indikilojn por apletoj"
 
 #: default/package/config/config.qml:381
 #, kde-format
 msgid "Indicators are shown for applets"
-msgstr ""
+msgstr "Indikiloj estas montritaj por apletoj"
 
 #: default/package/config/config.qml:391
 #, kde-format
 msgid "Reverse indicator style"
-msgstr ""
+msgstr "Inversa indikilo stilo"

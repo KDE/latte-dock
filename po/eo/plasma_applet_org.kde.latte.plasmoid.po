@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2024-02-26 21:30+0100\n"
+"PO-Revision-Date: 2024-03-24 10:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo.org>\n"
 "Language: eo\n"
@@ -31,37 +31,37 @@ msgstr "Panelo"
 #: package/contents/config/config.qml:23
 #, kde-format
 msgid "Interaction"
-msgstr ""
+msgstr "Interago"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
 #, kde-format
 msgid "Maximum icon size: "
-msgstr ""
+msgstr "Maksimuma piktogramograndeco:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
 msgid "Enable shadows for icons"
-msgstr ""
+msgstr "Ebligi ombrojn por piktogramoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:145
 #, kde-format
 msgid "Show glow around windows points"
-msgstr ""
+msgstr "Montri brilon ĉirkaŭ fenestropunktoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:151
 #, kde-format
 msgid "Different color for minimized windows"
-msgstr ""
+msgstr "Malsama koloro por minimumigitaj fenestroj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:157
 #, kde-format
 msgid "Indicator for active window group"
-msgstr ""
+msgstr "Indikilo por aktiva fenestra grupo"
 
 #: package/contents/ui/config/ConfigAppearance.qml:175
 #, kde-format
 msgid "Animations: "
-msgstr ""
+msgstr "Animacioj:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:193
 #, kde-format
@@ -81,12 +81,12 @@ msgstr "Zomo"
 #: package/contents/ui/config/ConfigAppearance.qml:219
 #, kde-format
 msgid "Level: "
-msgstr ""
+msgstr "Nivelo:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:263
 #, kde-format
 msgid "Show a red line on the limit needed for animations"
-msgstr ""
+msgstr "Montri ruĝan linion sur la limo necesa por kuraĝigoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:294
 #: package/contents/ui/config/ConfigPanel.qml:144
@@ -98,22 +98,22 @@ msgstr ""
 #: package/contents/ui/config/ConfigInteraction.qml:46
 #, kde-format
 msgid "Cycle through tasks with mouse wheel"
-msgstr ""
+msgstr "Cikli tra taskoj per musrado"
 
 #: package/contents/ui/config/ConfigInteraction.qml:53
 #, kde-format
 msgid "Show window actions in the context menu"
-msgstr ""
+msgstr "Montri fenestrajn agojn en la kunteksta menuo"
 
 #: package/contents/ui/config/ConfigInteraction.qml:59
 #, kde-format
 msgid "Show progress information for tasks"
-msgstr ""
+msgstr "Montri progresinformojn por taskoj"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
 #, kde-format
 msgid "Middle Click"
-msgstr ""
+msgstr "Meza Klako"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -124,17 +124,17 @@ msgstr "Neniu"
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "Close Window or Group"
-msgstr ""
+msgstr "Fermi Fenestron aŭ Grupon"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "New Instance"
-msgstr ""
+msgstr "Nova Instanco"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "Minimize/Restore Window or Group"
-msgstr ""
+msgstr "Minimumi/Restarigi Fenestron aŭ Grupon"
 
 #: package/contents/ui/config/ConfigInteraction.qml:76
 #, kde-format
@@ -150,17 +150,17 @@ msgstr "Neniu"
 #: package/contents/ui/config/ConfigInteraction.qml:84
 #, kde-format
 msgid "Preview Windows"
-msgstr ""
+msgstr "Antaŭrigardi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:85
 #, kde-format
 msgid "Highlight Windows"
-msgstr ""
+msgstr "Reliefigi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:86
 #, kde-format
 msgid "Preview and Highlight Windows"
-msgstr ""
+msgstr "Antaŭrigardi kaj Reliefigi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:132
 #, kde-format
@@ -170,32 +170,32 @@ msgstr "Filtriloj"
 #: package/contents/ui/config/ConfigInteraction.qml:143
 #, kde-format
 msgid "Show only tasks from the current screen"
-msgstr ""
+msgstr "Montri nur taskojn de la nuna ekrano"
 
 #: package/contents/ui/config/ConfigInteraction.qml:148
 #, kde-format
 msgid "Show only tasks from the current desktop"
-msgstr ""
+msgstr "Montri nur taskojn de la nuna labortablo"
 
 #: package/contents/ui/config/ConfigInteraction.qml:153
 #, kde-format
 msgid "Show only tasks from the current activity"
-msgstr ""
+msgstr "Montri nur taskojn el la nuna agado"
 
 #: package/contents/ui/config/ConfigPanel.qml:48
 #, kde-format
 msgid "Show bar line for tasks"
-msgstr ""
+msgstr "Montri stangolinion por taskoj"
 
 #: package/contents/ui/config/ConfigPanel.qml:55
 #, kde-format
 msgid "Use plasma theme panel"
-msgstr ""
+msgstr "Uzi plasma-etosan panelon"
 
 #: package/contents/ui/config/ConfigPanel.qml:62
 #, kde-format
 msgid "Use transparency in the panel"
-msgstr ""
+msgstr "Uzi travideblecon en la panelo"
 
 #: package/contents/ui/config/ConfigPanel.qml:69
 #, kde-format
@@ -205,24 +205,24 @@ msgstr "Grandeco: "
 #: package/contents/ui/ContextMenu.qml:51
 #, kde-format
 msgid "Top Separator"
-msgstr ""
+msgstr "Supra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Left Separator"
-msgstr ""
+msgstr "Maldekstra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Right Separator"
-msgstr ""
+msgstr "Dekstra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr ""
+msgstr "Malsupra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:102
 #, kde-format
@@ -289,12 +289,12 @@ msgstr "Silentigi"
 #: package/contents/ui/ContextMenu.qml:336
 #, kde-format
 msgid "Start New Instance"
-msgstr ""
+msgstr "Komenci Novan Instancon"
 
 #: package/contents/ui/ContextMenu.qml:352
 #, kde-format
 msgid "Move To &Desktop"
-msgstr ""
+msgstr "Movi al La&bortablo"
 
 #: package/contents/ui/ContextMenu.qml:374
 #, kde-format
@@ -314,7 +314,7 @@ msgstr "&Nova Labortablo"
 #: package/contents/ui/ContextMenu.qml:438
 #, kde-format
 msgid "Move To &Activity"
-msgstr ""
+msgstr "Movi al &Agado"
 
 #: package/contents/ui/ContextMenu.qml:459
 #, kde-format
@@ -380,7 +380,7 @@ msgstr "Permesi al ĉi programo esti grupata"
 #: package/contents/ui/ContextMenu.qml:695
 #, kde-format
 msgid "&Pin Launcher"
-msgstr ""
+msgstr "Al&pingli Lanĉilon"
 
 #: package/contents/ui/ContextMenu.qml:748
 #, kde-format
@@ -395,7 +395,7 @@ msgstr "Pri La Nuna Agado"
 #: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "Unpin Launcher"
-msgstr ""
+msgstr "Malpingla Lanĉilo"
 
 #: package/contents/ui/ContextMenu.qml:791
 #, kde-format
@@ -423,7 +423,7 @@ msgstr "&Fermi"
 #: package/contents/ui/main.qml:1066
 #, kde-format
 msgid "Tasks Area"
-msgstr ""
+msgstr "Areo de Taskoj"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:477
 #, kde-format
