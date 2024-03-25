@@ -219,24 +219,24 @@ void IconItem::setLastValidSourceName(QString name)
     emit lastValidSourceNameChanged();
 }
 
-void IconItem::setColorGroup(Plasma::Theme::ColorGroup group)
+void IconItem::setColorSet(KSvg::Svg::ColorSet s)
 {
-    if (m_colorGroup == group) {
+    if (m_colorSet == s) {
         return;
     }
 
-    m_colorGroup = group;
+    m_colorSet = s;
 
     if (m_svgIcon) {
-        m_svgIcon->setColorGroup(group);
+        m_svgIcon->setColorSet(s);
     }
 
-    emit colorGroupChanged();
+    emit colorSetChanged();
 }
 
-Plasma::Theme::ColorGroup IconItem::colorGroup() const
+KSvg::Svg::ColorSet IconItem::colorSet() const
 {
-    return m_colorGroup;
+    return m_colorSet;
 }
 
 

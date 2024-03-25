@@ -50,10 +50,7 @@ class IconItem : public QQuickItem
      * Specifies the color group to use for this icon
      * This only applies to icons loaded from the plasma theme
      */
-    // FIXME:
-    // this needs to be replaced with ColorSet from Kirigami2
-    // https://api.kde.org/frameworks/kirigami/html/classKirigami_1_1Platform_1_1PlatformTheme.html
-    //Q_PROPERTY(Plasma::Theme::ColorGroup colorGroup READ colorGroup WRITE setColorGroup NOTIFY colorGroupChanged)
+    Q_PROPERTY(KSvg::Svg::ColorSet colorSet READ colorSet WRITE setColorSet NOTIFY colorSetChanged)
 
     /**
       * Specifies the overlay(s) for this icon
@@ -110,8 +107,8 @@ public:
     void setSource(const QVariant &source);
     QVariant source() const;
 
-    void setColorGroup(Plasma::Theme::ColorGroup group);
-    Plasma::Theme::ColorGroup colorGroup() const;
+    void setColorSet(KSvg::Svg::ColorSet s);
+    KSvg::Svg::ColorSet colorSet() const;
 
     void setOverlays(const QStringList &overlays);
     QStringList overlays() const;
@@ -150,7 +147,7 @@ public:
 signals:
     void activeChanged();
     void backgroundColorChanged();
-    void colorGroupChanged();
+    void colorSetChanged();
     void glowColorChanged();
     void lastValidSourceNameChanged();
     void overlaysChanged();
@@ -209,7 +206,7 @@ private:
 
     QStringList m_overlays;
 
-    Plasma::Theme::ColorGroup m_colorGroup;
+    KSvg::Svg::ColorSet m_colorSet;
 
     //this contains the raw variant it was passed
     QVariant m_source;
