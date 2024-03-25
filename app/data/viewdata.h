@@ -16,7 +16,7 @@
 #include <QString>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 
 namespace Latte {

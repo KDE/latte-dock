@@ -14,7 +14,7 @@
 #include <QObject>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 // KDE
 #include <KConfigGroup>

@@ -10,7 +10,7 @@
 #include <QObject>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 namespace Latte{
 

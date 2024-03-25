@@ -32,10 +32,10 @@
 
 // KDE
 #include <KSharedConfig>
-#include <KActivities/Consumer>
+#include <PlasmaActivities/Consumer>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 
 namespace Latte {

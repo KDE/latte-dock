@@ -51,6 +51,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Kirigami2
     NewStuff
     Notifications
+    Package
     Svg
     WindowSystem
     XmlGui

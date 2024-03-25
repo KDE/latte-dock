@@ -9,9 +9,12 @@
 // Qt
 #include <QObject>
 
+// KF
+#include <KSvg/FrameSvg>
+#include <KSvg/Svg>
+
 // Plasma
-#include <Plasma>
-#include <Plasma/FrameSvg>
+#include <Plasma/Plasma>
 
 namespace Latte {
 namespace PlasmaExtended {
@@ -64,19 +67,19 @@ signals:
     void maxOpacityChanged();
 
 private:
-    bool hasMask(Plasma::Svg *svg) const;
+    bool hasMask(KSvg::Svg *svg) const;
 
     QString prefixed(const QString &id);
-    QString element(Plasma::Svg *svg, const QString &id);
+    QString element(KSvg::Svg *svg, const QString &id);
 
-    void updateMaxOpacity(Plasma::Svg *svg);
-    void updatePaddings(Plasma::Svg *svg);
-    void updateRoundness(Plasma::Svg *svg);
-    void updateShadow(Plasma::Svg *svg);
+    void updateMaxOpacity(KSvg::Svg *svg);
+    void updatePaddings(KSvg::Svg *svg);
+    void updateRoundness(KSvg::Svg *svg);
+    void updateShadow(KSvg::Svg *svg);
 
-    void updateRoundnessFromMask(Plasma::Svg *svg);
-    void updateRoundnessFromShadows(Plasma::Svg *svg);
-    void updateRoundnessFallback(Plasma::Svg *svg);
+    void updateRoundnessFromMask(KSvg::Svg *svg);
+    void updateRoundnessFromShadows(KSvg::Svg *svg);
+    void updateRoundnessFallback(KSvg::Svg *svg);
 
 private:
     int m_paddingTop{0};

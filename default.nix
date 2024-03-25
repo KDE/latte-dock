@@ -10,7 +10,7 @@ stdenv.mkDerivation {
   src = ./.;
 
   buildInputs = with kdePackages; [
-    plasma-activities plasma-sdk
+    plasma-activities plasma-activities.dev plasma-sdk
     plasma-wayland-protocols qt6.full
     xorg.libpthreadstubs xorg.libXdmcp xorg.libSM
     wayland

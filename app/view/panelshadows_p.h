@@ -8,10 +8,10 @@
 
 #include <QSet>
 
-#include "plasma/framesvg.h"
-#include "plasma/svg.h"
+#include <KSvg/FrameSvg>
+#include <KSvg/Svg>
 
-class PanelShadows : public Plasma::Svg
+class PanelShadows : public KSvg::Svg
 {
     Q_OBJECT
 
@@ -21,10 +21,10 @@ public:
 
     static PanelShadows *self();
 
-    void addWindow(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
+    void addWindow(QWindow *window, KSvg::FrameSvg::EnabledBorders enabledBorders = KSvg::FrameSvg::AllBorders);
     void removeWindow(QWindow *window);
 
-    void setEnabledBorders(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders = Plasma::FrameSvg::AllBorders);
+    void setEnabledBorders(QWindow *window, KSvg::FrameSvg::EnabledBorders enabledBorders = KSvg::FrameSvg::AllBorders);
 
 private:
     class Private;

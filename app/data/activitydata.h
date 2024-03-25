@@ -16,8 +16,8 @@
 #include <QIcon>
 #include <QString>
 
-//! KActivities
-#include <KActivities/Info>
+//! Plasma Activities
+#include <PlasmaActivities/Info>
 
 namespace Latte {
 namespace Data {

@@ -15,8 +15,10 @@
 #include <QQuickView>
 #include <QRect>
 
+// KF
+#include <KSvg/FrameSvg>
+
 // Plasma
-#include <Plasma/FrameSvg>
 #include <Plasma/Theme>
 
 namespace Latte {

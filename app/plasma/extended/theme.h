@@ -18,8 +18,11 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+// KF
+#include <KSvg/FrameSvg>
+#include <KSvg/Svg>
+
 // Plasma
-#include <Plasma/FrameSvg>
 #include <Plasma/Theme>
 
 namespace Latte {

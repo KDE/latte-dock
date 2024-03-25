@@ -13,7 +13,7 @@
 #include <KConfigGroup>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 namespace Plasma {
 class Types;

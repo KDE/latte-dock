@@ -12,7 +12,7 @@
 
 // X11
 #include <KWindowSystem>
-#include <kx11extras.h>
+#include <KX11Extras>
 
 namespace Latte {
 

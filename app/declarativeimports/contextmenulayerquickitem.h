@@ -17,7 +17,7 @@
 #include <QObject>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Applet>
 
 namespace Plasma {
 class Applet;

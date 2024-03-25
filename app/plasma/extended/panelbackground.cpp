@@ -32,7 +32,7 @@ PanelBackground::~PanelBackground()
 {
 }
 
-bool PanelBackground::hasMask(Plasma::Svg *svg) const
+bool PanelBackground::hasMask(KSvg::Svg *svg) const
 {
     if (!svg) {
         return false;
@@ -96,7 +96,7 @@ QString PanelBackground::prefixed(const QString &id)
     return id;
 }
 
-QString PanelBackground::element(Plasma::Svg *svg, const QString &id)
+QString PanelBackground::element(KSvg::Svg *svg, const QString &id)
 {
     if (!svg) {
         return "";
@@ -113,7 +113,7 @@ QString PanelBackground::element(Plasma::Svg *svg, const QString &id)
     return "";
 }
 
-void PanelBackground::updateMaxOpacity(Plasma::Svg *svg)
+void PanelBackground::updateMaxOpacity(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -149,7 +149,7 @@ void PanelBackground::updateMaxOpacity(Plasma::Svg *svg)
     emit maxOpacityChanged();
 }
 
-void PanelBackground::updatePaddings(Plasma::Svg *svg)
+void PanelBackground::updatePaddings(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -163,7 +163,7 @@ void PanelBackground::updatePaddings(Plasma::Svg *svg)
     emit paddingsChanged();
 }
 
-void PanelBackground::updateRoundnessFromMask(Plasma::Svg *svg)
+void PanelBackground::updateRoundnessFromMask(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -317,7 +317,7 @@ void PanelBackground::updateRoundnessFromMask(Plasma::Svg *svg)
 
 
 
-void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
+void PanelBackground::updateRoundnessFromShadows(KSvg::Svg *svg)
 {
     //! 1.  Algorithm is choosing which corner shadow based on panel location
     //! 2.  For that corner discovers the maxOpacity (most solid shadow point) and
@@ -494,7 +494,7 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
     emit roundnessChanged();
 }
 
-void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
+void PanelBackground::updateRoundnessFallback(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -549,7 +549,7 @@ void PanelBackground::updateRoundnessFallback(Plasma::Svg *svg)
     emit roundnessChanged();
 }
 
-void PanelBackground::updateShadow(Plasma::Svg *svg)
+void PanelBackground::updateShadow(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -651,7 +651,7 @@ void PanelBackground::updateShadow(Plasma::Svg *svg)
 }
 
 
-void PanelBackground::updateRoundness(Plasma::Svg *svg)
+void PanelBackground::updateRoundness(KSvg::Svg *svg)
 {
     if (!svg) {
         return;
@@ -671,7 +671,7 @@ void PanelBackground::updateRoundness(Plasma::Svg *svg)
 
 void PanelBackground::update()
 {
-    Plasma::Svg *backSvg = new Plasma::Svg(this);
+    KSvg::Svg *backSvg = new KSvg::Svg(this);
     backSvg->setImagePath(QStringLiteral("widgets/panel-background"));
     backSvg->resize();
 

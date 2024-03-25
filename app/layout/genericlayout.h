@@ -20,7 +20,7 @@
 #include <QScreen>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 namespace Plasma {
 class Applet;

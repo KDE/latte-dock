@@ -326,7 +326,7 @@ void Theme::updateBackgrounds()
 
 void Theme::updateHasShadow()
 {
-    Plasma::Svg *svg = new Plasma::Svg(this);
+    KSvg::Svg *svg = new KSvg::Svg(this);
     svg->setImagePath(QStringLiteral("widgets/panel-background"));
     svg->resize();
 
@@ -498,7 +498,7 @@ void Theme::updateMarginsAreaValues()
     m_marginsAreaBottom = 0;
     m_marginsAreaRight = 0;
 
-    Plasma::Svg *svg = new Plasma::Svg(this);
+    KSvg::Svg *svg = new KSvg::Svg(this);
     svg->setImagePath(QStringLiteral("widgets/panel-background"));
 
     bool hasThickSeparatorMargins = svg->hasElement("thick-center");
