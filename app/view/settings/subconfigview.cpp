@@ -324,7 +324,7 @@ void SubConfigView::updateWaylandId()
     }
 }
 
-Plasma::FrameSvg::EnabledBorders SubConfigView::enabledBorders() const
+KSvg::FrameSvg::EnabledBorders SubConfigView::enabledBorders() const
 {
     return m_enabledBorders;
 }

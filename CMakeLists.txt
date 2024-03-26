@@ -60,6 +60,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 find_package(Plasma ${KF6_MIN_VERSION} REQUIRED)
 find_package(PlasmaActivities ${KF6_MIN_VERSION} REQUIRED)
 find_package(PlasmaQuick ${KF6_MIN_VERSION} REQUIRED)
+find_package(KWayland ${KF6_MIN_VERSION} REQUIRED)
 
 find_package(LibTaskManager REQUIRED)
 add_definitions(-DPLASMA_WORKSPACE_VERSION="${LibTaskManager_VERSION}")

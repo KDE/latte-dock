@@ -75,10 +75,10 @@ target_link_libraries(latte-dock
     KF6::NewStuffWidgets
     KF6::Package
     KF6::Svg
-#    KF6::WaylandClient
     KF6::XmlGui
-    Wayland::Client
+    #Wayland::Client
     Plasma::Activities
+    Plasma::KWaylandClient
     Plasma::Plasma
     Plasma::PlasmaQuick
 )

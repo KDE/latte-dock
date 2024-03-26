@@ -119,7 +119,7 @@ void PatternWidget::updateUi()
     m_label->setStyleSheet("QLabel {border: 0px; background-image:none; color:" + m_textColor + "}");
 }
 
-void PatternWidget::enterEvent(QEvent *event)
+void PatternWidget::enterEvent(QEnterEvent *event)
 {
     setCursor(Qt::PointingHandCursor);
     QWidget::enterEvent(event);
