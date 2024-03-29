@@ -1,460 +1,460 @@
+# translation of plasma_applet_org.kde.latte.plasmoid.pot to Esperanto
+# Copyright (C) 2024 Free Software Foundation, Inc.
+# This file is distributed under the same license as the latte-dock package.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2024.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: kdeorg\n"
+"Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
-"PO-Revision-Date: 2024-03-28 19:24\n"
-"Last-Translator: \n"
-"Language-Team: Chinese Simplified\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2024-03-24 10:34+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
+"Language-Team: Esperanto <kde-i18n-eo.org>\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: kdeorg\n"
-"X-Crowdin-Project-ID: 269464\n"
-"X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf5-stable/messages/latte-dock/plasma_applet_org.kde.latte."
-"plasmoid.pot\n"
-"X-Crowdin-File-ID: 6524\n"
+"X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
 msgid "Appearance"
-msgstr "外观"
+msgstr "Aspekto"
 
 #: package/contents/config/config.qml:18
 #, kde-format
 msgid "Panel"
-msgstr "面板"
+msgstr "Panelo"
 
 #: package/contents/config/config.qml:23
 #, kde-format
 msgid "Interaction"
-msgstr "交互"
+msgstr "Interago"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
 #, kde-format
 msgid "Maximum icon size: "
-msgstr "最大图标大小："
+msgstr "Maksimuma piktogramograndeco:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
 msgid "Enable shadows for icons"
-msgstr "显示图标阴影"
+msgstr "Ebligi ombrojn por piktogramoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:145
 #, kde-format
 msgid "Show glow around windows points"
-msgstr "显示光晕到窗口点周围"
+msgstr "Montri brilon ĉirkaŭ fenestropunktoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:151
 #, kde-format
 msgid "Different color for minimized windows"
-msgstr "最小化窗口使用不同颜色"
+msgstr "Malsama koloro por minimumigitaj fenestroj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:157
 #, kde-format
 msgid "Indicator for active window group"
-msgstr "活动窗口组指示器"
+msgstr "Indikilo por aktiva fenestra grupo"
 
 #: package/contents/ui/config/ConfigAppearance.qml:175
 #, kde-format
 msgid "Animations: "
-msgstr "动效："
+msgstr "Animacioj:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:193
 #, kde-format
 msgid "duration"
-msgstr "持续时间"
+msgstr "daŭro"
 
 #: package/contents/ui/config/ConfigAppearance.qml:193
 #, kde-format
 msgid "disabled"
-msgstr "已禁用"
+msgstr "malŝaltita"
 
 #: package/contents/ui/config/ConfigAppearance.qml:205
 #, kde-format
 msgid "Zoom"
-msgstr "缩放"
+msgstr "Zomo"
 
 #: package/contents/ui/config/ConfigAppearance.qml:219
 #, kde-format
 msgid "Level: "
-msgstr "级别："
+msgstr "Nivelo:"
 
 #: package/contents/ui/config/ConfigAppearance.qml:263
 #, kde-format
 msgid "Show a red line on the limit needed for animations"
-msgstr "显示动效所需的限制红线"
+msgstr "Montri ruĝan linion sur la limo necesa por kuraĝigoj"
 
 #: package/contents/ui/config/ConfigAppearance.qml:294
 #: package/contents/ui/config/ConfigPanel.qml:144
 #, kde-format
 msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
-msgstr "要配置已禁用的设置，请使用 Latte 停靠栏的配置窗口"
+msgstr ""
 
 #: package/contents/ui/config/ConfigInteraction.qml:46
 #, kde-format
 msgid "Cycle through tasks with mouse wheel"
-msgstr "使用鼠标滚轮循环任务"
+msgstr "Cikli tra taskoj per musrado"
 
 #: package/contents/ui/config/ConfigInteraction.qml:53
 #, kde-format
 msgid "Show window actions in the context menu"
-msgstr "在右键菜单中显示窗口操作"
+msgstr "Montri fenestrajn agojn en la kunteksta menuo"
 
 #: package/contents/ui/config/ConfigInteraction.qml:59
 #, kde-format
 msgid "Show progress information for tasks"
-msgstr "显示任务进度信息"
+msgstr "Montri progresinformojn por taskoj"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
 #, kde-format
 msgid "Middle Click"
-msgstr "中键点击"
+msgstr "Meza Klako"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgctxt "The click action"
 msgid "None"
-msgstr "无"
+msgstr "Neniu"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "Close Window or Group"
-msgstr "关闭窗口或分组"
+msgstr "Fermi Fenestron aŭ Grupon"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "New Instance"
-msgstr "启动新实例"
+msgstr "Nova Instanco"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "Minimize/Restore Window or Group"
-msgstr "最小化/恢复窗口或分组"
+msgstr "Minimumi/Restarigi Fenestron aŭ Grupon"
 
 #: package/contents/ui/config/ConfigInteraction.qml:76
 #, kde-format
 msgid "Hover"
-msgstr "悬停"
+msgstr "Ŝvebi"
 
 #: package/contents/ui/config/ConfigInteraction.qml:83
 #, kde-format
 msgctxt "none action"
 msgid "None"
-msgstr "无"
+msgstr "Neniu"
 
 #: package/contents/ui/config/ConfigInteraction.qml:84
 #, kde-format
 msgid "Preview Windows"
-msgstr "预览窗口"
+msgstr "Antaŭrigardi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:85
 #, kde-format
 msgid "Highlight Windows"
-msgstr "突出显示窗口"
+msgstr "Reliefigi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:86
 #, kde-format
 msgid "Preview and Highlight Windows"
-msgstr "预览和突出显示窗口"
+msgstr "Antaŭrigardi kaj Reliefigi Fenestrojn"
 
 #: package/contents/ui/config/ConfigInteraction.qml:132
 #, kde-format
 msgid "Filters"
-msgstr "过滤"
+msgstr "Filtriloj"
 
 #: package/contents/ui/config/ConfigInteraction.qml:143
 #, kde-format
 msgid "Show only tasks from the current screen"
-msgstr "仅显示当前屏幕的任务"
+msgstr "Montri nur taskojn de la nuna ekrano"
 
 #: package/contents/ui/config/ConfigInteraction.qml:148
 #, kde-format
 msgid "Show only tasks from the current desktop"
-msgstr "仅显示当前桌面的任务"
+msgstr "Montri nur taskojn de la nuna labortablo"
 
 #: package/contents/ui/config/ConfigInteraction.qml:153
 #, kde-format
 msgid "Show only tasks from the current activity"
-msgstr "仅显示当前活动的任务"
+msgstr "Montri nur taskojn el la nuna agado"
 
 #: package/contents/ui/config/ConfigPanel.qml:48
 #, kde-format
 msgid "Show bar line for tasks"
-msgstr "为任务显示分隔条"
+msgstr "Montri stangolinion por taskoj"
 
 #: package/contents/ui/config/ConfigPanel.qml:55
 #, kde-format
 msgid "Use plasma theme panel"
-msgstr "使用 Plasma 主题面板"
+msgstr "Uzi plasma-etosan panelon"
 
 #: package/contents/ui/config/ConfigPanel.qml:62
 #, kde-format
 msgid "Use transparency in the panel"
-msgstr "面板带有透明度"
+msgstr "Uzi travideblecon en la panelo"
 
 #: package/contents/ui/config/ConfigPanel.qml:69
 #, kde-format
 msgid "Size: "
-msgstr "大小："
+msgstr "Grandeco: "
 
 #: package/contents/ui/ContextMenu.qml:51
 #, kde-format
 msgid "Top Separator"
-msgstr "顶部分隔符"
+msgstr "Supra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Left Separator"
-msgstr "左侧分隔符"
+msgstr "Maldekstra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Right Separator"
-msgstr "右侧分隔符"
+msgstr "Dekstra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr "底部分隔符"
+msgstr "Malsupra Apartigilo"
 
 #: package/contents/ui/ContextMenu.qml:107
 #, kde-format
 msgid "Places"
-msgstr "常用位置"
+msgstr "Lokoj"
 
 #: package/contents/ui/ContextMenu.qml:112
 #: package/contents/ui/ContextMenu.qml:125
 #, kde-format
 msgid "Recent Documents"
-msgstr "最近文档"
+msgstr "Lasttempaj Dokumentoj"
 
 #: package/contents/ui/ContextMenu.qml:117
 #: package/contents/ui/ContextMenu.qml:130
 #, kde-format
 msgid "Actions"
-msgstr "操作"
+msgstr "Agoj"
 
 #: package/contents/ui/ContextMenu.qml:185
 #, kde-format
 msgctxt "Play previous track"
 msgid "Previous Track"
-msgstr "上一首"
+msgstr "Antaŭa trako"
 
 #: package/contents/ui/ContextMenu.qml:198
 #, kde-format
 msgctxt "Pause playback"
 msgid "Pause"
-msgstr "暂停"
+msgstr "Paŭzi"
 
 #: package/contents/ui/ContextMenu.qml:198
 #, kde-format
 msgctxt "Start playback"
 msgid "Play"
-msgstr "播放"
+msgstr "Ludi"
 
 #: package/contents/ui/ContextMenu.qml:212
 #, kde-format
 msgctxt "Play next track"
 msgid "Next Track"
-msgstr "下一首"
+msgstr "Sekva trako"
 
 #: package/contents/ui/ContextMenu.qml:223
 #, kde-format
 msgctxt "Stop playback"
 msgid "Stop"
-msgstr "停止"
+msgstr "Halti"
 
 #: package/contents/ui/ContextMenu.qml:240
 #, kde-format
 msgctxt "Quit media player app"
 msgid "Quit"
-msgstr "退出"
+msgstr "Forlasi"
 
 #: package/contents/ui/ContextMenu.qml:255
 #, kde-format
 msgctxt "Open or bring to the front window of media player app"
 msgid "Restore"
-msgstr "还原"
+msgstr "Restaŭri"
 
 #: package/contents/ui/ContextMenu.qml:281
 #, kde-format
 msgid "Mute"
-msgstr "静音"
+msgstr "Silentigi"
 
 #: package/contents/ui/ContextMenu.qml:343
 #, kde-format
 msgid "Start New Instance"
-msgstr "启动新实例"
+msgstr "Komenci Novan Instancon"
 
 #: package/contents/ui/ContextMenu.qml:360
 #, kde-format
 msgid "Move To &Desktop"
-msgstr "移动到桌面(&D)"
+msgstr "Movi al La&bortablo"
 
 #: package/contents/ui/ContextMenu.qml:388
 #, kde-format
 msgid "Move &To Current Desktop"
-msgstr "移动到当前桌面(&T)"
+msgstr "Movi al ak&tuala labortablo"
 
 #: package/contents/ui/ContextMenu.qml:406
 #, kde-format
 msgid "&All Desktops"
-msgstr "全部桌面(&A)"
+msgstr "Ĉiuj L&abortabloj"
 
 #: package/contents/ui/ContextMenu.qml:451
 #, kde-format
 msgid "&New Desktop"
-msgstr "新建桌面(&N)"
+msgstr "&Nova Labortablo"
 
 #: package/contents/ui/ContextMenu.qml:476
 #, kde-format
 msgid "Move To &Activity"
-msgstr "移动到活动(&A)"
+msgstr "Movi al &Agado"
 
 #: package/contents/ui/ContextMenu.qml:497
 #, kde-format
 msgid "Add To Current Activity"
-msgstr "添加到当前活动"
+msgstr "Aldoni al Aktuala Aktiveco"
 
 #: package/contents/ui/ContextMenu.qml:507
 #, kde-format
 msgid "All Activities"
-msgstr "全部活动"
+msgstr "Ĉiuj Aktivecoj"
 
 #: package/contents/ui/ContextMenu.qml:574
 #, kde-format
 msgid "More Actions"
-msgstr "更多操作"
+msgstr "Pliaj Agoj"
 
 #: package/contents/ui/ContextMenu.qml:583
 #, kde-format
 msgid "&Move"
-msgstr "移动(&M)"
+msgstr "&Movi"
 
 #: package/contents/ui/ContextMenu.qml:592
 #, kde-format
 msgid "Re&size"
-msgstr "调整大小(&S)"
+msgstr "Ali&grandigi"
 
 #: package/contents/ui/ContextMenu.qml:610
 #, kde-format
 msgid "Ma&ximize"
-msgstr "最大化(&X)"
+msgstr "Ma&ksimumigi"
 
 #: package/contents/ui/ContextMenu.qml:628
 #, kde-format
 msgid "Mi&nimize"
-msgstr "最小化(&N)"
+msgstr "Mi&nimumigi"
 
 #: package/contents/ui/ContextMenu.qml:638
 #, kde-format
 msgid "Keep &Above Others"
-msgstr "置顶(&A)"
+msgstr "Teni Super &Aliaj"
 
 #: package/contents/ui/ContextMenu.qml:648
 #, kde-format
 msgid "Keep &Below Others"
-msgstr "置底(&B)"
+msgstr "Teni Su&b Aliaj"
 
 #: package/contents/ui/ContextMenu.qml:660
 #, kde-format
 msgid "&Fullscreen"
-msgstr "全屏(&F)"
+msgstr "&Tutekrano"
 
 #: package/contents/ui/ContextMenu.qml:672
 #, kde-format
 msgid "&Shade"
-msgstr "折叠(&S)"
+msgstr "&Ombro"
 
 #: package/contents/ui/ContextMenu.qml:688
 #, kde-format
 msgid "Allow this program to be grouped"
-msgstr "允许将此程序的所有窗口合并为一个分组"
+msgstr "Permesi al ĉi programo esti grupata"
 
 #: package/contents/ui/ContextMenu.qml:718
 #: package/contents/ui/ContextMenu.qml:733
 #, kde-format
 msgid "&Pin Launcher"
-msgstr "固定启动器(&P)"
+msgstr "Al&pingli Lanĉilon"
 
 #: package/contents/ui/ContextMenu.qml:786
 #, kde-format
 msgid "On All Activities"
-msgstr "到全部活动"
+msgstr "Pri Ĉiuj Agadoj"
 
 #: package/contents/ui/ContextMenu.qml:792
 #, kde-format
 msgid "On The Current Activity"
-msgstr "到当前活动"
+msgstr "Pri La Nuna Agado"
 
 #: package/contents/ui/ContextMenu.qml:814
 #, kde-format
 msgid "Unpin Launcher"
-msgstr "解除固定启动器"
+msgstr "Malpingla Lanĉilo"
 
 #: package/contents/ui/ContextMenu.qml:829
 #, kde-format
 msgctxt "add separator"
 msgid "Add %1"
-msgstr "添加 %1"
+msgstr "Aldoni %1"
 
 #: package/contents/ui/ContextMenu.qml:847
 #: package/contents/ui/ContextMenu.qml:861
 #, kde-format
 msgctxt "remove separator"
 msgid "Remove %1"
-msgstr "移除 %1"
+msgstr "Forigi %1"
 
 #: package/contents/ui/ContextMenu.qml:905
 #, kde-format
 msgid "Window"
-msgstr "窗口"
+msgstr "Fenestro"
 
 #: package/contents/ui/ContextMenu.qml:917
 #, kde-format
 msgid "&Close"
-msgstr "关闭(&C)"
+msgstr "&Fermi"
 
 #: package/contents/ui/main.qml:1061
 #, kde-format
 msgid "Tasks Area"
-msgstr "任务区"
+msgstr "Areo de Taskoj"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:465
 #, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
-msgstr "位于 %1"
+msgstr "Sur %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:476
 #: package/contents/ui/task/TaskItem.qml:563
 #, kde-format
 msgctxt "Which virtual desktop a window is currently on"
 msgid "Available on all activities"
-msgstr "在全部活动中可见"
+msgstr "Havebla en ĉiuj aktivecoj"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:498
 #: package/contents/ui/task/TaskItem.qml:582
 #, kde-format
 msgctxt "Activities a window is currently on (apart from the current one)"
 msgid "Also available on %1"
-msgstr "同时位于 %1"
+msgstr "Ankaŭ havebla en %1"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:502
 #: package/contents/ui/task/TaskItem.qml:586
 #, kde-format
 msgctxt "Which activities a window is currently on"
 msgid "Available on %1"
-msgstr "位于 %1"
+msgstr "Havebla en %1"
 
 #: package/contents/ui/task/TaskItem.qml:554
 #, kde-format
 msgid "On %1"
-msgstr "位于 %1"
+msgstr "Sur %1"
