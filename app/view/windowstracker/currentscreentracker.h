@@ -8,6 +8,7 @@
 
 // local
 #include "../../wm/abstractwindowinterface.h"
+#include "../../wm/tracker/lastactivewindow.h"
 
 // Qt
 #include <QObject>
@@ -22,9 +23,6 @@ class WindowsTracker;
 namespace WindowSystem {
 class AbstractWindowInterface;
 class SchemeColors;
-namespace Tracker {
-class LastActiveWindow;
-}
 }
 }
 

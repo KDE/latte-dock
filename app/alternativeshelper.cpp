@@ -12,6 +12,7 @@
 
 // KDE
 #include <KPackage/Package>
+#include <KPluginMetaData>
 #include <kconfig_version.h>
 
 // Plasma
@@ -30,16 +31,22 @@ AlternativesHelper::~AlternativesHelper()
 
 QStringList AlternativesHelper::appletProvides() const
 {
-#if KCONFIG_VERSION_MINOR >= 27
-    return KPluginMetaData::readStringList(m_applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+    QString key = QStringLiteral("X-Plasma-Provides");
+#if KCONFIG_VERSION_MAJOR >= 6
+    QStringList def{};
+    return m_applet->pluginMetaData().value(key, def);
+#elif KCONFIG_VERSION_MINOR >= 27 && KCONFIG_VERSION_MAJOR < 6
+    return KPluginMetaData::readStringList(m_applet->pluginMetaData().rawData(), key);
 #else
-    return KPluginMetaData::readStringList(m_applet->pluginInfo().toMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+    return KPluginMetaData::readStringList(m_applet->pluginInfo().toMetaData().rawData(), key);
 #endif
 }
 
 QString AlternativesHelper::currentPlugin() const
 {
-#if KCONFIG_VERSION_MINOR >= 27
+#if KCONFIG_VERSION_MAJOR >= 6
+    return m_applet->pluginMetaData().pluginId();
+#elif KCONFIG_VERSION_MINOR >= 27 && KCONFIG_VERSION_MAJOR < 6
     return m_applet->pluginMetaData().pluginId();
 #else
     return m_applet->pluginInfo().toMetaData().pluginId();

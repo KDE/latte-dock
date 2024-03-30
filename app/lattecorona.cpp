@@ -53,16 +53,17 @@
 #include <QScreen>
 #include <QDBusConnection>
 #include <QDebug>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
 #include <QFile>
 #include <QFontDatabase>
 #include <QQmlContext>
 #include <QProcess>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 #include <Plasma/Corona>
 #include <Plasma/Containment>
+#include <PlasmaActivities/Consumer>
 #include <PlasmaQuick/ConfigView>
 
 // KDE
@@ -73,7 +74,6 @@
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 #include <KAboutData>
-#include <KActivities/Consumer>
 #include <KDeclarative/QmlObjectSharedEngine>
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>

@@ -17,16 +17,15 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QScreen>
+#include <QRandomGenerator>
 
 // KDE
 #include <KLocalizedContext>
-#include <KDeclarative/KDeclarative>
+#include <KPackage/Package>
 #include <KWindowSystem>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
-
-// Plasma
-#include <Plasma/Package>
+#include <KX11Extras>
 
 namespace Latte {
 
@@ -36,7 +35,7 @@ InfoView::InfoView(Latte::Corona *corona, QString message, QScreen *screen, QWin
       m_message(message),
       m_screen(screen)
 {
-    m_id = QString::number(qrand() % 1000);
+    m_id = QString::number(QRandomGenerator::global()->generate() % 1000);
 
     setTitle(validTitle());
 
@@ -77,11 +76,9 @@ void InfoView::init()
 {
     rootContext()->setContextProperty(QStringLiteral("infoWindow"), this);
 
-    KDeclarative::KDeclarative kdeclarative;
-    kdeclarative.setDeclarativeEngine(engine());
-    kdeclarative.setTranslationDomain(QStringLiteral("latte-dock"));
-    kdeclarative.setupContext();
-    kdeclarative.setupEngine(engine());
+    KLocalizedContext *context = new KLocalizedContext(engine());
+    context->setTranslationDomain(QStringLiteral("latte-dock"));
+    engine()->rootContext()->setContextObject(context);
 
     auto source = QUrl::fromLocalFile(m_corona->kPackage().filePath("infoviewui"));
     setSource(source);
@@ -96,7 +93,7 @@ QString InfoView::validTitle() const
     return "#layoutinfowindow#" + m_id;
 }
 
-Plasma::FrameSvg::EnabledBorders InfoView::enabledBorders() const
+KSvg::FrameSvg::EnabledBorders InfoView::enabledBorders() const
 {
     return m_borders;
 }
@@ -215,7 +212,7 @@ bool InfoView::event(QEvent *e)
 
 void InfoView::setOnActivities(QStringList activities)
 {
-    KWindowSystem::setOnActivities(winId(), activities);
+    KX11Extras::setOnActivities(winId(), activities);
 }
 
 }
