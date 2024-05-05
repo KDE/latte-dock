@@ -1,10 +1,12 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config-latte-lib.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-latte-lib.h)
 
+include_directories(../../legacy)
+
 set(lattecoreplugin_SRCS
     lattecoreplugin.cpp
     dialog.cpp
     environment.cpp
-    ManagedTextureNode.cpp
+    ../../legacy/ManagedTextureNode.cpp
     iconitem.cpp
     quickwindowsystem.cpp
     tools.cpp
