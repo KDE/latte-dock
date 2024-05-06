@@ -74,7 +74,9 @@
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 #include <KAboutData>
-#include <KDeclarative/QmlObjectSharedEngine>
+// #include <KDeclarative/QmlObjectSharedEngine>
+// QmlObjectSharedEngine seems to be replaced with...
+#include <PlasmaQuick/SharedQmlEngine>
 #include <KWindowSystem>
 #include <KWayland/Client/connection_thread.h>
 #include <KWayland/Client/registry.h>
@@ -859,12 +861,13 @@ void Corona::onScreenAdded(QScreen *screen)
 
     if (id == -1) {
         m_screenPool->insertScreenMapping(screen->name());
+        id = m_screenPool->id(screen->name());
     }
 
     connect(screen, &QScreen::geometryChanged, this, &Corona::onScreenGeometryChanged);
 
-    emit availableScreenRectChanged();
-    emit screenAdded(m_screenPool->id(screen->name()));
+    emit availableScreenRectChanged(id);
+    emit screenAdded(id);
 
     onScreenCountChanged();
 }
@@ -894,8 +897,8 @@ void Corona::onScreenGeometryChanged(const QRect &geometry)
 
     if (id >= 0) {
         emit screenGeometryChanged(id);
-        emit availableScreenRegionChanged();
-        emit availableScreenRectChanged();
+        emit availableScreenRegionChanged(id);
+        emit availableScreenRectChanged(id);
     }
 }
 
@@ -990,13 +993,13 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
 
     Latte::View *latteView =  m_layoutsManager->synchronizer()->viewForContainment(applet->containment());
 
-    KDeclarative::QmlObjectSharedEngine *qmlObj{nullptr};
+    PlasmaQuick::SharedQmlEngine *qmlObj{nullptr};
 
     if (latteView) {
         latteView->setAlternativesIsShown(true);
-        qmlObj = new KDeclarative::QmlObjectSharedEngine(latteView);
+        qmlObj = new PlasmaQuick::SharedQmlEngine(latteView);
     } else {
-        qmlObj = new KDeclarative::QmlObjectSharedEngine(this);
+        qmlObj = new PlasmaQuick::SharedQmlEngine(this);
     }
 
     qmlObj->setInitializationDelayed(true);
@@ -1021,10 +1024,10 @@ void Corona::showAlternativesForApplet(Plasma::Applet *applet)
             return;
         }
 
-        QMutableListIterator<KDeclarative::QmlObjectSharedEngine *> it(m_alternativesObjects);
+        QMutableListIterator<PlasmaQuick::SharedQmlEngine*> it(m_alternativesObjects);
 
         while (it.hasNext()) {
-            KDeclarative::QmlObjectSharedEngine *obj = it.next();
+            PlasmaQuick::SharedQmlEngine *obj = it.next();
 
             if (obj == qmlObj) {
                 it.remove();
@@ -1042,10 +1045,10 @@ void Corona::alternativesVisibilityChanged(bool visible)
 
     QObject *root = sender();
 
-    QMutableListIterator<KDeclarative::QmlObjectSharedEngine *> it(m_alternativesObjects);
+    QMutableListIterator<PlasmaQuick::SharedQmlEngine*> it(m_alternativesObjects);
 
     while (it.hasNext()) {
-        KDeclarative::QmlObjectSharedEngine *obj = it.next();
+        PlasmaQuick::SharedQmlEngine *obj = it.next();
 
         if (obj->rootObject() == root) {
             it.remove();
