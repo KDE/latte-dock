@@ -23,7 +23,7 @@ msgstr ""
 #: menu.cpp:97
 #, kde-format
 msgid "&Add Widgets..."
-msgstr "Afi&g ginys..."
+msgstr "Afi&g ginys…"
 
 #: menu.cpp:98
 #, kde-format
@@ -65,17 +65,17 @@ msgstr "Mou l'acoblador o el quadro a una disposició diferent"
 #, kde-format
 msgctxt "global settings window"
 msgid "&Configure Latte..."
-msgstr "&Configura Latte..."
+msgstr "&Configura Latte…"
 
 #: menu.cpp:245
 #, kde-format
 msgid "&Edit Dock..."
-msgstr "&Edita l'acoblador..."
+msgstr "&Edita l'acoblador…"
 
 #: menu.cpp:245
 #, kde-format
 msgid "&Edit Panel..."
-msgstr "&Edita el quadro..."
+msgstr "&Edita el quadro…"
 
 #: menu.cpp:248
 #, kde-format
@@ -120,4 +120,4 @@ msgstr "&Elimina el quadro"
 #: menu.cpp:359
 #, kde-format
 msgid "Edit &Layouts..."
-msgstr "Edita les &disposicions..."
+msgstr "Edita les &disposicions…"
