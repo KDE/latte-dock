@@ -2888,7 +2888,7 @@ msgstr "小程序展开时首选使用 Plasma 的配色方案"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1208
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
-msgstr "小程序展开时，Plasma 视觉风格中的背景将显示为不透明"
+msgstr "小程序展开时，Plasma 外观样式中的背景将显示为不透明"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
 #, kde-format
