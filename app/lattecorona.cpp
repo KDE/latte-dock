@@ -230,6 +230,7 @@ void Corona::load()
 
         connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged, Qt::UniqueConnection);
         connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged, Qt::UniqueConnection);
+        //
         connect(m_screenPool, &ScreenPool::primaryScreenChanged, this, &Corona::onScreenCountChanged, Qt::UniqueConnection);
 
         QString loadLayoutName = "";
@@ -648,6 +649,7 @@ QRegion Corona::availableScreenRegionWithCriteria(int id,
                     }
                 }
                 break;
+            default: break;
             }
 
             // Usually availableScreenRect is used by the desktop,
