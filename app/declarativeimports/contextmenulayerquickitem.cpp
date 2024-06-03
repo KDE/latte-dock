@@ -377,19 +377,19 @@ void ContextMenuLayerQuickItem::addAppletActions(QMenu *desktopMenu, Plasma::App
     }
 
     if (!applet->failedToLaunch()) {
-        QAction *runAssociatedApplication = applet->actions()->action(QStringLiteral("run associated application"));
+        QAction *runAssociatedApplication = applet->internalAction(QStringLiteral("run associated application"));
 
         if (runAssociatedApplication && runAssociatedApplication->isEnabled()) {
             desktopMenu->addAction(runAssociatedApplication);
         }
 
-        QAction *configureApplet = applet->actions()->action(QStringLiteral("configure"));
+        QAction *configureApplet = applet->internalAction(QStringLiteral("configure"));
 
         if (configureApplet && configureApplet->isEnabled()) {
             desktopMenu->addAction(configureApplet);
         }
 
-        QAction *appletAlternatives = applet->actions()->action(QStringLiteral("alternatives"));
+        QAction *appletAlternatives = applet->internalAction(QStringLiteral("alternatives"));
 
         if (appletAlternatives && appletAlternatives->isEnabled() && m_latteView->containment()->isUserConfiguring()) {
             desktopMenu->addAction(appletAlternatives);
@@ -434,8 +434,8 @@ void ContextMenuLayerQuickItem::addAppletActions(QMenu *desktopMenu, Plasma::App
     }
 
     if (m_latteView->containment()->immutability() == Plasma::Types::Mutable &&
-            (m_latteView->containment()->containmentType() != Plasma::Types::PanelContainment || m_latteView->containment()->isUserConfiguring())) {
-        QAction *closeApplet = applet->actions()->action(QStringLiteral("remove"));
+            (m_latteView->containment()->containmentType() != Plasma::Containment::Type::Panel || m_latteView->containment()->isUserConfiguring())) {
+        QAction *closeApplet = applet->internalAction(QStringLiteral("remove"));
 
         //qDebug() << "checking for removal" << closeApplet;
         if (closeApplet) {
