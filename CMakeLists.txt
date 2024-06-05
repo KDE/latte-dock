@@ -11,6 +11,10 @@ set(WEBSITE "https://userbase.kde.org/LatteDock")
 set(BUG_ADDRESS "https://bugs.kde.org/enter_bug.cgi?product=lattedock")
 set(FAQS "https://userbase.kde.org/LatteDock/FAQ")
 
+if(DEFINED ENV{GENERATE_COMPILE_COMMANDS})
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+
 set(QT_MIN_VERSION "6.5.0")
 set(KF6_MIN_VERSION "6.0.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.84.0")
