@@ -1,22 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2017.
+# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2021.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
-"PO-Revision-Date: 2017-11-06 22:19+0300\n"
-"Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2021-07-24 00:18+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: \n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 2.0\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
@@ -67,12 +67,12 @@ msgstr "الحركات: "
 #: package/contents/ui/config/ConfigAppearance.qml:193
 #, kde-format
 msgid "duration"
-msgstr ""
+msgstr "المدّة"
 
 #: package/contents/ui/config/ConfigAppearance.qml:193
 #, kde-format
 msgid "disabled"
-msgstr ""
+msgstr "معطّل"
 
 #: package/contents/ui/config/ConfigAppearance.qml:205
 #, kde-format
@@ -112,10 +112,9 @@ msgid "Show progress information for tasks"
 msgstr "أظهر معلومات التّقدم للمهامّ"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
-#, fuzzy, kde-format
-#| msgid "On middle-click:"
+#, kde-format
 msgid "Middle Click"
-msgstr "عند النّقر بالوسط:"
+msgstr "النّقر بالوسط"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -141,12 +140,10 @@ msgstr "صغّر أو استعد النّافذة/المجموعة"
 #: package/contents/ui/config/ConfigInteraction.qml:76
 #, kde-format
 msgid "Hover"
-msgstr ""
+msgstr "حوم"
 
 #: package/contents/ui/config/ConfigInteraction.qml:83
-#, fuzzy, kde-format
-#| msgctxt "The click action"
-#| msgid "None"
+#, kde-format
 msgctxt "none action"
 msgid "None"
 msgstr "بلا"
@@ -236,7 +233,7 @@ msgstr ""
 #: package/contents/ui/ContextMenu.qml:107
 #, kde-format
 msgid "Places"
-msgstr ""
+msgstr "الأماكن"
 
 #: package/contents/ui/ContextMenu.qml:112
 #: package/contents/ui/ContextMenu.qml:125
@@ -246,10 +243,9 @@ msgstr ""
 
 #: package/contents/ui/ContextMenu.qml:117
 #: package/contents/ui/ContextMenu.qml:130
-#, fuzzy, kde-format
-#| msgid "More Actions"
+#, kde-format
 msgid "Actions"
-msgstr "إجراءات أخرى"
+msgstr "الإجراءات"
 
 #: package/contents/ui/ContextMenu.qml:185
 #, kde-format
@@ -304,28 +300,24 @@ msgid "Start New Instance"
 msgstr "ابدأ سيرورة جديدة"
 
 #: package/contents/ui/ContextMenu.qml:360
-#, fuzzy, kde-format
-#| msgid "Move To Desktop"
+#, kde-format
 msgid "Move To &Desktop"
-msgstr "انقل إلى سطح المكتب"
+msgstr "انقل إلى &سطح المكتب"
 
 #: package/contents/ui/ContextMenu.qml:388
-#, fuzzy, kde-format
-#| msgid "Move To Current Desktop"
+#, kde-format
 msgid "Move &To Current Desktop"
-msgstr "انقل إلى سطح المكتب الحاليّ"
+msgstr "انقل إ&لى سطح المكتب الحاليّ"
 
 #: package/contents/ui/ContextMenu.qml:406
-#, fuzzy, kde-format
-#| msgid "All Desktops"
+#, kde-format
 msgid "&All Desktops"
-msgstr "كلّ أسطح المكتب"
+msgstr "&كلّ أسطح المكتب"
 
 #: package/contents/ui/ContextMenu.qml:451
-#, fuzzy, kde-format
-#| msgid "New Desktop"
+#, kde-format
 msgid "&New Desktop"
-msgstr "سطح مكتب جديد"
+msgstr "سطح مكتب &جديد"
 
 #: package/contents/ui/ContextMenu.qml:476
 #, kde-format
@@ -348,52 +340,44 @@ msgid "More Actions"
 msgstr "إجراءات أخرى"
 
 #: package/contents/ui/ContextMenu.qml:583
-#, fuzzy, kde-format
-#| msgid "Move"
+#, kde-format
 msgid "&Move"
-msgstr "انقل"
+msgstr "ا&نقل"
 
 #: package/contents/ui/ContextMenu.qml:592
-#, fuzzy, kde-format
-#| msgid "Resize"
+#, kde-format
 msgid "Re&size"
-msgstr "غيّر الحجم"
+msgstr "&غيّر الحجم"
 
 #: package/contents/ui/ContextMenu.qml:610
-#, fuzzy, kde-format
-#| msgid "Maximize"
+#, kde-format
 msgid "Ma&ximize"
-msgstr "كبّر"
+msgstr "&كبّر"
 
 #: package/contents/ui/ContextMenu.qml:628
-#, fuzzy, kde-format
-#| msgid "Minimize"
+#, kde-format
 msgid "Mi&nimize"
-msgstr "صغّر"
+msgstr "&صغّر"
 
 #: package/contents/ui/ContextMenu.qml:638
-#, fuzzy, kde-format
-#| msgid "Keep Above Others"
+#, kde-format
 msgid "Keep &Above Others"
-msgstr "أبقها فوق غيرها"
+msgstr "أبقِ فو&ق غيرها"
 
 #: package/contents/ui/ContextMenu.qml:648
-#, fuzzy, kde-format
-#| msgid "Keep Below Others"
+#, kde-format
 msgid "Keep &Below Others"
-msgstr "أبقها تحت غيرها"
+msgstr "أبقِ ت&حت غيرها"
 
 #: package/contents/ui/ContextMenu.qml:660
-#, fuzzy, kde-format
-#| msgid "Fullscreen"
+#, kde-format
 msgid "&Fullscreen"
-msgstr "املأ الشّاشة"
+msgstr "ا&ملأ الشّاشة"
 
 #: package/contents/ui/ContextMenu.qml:672
-#, fuzzy, kde-format
-#| msgid "Shade"
+#, kde-format
 msgid "&Shade"
-msgstr "ظلّل"
+msgstr "&ظلّل"
 
 #: package/contents/ui/ContextMenu.qml:688
 #, kde-format
@@ -425,25 +409,24 @@ msgstr ""
 #, kde-format
 msgctxt "add separator"
 msgid "Add %1"
-msgstr ""
+msgstr "أضف %1"
 
 #: package/contents/ui/ContextMenu.qml:847
 #: package/contents/ui/ContextMenu.qml:861
 #, kde-format
 msgctxt "remove separator"
 msgid "Remove %1"
-msgstr ""
+msgstr "أزِل %1"
 
 #: package/contents/ui/ContextMenu.qml:905
 #, kde-format
 msgid "Window"
-msgstr ""
+msgstr "النافذة"
 
 #: package/contents/ui/ContextMenu.qml:917
-#, fuzzy, kde-format
-#| msgid "Close"
+#, kde-format
 msgid "&Close"
-msgstr "أغلق"
+msgstr "أ&غلق"
 
 #: package/contents/ui/main.qml:1061
 #, kde-format
@@ -451,8 +434,7 @@ msgid "Tasks Area"
 msgstr ""
 
 #: package/contents/ui/previews/ToolTipInstance.qml:465
-#, fuzzy, kde-format
-#| msgid "On %1"
+#, kde-format
 msgctxt "Comma-separated list of desktops"
 msgid "On %1"
 msgstr "في %1"

@@ -1,22 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2017.
+# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2021, 2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2017-11-08 06:49+0300\n"
-"Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
-"Language-Team: Arabic <doc@arabeyes.org>\n"
+"PO-Revision-Date: 2022-01-22 22:25+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Lokalize 2.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -87,7 +87,7 @@ msgstr "تخطيطي"
 #: app/layouts/importer.cpp:64
 #, kde-format
 msgid "Alternative"
-msgstr ""
+msgstr "بديل"
 
 #: app/layouts/importer.cpp:324
 #, kde-format
@@ -485,35 +485,32 @@ msgstr "ملفّ التّخطيط الافتراضيّ"
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "مكوّن QML الّذي يظهر بريمجًا في منبثقة"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
-#, fuzzy, kde-format
-#| msgctxt "import full configuration"
-#| msgid "Full Configuration"
+#, kde-format
 msgid "Configuration Definitions"
-msgstr "الضّبط كلّه"
+msgstr "تعاريف الضبط"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:31
 #, kde-format
 msgid "User Interface"
-msgstr ""
+msgstr "واجهة المستخدم"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:32
 #, kde-format
 msgid "Data Files"
-msgstr ""
+msgstr "ملفات البيانات"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:33
 #, kde-format
 msgid "Executable Scripts"
-msgstr ""
+msgstr "السكرِبتات التنفيذية"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:34
-#, fuzzy, kde-format
-#| msgid "Animations"
+#, kde-format
 msgid "Translations"
-msgstr "الحركات"
+msgstr "الترجمات"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
 #: app/settings/actionsdialog/actionsdialog.ui:14
@@ -560,10 +557,9 @@ msgid " --- separator --- "
 msgstr ""
 
 #: app/settings/actionsdialog/actionshandler.cpp:89
-#, fuzzy, kde-format
-#| msgid "Add Widgets..."
+#, kde-format
 msgid "Add Widgets..."
-msgstr "أضف ودجدات..."
+msgstr "أضف ودجات…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:96
 #, fuzzy, kde-format
@@ -592,72 +588,70 @@ msgstr "أظهر «رصيف لاتيه»"
 #: app/settings/detailsdialog/colorsmodel.cpp:35
 #, kde-format
 msgid "Blue"
-msgstr ""
+msgstr "الأزرق"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:36
 #, kde-format
 msgid "Brown"
-msgstr ""
+msgstr "بنّي"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:37
 #, kde-format
 msgid "Dark Grey"
-msgstr ""
+msgstr "رمادي داكن"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:38
 #, kde-format
 msgid "Gold"
-msgstr ""
+msgstr "الذهب"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:39
-#, fuzzy, kde-format
-#| msgid "Screen:"
+#, kde-format
 msgid "Green"
-msgstr "الشّاشة:"
+msgstr "الأخضر"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:40
 #, kde-format
 msgid "Light Sky Blue"
-msgstr ""
+msgstr "أزرق سماوي فاتح"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:41
 #, kde-format
 msgid "Orange"
-msgstr ""
+msgstr "برتقالي"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:42
 #, kde-format
 msgid "Pink"
-msgstr ""
+msgstr "الوردي"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:43
 #, kde-format
 msgid "Purple"
-msgstr ""
+msgstr "أرجواني"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:44
 #, kde-format
 msgid "Red"
-msgstr ""
+msgstr "الأحمر"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:45
 #, kde-format
 msgid "Wheat"
-msgstr ""
+msgstr "قمحي"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
 #, kde-format
 msgid "Details"
-msgstr ""
+msgstr "التفاصيل"
 
 #. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:57
 #: app/settings/settingsdialog/settingsdialog.ui:809
-#, fuzzy, kde-format
-#| msgid "Behavior"
+#, kde-format
 msgid "Behavior:"
-msgstr "السّلوك"
+msgstr "السّلوك:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
 #: app/settings/detailsdialog/detailsdialog.ui:66
@@ -670,7 +664,7 @@ msgstr "أظهر الخلفيّة للنوافذ المكبّرة فقط"
 #: app/settings/detailsdialog/detailsdialog.ui:115
 #, kde-format
 msgid "Icon:"
-msgstr ""
+msgstr "الأيقونة:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
@@ -687,56 +681,52 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background..."
-msgstr "الخلفيّة"
+msgstr "الخلفيّة..."
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
 #, kde-format
 msgid "Text Color..."
-msgstr ""
+msgstr "لون النّصّ..."
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
 #: app/settings/viewsdialog/viewsdialog.ui:47
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layout:"
-msgstr "التّخطيط"
+msgstr "التّخطيط:"
 
 #. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:418
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background:"
-msgstr "الخلفيّة"
+msgstr "الخلفيّة:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:507
 #, kde-format
 msgid "disabled"
-msgstr ""
+msgstr "معطّل"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:510
 #, kde-format
 msgid " px."
-msgstr ""
+msgstr " بكسل"
 
 #. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:678
-#, fuzzy, kde-format
-#| msgid "Color"
+#, kde-format
 msgid "Custom Colors:"
-msgstr "اللون"
+msgstr "ألوان مخصّصة:"
 
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
 msgid "%1 Details"
-msgstr ""
+msgstr "تفاصيل %1"
 
 #: app/settings/detailsdialog/detailshandler.cpp:453
 #, kde-format
@@ -784,9 +774,7 @@ msgid "Export your selected view as template"
 msgstr ""
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:104
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgctxt "export template"
 msgid "Export"
 msgstr "صدّر"
@@ -803,26 +791,26 @@ msgstr "صدّر"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr ""
+msgstr "حدّد الكلّ"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
 #: app/settings/screensdialog/screensdialog.ui:58
 #, kde-format
 msgid "Deselect All"
-msgstr ""
+msgstr "ألغي خيار الكلّ"
 
 #. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
 #, kde-format
 msgid "File:"
-msgstr ""
+msgstr "الملف:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr ""
+msgstr "اختر..."
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -847,21 +835,19 @@ msgstr "تخطيطي"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
-#, fuzzy, kde-format
-#| msgid "New Dock"
+#, kde-format
 msgid "Dock"
-msgstr "رصيف جديد"
+msgstr "مرسى"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
 #, kde-format
 msgid "Panel"
-msgstr ""
+msgstr "اللوحة"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:78
-#, fuzzy, kde-format
-#| msgid "My Layout"
+#, kde-format
 msgid "Export %1 Template"
-msgstr "تخطيطي"
+msgstr "صدّر قالب %1"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, fuzzy, kde-format
@@ -878,7 +864,7 @@ msgstr ""
 #, kde-format
 msgctxt "choose file"
 msgid "Choose"
-msgstr ""
+msgstr "اختر"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
 #, fuzzy, kde-format
@@ -923,10 +909,9 @@ msgstr "استوردتُ التّخطيط <b>%0</b> بنجاح\n"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:665
 #: app/settings/settingsdialog/tablayoutshandler.cpp:690
 #: app/settings/viewsdialog/viewshandler.cpp:376
-#, fuzzy, kde-format
-#| msgid "Location"
+#, kde-format
 msgid "Open Location..."
-msgstr "المكان"
+msgstr "افتح الموقع..."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
 #, fuzzy, kde-format
@@ -939,12 +924,12 @@ msgstr "استوردتُ التّخطيط <b>%0</b> بنجاح\n"
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
 msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
-msgstr ""
+msgstr "الملفّ ”%1“ موجود بالفعل. أتريد الكتابة فوقه؟"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
 #, kde-format
 msgid "Overwrite File?"
-msgstr ""
+msgstr "أأكتب فوق الملفّ؟"
 
 #: app/settings/generic/genericdialog.cpp:69
 #, kde-format
@@ -954,17 +939,15 @@ msgid ""
 msgstr ""
 
 #: app/settings/generic/genericdialog.cpp:73
-#, fuzzy, kde-format
-#| msgid "Applets Size"
+#, kde-format
 msgid "Apply Settings"
-msgstr "مقاس البريمجات"
+msgstr "طبّق الإعدادات"
 
 #: app/settings/generic/genericdialog.cpp:107
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:588
-#, fuzzy, kde-format
-#| msgid "Hide:"
+#, kde-format
 msgid "Hide"
-msgstr "أخفِ:"
+msgstr "أخفِ"
 
 #: app/settings/screensdialog/screensdialog.cpp:69
 #, fuzzy, kde-format
@@ -981,10 +964,9 @@ msgstr "أزل المهامّ"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
 #: app/settings/screensdialog/screensdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Screen:"
+#, kde-format
 msgid "Screens"
-msgstr "الشّاشة:"
+msgstr "الشّاشات"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/screensdialog/screensdialog.ui:67
@@ -1017,11 +999,10 @@ msgid "Approve Removal"
 msgstr ""
 
 #: app/settings/screensdialog/screensmodel.cpp:238
-#, fuzzy, kde-format
-#| msgid "Screen:"
+#, kde-format
 msgctxt "column for screens"
 msgid "Screens"
-msgstr "الشّاشة:"
+msgstr "الشّاشات"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:599
 #, kde-format
@@ -1082,25 +1063,24 @@ msgstr ""
 msgctxt "errors count"
 msgid "1 error"
 msgid_plural "%1 errors"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لا أخطاء"
+msgstr[1] "خطأ واحد"
+msgstr[2] "خطآن"
+msgstr[3] "%1 أخطاء"
+msgstr[4] "%1 خطأ"
+msgstr[5] "%1 خطأ"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:664
-#, fuzzy, kde-format
-#| msgid "Layout Warning"
+#, kde-format
 msgctxt "warnings count"
 msgid "1 warning"
 msgid_plural "%1 warnings"
-msgstr[0] "تحذير عن التّخطيط"
-msgstr[1] "تحذير عن التّخطيط"
-msgstr[2] "تحذير عن التّخطيط"
-msgstr[3] "تحذير عن التّخطيط"
-msgstr[4] "تحذير عن التّخطيط"
-msgstr[5] "تحذير عن التّخطيط"
+msgstr[0] "لا تحذيرات"
+msgstr[1] "تحذير واحد"
+msgstr[2] "تحذيرين"
+msgstr[3] "%1 تحذيرات"
+msgstr[4] "%1 تحذيرا"
+msgstr[5] "%1 تحذير"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:669
 #, kde-format
@@ -1119,7 +1099,7 @@ msgstr ""
 #, kde-format
 msgctxt "layout"
 msgid "Alternative"
-msgstr ""
+msgstr "بديل"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:884
 #, fuzzy, kde-format
@@ -1141,8 +1121,7 @@ msgid "Layout <b>%1</b> is already used, please provide a different name..."
 msgstr ""
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:338
-#, fuzzy, kde-format
-#| msgid "Name"
+#, kde-format
 msgctxt "column for layout name"
 msgid "Name"
 msgstr "الاسم"
@@ -1161,17 +1140,15 @@ msgid "Borderless"
 msgstr ""
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:359
-#, fuzzy, kde-format
-#| msgid "Activities"
+#, kde-format
 msgctxt "column for layout to show which activities is assigned to"
 msgid "Activities"
 msgstr "الأنشطة"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:901
-#, fuzzy, kde-format
-#| msgid "Activities"
+#, kde-format
 msgid "All Activities"
-msgstr "الأنشطة"
+msgstr "كلّ الأنشطة"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:908
 #, fuzzy, kde-format
@@ -1180,10 +1157,9 @@ msgid "Free Activities"
 msgstr "الأنشطة"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:915
-#, fuzzy, kde-format
-#| msgid "Preview windows on hovering"
+#, kde-format
 msgid "Current Activity"
-msgstr "عاين النّوافذ عند مرور المؤشّر"
+msgstr "النّشاط الحاليّ"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:29
 #: app/settings/settingsdialog/layoutstableview.cpp:67
@@ -1206,7 +1182,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.cpp:126
 #, kde-format
 msgid "File"
-msgstr ""
+msgstr "ملف"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:130
 #, fuzzy, kde-format
@@ -1237,10 +1213,9 @@ msgid "Export your full configuration to create backup"
 msgstr "استورد ضبطًا."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:144
-#, fuzzy, kde-format
-#| msgid "Screen:"
+#, kde-format
 msgid "&Screens..."
-msgstr "الشّاشة:"
+msgstr "ال&شّاشات…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
 #, kde-format
@@ -1263,9 +1238,7 @@ msgstr "استورد ضبطًا."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:263
 #: app/settings/settingsdialog/settingsdialog.cpp:292
-#, fuzzy, kde-format
-#| msgctxt "import button"
-#| msgid "Import"
+#, kde-format
 msgctxt "import full configuration"
 msgid "Import"
 msgstr "استورد"
@@ -1320,9 +1293,7 @@ msgid "Export Full Configuration"
 msgstr "الضّبط كلّه"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:326
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgctxt "export full configuration"
 msgid "Export"
 msgstr "صدّر"
@@ -1363,7 +1334,7 @@ msgstr ""
 #, kde-format
 msgctxt "latte settings window"
 msgid "Settings"
-msgstr ""
+msgstr "إعدادات"
 
 #. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
 #: app/settings/settingsdialog/settingsdialog.ui:36
@@ -1405,24 +1376,19 @@ msgstr "ملفّ التّخطيط الافتراضيّ"
 
 #. i18n: ectx: property (text), widget (QPushButton, switchButton)
 #: app/settings/settingsdialog/settingsdialog.ui:177
-#, fuzzy, kde-format
-#| msgctxt "switch button"
-#| msgid "Switch"
+#, kde-format
 msgid "Switch"
 msgstr "بدّل"
 
 #. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
 #: app/settings/settingsdialog/settingsdialog.ui:191
-#, fuzzy, kde-format
-#| msgid "Activities"
+#, kde-format
 msgid "Activities..."
-msgstr "الأنشطة"
+msgstr "الأنشطة..."
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
-#, fuzzy, kde-format
-#| msgctxt "new button"
-#| msgid "New"
+#, kde-format
 msgid "New"
 msgstr "جديد"
 
@@ -1432,7 +1398,7 @@ msgstr "جديد"
 #: app/settings/viewsdialog/viewsdialog.ui:148
 #, kde-format
 msgid "Duplicate"
-msgstr ""
+msgstr "كرّر"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
 #: app/settings/settingsdialog/settingsdialog.ui:272
@@ -1446,47 +1412,43 @@ msgstr "أزل"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:498
 #, kde-format
 msgid "Enabled"
-msgstr ""
+msgstr "ممكّن"
 
 #. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
 #: app/settings/settingsdialog/settingsdialog.ui:310
 #, kde-format
 msgid "Read Only"
-msgstr ""
+msgstr "للقراءة فقط"
 
 #. i18n: ectx: property (text), widget (QPushButton, detailsButton)
 #: app/settings/settingsdialog/settingsdialog.ui:356
 #, kde-format
 msgid "Details..."
-msgstr ""
+msgstr "تفاصيل..."
 
 #. i18n: ectx: property (text), widget (QPushButton, importButton)
 #: app/settings/settingsdialog/settingsdialog.ui:438
-#, fuzzy, kde-format
-#| msgctxt "import button"
-#| msgid "Import"
+#, kde-format
 msgid "Import..."
-msgstr "استورد"
+msgstr "استورد..."
 
 #. i18n: ectx: property (text), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:452
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgid "Export..."
-msgstr "صدّر"
+msgstr "صدّر..."
 
 #. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:459
 #, kde-format
 msgid "Ctrl+S"
-msgstr ""
+msgstr "Ctrl+S"
 
 #. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
 #: app/settings/settingsdialog/settingsdialog.ui:499
 #, kde-format
 msgid "Preferences"
-msgstr ""
+msgstr "تفضيلات"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
 #. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
@@ -1502,7 +1464,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:570
 #, kde-format
 msgid " ms."
-msgstr ""
+msgstr " مث"
 
 #. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:599
@@ -1538,10 +1500,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, actionsLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:691
-#, fuzzy, kde-format
-#| msgid "Animations"
+#, kde-format
 msgid "Actions:"
-msgstr "الحركات"
+msgstr "الإجراءات:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:703
@@ -1634,10 +1595,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1034
-#, fuzzy, kde-format
-#| msgid "Appearance"
+#, kde-format
 msgid "Appearance:"
-msgstr "المظهر"
+msgstr "المظهر:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1046
@@ -1657,14 +1617,13 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:1071
 #, kde-format
 msgid "Context Menu:"
-msgstr ""
+msgstr "قائمة سياق:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:1100
-#, fuzzy, kde-format
-#| msgid "Animations"
+#, kde-format
 msgid "Actions..."
-msgstr "الحركات"
+msgstr "الإجراءات"
 
 #. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1122
@@ -1678,9 +1637,7 @@ msgid "Layout"
 msgstr "التّخطيط"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:115
-#, fuzzy, kde-format
-#| msgctxt "switch button"
-#| msgid "Switch"
+#, kde-format
 msgctxt "switch layout"
 msgid "Switch"
 msgstr "بدّل"
@@ -1692,10 +1649,9 @@ msgid "Switch to selected layout"
 msgstr "بدّل إلى تخطيط آخر"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:122
-#, fuzzy, kde-format
-#| msgid "Activities"
+#, kde-format
 msgid "&Activities"
-msgstr "الأنشطة"
+msgstr "الأ&نشطة"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:123
 #, kde-format
@@ -1706,19 +1662,18 @@ msgstr ""
 #, kde-format
 msgctxt "new layout"
 msgid "&New"
-msgstr ""
+msgstr "&جديد"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:132
-#, fuzzy, kde-format
-#| msgid "My Layout"
+#, kde-format
 msgid "New layout"
-msgstr "تخطيطي"
+msgstr "تخطيط جديد"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:144
 #, kde-format
 msgctxt "duplicate layout"
 msgid "&Duplicate"
-msgstr ""
+msgstr "&كرّر"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:145
 #, fuzzy, kde-format
@@ -1728,8 +1683,7 @@ msgstr "بدّل إلى تخطيط آخر"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:151
 #: app/settings/viewsdialog/viewshandler.cpp:91
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgctxt "remove layout"
 msgid "Remove"
 msgstr "أزل"
@@ -1743,7 +1697,7 @@ msgstr "أزل المهامّ"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:161
 #, kde-format
 msgid "Ena&bled"
-msgstr ""
+msgstr "&ممكّن"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:162
 #, kde-format
@@ -1754,7 +1708,7 @@ msgstr ""
 #, kde-format
 msgctxt "read only layout"
 msgid "&Read Only"
-msgstr ""
+msgstr "للقراءة &فقط"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:170
 #, fuzzy, kde-format
@@ -1779,7 +1733,7 @@ msgstr "بدّل إلى تخطيط آخر"
 #, kde-format
 msgctxt "layout details"
 msgid "De&tails..."
-msgstr ""
+msgstr "ال&تفاصيل…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:185
 #, fuzzy, kde-format
@@ -1788,12 +1742,10 @@ msgid "Show selected layout details"
 msgstr "بدّل إلى تخطيط آخر"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:195
-#, fuzzy, kde-format
-#| msgctxt "import button"
-#| msgid "Import"
+#, kde-format
 msgctxt "import layout"
 msgid "&Import"
-msgstr "استورد"
+msgstr "ا&ستورد"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:196
 #, kde-format
@@ -1802,12 +1754,10 @@ msgstr ""
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:207
 #: app/settings/viewsdialog/viewshandler.cpp:108
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgctxt "export layout"
 msgid "&Export"
-msgstr "صدّر"
+msgstr "&صدّر"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:208
 #, fuzzy, kde-format
@@ -1849,7 +1799,7 @@ msgstr "تخطيطي"
 #: app/settings/viewsdialog/viewshandler.cpp:169
 #, kde-format
 msgid "Templates..."
-msgstr ""
+msgstr "القوالب…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:170
@@ -1903,9 +1853,7 @@ msgid "Import Layout"
 msgstr "استورد تخطيطًا/ضبطًا"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:543
-#, fuzzy, kde-format
-#| msgctxt "import button"
-#| msgid "Import"
+#, kde-format
 msgctxt "import layout"
 msgid "Import"
 msgstr "استورد"
@@ -1917,12 +1865,10 @@ msgid "Latte Dock Layout file v0.2"
 msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة الثّانية"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:550
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "import older latte layout"
 msgid "Latte Dock Layout file v0.1"
-msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة الثّانية"
+msgstr "ملفّ تخطيط «رصيف لاتيه» الإصدارة 0٫1"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:561
 #: app/settings/settingsdialog/tablayoutshandler.cpp:780
@@ -1946,9 +1892,7 @@ msgid "Export Layout For Backup"
 msgstr "تخطيطي"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:623
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgctxt "export layout"
 msgid "Export"
 msgstr "صدّر"
@@ -1990,34 +1934,29 @@ msgstr[4] "استوردتُ التّخطيط <b>%0</b> بنجاح\n"
 msgstr[5] "استوردتُ التّخطيط <b>%0</b> بنجاح\n"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
-#, fuzzy, kde-format
-#| msgctxt "%1 is the name of the containment"
-#| msgid "%1 Options"
+#, kde-format
 msgid "optional"
-msgstr "خيارات %1"
+msgstr "اختياري"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:107
 #, kde-format
 msgid "Cut"
-msgstr ""
+msgstr "قصّ"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:111
-#, fuzzy, kde-format
-#| msgctxt "copy button"
-#| msgid "Copy"
+#, kde-format
 msgid "Copy"
 msgstr "انسخ"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:115
 #, kde-format
 msgid "Paste"
-msgstr ""
+msgstr "ألصق"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:119
-#, fuzzy, kde-format
-#| msgid "Switch to another layout"
+#, kde-format
 msgid "Duplicate Here"
-msgstr "بدّل إلى تخطيط آخر"
+msgstr "كرر هنا"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:323
 #, kde-format
@@ -2042,7 +1981,7 @@ msgstr "التّخطيط"
 #: app/settings/viewsdialog/viewscontroller.cpp:630
 #, kde-format
 msgid "Validate"
-msgstr ""
+msgstr "تحقّق"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:649
 #, kde-format
@@ -2055,7 +1994,7 @@ msgstr ""
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/>"
-msgstr ""
+msgstr "<b>خطأ #%1: %2</b> <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:667
 #, kde-format
@@ -2085,7 +2024,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:836
 #, kde-format
 msgid "<b>Possible Solutions:</b><br/>"
-msgstr ""
+msgstr "<b>الحلول المحتملة:</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:687
 #, kde-format
@@ -2113,7 +2052,7 @@ msgstr ""
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>خطأ #%1: %2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:703
 #, kde-format
@@ -2167,7 +2106,7 @@ msgstr ""
 #, kde-format
 msgctxt "warning id and title"
 msgid "<b>Warning #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>تحذير #%1: %2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:758
 #, kde-format
@@ -2237,7 +2176,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewsdialog.cpp:33
 #, kde-format
 msgid "Apply Now"
-msgstr ""
+msgstr "طبّق الآن"
 
 #: app/settings/viewsdialog/viewsdialog.cpp:34
 #, kde-format
@@ -2255,7 +2194,7 @@ msgstr "أظهر «رصيف لاتيه»"
 #, kde-format
 msgctxt "new view"
 msgid "&New"
-msgstr ""
+msgstr "&جديد"
 
 #: app/settings/viewsdialog/viewshandler.cpp:70
 #, fuzzy, kde-format
@@ -2267,7 +2206,7 @@ msgstr "لوحة «رصيف لاتيه»"
 #, kde-format
 msgctxt "duplicate dock or panel"
 msgid "&Duplicate"
-msgstr ""
+msgstr "&كرّر"
 
 #: app/settings/viewsdialog/viewshandler.cpp:84
 #, fuzzy, kde-format
@@ -2282,12 +2221,10 @@ msgid "Remove selected view"
 msgstr "أزل المهامّ"
 
 #: app/settings/viewsdialog/viewshandler.cpp:100
-#, fuzzy, kde-format
-#| msgctxt "import button"
-#| msgid "Import"
+#, kde-format
 msgctxt "import dock/panel"
 msgid "&Import..."
-msgstr "استورد"
+msgstr "ا&ستورد..."
 
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
@@ -2324,9 +2261,7 @@ msgid "Export Dock/Panel For Backup"
 msgstr "تخطيطي"
 
 #: app/settings/viewsdialog/viewshandler.cpp:344
-#, fuzzy, kde-format
-#| msgctxt "export button"
-#| msgid "Export"
+#, kde-format
 msgctxt "export view"
 msgid "Export"
 msgstr "صدّر"
@@ -2407,29 +2342,25 @@ msgid ""
 msgstr ""
 
 #: app/settings/viewsdialog/viewsmodel.cpp:190
-#, fuzzy, kde-format
-#| msgctxt "top location"
-#| msgid "Top"
+#, kde-format
 msgctxt "top edge"
 msgid "Top"
 msgstr "الأعلى"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:195
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "left edge"
 msgid "Left"
 msgstr "اليسار"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:200
-#, fuzzy, kde-format
-#| msgctxt "bottom location"
-#| msgid "Bottom"
+#, kde-format
 msgctxt "bottom edge"
 msgid "Bottom"
 msgstr "الأسفل"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:205
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "right edge"
 msgid "Right"
 msgstr "اليمين"
@@ -2437,7 +2368,7 @@ msgstr "اليمين"
 #: app/settings/viewsdialog/viewsmodel.cpp:216
 #: app/settings/viewsdialog/viewsmodel.cpp:899
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:279
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "left alignment"
 msgid "Left"
 msgstr "اليسار"
@@ -2461,7 +2392,7 @@ msgstr "الوسط"
 #: app/settings/viewsdialog/viewsmodel.cpp:234
 #: app/settings/viewsdialog/viewsmodel.cpp:901
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:313
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "right alignment"
 msgid "Right"
 msgstr "اليمين"
@@ -2489,23 +2420,21 @@ msgid " - Follow Primary Screen - "
 msgstr ""
 
 #: app/settings/viewsdialog/viewsmodel.cpp:575
-#, fuzzy, kde-format
-#| msgid "Name"
+#, kde-format
 msgid "Name"
 msgstr "الاسم"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:580
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
-#, fuzzy, kde-format
-#| msgid "Screen:"
+#, kde-format
 msgid "Screen"
-msgstr "الشّاشة:"
+msgstr "الشّاشة"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:588
 #, kde-format
 msgctxt "screen edge"
 msgid "Edge"
-msgstr ""
+msgstr "الحافة"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:596
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:258
@@ -2547,14 +2476,14 @@ msgstr "الأعلى"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:874
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:195
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "left location"
 msgid "Left"
 msgstr "اليسار"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:876
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:233
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "right location"
 msgid "Right"
 msgstr "اليمين"
@@ -2563,13 +2492,13 @@ msgstr "اليمين"
 #, kde-format
 msgctxt "unknown location"
 msgid "Unknown"
-msgstr ""
+msgstr "مجهول"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:910
 #, kde-format
 msgctxt "unknown alignment"
 msgid "Unknown"
-msgstr ""
+msgstr "مجهول"
 
 #: app/shortcuts/globalshortcuts.cpp:87
 #, fuzzy, kde-format
@@ -2602,17 +2531,16 @@ msgid "New Instance for Entry %1"
 msgstr "سيرورة جديدة لمدخلة مدير المهامّ %1"
 
 #: app/templates/templatesmanager.cpp:337
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "default layout template name"
 msgid "Default"
-msgstr "الافتراضيّ"
+msgstr "المبدئيّ"
 
 #: app/templates/templatesmanager.cpp:338
 #, kde-format
 msgctxt "empty layout template name"
 msgid "Empty"
-msgstr ""
+msgstr "فارغ"
 
 #: app/templates/templatesmanager.cpp:341
 #, fuzzy, kde-format
@@ -2622,18 +2550,16 @@ msgid "Default Dock"
 msgstr "الافتراضيّ"
 
 #: app/templates/templatesmanager.cpp:342
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "view template name"
 msgid "Default Panel"
-msgstr "الافتراضيّ"
+msgstr "اللوحة المبدئية"
 
 #: app/templates/templatesmanager.cpp:343
-#, fuzzy, kde-format
-#| msgid "Show Latte Dock"
+#, kde-format
 msgctxt "view template name"
 msgid "Empty Panel"
-msgstr "أظهر «رصيف لاتيه»"
+msgstr "لوحة فارغة"
 
 #: app/view/contextmenu.cpp:472
 #, kde-format
@@ -2651,7 +2577,7 @@ msgstr ""
 #, kde-format
 msgctxt "add indicator file"
 msgid "Latte Indicator"
-msgstr ""
+msgstr "مؤشرات لاتيه"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:67
 #, kde-format
@@ -2715,7 +2641,7 @@ msgstr "عامّ"
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr ""
+msgstr "العرض %1٪"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
@@ -2724,8 +2650,7 @@ msgid "Width %1% / Height %2%"
 msgstr ""
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
-#, fuzzy, kde-format
-#| msgid "Advanced"
+#, kde-format
 msgctxt "advanced settings"
 msgid "Advanced"
 msgstr "متقدّم"
@@ -2743,14 +2668,13 @@ msgstr "المظهر"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:331
 #, kde-format
 msgid "Effects"
-msgstr ""
+msgstr "التّأثيرات"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
-#, fuzzy, kde-format
-#| msgid "Tasks"
+#, kde-format
 msgctxt "tasks header and index"
 msgid "Tasks <%1>"
-msgstr "المهامّ"
+msgstr "المهامّ <%1>"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
 #, kde-format
@@ -2760,7 +2684,7 @@ msgstr "المهامّ"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:498
 #, kde-format
 msgid "Add..."
-msgstr ""
+msgstr "أضف..."
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:500
 #, kde-format
@@ -2785,7 +2709,7 @@ msgstr "أزل الرّصيف الحاليّ"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:628
 #, kde-format
 msgid "Close"
-msgstr ""
+msgstr "أغلق"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:630
 #, kde-format
@@ -2796,7 +2720,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:757
 #, kde-format
 msgid "Items"
-msgstr ""
+msgstr "العناصر"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
 #, kde-format
@@ -2809,7 +2733,7 @@ msgstr ""
 #, kde-format
 msgctxt "number in pixels, e.g. 12 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 بكسل"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
 #, kde-format
@@ -2821,7 +2745,7 @@ msgstr ""
 #, kde-format
 msgctxt "number in pixels, e.g. 64 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 بكسل"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
@@ -2859,16 +2783,14 @@ msgid "Length"
 msgstr "الطّول"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:251
-#, fuzzy, kde-format
-#| msgid "Maximum: "
+#, kde-format
 msgid "Maximum"
-msgstr "الأقصى: "
+msgstr "الحد الاعلى"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:362
-#, fuzzy, kde-format
-#| msgid "Maximum: "
+#, kde-format
 msgid "Minimum"
-msgstr "الأقصى: "
+msgstr "الحد الادنى"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:445
 #, kde-format
@@ -2878,19 +2800,19 @@ msgstr "الإزاحة"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:580
 #, kde-format
 msgid "Margins"
-msgstr ""
+msgstr "الهوامش"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
 #, kde-format
 msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 بكسل"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
 #, kde-format
 msgid "Thickness"
-msgstr ""
+msgstr "السّمك"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
 #, fuzzy, kde-format
@@ -2902,18 +2824,17 @@ msgstr "الشّاشة:"
 #, kde-format
 msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
-msgstr ""
+msgstr "%1 بكسل"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
-#, fuzzy, kde-format
-#| msgid "Color"
+#, kde-format
 msgid "Colors"
-msgstr "اللون"
+msgstr "الألوان"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
 #, kde-format
 msgid "Palette"
-msgstr ""
+msgstr "لوحة الألوان"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
 #, fuzzy, kde-format
@@ -2961,7 +2882,7 @@ msgstr "عاين النّوافذ عند مرور المؤشّر"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:497
 #, kde-format
 msgid "Disabled"
-msgstr ""
+msgstr "معطّل"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
 #, fuzzy, kde-format
@@ -3012,17 +2933,15 @@ msgstr "الخلفيّة"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:868
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:66
-#, fuzzy, kde-format
-#| msgid "Size: "
+#, kde-format
 msgid "Size"
-msgstr "المقاس: "
+msgstr "الحجم"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:114
-#, fuzzy, kde-format
-#| msgid "Opacity: "
+#, kde-format
 msgid "Opacity"
-msgstr "الشّفافيّة: "
+msgstr "الشّفافيّة"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:917
 #, fuzzy, kde-format
@@ -3034,7 +2953,7 @@ msgstr "الشّفافيّة: "
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
 #, kde-format
 msgid "Radius"
-msgstr ""
+msgstr "نصف القطر"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
@@ -3052,7 +2971,7 @@ msgstr "الظّلال"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1058
 #, kde-format
 msgid "Blur"
-msgstr ""
+msgstr "غشاوة"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1061
 #, kde-format
@@ -3073,7 +2992,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1094
 #, kde-format
 msgid "Outline"
-msgstr ""
+msgstr "محيط"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1098
 #, kde-format
@@ -3153,11 +3072,9 @@ msgstr ""
 "عند وجود نافذة مكبّرة"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1178
-#, fuzzy, kde-format
-#| msgctxt "%1 is the name of the containment"
-#| msgid "%1 Options"
+#, kde-format
 msgid "Exceptions"
-msgstr "خيارات %1"
+msgstr "الاستثناءات"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1185
 #, kde-format
@@ -3172,7 +3089,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
 #, kde-format
 msgid "Type"
-msgstr ""
+msgstr "النّوع"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:65
 #, kde-format
@@ -3220,10 +3137,9 @@ msgid "Windows Go Below"
 msgstr "تذهب النّوافذ أسفله"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:470
-#, fuzzy, kde-format
-#| msgid "Windows Go Below"
+#, kde-format
 msgid "Windows Can Cover"
-msgstr "تذهب النّوافذ أسفله"
+msgstr "يمكن للنّوافذ تغطيتها"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:475
 #, kde-format
@@ -3261,24 +3177,21 @@ msgid "Delay"
 msgstr "المهلة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:557
-#, fuzzy, kde-format
-#| msgctxt "show panel"
-#| msgid "Show"
+#, kde-format
 msgid "Show "
-msgstr "أظهر"
+msgstr "أظهر "
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:612
 #: shell/package/contents/configuration/pages/TasksConfig.qml:522
-#, fuzzy, kde-format
-#| msgid "Animations"
+#, kde-format
 msgid "Actions"
-msgstr "الحركات"
+msgstr "الإجراءات"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:634
 #, kde-format
 msgctxt "track active window"
 msgid "Track"
-msgstr ""
+msgstr "تتبع"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:640
 #, kde-format
@@ -3296,7 +3209,7 @@ msgstr "عاين النّوافذ عند مرور المؤشّر"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:666
 #, kde-format
 msgid "Left Button"
-msgstr ""
+msgstr "الزر الأيسر"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:671
 #, fuzzy, kde-format
@@ -3314,7 +3227,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:691
 #, kde-format
 msgid "Middle Button"
-msgstr ""
+msgstr "الزر الأوسط"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:696
 #, fuzzy, kde-format
@@ -3332,14 +3245,13 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:718
 #, kde-format
 msgid "Mouse wheel"
-msgstr ""
+msgstr "عجلة الفأرة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:724
-#, fuzzy, kde-format
-#| msgid "Animations"
+#, kde-format
 msgctxt "none scroll actions"
 msgid "No Action"
-msgstr "الحركات"
+msgstr "لا إجراء"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:725
 #, fuzzy, kde-format
@@ -3420,7 +3332,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:818
 #, kde-format
 msgid "Floating"
-msgstr ""
+msgstr "عائم"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:830
 #, kde-format
@@ -3465,10 +3377,9 @@ msgid "Floating gap is mirrored when it is shown in Always Visible mode"
 msgstr ""
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:890
-#, fuzzy, kde-format
-#| msgid "Alignment"
+#, kde-format
 msgid "Environment"
-msgstr "المحاذاة"
+msgstr "البيئة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:899
 #, kde-format
@@ -3514,11 +3425,10 @@ msgid "Enable/disable applet shadows"
 msgstr "ظلال البريمجات"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:178
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "default shadow"
 msgid "Default Color"
-msgstr "الافتراضيّ"
+msgstr "اللون الافتراضيّ"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
@@ -3588,15 +3498,13 @@ msgid "Enable/disable indicators"
 msgstr "ظلال البريمجات"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:426
-#, fuzzy, kde-format
-#| msgid "Quit Latte"
+#, kde-format
 msgctxt "latte indicator style"
 msgid "Latte"
-msgstr "أنهِ «لاتيه»"
+msgstr "لاتيه"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:437
-#, fuzzy, kde-format
-#| msgid "Plasma"
+#, kde-format
 msgctxt "plasma indicator style"
 msgid "Plasma"
 msgstr "بلازما"
@@ -3837,7 +3745,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:448
 #, kde-format
 msgid "Scrolling"
-msgstr ""
+msgstr "التمرير"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:449
 #, kde-format
@@ -3848,7 +3756,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:471
 #, kde-format
 msgid "Manual"
-msgstr ""
+msgstr "يدويّ"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:478
 #, kde-format
@@ -3874,7 +3782,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:489
 #, kde-format
 msgid "Automatic"
-msgstr ""
+msgstr "آليّ"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
@@ -3886,7 +3794,7 @@ msgstr "النّقر باليسار"
 #, kde-format
 msgctxt "present windows action"
 msgid "Present Windows"
-msgstr ""
+msgstr "النوافذ الحاضرة"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:548
 #: shell/package/contents/configuration/pages/TasksConfig.qml:608
@@ -3935,12 +3843,11 @@ msgstr "بدّل تجميع المهامّ"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:600
 #, kde-format
 msgid "Hover"
-msgstr ""
+msgstr "حوم"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:607
 #: shell/package/contents/configuration/pages/TasksConfig.qml:654
-#, fuzzy, kde-format
-#| msgid "None"
+#, kde-format
 msgctxt "none action"
 msgid "None"
 msgstr "بلا"
@@ -3959,7 +3866,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:647
 #, kde-format
 msgid "Wheel"
-msgstr ""
+msgstr "العجلة"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3980,7 +3887,7 @@ msgstr "اعكس أماكن الخطوط والنّقاط"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
 msgid "Install..."
-msgstr ""
+msgstr "ثبّت..."
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, fuzzy, kde-format
@@ -4001,11 +3908,10 @@ msgid "Get New Indicators..."
 msgstr ""
 
 #: shell/package/contents/controls/TypeSelection.qml:55
-#, fuzzy, kde-format
-#| msgid "New Dock"
+#, kde-format
 msgctxt "dock type"
 msgid "Dock"
-msgstr "رصيف جديد"
+msgstr "مرسى"
 
 #: shell/package/contents/controls/TypeSelection.qml:57
 #, kde-format
@@ -4016,7 +3922,7 @@ msgstr ""
 #, kde-format
 msgctxt "panel type"
 msgid "Panel"
-msgstr ""
+msgstr "اللوحة"
 
 #: shell/package/contents/controls/TypeSelection.qml:101
 #, kde-format
@@ -4026,23 +3932,23 @@ msgstr ""
 #: shell/package/contents/views/AppletDelegate.qml:167
 #, kde-format
 msgid "Undo uninstall"
-msgstr ""
+msgstr "تراجع عن إزالة التّثبيت"
 
 #: shell/package/contents/views/AppletDelegate.qml:168
 #, kde-format
 msgid "Uninstall widget"
-msgstr ""
+msgstr "أزل تثبيت الودجة"
 
 #: shell/package/contents/views/WidgetExplorer.qml:155
 #: shell/package/contents/views/WidgetExplorer.qml:265
 #, kde-format
 msgid "All Widgets"
-msgstr ""
+msgstr "كلّ الودجات"
 
 #: shell/package/contents/views/WidgetExplorer.qml:227
 #, kde-format
 msgid "Widgets"
-msgstr ""
+msgstr "الودجات"
 
 #: shell/package/contents/views/WidgetExplorer.qml:235
 #, kde-format
@@ -4057,17 +3963,17 @@ msgstr ""
 #: shell/package/contents/views/WidgetExplorer.qml:264
 #, kde-format
 msgid "Categories"
-msgstr ""
+msgstr "الفئات"
 
 #: shell/package/contents/views/WidgetExplorer.qml:363
 #, kde-format
 msgid "No widgets matched the search terms"
-msgstr ""
+msgstr "لا توجد ودجات مطابقة لشروط البحث"
 
 #: shell/package/contents/views/WidgetExplorer.qml:363
 #, kde-format
 msgid "No widgets available"
-msgstr ""
+msgstr "لا تتوفر ودجات"
 
 #, fuzzy
 #~| msgctxt "Use theme shadow"
