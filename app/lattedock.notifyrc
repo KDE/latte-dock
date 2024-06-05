@@ -75,6 +75,7 @@ IconName=latte-dock
 
 [Event/import-done]
 Name=Imported successfully
+Name[ar]=استوردتُ بنجاح
 Name[az]=Müvəffəqiyyətlə İdxal Olundu
 Name[ca]=S'ha importat amb èxit
 Name[ca@valencia]=S'ha importat amb èxit
@@ -114,6 +115,7 @@ Action=Popup
 
 [Event/import-fail]
 Name=Failed to import
+Name[ar]=فشل استيراد
 Name[az]=İdxal baş tutmadı
 Name[ca]=Ha fallat en importar
 Name[ca@valencia]=No s'ha pogut importar
@@ -153,6 +155,7 @@ Action=Popup
 
 [Event/export-done]
 Name=Exported successfully
+Name[ar]=صدّرتُ بنجاح
 Name[az]=Müvəffəqiyyətlə ixrac olundu
 Name[ca]=S'ha exportat amb èxit
 Name[ca@valencia]=S'ha exportat amb èxit
@@ -192,6 +195,7 @@ Action=Popup
 
 [Event/export-fail]
 Name=Failed to export
+Name[ar]=فشل تصدير
 Name[az]=İxrac baş tutmadı
 Name[ca]=Ha fallat en exportar
 Name[ca@valencia]=No s'ha pogut exportar
@@ -231,6 +235,7 @@ Action=Popup
 
 [Event/remove-done]
 Name=Removed successfully
+Name[ar]=استوردتُ بنجاح
 Name[az]=Müvəffəqiyyətlə silindi
 Name[ca]=S'ha eliminat amb èxit
 Name[ca@valencia]=S'ha eliminat amb èxit
@@ -270,6 +275,7 @@ Action=Popup
 
 [Event/remove-fail]
 Name=Failed to remove
+Name[ar]=فشلت إزالة
 Name[az]=Silinmə alınmadı
 Name[ca]=Ha fallat en eliminar
 Name[ca@valencia]=No s'ha pogut eliminar
@@ -310,6 +316,7 @@ Action=Popup
 
 [Event/switch-layout]
 Name=Switch to layout
+Name[ar]=بدل إلى تخطيط
 Name[az]=Maketi Keçmək
 Name[ca]=Commuta a la disposició
 Name[ca@valencia]=Canvia a la disposició
