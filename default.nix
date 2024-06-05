@@ -30,6 +30,10 @@ stdenv.mkDerivation {
     cp $out/share/applications/org.kde.latte-dock.desktop $out/etc/xdg/autostart
   '';
 
+  shellHook = ''
+    export GENERATE_COMPILE_COMMANDS=1
+  '';
+
   meta = with pkgs.lib; {
     description = "Dock-style app launcher based on Plasma frameworks";
     homepage = "https://invent.kde.org/plasma/latte-dock";
