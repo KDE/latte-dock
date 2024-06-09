@@ -152,7 +152,7 @@ public slots:
 
 signals:
     void activitiesChanged(); // to move at an interface
-    void viewsCountChanged();
+    void viewsCountChanged(int screenId);
     void viewEdgeChanged();
 
     //! used from ConfigView(s) in order to be informed which is one should be shown
