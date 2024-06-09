@@ -27,13 +27,14 @@
 #include <QScreen>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
 // KDE
 #include <KActionCollection>
 #include <KConfigGroup>
+#include <KPackage/Package>
 
 namespace Latte {
 namespace Layout {
@@ -826,6 +827,7 @@ void GenericLayout::destroyedChanged(bool destroyed)
     }
 
     if (view) {
+        // FIXME Replace view with screen number
         emit m_corona->availableScreenRectChangedFrom(view);
         emit m_corona->availableScreenRegionChangedFrom(view);
         emit viewEdgeChanged();
