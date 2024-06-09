@@ -228,9 +228,21 @@ void Corona::load()
         m_templatesManager->init();
         m_layoutsManager->init();
 
-        connect(this, &Corona::availableScreenRectChangedFrom, this, &Plasma::Corona::availableScreenRectChanged, Qt::UniqueConnection);
-        connect(this, &Corona::availableScreenRegionChangedFrom, this, &Plasma::Corona::availableScreenRegionChanged, Qt::UniqueConnection);
-        //
+        // We must extract Screen Id from the signalled view.
+        connect(this, &Corona::availableScreenRectChangedFrom,
+                this, [this](Latte::View *view) {
+                    Plasma::Corona* corona = static_cast<Plasma::Corona*>(this);
+                    int screenId = view->positioner()->currentScreenId();
+                    corona->availableScreenRectChanged(screenId);
+                },
+                Qt::UniqueConnection);
+        connect(this, &Corona::availableScreenRegionChangedFrom,
+                this, [this](Latte::View *view) {
+                    Plasma::Corona* corona = static_cast<Plasma::Corona*>(this);
+                    int screenId = view->positioner()->currentScreenId();
+                    corona->availableScreenRegionChanged(screenId);
+                },
+                Qt::UniqueConnection);
         connect(m_screenPool, &ScreenPool::primaryScreenChanged, this, &Corona::onScreenCountChanged, Qt::UniqueConnection);
 
         QString loadLayoutName = "";
