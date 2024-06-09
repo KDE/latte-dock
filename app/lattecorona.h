@@ -176,13 +176,8 @@ signals:
     void configurationShown(PlasmaQuick::ConfigView *configView);
     void viewLocationChanged();
     void raiseViewsTemporaryChanged();
-//  FIXME:
-//    Old versions of these signals had Latte::View argument.
-//    Check if it is still needed somewhere.
-//    void availableScreenRectChangedFrom(Latte::View *origin, int id);
-//    void availableScreenRegionChangedFrom(Latte::View *origin, int id);
-    void availableScreenRectChangedFrom(int id);
-    void availableScreenRegionChangedFrom(int id);
+    void availableScreenRectChangedFrom(Latte::View *origin);
+    void availableScreenRegionChangedFrom(Latte::View *origin);
     void verticalUnityViewHasFocus();
 
 private slots:
