@@ -18,7 +18,7 @@
 #include <QLatin1String>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 
 // KDE
 #include <KConfigGroup>

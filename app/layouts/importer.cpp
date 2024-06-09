@@ -20,11 +20,12 @@
 // Qt
 #include <QFile>
 #include <QLatin1String>
+#include <QRegularExpression>
 
 // KDE
-#include <KArchive/KTar>
-#include <KArchive/KArchiveEntry>
-#include <KArchive/KArchiveDirectory>
+#include <KTar>
+#include <KArchiveEntry>
+#include <KArchiveDirectory>
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KNotification>
@@ -740,7 +741,7 @@ QString Importer::layoutTemplateSystemFilePath(const QString &name)
 
 QString Importer::uniqueLayoutName(QString name)
 {
-    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
+    int pos_ = name.lastIndexOf(QRegularExpression(QString(" - [0-9]+")));
 
     if (layoutExists(name) && pos_ > 0) {
         name = name.left(pos_);
@@ -797,14 +798,14 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
     KConfigGroup linkedContainments = KConfigGroup(filePtr, "Containments");
 
     //! layoutName and its Containments
-    QHash<QString, QStringList> linkedLayoutContainmentGroups;
+    QMultiMap<QString, QString> linkedLayoutContainmentGroups;
 
     for(const auto &cId : linkedContainments.groupList()) {
         QString layoutName = linkedContainments.group(cId).readEntry("layoutId", QString());
 
         if (!layoutName.isEmpty()) {
             qDebug() << layoutName;
-            linkedLayoutContainmentGroups[layoutName].append(cId);
+            linkedLayoutContainmentGroups.insert(layoutName,cId);
             linkedContainments.group(cId).writeEntry("layoutId", QString());
         }
     }
@@ -821,7 +822,7 @@ QStringList Importer::checkRepairMultipleLayoutsLinkedFile()
             origLayoutContainments.deleteGroup();
 
             //Update containments
-            for(const auto &cId : linkedLayoutContainmentGroups[layoutName]) {
+            for(const auto &cId : linkedLayoutContainmentGroups.values(layoutName)) {
                 KConfigGroup newContainment = origLayoutContainments.group(cId);
                 linkedContainments.group(cId).copyTo(&newContainment);
                 linkedContainments.group(cId).deleteGroup();

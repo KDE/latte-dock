@@ -31,7 +31,7 @@
 #include <KPackage/PackageLoader>
 
 // Plasma
-#include <Plasma>
+#include <Plasma/Plasma>
 #include <Plasma/Applet>
 #include <Plasma/Containment>
 
@@ -696,7 +696,7 @@ Data::View Storage::newView(const Layout::GenericLayout *destinationLayout, cons
 
         Plasma::Containment *newContainment = (importedViews.size() == 1 ? importedViews[0] : nullptr);
 
-        if (!newContainment || !newContainment->kPackage().isValid()) {
+        if (!newContainment || !newContainment->pluginMetaData().isValid()) {
             qWarning() << "the requested containment plugin can not be located or loaded from:" << templateFile;
             return Data::View();
         }
@@ -1122,7 +1122,7 @@ bool Storage::hasOrphanedParentAppletOfSubContainment(const Layout::GenericLayou
                 errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(applet->pluginMetaData().pluginId());
                 errorinfo.applet.storageId = aid;
-                errorinfo.applet.subcontainmentId = subid;
+                errorinfo.applet.subcontainmentId = QString::number(subid);
 
                 error.information << errorinfo;
             }
@@ -1146,7 +1146,7 @@ bool Storage::hasOrphanedParentAppletOfSubContainment(const Layout::GenericLayou
                 errorinfo.containment.storageId = cid;
                 errorinfo.applet = metadata(containmentsEntries.group(cid).group("Applets").group(aid).readEntry("plugin", ""));
                 errorinfo.applet.storageId = aid;
-                errorinfo.applet.subcontainmentId = subid;
+                errorinfo.applet.subcontainmentId = QString::number(subid);
 
                 error.information << errorinfo;
             }
