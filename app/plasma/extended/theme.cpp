@@ -25,6 +25,7 @@
 
 // X11
 #include <KWindowSystem>
+#include <KX11Extras>
 
 #define DEFAULTCOLORSCHEME "default.colors"
 #define REVERSEDCOLORSCHEME "reversed.colors"
@@ -49,7 +50,7 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
         //! TODO: Wayland compositing active
         m_compositing = true;
     } else {
-        connect(KWindowSystem::self(), &KWindowSystem::compositingChanged
+        connect(KX11Extras::self(), &KX11Extras::compositingChanged
                 , this, [&](bool enabled) {
             if (m_compositing == enabled)
                 return;
@@ -58,7 +59,7 @@ Theme::Theme(KSharedConfig::Ptr config, QObject *parent) :
             emit compositingChanged();
         });
 
-        m_compositing = KWindowSystem::compositingActive();
+        m_compositing = KX11Extras::compositingActive();
     }
     //!
 
@@ -331,7 +332,7 @@ void Theme::updateHasShadow()
     svg->resize();
 
     QString cornerId = "shadow-topleft";
-    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+    QImage corner = svg->image(svg->elementSize(cornerId).toSize(), cornerId);
 
     int fullTransparentPixels = 0;
 

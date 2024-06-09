@@ -172,7 +172,7 @@ void PanelBackground::updateRoundnessFromMask(KSvg::Svg *svg)
     bool topLeftCorner = (m_location == Plasma::Types::BottomEdge || m_location == Plasma::Types::RightEdge);
 
     QString cornerId = (topLeftCorner ? "mask-topleft" : "mask-bottomright");
-    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+    QImage corner = svg->image(svg->elementSize(cornerId).toSize(), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
@@ -340,7 +340,7 @@ void PanelBackground::updateRoundnessFromShadows(KSvg::Svg *svg)
     bool topLeftCorner = (m_location == Plasma::Types::BottomEdge || m_location == Plasma::Types::RightEdge);
 
     QString cornerId = (topLeftCorner ? "shadow-topleft" : "shadow-bottomright");
-    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+    QImage corner = svg->image(svg->elementSize(cornerId).toSize(), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
@@ -501,7 +501,7 @@ void PanelBackground::updateRoundnessFallback(KSvg::Svg *svg)
     }
 
     QString cornerId = element(svg, (m_location == Plasma::Types::LeftEdge ? "bottomright" : "topleft"));
-    QImage corner = svg->image(svg->elementSize(cornerId), cornerId);
+    QImage corner = svg->image(svg->elementSize(cornerId).toSize(), cornerId);
 
     if (corner.format() != QImage::Format_ARGB32_Premultiplied) {
         corner.convertTo(QImage::Format_ARGB32_Premultiplied);
@@ -573,7 +573,7 @@ void PanelBackground::updateShadow(KSvg::Svg *svg)
         borderId = "shadow-left";
     }
 
-    QImage border = svg->image(svg->elementSize(borderId), borderId);
+    QImage border = svg->image(svg->elementSize(borderId).toSize(), borderId);
 
     if (border.format() != QImage::Format_ARGB32_Premultiplied) {
         border.convertTo(QImage::Format_ARGB32_Premultiplied);

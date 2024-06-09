@@ -68,11 +68,11 @@ KMessageBox::ButtonCode GenericDialog::saveChangesConfirmation(const QString &te
 {
     QString dialogtext = text.isEmpty() ? i18n("The settings have changed.<br/>Do you want to apply the changes or discard them?") : text;
 
-    return KMessageBox::warningYesNoCancel(this,
-                                           dialogtext,
-                                           i18n("Apply Settings"),
-                                           KStandardGuiItem::apply(),
-                                           KStandardGuiItem::discard());
+    return KMessageBox::warningTwoActionsCancel(this,
+                                                dialogtext,
+                                                i18n("Apply Settings"),
+                                                KStandardGuiItem::apply(),
+                                                KStandardGuiItem::discard());
 }
 
 void GenericDialog::showInlineMessage(const QString &msg, const KMessageWidget::MessageType &type, const bool &isPersistent, QList<QAction *> actions)

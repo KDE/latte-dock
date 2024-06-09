@@ -10,6 +10,7 @@
 
 // KDE
 #include <KLocalizedString>
+#include <KPackage/Package>
 
 namespace Latte {
 namespace Settings {

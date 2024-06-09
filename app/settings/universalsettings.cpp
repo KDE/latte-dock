@@ -21,8 +21,9 @@
 #include <QtDBus>
 
 // KDE
-#include <KActivities/Consumer>
+#include <PlasmaActivities/Consumer>
 #include <KDirWatch>
+#include <KPackage/Package>
 #include <KWindowSystem>
 
 #define KWINMETAFORWARDTOLATTESTRING "org.kde.lattedock,/Latte,org.kde.LatteDock,activateLauncherMenu"
@@ -639,13 +640,13 @@ QQmlListProperty<QScreen> UniversalSettings::screens()
     return QQmlListProperty<QScreen>(this, nullptr, &countScreens, &atScreens);
 }
 
-int UniversalSettings::countScreens(QQmlListProperty<QScreen> *property)
+qsizetype UniversalSettings::countScreens(QQmlListProperty<QScreen> *property)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().count();
 }
 
-QScreen *UniversalSettings::atScreens(QQmlListProperty<QScreen> *property, int index)
+QScreen *UniversalSettings::atScreens(QQmlListProperty<QScreen> *property, qsizetype index)
 {
     Q_UNUSED(property)
     return qGuiApp->screens().at(index);
