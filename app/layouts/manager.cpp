@@ -31,6 +31,7 @@
 #include <KMessageBox>
 #include <KLocalizedString>
 #include <KNotification>
+#include <KPackage/Package>
 
 namespace Latte {
 namespace Layouts {
