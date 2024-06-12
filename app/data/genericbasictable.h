@@ -27,7 +27,6 @@ public:
 }
 }
 
-Q_DECLARE_METATYPE(Latte::Data::Generic)
 Q_DECLARE_METATYPE(Latte::Data::GenericBasicTable)
 
 #endif
