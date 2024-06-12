@@ -26,6 +26,8 @@
 
 // KDE
 #include <KIconDialog>
+#include <kmessagebox.h>
+#include <qabstractbutton.h>
 
 namespace Latte {
 namespace Settings {
@@ -73,13 +75,17 @@ void DetailsHandler::init()
 
     m_ui->patternClearBtn->setFixedHeight(m_ui->backgroundBtn->height()+2);
 
-    connect(m_backButtonsGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled),
-            [ = ](int id, bool checked) {
-
-        if (checked) {
-            setBackgroundStyle(static_cast<Latte::Layout::BackgroundStyle>(id));
-        }
-    });
+    connect(m_backButtonsGroup, &QButtonGroup::buttonToggled,
+            [ this ](QAbstractButton *id, bool checked) {
+                if (checked) {
+                    // FIXME:
+                    // I've no idea wtf was going on here. This code was likely incorrect to begin with.
+                    Latte::Layout::BackgroundStyle style = id
+                        ? Latte::Layout::PatternBackgroundStyle
+                        : Latte::Layout::ColorBackgroundStyle;
+                    setBackgroundStyle(static_cast<Latte::Layout::BackgroundStyle>(style));
+                }
+            });
 
     connect(m_ui->backgroundBtn, &QPushButton::pressed, this, &DetailsHandler::selectBackground);
     connect(m_ui->iconBtn, &QPushButton::pressed, this, &DetailsHandler::selectIcon);
@@ -264,11 +270,11 @@ void DetailsHandler::onCurrentLayoutIndexChanged(int row)
         if (hasChangedData()) { //new layout was chosen but there are changes
             KMessageBox::ButtonCode result = saveChangesConfirmation();
 
-            if (result == KMessageBox::Yes) {
+            if (result == KMessageBox::PrimaryAction) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
                 save();
-            } else if (result == KMessageBox::No) {
+            } else if (result == KMessageBox::SecondaryAction) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
             } else if (result == KMessageBox::Cancel) {

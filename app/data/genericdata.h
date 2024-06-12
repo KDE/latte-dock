@@ -10,6 +10,7 @@
 #include "generictable.h"
 
 // Qt
+#include <QMetaType>
 #include <QString>
 
 namespace Latte {
@@ -37,6 +38,6 @@ public:
 }
 }
 
-
+Q_DECLARE_METATYPE(Latte::Data::Generic)
 
 #endif

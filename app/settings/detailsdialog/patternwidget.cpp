@@ -141,7 +141,7 @@ void PatternWidget::paintEvent(QPaintEvent *event)
     //! it is needed from Qt, otherwise QWidget is not updated
     //! https://wiki.qt.io/How_to_Change_the_Background_Color_of_QWidget
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
 
