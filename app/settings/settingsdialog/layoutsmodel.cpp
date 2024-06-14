@@ -20,9 +20,9 @@
 // KDE
 #include <KLocalizedString>
 
-// KActivities
-#include <KActivities/Consumer>
-#include <KActivities/Info>
+// PlasmaActivities
+#include <PlasmaActivities/Consumer>
+#include <PlasmaActivities/Info>
 
 namespace Latte {
 namespace Settings {
@@ -484,9 +484,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
         return isNewLayout ? true : (original != m_layoutsTable[row]);
     } else if (role == BACKGROUNDUSERROLE) {
         Latte::Data::LayoutIcon _icon = icon(row);
-        QVariant iconVariant;
-        iconVariant.setValue<Latte::Data::LayoutIcon>(_icon);
-        return iconVariant;
+        QVariant::fromValue(_icon);
     } else if (role == ERRORSROLE) {
         return m_layoutsTable[row].errors;
     } else if (role == WARNINGSROLE) {
@@ -510,9 +508,7 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
             return m_layoutsTable[row].background;
         } else if (role == Qt::UserRole) {
             Latte::Data::LayoutIcon _icon = icon(row);
-            QVariant iconVariant;
-            iconVariant.setValue<Latte::Data::LayoutIcon>(_icon);
-            return iconVariant;
+            QVariant::fromValue(_icon);
         }
         break;
     case NAMECOLUMN:
@@ -570,11 +566,11 @@ QVariant Layouts::data(const QModelIndex &index, int role) const
                 } else if (m_layoutsTable[row].activities.contains(Latte::Data::Layout::FREEACTIVITIESID)) {
                     return sortingPriority(HIGHPRIORITY, row);
                 } else {
-                    return sortingPriority(MEDIUMPRIORITY, row) + m_layoutsTable[row].activities.count();
+                    return sortingPriority(MEDIUMPRIORITY, row) + QString::number(m_layoutsTable[row].activities.count());
                 }
             }
 
-            return sortingPriority(NORMALPRIORITY, row) + m_layoutsTable[row].activities.count();
+            return sortingPriority(NORMALPRIORITY, row) + QString::number(m_layoutsTable[row].activities.count());
         }
 
         if (role == ORIGINALASSIGNEDACTIVITIESROLE) {
@@ -828,6 +824,7 @@ const Latte::Data::Layout &Layouts::currentData(const QString &id)
         return m_layoutsTable[id];
     }
 
+    // FIXME:
     return Latte::Data::Layout();
 }
 

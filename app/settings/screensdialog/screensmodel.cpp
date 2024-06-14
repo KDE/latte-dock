@@ -289,10 +289,8 @@ QVariant Screens::data(const QModelIndex &index, int role) const
     } else if (role == ISSELECTEDROLE) {
         return c_screens[row].isSelected;
     } else if (role == SCREENDATAROLE) {
-        QVariant scrVariant;
         Latte::Data::Screen scrdata = c_screens[row];
-        scrVariant.setValue<Latte::Data::Screen>(scrdata);
-        return scrVariant;
+        return QVariant::fromValue(scrdata);
     } else if (role == SORTINGROLE) {
         //! reverse id priority, smaller id has higher priority
         QString idstr = sortableId(c_screens[row].id);

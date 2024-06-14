@@ -34,6 +34,7 @@
 #include <KMessageBox>
 #include <KWindowSystem>
 #include <KIO/OpenFileManagerWindowJob>
+#include <KX11Extras>
 
 
 namespace Latte {
@@ -74,8 +75,8 @@ SettingsDialog::SettingsDialog(QWidget *parent, Latte::Corona *corona)
     loadConfig();
     resize(m_windowSize);
 
-    m_ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
-    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    m_ui->buttonBox->button(QDialogButtonBox::Apply)->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    m_ui->buttonBox->button(QDialogButtonBox::Reset)->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_L));
 
     //! SIGNALS
     connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &SettingsDialog::onCurrentTabChanged);
@@ -129,13 +130,13 @@ void SettingsDialog::initFileMenu()
 
     m_importFullAction = m_fileMenu->addAction(i18n("Import Configuration..."));
     m_importFullAction->setIcon(QIcon::fromTheme("document-import"));
-    m_importFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_I));
+    m_importFullAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I));
     m_importFullAction->setToolTip(i18n("Import your full configuration from previous backup"));
     connect(m_importFullAction, &QAction::triggered, this, &SettingsDialog::importFullConfiguration);
 
     m_exportFullAction = m_fileMenu->addAction(i18n("Export Configuration..."));
     m_exportFullAction->setIcon(QIcon::fromTheme("document-export"));
-    m_exportFullAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_E));
+    m_exportFullAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
     m_exportFullAction->setToolTip(i18n("Export your full configuration to create backup"));
     connect(m_exportFullAction, &QAction::triggered, this, &SettingsDialog::exportFullConfiguration);
 
@@ -143,13 +144,13 @@ void SettingsDialog::initFileMenu()
 
     QAction *screensAction = m_fileMenu->addAction(i18n("&Screens..."));
     screensAction->setIcon(QIcon::fromTheme("document-properties"));
-    screensAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_S));
+    screensAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
     screensAction->setToolTip(i18n("Examing your screens and remove deprecated references"));
     connect(screensAction, &QAction::triggered, this, &SettingsDialog::showScreensDialog);
 
     QAction *quitAction = m_fileMenu->addAction(i18n("&Quit Latte"));
     quitAction->setIcon(QIcon::fromTheme("application-exit"));
-    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    quitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
 
 
     //! triggers
@@ -300,10 +301,12 @@ void SettingsDialog::importFullConfiguration()
             connect(msg, &QFileDialog::finished, msg, &QFileDialog::deleteLater);
 
             connect(importBtn, &QPushButton::clicked, this, [&, file](bool check) {
+                Q_UNUSED(check);
                 m_corona->importFullConfiguration(file);
             });
 
             connect(takeBackupBtn, &QPushButton::clicked, this, [&](bool check) {
+                Q_UNUSED(check);
                 exportFullConfiguration();
             });
 
@@ -478,9 +481,9 @@ bool SettingsDialog::saveChanges()
 
         KMessageBox::ButtonCode result = saveChangesConfirmation(saveChangesText);
 
-        if (result == KMessageBox::Yes) {
+        if (result == KMessageBox::PrimaryAction) {
             save();
-        } else if (result == KMessageBox::No) {
+        } else if (result == KMessageBox::SecondaryAction) {
             reset();
         } else {
             return false;
@@ -605,7 +608,7 @@ void SettingsDialog::dropEvent(QDropEvent *event)
 void SettingsDialog::updateWindowActivities()
 {
     if (KWindowSystem::isPlatformX11()) {
-        KWindowSystem::setOnActivities(winId(), QStringList());
+        KX11Extras::setOnActivities(winId(), QStringList());
     }
 }
 
