@@ -69,7 +69,7 @@ void ViewsHandler::init()
     m_newViewAction = new QAction(i18nc("new view", "&New"), this);
     m_newViewAction->setToolTip(i18n("New dock or panel"));
     m_newViewAction->setIcon(QIcon::fromTheme("add"));
-    m_newViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+    m_newViewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
     connectActionWithButton(m_ui->newBtn, m_newViewAction);
     connect(m_newViewAction, &QAction::triggered, m_ui->newBtn, &QPushButton::showMenu);
 
@@ -83,7 +83,7 @@ void ViewsHandler::init()
     m_duplicateViewAction = new QAction(i18nc("duplicate dock or panel", "&Duplicate"), this);
     m_duplicateViewAction->setToolTip(i18n("Duplicate selected dock or panel"));
     m_duplicateViewAction->setIcon(QIcon::fromTheme("edit-copy"));
-    m_duplicateViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    m_duplicateViewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
     connectActionWithButton(m_ui->duplicateBtn, m_duplicateViewAction);
     connect(m_duplicateViewAction, &QAction::triggered, m_viewsController, &Controller::Views::duplicateSelectedViews);
 
@@ -100,7 +100,7 @@ void ViewsHandler::init()
     m_importViewAction =new QAction(i18nc("import dock/panel","&Import..."));
     m_duplicateViewAction->setToolTip(i18n("Import dock or panel from local file"));
     m_importViewAction->setIcon(QIcon::fromTheme("document-import"));
-    m_importViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_I));
+    m_importViewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_I));
     connectActionWithButton(m_ui->importBtn, m_importViewAction);
     connect(m_importViewAction, &QAction::triggered, this, &ViewsHandler::importView);
 
@@ -108,7 +108,7 @@ void ViewsHandler::init()
     m_exportViewAction = new QAction(i18nc("export layout", "&Export"), this);
     m_exportViewAction->setToolTip(i18n("Export selected dock or panel at your system"));
     m_exportViewAction->setIcon(QIcon::fromTheme("document-export"));
-    m_exportViewAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    m_exportViewAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_E));
     connectActionWithButton(m_ui->exportBtn, m_exportViewAction);
     connect(m_exportViewAction, &QAction::triggered, m_ui->exportBtn, &QPushButton::showMenu);
 
@@ -187,12 +187,12 @@ void ViewsHandler::initViewExportSubMenu()
 
     QAction *exportforbackup = m_viewExportSubMenu->addAction(i18nc("export for backup","&Export For Backup..."));
     exportforbackup->setIcon(QIcon::fromTheme("document-export"));
-    exportforbackup->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_E));
+    exportforbackup->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT  | Qt::Key_E));
     connect(exportforbackup, &QAction::triggered, this, &ViewsHandler::exportViewForBackup);
 
     QAction *exportastemplate = m_viewExportSubMenu->addAction(i18nc("export as template","Export As &Template..."));
     exportastemplate->setIcon(QIcon::fromTheme("document-export"));
-    exportastemplate->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT  + Qt::Key_T));
+    exportastemplate->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_T));
     connect(exportastemplate, &QAction::triggered, this, &ViewsHandler::exportViewAsTemplate);
 }
 
@@ -269,7 +269,7 @@ void ViewsHandler::save()
 {
     int viewsforremoval = m_viewsController->viewsForRemovalCount();
 
-    if (viewsforremoval <=0 || removalConfirmation(viewsforremoval) == KMessageBox::Yes) {
+    if (viewsforremoval <=0 || removalConfirmation(viewsforremoval) == KMessageBox::PrimaryAction) {
         m_viewsController->save();
     }
 }
@@ -461,18 +461,18 @@ void ViewsHandler::onCurrentLayoutIndexChanged(int row)
         if (hasChangedData()) { //new layout was chosen but there are changes
             KMessageBox::ButtonCode result = saveChangesConfirmation();
 
-            if (result == KMessageBox::Yes) {
+            if (result == KMessageBox::PrimaryAction) {
                 int removalviews = m_viewsController->viewsForRemovalCount();
                 KMessageBox::ButtonCode removalresponse = removalConfirmation(removalviews);
 
-                if (removalresponse == KMessageBox::Yes) {
+                if (removalresponse == KMessageBox::PrimaryAction) {
                     switchtonewlayout = true;
                     m_lastConfirmedLayoutIndex = row;
                     m_viewsController->save();
                 } else {
                     //do nothing
                 }
-            } else if (result == KMessageBox::No) {
+            } else if (result == KMessageBox::SecondaryAction) {
                 switchtonewlayout = true;
                 m_lastConfirmedLayoutIndex = row;
             } else if (result == KMessageBox::Cancel) {
@@ -516,18 +516,18 @@ void ViewsHandler::updateWindowTitle()
 KMessageBox::ButtonCode ViewsHandler::removalConfirmation(const int &viewsCount)
 {
     if (viewsCount<=0) {
-        return KMessageBox::No;
+        return KMessageBox::SecondaryAction;
     }
 
     if (hasChangedData() && viewsCount>0) {
-        return KMessageBox::warningYesNo(m_dialog,
-                                         i18np("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?",
-                                               "You are going to <b>remove %1</b> docks and panels completely from your layout.<br/>Would you like to continue?",
-                                               viewsCount),
-                                         i18n("Approve Removal"));
+        return KMessageBox::warningContinueCancel(m_dialog,
+                                                  i18np("You are going to <b>remove 1</b> dock or panel completely from your layout.<br/>Would you like to continue?",
+                                                        "You are going to <b>remove %1</b> docks and panels completely from your layout.<br/>Would you like to continue?",
+                                                        viewsCount),
+                                                  i18n("Approve Removal"));
     }
 
-    return KMessageBox::No;
+    return KMessageBox::SecondaryAction;
 }
 
 KMessageBox::ButtonCode ViewsHandler::saveChangesConfirmation()
