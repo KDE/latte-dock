@@ -75,15 +75,10 @@ void DetailsHandler::init()
 
     m_ui->patternClearBtn->setFixedHeight(m_ui->backgroundBtn->height()+2);
 
-    connect(m_backButtonsGroup, &QButtonGroup::buttonToggled,
-            [ this ](QAbstractButton *id, bool checked) {
+    connect(m_backButtonsGroup, &QButtonGroup::idToggled,
+            [ this ](int id, bool checked) {
                 if (checked) {
-                    // FIXME:
-                    // I've no idea wtf was going on here. This code was likely incorrect to begin with.
-                    Latte::Layout::BackgroundStyle style = id
-                        ? Latte::Layout::PatternBackgroundStyle
-                        : Latte::Layout::ColorBackgroundStyle;
-                    setBackgroundStyle(static_cast<Latte::Layout::BackgroundStyle>(style));
+                    this->setBackgroundStyle(static_cast<Latte::Layout::BackgroundStyle>(id));
                 }
             });
 
