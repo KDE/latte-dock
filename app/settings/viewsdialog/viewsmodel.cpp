@@ -778,8 +778,6 @@ QVariant Views::data(const QModelIndex &index, int role) const
         return m_viewsTable[row].isActive;
     } else if (role == CHOICESROLE) {
         if (column == SCREENCOLUMN) {
-            QVariant screensVariant;
-
             Latte::Data::ScreensTable currentScreens = s_screens;
 
             if (!m_viewsTable[row].onPrimary && !currentScreens.containsId(QString::number(m_viewsTable[row].screen))) {
@@ -788,8 +786,7 @@ QVariant Views::data(const QModelIndex &index, int role) const
                 currentScreens.insertBasedOnId(explicitScr);
             }
 
-            screensVariant.setValue<Latte::Data::ScreensTable>(currentScreens);
-            return screensVariant;
+            return QVariant::fromValue(currentScreens);
         } else if (column == EDGECOLUMN) {
             QVariant edgesVariant;
             edgesVariant.setValue<Latte::Data::ViewsTable>(edgesChoices(m_viewsTable[row]));
@@ -808,14 +805,11 @@ QVariant Views::data(const QModelIndex &index, int role) const
     } else if (role == HASCHANGEDVIEWROLE) {
         return (isNewView || (m_viewsTable[row] != o_viewsTable[origviewid]));
     } else if (role == SCREENROLE) {
-        QVariant scrVariant;
         Latte::Data::Screen scrdata = screenData(m_viewsTable[row].id);
-        scrVariant.setValue<Latte::Data::Screen>(scrdata);
-        return scrVariant;
+        QVariant::fromValue(scrdata);
     } else if (role == VIEWROLE) {
-        QVariant viewVariant;
-        viewVariant.setValue<Latte::Data::View>(m_viewsTable[row]);
-        return viewVariant;
+        Latte::Data::View view = m_viewsTable[row];
+        QVariant::fromValue(view);
     } else if (role == ISMOVEORIGINROLE) {
         return m_viewsTable[row].isMoveOrigin;
     } else if (role == ERRORSROLE) {

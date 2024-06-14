@@ -85,8 +85,8 @@ void GlobalShortcuts::init()
     //show-hide the main view in the primary screen
     QAction *showAction = generalActions->addAction(QStringLiteral("show latte view"));
     showAction->setText(i18n("Show Latte Dock/Panel"));
-    showAction->setShortcut(QKeySequence(Qt::META + '`'));
-    KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META + '`'));
+    showAction->setShortcut(QKeySequence(Qt::META | '`'));
+    KGlobalAccel::setGlobalShortcut(showAction, QKeySequence(Qt::META | '`'));
     connect(showAction, &QAction::triggered, this, [this]() {
         showViews();
     });
@@ -94,7 +94,7 @@ void GlobalShortcuts::init()
     //show-cycle between Latte settings windows
     QAction *settingsAction = generalActions->addAction(QStringLiteral("show view settings"));
     settingsAction->setText(i18n("Cycle Through Dock/Panel Settings Windows"));
-    KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META + Qt::Key_A));
+    KGlobalAccel::setGlobalShortcut(settingsAction, QKeySequence(Qt::META | Qt::Key_A));
     connect(settingsAction, &QAction::triggered, this, [this] {
         m_modifierTracker->cancelMetaPressed();
         showSettings();
@@ -119,7 +119,7 @@ void GlobalShortcuts::init()
 
         QAction *action = taskbarActions->addAction(QStringLiteral("activate entry %1").arg(QString::number(entryNumber)));
         action->setText(i18n("Activate Entry %1", entryNumber));
-        action->setShortcut(QKeySequence(Qt::META + key));
+        action->setShortcut(QKeySequence(Qt::META | key));
         KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta action...";
@@ -136,7 +136,7 @@ void GlobalShortcuts::init()
         QAction *action = taskbarActions->addAction(QStringLiteral("activate entry %1").arg(QString::number(i)));
         action->setText(i18n("Activate Entry %1", i));
         action->setShortcut(QKeySequence(Qt::META + keysAboveTen[i - 10]));
-        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + keysAboveTen[i - 10]));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META | keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
             m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::META));
@@ -150,7 +150,7 @@ void GlobalShortcuts::init()
 
         QAction *action = taskbarActions->addAction(QStringLiteral("new instance for entry %1").arg(QString::number(entryNumber)));
         action->setText(i18n("New Instance for Entry %1", entryNumber));
-        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + key));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META | Qt::CTRL | key));
         connect(action, &QAction::triggered, this, [this, i] {
             // qDebug() << "meta + ctrl + action...";
             m_modifierTracker->cancelMetaPressed();
@@ -162,7 +162,7 @@ void GlobalShortcuts::init()
     for (int i = 10; i < 20; ++i) {
         QAction *action = taskbarActions->addAction(QStringLiteral("new instance for entry %1").arg(QString::number(i)));
         action->setText(i18n("New Instance for Entry %1", i));
-        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META + Qt::CTRL + keysAboveTen[i - 10]));
+        KGlobalAccel::setGlobalShortcut(action, QKeySequence(Qt::META | Qt::CTRL | keysAboveTen[i - 10]));
         connect(action, &QAction::triggered, this, [this, i] {
             m_modifierTracker->cancelMetaPressed();
             activateEntry(i, static_cast<Qt::Key>(Qt::CTRL));

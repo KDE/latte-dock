@@ -101,19 +101,19 @@ void Views::init()
     applyColumnWidths();
 
     m_cutAction = new QAction(QIcon::fromTheme("edit-cut"), i18n("Cut"), m_view);
-    m_cutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+    m_cutAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
     connect(m_cutAction, &QAction::triggered, this, &Views::cutSelectedViews);
 
     m_copyAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Copy"), m_view);
-    m_copyAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+    m_copyAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
     connect(m_copyAction, &QAction::triggered, this, &Views::copySelectedViews);
 
     m_pasteAction = new QAction(QIcon::fromTheme("edit-paste"), i18n("Paste"), m_view);
-    m_pasteAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+    m_pasteAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_V));
     connect(m_pasteAction, &QAction::triggered, this, &Views::pasteSelectedViews);
 
     m_duplicateAction = new QAction(QIcon::fromTheme("edit-copy"), i18n("Duplicate Here"), m_view);
-    m_duplicateAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_D));
+    m_duplicateAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_D));
     connect(m_duplicateAction, &QAction::triggered, this, &Views::duplicateSelectedViews);
 
     m_view->addAction(m_cutAction);
@@ -1004,7 +1004,7 @@ QString Views::uniqueViewName(QString name)
         return name;
     }
 
-    int pos_ = name.lastIndexOf(QRegExp(QString(" - [0-9]+")));
+    int pos_ = name.lastIndexOf(QRegularExpression(QString(" - [0-9]+")));
 
     if (m_model->containsCurrentName(name) && pos_ > 0) {
         name = name.left(pos_);
