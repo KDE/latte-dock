@@ -36,8 +36,11 @@ LayoutsTableView::LayoutsTableView(QWidget *parent)
     m_overlayDropMessage->setAlignment(Qt::AlignCenter);
 
     QPalette palette = m_overlayDropMessage->palette();
-    QColor backgroundColor = palette.color(QPalette::Background);
-    QColor foregroundColor = palette.color(QPalette::Foreground);
+    // FIXME:
+    // These were QPalette::Background and QPalette::Forground respectively in Qt5.
+    // Maybe these need to be changed, I don't know yet.
+    QColor backgroundColor = palette.color(QPalette::Window);
+    QColor foregroundColor = palette.color(QPalette::WindowText);
 
     QColor borderColor = foregroundColor;
     borderColor.setAlphaF(0.5);
