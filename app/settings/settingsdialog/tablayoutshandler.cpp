@@ -88,19 +88,19 @@ void TabLayouts::initUi()
     connect(this, &Settings::Handler::TabLayouts::dataChanged, this, &TabLayouts::updatePerLayoutButtonsState);
     connect(m_corona->activitiesConsumer(), &KActivities::Consumer::runningActivitiesChanged, this, &TabLayouts::updatePerLayoutButtonsState);
 
-    connect(m_inMemoryButtons, &QButtonGroup::buttonToggled,
+    connect(m_inMemoryButtons, &QButtonGroup::idToggled,
             [ this ](int id, bool checked) {
+                if (checked) {
+                    this->m_layoutsController->setInMultipleMode(id == MemoryUsage::MultipleLayouts);
 
-        if (checked) {
-            this->m_layoutsController->setInMultipleMode(id == MemoryUsage::MultipleLayouts);
-
-            if (id == MemoryUsage::MultipleLayouts) {
-                this->m_layoutsController->sortByColumn(Model::Layouts::ACTIVITYCOLUMN, Qt::AscendingOrder);
-            } else {
-                this->m_layoutsController->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
-            }
-        }
-    });
+                    if (id == MemoryUsage::MultipleLayouts) {
+                      this->m_layoutsController->sortByColumn(
+                          Model::Layouts::ACTIVITYCOLUMN, Qt::AscendingOrder);
+                    } else {
+                      this->m_layoutsController->sortByColumn(Model::Layouts::NAMECOLUMN, Qt::AscendingOrder);
+                    }
+                }
+            });
 
     connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TabLayouts::currentPageChanged);
     connect(this, &TabLayouts::currentPageChanged, this, &TabLayouts::onCurrentPageChanged);
