@@ -7,6 +7,7 @@ set(lattedock-app_SRCS
     primaryoutputwatcher.cpp
     main.cpp
     coretypes.h
+    ../legacy/configpropertymap.cpp
 )
 
 add_subdirectory(data)
@@ -50,6 +51,7 @@ ki18n_wrap_ui(lattedock-app_SRCS settings/screensdialog/screensdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog/settingsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/viewsdialog/viewsdialog.ui)
 
+include_directories(../legacy)
 
 add_executable(latte-dock ${lattedock-app_SRCS})
 

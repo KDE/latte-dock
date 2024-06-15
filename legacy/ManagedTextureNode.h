@@ -17,6 +17,9 @@
 // I promise I will get rid of it.
 // - L.B.
 
+namespace Latte {
+namespace Legacy {
+
 /**
  * @class ManagedTextureNode managedtexturenode.h KQuickAddons/ManagedTextureNode
  *
@@ -44,5 +47,8 @@ public:
 private:
     QSharedPointer<QSGTexture> m_texture;
 };
+
+}
+}
 
 #endif

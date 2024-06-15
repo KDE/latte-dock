@@ -358,13 +358,13 @@ QSGNode *IconItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *update
         return nullptr;
     }
 
-    ManagedTextureNode *textureNode = dynamic_cast<ManagedTextureNode *>(oldNode);
+    Latte::Legacy::ManagedTextureNode *textureNode = dynamic_cast<Latte::Legacy::ManagedTextureNode *>(oldNode);
 
     if (!textureNode || m_textureChanged) {
         if (oldNode)
             delete oldNode;
 
-        textureNode = new ManagedTextureNode;
+        textureNode = new Latte::Legacy::ManagedTextureNode;
         textureNode->setTexture(QSharedPointer<QSGTexture>(window()->createTextureFromImage(m_iconPixmap.toImage(), QQuickWindow::TextureCanUseAtlas)));
         textureNode->setFiltering(smooth() ? QSGTexture::Linear : QSGTexture::Nearest);
 
