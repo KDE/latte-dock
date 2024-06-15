@@ -15,8 +15,29 @@
 
 namespace Latte {
 namespace WindowSystem {
+class WindowId : public QVariant
+{
+public:
+    using QVariant::QVariant;
 
-using WindowId = QVariant;
+    inline WindowId& operator=(const WindowId &other)
+    {
+        QVariant::operator=(other);
+        return *this;
+    }
+
+    static inline WindowId nil() noexcept
+    {
+        return WindowId{};
+    }
+};
+}
+}
+
+uint qHash(const Latte::WindowSystem::WindowId&, uint);
+
+namespace Latte {
+namespace WindowSystem {
 
 class WindowInfoWrap
 {
