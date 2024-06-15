@@ -43,14 +43,16 @@
 #include <QQuickItem>
 #include <QMenu>
 
-// KDe
+// KDE
 #include <KActionCollection>
-#include <KActivities/Consumer>
+#include <KPackage/Package>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 #include <KWindowSystem>
+#include <KX11Extras>
 
 // Plasma
+#include <PlasmaActivities/Consumer>
 #include <Plasma/Containment>
 #include <Plasma/ContainmentActions>
 #include <PlasmaQuick/AppletQuickItem>
@@ -84,7 +86,9 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     setIcon(qGuiApp->windowIcon());
     setResizeMode(QuickViewSharedEngine::SizeRootObjectToView);
     setColor(QColor(Qt::transparent));
-    setClearBeforeRendering(true);
+    // FIXME:
+    // This was removed in Qt6. Investigate if something else is needed.
+    //setClearBeforeRendering(true);
 
     const auto flags = Qt::FramelessWindowHint
             | Qt::NoDropShadowWindowHint
@@ -104,7 +108,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
         //! Best guess is that this is needed because OnAllDesktops is set through visibilitymanager
         //! after containment has been assigned. That delay might lead wm ignoring the flag
         //! until it is reapplied.
-        KWindowSystem::setOnAllDesktops(winId(), true);
+        KX11Extras::setOnAllDesktops(winId(), true);
     }
 
     if (targetScreen) {
@@ -729,7 +733,7 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         setFlags(flags() & ~Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
         if (KWindowSystem::isPlatformX11()) {
-            KWindowSystem::forceActiveWindow(winId());
+            KX11Extras::forceActiveWindow(winId());
         }
         if (m_shellSurface) {
             m_shellSurface->setPanelTakesFocus(true);
@@ -1369,7 +1373,7 @@ bool View::mimeContainsPlasmoid(QMimeData *mimeData, QString name)
 
     if (mimeData->hasFormat(QStringLiteral("text/x-plasmoidservicename"))) {
         QString data = mimeData->data(QStringLiteral("text/x-plasmoidservicename"));
-        const QStringList appletNames = data.split('\n', QString::SkipEmptyParts);
+        const QStringList appletNames = data.split('\n', Qt::SkipEmptyParts);
 
         for (const QString &appletName : appletNames) {
             if (appletName == name)
@@ -1648,7 +1652,7 @@ QAction *View::action(const QString &name)
         return nullptr;
     }
 
-    return this->containment()->actions()->action(name);
+    return this->containment()->internalAction(name);
 }
 
 QVariantList View::containmentActions() const

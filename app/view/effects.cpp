@@ -19,6 +19,7 @@
 // KDE
 #include <KWindowEffects>
 #include <KWindowSystem>
+#include <KX11Extras>
 
 
 namespace Latte {
@@ -55,8 +56,8 @@ void Effects::init()
     connect(m_view, &QQuickWindow::widthChanged, this, &Effects::updateMask);
     connect(m_view, &QQuickWindow::heightChanged, this, &Effects::updateMask);
     connect(m_view, &Latte::View::behaveAsPlasmaPanelChanged, this, &Effects::updateMask);
-    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, [&]() {
-        if (!KWindowSystem::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
+    connect(KX11Extras::self(), &KX11Extras::compositingChanged, this, [&]() {
+        if (!KX11Extras::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
             setMask(m_rect);
         }
 
@@ -64,7 +65,7 @@ void Effects::init()
     });
 
     connect(this, &Effects::rectChanged, this, [&]() {
-        if (!KWindowSystem::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
+        if (!KX11Extras::compositingActive() && !m_view->behaveAsPlasmaPanel()) {
             setMask(m_rect);
         }
     });
@@ -470,7 +471,7 @@ void Effects::updateBackgroundCorners()
 
 void Effects::updateMask()
 {
-    if (KWindowSystem::compositingActive()) {
+    if (KX11Extras::compositingActive()) {
         if (KWindowSystem::isPlatformX11()) {
             if (m_view->behaveAsPlasmaPanel()) {
                 // set as NULL in order for plasma framrworks to identify NULL Mask properly
@@ -597,8 +598,8 @@ void Effects::updateEffects()
 
                 if (!fixedMask.isEmpty()) {
                     clearEffects = false;
-                    KWindowEffects::enableBlurBehind(m_view->winId(), true, fixedMask);
-                    KWindowEffects::enableBackgroundContrast(m_view->winId(),
+                    KWindowEffects::enableBlurBehind(m_view, true, fixedMask);
+                    KWindowEffects::enableBackgroundContrast(m_view,
                                                              m_theme.backgroundContrastEnabled(),
                                                              m_backEffectContrast,
                                                              m_backEffectIntesity,
@@ -609,8 +610,8 @@ void Effects::updateEffects()
         } else {
             //!  BEHAVEASPLASMAPANEL case
             clearEffects = false;
-            KWindowEffects::enableBlurBehind(m_view->winId(), true);
-            KWindowEffects::enableBackgroundContrast(m_view->winId(),
+            KWindowEffects::enableBlurBehind(m_view, true);
+            KWindowEffects::enableBackgroundContrast(m_view,
                                                      m_theme.backgroundContrastEnabled(),
                                                      m_backEffectContrast,
                                                      m_backEffectIntesity,
@@ -619,13 +620,13 @@ void Effects::updateEffects()
     }
 
     if (clearEffects) {
-        KWindowEffects::enableBlurBehind(m_view->winId(), false);
-        KWindowEffects::enableBackgroundContrast(m_view->winId(), false);
+        KWindowEffects::enableBlurBehind(m_view, false);
+        KWindowEffects::enableBackgroundContrast(m_view, false);
     }
 }
 
 //!BEGIN draw panel shadows outside the dock window
-Plasma::FrameSvg::EnabledBorders Effects::enabledBorders() const
+KSvg::FrameSvg::EnabledBorders Effects::enabledBorders() const
 {
     return m_enabledBorders;
 }
@@ -676,24 +677,24 @@ void Effects::updateEnabledBorders()
         return;
     }
 
-    Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
+    KSvg::FrameSvg::EnabledBorders borders = KSvg::FrameSvg::AllBorders;
 
     if (!m_view->screenEdgeMarginEnabled() && !m_backgroundAllCorners) {
         switch (m_view->location()) {
         case Plasma::Types::TopEdge:
-            borders &= ~Plasma::FrameSvg::TopBorder;
+            borders &= ~KSvg::FrameSvg::TopBorder;
             break;
 
         case Plasma::Types::LeftEdge:
-            borders &= ~Plasma::FrameSvg::LeftBorder;
+            borders &= ~KSvg::FrameSvg::LeftBorder;
             break;
 
         case Plasma::Types::RightEdge:
-            borders &= ~Plasma::FrameSvg::RightBorder;
+            borders &= ~KSvg::FrameSvg::RightBorder;
             break;
 
         case Plasma::Types::BottomEdge:
-            borders &= ~Plasma::FrameSvg::BottomBorder;
+            borders &= ~KSvg::FrameSvg::BottomBorder;
             break;
 
         default:
@@ -705,43 +706,43 @@ void Effects::updateEnabledBorders()
         if ((m_view->location() == Plasma::Types::LeftEdge || m_view->location() == Plasma::Types::RightEdge)) {
             if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
                 if (!m_forceTopBorder) {
-                    borders &= ~Plasma::FrameSvg::TopBorder;
+                    borders &= ~KSvg::FrameSvg::TopBorder;
                 }
 
                 if (!m_forceBottomBorder) {
-                    borders &= ~Plasma::FrameSvg::BottomBorder;
+                    borders &= ~KSvg::FrameSvg::BottomBorder;
                 }
             }
 
             if (m_view->alignment() == Latte::Types::Top && !m_forceTopBorder && m_view->offset() == 0) {
-                borders &= ~Plasma::FrameSvg::TopBorder;
+                borders &= ~KSvg::FrameSvg::TopBorder;
             }
 
             if (m_view->alignment() == Latte::Types::Bottom && !m_forceBottomBorder && m_view->offset() == 0) {
-                borders &= ~Plasma::FrameSvg::BottomBorder;
+                borders &= ~KSvg::FrameSvg::BottomBorder;
             }
         }
 
         if (m_view->location() == Plasma::Types::TopEdge || m_view->location() == Plasma::Types::BottomEdge) {
             if (m_view->maxLength() == 1 && m_view->alignment() == Latte::Types::Justify) {
-                borders &= ~Plasma::FrameSvg::LeftBorder;
-                borders &= ~Plasma::FrameSvg::RightBorder;
+                borders &= ~KSvg::FrameSvg::LeftBorder;
+                borders &= ~KSvg::FrameSvg::RightBorder;
             }
 
             if (m_view->alignment() == Latte::Types::Left && m_view->offset() == 0) {
-                borders &= ~Plasma::FrameSvg::LeftBorder;
+                borders &= ~KSvg::FrameSvg::LeftBorder;
             }
 
             if (m_view->alignment() == Latte::Types::Right  && m_view->offset() == 0) {
-                borders &= ~Plasma::FrameSvg::RightBorder;
+                borders &= ~KSvg::FrameSvg::RightBorder;
             }
         }
     }
 
-    m_hasTopLeftCorner =  (borders == Plasma::FrameSvg::AllBorders) || ((borders & Plasma::FrameSvg::TopBorder) && (borders & Plasma::FrameSvg::LeftBorder));
-    m_hasTopRightCorner =  (borders == Plasma::FrameSvg::AllBorders) || ((borders & Plasma::FrameSvg::TopBorder) && (borders & Plasma::FrameSvg::RightBorder));
-    m_hasBottomLeftCorner =  (borders == Plasma::FrameSvg::AllBorders) || ((borders & Plasma::FrameSvg::BottomBorder) && (borders & Plasma::FrameSvg::LeftBorder));
-    m_hasBottomRightCorner =  (borders == Plasma::FrameSvg::AllBorders) || ((borders & Plasma::FrameSvg::BottomBorder) && (borders & Plasma::FrameSvg::RightBorder));
+    m_hasTopLeftCorner =  (borders == KSvg::FrameSvg::AllBorders) || ((borders & KSvg::FrameSvg::TopBorder) && (borders & KSvg::FrameSvg::LeftBorder));
+    m_hasTopRightCorner =  (borders == KSvg::FrameSvg::AllBorders) || ((borders & KSvg::FrameSvg::TopBorder) && (borders & KSvg::FrameSvg::RightBorder));
+    m_hasBottomLeftCorner =  (borders == KSvg::FrameSvg::AllBorders) || ((borders & KSvg::FrameSvg::BottomBorder) && (borders & KSvg::FrameSvg::LeftBorder));
+    m_hasBottomRightCorner =  (borders == KSvg::FrameSvg::AllBorders) || ((borders & KSvg::FrameSvg::BottomBorder) && (borders & KSvg::FrameSvg::RightBorder));
 
     if (m_enabledBorders != borders) {
         m_enabledBorders = borders;

@@ -12,9 +12,9 @@
 #include <QQuickItem>
 #include <QPointer>
 
-namespace KDeclarative
+namespace PlasmaQuick
 {
-class QmlObjectSharedEngine;
+class SharedQmlEngine;
 }
 
 namespace Latte {
@@ -37,7 +37,7 @@ struct IndicatorUiData
     QString pluginPath;
     QString name;
     QPointer<Latte::View> view;
-    QPointer<KDeclarative::QmlObjectSharedEngine> ui;
+    QPointer<PlasmaQuick::SharedQmlEngine> ui;
 };
 
 class IndicatorUiManager : public QObject

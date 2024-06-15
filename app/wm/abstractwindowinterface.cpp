@@ -18,7 +18,7 @@
 
 // KDE
 #include <KWindowSystem>
-#include <KActivities/Controller>
+#include <PlasmaActivities/Controller>
 
 namespace Latte {
 namespace WindowSystem {

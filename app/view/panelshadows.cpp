@@ -24,14 +24,14 @@ public:
     void clearTiles();
     void setupTiles();
     void initTile(const QString &element);
-    void updateShadow(QWindow *window, Plasma::FrameSvg::EnabledBorders);
+    void updateShadow(QWindow *window, KSvg::FrameSvg::EnabledBorders);
     void clearShadow(QWindow *window);
     void updateShadows();
     bool hasShadows() const;
 
     PanelShadows *q;
 
-    QHash<QWindow *, Plasma::FrameSvg::EnabledBorders> m_windows;
+    QHash<QWindow *, KSvg::FrameSvg::EnabledBorders> m_windows;
     QHash<QWindow *, KWindowShadow *> m_shadows;
     QVector<KWindowShadowTile::Ptr> m_tiles;
 };
@@ -49,11 +49,11 @@ public:
 Q_GLOBAL_STATIC(PanelShadowsSingleton, privatePanelShadowsSelf)
 
 PanelShadows::PanelShadows(QObject *parent, const QString &prefix)
-    : Plasma::Svg(parent)
+    : KSvg::Svg(parent)
     , d(new Private(this))
 {
     setImagePath(prefix);
-    connect(this, &Plasma::Svg::repaintNeeded, this, [this]() {
+    connect(this, &KSvg::Svg::repaintNeeded, this, [this]() {
         d->updateShadows();
     });
 }
@@ -68,7 +68,7 @@ PanelShadows *PanelShadows::self()
     return &privatePanelShadowsSelf->self;
 }
 
-void PanelShadows::addWindow(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
+void PanelShadows::addWindow(QWindow *window, KSvg::FrameSvg::EnabledBorders enabledBorders)
 {
     if (!window) {
         return;
@@ -100,7 +100,7 @@ void PanelShadows::removeWindow(QWindow *window)
     }
 }
 
-void PanelShadows::setEnabledBorders(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
+void PanelShadows::setEnabledBorders(QWindow *window, KSvg::FrameSvg::EnabledBorders enabledBorders)
 {
     if (!window || !d->m_windows.contains(window)) {
         return;
@@ -161,7 +161,7 @@ void PanelShadows::Private::clearTiles()
     m_tiles.clear();
 }
 
-void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::EnabledBorders enabledBorders)
+void PanelShadows::Private::updateShadow(QWindow *window, KSvg::FrameSvg::EnabledBorders enabledBorders)
 {
     if (!hasShadows()) {
         return;
@@ -181,49 +181,49 @@ void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::Enab
         shadow->destroy();
     }
 
-    if (enabledBorders & Plasma::FrameSvg::TopBorder) {
+    if (enabledBorders & KSvg::FrameSvg::TopBorder) {
         shadow->setTopTile(m_tiles.at(0));
     } else {
         shadow->setTopTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::TopBorder && enabledBorders & Plasma::FrameSvg::RightBorder) {
+    if (enabledBorders & KSvg::FrameSvg::TopBorder && enabledBorders & KSvg::FrameSvg::RightBorder) {
         shadow->setTopRightTile(m_tiles.at(1));
     } else {
         shadow->setTopRightTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::RightBorder) {
+    if (enabledBorders & KSvg::FrameSvg::RightBorder) {
         shadow->setRightTile(m_tiles.at(2));
     } else {
         shadow->setRightTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::BottomBorder && enabledBorders & Plasma::FrameSvg::RightBorder) {
+    if (enabledBorders & KSvg::FrameSvg::BottomBorder && enabledBorders & KSvg::FrameSvg::RightBorder) {
         shadow->setBottomRightTile(m_tiles.at(3));
     } else {
         shadow->setBottomRightTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::BottomBorder) {
+    if (enabledBorders & KSvg::FrameSvg::BottomBorder) {
         shadow->setBottomTile(m_tiles.at(4));
     } else {
         shadow->setBottomTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::BottomBorder && enabledBorders & Plasma::FrameSvg::LeftBorder) {
+    if (enabledBorders & KSvg::FrameSvg::BottomBorder && enabledBorders & KSvg::FrameSvg::LeftBorder) {
         shadow->setBottomLeftTile(m_tiles.at(5));
     } else {
         shadow->setBottomLeftTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::LeftBorder) {
+    if (enabledBorders & KSvg::FrameSvg::LeftBorder) {
         shadow->setLeftTile(m_tiles.at(6));
     } else {
         shadow->setLeftTile(nullptr);
     }
 
-    if (enabledBorders & Plasma::FrameSvg::TopBorder && enabledBorders & Plasma::FrameSvg::LeftBorder) {
+    if (enabledBorders & KSvg::FrameSvg::TopBorder && enabledBorders & KSvg::FrameSvg::LeftBorder) {
         shadow->setTopLeftTile(m_tiles.at(7));
     } else {
         shadow->setTopLeftTile(nullptr);
@@ -231,8 +231,8 @@ void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::Enab
 
     QMargins padding;
 
-    if (enabledBorders & Plasma::FrameSvg::TopBorder) {
-        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-top-margin"));
+    if (enabledBorders & KSvg::FrameSvg::TopBorder) {
+        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-top-margin")).toSize();
         if (marginHint.isValid()) {
             padding.setTop(marginHint.height());
         } else {
@@ -240,8 +240,8 @@ void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::Enab
         }
     }
 
-    if (enabledBorders & Plasma::FrameSvg::RightBorder) {
-        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-right-margin"));
+    if (enabledBorders & KSvg::FrameSvg::RightBorder) {
+        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-right-margin")).toSize();
         if (marginHint.isValid()) {
             padding.setRight(marginHint.width());
         } else {
@@ -249,8 +249,8 @@ void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::Enab
         }
     }
 
-    if (enabledBorders & Plasma::FrameSvg::BottomBorder) {
-        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-bottom-margin"));
+    if (enabledBorders & KSvg::FrameSvg::BottomBorder) {
+        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-bottom-margin")).toSize();
         if (marginHint.isValid()) {
             padding.setBottom(marginHint.height());
         } else {
@@ -258,8 +258,8 @@ void PanelShadows::Private::updateShadow(QWindow *window, Plasma::FrameSvg::Enab
         }
     }
 
-    if (enabledBorders & Plasma::FrameSvg::LeftBorder) {
-        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-left-margin"));
+    if (enabledBorders & KSvg::FrameSvg::LeftBorder) {
+        const QSize marginHint = q->elementSize(QStringLiteral("shadow-hint-left-margin")).toSize();
         if (marginHint.isValid()) {
             padding.setLeft(marginHint.width());
         } else {
