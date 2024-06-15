@@ -13,7 +13,7 @@
 #include "windowinfowrap.h"
 
 // Qt
-#include <QMap>
+#include <QHash>
 #include <QObject>
 
 // KDE
@@ -121,7 +121,7 @@ private:
 
 private:
     friend class Private::GhostWindow;
-    mutable QMap<WindowId, Private::GhostWindow *> m_ghostWindows;
+    mutable QHash<WindowId, Private::GhostWindow *> m_ghostWindows;
 
     KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
 
