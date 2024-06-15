@@ -21,9 +21,11 @@
 #include <KConfigLoader>
 #include <KPluginMetaData>
 
+// legacy
+#include "configpropertymap.h"
+
 namespace KDeclarative
 {
-class ConfigPropertyMap;
 class QmlObjectSharedEngine;
 }
 
@@ -157,7 +159,7 @@ private:
     QPointer<IndicatorPart::Info> m_info;
     QPointer<IndicatorPart::Resources> m_resources;
 
-    QPointer<KDeclarative::ConfigPropertyMap> m_configuration;
+    QPointer<Latte::Legacy::ConfigPropertyMap> m_configuration;
 };
 
 }

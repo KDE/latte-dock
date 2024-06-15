@@ -10,8 +10,8 @@
 #include <QDebug>
 #include <QFileInfo>
 
-// Plasma
-#include <Plasma/Svg>
+// KDE
+#include <KSvg/Svg>
 
 namespace Latte {
 namespace ViewPart {
@@ -46,7 +46,7 @@ void Resources::setSvgImagePaths(QStringList paths)
 
     for(const auto &relPath : paths) {
         if (!relPath.isEmpty()) {
-            Plasma::Svg *svg = new Plasma::Svg(this);
+            KSvg::Svg *svg = new KSvg::Svg(this);
 
             bool isLocalFile = relPath.contains(".") && !relPath.startsWith("file:");
 

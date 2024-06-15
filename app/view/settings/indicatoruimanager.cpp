@@ -20,7 +20,7 @@
 // KDE
 #include <KLocalizedString>
 #include <KPluginMetaData>
-#include <KDeclarative/QmlObjectSharedEngine>
+#include <PlasmaQuick/SharedQmlEngine>
 
 namespace Latte {
 namespace ViewPart {
@@ -121,7 +121,7 @@ void IndicatorUiManager::ui(const QString &type, Latte::View *view)
         if (!uiPath.isEmpty()) {
             IndicatorUiData uidata;
 
-            uidata.ui = new KDeclarative::QmlObjectSharedEngine(this);
+            uidata.ui = new PlasmaQuick::SharedQmlEngine(this);
             uidata.pluginPath = QFileInfo(metadata.fileName()).absolutePath();
             uidata.type = type;
             uidata.view = view;

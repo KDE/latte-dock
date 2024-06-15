@@ -189,9 +189,12 @@ QEvent *EventsSink::onEvent(QEvent *e)
                 auto positionadjusted = positionAdjustedForDestination(pos);
                 auto we2 = new QWheelEvent(positionadjusted,
                                            positionadjusted + m_view->position(),
-                                           we->pixelDelta(), we->angleDelta(), we->angleDelta().y(),
-                                           we->orientation(), we->buttons(), we->modifiers(), we->phase());
-
+                                           we->pixelDelta(),
+                                           we->angleDelta(),
+                                           we->buttons(),
+                                           we->modifiers(),
+                                           we->phase(),
+                                           we->inverted());
                 sunkevent = we2;
             } else if (!destinationContains(pos)) {
                 release();

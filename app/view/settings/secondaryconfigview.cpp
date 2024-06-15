@@ -21,14 +21,12 @@
 
 // KDE
 #include <KLocalizedContext>
-#include <KDeclarative/KDeclarative>
 #include <KWayland/Client/plasmashell.h>
 #include <KWayland/Client/surface.h>
 #include <KWindowEffects>
 #include <KWindowSystem>
-
-// Plasma
-#include <Plasma/Package>
+#include <KX11Extras>
+#include <KPackage/Package>
 
 namespace Latte {
 namespace ViewPart {
@@ -237,7 +235,7 @@ void SecondaryConfigView::updateEffects()
     }
 
     if (!m_background) {
-        m_background = new Plasma::FrameSvg(this);
+        m_background = new KSvg::FrameSvg(this);
     }
 
     if (m_background->imagePath() != "dialogs/background") {
@@ -257,10 +255,10 @@ void SecondaryConfigView::updateEffects()
         setMask(QRegion());
     }
 
-    if (KWindowSystem::compositingActive()) {
-        KWindowEffects::enableBlurBehind(winId(), true, fixedMask);
+    if (KX11Extras::compositingActive()) {
+        KWindowEffects::enableBlurBehind(this, true, fixedMask);
     } else {
-        KWindowEffects::enableBlurBehind(winId(), false);
+        KWindowEffects::enableBlurBehind(this, false);
     }
 }
 
@@ -271,23 +269,23 @@ void SecondaryConfigView::updateEnabledBorders()
         return;
     }
 
-    Plasma::FrameSvg::EnabledBorders borders = Plasma::FrameSvg::AllBorders;
+    KSvg::FrameSvg::EnabledBorders borders = KSvg::FrameSvg::AllBorders;
 
     switch (m_latteView->location()) {
     case Plasma::Types::TopEdge:
-        borders &= ~Plasma::FrameSvg::TopBorder;
+        borders &= ~KSvg::FrameSvg::TopBorder;
         break;
 
     case Plasma::Types::LeftEdge:
-        borders &= ~Plasma::FrameSvg::LeftBorder;
+        borders &= ~KSvg::FrameSvg::LeftBorder;
         break;
 
     case Plasma::Types::RightEdge:
-        borders &= ~Plasma::FrameSvg::RightBorder;
+        borders &= ~KSvg::FrameSvg::RightBorder;
         break;
 
     case Plasma::Types::BottomEdge:
-        borders &=  ~Plasma::FrameSvg::BottomBorder;
+        borders &=  ~KSvg::FrameSvg::BottomBorder;
         break;
 
     default:

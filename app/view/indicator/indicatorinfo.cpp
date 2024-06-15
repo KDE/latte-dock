@@ -8,8 +8,8 @@
 // Qt
 #include <QDebug>
 
-// Plasma
-#include <Plasma/Svg>
+// KDE
+#include <KSvg/Svg>
 
 namespace Latte {
 namespace ViewPart {

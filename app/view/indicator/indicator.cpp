@@ -17,13 +17,12 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QLatin1String>
+#include <QQmlComponent>
 
 // KDE
 #include <KLocalizedString>
 #include <KPluginMetaData>
-#include <KDeclarative/ConfigPropertyMap>
-#include <KDeclarative/QmlObjectSharedEngine>
-
+#include <PlasmaQuick/SharedQmlEngine>
 
 namespace Latte {
 namespace ViewPart {
@@ -271,7 +270,7 @@ void Indicator::updateComponent()
 
     if (!uiPath.isEmpty()) {
         uiPath = m_pluginPath + "/package/" + uiPath;
-        m_component = new QQmlComponent(m_view->engine(), uiPath);
+        m_component = new QQmlComponent(m_view->engine().get(), uiPath);
     }
 
     if (prevComponent) {
@@ -288,7 +287,7 @@ void Indicator::loadPlasmaComponent()
 
     if (!uiPath.isEmpty()) {
         uiPath = QFileInfo(metadata.fileName()).absolutePath() + "/package/" + uiPath;
-        m_plasmaComponent = new QQmlComponent(m_view->engine(), uiPath);
+        m_plasmaComponent = new QQmlComponent(m_view->engine().get(), uiPath);
     }
 
     if (prevComponent) {
@@ -313,7 +312,7 @@ void Indicator::updateScheme()
     if (!xmlPath.isEmpty()) {
         QFile file(m_pluginPath + "/package/" + xmlPath);
         m_configLoader = new KConfigLoader(m_view->containment()->config().group("Indicator").group(m_metadata.pluginId()), &file);
-        m_configuration = new KDeclarative::ConfigPropertyMap(m_configLoader, this);
+        m_configuration = new Latte::Legacy::ConfigPropertyMap(m_configLoader, this);
     } else {
         m_configLoader = nullptr;
         m_configuration = nullptr;
