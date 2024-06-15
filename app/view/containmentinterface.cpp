@@ -27,7 +27,6 @@
 #include <KDesktopFile>
 #include <KLocalizedString>
 #include <KPluginMetaData>
-#include <KDeclarative/ConfigPropertyMap>
 
 namespace Latte {
 namespace ViewPart {
@@ -180,7 +179,7 @@ int ContainmentInterface::applicationLauncherId() const
     auto launcherId{-1};
 
     for (auto applet : applets) {
-        const auto provides = applet->kPackage().metadata().value(QStringLiteral("X-Plasma-Provides"));
+        const auto provides = applet->pluginMetaData().value(QStringLiteral("X-Plasma-Provides"));
 
         if (provides.contains(QLatin1String("org.kde.plasma.launchermenu"))) {
             if (!applet->globalShortcut().isEmpty()) {
@@ -203,7 +202,7 @@ bool ContainmentInterface::updateBadgeForLatteTask(const QString identifier, con
     const auto &applets = m_view->containment()->applets();
 
     for (auto *applet : applets) {
-        KPluginMetaData meta = applet->kPackage().metadata();
+        KPluginMetaData meta = applet->pluginMetaData();
 
         if (meta.pluginId() == QLatin1String("org.kde.latte.plasmoid")) {
 
@@ -252,7 +251,8 @@ bool ContainmentInterface::activatePlasmaTask(const int index)
     const auto &applets = m_view->containment()->applets();
 
     for (auto *applet : applets) {
-        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+        const KPluginMetaData& metadata = applet->pluginMetaData();
+        const QStringList& provides = metadata.value(QStringLiteral("X-Plasma-Provides"), QStringList{});
 
         if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -262,7 +262,7 @@ bool ContainmentInterface::activatePlasmaTask(const int index)
                     continue;
                 }
 
-                KPluginMetaData meta = applet->kPackage().metadata();
+                KPluginMetaData meta = applet->pluginMetaData();
 
                 for (QQuickItem *item : childItems) {
                     if (auto *metaObject = item->metaObject()) {
@@ -299,7 +299,8 @@ bool ContainmentInterface::newInstanceForPlasmaTask(const int index)
     const auto &applets = m_view->containment()->applets();
 
     for (auto *applet : applets) {
-        const auto &provides = KPluginMetaData::readStringList(applet->pluginMetaData().rawData(), QStringLiteral("X-Plasma-Provides"));
+        const KPluginMetaData& metadata = applet->pluginMetaData();
+        const QStringList& provides = metadata.value(QStringLiteral("X-Plasma-Provides"), QStringList{});
 
         if (provides.contains(QLatin1String("org.kde.plasma.multitasking"))) {
             if (QQuickItem *appletInterface = applet->property("_plasma_graphicObject").value<QQuickItem *>()) {
@@ -309,7 +310,7 @@ bool ContainmentInterface::newInstanceForPlasmaTask(const int index)
                     continue;
                 }
 
-                KPluginMetaData meta = applet->kPackage().metadata();
+                KPluginMetaData meta = applet->pluginMetaData();
 
                 for (QQuickItem *item : childItems) {
                     if (auto *metaObject = item->metaObject()) {
@@ -540,7 +541,7 @@ void ContainmentInterface::setPlasmoid(QObject *plasmoid)
     m_plasmoid = plasmoid;
 
     if (m_plasmoid) {
-        m_configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
+        m_configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
 
         if (m_configuration) {
             connect(m_configuration, &QQmlPropertyMap::valueChanged, this, &ContainmentInterface::containmentConfigPropertyChanged);
@@ -908,7 +909,7 @@ void ContainmentInterface::updateAppletDelayedConfiguration()
     }
 }
 
-void ContainmentInterface::initAppletConfigurationSignals(const int &id, KDeclarative::ConfigPropertyMap *configuration)
+void ContainmentInterface::initAppletConfigurationSignals(const int &id, Latte::Legacy::ConfigPropertyMap *configuration)
 {
     if (!configuration) {
         return;
@@ -921,7 +922,7 @@ void ContainmentInterface::initAppletConfigurationSignals(const int &id, KDeclar
     });
 }
 
-KDeclarative::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const Plasma::Applet *applet)
+Latte::Legacy::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const Plasma::Applet *applet)
 {
     if (!m_view->containment() || !applet) {
         return nullptr;
@@ -930,13 +931,13 @@ KDeclarative::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const
     PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
     bool isSubContainment = Layouts::Storage::self()->isSubContainment(m_view->corona(), applet); //we use corona() to make sure that returns true even when it is first created from user
     int currentAppletId = applet->id();
-    KDeclarative::ConfigPropertyMap *configuration{nullptr};
+    Latte::Legacy::ConfigPropertyMap *configuration{nullptr};
 
     //! set configuration object properly for applets and subcontainments
     if (!isSubContainment) {
         int metaconfigindex = ai->metaObject()->indexOfProperty("configuration");
         if (metaconfigindex >=0 ){
-            configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
+            configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
         }
     } else {
         Plasma::Containment *subcontainment = Layouts::Storage::self()->subContainmentOf(m_view->corona(), applet);
@@ -946,7 +947,7 @@ KDeclarative::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const
             if (subcai) {
                 int metaconfigindex = subcai->metaObject()->indexOfProperty("configuration");
                 if (metaconfigindex >=0 ){
-                    configuration = qobject_cast<KDeclarative::ConfigPropertyMap *>((subcai->property("configuration")).value<QObject *>());
+                    configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>((subcai->property("configuration")).value<QObject *>());
                 }
             }
         }
@@ -993,8 +994,8 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
             }
         }
     } else if (ai) {
-        KPluginMetaData meta = applet->kPackage().metadata();
-        const auto &provides = KPluginMetaData::readStringList(meta.rawData(), QStringLiteral("X-Plasma-Provides"));
+        KPluginMetaData meta = applet->pluginMetaData();
+        const QStringList& provides = meta.value(QStringLiteral("X-Plasma-Provides"), QStringList{});
 
         if (meta.pluginId() == QLatin1String("org.kde.latte.plasmoid")) {
             //! populate latte tasks applet
@@ -1016,7 +1017,7 @@ void ContainmentInterface::onAppletAdded(Plasma::Applet *applet)
     if (ai) {
         bool initializing{!m_appletData.contains(currentAppletId)};
 
-        KPluginMetaData meta = applet->kPackage().metadata();
+        KPluginMetaData meta = applet->pluginMetaData();
         ViewPart::AppletInterfaceData data;
         data.id = currentAppletId;
         data.plugin = meta.pluginId();

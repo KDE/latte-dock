@@ -6,6 +6,9 @@
 
 #include "ManagedTextureNode.h"
 
+namespace Latte {
+namespace Legacy {
+
 ManagedTextureNode::ManagedTextureNode()
 {
 }
@@ -14,4 +17,7 @@ void ManagedTextureNode::setTexture(QSharedPointer<QSGTexture> texture)
 {
     m_texture = texture;
     QSGSimpleTextureNode::setTexture(texture.data());
+}
+
+}
 }
