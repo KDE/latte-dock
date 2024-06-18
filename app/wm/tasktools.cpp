@@ -6,23 +6,24 @@
 #include "tasktools.h"
 #include <config-latte.h>
 
-#include <KActivities/ResourceInstance>
+#include <PlasmaActivities/ResourceInstance>
 #include <KApplicationTrader>
 #include <KConfigGroup>
 #include <KDesktopFile>
-#include <kemailsettings.h>
-#include <KMimeTypeTrader>
-#include <KServiceTypeTrader>
+//#include <KMimeTypeTrader>
+//#include <KServiceTypeTrader>
 #include <KSharedConfig>
 #include <KStartupInfo>
 #include <KWindowSystem>
 #include <KProcessList>
 
+#include <QtCore>
 #include <QDir>
 #include <QGuiApplication>
 #include <QRegularExpression>
 #include <QScreen>
 #include <QUrlQuery>
+#include <kservice.h>
 #if HAVE_X11
 #include <private/qtx11extras_p.h>
 #endif
@@ -31,6 +32,45 @@ namespace Latte
 {
 namespace WindowSystem
 {
+
+enum class AppSearchParam {
+  AppName,
+  ExecName,
+  CmdLine,
+  StartUpWMClass,
+  XWMClass
+};
+
+static KService::List searchApplication(AppSearchParam pm, const QString& arg) {
+    if(arg.isEmpty())
+        return {};
+    KApplicationTrader::FilterFunc filter = [&arg](const KService::Ptr&) {
+        qDebug() << "APPSEARCH default :: " << arg;
+        return false;
+    };
+    switch(pm) {
+        case AppSearchParam::AppName:
+            filter = [&arg](const KService::Ptr& s) {
+                qDebug() << "APPSEARCH AppName :: " << arg;
+                return s->isApplication() && s->name() == arg;
+            };
+            break;
+        case AppSearchParam::ExecName:
+            filter = [&arg](const KService::Ptr& s) {
+                qDebug() << "APPSEARCH ExecName :: " << arg;
+                return s->isApplication() && s->exec() == arg;
+            };
+            break;
+        case AppSearchParam::CmdLine:
+            filter = [&arg](const KService::Ptr& s) {
+                qDebug() << "APPSEARCH CmdLine :: " << arg;
+                return s->isApplication() && s->exec() == arg;
+            };
+            break;
+    }
+
+    return KApplicationTrader::query(filter);
+}
 
 AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
 {
@@ -143,8 +183,10 @@ AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
     return data;
 }
 
-QUrl windowUrlFromMetadata(const QString &appId, quint32 pid,
-    KSharedConfig::Ptr rulesConfig, const QString &xWindowsWMClassName)
+QUrl windowUrlFromMetadata(const QString &appId,
+                           quint32 pid,
+                           KSharedConfig::Ptr rulesConfig,
+                           const QString &xWindowsWMClassName)
 {
     if (!rulesConfig) {
         return QUrl();
@@ -491,8 +533,7 @@ KService::List servicesFromPid(quint32 pid, KSharedConfig::Ptr rulesConfig)
     return servicesFromCmdLine(cmdLine, proc.name(), rulesConfig);
 }
 
-KService::List servicesFromCmdLine(const QString &_cmdLine, const QString &processName,
-    KSharedConfig::Ptr rulesConfig)
+KService::List servicesFromCmdLine(const QString &_cmdLine, const QString &processName, KSharedConfig::Ptr rulesConfig)
 {
     QString cmdLine = _cmdLine;
     KService::List services;
