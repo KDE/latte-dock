@@ -40,6 +40,7 @@ class Predicate {
 public:
     Predicate(const std::function<bool(Inputs...)>& p)  : m_pred(p) {}
     Predicate(const std::function<bool(Inputs...)>&& p) : m_pred(std::move(p)) {}
+    std::function<bool(Inputs...)> toFunction() { return m_pred; }
 
     bool operator()(Inputs&...);
     Predicate operator|(const Predicate&);
@@ -56,9 +57,9 @@ class PredicateList : public QList<Predicate<Inputs...>> {
 public:
     using QList<Predicate<Inputs...>>::QList;
 
-    bool all(Inputs&...);
-    bool any(Inputs&...);
-    bool none(Inputs&...);
+    Predicate<Inputs...> all();
+    Predicate<Inputs...> any();
+    Predicate<Inputs...> none();
 };
 }
 

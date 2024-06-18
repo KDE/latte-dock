@@ -168,26 +168,27 @@ Predicate<Inputs...> Predicate<Inputs...>::operator~() {
 }
 
 template<typename... Inputs>
-bool PredicateList<Inputs...>::all(Inputs&... i) {
-    bool r = true;
+Predicate<Inputs...> PredicateList<Inputs...>::all() {
+    Predicate<Inputs...> r = [](Inputs&...) { return true; };
     for(auto& p: this->elems()) {
-        r = r && p(i...);
+        r = r & p;
     }
     return r;
 }
 
 template<typename... Inputs>
-bool PredicateList<Inputs...>::any(Inputs&... i) {
-    bool r = false;
+Predicate<Inputs...> PredicateList<Inputs...>::any() {
+    Predicate<Inputs...> r = [](Inputs&...) { return false; };
     for(auto& p: this->elems()) {
-        r = r || p(i...);
+        r = r | p;
     }
     return r;
 }
 
 template<typename... Inputs>
-bool PredicateList<Inputs...>::none(Inputs&... i) {
-    return !this->any(i...);
+Predicate<Inputs...> PredicateList<Inputs...>::none() {
+    auto p = this->any();
+    return ~p;
 }
 
 }
