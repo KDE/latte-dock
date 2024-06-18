@@ -4,6 +4,7 @@
 */
 
 #include "tasktools.h"
+#include "tools/commontools.h"
 #include <config-latte.h>
 
 #include <PlasmaActivities/ResourceInstance>
@@ -34,43 +35,74 @@ namespace Latte
 namespace WindowSystem
 {
 
-enum class AppSearchParam {
+class AppSearchParam {
+public:
+using Predicate = Latte::Predicate<KService::Ptr&, const QString&>;
+enum Value {
+  IsApplication,
   AppName,
   ExecName,
   CmdLine,
   StartUpWMClass,
   XWMClass
 };
+AppSearchParam(Value v) : m_value(v) {};
 
-static KService::List searchApplication(AppSearchParam pm, const QString& arg) {
-    if(arg.isEmpty())
-        return {};
-    KApplicationTrader::FilterFunc filter = [&arg](const KService::Ptr&) {
-        qDebug() << "APPSEARCH default :: " << arg;
-        return false;
-    };
-    switch(pm) {
-        case AppSearchParam::AppName:
-            filter = [&arg](const KService::Ptr& s) {
-                qDebug() << "APPSEARCH AppName :: " << arg;
-                return s->isApplication() && s->name() == arg;
+Predicate toPredicate() {
+    // Use identity for conjunction.
+    std::function<bool(KService::Ptr&, const QString&)> pred =
+        [](KService::Ptr&, const QString&) { return true; };
+
+    switch(m_value) {
+        case IsApplication:
+            pred = [](KService::Ptr& p, const QString&) {
+                qDebug() << "APPSEARCH IsApplication";
+                return p->isApplication();
             };
             break;
-        case AppSearchParam::ExecName:
-            filter = [&arg](const KService::Ptr& s) {
+        case AppName:
+            pred = [](KService::Ptr& s, const QString &arg) {
+                qDebug() << "APPSEARCH AppName :: " << arg;
+                return s->name() == arg;
+            };
+            break;
+        case ExecName:
+            pred = [](const KService::Ptr& s, const QString& arg) {
                 qDebug() << "APPSEARCH ExecName :: " << arg;
                 return s->isApplication() && s->exec() == arg;
             };
             break;
-        case AppSearchParam::CmdLine:
-            filter = [&arg](const KService::Ptr& s) {
+        case CmdLine:
+            pred = [](const KService::Ptr& s, const QString& arg) {
                 qDebug() << "APPSEARCH CmdLine :: " << arg;
                 return s->isApplication() && s->exec() == arg;
             };
             break;
-    }
+        default:
+            break;
+        }
+    return Predicate{pred};
+};
 
-    return KApplicationTrader::query(filter);
+private:
+  const Value m_value;
+};
+
+
+
+static KService::List searchApplication(const QList<AppSearchParam::Value> pms, const QString& arg) {
+    if(arg.isEmpty() || pms.isEmpty())
+        return {};
+
+    PredicateList<KService::Ptr&, const QString&> pl;
+    for(auto p: pms) {
+        pl.append(AppSearchParam(p).toPredicate());
+    }
+    Predicate<KService::Ptr&, const QString&> p = pl.all();
+    KApplicationTrader::FilterFunc ff = [&arg](KService::Ptr& s) { return p(s, arg); };
+
+
+    return KApplicationTrader::query(NULL);
 }
 
 AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
