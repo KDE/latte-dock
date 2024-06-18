@@ -10,6 +10,7 @@
 #include <KApplicationTrader>
 #include <KConfigGroup>
 #include <KDesktopFile>
+#include <KEMailSettings>
 //#include <KMimeTypeTrader>
 //#include <KServiceTypeTrader>
 #include <KSharedConfig>

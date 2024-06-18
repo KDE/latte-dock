@@ -6,6 +6,9 @@
 #ifndef COMMONTOOLS_H
 #define COMMONTOOLS_H
 
+// std
+#include <functional>
+
 // Qt
 #include <QColor>
 #include <QRect>
@@ -29,6 +32,34 @@ QRect stringToRect(const QString &str);
 QString standardPath(QString subPath, bool localFirst = true);
 
 QString configPath();
+
+// Predicates.
+// If this grows out of proportions, consider moving this out of here.
+template <typename... Inputs>
+class Predicate {
+public:
+    Predicate(const std::function<bool(Inputs...)>& p)  : m_pred(p) {}
+    Predicate(const std::function<bool(Inputs...)>&& p) : m_pred(std::move(p)) {}
+
+    bool operator()(Inputs&...);
+    Predicate operator|(const Predicate&);
+    Predicate operator&(const Predicate&);
+    Predicate operator^(const Predicate&);
+    Predicate operator~();
+
+private:
+    const std::function<bool(Inputs...)> m_pred;
+};
+
+template <typename... Inputs>
+class PredicateList : public QList<Predicate<Inputs...>> {
+public:
+    using QList<Predicate<Inputs...>>::QList;
+
+    bool all(Inputs&...);
+    bool any(Inputs&...);
+    bool none(Inputs&...);
+};
 }
 
 #endif
