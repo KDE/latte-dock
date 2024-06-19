@@ -205,24 +205,24 @@ msgstr "大小："
 #: package/contents/ui/ContextMenu.qml:51
 #, kde-format
 msgid "Top Separator"
-msgstr "顶部分隔符"
+msgstr "顶部分隔线"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Left Separator"
-msgstr "左侧分隔符"
+msgstr "左侧分隔线"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
 #, kde-format
 msgid "Right Separator"
-msgstr "右侧分隔符"
+msgstr "右侧分隔线"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr "底部分隔符"
+msgstr "底部分隔线"
 
 #: package/contents/ui/ContextMenu.qml:102
 #, kde-format

@@ -509,7 +509,7 @@ msgstr "退出 Latte"
 #: app/settings/actionsdialog/actionshandler.cpp:82
 #, kde-format
 msgid " --- separator --- "
-msgstr " --- 分隔符 --- "
+msgstr " --- 分隔线 --- "
 
 #: app/settings/actionsdialog/actionshandler.cpp:89
 #, kde-format
