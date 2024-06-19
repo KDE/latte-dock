@@ -43,6 +43,7 @@ enum Value {
   // No arguments required
   IsApplication,
   NoDisplay,
+  NotNoDisplay,
   // Require an argument
   AppName,
   ExecName,
@@ -68,6 +69,12 @@ Predicate toPredicate() {
             pred = [](KService::Ptr& p, const QString&) {
                 qDebug() << "APPSEARCH NoDisplay";
                 return p->noDisplay();
+            };
+            break;
+        case NotNoDisplay:
+            pred = [](KService::Ptr& p, const QString&) {
+                qDebug() << "APPSEARCH NotNoDisplay";
+                return !p->noDisplay();
             };
             break;
         case AppName:
@@ -388,9 +395,9 @@ QUrl windowUrlFromMetadata(const QString &appId,
                                 rewrittenString = matchProperty;
                             }
 
-                            services =
-                                KServiceTypeTrader::self()->query(QStringLiteral("Application"),
-                                                                  QStringLiteral("exist Exec and ('%1' =~ %2)").arg(rewrittenString, serviceSearchIdentifier));
+                            services = searchAppByProperty(rewrittenString, serviceSearchIdentifier);
+                            //    KServiceTypeTrader::self()->query(QStringLiteral("Application"),
+                            //                                      QStringLiteral("exist Exec and ('%1' =~ %2)").arg(rewrittenString, serviceSearchIdentifier));
                             sortServicesByMenuId(services, serviceSearchIdentifier);
 
                             if (!services.isEmpty()) {
