@@ -40,6 +40,10 @@ class Predicate {
 public:
     Predicate(const std::function<bool(Inputs...)>& p)  : m_pred(p) {}
     Predicate(const std::function<bool(Inputs...)>&& p) : m_pred(std::move(p)) {}
+    Predicate(const Predicate<Inputs...>& other) : m_pred(other.m_pred) {}
+    Predicate(const Predicate<Inputs...>&& other) : m_pred(std::move(other.m_pred)) {}
+    Predicate<Inputs...>& operator=(const Predicate<Inputs...>&);
+
     std::function<bool(Inputs...)> toFunction() { return m_pred; }
 
     bool operator()(Inputs&...);

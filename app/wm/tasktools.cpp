@@ -26,6 +26,7 @@
 #include <QScreen>
 #include <QUrlQuery>
 #include <kservice.h>
+#include <kserviceaction.h>
 #if HAVE_X11
 #include <private/qtx11extras_p.h>
 #endif
@@ -39,7 +40,10 @@ class AppSearchParam {
 public:
 using Predicate = Latte::Predicate<KService::Ptr&, const QString&>;
 enum Value {
+  // No arguments required
   IsApplication,
+  NoDisplay,
+  // Require an argument
   AppName,
   ExecName,
   CmdLine,
@@ -60,6 +64,12 @@ Predicate toPredicate() {
                 return p->isApplication();
             };
             break;
+        case NoDisplay:
+            pred = [](KService::Ptr& p, const QString&) {
+                qDebug() << "APPSEARCH NoDisplay";
+                return p->noDisplay();
+            };
+            break;
         case AppName:
             pred = [](KService::Ptr& s, const QString &arg) {
                 qDebug() << "APPSEARCH AppName :: " << arg;
@@ -69,13 +79,13 @@ Predicate toPredicate() {
         case ExecName:
             pred = [](const KService::Ptr& s, const QString& arg) {
                 qDebug() << "APPSEARCH ExecName :: " << arg;
-                return s->isApplication() && s->exec() == arg;
+                return s->exec() == arg;
             };
             break;
         case CmdLine:
             pred = [](const KService::Ptr& s, const QString& arg) {
                 qDebug() << "APPSEARCH CmdLine :: " << arg;
-                return s->isApplication() && s->exec() == arg;
+                return s->exec() == arg;
             };
             break;
         default:
@@ -88,8 +98,6 @@ private:
   const Value m_value;
 };
 
-
-
 static KService::List searchApplication(const QList<AppSearchParam::Value> pms, const QString& arg) {
     if(arg.isEmpty() || pms.isEmpty())
         return {};
@@ -98,11 +106,17 @@ static KService::List searchApplication(const QList<AppSearchParam::Value> pms, 
     for(auto p: pms) {
         pl.append(AppSearchParam(p).toPredicate());
     }
-    Predicate<KService::Ptr&, const QString&> p = pl.all();
-    KApplicationTrader::FilterFunc ff = [&arg](KService::Ptr& s) { return p(s, arg); };
+    return KApplicationTrader::query([&arg,&pl](KService::Ptr s) { return pl.all()(s, arg); });
+}
 
+static KService::List searchAppByProperty(const QString& prop, const QString& value) {
+    if(prop.isEmpty() || value.isEmpty())
+        return {};
 
-    return KApplicationTrader::query(NULL);
+    auto pred = [&prop, &value](KService::Ptr p) -> bool {
+        return p->property<QString>(prop) == value;
+    };
+    return KApplicationTrader::query(pred);
 }
 
 AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
@@ -319,14 +333,15 @@ QUrl windowUrlFromMetadata(const QString &appId,
             //
             // Source: https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt
             if (services.isEmpty()) {
-                services =
-                    KServiceTypeTrader::self()->query(QStringLiteral("Application"), QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(appId));
+                services = searchApplication({AppSearchParam::IsApplication, AppSearchParam::StartUpWMClass}, appId);
+                    //KServiceTypeTrader::self()->query(QStringLiteral("Application"), QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(appId));
                 sortServicesByMenuId(services, appId);
             }
 
             if (services.isEmpty() && !xWindowsWMClassName.isEmpty()) {
-                services = KServiceTypeTrader::self()->query(QStringLiteral("Application"),
-                                                             QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(xWindowsWMClassName));
+                services = searchApplication({AppSearchParam::IsApplication, AppSearchParam::StartUpWMClass}, xWindowsWMClassName);
+                //services = KServiceTypeTrader::self()->query(QStringLiteral("Application"),
+                //                                             QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(xWindowsWMClassName));
                 sortServicesByMenuId(services, xWindowsWMClassName);
             }
 

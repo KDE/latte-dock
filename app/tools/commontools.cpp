@@ -124,6 +124,12 @@ QString configPath()
 // If this grows out of proportions, consider moving this out of here.
 
 template<typename... Inputs>
+Predicate<Inputs...>& Predicate<Inputs...>::operator=(const Predicate<Inputs...>& other) {
+    this->m_pred = other.m_pred;
+    return *this;
+}
+
+template<typename... Inputs>
 bool Predicate<Inputs...>::operator()(Inputs&... i) {
     return m_pred(i...);
 }
