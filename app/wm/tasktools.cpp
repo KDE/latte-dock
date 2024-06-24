@@ -4,7 +4,6 @@
 */
 
 #include "tasktools.h"
-#include "tools/commontools.h"
 #include <config-latte.h>
 
 #include <PlasmaActivities/ResourceInstance>
@@ -35,96 +34,6 @@ namespace Latte
 {
 namespace WindowSystem
 {
-
-class AppSearchParam {
-public:
-using Predicate = Latte::Predicate<KService::Ptr&, const QString&>;
-enum Value {
-  // No arguments required
-  IsApplication,
-  NoDisplay,
-  NotNoDisplay,
-  // Require an argument
-  AppName,
-  ExecName,
-  CmdLine,
-  StartUpWMClass,
-  XWMClass
-};
-AppSearchParam(Value v) : m_value(v) {};
-
-Predicate toPredicate() {
-    // Use identity for conjunction.
-    std::function<bool(KService::Ptr&, const QString&)> pred =
-        [](KService::Ptr&, const QString&) { return true; };
-
-    switch(m_value) {
-        case IsApplication:
-            pred = [](KService::Ptr& p, const QString&) {
-                qDebug() << "APPSEARCH IsApplication";
-                return p->isApplication();
-            };
-            break;
-        case NoDisplay:
-            pred = [](KService::Ptr& p, const QString&) {
-                qDebug() << "APPSEARCH NoDisplay";
-                return p->noDisplay();
-            };
-            break;
-        case NotNoDisplay:
-            pred = [](KService::Ptr& p, const QString&) {
-                qDebug() << "APPSEARCH NotNoDisplay";
-                return !p->noDisplay();
-            };
-            break;
-        case AppName:
-            pred = [](KService::Ptr& s, const QString &arg) {
-                qDebug() << "APPSEARCH AppName :: " << arg;
-                return s->name() == arg;
-            };
-            break;
-        case ExecName:
-            pred = [](const KService::Ptr& s, const QString& arg) {
-                qDebug() << "APPSEARCH ExecName :: " << arg;
-                return s->exec() == arg;
-            };
-            break;
-        case CmdLine:
-            pred = [](const KService::Ptr& s, const QString& arg) {
-                qDebug() << "APPSEARCH CmdLine :: " << arg;
-                return s->exec() == arg;
-            };
-            break;
-        default:
-            break;
-        }
-    return Predicate{pred};
-};
-
-private:
-  const Value m_value;
-};
-
-static KService::List searchApplication(const QList<AppSearchParam::Value> pms, const QString& arg) {
-    if(arg.isEmpty() || pms.isEmpty())
-        return {};
-
-    PredicateList<KService::Ptr&, const QString&> pl;
-    for(auto p: pms) {
-        pl.append(AppSearchParam(p).toPredicate());
-    }
-    return KApplicationTrader::query([&arg,&pl](KService::Ptr s) { return pl.all()(s, arg); });
-}
-
-static KService::List searchAppByProperty(const QString& prop, const QString& value) {
-    if(prop.isEmpty() || value.isEmpty())
-        return {};
-
-    auto pred = [&prop, &value](KService::Ptr p) -> bool {
-        return p->property<QString>(prop) == value;
-    };
-    return KApplicationTrader::query(pred);
-}
 
 AppData appDataFromUrl(const QUrl &url, const QIcon &fallbackIcon)
 {
@@ -340,13 +249,22 @@ QUrl windowUrlFromMetadata(const QString &appId,
             //
             // Source: https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt
             if (services.isEmpty()) {
-                services = searchApplication({AppSearchParam::IsApplication, AppSearchParam::StartUpWMClass}, appId);
-                    //KServiceTypeTrader::self()->query(QStringLiteral("Application"), QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(appId));
+                services = KApplicationTrader::query([&appId](KService::Ptr s) {
+                    return s->isApplication()
+                        && !s->exec().isEmpty()
+                        && s->property<QString>("StartupWMClass") == appId;
+                });
+                //KServiceTypeTrader::self()->query(QStringLiteral("Application"), QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(appId));
                 sortServicesByMenuId(services, appId);
             }
 
             if (services.isEmpty() && !xWindowsWMClassName.isEmpty()) {
-                services = searchApplication({AppSearchParam::IsApplication, AppSearchParam::StartUpWMClass}, xWindowsWMClassName);
+                services = KApplicationTrader::query([&xWindowsWMClassName](KService::Ptr s) {
+                    return s->isApplication()
+                        && !s->exec().isEmpty()
+                        && s->property<QString>("StartupWMClass") == xWindowsWMClassName;
+
+                });
                 //services = KServiceTypeTrader::self()->query(QStringLiteral("Application"),
                 //                                             QStringLiteral("exist Exec and ('%1' =~ StartupWMClass)").arg(xWindowsWMClassName));
                 sortServicesByMenuId(services, xWindowsWMClassName);
@@ -395,7 +313,11 @@ QUrl windowUrlFromMetadata(const QString &appId,
                                 rewrittenString = matchProperty;
                             }
 
-                            services = searchAppByProperty(rewrittenString, serviceSearchIdentifier);
+                            services = KApplicationTrader::query([&rewrittenString, &serviceSearchIdentifier](KService::Ptr s) {
+                               return s->isApplication()
+                                   && !s->exec().isEmpty()
+                                   && s->property<QString>(rewrittenString) == serviceSearchIdentifier;
+                            });
                             //    KServiceTypeTrader::self()->query(QStringLiteral("Application"),
                             //                                      QStringLiteral("exist Exec and ('%1' =~ %2)").arg(rewrittenString, serviceSearchIdentifier));
                             sortServicesByMenuId(services, serviceSearchIdentifier);
@@ -425,34 +347,41 @@ QUrl windowUrlFromMetadata(const QString &appId,
 
             // Try matching mapped name against DesktopEntryName.
             if (!mapped.isEmpty() && services.isEmpty()) {
-                services = KServiceTypeTrader::self()->query(
-                    QStringLiteral("Application"),
-                    QStringLiteral("exist Exec and ('%1' =~ DesktopEntryName) and (not exist NoDisplay or not NoDisplay)").arg(mapped));
+                services = KApplicationTrader::query([&mapped](KService::Ptr s) {
+                   return s->isApplication()
+                       && !s->noDisplay()
+                       && s->desktopEntryName() == mapped;
+                });
+//                services = KServiceTypeTrader::self()->query(
+//                    QStringLiteral("Application"),
+//                    QStringLiteral("exist Exec and ('%1' =~ DesktopEntryName) and (not exist NoDisplay or not NoDisplay)").arg(mapped));
                 sortServicesByMenuId(services, mapped);
             }
 
             // Try matching mapped name against 'Name'.
             if (!mapped.isEmpty() && services.isEmpty()) {
-                services =
-                    KServiceTypeTrader::self()->query(QStringLiteral("Application"),
-                                                      QStringLiteral("exist Exec and ('%1' =~ Name) and (not exist NoDisplay or not NoDisplay)").arg(mapped));
+                services = searchApplication({AppSearchParam::ExecName, AppSearchParam::IsApplication, AppSearchParam::NotNoDisplay}, mapped);
+                    //KServiceTypeTrader::self()->query(QStringLiteral("Application"),
+                    //                                  QStringLiteral("exist Exec and ('%1' =~ Name) and (not exist NoDisplay or not NoDisplay)").arg(mapped));
                 sortServicesByMenuId(services, mapped);
             }
 
             // Try matching appId against DesktopEntryName.
             if (services.isEmpty()) {
-                services = KServiceTypeTrader::self()->query(
-                    QStringLiteral("Application"),
-                    QStringLiteral("exist Exec and ('%1' =~ DesktopEntryName)").arg(appId));
+                services = searchApplication({AppSearchParam::DesktopEntry, AppSearchParam::IsApplication}, appId);
+            //    services = KServiceTypeTrader::self()->query(
+            //        QStringLiteral("Application"),
+            //        QStringLiteral("exist Exec and ('%1' =~ DesktopEntryName)").arg(appId));
                 sortServicesByMenuId(services, appId);
             }
 
             // Try matching appId against 'Name'.
             // This has a shaky chance of success as appId is untranslated, but 'Name' may be localized.
             if (services.isEmpty()) {
-                services =
-                    KServiceTypeTrader::self()->query(QStringLiteral("Application"),
-                                                      QStringLiteral("exist Exec and ('%1' =~ Name) and (not exist NoDisplay or not NoDisplay)").arg(appId));
+                services = searchApplication({AppSearchParam::AppName, AppSearchParam::IsApplication, AppSearchParam::NotNoDisplay}, appId);
+                //services =
+                //    KServiceTypeTrader::self()->query(QStringLiteral("Application"),
+                //                                      QStringLiteral("exist Exec and ('%1' =~ Name) and (not exist NoDisplay or not NoDisplay)").arg(appId));
                 sortServicesByMenuId(services, appId);
             }
 
