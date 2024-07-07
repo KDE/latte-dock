@@ -88,7 +88,7 @@ Minimum requirements:
 
 ### Arch Linux
 
-- [Arch Linux](https://www.archlinux.org/packages/?sort=&q=latte-dock)
+- [Arch Linux](https://aur.archlinux.org/packages/latte-dock)
 
 ### Gentoo
 
