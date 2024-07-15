@@ -25,9 +25,9 @@ Installation
 
 We need to use at least:
 
-- **Plasma >= 5.24.0**
+- **Plasma >= 6.0**
 - **PlasmaWaylandProtocols >= 1.6.0**
-- **Qt >= 5.15**
+- **Qt >= 6.5**
 
 Minimum requirements:
 
