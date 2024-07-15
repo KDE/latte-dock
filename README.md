@@ -42,25 +42,25 @@ Minimum requirements:
  QtGui >= 6.5.0
  QtDbus >= 6.5.0
 
- KF5Plasma >= 6.0
- KF5PlasmaQuick >= 6.0
- KF5Activities >= 6.0
- KF5CoreAddons >= 6.0
- KF5GuiAddons >= 6.0
- KF5DBusAddons >= 6.0
- KF5Declarative >= 6.0
- KF5Kirigami2 >= 6.0
- KF5Wayland >= 6.0
- KF5Package >= 6.0
- KF5XmlGui >= 6.0
- KF5IconThemes >= 6.0
- KF5KIO >= 6.0
- KF5I18n >= 6.0
- KF5Notifications >= 6.0
- KF5NewStuff >= 6.0
- KF5Archive >= 6.0
- KF5GlobalAccel >= 6.0
- KF5Crash >= 6.0
+ KF6Plasma >= 6.0
+ KF6PlasmaQuick >= 6.0
+ KF6Activities >= 6.0
+ KF6CoreAddons >= 6.0
+ KF6GuiAddons >= 6.0
+ KF6DBusAddons >= 6.0
+ KF6Declarative >= 6.0
+ KF6Kirigami2 >= 6.0
+ KF6Wayland >= 6.0
+ KF6Package >= 6.0
+ KF6XmlGui >= 6.0
+ KF6IconThemes >= 6.0
+ KF6KIO >= 6.0
+ KF6I18n >= 6.0
+ KF6Notifications >= 6.0
+ KF6NewStuff >= 6.0
+ KF6Archive >= 6.0
+ KF6GlobalAccel >= 6.0
+ KF6Crash >= 6.0
 
   For X11 support:
     KF6WindowSystem >= 6.0
