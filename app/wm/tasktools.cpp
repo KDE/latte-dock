@@ -24,7 +24,6 @@
 #include <QRegularExpression>
 #include <QScreen>
 #include <QUrlQuery>
-#include <kapplicationtrader.h>
 #include <kservice.h>
 #include <kserviceaction.h>
 #if HAVE_X11

@@ -64,7 +64,7 @@ class LastActiveWindow : public QObject {
 
     Q_PROPERTY(QIcon icon READ icon NOTIFY iconChanged)
 
-    Q_PROPERTY(QVariant winId READ currentWinId NOTIFY currentWinIdChanged)
+    Q_PROPERTY(WindowId winId READ currentWinId NOTIFY currentWinIdChanged)
 
 public:
     LastActiveWindow(TrackedGeneralInfo *trackedInfo);
@@ -100,7 +100,7 @@ public:
     QRect geometry() const;
     QIcon icon() const;
 
-    QVariant currentWinId() const;
+    WindowId currentWinId() const;
 
     void setInformation(const WindowInfoWrap &info);
 
@@ -194,11 +194,11 @@ private:
     void setGeometry(QRect geometry);
     void setIcon(QIcon icon);
 
-    void setCurrentWinId(QVariant winId);
+    void setCurrentWinId(WindowId winId);
 
     void cleanHistory();
-    void appendInHistory(const QVariant &wid);
-    void removeFromHistory(const QVariant &wid);
+    void appendInHistory(const WindowId &wid);
+    void removeFromHistory(const WindowId &wid);
 
     void updateColorScheme();
 
@@ -234,7 +234,7 @@ private:
     QRect m_geometry;
     QIcon m_icon;
 
-    QVariant m_currentWinId;
+    WindowId m_currentWinId;
 
     QList<WindowId> m_history;
 

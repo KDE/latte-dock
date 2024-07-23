@@ -10,7 +10,6 @@
 #include "trackedgeneralinfo.h"
 #include "windowstracker.h"
 #include "../abstractwindowinterface.h"
-#include "../tasktools.h"
 #include "../../view/view.h"
 
 // Qt
@@ -18,6 +17,7 @@
 #include <QHoverEvent>
 #include <QPoint>
 #include <QTimer>
+#include <qvariant.h>
 
 
 namespace Latte {
@@ -397,12 +397,12 @@ void LastActiveWindow::setIcon(QIcon icon)
     emit iconChanged();
 }
 
-QVariant LastActiveWindow::currentWinId() const
+WindowId LastActiveWindow::currentWinId() const
 {
     return m_currentWinId;
 }
 
-void LastActiveWindow::setCurrentWinId(QVariant winId)
+void LastActiveWindow::setCurrentWinId(WindowId winId)
 {
     if (m_currentWinId == winId) {
         return;
@@ -543,11 +543,13 @@ void LastActiveWindow::cleanHistory()
 void LastActiveWindow::printHistory() {
     for(int i=0; i<m_history.count(); ++i) {
         WindowInfoWrap historyitem = m_windowsTracker->infoFor(m_history[i]);
-        qDebug() << "  " << i << ". " << historyitem.wid() << " -- " << historyitem.display();
+        qDebug() << "  " << i
+                 << ". " << static_cast<QVariant>(historyitem.wid())
+                 << " -- " << historyitem.display();
     }
 }
 
-void LastActiveWindow::appendInHistory(const QVariant &wid)
+void LastActiveWindow::appendInHistory(const WindowId &wid)
 {
     if (!m_history.contains(wid)) {
         m_history.prepend(wid);
@@ -558,7 +560,7 @@ void LastActiveWindow::appendInHistory(const QVariant &wid)
     }
 }
 
-void LastActiveWindow::removeFromHistory(const QVariant &wid)
+void LastActiveWindow::removeFromHistory(const WindowId &wid)
 {
     m_history.removeAll(wid);
 }
