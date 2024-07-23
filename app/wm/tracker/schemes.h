@@ -53,7 +53,7 @@ private:
      QMap<QString, Latte::WindowSystem::SchemeColors *> m_schemes;
 
      //! window id and its corresponding scheme file
-     QMap<WindowId, QString> m_windowScheme;
+     QHash<WindowId, QString> m_windowScheme;
 };
 
 }

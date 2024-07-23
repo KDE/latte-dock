@@ -181,7 +181,7 @@ private:
         Latte::Types::SidebarAutoHide
     };
 
-    QMap<WindowId, WindowInfoWrap> m_windows;
+    QHash<WindowId, WindowInfoWrap> m_windows;
 
     QTimer m_updateAllHintsTimer;
     //! Some applications delay their application name/icon identification
