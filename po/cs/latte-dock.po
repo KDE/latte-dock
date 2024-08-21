@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2023 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2023, 2024 Vít Pelčák <vit@pelcak.org>
 # Vit Pelcak <vit@pelcak.org>, 2021, 2023.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-10-31 16:14+0100\n"
+"PO-Revision-Date: 2024-08-20 15:25+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.08.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -70,7 +70,7 @@ msgstr "<b>%1</b> ukazatel byl úspěšně odstraněn"
 #: app/lattecorona.cpp:1130 app/lattecorona.cpp:1153
 #, kde-format
 msgid "The layout cannot be imported from file :: "
-msgstr "Rozložení nemohou být importována ze souboru :: "
+msgstr "Rozvržení nemohou být importována ze souboru :: "
 
 #: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
 #: app/layouts/manager.cpp:78 app/layouts/manager.cpp:85
@@ -182,7 +182,7 @@ msgstr "Vypsat dostupné šablony doků"
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr "Vypsat dostupné šablony rozložení"
+msgstr "Vypsat dostupné šablony rozvržení"
 
 #: app/main.cpp:109
 #, kde-format
@@ -304,7 +304,7 @@ msgstr ""
 #, kde-format
 msgctxt "layout missing"
 msgid "This layout doesn't exist in the system."
-msgstr "Toto rozložení v systému neexistuje."
+msgstr "Toto rozvržení v systému neexistuje."
 
 #: app/main.cpp:333
 #, kde-format
@@ -395,17 +395,17 @@ msgstr "soubor výchozího rozvržení"
 #: app/package/lattepackage.cpp:48
 #, kde-format
 msgid "plasma layout file"
-msgstr "soubor rozložení plasma"
+msgstr "soubor rozvržení plasma"
 
 #: app/package/lattepackage.cpp:49
 #, kde-format
 msgid "unity layout file"
-msgstr "soubor rozložení unity"
+msgstr "soubor rozvržení unity"
 
 #: app/package/lattepackage.cpp:50
 #, kde-format
 msgid "extended layout file"
-msgstr "rozšířený soubor rozložení"
+msgstr "rozšířený soubor rozvržení"
 
 #: app/package/lattepackage.cpp:52
 #, kde-format
@@ -490,7 +490,7 @@ msgstr ""
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
-msgstr "Rozložení"
+msgstr "Rozvržení"
 
 #: app/settings/actionsdialog/actionshandler.cpp:68
 #, kde-format
@@ -1012,15 +1012,15 @@ msgstr "Alternativní"
 #, kde-format
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozložení <b>%2</b> bylo naimportováno úspěšně..."
-msgstr[1] "Rozložení <b>%2</b> byla naimportována úspěšně..."
-msgstr[2] "Rozložení <b>%2</b> byla naimportována úspěšně..."
+msgstr[0] "Rozvržení <b>%2</b> bylo naimportováno úspěšně..."
+msgstr[1] "Rozvržení <b>%2</b> byla naimportována úspěšně..."
+msgstr[2] "Rozvržení <b>%2</b> byla naimportována úspěšně..."
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
 #, kde-format
 msgctxt "settings: layout name used"
 msgid "Layout <b>%1</b> is already used, please provide a different name..."
-msgstr "Rozložení <b>%1</b> je již použito, prosím zvolte jiné..."
+msgstr "Rozvržení <b>%1</b> je již použito, prosím zvolte jiné..."
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:338
 #, kde-format
@@ -1678,7 +1678,7 @@ msgstr ""
 #, kde-format
 msgctxt "import layout"
 msgid "Import Layout"
-msgstr "Importovat rozložení"
+msgstr "Importovat rozvržení"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:544
 #, kde-format
@@ -1703,7 +1703,7 @@ msgstr ""
 #, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%1</b> imported successfully..."
-msgstr "Rozložení <b>%1</b> bylo naimportováno úspěšně..."
+msgstr "Rozvržení <b>%1</b> bylo naimportováno úspěšně..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:566
 #, kde-format
@@ -1745,9 +1745,9 @@ msgstr ""
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozložení <b>%2</b> bylo naimportováno úspěšně..."
-msgstr[1] "Rozložení <b>%2</b> byla naimportována úspěšně..."
-msgstr[2] "Rozložení <b>%2</b> byla naimportována úspěšně..."
+msgstr[0] "Rozvržení <b>%2</b> bylo naimportováno úspěšně..."
+msgstr[1] "Rozvržení <b>%2</b> byla naimportována úspěšně..."
+msgstr[2] "Rozvržení <b>%2</b> byla naimportována úspěšně..."
 
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
