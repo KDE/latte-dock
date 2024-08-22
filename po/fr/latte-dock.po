@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2024-05-07 07:35+0200\n"
+"PO-Revision-Date: 2024-08-13 17:46+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -152,7 +152,7 @@ msgstr "Afficher les messages de débogage sur stdout."
 msgctxt "command line"
 msgid "Clear qml cache. It can be useful after system upgrades."
 msgstr ""
-"Effacer le cache de Qml. Peut être utile après des mises à jour du système."
+"Effacer le cache de QML. Peut être utile après des mises à jour du système."
 
 #: app/main.cpp:103
 #, kde-format
