@@ -1,21 +1,21 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023 Adrian Chaves <adrian@chaves.io>
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023, 2024 Adrian Chaves <adrian@chaves.io>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-11-18 12:43+0100\n"
+"PO-Revision-Date: 2024-08-31 14:32+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
-"Language-Team: Galician <proxecto@trasno.gal>\n"
+"Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.2\n"
+"X-Generator: Lokalize 24.05.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -335,7 +335,7 @@ msgid ""
 "\"Art in Coffee\""
 msgstr ""
 "Latte é unha doca construída coas infraestruturas de Plasma que fornece unha "
-"experiencia elegante e intuitiva para as súas tarefas e plasmoides. Anima o "
+"experiencia elegante e intuitiva para as súas tarefas e trebellos. Anima o "
 "seu contido usando o efecto de ampliación parabólico e intenta estar aí só "
 "cando se necesita.\n"
 "\n"
@@ -3450,7 +3450,7 @@ msgstr "Información de progreso das tarefas"
 msgid ""
 "Show a progress animation for tasks e.g. when copying files with Dolphin"
 msgstr ""
-"Amosar unha animación de progreso das tarefas, por exemploao copiar "
+"Amosar unha animación de progreso das tarefas, por exemplo ao copiar "
 "ficheiros con Dolphin"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:82
