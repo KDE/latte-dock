@@ -7,7 +7,7 @@
 # Jan Neumann <neum dot ja at gmail dot com>, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: plasma_applet_org.kde.latte.plasmoid\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
 "PO-Revision-Date: 2022-07-23 23:19+0200\n"
