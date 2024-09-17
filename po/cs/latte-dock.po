@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2024-08-20 15:25+0200\n"
+"PO-Revision-Date: 2024-09-03 08:49+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 24.08.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -422,22 +422,22 @@ msgstr ""
 #: app/package/lattepackage.cpp:54
 #, kde-format
 msgid "default preset file"
-msgstr "soubor s výchozími předvolbami"
+msgstr "soubor s výchozími přednastaveními"
 
 #: app/package/lattepackage.cpp:55
 #, kde-format
 msgid "plasma preset file"
-msgstr "soubor s předvolbami plasma"
+msgstr "soubor s přednastaveními plasma"
 
 #: app/package/lattepackage.cpp:56
 #, kde-format
 msgid "unity preset file"
-msgstr "soubor s předvolbami unity"
+msgstr "soubor s přednastaveními unity"
 
 #: app/package/lattepackage.cpp:57
 #, kde-format
 msgid "extended preset file"
-msgstr "soubor s rozšířenými předvolbami"
+msgstr "soubor s rozšířenými přednastaveními"
 
 #: app/package/lattepackage.cpp:58
 #, kde-format
