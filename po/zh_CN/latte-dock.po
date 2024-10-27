@@ -2616,7 +2616,7 @@ msgstr "偏移"
 #, kde-format
 msgctxt "@label dynamic length configuration"
 msgid "Dynamic Length Adjustments"
-msgstr ""
+msgstr "动态长度调整"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:577
 #, kde-format
