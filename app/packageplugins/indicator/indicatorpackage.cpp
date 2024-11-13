@@ -10,7 +10,6 @@
 
 // KDE
 #include <KPackage/PackageLoader>
-#include <KI18n/KLocalizedString>
 
 namespace Latte {
 
@@ -23,11 +22,11 @@ void IndicatorPackage::initPackage(KPackage::Package *package)
 {
     package->setDefaultPackageRoot(QStringLiteral("latte/indicators"));
 
-    package->addDirectoryDefinition("config", QStringLiteral("config"), i18n("Configuration Definitions"));
-    package->addDirectoryDefinition("ui", QStringLiteral("ui"), i18n("User Interface"));
-    package->addDirectoryDefinition("data", QStringLiteral("data"), i18n("Data Files"));
-    package->addDirectoryDefinition("scripts", QStringLiteral("code"), i18n("Executable Scripts"));
-    package->addDirectoryDefinition("translations", QStringLiteral("locale"), i18n("Translations"));
+    package->addDirectoryDefinition("config", QStringLiteral("config"));
+    package->addDirectoryDefinition("ui", QStringLiteral("ui"));
+    package->addDirectoryDefinition("data", QStringLiteral("data"));
+    package->addDirectoryDefinition("scripts", QStringLiteral("code"));
+    package->addDirectoryDefinition("translations", QStringLiteral("locale"));
 }
 
 }
