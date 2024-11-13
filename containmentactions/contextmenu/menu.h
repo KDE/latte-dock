@@ -7,12 +7,12 @@
 #define MENU_H
 
 // Qt
+#include <QAction>
 #include <QObject>
 
 // Plasma
 #include <Plasma/ContainmentActions>
 
-class QAction;
 class QMenu;
 
 enum ViewType
