@@ -21,8 +21,8 @@ set(KDE_COMPILERSETTINGS_LEVEL "5.84.0")
 
 set(KF6_LOCALE_PREFIX "")
 
-find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED )
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs6)
 include(CheckIncludeFiles)
@@ -52,7 +52,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     I18n
     IconThemes
     KIO
-    Kirigami2
+    Kirigami
     NewStuff
     Notifications
     Package
@@ -91,7 +91,7 @@ if(X11_FOUND AND XCB_XCB_FOUND)
 endif()
 
 
-#find_package(QtWaylandScanner REQUIRED)
+find_package(QtWaylandScanner REQUIRED)
 find_package(Qt${QT_MAJOR_VERSION}WaylandClient)
 find_package(PlasmaWaylandProtocols 1.6 REQUIRED)
 find_package(Wayland REQUIRED COMPONENTS Client)
@@ -104,9 +104,9 @@ message(STATUS "KF6 VERSION MINOR : ${KF6_VERSION_MINOR}")
 
 
 include(ECMFindQmlModule)
-ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0)
-ecm_find_qmlmodule(org.kde.plasma.core 2.0)
-ecm_find_qmlmodule(org.kde.plasma.components 2.0)
+ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0 REQUIRED)
+ecm_find_qmlmodule(org.kde.plasma.core 2.0 REQUIRED)
+ecm_find_qmlmodule(org.kde.plasma.components 2.0 REQUIRED)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/app/config-latte.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/app/config-latte.h)
