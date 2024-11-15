@@ -9,7 +9,7 @@ import QtQuick 2.0
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.activities 0.1 as Activities
 import org.kde.taskmanager 0.1 as TaskManager
 
@@ -84,14 +84,14 @@ PlasmaComponents.ContextMenu {
 
     function newMenuItem(parent) {
         return Qt.createQmlObject(
-                    "import org.kde.plasma.components 2.0 as PlasmaComponents;" +
+                    "import org.kde.plasma.components 3.0 as PlasmaComponents;" +
                     "PlasmaComponents.MenuItem {}",
                     parent);
     }
 
     function newSeparator(parent) {
         return Qt.createQmlObject(
-                    "import org.kde.plasma.components 2.0 as PlasmaComponents;" +
+                    "import org.kde.plasma.components 3.0 as PlasmaComponents;" +
                     "PlasmaComponents.MenuItem { separator: true }",
                     parent);
     }

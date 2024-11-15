@@ -4,7 +4,7 @@
 */
 
 import QtQuick 2.7
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.components 1.0 as LatteComponents

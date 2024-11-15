@@ -6,12 +6,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import QtQuick.Controls.Styles.Plasma 2.0 as PlasmaStyles
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 
 PlasmaStyles.CheckBoxStyle{
     id: checkboxStyle

@@ -6,10 +6,10 @@
 import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.latte.core 0.2 as LatteCore

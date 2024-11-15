@@ -4,7 +4,7 @@
 */
 
 import QtQuick 2.1
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import org.kde.latte.components 1.0 as LatteComponents
 

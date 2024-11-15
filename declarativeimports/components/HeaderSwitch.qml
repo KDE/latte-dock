@@ -4,12 +4,12 @@
 */
 
 import QtQuick 2.7
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 
 import org.kde.plasma.plasmoid 2.0
 
@@ -17,7 +17,7 @@ import "." as LatteExtraControls
 
 import "private" as Private
 
-Item {
+PlasmoidItem {
     id: item
 
     Layout.rightMargin: {
