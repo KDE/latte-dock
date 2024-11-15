@@ -11,7 +11,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "./myview" as MyViewTypes
 
-Item {
+PlasmoidItem {
     property int groupId: -1
 
     property bool isReady: false

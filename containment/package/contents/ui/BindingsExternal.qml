@@ -11,7 +11,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.private.containment 0.1 as LatteContainment
 
-Item {
+PlasmoidItem {
     property bool updateIsEnabled: autosize.inCalculatedIconSize
                                    && !visibilityManager.inSlidingIn
                                    && !visibilityManager.inSlidingOut

@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-Item {
+PlasmoidItem {
     id: level
     signal mousePressed(int x, int y, int button);
     signal mouseReleased(int x, int y, int button);

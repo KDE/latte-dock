@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-Item {
+PlasmoidItem {
     id: tag
     width: _label.width + 4
     height: _label.height + 4

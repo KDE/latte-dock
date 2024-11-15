@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-Item {
+PlasmoidItem {
     property bool isEnabled: true
 
     property int size: 6

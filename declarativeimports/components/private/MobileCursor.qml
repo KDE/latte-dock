@@ -8,7 +8,7 @@ import QtQuick 2.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
 
-Item {
+PlasmoidItem {
     id: root
     width: 1 //<-important that this is actually a single device pixel
     height: units.gridUnit

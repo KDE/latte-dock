@@ -10,7 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.taskmanager 0.1 as TaskManager
 
 // opacity doesn't work in the root item
-Item {
+PlasmoidItem {
     anchors.fill: parent
 
     TaskManager.PipeWireSourceItem {

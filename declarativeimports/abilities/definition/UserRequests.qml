@@ -5,6 +5,6 @@
 
 import QtQuick 2.0
 
-Item {
+PlasmoidItem {
     signal sglViewType(int viewType);
 }

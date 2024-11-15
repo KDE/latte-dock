@@ -8,7 +8,7 @@ import QtQuick 2.7
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 
-Item {
+PlasmoidItem {
     property Item destination: null
 
     readonly property int headThickness: destination ? destination.headThicknessMargin : appletItem.metrics.margin.headThickness

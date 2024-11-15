@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-Item {
+PlasmoidItem {
     property real zoom: 1.6
     property real maxZoom: 1.6
     readonly property real marginThicknessZoom: 1.0 + ((zoom-1.0) * marginThicknessZoomInPercentage)

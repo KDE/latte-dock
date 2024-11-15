@@ -10,7 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.abilities.client 0.1 as AbilityClient
 
-Item {
+PlasmoidItem {
     id: _abilityContainer
     property Item bridge: null
     property Item layout: null

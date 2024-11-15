@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.3
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-Item {
+PlasmoidItem {
     id: uiManager
     visible: false
 

@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-Item {
+PlasmoidItem {
     property int length: 0
     property int lengthApplet: 0
 }

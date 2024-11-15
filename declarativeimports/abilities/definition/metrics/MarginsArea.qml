@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-Item {
+PlasmoidItem {
     property int headThickness: 8
     property int tailThickness: 8
     readonly property int iconSize: _metrics.totals.thickness - thicknessEdges

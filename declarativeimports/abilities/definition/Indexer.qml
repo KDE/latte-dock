@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-Item {
+PlasmoidItem {
     property var separators: []
     property var hidden: []
 }

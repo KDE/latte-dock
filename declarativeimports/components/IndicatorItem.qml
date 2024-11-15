@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-Item {
+PlasmoidItem {
     readonly property Item level: parent && parent.hasOwnProperty("level") ? parent.level : null
     readonly property Item indicator: {
         if (!level) {

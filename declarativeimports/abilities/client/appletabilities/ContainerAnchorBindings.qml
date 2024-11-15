@@ -10,7 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.core 0.2 as LatteCore
 
-Item {
+PlasmoidItem {
     //! ListView Layout States
     states: [
         ///Bottom Edge

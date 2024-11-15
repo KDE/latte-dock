@@ -11,7 +11,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.latte.core 0.2 as LatteCore
 import org.kde.latte.components 1.0 as LatteComponents
 
-Item {
+PlasmoidItem {
     id: background
 
     Item {

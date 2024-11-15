@@ -5,6 +5,6 @@
 
 import QtQuick 2.7
 
-Item {
+PlasmoidItem {
     property bool directRenderingEnabled: false
 }

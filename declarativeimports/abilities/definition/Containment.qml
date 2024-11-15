@@ -7,7 +7,7 @@ import QtQuick 2.7
 
 import org.kde.latte.core 0.2 as LatteCore
 
-Item {
+PlasmoidItem {
     property bool isFirstAppletInContainment: false
     property bool isLastAppletInContainment: false
 
