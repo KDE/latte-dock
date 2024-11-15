@@ -13,7 +13,6 @@
 #include "templates/templatesmanager.h"
 
 // C++
-#include <memory>
 #include <csignal>
 
 // Qt
@@ -327,6 +326,11 @@ int main(int argc, char **argv)
             } else {
                 // LayoutPage = 0
                 iface.call("showSettingsWindow", 0);
+            }
+        } else {
+            QDBusError err = iface.lastError();
+            if(err.isValid()) {
+                qInfo() << "DBus error (" << err.name() << ") encountered: " << err.message();
             }
         }
 

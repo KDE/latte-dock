@@ -28,6 +28,9 @@ Package::~Package()
 void Package::initPackage(KPackage::Package *package)
 {
     auto fallback = KPackage::PackageLoader::self()->loadPackage("Plasma/Shell", "org.kde.plasma.desktop");
+    if(!fallback.isValid()) {
+        qDebug() << "Failed to load fallback plasma shell package";
+    }
     package->setDefaultPackageRoot(QStringLiteral("plasma/shells/"));
     package->setPath("org.kde.latte.shell");
     package->addFileDefinition("defaults", QStringLiteral("defaults"));
