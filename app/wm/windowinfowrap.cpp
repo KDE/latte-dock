@@ -10,11 +10,14 @@
 #include <QtCore>
 
 // Ugly thing to hash WindowId (effectively, QVariant) for use as a key in QHash.
+// FIXME:
+// Rewrite this into something less abominable.
 uint qHash(const Latte::WindowSystem::WindowId& wid, uint seed = 0)
 {
     QByteArray bytes;
     bytes.reserve(1024);
     QBuffer buf(&bytes);
+    buf.open(QIODevice::WriteOnly);
     buf.seek(0);
 
     QDataStream s(&buf);
