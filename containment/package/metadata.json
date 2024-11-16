@@ -99,7 +99,6 @@
         "Website": "https://userbase.kde.org/LatteDock"
     },
     "NoDisplay": true,
-    "X-Plasma-API": "declarativeappletscript",
-    "X-Plasma-ContainmentType": "Panel",
-    "X-Plasma-MainScript": "ui/main.qml"
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-ContainmentType": "Panel"
 }
