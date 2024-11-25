@@ -287,7 +287,8 @@ int main(int argc, char **argv)
     if (username.isEmpty())
         username = qgetenv("USERNAME");
 
-    QLockFile lockFile {QDir::tempPath() + "/latte-dock." + username + ".lock"};
+    QString lockFileName { QDir::tempPath() + "/latte-dock." + username + ".lock" };
+    QLockFile lockFile {lockFileName};
 
     int timeout {100};
 
@@ -301,41 +302,57 @@ int main(int argc, char **argv)
     }
 
     if (!lockFile.tryLock(timeout)) {
-        QDBusInterface iface("org.kde.lattedock", "/Latte", "", QDBusConnection::sessionBus());
-        bool addview{parser.isSet(QStringLiteral("add-dock"))};
-        bool importlayout{parser.isSet(QStringLiteral("import-layout"))};
-        bool enableautostart{parser.isSet(QStringLiteral("enable-autostart"))};
-        bool disableautostart{parser.isSet(QStringLiteral("disable-autostart"))};
-
-        bool validaction{false};
-
-        if (iface.isValid()) {
-            if (addview) {
-                validaction = true;
-                iface.call("addView", (uint)0, parser.value(QStringLiteral("add-dock")));
-                qGuiApp->exit();
-                return 0;
-            } else if (importlayout) {
-                validaction = true;
-                QString suggestedname = parser.isSet(QStringLiteral("suggested-layout-name")) ? parser.value(QStringLiteral("suggested-layout-name")) : QString();
-                iface.call("importLayoutFile", parser.value(QStringLiteral("import-layout")), suggestedname);
-                qGuiApp->exit();
-                return 0;
-            } else if (enableautostart || disableautostart){
-                validaction = true;
-            } else {
-                // LayoutPage = 0
-                iface.call("showSettingsWindow", 0);
-            }
+        auto lockErr = lockFile.error();
+        if(lockErr != QLockFile::LockFailedError) {
+            qInfo() << i18n("Failed to obtain the lock file:") << lockFileName;
         } else {
-            QDBusError err = iface.lastError();
-            if(err.isValid()) {
-                qInfo() << "DBus error (" << err.name() << ") encountered: " << err.message();
-            }
-        }
+          QDBusInterface iface("org.kde.lattedock", "/Latte", "",
+                               QDBusConnection::sessionBus());
+          bool addview{parser.isSet(QStringLiteral("add-dock"))};
+          bool importlayout{parser.isSet(QStringLiteral("import-layout"))};
+          bool enableautostart{
+              parser.isSet(QStringLiteral("enable-autostart"))};
+          bool disableautostart{
+              parser.isSet(QStringLiteral("disable-autostart"))};
 
-        if (!validaction) {
-            qInfo() << i18n("An instance is already running!, use --replace to restart Latte");
+          bool validaction{false};
+
+          if (iface.isValid()) {
+            if (addview) {
+              validaction = true;
+              iface.call("addView", (uint)0,
+                         parser.value(QStringLiteral("add-dock")));
+              qGuiApp->exit();
+              return 0;
+            } else if (importlayout) {
+              validaction = true;
+              QString suggestedname =
+                  parser.isSet(QStringLiteral("suggested-layout-name"))
+                      ? parser.value(QStringLiteral("suggested-layout-name"))
+                      : QString();
+              iface.call("importLayoutFile",
+                         parser.value(QStringLiteral("import-layout")),
+                         suggestedname);
+              qGuiApp->exit();
+              return 0;
+            } else if (enableautostart || disableautostart) {
+              validaction = true;
+            } else {
+              // LayoutPage = 0
+              iface.call("showSettingsWindow", 0);
+            }
+          } else {
+            QDBusError err = iface.lastError();
+            if (err.isValid()) {
+              qInfo() << "DBus error (" << err.name()
+                      << ") encountered: " << err.message();
+            }
+          }
+
+          if (!validaction) {
+            qInfo() << i18n("An instance is already running!, use --replace to "
+                            "restart Latte");
+          }
         }
 
         qGuiApp->exit();
