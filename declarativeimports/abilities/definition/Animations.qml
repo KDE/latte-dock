@@ -7,7 +7,7 @@ import QtQuick 2.0
 
 import "./animations" as AnimationsTypes
 
-PlasmoidItem {
+Item {
     property bool active: false
     readonly property bool hasThicknessAnimation: (needBothAxis.count>0) || (needThickness.count>0)
     //! mouse sensitivity in pixels for parabolic effect hover animation

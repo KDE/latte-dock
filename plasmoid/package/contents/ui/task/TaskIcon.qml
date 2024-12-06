@@ -18,7 +18,7 @@ import org.kde.latte.components 1.0 as LatteComponents
 
 import "animations" as TaskAnimations
 
-PlasmoidItem {
+Item {
     id: taskIconContainer
     anchors.fill: parent
     property bool toBeDestroyed: false

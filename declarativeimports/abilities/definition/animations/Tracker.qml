@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     property int count: 0
     property var events: []
 

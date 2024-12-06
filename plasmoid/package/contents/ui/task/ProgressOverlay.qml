@@ -10,7 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.components 1.0 as LatteComponents
 
-PlasmoidItem {
+Item {
     id: background
 
     readonly property int contentWidth: progressCircle.width + 0.1*height

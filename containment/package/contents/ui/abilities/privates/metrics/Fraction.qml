@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     property real thicknessMargin: 0.06
     property real lengthMargin: 0.06
     property real lengthPadding: 0.06

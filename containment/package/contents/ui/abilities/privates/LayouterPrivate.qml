@@ -10,7 +10,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "./layouter" as LayouterElements
 
-PlasmoidItem {
+Item {
     property Item layouts: null
     property Item animations: null
     property Item indexer: null

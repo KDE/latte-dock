@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     id: _launchersprivate
     property Item layouts: null
     property bool updateIsBlocked: false

@@ -18,7 +18,7 @@ import org.kde.plasma.plasmoid 2.0
 //! All the logic that is trying to improve the mentioned limits is provided
 //! from this class
 
-PlasmoidItem {
+Item {
     id: tasksExtManager
 
     /// Launchers that are playing an ADD or REMOVAL animation

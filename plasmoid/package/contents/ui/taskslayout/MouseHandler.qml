@@ -14,7 +14,7 @@ import org.kde.taskmanager 0.1 as TaskManager
 
 import "../../code/tools.js" as TaskTools
 
-PlasmoidItem {
+Item {
     // signal urlDropped(url url)
     id: dArea
     signal urlsDropped(var urls)

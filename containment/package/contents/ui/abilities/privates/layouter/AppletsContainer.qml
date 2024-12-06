@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     id: appletsContainer
 
     property Item grid: null

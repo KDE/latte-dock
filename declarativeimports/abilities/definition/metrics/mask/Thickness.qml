@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     property int hidden: 1
     property int normal: 48
     property int medium: 48

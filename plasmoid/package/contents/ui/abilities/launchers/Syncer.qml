@@ -9,7 +9,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.latte.core 0.2 as LatteCore
 
-PlasmoidItem {
+Item {
     id:_syncer
     property bool isBlocked: false
     readonly property bool isActive: bridge !== null && bridge.launchers.host !==null

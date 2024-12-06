@@ -6,7 +6,7 @@
 import QtQuick 2.7
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-PlasmoidItem {
+Item {
     id: _parabolicArea
     signal parabolicEntered(real mouseX, real mouseY);
     signal parabolicMove(real mouseX, real mouseY);

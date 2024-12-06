@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     property real normal: 1.0
     property real current: 1.0
 }

@@ -11,7 +11,7 @@ import org.kde.latte.core 0.2 as LatteCore
 
 import "launchers" as LaunchersPart
 
-PlasmoidItem {
+Item {
     id: _launchers
     readonly property bool isActive: bridge !== null
 

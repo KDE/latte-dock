@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     readonly property int length: iconSize + lengthEdges
     readonly property int lengthEdge: margin.length + padding.length
     readonly property int lengthEdges: 2 * lengthEdge

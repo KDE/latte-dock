@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     property bool eventsSinkEnabled: false
     property bool graphicsEnabled: false
     property bool inputMaskEnabled: false

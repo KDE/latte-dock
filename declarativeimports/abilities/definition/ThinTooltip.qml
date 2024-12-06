@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     property bool isEnabled: false
     property bool showIsBlocked: false
 

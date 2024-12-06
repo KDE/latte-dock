@@ -8,7 +8,7 @@
 import QtQuick 2.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-PlasmoidItem {
+Item {
     id: main
     state: parent.state
 

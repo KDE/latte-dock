@@ -5,7 +5,7 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     property int tailThickness: 4
     property int maxTailThickness: 4
     property int headThickness: 4

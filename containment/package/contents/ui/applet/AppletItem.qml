@@ -22,7 +22,7 @@ import "colorizer" as Colorizer
 import "communicator" as Communicator
 import "../debugger" as Debugger
 
-PlasmoidItem {
+Item {
     id: appletItem
     width: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeWidth
     height: isInternalViewSplitter && !root.inConfigureAppletsMode ? 0 : computeHeight

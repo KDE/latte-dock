@@ -7,7 +7,7 @@ import QtQuick 2.0
 
 import "./metrics" as MetricsTypes
 
-PlasmoidItem {
+Item {
     id: _metrics
     property int iconSize: 48
     property int maxIconSize: 48

@@ -7,7 +7,7 @@ import QtQuick 2.0
 
 import "./mask" as MaskTypes
 
-PlasmoidItem {
+Item {
     property int screenEdge: 0
     property int maxScreenEdge: 0
 

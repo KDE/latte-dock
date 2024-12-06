@@ -10,7 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 import "./paraboliceffect" as ParabolicEffectTypes
 
-PlasmoidItem {
+Item {
     property bool isEnabled: false
     property bool restoreZoomIsBlocked: false
 

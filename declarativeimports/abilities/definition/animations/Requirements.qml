@@ -5,6 +5,6 @@
 
 import QtQuick 2.7
 
-PlasmoidItem {
+Item {
     property real zoomFactor: 1.0
 }

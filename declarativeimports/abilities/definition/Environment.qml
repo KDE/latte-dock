@@ -5,6 +5,6 @@
 
 import QtQuick 2.0
 
-PlasmoidItem {
+Item {
     property bool isGraphicsSystemAccelerated: false
 }

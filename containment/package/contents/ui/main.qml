@@ -29,7 +29,7 @@ import "layouts" as Layouts
 import "./background" as Background
 import "./debugger" as Debugger
 
-ContainmentItem {
+Item {
     id: root
     objectName: "containmentViewLayout"
 
