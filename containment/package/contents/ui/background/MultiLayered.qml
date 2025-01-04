@@ -11,6 +11,7 @@ import Qt5Compat.GraphicalEffects
 
 import org.kde.plasma.plasmoid 2.0
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
@@ -34,11 +35,11 @@ BackgroundProperties{
 
     isShown: (solidBackground.opacity > 0) || (overlayedBackground.backgroundOpacity > 0)
 
-    hasAllBorders: solidBackground.enabledBorders === PlasmaCore.FrameSvg.AllBorders
-    hasLeftBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.LeftBorder) > 0)
-    hasRightBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.RightBorder) > 0)
-    hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.TopBorder) > 0)
-    hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & PlasmaCore.FrameSvg.BottomBorder) > 0)
+    hasAllBorders: solidBackground.enabledBorders === KSvg.FrameSvg.AllBorders
+    hasLeftBorder: hasAllBorders || ((solidBackground.enabledBorders & KSvg.FrameSvg.LeftBorder) > 0)
+    hasRightBorder: hasAllBorders || ((solidBackground.enabledBorders & KSvg.FrameSvg.RightBorder) > 0)
+    hasTopBorder: hasAllBorders || ((solidBackground.enabledBorders & KSvg.FrameSvg.TopBorder) > 0)
+    hasBottomBorder: hasAllBorders || ((solidBackground.enabledBorders & KSvg.FrameSvg.BottomBorder) > 0)
 
     shadows.left: hasLeftBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.left) : 0
     shadows.right: hasRightBorder && root.behaveAsDockWithMask ? (customShadowIsEnabled ? customShadow : shadowsSvgItem.margins.right) : 0
@@ -322,11 +323,11 @@ BackgroundProperties{
     //! Layer 1: Shadows that are drawn around the background but always inside the View window (these are internal drawn shadows).
     //!          When the container has chosen external shadows (these are shadows that are drawn out of the View window from the compositor)
     //!          in such case the internal drawn shadows are NOT drawn at all.
-    PlasmaCore.FrameSvgItem{
+    KSvg.FrameSvgItem{
         id: shadowsSvgItem
         width: root.isVertical ?  background.thickness + totals.shadowsThickness : totals.visualLength
         height: root.isVertical ? totals.visualLength : background.thickness + totals.shadowsThickness
-        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : KSvg.FrameSvg.NoBorder
         imagePath: "widgets/panel-background"
         prefix: "shadow"
         opacity: hideShadow || !root.useThemePanel || (root.forceTransparentPanel && !root.forcePanelForBusyBackground) ? 0 : 1
@@ -382,7 +383,7 @@ BackgroundProperties{
     //!          the original background when to special settings and options exist from the user. It is also
     //!          doing one very important job which is to calculate the Effects Rectangle which is used from
     //!          the compositor to provide blurriness and from Mask calculations to provide the View Local Geometry
-    PlasmaCore.FrameSvgItem{
+    KSvg.FrameSvgItem{
         id: solidBackground
         anchors.leftMargin: shadows.left
         anchors.rightMargin: shadows.right
@@ -504,7 +505,7 @@ BackgroundProperties{
                 adjustPrefix();
         }
 
-        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: latteView && latteView.effects ? latteView.effects.enabledBorders : KSvg.FrameSvg.NoBorder
 
         Behavior on opacity{
             enabled: LatteCore.WindowSystem.compositingActive && !solidBackground.paintInstantly

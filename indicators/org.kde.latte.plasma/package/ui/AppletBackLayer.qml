@@ -5,10 +5,11 @@
 
 import QtQuick 2.0
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-PlasmaCore.FrameSvgItem {
+KSvg.FrameSvgItem {
     id: frame
     imagePath: "widgets/tabbar"
     opacity: indicator.isActive ? 1 : 0

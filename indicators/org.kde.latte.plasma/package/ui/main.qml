@@ -5,6 +5,7 @@
 
 import QtQuick 2.0
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.latte.components 1.0 as LatteComponents
@@ -84,7 +85,7 @@ LatteComponents.IndicatorItem {
                 width: parent.width * (Math.min(indicator.progress, 100) / 100)
                 clip: true
 
-                PlasmaCore.FrameSvgItem {
+                KSvg.FrameSvgItem {
                     id: progressFrame
                     width: background.width
                     height: background.height

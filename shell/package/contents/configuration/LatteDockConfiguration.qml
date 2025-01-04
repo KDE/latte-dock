@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.3
 import Qt5Compat.GraphicalEffects
 import QtQuick.Window 2.2
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -119,7 +120,7 @@ Loader {
             userScaleHeight = universalSettings.screenHeightScale(latteView.positioner.currentScreenName);
         }
 
-        PlasmaCore.FrameSvgItem{
+        KSvg.FrameSvgItem{
             id: backgroundFrameSvgItem
             anchors.fill: parent
             imagePath: "dialogs/background"

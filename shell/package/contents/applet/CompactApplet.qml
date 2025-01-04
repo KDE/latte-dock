@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 import Qt5Compat.GraphicalEffects
 
+import org.kde.ksvg 1.0 as KSvg
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
@@ -103,7 +104,7 @@ PlasmaCore.ToolTipArea {
         fullRepresentation.anchors.fill = fullRepresentation.parent;
     }
 
-   /* PlasmaCore.FrameSvgItem {
+   /* KSvg.FrameSvgItem {
         id: expandedItem
         anchors.fill: parent
         imagePath: "widgets/tabbar"
