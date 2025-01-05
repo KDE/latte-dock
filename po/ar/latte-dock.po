@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2017.
-# Zayed Al-Saidi <zayed.alsaidi@gmail.com>, 2021, 2022.
+# SPDX-FileCopyrightText: 2021, 2022, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2022-01-22 22:25+0400\n"
+"PO-Revision-Date: 2025-01-04 21:51+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2149,7 +2150,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:833
 #, kde-format
 msgid "Repair"
-msgstr ""
+msgstr "أصلح"
 
 #: app/settings/viewsdialog/viewsdialog.cpp:33
 #, kde-format
@@ -2977,8 +2978,7 @@ msgid "Radius"
 msgstr "نصف القطر"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1031
-#, fuzzy, kde-format
-#| msgid "Shadows"
+#, kde-format
 msgid "Shadow"
 msgstr "الظل"
 
@@ -3982,8 +3982,7 @@ msgid "Widgets"
 msgstr "الودجات"
 
 #: shell/package/contents/views/WidgetExplorer.qml:218
-#, fuzzy, kde-format
-#| msgid "Get New Widgets..."
+#, kde-format
 msgid "Get New Widgets…"
 msgstr "اجلب ودجات جديدة..."
 
