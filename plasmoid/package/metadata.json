@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com, audoban@openmailbox.org",
                 "Name": "Michail Vourlakos, Smith Ar",
+                "Name[ar]": "مايكل فورلاكوس، سميث آر",
                 "Name[az]": "Michail Vourlakos, Smith Ar",
                 "Name[ca@valencia]": "Michail Vourlakos, Smith Ar",
                 "Name[ca]": "Michail Vourlakos, Smith Ar",
@@ -34,6 +35,7 @@
         ],
         "Category": "Windows and Tasks",
         "Description": "Tasks plasmoid from Latte Dock",
+        "Description[ar]": "بلازمويد المهام من رصيف لاتيه",
         "Description[az]": "Latte Dokdan Tapşırıqlar plasmoidi",
         "Description[ca@valencia]": "Plasmoide de tasques de Latte Dock",
         "Description[ca]": "Plasmoide de tasques del Latte Dock",

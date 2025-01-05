@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com, audoban@openmailbox.org",
                 "Name": "Michail Vourlakos, Smith Ar",
+                "Name[ar]": "مايكل فورلاكوس، سميث آر",
                 "Name[az]": "Michail Vourlakos, Smith Ar",
                 "Name[ca@valencia]": "Michail Vourlakos, Smith Ar",
                 "Name[ca]": "Michail Vourlakos, Smith Ar",
@@ -33,6 +34,7 @@
             }
         ],
         "Description": "Shell provided for the Latte Dock",
+        "Description[ar]": "صدفة موفرة لرصيف لاتيه",
         "Description[az]": "Latte Dok paneli üçün nəzərdə tutulan üzlük",
         "Description[ca@valencia]": "Intèrpret d'ordres proporcionat per Latte Dock",
         "Description[ca]": "Intèrpret d'ordres proporcionat pel Latte Dock",

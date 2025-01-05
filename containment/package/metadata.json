@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com, audoban@openmailbox.org",
                 "Name": "Michail Vourlakos, Smith Ar",
+                "Name[ar]": "مايكل فورلاكوس، سميث آر",
                 "Name[az]": "Michail Vourlakos, Smith Ar",
                 "Name[ca@valencia]": "Michail Vourlakos, Smith Ar",
                 "Name[ca]": "Michail Vourlakos, Smith Ar",
@@ -35,6 +36,7 @@
         "Category": "",
         "Dependencies": [],
         "Description": "Containment provided for the Latte Dock",
+        "Description[ar]": "حاوية موفرة لرصيف لاتيه",
         "Description[az]": "Latte Dok paneli üçün nəzərdə tutulmuş saxlama",
         "Description[ca@valencia]": "Contenidor proporcionat per Latte Dock",
         "Description[ca]": "Contenidor proporcionat pel Latte Dock",

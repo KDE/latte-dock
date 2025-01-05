@@ -4,6 +4,7 @@
             {
                 "Email": "mvourlakos@gmail.com",
                 "Name": "Michail Vourlakos",
+                "Name[ar]": "مايكل فورلاكوس",
                 "Name[az]": "Michail Vourlakos",
                 "Name[ca@valencia]": "Michail Vourlakos",
                 "Name[ca]": "Michail Vourlakos",
@@ -34,6 +35,7 @@
         ],
         "Category": "Latte Indicator",
         "Description": "Latte Plasma style indicator",
+        "Description[ar]": "مؤشر نمط بلازما لاتيه",
         "Description[az]": "Latte Plasma üslubu göstəricisi",
         "Description[ca@valencia]": "Indicador a l'estil Plasma de Latte",
         "Description[ca]": "Indicador a l'estil Plasma del Latte",
