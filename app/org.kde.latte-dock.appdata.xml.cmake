@@ -158,6 +158,7 @@
   <url type="bugtracker">@BUG_ADDRESS@</url>
   <url type="faq">@FAQS@</url>
   <developer_name>Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="ar">ميخائيل فورلاكوس، يوهان سميث أجوديلو رودريجيز</developer_name>
   <developer_name xml:lang="ast">Michail Vourlakos y Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="az">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="ca">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
