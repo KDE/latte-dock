@@ -16,12 +16,11 @@ import org.kde.draganddrop 2.0
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
 import org.kde.taskmanager 0.1 as TaskManager
 
-PlasmaExtras.ScrollArea {
+PlasmaComponents.ScrollView {
     id: mainToolTip
     property Item parentTask: null
     property var rootIndex: []

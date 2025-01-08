@@ -385,7 +385,7 @@ Loader {
                     border.color: dialog.borderColor
                 }
 
-                PlasmaExtras.ScrollArea {
+                PlasmaComponents.ScrollView {
                     id: scrollArea
 
                     anchors.fill: parent

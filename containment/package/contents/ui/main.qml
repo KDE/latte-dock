@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import Qt5Compat.GraphicalEffects
 
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
@@ -29,7 +30,7 @@ import "layouts" as Layouts
 import "./background" as Background
 import "./debugger" as Debugger
 
-Item {
+ContainmentItem {
     id: root
     objectName: "containmentViewLayout"
 
@@ -744,9 +745,9 @@ Item {
 
     ///////////////END components
 
-    PlasmaCore.ColorScope{
-        id: colorScopePalette
-    }
+    //Kirigami.ColorSet{
+    //    id: colorScopePalette
+    //}
 
     LatteContainment.LayoutManager{
         id:fastLayoutManager

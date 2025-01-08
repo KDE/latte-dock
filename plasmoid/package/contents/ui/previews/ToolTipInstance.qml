@@ -12,6 +12,7 @@ import QtQuick.Layouts 1.1
 import Qt5Compat.GraphicalEffects
 import QtQml.Models 2.2
 
+import org.kde.kirigami 2.5 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
@@ -89,7 +90,7 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
 
         // launcher icon
-        PlasmaCore.IconItem {
+        Kirigami.Icon {
             Layout.preferredWidth: units.iconSizes.medium
             Layout.preferredHeight: units.iconSizes.medium
             source: icon

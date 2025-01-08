@@ -276,9 +276,9 @@ PlasmoidItem {
     }
 
     /////
-    PlasmaCore.ColorScope{
-        id: colorScopePalette
-    }
+    //Kirigami.ColorSet {
+    //    id: colorScopePalette
+    //}
 
     ///UPDATE
     function updateListViewParent() {

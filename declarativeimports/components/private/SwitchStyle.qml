@@ -6,6 +6,7 @@
 import QtQuick 2.2
 import QtQuick.Controls.Styles 1.2 as QtQuickControlStyle
 import QtQuick.Controls 1.2
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 QtQuickControlStyle.SwitchStyle {
@@ -15,7 +16,7 @@ QtQuickControlStyle.SwitchStyle {
     PlasmaCore.Svg {
         id: switchSvg
         imagePath: "widgets/switch"
-        colorGroup: PlasmaCore.ColorScope.colorGroup
+        colorGroup: Kirigami.Theme.colorSet
     }
 
     property bool themeHasSwitch: false
@@ -91,7 +92,7 @@ QtQuickControlStyle.SwitchStyle {
                 imagePath: "widgets/slider"
                 prefix: "groove"
                 opacity: control.checked ? 0 : 1
-                colorGroup: PlasmaCore.ColorScope.colorGroup
+                colorGroup: Kirigami.Theme.colorSet
                 visible: opacity > 0                
 
                 Behavior on opacity {
@@ -105,7 +106,7 @@ QtQuickControlStyle.SwitchStyle {
                 imagePath: "widgets/slider"
                 prefix: "groove-highlight"
                 opacity: control.checked ? 1 : 0
-                colorGroup: PlasmaCore.ColorScope.colorGroup
+                colorGroup: Kirigami.Theme.colorSet
                 visible: opacity > 0
 
                 Behavior on opacity {
@@ -125,7 +126,7 @@ QtQuickControlStyle.SwitchStyle {
                 imagePath: "widgets/switch"
                 prefix: "groove"
                 opacity: control.checked ? 0 : 1
-                colorGroup: PlasmaCore.ColorScope.colorGroup
+                colorGroup: Kirigami.Theme.colorSet
                 visible: opacity > 0
 
                 Component.onCompleted: styleRoot.themeHasSwitch = fromCurrentTheme;
@@ -142,7 +143,7 @@ QtQuickControlStyle.SwitchStyle {
                 imagePath: "widgets/switch"
                 prefix: "groove-highlight"
                 opacity: control.checked ? 1 : 0
-                colorGroup: PlasmaCore.ColorScope.colorGroup
+                colorGroup: Kirigami.Theme.colorSet
                 visible: opacity > 0
 
                 Behavior on opacity {
