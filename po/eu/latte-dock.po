@@ -1,18 +1,18 @@
 # Translation of latte-dock.po to Euskara/Basque (eu).
 # Copyright (C) 2017-2018, Free Software Foundation.
-# Copyright (C) 2019-2020, This file is copyright:
+# Copyright (C) 2019-2025 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
-# KDE euskaratzeko proiektuaren arduraduna <xalba@euskalnet.net>.
+# SPDX-FileCopyrightText: 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
 # Ander Elortondo <ander.elor@gmail.com>, 2017, 2018, 2019, 2020.
-# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023 Iñigo Salvador Azurmendi <xalba@euskalnet.net>
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023, 2025 Iñigo Salvador Azurmendi <xalba@ni.eus>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-09-26 23:08+0200\n"
+"PO-Revision-Date: 2025-01-11 19:54+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -20,17 +20,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Ander Elortondo"
+msgstr "Ander Elortondo,Iñigo Salvador Azurmendi"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "ander.elor@gmail.com"
+msgstr "ander.elor@gmail.com,xalba@ni.eus"
 
 #: app/declarativeimports/contextmenulayerquickitem.cpp:400
 #, kde-format
@@ -44,45 +44,37 @@ msgid "Failed to import indicator"
 msgstr "Huts egin du adierazlea inportatzea"
 
 #: app/indicator/factory.cpp:290
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, imported updated"
-#| msgid "%0 indicator updated successfully"
+#, kde-format
 msgctxt "indicator_name, imported updated"
 msgid "%1 indicator updated successfully"
-msgstr "%0 adierazle eguneratze arrakastatsua"
+msgstr "%1 adierazlearen eguneratze arrakastatsua"
 
 #: app/indicator/factory.cpp:291
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, imported success"
-#| msgid "%0 indicator installed successfully"
+#, kde-format
 msgctxt "indicator_name, imported success"
 msgid "%1 indicator installed successfully"
-msgstr "%0 adierazle instalatze arrakastatsua"
+msgstr "%1 adierazlearen instalatze arrakastatsua"
 
 #: app/indicator/factory.cpp:371
-#, fuzzy, kde-format
-#| msgid "Remove Indicator"
+#, kde-format
 msgid "Remove Indicator Confirmation"
-msgstr "Kendu adierazlea"
+msgstr "Kendu adierazlearen baieztapena"
 
 #: app/indicator/factory.cpp:380
-#, fuzzy, kde-format
-#| msgid "Do you want to remove <b>%0</b> indicator from your system?"
+#, kde-format
 msgid "Do you want to remove completely <b>%1</b> indicator from your system?"
-msgstr "Zure sistematik <b>%0</b> adierazlea kendu nahi duzu?"
+msgstr "Zure sistematik <b>%1</b> adierazlea erabat kendu nahi duzu?"
 
 #: app/indicator/factory.cpp:390
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, removed success"
-#| msgid "<b>%0</b> indicator removed successfully"
+#, kde-format
 msgctxt "indicator_name, removed success"
 msgid "<b>%1</b> indicator removed successfully"
-msgstr "<b>%0</b> adierazle kentze arrakastatsua"
+msgstr "<b>%1</b> adierazle kentze arrakastatsua"
 
 #: app/lattecorona.cpp:1130 app/lattecorona.cpp:1153
 #, kde-format
 msgid "The layout cannot be imported from file :: "
-msgstr "Antolamendua ezin izan da inportatu fitxategitik :: "
+msgstr "Antolamendua ezin izan da fitxategitik inportatu :: "
 
 #: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
 #: app/layouts/manager.cpp:78 app/layouts/manager.cpp:85
@@ -115,36 +107,31 @@ msgid "The temp directory could not be created!!!"
 msgstr "Aldi baterako direktorioa ezin izan da sortu!!!"
 
 #: app/layouts/storage.cpp:49
-#, fuzzy, kde-format
-#| msgid "Different applets with same id ::: "
+#, kde-format
 msgid "Different Applets With Same Id"
-msgstr "Aplikaziotxo ezberdinak id berarekin ::: "
+msgstr "ID bereko aplikaziotxo ezberdinak"
 
 #: app/layouts/storage.cpp:50
-#, fuzzy, kde-format
-#| msgid "Orphan Systrays:"
+#, kde-format
 msgid "Orphaned Parent Applet Of Subcontainment"
-msgstr "Sistema-erretilu umezurtzak:"
+msgstr "Azpi-edukitzailearen Zurztutako guraso aplikaziotxoa"
 
 #: app/layouts/storage.cpp:51
-#, fuzzy, kde-format
-#| msgid "Different applets with same id ::: "
+#, kde-format
 msgid "Different Applet And Containment With Same Id"
-msgstr "Aplikaziotxo ezberdinak id berarekin ::: "
+msgstr "ID bereko aplikaziotxo eta edukitzaile ezberdina"
 
 #: app/layouts/storage.cpp:52
-#, fuzzy, kde-format
-#| msgid "Orphan Systrays:"
+#, kde-format
 msgid "Orphaned Subcontainment"
-msgstr "Sistema-erretilu umezurtzak:"
+msgstr "Zurztutako azpi-edukitzailea"
 
 #: app/layouts/synchronizer.cpp:1012
-#, fuzzy, kde-format
-#| msgid "Activating layout: <b>%0</b> ..."
+#, kde-format
 msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
-msgstr[0] "<b>%0</b> antolamendua aktibatzen..."
-msgstr[1] "<b>%0</b> antolamendua aktibatzen..."
+msgstr[0] "Antolaera aktibatzea: <b>%2</b> ..."
+msgstr[1] "Antolaera aktibatzea: <b>%2</b> ..."
 
 #: app/main.cpp:100
 #, kde-format
@@ -166,17 +153,16 @@ msgstr ""
 "Garbitu qml cachea. Baliagarria izan daiteke sistema bertsio-berritu ondoren."
 
 #: app/main.cpp:103
-#, fuzzy, kde-format
-#| msgid "Enable autostart during startup"
+#, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
-msgstr "Gaitu auto-abiaraztea abiaraztean"
+msgstr "Aplikazio honetarako abio automatikoa gaitu"
 
 #: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
-msgstr ""
+msgstr "Aplikazio honetarako abio automatikoa ezgaitu"
 
 #: app/main.cpp:105
 #, kde-format
@@ -191,56 +177,52 @@ msgid "Print available layouts"
 msgstr "Inprimatu antolamendu erabilgarriak"
 
 #: app/main.cpp:107
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Print available layouts"
+#, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
-msgstr "Inprimatu antolamendu erabilgarriak"
+msgstr "Kai-txantiloi erabilgarriak inprimatu"
 
 #: app/main.cpp:108
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Print available layouts"
+#, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr "Inprimatu antolamendu erabilgarriak"
+msgstr "Antolaera-txantiloi erabilgarriak inprimatu"
 
 #: app/main.cpp:109
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
-msgstr "Kargatu antolamendu zehatza abiaraztean"
+msgstr "Kargatu antolaera zehatza abiaraztean"
 
 #: app/main.cpp:109
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
-msgstr "Antolamendu_izena"
+msgstr "Antolaera_izena"
 
 #: app/main.cpp:110
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
-msgstr "Inportatu eta kargatu antolamendua"
+msgstr "Inportatu eta kargatu antolaera"
 
 #: app/main.cpp:110
 #, kde-format
 msgctxt "command line: import"
 msgid "absolute_filepath"
-msgstr ""
+msgstr "fitxategibideizen_absolutua"
 
 #: app/main.cpp:111
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
-msgstr ""
+msgstr "Antolaera fitxategi bat inportatzean iradokitako antolaera izena"
 
 #: app/main.cpp:111
 #, kde-format
 msgctxt "command line: import"
 msgid "suggested_name"
-msgstr ""
+msgstr "iradokitako_izena"
 
 #: app/main.cpp:112
 #, kde-format
@@ -255,26 +237,23 @@ msgid "file_name"
 msgstr "Fitxategi_izena"
 
 #: app/main.cpp:113
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
-msgstr "Kaiak/Panelak"
+msgstr "Gehitu Kaia/Panela"
 
 #: app/main.cpp:113
-#, fuzzy, kde-format
-#| msgctxt "command line: load"
-#| msgid "layout_name"
+#, kde-format
 msgctxt "command line: add"
 msgid "template_name"
-msgstr "Antolamendu_izena"
+msgstr "txantiloi_izena"
 
 #: app/main.cpp:114
 #, kde-format
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
-"Antolamendu bakarra memoria modua. Antolamendu bakarra dago aktibo kasu "
+"Antolaera bakarreko memoria modua. Antolaera bakarra dago aktibo kasu "
 "guztietan."
 
 #: app/main.cpp:115
@@ -291,18 +270,18 @@ msgstr ""
 #, kde-format
 msgctxt "command line: debug-text"
 msgid "filter_debug_text"
-msgstr ""
+msgstr "iragazi_araztu_testua"
 
 #: app/main.cpp:183
 #, kde-format
 msgctxt "command line: log-filepath"
 msgid "filter_log_filepath"
-msgstr ""
+msgstr "iragazki_egunkara_fitxategibideizena"
 
 #: app/main.cpp:204
 #, kde-format
 msgid "Available layouts that can be used to start Latte:"
-msgstr "Latte abiatzean erabil daitezkeen antolamendu erabilgarriak:"
+msgstr "Latte abiatzeko erabil daitezkeen antolaera erabilgarriak:"
 
 #: app/main.cpp:210
 #, kde-format
@@ -311,27 +290,24 @@ msgstr ""
 "Ez dago antolamendu erabilgarririk, abiaraztean lehenetsia erabiliko da."
 
 #: app/main.cpp:222
-#, fuzzy, kde-format
-#| msgid "Available layouts that can be used to start Latte:"
+#, kde-format
 msgid "Available layout templates found in your system:"
-msgstr "Latte abiatzean erabil daitezkeen antolamendu erabilgarriak:"
+msgstr "Zure sisteman aurkitutako antolaera-txantiloi erabilgarriak:"
 
 #: app/main.cpp:228
-#, fuzzy, kde-format
-#| msgid "There are no available layouts, during startup Default will be used."
+#, kde-format
 msgid "There are no available layout templates in your system."
-msgstr ""
-"Ez dago antolamendu erabilgarririk, abiaraztean lehenetsia erabiliko da."
+msgstr "Zure sisteman ez dago antolaera-txantiloirik erabilgarri."
 
 #: app/main.cpp:240
 #, kde-format
 msgid "Available dock templates found in your system:"
-msgstr ""
+msgstr "Zure sisteman aurkitutako kai-txantiloi erabilgarriak:"
 
 #: app/main.cpp:246
 #, kde-format
 msgid "There are no available dock templates in your system."
-msgstr ""
+msgstr "Zure sisteman ez dago kai-txantiloirik erabilgarri."
 
 #: app/main.cpp:278
 #, kde-format
@@ -386,7 +362,7 @@ msgstr "Latte Dock panela"
 #: app/package/lattepackage.cpp:36
 #, kde-format
 msgid "Widget Explorer"
-msgstr ""
+msgstr "Trepeta esploratzailea"
 
 #: app/package/lattepackage.cpp:38
 #, kde-format
@@ -399,10 +375,9 @@ msgid "Dock secondary configuration UI"
 msgstr "Bigarren kaiaren konfigurazio interfase-orria"
 
 #: app/package/lattepackage.cpp:40
-#, fuzzy, kde-format
-#| msgid "Dock configuration UI"
+#, kde-format
 msgid "Dock canvas configuration UI"
-msgstr "Kai konfigurazio interfase-orria"
+msgstr "Kai mihisearen konfiguratzeko EI"
 
 #: app/package/lattepackage.cpp:41
 #, kde-format
@@ -420,10 +395,9 @@ msgid "Latte Trademark"
 msgstr "Latte marka erregistratua"
 
 #: app/package/lattepackage.cpp:44
-#, fuzzy, kde-format
-#| msgid "Latte Trademark"
+#, kde-format
 msgid "Latte Trademark Icon"
-msgstr "Latte marka erregistratua"
+msgstr "Latte marka erregistratuaren ikonoa"
 
 #: app/package/lattepackage.cpp:45
 #, kde-format
@@ -453,12 +427,12 @@ msgstr "Antolamendu-fitxategi hedatua"
 #: app/package/lattepackage.cpp:52
 #, kde-format
 msgid "system templates directory"
-msgstr ""
+msgstr "sistemaren txantiloien direktorioa"
 
 #: app/package/lattepackage.cpp:54
 #, kde-format
 msgid "default preset file"
-msgstr "Aurrezarpen fitxategi lehenetsia"
+msgstr "aurrezarpen fitxategi lehenetsia"
 
 #: app/package/lattepackage.cpp:55
 #, kde-format
@@ -473,17 +447,17 @@ msgstr "Unity aurrezarpen fitxategia"
 #: app/package/lattepackage.cpp:57
 #, kde-format
 msgid "extended preset file"
-msgstr "Aurrezarpen fitxategi hedatua"
+msgstr "aurrezarpen fitxategi hedatua"
 
 #: app/package/lattepackage.cpp:58
 #, kde-format
 msgid "multiple layouts hidden file"
-msgstr "Hainbat antolamenduren ezkutuko fitxategia"
+msgstr "hainbat antolaeren ezkutuko fitxategia"
 
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "Gainerako batean aplikaziotxo bat erakusten duen QML osagaia"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:26
 #, kde-format
@@ -493,7 +467,7 @@ msgstr "Konfigurazioaren definizioak"
 #: app/packageplugins/indicator/indicatorpackage.cpp:27
 #, kde-format
 msgid "User Interface"
-msgstr "Erabiltzailaren interfazea"
+msgstr "Erabiltzailearen interfazea"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:28
 #, kde-format
@@ -503,7 +477,7 @@ msgstr "Datu-fitxategiak"
 #: app/packageplugins/indicator/indicatorpackage.cpp:29
 #, kde-format
 msgid "Executable Scripts"
-msgstr "Script exekutagarriak"
+msgstr "Gidoi exekutagarriak"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
 #, kde-format
@@ -512,163 +486,150 @@ msgstr "Itzulpenak"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
 #: app/settings/actionsdialog/actionsdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Extra Actions"
+#, kde-format
 msgid "Context Menu Actions"
-msgstr "Ekintza gehigarriak"
+msgstr "Testuinguru-menuaren ekintzak"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
 #, kde-format
 msgctxt "actions shown only in edit mode"
 msgid "Accessible only in edit mode:"
-msgstr ""
+msgstr "Edizio moduan bakarra irisgarri:"
 
 #. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:27
 #, kde-format
 msgctxt "actions shown always"
 msgid "Accessible always:"
-msgstr ""
+msgstr "Irisgarri beti:"
 
 #: app/settings/actionsdialog/actionshandler.cpp:61
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layouts"
-msgstr "Antolamendua"
+msgstr "Antolaerak"
 
 #: app/settings/actionsdialog/actionshandler.cpp:68
-#, fuzzy, kde-format
-#| msgctxt "opens the layout manager window"
-#| msgid "Configure..."
+#, kde-format
 msgctxt "global settings window"
 msgid "Configure Latte..."
-msgstr "Konfiguratu..."
+msgstr "Konfiguratu Latte..."
 
 #: app/settings/actionsdialog/actionshandler.cpp:75
-#, fuzzy, kde-format
-#| msgid "&Quit Latte"
+#, kde-format
 msgctxt "quit application"
 msgid "Quit Latte"
-msgstr "&Irten Latte-tik"
+msgstr "Irten Latte-tik"
 
 #: app/settings/actionsdialog/actionshandler.cpp:82
 #, kde-format
 msgid " --- separator --- "
-msgstr ""
+msgstr " --- bereizlea --- "
 
 #: app/settings/actionsdialog/actionshandler.cpp:89
-#, fuzzy, kde-format
-#| msgid "Get New Indicators..."
+#, kde-format
 msgid "Add Widgets..."
-msgstr "Lortu adierazle berriak..."
+msgstr "Gehitu trepetak..."
 
 #: app/settings/actionsdialog/actionshandler.cpp:96
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgid "Add Dock/Panel"
-msgstr "Kaiak/Panelak"
+msgstr "Gehitu Kaia/Panela"
 
 #: app/settings/actionsdialog/actionshandler.cpp:103
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Move Dock/Panel To Layout"
-msgstr "Esportatu antolamendua"
+msgstr "Mugitu Kaia/Panela antolaerara"
 
 #: app/settings/actionsdialog/actionshandler.cpp:110
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel as Template..."
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu Kaio/Panela txantiloi gisa..."
 
 #: app/settings/actionsdialog/actionshandler.cpp:117
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgid "Remove Dock/Panel"
-msgstr "Kaiak/Panelak"
+msgstr "Kendu Kaiak/Panela"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:35
 #, kde-format
 msgid "Blue"
-msgstr ""
+msgstr "Urdina"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:36
 #, kde-format
 msgid "Brown"
-msgstr ""
+msgstr "Marroia"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:37
 #, kde-format
 msgid "Dark Grey"
-msgstr ""
+msgstr "Gris iluna"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:38
 #, kde-format
 msgid "Gold"
-msgstr ""
+msgstr "Urrea"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:39
-#, fuzzy, kde-format
-#| msgid "Screen"
+#, kde-format
 msgid "Green"
-msgstr "Pantaila"
+msgstr "Berdea"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:40
 #, kde-format
 msgid "Light Sky Blue"
-msgstr ""
+msgstr "Zeru urdin argia"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:41
 #, kde-format
 msgid "Orange"
-msgstr ""
+msgstr "Laranja"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:42
 #, kde-format
 msgid "Pink"
-msgstr ""
+msgstr "Arrosa"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:43
 #, kde-format
 msgid "Purple"
-msgstr ""
+msgstr "Purpura"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:44
 #, kde-format
 msgid "Red"
-msgstr ""
+msgstr "Gorria"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:45
 #, kde-format
 msgid "Wheat"
-msgstr ""
+msgstr "Garia"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Details..."
+#, kde-format
 msgid "Details"
-msgstr "Xehetasunak..."
+msgstr "Xehetasunak"
 
 #. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:57
 #: app/settings/settingsdialog/settingsdialog.ui:869
 #, kde-format
 msgid "Behavior:"
-msgstr "Portaera:"
+msgstr "Jokabidea:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
 #: app/settings/detailsdialog/detailsdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Hide screen gap for maximized windows"
+#, kde-format
 msgid "Hide window borders for maximized windows"
-msgstr "Ezkutatu pantaila tartea maximizatutako leihoentzat"
+msgstr "Maximizatutako leihoetarako leiho-ertzak ezkutatu"
 
 #. i18n: ectx: property (text), widget (QLabel, iconLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:115
 #, kde-format
 msgid "Icon:"
-msgstr ""
+msgstr "Ikonoa:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
@@ -686,39 +647,34 @@ msgstr "Marjinak"
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background..."
-msgstr "Atzeko planoa"
+msgstr "Atzeko planoa..."
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
+#, kde-format
 msgid "Text Color..."
-msgstr "Norberak finkatutako Testu kolorea..."
+msgstr "Testuaren kolorea..."
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
 #: app/settings/viewsdialog/viewsdialog.ui:47
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layout:"
-msgstr "Antolamendua"
+msgstr "Antolaera:"
 
 #. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:418
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background:"
-msgstr "Atzeko planoa"
+msgstr "Atzeko planoa:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:507
-#, fuzzy, kde-format
-#| msgid "Disabled"
+#, kde-format
 msgid "disabled"
-msgstr "Ezgaituta"
+msgstr "ezgaituta"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:510
@@ -728,17 +684,15 @@ msgstr " px."
 
 #. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:678
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgid "Custom Colors:"
-msgstr "Koloreak"
+msgstr "Neurriko koloreak:"
 
 #: app/settings/detailsdialog/detailshandler.cpp:446
-#, fuzzy, kde-format
-#| msgid "Details..."
+#, kde-format
 msgctxt "<layout name> Details"
 msgid "%1 Details"
-msgstr "Xehetasunak..."
+msgstr "%1 xehetasunak"
 
 #: app/settings/detailsdialog/detailshandler.cpp:453
 #, fuzzy, kde-format
@@ -755,79 +709,70 @@ msgstr ""
 #: app/settings/detailsdialog/patternwidget.cpp:48
 #, kde-format
 msgid "Sample Text"
-msgstr ""
+msgstr "Lagin-testua"
 
 #: app/settings/detailsdialog/schemesmodel.cpp:123
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
+#, kde-format
 msgid "System Colors"
-msgstr "Norberak finkatutako Testu kolorea..."
+msgstr "Sistemaren koloreak"
 
 #: app/settings/exporttemplatedialog/appletsmodel.cpp:225
-#, fuzzy, kde-format
-#| msgid "Close Active Window"
+#, kde-format
 msgctxt "column for current applets"
 msgid "Current Applets"
-msgstr "Itxi leiho aktiboa"
+msgstr "Uneko aplikaziotxoak"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
-#, fuzzy, kde-format
-#| msgid "Export selected layout at your system"
+#, kde-format
 msgid "Export your selected layout as template"
-msgstr "Esportatu aukeratutako antolamendu zure sistemara"
+msgstr "Esportatu zuk aukeratutako antolaera txantiloi gisa"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:48
-#, fuzzy, kde-format
-#| msgid "Export selected layout at your system"
+#, kde-format
 msgid "Export your selected dock or panel as template"
-msgstr "Esportatu aukeratutako antolamendu zure sistemara"
+msgstr "Esportatu zuk aukeratutako kaia edo panela txantiloi gisa"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:62
 #, kde-format
 msgid "Export your selected view as template"
-msgstr ""
+msgstr "Esportatu zuk aukeratutako ikuspegia txantiloi gisa"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:104
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export template"
 msgid "Export"
 msgstr "Esportatu"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export template"
 msgid "Export Again"
-msgstr "Esportatu"
+msgstr "Berriz esportatu"
 
 #. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr ""
+msgstr "Hautatu dena"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
 #: app/settings/screensdialog/screensdialog.ui:58
 #, kde-format
 msgid "Deselect All"
-msgstr ""
+msgstr "Desautatu dena"
 
 #. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, fuzzy, kde-format
-#| msgid "File"
+#, kde-format
 msgid "File:"
-msgstr "Fitxategia"
+msgstr "Fitxategia:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr ""
+msgstr "Aukeratu..."
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -839,70 +784,58 @@ msgid ""
 msgstr ""
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Layout Template"
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu antolaera-txantiloia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:63
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel Template"
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu Kai/Panel txantiloia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
-#, fuzzy, kde-format
-#| msgctxt "dock type"
-#| msgid "Dock"
+#, kde-format
 msgid "Dock"
 msgstr "Kaia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
-#, fuzzy, kde-format
-#| msgctxt "panel type"
-#| msgid "Panel"
+#, kde-format
 msgid "Panel"
 msgstr "Panela"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:78
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export %1 Template"
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu %1 txantiloia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Choose Layout Template file"
-msgstr "Esportatu antolamendua"
+msgstr "Aukeratu antolaera-txantiloi fitxategia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
 msgid "Choose View Template file"
-msgstr ""
+msgstr "Aukeratu ikuspegi-txantiloi fitxategia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:151
 #, kde-format
 msgctxt "choose file"
 msgid "Choose"
-msgstr ""
+msgstr "Aukeratu"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "layout template"
 msgid "Latte Dock Layout Template file v0.2"
-msgstr "Latte Dock antolamendu-fitxategia v0.2"
+msgstr "Latte Dock antolaera-txantiloi fitxategia v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "view template"
 msgid "Latte Dock View Template file v0.2"
-msgstr "Latte Dock antolamendu-fitxategia v0.2"
+msgstr "Latte Dock ikuspegi-txantiloi fitxategia v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:176
 #, kde-format
@@ -1978,10 +1911,9 @@ msgid ""
 msgstr ""
 
 #: app/settings/viewsdialog/viewscontroller.cpp:593
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Edit Layout"
-msgstr "Antolamendua"
+msgstr "Editatu antolaera"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:622
 #, kde-format
@@ -2196,41 +2128,34 @@ msgid "Docks/Panels"
 msgstr "Kaiak/Panelak"
 
 #: app/settings/viewsdialog/viewshandler.cpp:69
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "&New"
+#, kde-format
 msgctxt "new view"
 msgid "&New"
 msgstr "&Berria"
 
 #: app/settings/viewsdialog/viewshandler.cpp:70
-#, fuzzy, kde-format
-#| msgid "Latte Dock panel"
+#, kde-format
 msgid "New dock or panel"
-msgstr "Latte Dock panela"
+msgstr "Kai edo panel berria"
 
 #: app/settings/viewsdialog/viewshandler.cpp:83
 #, kde-format
 msgctxt "duplicate dock or panel"
 msgid "&Duplicate"
-msgstr ""
+msgstr "&Bikoiztu"
 
 #: app/settings/viewsdialog/viewshandler.cpp:84
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate selected dock or panel"
-msgstr "Aldatu aukeratutako antolamendura"
+msgstr "Bikoiztu hautatutako kaia edo panela"
 
 #: app/settings/viewsdialog/viewshandler.cpp:92
-#, fuzzy, kde-format
-#| msgid "Remove selected layout"
+#, kde-format
 msgid "Remove selected view"
-msgstr "Kendu aukeratutako antolamendura"
+msgstr "Kendu aukeratutako ikuspegia"
 
 #: app/settings/viewsdialog/viewshandler.cpp:100
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "&Import..."
+#, kde-format
 msgctxt "import dock/panel"
 msgid "&Import..."
 msgstr "&Inportatu..."
@@ -2238,7 +2163,7 @@ msgstr "&Inportatu..."
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
 msgid "Import dock or panel from local file"
-msgstr ""
+msgstr "Inportatu kaia edo panela fitxategi lokaletik"
 
 #: app/settings/viewsdialog/viewshandler.cpp:109
 #, fuzzy, kde-format
@@ -2263,26 +2188,21 @@ msgid ""
 msgstr ""
 
 #: app/settings/viewsdialog/viewshandler.cpp:342
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel For Backup"
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu Kaia/Panela babes-kopiarako"
 
 #: app/settings/viewsdialog/viewshandler.cpp:344
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export view"
 msgid "Export"
 msgstr "Esportatu"
 
 #: app/settings/viewsdialog/viewshandler.cpp:350
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "export view"
 msgid "Latte Dock/Panel file v0.2"
-msgstr "Latte Dock antolamendu-fitxategia v0.2"
+msgstr "Latte Kai/Panel fitxategia v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:360
 #, fuzzy, kde-format
@@ -2301,33 +2221,27 @@ msgid "Export in file <b>%1</b> succeeded..."
 msgstr "<b>%0</b> antolamendua ondo inportatua..."
 
 #: app/settings/viewsdialog/viewshandler.cpp:431
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "import dock/panel"
 msgid "Import Dock/Panel"
-msgstr "Kaiak/Panelak"
+msgstr "Inportatu Kaia/Panela"
 
 #: app/settings/viewsdialog/viewshandler.cpp:434
-#, fuzzy, kde-format
-#| msgctxt "import full configuration"
-#| msgid "Import"
+#, kde-format
 msgid "Import"
 msgstr "Inportatu"
 
 #: app/settings/viewsdialog/viewshandler.cpp:440
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "import dock panel"
 msgid "Latte Dock or Panel file v0.2"
-msgstr "Latte Dock antolamendu-fitxategia v0.2"
+msgstr "Latte Dock edo Panel-fitxategia v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:512
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "<layout name> Docks/Panels"
 msgid "%1 Docks/Panels"
-msgstr "Kaiak/Panelak"
+msgstr "%1 Kaiak/Panelak"
 
 #: app/settings/viewsdialog/viewshandler.cpp:524
 #, kde-format
@@ -2356,7 +2270,7 @@ msgstr ""
 #, kde-format
 msgctxt "top edge"
 msgid "Top"
-msgstr "Goiko ertzean"
+msgstr "Goian"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:195
 #, kde-format
@@ -2425,28 +2339,22 @@ msgid "Justify"
 msgstr "Justifikatu"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:499
-#, fuzzy, kde-format
-#| msgid "Follow Primary Screen"
+#, kde-format
 msgid " - On Primary Screen - "
-msgstr "Jarraitu pantaila nagusia"
+msgstr "- Pantaila nagusian - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:500
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid " - On All Screens - "
-msgstr "Pantaila guztietatik"
+msgstr " - Pantaila guztietan - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:501
-#, fuzzy, kde-format
-#| msgid "Follow Primary Screen"
+#, kde-format
 msgid " - On All Secondary Screens - "
-msgstr "Jarraitu pantaila nagusia"
+msgstr " - Bigarren mailako pantaila guztietan - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:592
-#, fuzzy, kde-format
-#| msgctxt "column for layout name"
-#| msgid "Name"
+#, kde-format
 msgid "Name"
 msgstr "Izena"
 
@@ -2475,11 +2383,10 @@ msgstr ""
 
 #: app/settings/viewsdialog/viewsmodel.cpp:787
 #: app/settings/viewsdialog/viewsmodel.cpp:877
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown screen"
 msgid "Unknown: [%1]"
-msgstr "Pantaila ezezagunak:"
+msgstr "Ezezaguna: [%1]"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:867
 #, kde-format
@@ -2488,18 +2395,14 @@ msgid "Primary"
 msgstr "Nagusia"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:869
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "All Screens"
-msgstr "Pantaila guztietatik"
+msgstr "Pantaila guztiak"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:871
-#, fuzzy, kde-format
-#| msgctxt "secondary screen"
-#| msgid "Secondary"
+#, kde-format
 msgid "Secondary Screens"
-msgstr "Bigarren mailakoa"
+msgstr "Bigarren mailakoa pantailak"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:907
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:190
@@ -2530,18 +2433,16 @@ msgid "Right"
 msgstr "Eskuinean"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:916
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown location"
 msgid "Unknown"
-msgstr "Pantaila ezezagunak:"
+msgstr "Ezezaguna"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:947
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown alignment"
 msgid "Unknown"
-msgstr "Pantaila ezezagunak:"
+msgstr "Ezezaguna"
 
 #: app/shortcuts/globalshortcuts.cpp:87
 #, kde-format
@@ -2569,45 +2470,40 @@ msgid "New Instance for Entry %1"
 msgstr "Instantzia berria %1 sarrerarako"
 
 #: app/templates/templatesmanager.cpp:337
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "default layout template name"
 msgid "Default"
 msgstr "Lehenetsia"
 
 #: app/templates/templatesmanager.cpp:338
-#, fuzzy, kde-format
-#| msgid "Empty Area"
+#, kde-format
 msgctxt "empty layout template name"
 msgid "Empty"
-msgstr "Azalera hutsa"
+msgstr "Hutsik"
 
 #: app/templates/templatesmanager.cpp:341
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "view template name"
 msgid "Default Dock"
-msgstr "Lehenetsia"
+msgstr "Lehenetsitako Kaia"
 
 #: app/templates/templatesmanager.cpp:342
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "view template name"
 msgid "Default Panel"
-msgstr "Lehenetsia"
+msgstr "Lehenetsitako Panela"
 
 #: app/templates/templatesmanager.cpp:343
-#, fuzzy, kde-format
-#| msgid "Copy Panel"
+#, kde-format
 msgctxt "view template name"
 msgid "Empty Panel"
-msgstr "Kopiatu panela"
+msgstr "Panel hutsa"
 
 #: app/view/originalview.cpp:126
 #, kde-format
 msgctxt "clone of original dock panel, name"
 msgid "Clone of %1"
-msgstr ""
+msgstr "%1(e)ren klona"
 
 #: app/view/settings/indicatoruimanager.cpp:167
 #, kde-format
@@ -2663,10 +2559,9 @@ msgid "You can use mouse wheel to change maximum length of %1%"
 msgstr ""
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
-#, fuzzy, kde-format
-#| msgid "Maximum"
+#, kde-format
 msgid "Maximum Length"
-msgstr "Maximoa"
+msgstr "Gehieneko luzera"
 
 #: shell/package/contents/configuration/CanvasConfiguration.qml:101
 #, kde-format
@@ -2680,17 +2575,16 @@ msgid "General"
 msgstr "Orokorra"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:140
-#, fuzzy, kde-format
-#| msgid "Width"
+#, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr "Zabalera"
+msgstr "Zabalera %%1"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr ""
+msgstr "Zabalera %%1 / Altuera %%2"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
@@ -2714,11 +2608,10 @@ msgid "Effects"
 msgstr "Efektuak"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
-#, fuzzy, kde-format
-#| msgid "Tasks"
+#, kde-format
 msgctxt "tasks header and index"
 msgid "Tasks <%1>"
-msgstr "Zereginak"
+msgstr "Atazak <%1>"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
 #, kde-format
@@ -2728,22 +2621,22 @@ msgstr "Zereginak"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:498
 #, kde-format
 msgid "Add..."
-msgstr ""
+msgstr "Gehitu..."
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:500
 #, kde-format
 msgid "Add new docks and panels from various templates"
-msgstr ""
+msgstr "Gehitu kaiak eta panelak hainbat txantiloitatik"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:603
 #, kde-format
 msgid "Duplicate Dock"
-msgstr ""
+msgstr "Bikoiztu Kaia"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:603
 #, kde-format
 msgid "Duplicate Panel"
-msgstr ""
+msgstr "Bikoiztu Panela"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -2767,37 +2660,29 @@ msgid "Items"
 msgstr "Elementuak"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
-#, fuzzy, kde-format
-#| msgctxt "absolute size"
-#| msgid "Absolute"
+#, kde-format
 msgctxt "absolute size"
 msgid "Absolute size"
-msgstr "Absolutua"
+msgstr "Tamaina absolutua"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1060
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 12 px."
 msgid "%1 px."
-msgstr "%0 px."
+msgstr "%1 px."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
-#, fuzzy, kde-format
-#| msgctxt "relative size"
-#| msgid "Relative"
+#, kde-format
 msgctxt "relative size"
 msgid "Relative size"
-msgstr "Erlatiboa"
+msgstr "Tamaina erlatiboa"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:159
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 64 px."
 msgid "%1 px."
-msgstr "%0 px."
+msgstr "%1 px."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
@@ -2814,7 +2699,7 @@ msgstr "%0 px."
 #, kde-format
 msgctxt "number in percentage, e.g. 85 %"
 msgid "%1 %"
-msgstr ""
+msgstr "% %1"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:161
 #, kde-format
@@ -2876,12 +2761,10 @@ msgstr "Marjinak"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:686
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
-msgstr "%0 px."
+msgstr "%1 px."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:662
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:890
@@ -2896,12 +2779,10 @@ msgid "Floating gap"
 msgstr "Mugikorra"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:731
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 85 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
-msgstr "%0 px."
+msgstr "%1 px."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:750
 #, kde-format
@@ -2911,28 +2792,25 @@ msgstr "Koloreak"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:767
 #, kde-format
 msgid "Palette"
-msgstr ""
+msgstr "Paleta"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:774
-#, fuzzy, kde-format
-#| msgid "Plasma Theme:"
+#, kde-format
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
-msgstr "Plasmaren gaia:"
+msgstr "Plasma gaiaren koloreak"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:777
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgctxt "dark theme colors"
 msgid "Dark Colors"
-msgstr "Koloreak"
+msgstr "Kolore ilunak"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:780
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgctxt "light theme colors"
 msgid "Light Colors"
-msgstr "Koloreak"
+msgstr "Kolore argiak"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:783
 #, kde-format
@@ -3038,18 +2916,17 @@ msgstr "Lanpetuta dagoeneko opakutasuna"
 #, kde-format
 msgctxt "Default word abbreviation"
 msgid "Def."
-msgstr ""
+msgstr "Leh."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:988
 #, kde-format
 msgid "Radius"
-msgstr ""
+msgstr "Erradioa"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1031
-#, fuzzy, kde-format
-#| msgid "Shadows"
+#, kde-format
 msgid "Shadow"
-msgstr "Itzalak"
+msgstr "Itzala"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1080
 #, kde-format
@@ -3171,24 +3048,19 @@ msgid "Location"
 msgstr "Kokalekua"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
-#, fuzzy, kde-format
-#| msgid "Follow Primary Screen"
+#, kde-format
 msgid "On Primary Screen"
-msgstr "Jarraitu pantaila nagusia"
+msgstr "Pantaila nagusian"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "On All Screens"
-msgstr "Pantaila guztietatik"
+msgstr "Pantaila guztietan"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "On All Secondary Screens"
-msgstr "Pantaila guztietatik"
+msgstr "Bigarren mailako pantaila guztietan"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format
@@ -3254,10 +3126,9 @@ msgstr ""
 "eskatzean.Adibidez kanpo aplikaziotxo, lasterbide edo script baten bitartez."
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:516
-#, fuzzy, kde-format
-#| msgid "Auto Hide"
+#, kde-format
 msgid "Auto Hide Sidebar"
-msgstr "Auto gorde"
+msgstr "Alboko barra automatikoki ezkutatu"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:517
 #, kde-format
@@ -3350,9 +3221,7 @@ msgid "Mouse wheel"
 msgstr "Saguaren gurpila"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:738
-#, fuzzy, kde-format
-#| msgctxt "none scroll actions"
-#| msgid "None Action"
+#, kde-format
 msgctxt "none scroll actions"
 msgid "No Action"
 msgstr "Ekintzarik ez"
@@ -3683,7 +3552,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:105
 #, kde-format
 msgid "Change volume when scrolling audio badge"
-msgstr "Aldatu bolumena audio txartelean labaintzean"
+msgstr "Aldatu bolumena audio bereizgarrian kiribiltzean"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:107
 #, kde-format
@@ -3756,38 +3625,37 @@ msgstr "Iragazkiak"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:201
 #, kde-format
 msgid "Show only tasks from the current screen"
-msgstr "Erakutsi soilik uneko pantailako atazak"
+msgstr "Erakutsi uneko pantailako atazak bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:212
 #, kde-format
 msgid "Show only tasks from the current desktop"
-msgstr "Erakutsi soilik uneko mahaigaineko atazak"
+msgstr "Erakutsi uneko mahaigaineko atazak bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:223
 #, kde-format
 msgid "Show only tasks from the current activity"
-msgstr "Erakutsi soilik uneko jarduerako atazak"
+msgstr "Erakutsi uneko jarduerako atazak bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:234
 #, kde-format
 msgid "Show only tasks from launchers"
-msgstr "Erakutsi soilik abiarazleen atazak"
+msgstr "Erakutsi abiarazleen atazak bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:246
 #, kde-format
 msgid "Show only launchers and hide all tasks"
-msgstr ""
+msgstr "Erakutsi abiarazleak bakarrik eta ezkutatu ataza guztiak"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:247
 #, kde-format
 msgid "Tasks become hidden and only launchers are shown"
-msgstr ""
+msgstr "Atazak ezkutatu egiten dira eta abiarazleak bakarrik erakusten dira"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:258
-#, fuzzy, kde-format
-#| msgid "Group tasks of the same application"
+#, kde-format
 msgid "Show only grouped tasks for same application"
-msgstr "Batu aplikazio berdineko atazak"
+msgstr "Erakutsi taldekatutako atazak aplikazio berdinerako bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:259
 #, kde-format
@@ -3818,7 +3686,7 @@ msgstr "Taldekatutako atazek haien leiho berriak errebotatzen dituzte"
 #, kde-format
 msgid "Grouped tasks slide out their closed windows"
 msgstr ""
-"Taldekatutako atazek beraien itxitako leihoak kanpora irristatzen dituzte "
+"Taldekatutako atazek beraien itxitako leihoak kanpora irristatzen dituzte"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:351
 #, kde-format
@@ -3826,12 +3694,10 @@ msgid "Launchers"
 msgstr "Abiarazleak"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:376
-#, fuzzy, kde-format
-#| msgctxt "unique launchers group"
-#| msgid "Unique"
+#, kde-format
 msgctxt "unique launchers group"
 msgid "Unique Group"
-msgstr "Bakarra"
+msgstr "Talde bakarra"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:380
 #, kde-format
@@ -3843,11 +3709,10 @@ msgstr ""
 "ikuspegietatik independentea dena"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:395
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgctxt "layout launchers group"
 msgid "Layout Group"
-msgstr "Antolamendua"
+msgstr "Antolaera taldea"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:399
 #, kde-format
@@ -3856,17 +3721,15 @@ msgid ""
 "provides launchers <b>synchronization</b> between different views in the "
 "<b>same layout</b>"
 msgstr ""
-"Erabili uneko abiarazle-multzoen antolamendua latte ikuspegi honetarako. "
-"Talde honek <b>antolamendu bereko</b> ikuspegi ezberdinen artean abiarazleen "
+"Erabili uneko abiarazle-multzoen antolaera latte ikuspegi honetarako. Talde "
+"honek <b>antolamendu bereko</b> ikuspegi ezberdinen artean abiarazleen "
 "<b>sinkronizatzea</b> eskaintzen du."
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:415
-#, fuzzy, kde-format
-#| msgctxt "global launchers group"
-#| msgid "Global"
+#, kde-format
 msgctxt "global launchers group"
 msgid "Global Group"
-msgstr "Orokorra"
+msgstr "Talde globala"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:419
 #, kde-format
@@ -3875,21 +3738,21 @@ msgid ""
 "launchers <b>synchronization</b> between different views and between "
 "<b>different layouts</b>"
 msgstr ""
-"Erabili abiarazle-multzo orokorra latte ikuspegi honetarako. Talde honek "
+"Erabili abiarazle-multzo globala latte ikuspegi honetarako. Talde honek "
 "ikuspegi ezberdinen artean eta <b>antolamendu ezberdinen</b> artean "
 "abiarazleen <b>sinkronizatzea</b> eskaintzen du."
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:448
 #, kde-format
 msgid "Scrolling"
-msgstr "Labaintzea"
+msgstr "Kiribiltzea"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:449
 #, kde-format
 msgid ""
 "Enable tasks scrolling when they overflow and exceed the available space"
 msgstr ""
-"Gaitu atazak labaintzea gainezka egin eta leku erabilgarria gainditzen "
+"Gaitu atazak kiribiltzea gainezka egin eta leku erabilgarria gainditzen "
 "dutenean"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:471
@@ -3901,22 +3764,22 @@ msgstr "Eskuz"
 #, kde-format
 msgctxt "disabled manual scrolling"
 msgid "Disabled scrolling"
-msgstr "Labaintze ezgaitua"
+msgstr "Ezgaitu kiribiltzea"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:479
 #, kde-format
 msgid "Only vertical scrolling"
-msgstr "Soilik labaintze bertikala"
+msgstr "Kiribiltze bertikala bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:479
 #, kde-format
 msgid "Only horizontal scrolling"
-msgstr "Soilik labaintze horizontala"
+msgstr "Kiribiltze horizontala bakarrik"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:480
 #, kde-format
 msgid "Horizontal and vertical scrolling"
-msgstr "Labaintze horizontala eta bertikala"
+msgstr "Kiribiltze horizontala eta bertikala"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:489
 #, kde-format
@@ -4014,17 +3877,17 @@ msgstr "Eskuineko klik"
 #, kde-format
 msgid "Install indicators from KDE Online Store or local files"
 msgstr ""
+"Instalatu adierazleak KDEren lerroko biltegitik edo fitxategi lokaletatik"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:19
-#, fuzzy, kde-format
-#| msgid "Use %0 style for your indicators"
+#, kde-format
 msgid "Use %1 style for your indicators"
-msgstr "Erabili %0 estiloa zure adierazleekin"
+msgstr "Erabili %1 estiloa zure adierazletarako"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
 msgid "Install..."
-msgstr ""
+msgstr "Instalatu..."
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, kde-format
@@ -4050,7 +3913,7 @@ msgstr "Kaia"
 #: shell/package/contents/controls/TypeSelection.qml:57
 #, kde-format
 msgid "Change the behavior and appearance to Dock type"
-msgstr "Aldatu kai motaren portaera eta itxura"
+msgstr "Aldatu Kai motaren jokabidea eta itxura"
 
 #: shell/package/contents/controls/TypeSelection.qml:99
 #, kde-format
@@ -4061,54 +3924,53 @@ msgstr "Panela"
 #: shell/package/contents/controls/TypeSelection.qml:101
 #, kde-format
 msgid "Change the behavior and appearance to Panel type"
-msgstr "Aldatu panel motaren portaera eta itxura"
+msgstr "Aldatu Panel motaren jokabidea eta itxura"
 
 #: shell/package/contents/views/AppletDelegate.qml:168
 #, kde-format
 msgid "Undo uninstall"
-msgstr ""
+msgstr "Desegin desinstalatzea"
 
 #: shell/package/contents/views/AppletDelegate.qml:169
 #, kde-format
 msgid "Uninstall widget"
-msgstr ""
+msgstr "Desinstalatu trepeta"
 
 #: shell/package/contents/views/WidgetExplorer.qml:147
 #: shell/package/contents/views/WidgetExplorer.qml:250
 #, kde-format
 msgid "All Widgets"
-msgstr ""
+msgstr "Trepeta guztiak"
 
 #: shell/package/contents/views/WidgetExplorer.qml:210
 #, kde-format
 msgid "Widgets"
-msgstr ""
+msgstr "Trepetak"
 
 #: shell/package/contents/views/WidgetExplorer.qml:218
-#, fuzzy, kde-format
-#| msgid "Get New Indicators..."
+#, kde-format
 msgid "Get New Widgets…"
-msgstr "Lortu adierazle berriak..."
+msgstr "Lortu trepeta berriak..."
 
 #: shell/package/contents/views/WidgetExplorer.qml:236
 #, kde-format
 msgid "Search…"
-msgstr ""
+msgstr "Bilatu…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:258
 #, kde-format
 msgid "Categories"
-msgstr ""
+msgstr "Kategoriak"
 
 #: shell/package/contents/views/WidgetExplorer.qml:343
 #, kde-format
 msgid "No widgets matched the search terms"
-msgstr ""
+msgstr "Ez dago bilatuta terminoekin bat datorren trepetarik"
 
 #: shell/package/contents/views/WidgetExplorer.qml:343
 #, kde-format
 msgid "No widgets available"
-msgstr ""
+msgstr "Ez dago trepetarik erabilgarri"
 
 #~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
 #~ msgstr ""
