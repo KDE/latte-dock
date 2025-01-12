@@ -1,26 +1,26 @@
 # Translation of plasma_containmentactions_lattecontextmenu.po to Euskara/Basque (eu).
 # Copyright (C) 2018, Free Software Foundation.
-# Copyright (C) 2019-2020, This file is copyright:
+# Copyright (C) 2019-2025 This file is copyright:
 # This file is distributed under the same license as latte-dock package.
-# KDE euskaraz proiektuaren arduraduna <xalba@euskalnet.net>
+# SPDX-FileCopyrightText: 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
 # Ander Elortondo <ander.elor@gmail.com>, 2018, 2019.
-# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2020.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2020, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-08-28 01:44+0000\n"
-"PO-Revision-Date: 2020-04-08 22:58+0200\n"
-"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"PO-Revision-Date: 2025-01-11 18:56+0100\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: menu.cpp:97
 #, kde-format
@@ -28,10 +28,9 @@ msgid "&Add Widgets..."
 msgstr "&Gehitu trepetak..."
 
 #: menu.cpp:98
-#, fuzzy, kde-format
-#| msgid "Show Plasma Widget Explorer"
+#, kde-format
 msgid "Show Widget Explorer"
-msgstr "Erakutsi plasma trepeta esploradorea"
+msgstr "Erakutsi trepeta esploratzailea"
 
 #: menu.cpp:117
 #, kde-format
@@ -52,17 +51,17 @@ msgstr "Aldatu beste disenu batera"
 #: menu.cpp:135
 #, kde-format
 msgid "&Add Dock/Panel"
-msgstr ""
+msgstr "&Gehitu Kaia/Panela"
 
 #: menu.cpp:137
 #, kde-format
 msgid "Add dock or panel based on specific template"
-msgstr ""
+msgstr "Gehitu kaia edo panela txantiloi zehatz batean oinarrituta"
 
 #: menu.cpp:148
 #, kde-format
 msgid "Move dock or panel to different layout"
-msgstr ""
+msgstr "Mugitu kaia edo panela antolaera ezberdin batera"
 
 #: menu.cpp:155
 #, kde-format
@@ -71,64 +70,59 @@ msgid "&Configure Latte..."
 msgstr "&Konfiguratu Latte..."
 
 #: menu.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "dock settings window"
-#| msgid "&Edit Dock..."
+#, kde-format
 msgid "&Edit Dock..."
 msgstr "&Editatu kaia..."
 
 #: menu.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "panel settings window"
-#| msgid "&Edit Panel..."
+#, kde-format
 msgid "&Edit Panel..."
 msgstr "&Editatu panela..."
 
 #: menu.cpp:248
 #, kde-format
 msgid "&Duplicate Dock"
-msgstr ""
+msgstr "&Bikoiztu kaia"
 
 #: menu.cpp:248
 #, kde-format
 msgid "&Duplicate Panel"
-msgstr ""
+msgstr "&Bikoiztu panela"
 
 #: menu.cpp:251
 #, kde-format
 msgid "E&xport Dock as Template"
-msgstr ""
+msgstr "E&sportatu kaia txantiloi gisa"
 
 #: menu.cpp:251
 #, kde-format
 msgid "E&xport Panel as Template"
-msgstr ""
+msgstr "E&sportatu panela txantiloi gisa"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Move Dock To Layout"
-msgstr ""
+msgstr "&Mugitu kaia antolaerara"
 
 #: menu.cpp:255
 #, kde-format
 msgid "&Move Panel To Layout"
-msgstr ""
+msgstr "&Mugitu panela antolaerara"
 
 #: menu.cpp:258
 #, kde-format
 msgid "&Remove Dock"
-msgstr ""
+msgstr "&Kendu kaia"
 
 #: menu.cpp:258
 #, kde-format
 msgid "&Remove Panel"
-msgstr ""
+msgstr "&Kendu panela"
 
 #: menu.cpp:359
-#, fuzzy, kde-format
-#| msgid "Manage &Layouts..."
+#, kde-format
 msgid "Edit &Layouts..."
-msgstr "Kudeatu anto&lamendua..."
+msgstr "Editatu anto&laerak..."
 
 #, fuzzy
 #~| msgctxt "current layout"

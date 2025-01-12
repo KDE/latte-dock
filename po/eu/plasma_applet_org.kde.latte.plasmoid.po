@@ -1,26 +1,26 @@
 # Translation of plasma_applet_org.kde.latte.plasmoid.po to Euskara/Basque (eu).
 # Copyright (C) 2018, Free Software Foundation.
-# Copyright (C) 2019, This file is copyright:
+# Copyright (C) 2019-2025 This file is copyright:
 # This file is distributed under the same license as latte-dock package.
-# KDE euskaratzeko proiektuaren arduraduna <xalba@euskalnet.net>.
+# KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>.
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@euskalnet.net>, 2018, 2019.
+# SPDX-FileCopyrightText: 2018, 2019, 2025 Iñigo Salvador Azurmendi <xalba@ni.eus>
 # Ander Elortondo <ander.elor@gmail.com>, 2018, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-06-07 03:05+0000\n"
-"PO-Revision-Date: 2019-11-03 09:36+0100\n"
-"Last-Translator: Iñigo Salvador Azurmendi <xalba@euskalnet.net>\n"
+"PO-Revision-Date: 2025-01-11 18:49+0100\n"
+"Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.08.2\n"
+"X-Generator: Lokalize 24.12.0\n"
 
 #: package/contents/config/config.qml:13
 #, kde-format
@@ -38,10 +38,9 @@ msgid "Interaction"
 msgstr "Elkarrekintza"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
-#, fuzzy, kde-format
-#| msgid "Icon size: "
+#, kde-format
 msgid "Maximum icon size: "
-msgstr "Ikonoen neurria:"
+msgstr "Ikonoen gehienezko neurria: "
 
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
@@ -117,10 +116,9 @@ msgid "Show progress information for tasks"
 msgstr "Erakutsi atazen aurrerapenaren informazioa"
 
 #: package/contents/ui/config/ConfigInteraction.qml:66
-#, fuzzy, kde-format
-#| msgid "On middle-click:"
+#, kde-format
 msgid "Middle Click"
-msgstr "Erdiko klik egitean:"
+msgstr "Erdiko klik"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -146,32 +144,28 @@ msgstr "Ikonotu/lehengoratu leihoa edo taldea"
 #: package/contents/ui/config/ConfigInteraction.qml:76
 #, kde-format
 msgid "Hover"
-msgstr ""
+msgstr "Gainetik igaro"
 
 #: package/contents/ui/config/ConfigInteraction.qml:83
-#, fuzzy, kde-format
-#| msgctxt "The click action"
-#| msgid "None"
+#, kde-format
 msgctxt "none action"
 msgid "None"
 msgstr "Bat ere ez"
 
 #: package/contents/ui/config/ConfigInteraction.qml:84
-#, fuzzy, kde-format
-#| msgid "Preview windows on hovering"
+#, kde-format
 msgid "Preview Windows"
-msgstr "Aurreikusi leihoak gainetik igarotzean"
+msgstr "Aurreikusi leihoak"
 
 #: package/contents/ui/config/ConfigInteraction.qml:85
-#, fuzzy, kde-format
-#| msgid "Highlight windows on hovering"
+#, kde-format
 msgid "Highlight Windows"
-msgstr "Nabarmendu leihoak gainetik igarotzean"
+msgstr "Nabarmendu leihoak"
 
 #: package/contents/ui/config/ConfigInteraction.qml:86
 #, kde-format
 msgid "Preview and Highlight Windows"
-msgstr ""
+msgstr "Aurreikusi eta nabarmendu leihoak"
 
 #: package/contents/ui/config/ConfigInteraction.qml:132
 #, kde-format
@@ -214,29 +208,26 @@ msgid "Size: "
 msgstr "Neurria: "
 
 #: package/contents/ui/ContextMenu.qml:51
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Top Separator"
-msgstr "Gehitu bereizlea"
+msgstr "Goiko bereizlea"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Left Separator"
-msgstr "Gehitu bereizlea"
+msgstr "Ezkerreko bereizlea"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Add Separator"
+#, kde-format
 msgid "Right Separator"
-msgstr "Gehitu bereizlea"
+msgstr "Eskuineko bereizlea"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr ""
+msgstr "Beheko bereizlea"
 
 #: package/contents/ui/ContextMenu.qml:107
 #, kde-format
@@ -417,19 +408,19 @@ msgstr "Finkatzea kendu abiarazleari"
 #, kde-format
 msgctxt "add separator"
 msgid "Add %1"
-msgstr ""
+msgstr "Gehitu %1"
 
 #: package/contents/ui/ContextMenu.qml:847
 #: package/contents/ui/ContextMenu.qml:861
 #, kde-format
 msgctxt "remove separator"
 msgid "Remove %1"
-msgstr ""
+msgstr "Kendu %1"
 
 #: package/contents/ui/ContextMenu.qml:905
 #, kde-format
 msgid "Window"
-msgstr ""
+msgstr "Leihoa"
 
 #: package/contents/ui/ContextMenu.qml:917
 #, kde-format
