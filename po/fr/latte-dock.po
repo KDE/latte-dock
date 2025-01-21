@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2020, 2021, 2022, 2023, 2024 Xavier Besnard <xavier.besnard@kde.org>
+# SPDX-FileCopyrightText: 2020, 2021, 2022, 2023, 2024, 2025 Xavier Besnard <xavier.besnard@kde.org>
 # Simon Depiets <sdepiets@gmail.com>, 2019.
 # Christophe Moulin <mevouillon.corp@gmail.com>, 2020.
 # Xavier Besnard <xavier.besnard@kde.org>, 2023.
@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2024-08-13 17:46+0200\n"
+"PO-Revision-Date: 2025-01-20 19:21+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 24.12.1\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -93,19 +93,19 @@ msgstr "Alternative"
 #, kde-format
 msgctxt "import/export config"
 msgid "The extracted file could not be copied!!!"
-msgstr "Le fichier extrait n'a pas pu être copié !!!"
+msgstr "Le fichier extrait n'a pas pu être copié !"
 
 #: app/layouts/importer.cpp:329
 #, kde-format
 msgctxt "import/export config"
 msgid "The file has a wrong format!!!"
-msgstr "Le fichier a un mauvais format !!!"
+msgstr "Le fichier possède un mauvais format !"
 
 #: app/layouts/importer.cpp:335
 #, kde-format
 msgctxt "import/export config"
 msgid "The temp directory could not be created!!!"
-msgstr "Le dossier temporaire n'a pas pu être créé !!!"
+msgstr "Il a été impossible de créer le dossier temporaire !"
 
 #: app/layouts/storage.cpp:49
 #, kde-format
@@ -2770,7 +2770,7 @@ msgid ""
 "Change panel length to maximum screen size when there is a maximized window "
 "present on the screen"
 msgstr ""
-"Modifier la longueur du panneau à la taille maximale de l’écran lorsqu’il y "
+"Modifier la longueur du panneau à la taille maximale de l'écran lorsqu'il y "
 "a une fenêtre maximisée présente à l'écran."
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:602
