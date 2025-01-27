@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023, 2024 Adrian Chaves <adrian@chaves.io>
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2023, 2024, 2025 Adrian Chaves <adrian@chaves.io>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-11-17 02:27+0000\n"
-"PO-Revision-Date: 2024-12-17 22:34+0100\n"
+"PO-Revision-Date: 2025-01-26 20:03+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Proxecto Trasno (proxecto@trasno.gal)\n"
 "Language: gl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 24.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -353,11 +353,13 @@ msgstr ""
 "\n"
 "«A arte do café»"
 
+# skip-rule: trasno-dock
 #: app/package/lattepackage.cpp:34
 #, kde-format
 msgid "Latte Dock defaults"
 msgstr "Predeterminada de Latte Dock"
 
+# skip-rule: trasno-dock
 #: app/package/lattepackage.cpp:35
 #, kde-format
 msgid "Latte Dock panel"
@@ -827,12 +829,14 @@ msgctxt "choose file"
 msgid "Choose"
 msgstr "Escoller"
 
+# skip-rule: trasno-dock
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
 #, kde-format
 msgctxt "layout template"
 msgid "Latte Dock Layout Template file v0.2"
 msgstr "Ficheiro v0.2 de modelo de disposición de Latte Dock"
 
+# skip-rule: trasno-dock
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
 #, kde-format
 msgctxt "view template"
@@ -1167,6 +1171,7 @@ msgctxt "import full configuration"
 msgid "Import"
 msgstr "Importar"
 
+# skip-rule: trasno-dock
 #: app/settings/settingsdialog/settingsdialog.cpp:269
 #, kde-format
 msgctxt "import full configuration"
@@ -1219,6 +1224,7 @@ msgctxt "export full configuration"
 msgid "Export"
 msgstr "Exportar"
 
+# skip-rule: trasno-dock
 #: app/settings/settingsdialog/settingsdialog.cpp:332
 #, kde-format
 msgctxt "export full configuration"
@@ -1770,12 +1776,14 @@ msgctxt "import layout"
 msgid "Import"
 msgstr "Importar"
 
+# skip-rule: trasno-dock
 #: app/settings/settingsdialog/tablayoutshandler.cpp:549
 #, kde-format
 msgctxt "import latte layout"
 msgid "Latte Dock Layout file v0.2"
 msgstr "Ficheiro v0.2 de disposición de Latte Dock"
 
+# skip-rule: trasno-dock
 #: app/settings/settingsdialog/tablayoutshandler.cpp:550
 #, kde-format
 msgctxt "import older latte layout"
@@ -1806,6 +1814,7 @@ msgctxt "export layout"
 msgid "Export"
 msgstr "Exportar"
 
+# skip-rule: trasno-dock
 #: app/settings/settingsdialog/tablayoutshandler.cpp:629
 #, kde-format
 msgctxt "export layout"
