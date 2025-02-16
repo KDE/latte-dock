@@ -496,7 +496,7 @@ msgstr "Accions del menú contextual"
 #, kde-format
 msgctxt "actions shown only in edit mode"
 msgid "Accessible only in edit mode:"
-msgstr "Accessible només en mode d'edició:"
+msgstr "Accessible només en mode edició:"
 
 #. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:27
