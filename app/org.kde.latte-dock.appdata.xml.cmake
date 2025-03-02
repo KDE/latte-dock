@@ -57,7 +57,7 @@
   <summary xml:lang="eu">Jendartearen kaia</summary>
   <summary xml:lang="fi">Telakka massoille</summary>
   <summary xml:lang="fr">Une barre des tâches pour tout le monde</summary>
-  <summary xml:lang="gl">Doca para as masas.</summary>
+  <summary xml:lang="gl">Doca para as masas</summary>
   <summary xml:lang="id">Dock untuk mengelompokkan</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="ko">다수의 프로그램을 위한 도구집</summary>
