@@ -22,12 +22,12 @@ msgstr ""
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Jan Neumann"
+msgstr "Deutsches KDE-Übersetzungsteam"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "neum.ja@gmail.com"
+msgstr "kde-i18n-de@kde.org"
 
 #: app/indicator/factory.cpp:267
 #, fuzzy, kde-format
