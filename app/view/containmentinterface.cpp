@@ -541,7 +541,7 @@ void ContainmentInterface::setPlasmoid(QObject *plasmoid)
     m_plasmoid = plasmoid;
 
     if (m_plasmoid) {
-        m_configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
+        m_configuration = qobject_cast<KConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
 
         if (m_configuration) {
             connect(m_configuration, &QQmlPropertyMap::valueChanged, this, &ContainmentInterface::containmentConfigPropertyChanged);
@@ -909,7 +909,7 @@ void ContainmentInterface::updateAppletDelayedConfiguration()
     }
 }
 
-void ContainmentInterface::initAppletConfigurationSignals(const int &id, Latte::Legacy::ConfigPropertyMap *configuration)
+void ContainmentInterface::initAppletConfigurationSignals(const int &id, KConfigPropertyMap *configuration)
 {
     if (!configuration) {
         return;
@@ -922,7 +922,7 @@ void ContainmentInterface::initAppletConfigurationSignals(const int &id, Latte::
     });
 }
 
-Latte::Legacy::ConfigPropertyMap *ContainmentInterface::appletConfiguration(const Plasma::Applet *applet)
+KConfigPropertyMap *ContainmentInterface::appletConfiguration(const Plasma::Applet *applet)
 {
     if (!m_view->containment() || !applet) {
         return nullptr;
@@ -931,13 +931,13 @@ Latte::Legacy::ConfigPropertyMap *ContainmentInterface::appletConfiguration(cons
     PlasmaQuick::AppletQuickItem *ai = applet->property("_plasma_graphicObject").value<PlasmaQuick::AppletQuickItem *>();
     bool isSubContainment = Layouts::Storage::self()->isSubContainment(m_view->corona(), applet); //we use corona() to make sure that returns true even when it is first created from user
     int currentAppletId = applet->id();
-    Latte::Legacy::ConfigPropertyMap *configuration{nullptr};
+    KConfigPropertyMap *configuration{nullptr};
 
     //! set configuration object properly for applets and subcontainments
     if (!isSubContainment) {
         int metaconfigindex = ai->metaObject()->indexOfProperty("configuration");
         if (metaconfigindex >=0 ){
-            configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
+            configuration = qobject_cast<KConfigPropertyMap *>((ai->property("configuration")).value<QObject *>());
         }
     } else {
         Plasma::Containment *subcontainment = Layouts::Storage::self()->subContainmentOf(m_view->corona(), applet);
@@ -947,7 +947,7 @@ Latte::Legacy::ConfigPropertyMap *ContainmentInterface::appletConfiguration(cons
             if (subcai) {
                 int metaconfigindex = subcai->metaObject()->indexOfProperty("configuration");
                 if (metaconfigindex >=0 ){
-                    configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>((subcai->property("configuration")).value<QObject *>());
+                    configuration = qobject_cast<KConfigPropertyMap *>((subcai->property("configuration")).value<QObject *>());
                 }
             }
         }

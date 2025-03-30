@@ -20,9 +20,7 @@
 // KDE
 #include <KConfigLoader>
 #include <KPluginMetaData>
-
-// legacy
-#include "configpropertymap.h"
+#include <KConfigPropertyMap>
 
 namespace KDeclarative
 {
@@ -159,7 +157,7 @@ private:
     QPointer<IndicatorPart::Info> m_info;
     QPointer<IndicatorPart::Resources> m_resources;
 
-    QPointer<Latte::Legacy::ConfigPropertyMap> m_configuration;
+    QPointer<KConfigPropertyMap> m_configuration;
 };
 
 }

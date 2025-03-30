@@ -14,8 +14,8 @@
 #include <QQuickItem>
 #include <QTimer>
 
-// legacy
-#include <configpropertymap.h>
+// KDE
+#include <KConfigPropertyMap>
 
 namespace Latte{
 namespace Containment{
@@ -199,7 +199,7 @@ private:
     QQuickItem *m_metrics{nullptr};
 
     QObject *m_plasmoid{nullptr};
-    Latte::Legacy::ConfigPropertyMap *m_configuration{nullptr};
+    KConfigPropertyMap *m_configuration{nullptr};
 
     QHash<int, QQuickItem *> m_appletsInScheduledDestruction;
 

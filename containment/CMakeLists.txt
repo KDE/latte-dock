@@ -2,14 +2,11 @@ add_definitions(-DTRANSLATION_DOMAIN=\"plasma_applet_org.kde.latte.containment\"
 
 plasma_install_package(package org.kde.latte.containment)
 
-include_directories(../legacy)
-
 set(containment_SRCS
     plugin/lattetypes.h
     plugin/types.cpp
     plugin/layoutmanager.cpp
     plugin/lattecontainmentplugin.cpp
-    ../legacy/configpropertymap.cpp
 )
 
 add_library(lattecontainmentplugin SHARED ${containment_SRCS})
@@ -18,6 +15,7 @@ target_link_libraries(lattecontainmentplugin
                       Qt::Core
                       Qt::Qml
                       Qt::Quick
+                      KF6::ConfigQml
                       Plasma::Plasma
                       Plasma::PlasmaQuick)
 

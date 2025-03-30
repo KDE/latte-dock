@@ -312,7 +312,7 @@ void Indicator::updateScheme()
     if (!xmlPath.isEmpty()) {
         QFile file(m_pluginPath + "/package/" + xmlPath);
         m_configLoader = new KConfigLoader(m_view->containment()->config().group("Indicator").group(m_metadata.pluginId()), &file);
-        m_configuration = new Latte::Legacy::ConfigPropertyMap(m_configLoader, this);
+        m_configuration = new KConfigPropertyMap(m_configLoader, this);
     } else {
         m_configLoader = nullptr;
         m_configuration = nullptr;

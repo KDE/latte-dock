@@ -11,9 +11,6 @@
 // Qt
 #include <QtMath>
 
-// Legacy
-#include <configpropertymap.h>
-
 // Plasma
 #include <Plasma/Plasma>
 #include <Plasma/Applet>
@@ -169,7 +166,7 @@ void LayoutManager::setPlasmoid(QObject *plasmoid)
     m_plasmoid = plasmoid;
 
     if (m_plasmoid) {
-        m_configuration = qobject_cast<Latte::Legacy::ConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
+        m_configuration = qobject_cast<KConfigPropertyMap *>(m_plasmoid->property("configuration").value<QObject *>());
     }
 
     emit plasmoidChanged();

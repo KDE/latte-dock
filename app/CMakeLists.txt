@@ -7,7 +7,6 @@ set(lattedock-app_SRCS
     primaryoutputwatcher.cpp
     main.cpp
     coretypes.h
-    ../legacy/configpropertymap.cpp
 )
 
 add_subdirectory(data)
@@ -51,8 +50,6 @@ ki18n_wrap_ui(lattedock-app_SRCS settings/screensdialog/screensdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/settingsdialog/settingsdialog.ui)
 ki18n_wrap_ui(lattedock-app_SRCS settings/viewsdialog/viewsdialog.ui)
 
-include_directories(../legacy)
-
 add_executable(latte-dock ${lattedock-app_SRCS})
 
 include(FakeTarget.cmake)
@@ -79,6 +76,7 @@ target_link_libraries(latte-dock
     KF6::Package
     KF6::Svg
     KF6::XmlGui
+    KF6::ConfigQml
     Wayland::Client
     Plasma::Activities
     Plasma::KWaylandClient

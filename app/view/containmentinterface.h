@@ -18,8 +18,8 @@
 #include <QTimer>
 #include <QUrl>
 
-// Legacy
-#include <configpropertymap.h>
+// KDE
+#include <KConfigPropertyMap>
 
 namespace Plasma {
 class Applet;
@@ -44,7 +44,7 @@ struct AppletInterfaceData
     int lastValidIndex{-1};
     Plasma::Applet *applet{nullptr};
     PlasmaQuick::AppletQuickItem *plasmoid{nullptr};
-    Latte::Legacy::ConfigPropertyMap *configuration{nullptr};
+    KConfigPropertyMap *configuration{nullptr};
 };
 
 class ContainmentInterface: public QObject
@@ -169,11 +169,11 @@ private slots:
 private:
     void addExpandedApplet(PlasmaQuick::AppletQuickItem * appletQuickItem);
     void removeExpandedApplet(PlasmaQuick::AppletQuickItem *appletQuickItem);
-    void initAppletConfigurationSignals(const int &id, Latte::Legacy::ConfigPropertyMap *configuration);
+    void initAppletConfigurationSignals(const int &id, KConfigPropertyMap *configuration);
 
     bool appletIsExpandable(PlasmaQuick::AppletQuickItem *appletQuickItem) const;
 
-    Latte::Legacy::ConfigPropertyMap *appletConfiguration(const Plasma::Applet *applet);
+    KConfigPropertyMap *appletConfiguration(const Plasma::Applet *applet);
 
     QList<int> toIntList(const QVariantList &list);
 
@@ -200,7 +200,7 @@ private:
     //!follow containment plasmoid
     QPointer<QObject> m_plasmoid;
     QPointer<QObject> m_layoutManager;
-    QPointer<Latte::Legacy::ConfigPropertyMap> m_configuration;
+    QPointer<KConfigPropertyMap> m_configuration;
 
     //!keep record of applet ids and avoid crashes when trying to access ids for already destroyed applets
     QHash<PlasmaQuick::AppletQuickItem *, int> m_expandedAppletIds;

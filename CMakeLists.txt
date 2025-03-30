@@ -59,6 +59,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Svg
     WindowSystem
     XmlGui
+    Config
 )
 
 find_package(Plasma ${KF6_MIN_VERSION} REQUIRED)
