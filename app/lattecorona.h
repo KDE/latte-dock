@@ -190,6 +190,8 @@ private slots:
     void onScreenRemoved(QScreen *screen);
     void onScreenCountChanged();
     void onScreenGeometryChanged(const QRect &geometry);
+    void onAvailableScreenRegionChangedFrom(Latte::View *view);
+    void onAvailableScreenRectChangedFrom(Latte::View *view);
     void syncLatteViewsToScreens();
 
 private:

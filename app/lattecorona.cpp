@@ -230,18 +230,10 @@ void Corona::load()
 
         // We must extract Screen Id from the signalled view.
         connect(this, &Corona::availableScreenRectChangedFrom,
-                this, [this](Latte::View *view) {
-                    Plasma::Corona* corona = static_cast<Plasma::Corona*>(this);
-                    int screenId = view->positioner()->currentScreenId();
-                    corona->availableScreenRectChanged(screenId);
-                },
+                this, &Corona::onAvailableScreenRectChangedFrom,
                 Qt::UniqueConnection);
         connect(this, &Corona::availableScreenRegionChangedFrom,
-                this, [this](Latte::View *view) {
-                    Plasma::Corona* corona = static_cast<Plasma::Corona*>(this);
-                    int screenId = view->positioner()->currentScreenId();
-                    corona->availableScreenRegionChanged(screenId);
-                },
+                this, &Corona::onAvailableScreenRegionChangedFrom,
                 Qt::UniqueConnection);
         connect(m_screenPool, &ScreenPool::primaryScreenChanged, this, &Corona::onScreenCountChanged, Qt::UniqueConnection);
 
@@ -914,6 +906,20 @@ void Corona::onScreenGeometryChanged(const QRect &geometry)
         emit availableScreenRegionChanged(id);
         emit availableScreenRectChanged(id);
     }
+}
+
+void Corona::onAvailableScreenRegionChangedFrom(Latte::View *view)
+{
+    Plasma::Corona* corona = qobject_cast<Plasma::Corona*>(this);
+    int screenId = view->positioner()->currentScreenId();
+    corona->availableScreenRegionChanged(screenId);
+}
+
+void Corona::onAvailableScreenRectChangedFrom(Latte::View *view)
+{
+    Plasma::Corona* corona = qobject_cast<Plasma::Corona*>(this);
+    int screenId = view->positioner()->currentScreenId();
+    corona->availableScreenRectChanged(screenId);
 }
 
 //! the central functions that updates loading/unloading latteviews
