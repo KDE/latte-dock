@@ -4,6 +4,7 @@
 
 # Ignore hidden files
 .directory
+.vscode
 
 # build directory
 build*/
