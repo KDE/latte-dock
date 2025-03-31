@@ -104,5 +104,7 @@
         "Website": "https://userbase.kde.org/LatteDock"
     },
     "X-Plasma-API-Minimum-Version": "6.0",
-    "X-Plasma-Provides": "org.kde.plasma.multitasking"
+    "X-Plasma-Provides": [
+        "org.kde.plasma.multitasking"
+    ]
 }
