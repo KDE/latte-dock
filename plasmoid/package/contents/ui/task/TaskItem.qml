@@ -434,18 +434,10 @@ AbilityItem.BasicItem {
             activateLauncher();
         } else{
             if (model.IsGroupParent) {
-                if (root.plasmaAtLeast525) {
-                    //! At least Plasma 5.25 case
-                    var isWindowViewAvailable = LatteCore.WindowSystem.compositingActive && backend.windowViewAvailable;
-                    if (isWindowViewAvailable) {
-                        root.activateWindowView(model.WinIdList);
-                    }
-                } else {
-                    //! Plasma 5.24 case
-                    var isPresentWindowsAvailable = LatteCore.WindowSystem.compositingActive && backend.canPresentWindows;
-                    if (isPresentWindowsAvailable) {
-                        root.presentWindows(model.WinIdList);
-                    }
+                //! At least Plasma 5.25 case
+                var isWindowViewAvailable = LatteCore.WindowSystem.compositingActive && backend.windowViewAvailable;
+                if (isWindowViewAvailable) {
+                    root.activateWindowView(model.WinIdList);
                 }
             } else {
                 if (windowsPreviewDlg.visible) {
@@ -512,7 +504,7 @@ AbilityItem.BasicItem {
         }
 
         toolTipDelegate.windows = Qt.binding(function() {
-            return root.plasma515 ? model.WinIdList : model.LegacyWinIdList ;
+            return model.WinIdList;
         });
         toolTipDelegate.isGroup = Qt.binding(function() {
             return model.IsGroupParent == true;

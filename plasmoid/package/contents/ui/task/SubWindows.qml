@@ -52,8 +52,7 @@ Item{
                 onIsMinimizedChanged: windowsContainer.updateStates();
                 onIsActiveChanged:  {
                     if (isActive) {
-                        var winIdList = (root.plasma515 ? WinIdList : LegacyWinIdList);
-                        windowsContainer.lastActiveWinInGroup = (winIdList!==undefined ? winIdList[0] : 0);
+                        windowsContainer.lastActiveWinInGroup = (WinIdList!==undefined ? WinIdList[0] : 0);
                     }
                     windowsContainer.updateStates();
                 }
@@ -183,7 +182,7 @@ Item{
         if (nextAvailableWindow === -1 && lastActiveWinInGroup !==-1){
             for(var i=0; i<childs.count; ++i){
                 var kid = childs.get(i);
-                var winIdList = (root.plasma515 ? kid.model.WinIdList : kid.model.LegacyWinIdList);
+                var winIdList = kid.model.WinIdList;
                 var kidId = (winIdList !== undefined ? winIdList[0] : 0);
 
                 if (kidId === lastActiveWinInGroup) {
@@ -229,7 +228,7 @@ Item{
         if (prevAvailableWindow === -2 && lastActiveWinInGroup !==-1){
             for(var i=childs.count-1; i>=0; --i){
                 var kid = childs.get(i);
-                var firstTask = (root.plasma515 ? kid.model.WinIdList[0] : kid.model.LegacyWinIdList[0]);
+                var firstTask = kid.model.WinIdList[0];
                 if ( firstTask === lastActiveWinInGroup) {
                     prevAvailableWindow = i;
                     break;
@@ -269,7 +268,7 @@ Item{
         if (availableWindow === -1 && lastActiveWinInGroup !==-1){
             for(var i=childs.count-1; i>=0; --i){
                 var kid = childs.get(i);
-                var firstTask = (root.plasma515 ? kid.model.WinIdList[0] : kid.model.LegacyWinIdList[0]);
+                var firstTask = kid.model.WinIdList[0];
                 var isMinimized = kid.model.IsMinimized === true;
 
                 if (firstTask === lastActiveWinInGroup && !isMinimized) {

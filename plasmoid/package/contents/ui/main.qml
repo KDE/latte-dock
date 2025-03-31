@@ -47,8 +47,6 @@ PlasmoidItem {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft && !root.vertical
     LayoutMirroring.childrenInherit: true
 
-    property bool plasmaAtLeast600: LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(6,0,0)
-
     property bool disableRestoreZoom: false //blocks restore animation in rightClick
     property bool disableAllWindowsFunctionality: plasmoid.configuration.hideAllTasks
     property bool inActivityChange: false
@@ -543,9 +541,7 @@ PlasmoidItem {
             groupingLauncherUrlBlacklist = plasmoid.configuration.groupingLauncherUrlBlacklist;
 
             ///Plasma 5.9 enforce grouping at all cases
-            if (LatteCore.Environment.plasmaDesktopVersion >= LatteCore.Environment.makeVersion(5,9,0)) {
-                groupingWindowTasksThreshold = -1;
-            }
+            groupingWindowTasksThreshold = -1;
         }
     }
 
@@ -1292,22 +1288,14 @@ PlasmoidItem {
     }
 
     Component.onCompleted:  {
-        if (root.plasmaAtLeast525) {
-            root.activateWindowView.connect(backend.activateWindowView);
-        } else {
-            root.presentWindows.connect(backend.presentWindows);
-        }
+        root.activateWindowView.connect(backend.activateWindowView);
 
         root.windowsHovered.connect(backend.windowsHovered);
         updateListViewParent();
     }
 
     Component.onDestruction: {
-        if (root.plasmaAtLeast525) {
-            root.activateWindowView.disconnect(backend.activateWindowView);
-        } else {
-            root.presentWindows.disconnect(backend.presentWindows);
-        }
+        root.activateWindowView.disconnect(backend.activateWindowView);
 
         root.windowsHovered.disconnect(backend.windowsHovered);
     }
