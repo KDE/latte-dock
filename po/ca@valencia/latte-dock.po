@@ -1889,8 +1889,8 @@ msgid ""
 "After you have made your layout file changes, please click <b>Validate</b> "
 "to confirm them."
 msgstr ""
-"Després d'haver fet els canvis en la disposició, feu clic en <b>Valida</b> "
-"per a confirmar-los."
+"Després d'haver fet els canvis en la disposició, cliqueu damunt <b>Valida</"
+"b> per a confirmar-los."
 
 #: app/settings/viewsdialog/viewscontroller.cpp:657
 #, kde-format
@@ -2085,7 +2085,7 @@ msgid ""
 "&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned "
 "subcontainments<br/>"
 msgstr ""
-"&nbsp;&nbsp;1. Feu clic en el botó <b>Repara</b> per tal d'eliminar els "
+"&nbsp;&nbsp;1. Cliqueu damunt del botó <b>Repara</b> per tal d'eliminar els "
 "subcontenidors orfes<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:830
@@ -3323,7 +3323,7 @@ msgstr "Retard de l'ocultació del separador flotant fins que el ratolí marxi"
 #, kde-format
 msgid "to avoid clicking on adjacent items accidentally in some cases"
 msgstr ""
-"per a evitar fer clic accidentalment en elements adjacents en algun cas"
+"per a evitar clicar accidentalment damunt d'elements adjacents en algun cas"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:880
 #, kde-format
@@ -3425,7 +3425,7 @@ msgstr "Utilitza el color de l'ombra definit"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:265
 #, kde-format
 msgid "Please choose shadow color"
-msgstr "Escolliu el color de l'ombra"
+msgstr "Trieu el color de l'ombra"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:307
 #: shell/package/contents/configuration/pages/TasksConfig.qml:280

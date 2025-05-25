@@ -51,4 +51,4 @@ msgstr "Opcions"
 #: org.kde.latte.plasma/package/config/config.qml:117
 #, kde-format
 msgid "Growing circle animation when clicked"
-msgstr "Animació de cercle creixent en fer clic"
+msgstr "Animació de cercle creixent quan es clique"
