@@ -56,7 +56,7 @@ msgstr "Estil invers de l'indicador"
 #: org.kde.latte.plasma/package/config/config.qml:117
 #, kde-format
 msgid "Growing circle animation when clicked"
-msgstr "Animació de cercle creixent en fer clic"
+msgstr "Animació de cercle creixent quan es clique"
 
 #: org.kde.latte.plasma/package/config/config.qml:127
 #, kde-format
