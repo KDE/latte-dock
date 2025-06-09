@@ -1,15 +1,16 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for latte-dock.po package.
+# Copyright (C) 2017-2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
 #
-# Smith Ar <audoban@openmailbox.org>, 2017.
-# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, %Y.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2017, 2019, 2020, 2021, 2022.
+# SPDX-FileCopyrightText: 2017 Smith Ar <audoban@openmailbox.org>
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Víctor Rodrigo Córdoba <vrcordoba@gmail.com>
+# SPDX-FileCopyrightText: 2017, 2019, 2020, 2021, 2022 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2023-11-04 11:44+0100\n"
+"PO-Revision-Date: 2025-06-09 02:40+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -127,8 +128,8 @@ msgstr "Subcontenedor huérfano"
 #, kde-format
 msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
-msgstr[0] "Activando distribución: <b>%2</b>..."
-msgstr[1] "Activando distribuciones: <b>%2</b>..."
+msgstr[0] "Activando distribución: <b>%2</b>…"
+msgstr[1] "Activando distribuciones: <b>%2</b>…"
 
 #: app/main.cpp:100
 #, kde-format
@@ -510,7 +511,7 @@ msgstr "Distribuciones"
 #, kde-format
 msgctxt "global settings window"
 msgid "Configure Latte..."
-msgstr "Configurar Latte..."
+msgstr "Configurar Latte…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:75
 #, kde-format
@@ -541,7 +542,7 @@ msgstr "Mover dock/panel a la distribución"
 #: app/settings/actionsdialog/actionshandler.cpp:110
 #, kde-format
 msgid "Export Dock/Panel as Template..."
-msgstr "Exportar dock/panel como plantilla..."
+msgstr "Exportar dock/panel como plantilla…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:117
 #, kde-format
@@ -644,13 +645,13 @@ msgstr "Margen emergente:"
 #: app/settings/detailsdialog/detailsdialog.ui:201
 #, kde-format
 msgid "Background..."
-msgstr "Fondo..."
+msgstr "Fondo…"
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
 #, kde-format
 msgid "Text Color..."
-msgstr "Color del texto..."
+msgstr "Color del texto…"
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
@@ -764,7 +765,7 @@ msgstr "Archivo:"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr "Elegir..."
+msgstr "Elegir…"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -855,7 +856,7 @@ msgstr ""
 #, kde-format
 msgctxt "settings:template export fail"
 msgid "Template <b>%1</b> export <b>failed</b>..."
-msgstr "Exportación de plantilla <b>%1</b> <b>fallida</b>..."
+msgstr "Exportación de plantilla <b>%1</b> <b>fallida</b>…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:222
 #: app/settings/settingsdialog/settingsdialog.cpp:348
@@ -864,13 +865,13 @@ msgstr "Exportación de plantilla <b>%1</b> <b>fallida</b>..."
 #: app/settings/viewsdialog/viewshandler.cpp:376
 #, kde-format
 msgid "Open Location..."
-msgstr "Abrir ubicación..."
+msgstr "Abrir ubicación…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
 #, kde-format
 msgctxt "settings:template export success"
 msgid "Template <b>%1</b> export succeeded..."
-msgstr "Exportación de plantilla <b>%1</b> <b>exitosa</b>..."
+msgstr "Exportación de plantilla <b>%1</b> <b>exitosa</b>…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
@@ -977,7 +978,7 @@ msgstr[1] "<b>Aviso:</b> Hay <b>%1 distribuciones</b> con avisos."
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
 msgid "Examine..."
-msgstr "Examinar..."
+msgstr "Examinar…"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:640
 #, kde-format
@@ -1045,8 +1046,8 @@ msgstr "Alternativa"
 #, kde-format
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Distribución <b>%2</b> importada exitosamente..."
-msgstr[1] "Distribuciones <b>%2</b> importadas exitosamente..."
+msgstr[0] "Distribución <b>%2</b> importada exitosamente…"
+msgstr[1] "Distribuciones <b>%2</b> importadas exitosamente…"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
 #, kde-format
@@ -1054,7 +1055,7 @@ msgctxt "settings: layout name used"
 msgid "Layout <b>%1</b> is already used, please provide a different name..."
 msgstr ""
 "La distribución <b>%1</b> ya se está usando, por favor proporcione un nombre "
-"diferente..."
+"diferente…"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:338
 #, kde-format
@@ -1099,12 +1100,12 @@ msgstr "Actividad actual"
 #: app/settings/settingsdialog/layoutstableview.cpp:67
 #, kde-format
 msgid "Drop layout files here..."
-msgstr "Dejar los archivos de distribución aquí..."
+msgstr "Dejar los archivos de distribución aquí…"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:69
 #, kde-format
 msgid "Drop raw layout text here..."
-msgstr "Dejar el texto de distribución en bruto aquí..."
+msgstr "Dejar el texto de distribución en bruto aquí…"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:71
 #, kde-format
@@ -1119,7 +1120,7 @@ msgstr "Archivo"
 #: app/settings/settingsdialog/settingsdialog.cpp:130
 #, kde-format
 msgid "Import Configuration..."
-msgstr "Importar configuración..."
+msgstr "Importar configuración…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:133
 #, kde-format
@@ -1129,7 +1130,7 @@ msgstr "Importar su configuración completa desde una copia de seguridad previa"
 #: app/settings/settingsdialog/settingsdialog.cpp:136
 #, kde-format
 msgid "Export Configuration..."
-msgstr "Exportar configuración..."
+msgstr "Exportar configuración…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:139
 #, kde-format
@@ -1139,7 +1140,7 @@ msgstr "Exportar la configuración completa para crear una copia de seguridad"
 #: app/settings/settingsdialog/settingsdialog.cpp:144
 #, kde-format
 msgid "&Screens..."
-msgstr "Pantalla&s..."
+msgstr "Pantalla&s…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
 #, kde-format
@@ -1190,7 +1191,7 @@ msgstr ""
 #, kde-format
 msgctxt "export full configuration"
 msgid "Take Backup..."
-msgstr "Tomar copia de seguridad..."
+msgstr "Tomar copia de seguridad…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:289
 #, kde-format
@@ -1226,13 +1227,13 @@ msgstr "Archivo de configuración completa de Latte Dock v0.2"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:688
 #, kde-format
 msgid "Full configuration export <b>failed</b>..."
-msgstr "La exportación de la configuración completa <b>falló</b>..."
+msgstr "La exportación de la configuración completa <b>falló</b>…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:362
 #: app/settings/settingsdialog/tablayoutshandler.cpp:708
 #, kde-format
 msgid "Full configuration export succeeded..."
-msgstr "Exportación de la configuración completa exitosamente..."
+msgstr "Exportación de la configuración completa exitosamente…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:477
 #, kde-format
@@ -1298,7 +1299,7 @@ msgstr "Cambiar"
 #: app/settings/settingsdialog/settingsdialog.ui:191
 #, kde-format
 msgid "Activities..."
-msgstr "Actividades..."
+msgstr "Actividades…"
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
@@ -1338,19 +1339,19 @@ msgstr "Solo lectura"
 #: app/settings/settingsdialog/settingsdialog.ui:356
 #, kde-format
 msgid "Details..."
-msgstr "Detalles..."
+msgstr "Detalles…"
 
 #. i18n: ectx: property (text), widget (QPushButton, importButton)
 #: app/settings/settingsdialog/settingsdialog.ui:438
 #, kde-format
 msgid "Import..."
-msgstr "Importar..."
+msgstr "Importar…"
 
 #. i18n: ectx: property (text), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:452
 #, kde-format
 msgid "Export..."
-msgstr "Exportar..."
+msgstr "Exportar…"
 
 #. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:459
@@ -1466,7 +1467,7 @@ msgstr "Acciones:"
 #: app/settings/settingsdialog/settingsdialog.ui:968
 #, kde-format
 msgid "Actions..."
-msgstr "Acciones..."
+msgstr "Acciones…"
 
 #. i18n: ectx: property (text), widget (QLabel, screensLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1011
@@ -1623,7 +1624,7 @@ msgstr "Convertir la distribución seleccionada en solo-lectura"
 #, kde-format
 msgctxt "layout docks / panels"
 msgid "Docks, &Panels..."
-msgstr "Docks, &Paneles..."
+msgstr "Docks, &Paneles…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:179
 #, kde-format
@@ -1634,7 +1635,7 @@ msgstr "Mostrar los docks y paneles de la distribución seleccionada"
 #, kde-format
 msgctxt "layout details"
 msgid "De&tails..."
-msgstr "De&talles..."
+msgstr "De&talles…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:186
 #, kde-format
@@ -1668,33 +1669,33 @@ msgstr "Exportar distribución seleccionada a sus sistema"
 #, kde-format
 msgctxt "import layout"
 msgid "&Import From Local File..."
-msgstr "&Importar de archivo local..."
+msgstr "&Importar de archivo local…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:234
 #, kde-format
 msgctxt "download layout"
 msgid "Import From K&DE Online Store..."
-msgstr "Importar de la tienda online de K&DE..."
+msgstr "Importar de la tienda online de K&DE…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:249
 #: app/settings/viewsdialog/viewshandler.cpp:188
 #, kde-format
 msgctxt "export for backup"
 msgid "&Export For Backup..."
-msgstr "&Exportar para copia de seguridad..."
+msgstr "&Exportar para copia de seguridad…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:254
 #: app/settings/viewsdialog/viewshandler.cpp:193
 #, kde-format
 msgctxt "export as template"
 msgid "Export As &Template..."
-msgstr "Exportar como plan&tilla..."
+msgstr "Exportar como plan&tilla…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:169
 #, kde-format
 msgid "Templates..."
-msgstr "Plantillas..."
+msgstr "Plantillas…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:291
 #: app/settings/viewsdialog/viewshandler.cpp:170
@@ -1709,31 +1710,31 @@ msgid ""
 "You need to <b>apply</b> your changes first to switch layout afterwards..."
 msgstr ""
 "Necesita <b>aplicar</b> sus cambios antes de cambiar distribución "
-"posteriormente..."
+"posteriormente…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:444
 #, kde-format
 msgctxt "settings:layout added successfully"
 msgid "Layout <b>%1</b> added successfully..."
-msgstr "Distribución <b>%1</b> añadida exitosamente..."
+msgstr "Distribución <b>%1</b> añadida exitosamente…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:480
 #, kde-format
 msgctxt "settings:layout downloaded successfully"
 msgid "Layout <b>%1</b> downloaded successfully..."
-msgstr "Distribución <b>%1</b> descargada exitosamente..."
+msgstr "Distribución <b>%1</b> descargada exitosamente…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:506
 #, kde-format
 msgctxt "settings: active layout remove"
 msgid "<b>Active</b> layouts can not be removed..."
-msgstr "Las distribuciones <b>activas</b> no pueden ser eliminadas..."
+msgstr "Las distribuciones <b>activas</b> no pueden ser eliminadas…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:512
 #, kde-format
 msgctxt "settings: locked layout remove"
 msgid "Locked layouts can not be removed..."
-msgstr "Las distribuciones bloqueados no se pueden eliminar..."
+msgstr "Las distribuciones bloqueados no se pueden eliminar…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:541
 #, kde-format
@@ -1764,13 +1765,13 @@ msgstr "Archivo de distribución de Latte Dock v0.1"
 #, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%1</b> imported successfully..."
-msgstr "Distribución <b>%1</b> importada exitosamente..."
+msgstr "Distribución <b>%1</b> importada exitosamente…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:566
 #, kde-format
 msgctxt "settings:deprecated layouts import failed"
 msgid "Import layouts from deprecated version <b>failed</b>..."
-msgstr "<b>Fallo</b> al importar distribuciones desde una versión obsoleta ..."
+msgstr "<b>Fallo</b> al importar distribuciones desde una versión obsoleta …"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:622
 #, kde-format
@@ -1793,21 +1794,21 @@ msgstr "Archivo de distribución de Latte Dock v0.2"
 #, kde-format
 msgctxt "settings:layout export fail"
 msgid "Layout <b>%1</b> export <b>failed</b>..."
-msgstr "Distribución <b>%1</b> exportación <b>fallida</b>..."
+msgstr "Distribución <b>%1</b> exportación <b>fallida</b>…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:682
 #, kde-format
 msgctxt "settings:layout export success"
 msgid "Layout <b>%1</b> export succeeded..."
-msgstr "Distribución <b>%1</b> exportación <b>exitosa</b>..."
+msgstr "Distribución <b>%1</b> exportación <b>exitosa</b>…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:773
 #, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Distribución <b>%2</b> importada exitosamente..."
-msgstr[1] "Distribuciones <b>%2</b> importadas exitosamente..."
+msgstr[0] "Distribución <b>%2</b> importada exitosamente…"
+msgstr[1] "Distribuciones <b>%2</b> importadas exitosamente…"
 
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
@@ -2136,7 +2137,7 @@ msgstr "Eliminar la vista seleccionada"
 #, kde-format
 msgctxt "import dock/panel"
 msgid "&Import..."
-msgstr "&Importar..."
+msgstr "&Importar…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
@@ -2152,7 +2153,7 @@ msgstr "Exportar dock o panel seleccionado a su sistema"
 #, kde-format
 msgctxt "settings:dock/panel added successfully"
 msgid "<b>%1</b> added successfully..."
-msgstr "<b>%1</b> añadido exitosamente..."
+msgstr "<b>%1</b> añadido exitosamente…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:328
 #: app/settings/viewsdialog/viewshandler.cpp:407
@@ -2185,13 +2186,13 @@ msgstr "Archivo de Latte dock/panel v0.2"
 #, kde-format
 msgctxt "settings:view export fail"
 msgid "Export in file <b>%1</b> <b>failed</b>..."
-msgstr "Exportación en archivo <b>%1</b> <b>falló</b>..."
+msgstr "Exportación en archivo <b>%1</b> <b>falló</b>…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:389
 #, kde-format
 msgctxt "settings:view export success"
 msgid "Export in file <b>%1</b> succeeded..."
-msgstr "Exportación en archivo <b>%1</b>  tuvo éxito..."
+msgstr "Exportación en archivo <b>%1</b>  tuvo éxito…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:431
 #, kde-format
@@ -2602,7 +2603,7 @@ msgstr "Tareas"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:498
 #, kde-format
 msgid "Add..."
-msgstr "Añadir..."
+msgstr "Añadir…"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:500
 #, kde-format
@@ -3831,7 +3832,7 @@ msgstr "Usar el estilo %1 para sus indicadores"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
 msgid "Install..."
-msgstr "Instalar..."
+msgstr "Instalar…"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, kde-format
@@ -3841,12 +3842,12 @@ msgstr "Eliminar indicador"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:197
 #, kde-format
 msgid "Add Indicator..."
-msgstr "Añadir indicador..."
+msgstr "Añadir indicador…"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:207
 #, kde-format
 msgid "Get New Indicators..."
-msgstr "Obtener nuevos indicadores..."
+msgstr "Obtener nuevos indicadores…"
 
 #: shell/package/contents/controls/TypeSelection.qml:55
 #, kde-format
@@ -3894,12 +3895,12 @@ msgstr "Elementos gráficos"
 #: shell/package/contents/views/WidgetExplorer.qml:218
 #, kde-format
 msgid "Get New Widgets…"
-msgstr "Obtener nuevos elementos gráficos..."
+msgstr "Obtener nuevos elementos gráficos…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:236
 #, kde-format
 msgid "Search…"
-msgstr "Buscar..."
+msgstr "Buscar…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:258
 #, kde-format

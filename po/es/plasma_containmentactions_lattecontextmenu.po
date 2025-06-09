@@ -1,13 +1,14 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for plasma_containmentactions_lattecontextmenu.po package.
+# Copyright (C) 2018-2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
 #
-# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2018, 2019, 2020, 2021, 2022.
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2021, 2022, 2025 Víctor Rodrigo Córdoba <vrcordoba@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: plasma_containmentactions_lattecontextmenu\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2022-01-22 15:37+0100\n"
+"PO-Revision-Date: 2025-06-09 02:42+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -20,7 +21,7 @@ msgstr ""
 #: menu.cpp:91
 #, kde-format
 msgid "&Add Widgets..."
-msgstr "&Añadir elementos gráficos..."
+msgstr "&Añadir elementos gráficos…"
 
 #: menu.cpp:92
 #, kde-format
@@ -62,27 +63,27 @@ msgstr "Mover dock o panel a una distribución diferente"
 #, kde-format
 msgctxt "global settings window"
 msgid "&Configure Latte..."
-msgstr "&Configurar Latte..."
+msgstr "&Configurar Latte…"
 
 #: menu.cpp:239
 #, kde-format
 msgid "&Edit Dock..."
-msgstr "&Editar dock..."
+msgstr "&Editar dock…"
 
 #: menu.cpp:239
 #, kde-format
 msgid "&Edit Panel..."
-msgstr "&Editar panel..."
+msgstr "&Editar panel…"
 
 #: menu.cpp:241
 #, kde-format
 msgid "&Edit Original Dock..."
-msgstr "&Editar dock original..."
+msgstr "&Editar dock original…"
 
 #: menu.cpp:241
 #, kde-format
 msgid "&Edit Original Panel..."
-msgstr "&Editar panel original..."
+msgstr "&Editar panel original…"
 
 #: menu.cpp:245
 #, kde-format
@@ -127,4 +128,4 @@ msgstr "Elimina&r panel"
 #: menu.cpp:363
 #, kde-format
 msgid "Edit &Layouts..."
-msgstr "Editar &Distribuciones..."
+msgstr "Editar &Distribuciones…"
