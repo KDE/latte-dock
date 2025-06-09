@@ -1,14 +1,15 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Spanish translations for plasma_applet_org.kde.latte.containment.po package.
+# Copyright (C) 2017-2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
 #
-# Smith Ar <audoban@openmailbox.org>, 2017.
-# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2017, 2018, 2019, 2020.
+# SPDX-FileCopyrightText: 2017 Smith Ar <audoban@openmailbox.org>
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2025 Víctor Rodrigo Córdoba <vrcordoba@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: plasma_applet_org.kde.latte.containment\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-01-04 02:12+0000\n"
-"PO-Revision-Date: 2020-03-08 18:33+0100\n"
+"PO-Revision-Date: 2025-06-09 02:52+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"

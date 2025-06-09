@@ -1,16 +1,16 @@
 # Spanish translations for latte_indicator_org.kde.latte.default.po package.
-# Copyright (C) 2019 This file is copyright:
+# Copyright (C) 2019-2025 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
-#
 # Automatically generated, 2019.
-# Víctor Rodrigo Córdoba <vrcordoba@gmail.com>, 2019, 2020, 2021, %Y.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2019.
+#
+# SPDX-FileCopyrightText: 2019, 2020, 2021, 2023, 2025 Víctor Rodrigo Córdoba <vrcordoba@gmail.com>
+# SPDX-FileCopyrightText: 2019 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: latte_indicator_org\n"
+"Project-Id-Version: latte_indicator_org.kde.latte.default\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-10-04 01:38+0000\n"
-"PO-Revision-Date: 2021-10-09 16:56+0200\n"
+"PO-Revision-Date: 2025-06-09 02:52+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
