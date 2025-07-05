@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-05 03:22+0000\n"
+"POT-Creation-Date: 2025-07-05 05:54+0000\n"
 "PO-Revision-Date: 2020-11-02 15:38+0200\n"
 "Last-Translator: Moo\n"
 "Language-Team: lt\n"
@@ -530,6 +530,26 @@ msgstr "Vykdomieji scenarijai"
 msgid "Translations"
 msgstr "Vertimai"
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
+#: app/settings/actionsdialog/actionsdialog.ui:14
+#, kde-format
+msgid "Context Menu Actions"
+msgstr ""
+
+#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:24
+#, kde-format
+msgctxt "actions shown only in edit mode"
+msgid "Accessible only in edit mode:"
+msgstr ""
+
+#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:27
+#, kde-format
+msgctxt "actions shown always"
+msgid "Accessible always:"
+msgstr ""
+
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, fuzzy, kde-format
 #| msgid "Layout"
@@ -642,6 +662,93 @@ msgstr ""
 msgid "Wheat"
 msgstr ""
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
+#: app/settings/detailsdialog/detailsdialog.ui:14
+#, kde-format
+msgid "Details"
+msgstr "Išsamiau"
+
+#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:57
+#: app/settings/settingsdialog/settingsdialog.ui:809
+#, kde-format
+msgid "Behavior:"
+msgstr "Elgsena:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
+#: app/settings/detailsdialog/detailsdialog.ui:66
+#, kde-format
+msgid "Hide window borders for maximized windows"
+msgstr "Slėpti išskleistų langų rėmelius"
+
+#. i18n: ectx: property (text), widget (QLabel, iconLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:115
+#, kde-format
+msgid "Icon:"
+msgstr "Piktograma:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
+#: app/settings/detailsdialog/detailsdialog.ui:157
+#, fuzzy, kde-format
+#| msgid "Show in layouts context menu"
+msgid "Show in layouts context menu when possible"
+msgstr "Rodyti išdėstymų kontekstiniame meniu"
+
+#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:182
+#, fuzzy, kde-format
+#| msgid "Margins"
+msgid "PopUp Margin:"
+msgstr "Paraštės"
+
+#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:201
+#, fuzzy, kde-format
+#| msgid "Background"
+msgid "Background..."
+msgstr "Fonas"
+
+#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:214
+#, fuzzy, kde-format
+#| msgid "Custom text color..."
+msgid "Text Color..."
+msgstr "Tinkinta teksto spalva..."
+
+#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:388
+#: app/settings/viewsdialog/viewsdialog.ui:47
+#, fuzzy, kde-format
+#| msgid "Layout"
+msgid "Layout:"
+msgstr "Išdėstymas"
+
+#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:418
+#, kde-format
+msgid "Background:"
+msgstr "Fonas:"
+
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:507
+#, fuzzy, kde-format
+#| msgid "Disabled"
+msgid "disabled"
+msgstr "Išjungta"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:510
+#, kde-format
+msgid " px."
+msgstr " piks."
+
+#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:678
+#, fuzzy, kde-format
+#| msgid "Colors"
+msgid "Custom Colors:"
+msgstr "Spalvos"
+
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, fuzzy, kde-format
 #| msgid "Details"
@@ -711,6 +818,41 @@ msgstr "Eksportuoti"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Eksportuoti"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
+#, kde-format
+msgid "Select All"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
+#: app/settings/screensdialog/screensdialog.ui:58
+#, kde-format
+msgid "Deselect All"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
+#, fuzzy, kde-format
+#| msgid "File"
+msgid "File:"
+msgstr "Failas"
+
+#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
+#, kde-format
+msgid "Choose..."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
+#, kde-format
+msgid ""
+"<b>Select only</b> applets that you would like to keep their settings in the "
+"extracted template. Make sure to not include any applets that contain "
+"personal data such as email credentials, calendar etc. "
+msgstr ""
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, fuzzy, kde-format
@@ -862,6 +1004,22 @@ msgstr "Šalinti"
 #| msgid "Remove selected layout"
 msgid "Remove selected screen references"
 msgstr "Šalinti pasirinktą išdėstymą"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
+#: app/settings/screensdialog/screensdialog.ui:14
+#, fuzzy, kde-format
+#| msgid "Screens:"
+msgid "Screens"
+msgstr "Ekranai:"
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/screensdialog/screensdialog.ui:67
+#, kde-format
+msgid ""
+"<b>Select only</b> screens that are obsolete and you would like to remove "
+"their reference. Active screens or screens used in your layouts can not be "
+"removed."
+msgstr ""
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1191,6 +1349,337 @@ msgid ""
 msgstr ""
 "Pasikeitė kortelės <b>%0</b> nuostatos. Ar norite pakeitimus pritaikyti, ar "
 "juos atmesti?"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
+#: app/settings/settingsdialog/settingsdialog.ui:26
+#, kde-format
+msgctxt "latte settings window"
+msgid "Settings"
+msgstr "Nuostatos"
+
+#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
+#: app/settings/settingsdialog/settingsdialog.ui:36
+#, fuzzy, kde-format
+#| msgid "Layouts"
+msgid "Layouts Editor"
+msgstr "Išdėstymai"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:67
+#, fuzzy, kde-format
+#| msgid "Only one layout can be present in memory at all cases"
+msgid "Only one layout is applied at all times for all activities"
+msgstr "Atmintyje visais atvejais gali būti tik vienas išdėstymas"
+
+#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:70
+#, fuzzy, kde-format
+#| msgctxt "single layout"
+#| msgid "Single Layout"
+msgctxt "single layout"
+msgid "Single layout at all times"
+msgstr "Vienas išdėstymas"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:84
+#, fuzzy, kde-format
+#| msgid ""
+#| "Multiple layouts can be present and active in memory at the same time"
+msgid ""
+"Multiple layouts can be present and active in memory at the same time for "
+"different activities"
+msgstr "Atmintyje vienu metu gali būti aktyvūs keli išdėstymai"
+
+#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:87
+#, fuzzy, kde-format
+#| msgid "multiple layouts hidden file"
+msgctxt "multiple layouts"
+msgid "Multiple layouts based on activities"
+msgstr "kelių išdėstymų paslėptas failas"
+
+#. i18n: ectx: property (text), widget (QPushButton, switchButton)
+#: app/settings/settingsdialog/settingsdialog.ui:177
+#, fuzzy, kde-format
+#| msgctxt "switch layout"
+#| msgid "Switch"
+msgid "Switch"
+msgstr "Perjungti"
+
+#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
+#: app/settings/settingsdialog/settingsdialog.ui:191
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "Activities..."
+msgstr "Veiklos"
+
+#. i18n: ectx: property (text), widget (QPushButton, newButton)
+#: app/settings/settingsdialog/settingsdialog.ui:247
+#, fuzzy, kde-format
+#| msgctxt "new layout"
+#| msgid "New"
+msgid "New"
+msgstr "Naujas"
+
+#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
+#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
+#: app/settings/settingsdialog/settingsdialog.ui:258
+#: app/settings/viewsdialog/viewsdialog.ui:148
+#, fuzzy, kde-format
+#| msgid "Switch to selected layout"
+msgid "Duplicate"
+msgstr "Perjungti į pasirinktą išdėstymą"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeButton)
+#: app/settings/settingsdialog/settingsdialog.ui:272
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Šalinti"
+
+#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
+#: app/settings/settingsdialog/settingsdialog.ui:299
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Įjungta"
+
+#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
+#: app/settings/settingsdialog/settingsdialog.ui:310
+#, kde-format
+msgid "Read Only"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
+#: app/settings/settingsdialog/settingsdialog.ui:356
+#, kde-format
+msgid "Details..."
+msgstr "Išsamiau..."
+
+#. i18n: ectx: property (text), widget (QPushButton, importButton)
+#: app/settings/settingsdialog/settingsdialog.ui:438
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "&Import..."
+msgid "Import..."
+msgstr "&Importuoti..."
+
+#. i18n: ectx: property (text), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:452
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Export"
+msgid "Export..."
+msgstr "Eksportuoti"
+
+#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:459
+#, kde-format
+msgid "Ctrl+S"
+msgstr "Vald+S"
+
+#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
+#: app/settings/settingsdialog/settingsdialog.ui:499
+#, kde-format
+msgid "Preferences"
+msgstr "Nuostatos"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
+#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:561
+#: app/settings/settingsdialog/settingsdialog.ui:596
+#, kde-format
+msgid ""
+"Different hardware can have different delays during screen changes.\n"
+"This tracker is used in order to not lose any screen related update."
+msgstr ""
+"Įvairi aparatinė įranga ekrano pakeitimo metu gali delsti skirtingai.\n"
+"Šis seklys yra naudojamas, siekiant neprarasti jokio su ekranu susijusio "
+"atnaujinimo."
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
+#: app/settings/settingsdialog/settingsdialog.ui:570
+#, kde-format
+msgid " ms."
+msgstr " msek."
+
+#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:599
+#, kde-format
+msgid "reaction delay for changes"
+msgstr "pakeitimų reakcijos delsa"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:624
+#, kde-format
+msgid "Provide visual feedback when layouts are activated automatically"
+msgstr ""
+"Pateikti vaizdinį grįžtamąjį ryšį, kai išdėstymai yra aktyvuojami "
+"automatiškai"
+
+#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:627
+#, kde-format
+msgid "Show informative window for layouts automatic activation"
+msgstr "Rodyti informacinį automatinio veiklų aktyvavimo langą"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:666
+#, kde-format
+msgid ""
+"Activate support for borderless maximized windows between different layouts"
+msgstr ""
+"Aktyvuoti palaikymą, skirtą berėmiams išskleistiems langams tarp įvairių "
+"išdėstymų"
+
+#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:669
+#, kde-format
+msgid "Support borderless maximized windows in different layouts"
+msgstr "Palaikyti berėmius išskleistus langus įvairiuose išdėstymuose"
+
+#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:691
+#, kde-format
+msgid "Actions:"
+msgstr "Veiksmai:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:703
+#, kde-format
+msgid "Use 3D style for notification and shortcut badges"
+msgstr "Naudoti trimatį (3D) pranešimų ir sparčiųjų klavišų ženklelių stilių"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:729
+#, kde-format
+msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+msgstr ""
+"Paspausti ir laikyti ⌘, siekiant rodyti programėlių ir užduočių sparčiųjų "
+"klavišų ženklelius"
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:732
+#, kde-format
+msgid "Press and Hold ⌘ to show shortcuts badges"
+msgstr "Paspausti ir laikyti ⌘, kad būtų rodomi sparčiųjų klavišų ženkleliai"
+
+#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:776
+#, kde-format
+msgid "Parabolic Effect:"
+msgstr "Parabolinis efektas:"
+
+#. i18n: ectx: property (text), widget (QLabel, screensLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:842
+#, kde-format
+msgid "Screens:"
+msgstr "Ekranai:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:873
+#, kde-format
+msgid "Start the application automatically after each relogin"
+msgstr "Po kiekvieno prisijungimo, paleisti programą automatiškai"
+
+#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:876
+#, kde-format
+msgid "Enable autostart during startup"
+msgstr "Ijungti automatinį Latte paleidimą, įjungus kompiuterį"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:903
+#, kde-format
+msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+msgstr ""
+"Mažas parabolinio efekto jautrumas (mažas procesoriaus ir našumo naudojimas)"
+
+#. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:906
+#, kde-format
+msgctxt "low sensitivity"
+msgid "Low"
+msgstr "Mažas"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:934
+#, kde-format
+msgid ""
+"Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+msgstr ""
+"Vidutinis parabolinio efekto jautrumas (įprastas procesoriaus ir našumo "
+"naudojimas)"
+
+#. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:937
+#, kde-format
+msgctxt "medium sensitivity"
+msgid "Medium"
+msgstr "Vidutinis"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:965
+#, kde-format
+msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
+msgstr ""
+"Didelis parabolinio efekto jautrumas (didelis procesoriaus ir našumo "
+"naudojimas)"
+
+#. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:968
+#, kde-format
+msgctxt "high sensitivity"
+msgid "High"
+msgstr "Didelis"
+
+#. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:978
+#, kde-format
+msgid "mouse sensitivity"
+msgstr "pelės jautrumas"
+
+#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1034
+#, kde-format
+msgid "Appearance:"
+msgstr "Išvaizda:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1046
+#, kde-format
+msgid ""
+"Forward ⌘ press from KWin to Latte in order to activate Application "
+"Launcher. It is suggested to disable that option if you remove Latte."
+msgstr ""
+"Persiųsti ⌘ paspaudimą iš KWin į Latte, siekiant aktyvuoti programų "
+"paleidyklę. Jei pašalinsite Latte, yra siūloma išjungti šią parinktį."
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1049
+#, kde-format
+msgid "Press ⌘ to activate Application Launcher"
+msgstr "Paspausti ⌘, siekiant aktyvuoti programų paleidyklę"
+
+#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1071
+#, kde-format
+msgid "Context Menu:"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:1100
+#, fuzzy, kde-format
+#| msgid "Actions"
+msgid "Actions..."
+msgstr "Veiksmai"
+
+#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1122
+#, kde-format
+msgid "Inform Plasma desktop for available desktop space"
+msgstr ""
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
@@ -1747,6 +2236,12 @@ msgstr ""
 msgid "Apply all dock, panels changes now"
 msgstr ""
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
+#: app/settings/viewsdialog/viewsdialog.ui:14
+#, kde-format
+msgid "Docks/Panels"
+msgstr "Dokai/Skydeliai"
+
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, fuzzy, kde-format
 #| msgctxt "new layout"
@@ -2273,11 +2768,6 @@ msgstr ""
 #, kde-format
 msgid "Duplicate Panel"
 msgstr ""
-
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Šalinti"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3413,11 +3903,6 @@ msgstr "Horizontalus ir vertikalus slinkimas"
 msgid "Automatic"
 msgstr "Automatinis"
 
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Įjungta"
-
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3604,256 +4089,6 @@ msgstr ""
 #, kde-format
 msgid "No widgets available"
 msgstr ""
-
-#~ msgid "Details"
-#~ msgstr "Išsamiau"
-
-#~ msgid "Behavior:"
-#~ msgstr "Elgsena:"
-
-#~ msgid "Hide window borders for maximized windows"
-#~ msgstr "Slėpti išskleistų langų rėmelius"
-
-#~ msgid "Icon:"
-#~ msgstr "Piktograma:"
-
-#, fuzzy
-#~| msgid "Show in layouts context menu"
-#~ msgid "Show in layouts context menu when possible"
-#~ msgstr "Rodyti išdėstymų kontekstiniame meniu"
-
-#, fuzzy
-#~| msgid "Margins"
-#~ msgid "PopUp Margin:"
-#~ msgstr "Paraštės"
-
-#, fuzzy
-#~| msgid "Background"
-#~ msgid "Background..."
-#~ msgstr "Fonas"
-
-#, fuzzy
-#~| msgid "Custom text color..."
-#~ msgid "Text Color..."
-#~ msgstr "Tinkinta teksto spalva..."
-
-#, fuzzy
-#~| msgid "Layout"
-#~ msgid "Layout:"
-#~ msgstr "Išdėstymas"
-
-#~ msgid "Background:"
-#~ msgstr "Fonas:"
-
-#, fuzzy
-#~| msgid "Disabled"
-#~ msgid "disabled"
-#~ msgstr "Išjungta"
-
-#~ msgid " px."
-#~ msgstr " piks."
-
-#, fuzzy
-#~| msgid "Colors"
-#~ msgid "Custom Colors:"
-#~ msgstr "Spalvos"
-
-#, fuzzy
-#~| msgid "File"
-#~ msgid "File:"
-#~ msgstr "Failas"
-
-#, fuzzy
-#~| msgid "Screens:"
-#~ msgid "Screens"
-#~ msgstr "Ekranai:"
-
-#~ msgctxt "latte settings window"
-#~ msgid "Settings"
-#~ msgstr "Nuostatos"
-
-#, fuzzy
-#~| msgid "Layouts"
-#~ msgid "Layouts Editor"
-#~ msgstr "Išdėstymai"
-
-#, fuzzy
-#~| msgid "Only one layout can be present in memory at all cases"
-#~ msgid "Only one layout is applied at all times for all activities"
-#~ msgstr "Atmintyje visais atvejais gali būti tik vienas išdėstymas"
-
-#, fuzzy
-#~| msgctxt "single layout"
-#~| msgid "Single Layout"
-#~ msgctxt "single layout"
-#~ msgid "Single layout at all times"
-#~ msgstr "Vienas išdėstymas"
-
-#, fuzzy
-#~| msgid ""
-#~| "Multiple layouts can be present and active in memory at the same time"
-#~ msgid ""
-#~ "Multiple layouts can be present and active in memory at the same time for "
-#~ "different activities"
-#~ msgstr "Atmintyje vienu metu gali būti aktyvūs keli išdėstymai"
-
-#, fuzzy
-#~| msgid "multiple layouts hidden file"
-#~ msgctxt "multiple layouts"
-#~ msgid "Multiple layouts based on activities"
-#~ msgstr "kelių išdėstymų paslėptas failas"
-
-#, fuzzy
-#~| msgctxt "switch layout"
-#~| msgid "Switch"
-#~ msgid "Switch"
-#~ msgstr "Perjungti"
-
-#, fuzzy
-#~| msgctxt "column for layout to show which activities is assigned to"
-#~| msgid "Activities"
-#~ msgid "Activities..."
-#~ msgstr "Veiklos"
-
-#, fuzzy
-#~| msgctxt "new layout"
-#~| msgid "New"
-#~ msgid "New"
-#~ msgstr "Naujas"
-
-#~ msgid "Details..."
-#~ msgstr "Išsamiau..."
-
-#, fuzzy
-#~| msgctxt "import layout"
-#~| msgid "&Import..."
-#~ msgid "Import..."
-#~ msgstr "&Importuoti..."
-
-#, fuzzy
-#~| msgctxt "export full configuration"
-#~| msgid "Export"
-#~ msgid "Export..."
-#~ msgstr "Eksportuoti"
-
-#~ msgid "Ctrl+S"
-#~ msgstr "Vald+S"
-
-#~ msgid "Preferences"
-#~ msgstr "Nuostatos"
-
-#~ msgid ""
-#~ "Different hardware can have different delays during screen changes.\n"
-#~ "This tracker is used in order to not lose any screen related update."
-#~ msgstr ""
-#~ "Įvairi aparatinė įranga ekrano pakeitimo metu gali delsti skirtingai.\n"
-#~ "Šis seklys yra naudojamas, siekiant neprarasti jokio su ekranu susijusio "
-#~ "atnaujinimo."
-
-#~ msgid " ms."
-#~ msgstr " msek."
-
-#~ msgid "reaction delay for changes"
-#~ msgstr "pakeitimų reakcijos delsa"
-
-#~ msgid "Provide visual feedback when layouts are activated automatically"
-#~ msgstr ""
-#~ "Pateikti vaizdinį grįžtamąjį ryšį, kai išdėstymai yra aktyvuojami "
-#~ "automatiškai"
-
-#~ msgid "Show informative window for layouts automatic activation"
-#~ msgstr "Rodyti informacinį automatinio veiklų aktyvavimo langą"
-
-#~ msgid ""
-#~ "Activate support for borderless maximized windows between different "
-#~ "layouts"
-#~ msgstr ""
-#~ "Aktyvuoti palaikymą, skirtą berėmiams išskleistiems langams tarp įvairių "
-#~ "išdėstymų"
-
-#~ msgid "Support borderless maximized windows in different layouts"
-#~ msgstr "Palaikyti berėmius išskleistus langus įvairiuose išdėstymuose"
-
-#~ msgid "Actions:"
-#~ msgstr "Veiksmai:"
-
-#~ msgid "Use 3D style for notification and shortcut badges"
-#~ msgstr ""
-#~ "Naudoti trimatį (3D) pranešimų ir sparčiųjų klavišų ženklelių stilių"
-
-#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-#~ msgstr ""
-#~ "Paspausti ir laikyti ⌘, siekiant rodyti programėlių ir užduočių sparčiųjų "
-#~ "klavišų ženklelius"
-
-#~ msgid "Press and Hold ⌘ to show shortcuts badges"
-#~ msgstr ""
-#~ "Paspausti ir laikyti ⌘, kad būtų rodomi sparčiųjų klavišų ženkleliai"
-
-#~ msgid "Parabolic Effect:"
-#~ msgstr "Parabolinis efektas:"
-
-#~ msgid "Screens:"
-#~ msgstr "Ekranai:"
-
-#~ msgid "Start the application automatically after each relogin"
-#~ msgstr "Po kiekvieno prisijungimo, paleisti programą automatiškai"
-
-#~ msgid "Enable autostart during startup"
-#~ msgstr "Ijungti automatinį Latte paleidimą, įjungus kompiuterį"
-
-#~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
-#~ msgstr ""
-#~ "Mažas parabolinio efekto jautrumas (mažas procesoriaus ir našumo "
-#~ "naudojimas)"
-
-#~ msgctxt "low sensitivity"
-#~ msgid "Low"
-#~ msgstr "Mažas"
-
-#~ msgid ""
-#~ "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
-#~ msgstr ""
-#~ "Vidutinis parabolinio efekto jautrumas (įprastas procesoriaus ir našumo "
-#~ "naudojimas)"
-
-#~ msgctxt "medium sensitivity"
-#~ msgid "Medium"
-#~ msgstr "Vidutinis"
-
-#~ msgid ""
-#~ "High sensitivity for parabolic effect (high cpu usage and performance)"
-#~ msgstr ""
-#~ "Didelis parabolinio efekto jautrumas (didelis procesoriaus ir našumo "
-#~ "naudojimas)"
-
-#~ msgctxt "high sensitivity"
-#~ msgid "High"
-#~ msgstr "Didelis"
-
-#~ msgid "mouse sensitivity"
-#~ msgstr "pelės jautrumas"
-
-#~ msgid "Appearance:"
-#~ msgstr "Išvaizda:"
-
-#~ msgid ""
-#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
-#~ "Launcher. It is suggested to disable that option if you remove Latte."
-#~ msgstr ""
-#~ "Persiųsti ⌘ paspaudimą iš KWin į Latte, siekiant aktyvuoti programų "
-#~ "paleidyklę. Jei pašalinsite Latte, yra siūloma išjungti šią parinktį."
-
-#~ msgid "Press ⌘ to activate Application Launcher"
-#~ msgstr "Paspausti ⌘, siekiant aktyvuoti programų paleidyklę"
-
-#, fuzzy
-#~| msgid "Actions"
-#~ msgid "Actions..."
-#~ msgstr "Veiksmai"
-
-#~ msgid "Docks/Panels"
-#~ msgstr "Dokai/Skydeliai"
 
 #~ msgid "Theme"
 #~ msgstr "Apipavidalinimas"

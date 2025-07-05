@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-05 03:22+0000\n"
+"POT-Creation-Date: 2025-07-05 05:54+0000\n"
 "PO-Revision-Date: 2025-01-11 19:54+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -498,6 +498,26 @@ msgstr "Gidoi exekutagarriak"
 msgid "Translations"
 msgstr "Itzulpenak"
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
+#: app/settings/actionsdialog/actionsdialog.ui:14
+#, kde-format
+msgid "Context Menu Actions"
+msgstr "Testuinguru-menuaren ekintzak"
+
+#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:24
+#, kde-format
+msgctxt "actions shown only in edit mode"
+msgid "Accessible only in edit mode:"
+msgstr "Edizio moduan bakarra irisgarri:"
+
+#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
+#: app/settings/actionsdialog/actionsdialog.ui:27
+#, kde-format
+msgctxt "actions shown always"
+msgid "Accessible always:"
+msgstr "Irisgarri beti:"
+
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -600,6 +620,88 @@ msgstr "Gorria"
 msgid "Wheat"
 msgstr "Garia"
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
+#: app/settings/detailsdialog/detailsdialog.ui:14
+#, kde-format
+msgid "Details"
+msgstr "Xehetasunak"
+
+#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:57
+#: app/settings/settingsdialog/settingsdialog.ui:809
+#, kde-format
+msgid "Behavior:"
+msgstr "Jokabidea:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
+#: app/settings/detailsdialog/detailsdialog.ui:66
+#, kde-format
+msgid "Hide window borders for maximized windows"
+msgstr "Maximizatutako leihoetarako leiho-ertzak ezkutatu"
+
+#. i18n: ectx: property (text), widget (QLabel, iconLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:115
+#, kde-format
+msgid "Icon:"
+msgstr "Ikonoa:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
+#: app/settings/detailsdialog/detailsdialog.ui:157
+#, fuzzy, kde-format
+#| msgid "Window actions in the context menu"
+msgid "Show in layouts context menu when possible"
+msgstr "Leihoen ekintzak laster-menuan"
+
+#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:182
+#, fuzzy, kde-format
+#| msgid "Margins"
+msgid "PopUp Margin:"
+msgstr "Marjinak"
+
+#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:201
+#, kde-format
+msgid "Background..."
+msgstr "Atzeko planoa..."
+
+#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
+#: app/settings/detailsdialog/detailsdialog.ui:214
+#, kde-format
+msgid "Text Color..."
+msgstr "Testuaren kolorea..."
+
+#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:388
+#: app/settings/viewsdialog/viewsdialog.ui:47
+#, kde-format
+msgid "Layout:"
+msgstr "Antolaera:"
+
+#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:418
+#, kde-format
+msgid "Background:"
+msgstr "Atzeko planoa:"
+
+#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:507
+#, kde-format
+msgid "disabled"
+msgstr "ezgaituta"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
+#: app/settings/detailsdialog/detailsdialog.ui:510
+#, kde-format
+msgid " px."
+msgstr " px."
+
+#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
+#: app/settings/detailsdialog/detailsdialog.ui:678
+#, kde-format
+msgid "Custom Colors:"
+msgstr "Neurriko koloreak:"
+
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -660,6 +762,40 @@ msgstr "Esportatu"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Berriz esportatu"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
+#, kde-format
+msgid "Select All"
+msgstr "Hautatu dena"
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
+#: app/settings/screensdialog/screensdialog.ui:58
+#, kde-format
+msgid "Deselect All"
+msgstr "Desautatu dena"
+
+#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
+#, kde-format
+msgid "File:"
+msgstr "Fitxategia:"
+
+#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
+#, kde-format
+msgid "Choose..."
+msgstr "Aukeratu..."
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
+#, kde-format
+msgid ""
+"<b>Select only</b> applets that you would like to keep their settings in the "
+"extracted template. Make sure to not include any applets that contain "
+"personal data such as email credentials, calendar etc. "
+msgstr ""
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -799,6 +935,22 @@ msgstr "Kendu"
 #| msgid "Remove selected layout"
 msgid "Remove selected screen references"
 msgstr "Kendu aukeratutako antolamendura"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
+#: app/settings/screensdialog/screensdialog.ui:14
+#, fuzzy, kde-format
+#| msgid "Screens:"
+msgid "Screens"
+msgstr "Pantailak:"
+
+#. i18n: ectx: property (text), widget (QLabel, noteLbl)
+#: app/settings/screensdialog/screensdialog.ui:67
+#, kde-format
+msgid ""
+"<b>Select only</b> screens that are obsolete and you would like to remove "
+"their reference. Active screens or screens used in your layouts can not be "
+"removed."
+msgstr ""
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1113,6 +1265,340 @@ msgid ""
 msgstr ""
 "<b>%0</b> fitxaren ezarpenak aldatu dira. Aldaketak aplikatu nahi dituzu edo "
 "baztertu?"
+
+#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
+#: app/settings/settingsdialog/settingsdialog.ui:26
+#, kde-format
+msgctxt "latte settings window"
+msgid "Settings"
+msgstr "Ezarpenak"
+
+#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
+#: app/settings/settingsdialog/settingsdialog.ui:36
+#, fuzzy, kde-format
+#| msgid "Layouts"
+msgid "Layouts Editor"
+msgstr "Antolamenduak"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:67
+#, fuzzy, kde-format
+#| msgid "Only one layout can be present in memory at all cases"
+msgid "Only one layout is applied at all times for all activities"
+msgstr "Antolamendu bakarra egon daiteke aktibo eta memorian kasu guztietan"
+
+#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:70
+#, fuzzy, kde-format
+#| msgctxt "single layout"
+#| msgid "Single Layout"
+msgctxt "single layout"
+msgid "Single layout at all times"
+msgstr "Antolamendu bakuna"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:84
+#, fuzzy, kde-format
+#| msgid ""
+#| "Multiple layouts can be present and active in memory at the same time"
+msgid ""
+"Multiple layouts can be present and active in memory at the same time for "
+"different activities"
+msgstr "Hainbat antolamendu egon daitezke aktibo eta memorian aldi berean"
+
+#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:87
+#, fuzzy, kde-format
+#| msgid "multiple layouts hidden file"
+msgctxt "multiple layouts"
+msgid "Multiple layouts based on activities"
+msgstr "Hainbat antolamenduren ezkutuko fitxategia"
+
+#. i18n: ectx: property (text), widget (QPushButton, switchButton)
+#: app/settings/settingsdialog/settingsdialog.ui:177
+#, fuzzy, kde-format
+#| msgctxt "switch layout"
+#| msgid "Switch"
+msgid "Switch"
+msgstr "Aldatu"
+
+#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
+#: app/settings/settingsdialog/settingsdialog.ui:191
+#, fuzzy, kde-format
+#| msgctxt "column for layout to show which activities is assigned to"
+#| msgid "Activities"
+msgid "Activities..."
+msgstr "Jarduerak"
+
+#. i18n: ectx: property (text), widget (QPushButton, newButton)
+#: app/settings/settingsdialog/settingsdialog.ui:247
+#, fuzzy, kde-format
+#| msgctxt "new layout"
+#| msgid "New"
+msgid "New"
+msgstr "Berria"
+
+#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
+#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
+#: app/settings/settingsdialog/settingsdialog.ui:258
+#: app/settings/viewsdialog/viewsdialog.ui:148
+#, fuzzy, kde-format
+#| msgctxt "duplicate dock or panel"
+#| msgid "&Duplicate"
+msgid "Duplicate"
+msgstr "&Bikoiztu"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeButton)
+#: app/settings/settingsdialog/settingsdialog.ui:272
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Kendu"
+
+#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
+#: app/settings/settingsdialog/settingsdialog.ui:299
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Gaituta"
+
+#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
+#: app/settings/settingsdialog/settingsdialog.ui:310
+#, kde-format
+msgid "Read Only"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
+#: app/settings/settingsdialog/settingsdialog.ui:356
+#, kde-format
+msgid "Details..."
+msgstr "Xehetasunak..."
+
+#. i18n: ectx: property (text), widget (QPushButton, importButton)
+#: app/settings/settingsdialog/settingsdialog.ui:438
+#, fuzzy, kde-format
+#| msgctxt "import layout"
+#| msgid "&Import..."
+msgid "Import..."
+msgstr "&Inportatu..."
+
+#. i18n: ectx: property (text), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:452
+#, fuzzy, kde-format
+#| msgctxt "export full configuration"
+#| msgid "Export"
+msgid "Export..."
+msgstr "Esportatu"
+
+#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
+#: app/settings/settingsdialog/settingsdialog.ui:459
+#, kde-format
+msgid "Ctrl+S"
+msgstr "Ctrl+S"
+
+#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
+#: app/settings/settingsdialog/settingsdialog.ui:499
+#, kde-format
+msgid "Preferences"
+msgstr "Hobespenak"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
+#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:561
+#: app/settings/settingsdialog/settingsdialog.ui:596
+#, kde-format
+msgid ""
+"Different hardware can have different delays during screen changes.\n"
+"This tracker is used in order to not lose any screen related update."
+msgstr ""
+"Hainbat Hardware atzerapen ezberdinak izan dezakete pantaila aldaketen "
+"zehar.\n"
+"Erregistro hau erabiltzen da ez galtzeko inolako pantailari loturiko "
+"eguneraketa."
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
+#: app/settings/settingsdialog/settingsdialog.ui:570
+#, kde-format
+msgid " ms."
+msgstr " ms."
+
+#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:599
+#, kde-format
+msgid "reaction delay for changes"
+msgstr "erreakzioaren atzerapena aldaketetan"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:624
+#, kde-format
+msgid "Provide visual feedback when layouts are activated automatically"
+msgstr ""
+"Jakinarazpen bisuala hornitzen du antolamenduak automatikoki aktibatzean"
+
+#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:627
+#, kde-format
+msgid "Show informative window for layouts automatic activation"
+msgstr "Erakutsi informazio leihoa automatikoki aktibatutako antolamendutan"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:666
+#, kde-format
+msgid ""
+"Activate support for borderless maximized windows between different layouts"
+msgstr ""
+"Aktibatu ertzik gabeko leiho maximizatuen euskarria antolamendu ezberdinen "
+"artean"
+
+#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:669
+#, kde-format
+msgid "Support borderless maximized windows in different layouts"
+msgstr "Ertzik gabeko leiho maximizatuen euskarria antolamendu ezberdinekin"
+
+#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:691
+#, kde-format
+msgid "Actions:"
+msgstr "Ekintzak:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:703
+#, kde-format
+msgid "Use 3D style for notification and shortcut badges"
+msgstr "Erabili 3D estiloa jakinarazpen eta lasterbide txartelentzat"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:729
+#, kde-format
+msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+msgstr ""
+"Sakatu ⌘ eta eutsi, aplikaziotxo eta atazentzako lasterbide txartelak "
+"erakusteko"
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:732
+#, kde-format
+msgid "Press and Hold ⌘ to show shortcuts badges"
+msgstr "Sakatu ⌘ eta eutsi, lasterbide txartelak erakusteko"
+
+#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:776
+#, kde-format
+msgid "Parabolic Effect:"
+msgstr "Efektu parabolikoa:"
+
+#. i18n: ectx: property (text), widget (QLabel, screensLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:842
+#, kde-format
+msgid "Screens:"
+msgstr "Pantailak:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:873
+#, kde-format
+msgid "Start the application automatically after each relogin"
+msgstr "Abiarazi aplikazioa automatikoki saio hasiera bakoitzean"
+
+#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:876
+#, kde-format
+msgid "Enable autostart during startup"
+msgstr "Gaitu auto-abiaraztea abiaraztean"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:903
+#, kde-format
+msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+msgstr ""
+"Sentikortasun apala efektu parabolikoan (puz erabilera eta errendimendu "
+"apala)"
+
+#. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:906
+#, kde-format
+msgctxt "low sensitivity"
+msgid "Low"
+msgstr "Apala"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:934
+#, kde-format
+msgid ""
+"Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+msgstr ""
+"Sentikortasun ertaina efektu parabolikoan (puz erabilera eta errendimendu "
+"normala)"
+
+#. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:937
+#, kde-format
+msgctxt "medium sensitivity"
+msgid "Medium"
+msgstr "Ertaina"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:965
+#, kde-format
+msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
+msgstr ""
+"Sentikortasun altua efektu parabolikoan (puz erabilera eta errendimendu "
+"altua)"
+
+#. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:968
+#, kde-format
+msgctxt "high sensitivity"
+msgid "High"
+msgstr "Altua"
+
+#. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:978
+#, kde-format
+msgid "mouse sensitivity"
+msgstr "saguaren sentikortasuna"
+
+#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1034
+#, kde-format
+msgid "Appearance:"
+msgstr "Itxura:"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1046
+#, kde-format
+msgid ""
+"Forward ⌘ press from KWin to Latte in order to activate Application "
+"Launcher. It is suggested to disable that option if you remove Latte."
+msgstr ""
+"Birbidali ⌘ sakatzea KWin-etik Latte-ra aplikazio abiarazlea aktibatzeko. "
+"Latte kenduz gero aukera hau ezgaitzea gomendatzen da."
+
+#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1049
+#, kde-format
+msgid "Press ⌘ to activate Application Launcher"
+msgstr "Sakatu ⌘ aplikazio abiarazlea aktibatzeko"
+
+#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
+#: app/settings/settingsdialog/settingsdialog.ui:1071
+#, fuzzy, kde-format
+#| msgid "Context Menu Actions"
+msgid "Context Menu:"
+msgstr "Testuinguru-menuaren ekintzak"
+
+#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
+#: app/settings/settingsdialog/settingsdialog.ui:1100
+#, fuzzy, kde-format
+#| msgid "Actions"
+msgid "Actions..."
+msgstr "Ekintzak"
+
+#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
+#: app/settings/settingsdialog/settingsdialog.ui:1122
+#, kde-format
+msgid "Inform Plasma desktop for available desktop space"
+msgstr ""
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
@@ -1667,6 +2153,12 @@ msgstr ""
 msgid "Apply all dock, panels changes now"
 msgstr ""
 
+#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
+#: app/settings/viewsdialog/viewsdialog.ui:14
+#, kde-format
+msgid "Docks/Panels"
+msgstr "Kaiak/Panelak"
+
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2160,11 +2652,6 @@ msgstr "Bikoiztu Kaia"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr "Bikoiztu Panela"
-
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Kendu"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3283,11 +3770,6 @@ msgstr "Kiribiltze horizontala eta bertikala"
 msgid "Automatic"
 msgstr "Automatikoa"
 
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Gaituta"
-
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3474,262 +3956,6 @@ msgstr "Ez dago bilatuta terminoekin bat datorren trepetarik"
 #, kde-format
 msgid "No widgets available"
 msgstr "Ez dago trepetarik erabilgarri"
-
-#~ msgid "Context Menu Actions"
-#~ msgstr "Testuinguru-menuaren ekintzak"
-
-#~ msgctxt "actions shown only in edit mode"
-#~ msgid "Accessible only in edit mode:"
-#~ msgstr "Edizio moduan bakarra irisgarri:"
-
-#~ msgctxt "actions shown always"
-#~ msgid "Accessible always:"
-#~ msgstr "Irisgarri beti:"
-
-#~ msgid "Details"
-#~ msgstr "Xehetasunak"
-
-#~ msgid "Behavior:"
-#~ msgstr "Jokabidea:"
-
-#~ msgid "Hide window borders for maximized windows"
-#~ msgstr "Maximizatutako leihoetarako leiho-ertzak ezkutatu"
-
-#~ msgid "Icon:"
-#~ msgstr "Ikonoa:"
-
-#, fuzzy
-#~| msgid "Window actions in the context menu"
-#~ msgid "Show in layouts context menu when possible"
-#~ msgstr "Leihoen ekintzak laster-menuan"
-
-#, fuzzy
-#~| msgid "Margins"
-#~ msgid "PopUp Margin:"
-#~ msgstr "Marjinak"
-
-#~ msgid "Background..."
-#~ msgstr "Atzeko planoa..."
-
-#~ msgid "Text Color..."
-#~ msgstr "Testuaren kolorea..."
-
-#~ msgid "Layout:"
-#~ msgstr "Antolaera:"
-
-#~ msgid "Background:"
-#~ msgstr "Atzeko planoa:"
-
-#~ msgid "disabled"
-#~ msgstr "ezgaituta"
-
-#~ msgid " px."
-#~ msgstr " px."
-
-#~ msgid "Custom Colors:"
-#~ msgstr "Neurriko koloreak:"
-
-#~ msgid "Select All"
-#~ msgstr "Hautatu dena"
-
-#~ msgid "Deselect All"
-#~ msgstr "Desautatu dena"
-
-#~ msgid "File:"
-#~ msgstr "Fitxategia:"
-
-#~ msgid "Choose..."
-#~ msgstr "Aukeratu..."
-
-#, fuzzy
-#~| msgid "Screens:"
-#~ msgid "Screens"
-#~ msgstr "Pantailak:"
-
-#~ msgctxt "latte settings window"
-#~ msgid "Settings"
-#~ msgstr "Ezarpenak"
-
-#, fuzzy
-#~| msgid "Layouts"
-#~ msgid "Layouts Editor"
-#~ msgstr "Antolamenduak"
-
-#, fuzzy
-#~| msgid "Only one layout can be present in memory at all cases"
-#~ msgid "Only one layout is applied at all times for all activities"
-#~ msgstr "Antolamendu bakarra egon daiteke aktibo eta memorian kasu guztietan"
-
-#, fuzzy
-#~| msgctxt "single layout"
-#~| msgid "Single Layout"
-#~ msgctxt "single layout"
-#~ msgid "Single layout at all times"
-#~ msgstr "Antolamendu bakuna"
-
-#, fuzzy
-#~| msgid ""
-#~| "Multiple layouts can be present and active in memory at the same time"
-#~ msgid ""
-#~ "Multiple layouts can be present and active in memory at the same time for "
-#~ "different activities"
-#~ msgstr "Hainbat antolamendu egon daitezke aktibo eta memorian aldi berean"
-
-#, fuzzy
-#~| msgid "multiple layouts hidden file"
-#~ msgctxt "multiple layouts"
-#~ msgid "Multiple layouts based on activities"
-#~ msgstr "Hainbat antolamenduren ezkutuko fitxategia"
-
-#, fuzzy
-#~| msgctxt "switch layout"
-#~| msgid "Switch"
-#~ msgid "Switch"
-#~ msgstr "Aldatu"
-
-#, fuzzy
-#~| msgctxt "column for layout to show which activities is assigned to"
-#~| msgid "Activities"
-#~ msgid "Activities..."
-#~ msgstr "Jarduerak"
-
-#, fuzzy
-#~| msgctxt "new layout"
-#~| msgid "New"
-#~ msgid "New"
-#~ msgstr "Berria"
-
-#~ msgid "Details..."
-#~ msgstr "Xehetasunak..."
-
-#, fuzzy
-#~| msgctxt "import layout"
-#~| msgid "&Import..."
-#~ msgid "Import..."
-#~ msgstr "&Inportatu..."
-
-#, fuzzy
-#~| msgctxt "export full configuration"
-#~| msgid "Export"
-#~ msgid "Export..."
-#~ msgstr "Esportatu"
-
-#~ msgid "Ctrl+S"
-#~ msgstr "Ctrl+S"
-
-#~ msgid "Preferences"
-#~ msgstr "Hobespenak"
-
-#~ msgid ""
-#~ "Different hardware can have different delays during screen changes.\n"
-#~ "This tracker is used in order to not lose any screen related update."
-#~ msgstr ""
-#~ "Hainbat Hardware atzerapen ezberdinak izan dezakete pantaila aldaketen "
-#~ "zehar.\n"
-#~ "Erregistro hau erabiltzen da ez galtzeko inolako pantailari loturiko "
-#~ "eguneraketa."
-
-#~ msgid " ms."
-#~ msgstr " ms."
-
-#~ msgid "reaction delay for changes"
-#~ msgstr "erreakzioaren atzerapena aldaketetan"
-
-#~ msgid "Provide visual feedback when layouts are activated automatically"
-#~ msgstr ""
-#~ "Jakinarazpen bisuala hornitzen du antolamenduak automatikoki aktibatzean"
-
-#~ msgid "Show informative window for layouts automatic activation"
-#~ msgstr "Erakutsi informazio leihoa automatikoki aktibatutako antolamendutan"
-
-#~ msgid ""
-#~ "Activate support for borderless maximized windows between different "
-#~ "layouts"
-#~ msgstr ""
-#~ "Aktibatu ertzik gabeko leiho maximizatuen euskarria antolamendu "
-#~ "ezberdinen artean"
-
-#~ msgid "Support borderless maximized windows in different layouts"
-#~ msgstr "Ertzik gabeko leiho maximizatuen euskarria antolamendu ezberdinekin"
-
-#~ msgid "Actions:"
-#~ msgstr "Ekintzak:"
-
-#~ msgid "Use 3D style for notification and shortcut badges"
-#~ msgstr "Erabili 3D estiloa jakinarazpen eta lasterbide txartelentzat"
-
-#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-#~ msgstr ""
-#~ "Sakatu ⌘ eta eutsi, aplikaziotxo eta atazentzako lasterbide txartelak "
-#~ "erakusteko"
-
-#~ msgid "Press and Hold ⌘ to show shortcuts badges"
-#~ msgstr "Sakatu ⌘ eta eutsi, lasterbide txartelak erakusteko"
-
-#~ msgid "Parabolic Effect:"
-#~ msgstr "Efektu parabolikoa:"
-
-#~ msgid "Screens:"
-#~ msgstr "Pantailak:"
-
-#~ msgid "Start the application automatically after each relogin"
-#~ msgstr "Abiarazi aplikazioa automatikoki saio hasiera bakoitzean"
-
-#~ msgid "Enable autostart during startup"
-#~ msgstr "Gaitu auto-abiaraztea abiaraztean"
-
-#~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
-#~ msgstr ""
-#~ "Sentikortasun apala efektu parabolikoan (puz erabilera eta errendimendu "
-#~ "apala)"
-
-#~ msgctxt "low sensitivity"
-#~ msgid "Low"
-#~ msgstr "Apala"
-
-#~ msgid ""
-#~ "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
-#~ msgstr ""
-#~ "Sentikortasun ertaina efektu parabolikoan (puz erabilera eta errendimendu "
-#~ "normala)"
-
-#~ msgctxt "medium sensitivity"
-#~ msgid "Medium"
-#~ msgstr "Ertaina"
-
-#~ msgid ""
-#~ "High sensitivity for parabolic effect (high cpu usage and performance)"
-#~ msgstr ""
-#~ "Sentikortasun altua efektu parabolikoan (puz erabilera eta errendimendu "
-#~ "altua)"
-
-#~ msgctxt "high sensitivity"
-#~ msgid "High"
-#~ msgstr "Altua"
-
-#~ msgid "mouse sensitivity"
-#~ msgstr "saguaren sentikortasuna"
-
-#~ msgid "Appearance:"
-#~ msgstr "Itxura:"
-
-#~ msgid ""
-#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
-#~ "Launcher. It is suggested to disable that option if you remove Latte."
-#~ msgstr ""
-#~ "Birbidali ⌘ sakatzea KWin-etik Latte-ra aplikazio abiarazlea aktibatzeko. "
-#~ "Latte kenduz gero aukera hau ezgaitzea gomendatzen da."
-
-#~ msgid "Press ⌘ to activate Application Launcher"
-#~ msgstr "Sakatu ⌘ aplikazio abiarazlea aktibatzeko"
-
-#, fuzzy
-#~| msgid "Actions"
-#~ msgid "Actions..."
-#~ msgstr "Ekintzak"
-
-#~ msgid "Docks/Panels"
-#~ msgstr "Kaiak/Panelak"
 
 #~ msgid "Theme"
 #~ msgstr "Gaia"
