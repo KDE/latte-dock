@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-17 02:27+0000\n"
+"POT-Creation-Date: 2025-07-05 03:22+0000\n"
 "PO-Revision-Date: 2024-03-30 19:46\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -476,26 +476,6 @@ msgstr "可执行脚本"
 msgid "Translations"
 msgstr "翻译"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
-#: app/settings/actionsdialog/actionsdialog.ui:14
-#, kde-format
-msgid "Context Menu Actions"
-msgstr "右键菜单操作"
-
-#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:24
-#, kde-format
-msgctxt "actions shown only in edit mode"
-msgid "Accessible only in edit mode:"
-msgstr "只能在编辑模式下访问："
-
-#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:27
-#, kde-format
-msgctxt "actions shown always"
-msgid "Accessible always:"
-msgstr "总是可以访问："
-
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -598,86 +578,6 @@ msgstr "红色"
 msgid "Wheat"
 msgstr "小麦色"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
-#: app/settings/detailsdialog/detailsdialog.ui:14
-#, kde-format
-msgid "Details"
-msgstr "细节"
-
-#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:57
-#: app/settings/settingsdialog/settingsdialog.ui:809
-#, kde-format
-msgid "Behavior:"
-msgstr "行为:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
-#: app/settings/detailsdialog/detailsdialog.ui:66
-#, kde-format
-msgid "Hide window borders for maximized windows"
-msgstr "隐藏最大化窗口的边框"
-
-#. i18n: ectx: property (text), widget (QLabel, iconLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:115
-#, kde-format
-msgid "Icon:"
-msgstr "图标："
-
-#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
-#: app/settings/detailsdialog/detailsdialog.ui:157
-#, kde-format
-msgid "Show in layouts context menu when possible"
-msgstr "尽可能在布局上下文菜单中显示"
-
-#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:182
-#, kde-format
-msgid "PopUp Margin:"
-msgstr "弹框外边距："
-
-#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:201
-#, kde-format
-msgid "Background..."
-msgstr "背景色..."
-
-#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:214
-#, kde-format
-msgid "Text Color..."
-msgstr "文字颜色..."
-
-#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:388
-#: app/settings/viewsdialog/viewsdialog.ui:47
-#, kde-format
-msgid "Layout:"
-msgstr "布局："
-
-#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:418
-#, kde-format
-msgid "Background:"
-msgstr "背景："
-
-#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:507
-#, kde-format
-msgid "disabled"
-msgstr "已禁用"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:510
-#, kde-format
-msgid " px."
-msgstr " 像素"
-
-#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:678
-#, kde-format
-msgid "Custom Colors:"
-msgstr "自定义颜色:"
-
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -733,42 +633,6 @@ msgstr "导出"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "重新导出"
-
-#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
-#, kde-format
-msgid "Select All"
-msgstr "全选"
-
-#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
-#: app/settings/screensdialog/screensdialog.ui:58
-#, kde-format
-msgid "Deselect All"
-msgstr "全不选"
-
-#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, kde-format
-msgid "File:"
-msgstr "文件："
-
-#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, kde-format
-msgid "Choose..."
-msgstr "选择..."
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
-#, kde-format
-msgid ""
-"<b>Select only</b> applets that you would like to keep their settings in the "
-"extracted template. Make sure to not include any applets that contain "
-"personal data such as email credentials, calendar etc. "
-msgstr ""
-"<b>只选择</b>您希望在提取的模板中保留其设置的小程序。确保不包括任何包含个人数"
-"据的小程序，如电子邮件凭证、日历等。 "
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -897,23 +761,6 @@ msgstr "立即移除"
 #, kde-format
 msgid "Remove selected screen references"
 msgstr "删除选中的屏幕引用"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
-#: app/settings/screensdialog/screensdialog.ui:14
-#, kde-format
-msgid "Screens"
-msgstr "屏幕"
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/screensdialog/screensdialog.ui:67
-#, kde-format
-msgid ""
-"<b>Select only</b> screens that are obsolete and you would like to remove "
-"their reference. Active screens or screens used in your layouts can not be "
-"removed."
-msgstr ""
-"请<b>只选择</b> 已失效的屏幕，并确定您想要删除它们的引用。 您布局中使用的活动"
-"屏幕或屏幕无法删除。"
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1202,305 +1049,6 @@ msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
 msgstr "<b>%1</b> 标签页的设置已更改。<br/>您想要应用或放弃更改吗？"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
-#: app/settings/settingsdialog/settingsdialog.ui:26
-#, kde-format
-msgctxt "latte settings window"
-msgid "Settings"
-msgstr "设置"
-
-#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
-#: app/settings/settingsdialog/settingsdialog.ui:36
-#, kde-format
-msgid "Layouts Editor"
-msgstr "布局编辑器"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:67
-#, kde-format
-msgid "Only one layout is applied at all times for all activities"
-msgstr "所有活动在任何时候只应用一个布局"
-
-#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:70
-#, kde-format
-msgctxt "single layout"
-msgid "Single layout at all times"
-msgstr "总是使用单个布局"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:84
-#, kde-format
-msgid ""
-"Multiple layouts can be present and active in memory at the same time for "
-"different activities"
-msgstr "不同活动的多个布局可以同时存在并在内存中激活"
-
-#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:87
-#, kde-format
-msgctxt "multiple layouts"
-msgid "Multiple layouts based on activities"
-msgstr "基于活动的多个布局"
-
-#. i18n: ectx: property (text), widget (QPushButton, switchButton)
-#: app/settings/settingsdialog/settingsdialog.ui:177
-#, kde-format
-msgid "Switch"
-msgstr "切换"
-
-#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
-#: app/settings/settingsdialog/settingsdialog.ui:191
-#, kde-format
-msgid "Activities..."
-msgstr "活动..."
-
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: app/settings/settingsdialog/settingsdialog.ui:247
-#, kde-format
-msgid "New"
-msgstr "新建"
-
-#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
-#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
-#: app/settings/settingsdialog/settingsdialog.ui:258
-#: app/settings/viewsdialog/viewsdialog.ui:148
-#, kde-format
-msgid "Duplicate"
-msgstr "复制"
-
-#. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: app/settings/settingsdialog/settingsdialog.ui:272
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "移除"
-
-#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
-#: app/settings/settingsdialog/settingsdialog.ui:299
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "已启用"
-
-#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
-#: app/settings/settingsdialog/settingsdialog.ui:310
-#, kde-format
-msgid "Read Only"
-msgstr "只读"
-
-#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
-#: app/settings/settingsdialog/settingsdialog.ui:356
-#, kde-format
-msgid "Details..."
-msgstr "详情..."
-
-#. i18n: ectx: property (text), widget (QPushButton, importButton)
-#: app/settings/settingsdialog/settingsdialog.ui:438
-#, kde-format
-msgid "Import..."
-msgstr "导入..."
-
-#. i18n: ectx: property (text), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:452
-#, kde-format
-msgid "Export..."
-msgstr "导出..."
-
-#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:459
-#, kde-format
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
-#: app/settings/settingsdialog/settingsdialog.ui:499
-#, kde-format
-msgid "Preferences"
-msgstr "首选项"
-
-#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
-#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:561
-#: app/settings/settingsdialog/settingsdialog.ui:596
-#, kde-format
-msgid ""
-"Different hardware can have different delays during screen changes.\n"
-"This tracker is used in order to not lose any screen related update."
-msgstr ""
-"不同硬件有不同的屏幕更改响应延迟。\n"
-"该追踪器用于防止丢失任何屏幕相关的更新。"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
-#: app/settings/settingsdialog/settingsdialog.ui:570
-#, kde-format
-msgid " ms."
-msgstr " 毫秒"
-
-#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:599
-#, kde-format
-msgid "reaction delay for changes"
-msgstr "更改的反应延迟"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:624
-#, kde-format
-msgid "Provide visual feedback when layouts are activated automatically"
-msgstr "自动激活布局时提供视觉反馈"
-
-#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:627
-#, kde-format
-msgid "Show informative window for layouts automatic activation"
-msgstr "自动激活布局时显示信息窗口"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:666
-#, kde-format
-msgid ""
-"Activate support for borderless maximized windows between different layouts"
-msgstr "启用在不同布局间无边框最大化窗口的支持"
-
-#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:669
-#, kde-format
-msgid "Support borderless maximized windows in different layouts"
-msgstr "在不同布局间支持无边框最大化窗口"
-
-#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:691
-#, kde-format
-msgid "Actions:"
-msgstr "操作："
-
-#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:703
-#, kde-format
-msgid "Use 3D style for notification and shortcut badges"
-msgstr "使用3D样式显示通知和快捷键角标"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:729
-#, kde-format
-msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-msgstr "按住 ⌘ Meta 键以角标显示小程序和任务的快捷键提示"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:732
-#, kde-format
-msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "按住 ⌘ Meta 键以显示快捷键提示"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:776
-#, kde-format
-msgid "Parabolic Effect:"
-msgstr "抛物线效果:"
-
-#. i18n: ectx: property (text), widget (QLabel, screensLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:842
-#, kde-format
-msgid "Screens:"
-msgstr "屏幕:"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:873
-#, kde-format
-msgid "Start the application automatically after each relogin"
-msgstr "每次重新登录后自动启动应用程序"
-
-#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:876
-#, kde-format
-msgid "Enable autostart during startup"
-msgstr "系统启动时自动启动"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:903
-#, kde-format
-msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
-msgstr "抛物线效果使用低灵敏度 (较低的 CPU 使用，较差的性能)"
-
-#. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:906
-#, kde-format
-msgctxt "low sensitivity"
-msgid "Low"
-msgstr "低"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:934
-#, kde-format
-msgid ""
-"Medium sensitivity for parabolic effect (normal cpu usage and performance)"
-msgstr "抛物线效果使用中灵敏度 (一般的 CPU 使用，一般的性能)"
-
-#. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:937
-#, kde-format
-msgctxt "medium sensitivity"
-msgid "Medium"
-msgstr "中"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:965
-#, kde-format
-msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
-msgstr "抛物线效果使用高灵敏度 (较高的 CPU 使用，较好的性能)"
-
-#. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:968
-#, kde-format
-msgctxt "high sensitivity"
-msgid "High"
-msgstr "高"
-
-#. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:978
-#, kde-format
-msgid "mouse sensitivity"
-msgstr "鼠标灵敏度"
-
-#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1034
-#, kde-format
-msgid "Appearance:"
-msgstr "外观:"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1046
-#, kde-format
-msgid ""
-"Forward ⌘ press from KWin to Latte in order to activate Application "
-"Launcher. It is suggested to disable that option if you remove Latte."
-msgstr ""
-"将 ⌘ Meta 键按键事件从 KWin 转发到 Latte。建议您卸载 Latte 时禁用此选项。"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1049
-#, kde-format
-msgid "Press ⌘ to activate Application Launcher"
-msgstr "按 ⌘ Meta 键打开应用启动器"
-
-#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1071
-#, kde-format
-msgid "Context Menu:"
-msgstr "右键菜单："
-
-#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:1100
-#, kde-format
-msgid "Actions..."
-msgstr "操作..."
-
-#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1122
-#, kde-format
-msgid "Inform Plasma desktop for available desktop space"
-msgstr "通知 Plasma 桌面可用桌面空间信息"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
@@ -2030,12 +1578,6 @@ msgstr "立即应用"
 msgid "Apply all dock, panels changes now"
 msgstr "立即应用所有停靠栏/面板更改"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
-#: app/settings/viewsdialog/viewsdialog.ui:14
-#, kde-format
-msgid "Docks/Panels"
-msgstr "停靠栏/面板"
-
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2515,6 +2057,11 @@ msgstr "复制停靠栏"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr "复制面板"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "移除"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3548,6 +3095,11 @@ msgstr "水平和垂直滚动"
 msgid "Automatic"
 msgstr "自动"
 
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "已启用"
+
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3732,3 +3284,238 @@ msgstr "没有匹配搜索条件的挂件"
 #, kde-format
 msgid "No widgets available"
 msgstr "没有可用的挂件"
+
+#~ msgid "Context Menu Actions"
+#~ msgstr "右键菜单操作"
+
+#~ msgctxt "actions shown only in edit mode"
+#~ msgid "Accessible only in edit mode:"
+#~ msgstr "只能在编辑模式下访问："
+
+#~ msgctxt "actions shown always"
+#~ msgid "Accessible always:"
+#~ msgstr "总是可以访问："
+
+#~ msgid "Details"
+#~ msgstr "细节"
+
+#~ msgid "Behavior:"
+#~ msgstr "行为:"
+
+#~ msgid "Hide window borders for maximized windows"
+#~ msgstr "隐藏最大化窗口的边框"
+
+#~ msgid "Icon:"
+#~ msgstr "图标："
+
+#~ msgid "Show in layouts context menu when possible"
+#~ msgstr "尽可能在布局上下文菜单中显示"
+
+#~ msgid "PopUp Margin:"
+#~ msgstr "弹框外边距："
+
+#~ msgid "Background..."
+#~ msgstr "背景色..."
+
+#~ msgid "Text Color..."
+#~ msgstr "文字颜色..."
+
+#~ msgid "Layout:"
+#~ msgstr "布局："
+
+#~ msgid "Background:"
+#~ msgstr "背景："
+
+#~ msgid "disabled"
+#~ msgstr "已禁用"
+
+#~ msgid " px."
+#~ msgstr " 像素"
+
+#~ msgid "Custom Colors:"
+#~ msgstr "自定义颜色:"
+
+#~ msgid "Select All"
+#~ msgstr "全选"
+
+#~ msgid "Deselect All"
+#~ msgstr "全不选"
+
+#~ msgid "File:"
+#~ msgstr "文件："
+
+#~ msgid "Choose..."
+#~ msgstr "选择..."
+
+#~ msgid ""
+#~ "<b>Select only</b> applets that you would like to keep their settings in "
+#~ "the extracted template. Make sure to not include any applets that contain "
+#~ "personal data such as email credentials, calendar etc. "
+#~ msgstr ""
+#~ "<b>只选择</b>您希望在提取的模板中保留其设置的小程序。确保不包括任何包含个"
+#~ "人数据的小程序，如电子邮件凭证、日历等。 "
+
+#~ msgid "Screens"
+#~ msgstr "屏幕"
+
+#~ msgid ""
+#~ "<b>Select only</b> screens that are obsolete and you would like to remove "
+#~ "their reference. Active screens or screens used in your layouts can not "
+#~ "be removed."
+#~ msgstr ""
+#~ "请<b>只选择</b> 已失效的屏幕，并确定您想要删除它们的引用。 您布局中使用的"
+#~ "活动屏幕或屏幕无法删除。"
+
+#~ msgctxt "latte settings window"
+#~ msgid "Settings"
+#~ msgstr "设置"
+
+#~ msgid "Layouts Editor"
+#~ msgstr "布局编辑器"
+
+#~ msgid "Only one layout is applied at all times for all activities"
+#~ msgstr "所有活动在任何时候只应用一个布局"
+
+#~ msgctxt "single layout"
+#~ msgid "Single layout at all times"
+#~ msgstr "总是使用单个布局"
+
+#~ msgid ""
+#~ "Multiple layouts can be present and active in memory at the same time for "
+#~ "different activities"
+#~ msgstr "不同活动的多个布局可以同时存在并在内存中激活"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple layouts based on activities"
+#~ msgstr "基于活动的多个布局"
+
+#~ msgid "Switch"
+#~ msgstr "切换"
+
+#~ msgid "Activities..."
+#~ msgstr "活动..."
+
+#~ msgid "New"
+#~ msgstr "新建"
+
+#~ msgid "Duplicate"
+#~ msgstr "复制"
+
+#~ msgid "Read Only"
+#~ msgstr "只读"
+
+#~ msgid "Details..."
+#~ msgstr "详情..."
+
+#~ msgid "Import..."
+#~ msgstr "导入..."
+
+#~ msgid "Export..."
+#~ msgstr "导出..."
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
+#~ msgid "Preferences"
+#~ msgstr "首选项"
+
+#~ msgid ""
+#~ "Different hardware can have different delays during screen changes.\n"
+#~ "This tracker is used in order to not lose any screen related update."
+#~ msgstr ""
+#~ "不同硬件有不同的屏幕更改响应延迟。\n"
+#~ "该追踪器用于防止丢失任何屏幕相关的更新。"
+
+#~ msgid " ms."
+#~ msgstr " 毫秒"
+
+#~ msgid "reaction delay for changes"
+#~ msgstr "更改的反应延迟"
+
+#~ msgid "Provide visual feedback when layouts are activated automatically"
+#~ msgstr "自动激活布局时提供视觉反馈"
+
+#~ msgid "Show informative window for layouts automatic activation"
+#~ msgstr "自动激活布局时显示信息窗口"
+
+#~ msgid ""
+#~ "Activate support for borderless maximized windows between different "
+#~ "layouts"
+#~ msgstr "启用在不同布局间无边框最大化窗口的支持"
+
+#~ msgid "Support borderless maximized windows in different layouts"
+#~ msgstr "在不同布局间支持无边框最大化窗口"
+
+#~ msgid "Actions:"
+#~ msgstr "操作："
+
+#~ msgid "Use 3D style for notification and shortcut badges"
+#~ msgstr "使用3D样式显示通知和快捷键角标"
+
+#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+#~ msgstr "按住 ⌘ Meta 键以角标显示小程序和任务的快捷键提示"
+
+#~ msgid "Press and Hold ⌘ to show shortcuts badges"
+#~ msgstr "按住 ⌘ Meta 键以显示快捷键提示"
+
+#~ msgid "Parabolic Effect:"
+#~ msgstr "抛物线效果:"
+
+#~ msgid "Screens:"
+#~ msgstr "屏幕:"
+
+#~ msgid "Start the application automatically after each relogin"
+#~ msgstr "每次重新登录后自动启动应用程序"
+
+#~ msgid "Enable autostart during startup"
+#~ msgstr "系统启动时自动启动"
+
+#~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+#~ msgstr "抛物线效果使用低灵敏度 (较低的 CPU 使用，较差的性能)"
+
+#~ msgctxt "low sensitivity"
+#~ msgid "Low"
+#~ msgstr "低"
+
+#~ msgid ""
+#~ "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+#~ msgstr "抛物线效果使用中灵敏度 (一般的 CPU 使用，一般的性能)"
+
+#~ msgctxt "medium sensitivity"
+#~ msgid "Medium"
+#~ msgstr "中"
+
+#~ msgid ""
+#~ "High sensitivity for parabolic effect (high cpu usage and performance)"
+#~ msgstr "抛物线效果使用高灵敏度 (较高的 CPU 使用，较好的性能)"
+
+#~ msgctxt "high sensitivity"
+#~ msgid "High"
+#~ msgstr "高"
+
+#~ msgid "mouse sensitivity"
+#~ msgstr "鼠标灵敏度"
+
+#~ msgid "Appearance:"
+#~ msgstr "外观:"
+
+#~ msgid ""
+#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
+#~ "Launcher. It is suggested to disable that option if you remove Latte."
+#~ msgstr ""
+#~ "将 ⌘ Meta 键按键事件从 KWin 转发到 Latte。建议您卸载 Latte 时禁用此选项。"
+
+#~ msgid "Press ⌘ to activate Application Launcher"
+#~ msgstr "按 ⌘ Meta 键打开应用启动器"
+
+#~ msgid "Context Menu:"
+#~ msgstr "右键菜单："
+
+#~ msgid "Actions..."
+#~ msgstr "操作..."
+
+#~ msgid "Inform Plasma desktop for available desktop space"
+#~ msgstr "通知 Plasma 桌面可用桌面空间信息"
+
+#~ msgid "Docks/Panels"
+#~ msgstr "停靠栏/面板"

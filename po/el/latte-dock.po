@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-17 02:27+0000\n"
+"POT-Creation-Date: 2025-07-05 03:22+0000\n"
 "PO-Revision-Date: 2019-07-31 08:26+0300\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -527,27 +527,6 @@ msgstr "Εκτελέσιμα σενάρια"
 msgid "Translations"
 msgstr "Μεταφράσεις"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
-#: app/settings/actionsdialog/actionsdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Extra Actions"
-msgid "Context Menu Actions"
-msgstr "Πρόσθετες Ενέργειες"
-
-#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:24
-#, kde-format
-msgctxt "actions shown only in edit mode"
-msgid "Accessible only in edit mode:"
-msgstr ""
-
-#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:27
-#, kde-format
-msgctxt "actions shown always"
-msgid "Accessible always:"
-msgstr ""
-
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -660,96 +639,6 @@ msgstr ""
 msgid "Wheat"
 msgstr ""
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
-#: app/settings/detailsdialog/detailsdialog.ui:14
-#, kde-format
-msgid "Details"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:57
-#: app/settings/settingsdialog/settingsdialog.ui:809
-#, fuzzy, kde-format
-#| msgid "Behavior"
-msgid "Behavior:"
-msgstr "Συμπεριφορά"
-
-#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
-#: app/settings/detailsdialog/detailsdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Hide background shadow for maximized windows"
-msgid "Hide window borders for maximized windows"
-msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
-
-#. i18n: ectx: property (text), widget (QLabel, iconLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:115
-#, kde-format
-msgid "Icon:"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
-#: app/settings/detailsdialog/detailsdialog.ui:157
-#, fuzzy, kde-format
-#| msgid "Window actions in the context menu"
-msgid "Show in layouts context menu when possible"
-msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
-
-#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:182
-#, fuzzy, kde-format
-#| msgid "Margins"
-msgid "PopUp Margin:"
-msgstr "Περιθώρια"
-
-#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:201
-#, fuzzy, kde-format
-#| msgid "Background"
-msgid "Background..."
-msgstr "Φόντο"
-
-#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:214
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
-msgid "Text Color..."
-msgstr "Προσαρμοσμένο χρώμα κειμένου..."
-
-#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:388
-#: app/settings/viewsdialog/viewsdialog.ui:47
-#, fuzzy, kde-format
-#| msgid "Layout"
-msgid "Layout:"
-msgstr "Προφίλ"
-
-#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:418
-#, fuzzy, kde-format
-#| msgid "Background"
-msgid "Background:"
-msgstr "Φόντο"
-
-#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:507
-#, fuzzy, kde-format
-#| msgid "Disabled"
-msgid "disabled"
-msgstr "Ανενεργό"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:510
-#, kde-format
-msgid " px."
-msgstr " px."
-
-#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:678
-#, fuzzy, kde-format
-#| msgid "Colors"
-msgid "Custom Colors:"
-msgstr "Χρώματα"
-
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -813,41 +702,6 @@ msgstr "Εξαγωγή"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Εξαγωγή"
-
-#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
-#, kde-format
-msgid "Select All"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
-#: app/settings/screensdialog/screensdialog.ui:58
-#, kde-format
-msgid "Deselect All"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, fuzzy, kde-format
-#| msgid "File"
-msgid "File:"
-msgstr "Αρχείο"
-
-#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, kde-format
-msgid "Choose..."
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
-#, kde-format
-msgid ""
-"<b>Select only</b> applets that you would like to keep their settings in the "
-"extracted template. Make sure to not include any applets that contain "
-"personal data such as email credentials, calendar etc. "
-msgstr ""
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, fuzzy, kde-format
@@ -1002,22 +856,6 @@ msgstr "Αφαίρεση"
 #| msgid "Remove selected layout"
 msgid "Remove selected screen references"
 msgstr "Αφαίρεση επιλεγμένου προφίλ"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
-#: app/settings/screensdialog/screensdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Screen"
-msgid "Screens"
-msgstr "Οθόνη"
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/screensdialog/screensdialog.ui:67
-#, kde-format
-msgid ""
-"<b>Select only</b> screens that are obsolete and you would like to remove "
-"their reference. Active screens or screens used in your layouts can not be "
-"removed."
-msgstr ""
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1346,341 +1184,6 @@ msgstr "Επιτυχής εξαγωγή πλήρους διαμόρφωσης"
 msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
-msgstr ""
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
-#: app/settings/settingsdialog/settingsdialog.ui:26
-#, kde-format
-msgctxt "latte settings window"
-msgid "Settings"
-msgstr "Ρυθμίσεις"
-
-#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
-#: app/settings/settingsdialog/settingsdialog.ui:36
-#, kde-format
-msgid "Layouts Editor"
-msgstr "Επεξεργαστής Προφίλ"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:67
-#, fuzzy, kde-format
-#| msgid "Only one layout can be present in memory at all cases"
-msgid "Only one layout is applied at all times for all activities"
-msgstr "Μόνο ένα προφίλ μπορεί να βρίσκεται στη μνήμη για όλες τις περιπτώσεις"
-
-#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:70
-#, fuzzy, kde-format
-#| msgctxt "import only the layouts"
-#| msgid "Only Layouts"
-msgctxt "single layout"
-msgid "Single layout at all times"
-msgstr "Μόνο Προφίλ"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "Multiple layouts can be present and active in memory at the same time"
-msgid ""
-"Multiple layouts can be present and active in memory at the same time for "
-"different activities"
-msgstr "Πολλαπλά προφίλ μπορεί να είναι ταυτόχρονα ενεργά στη μνήμη"
-
-#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:87
-#, fuzzy, kde-format
-#| msgid "multiple layouts hidden file"
-msgctxt "multiple layouts"
-msgid "Multiple layouts based on activities"
-msgstr "κρυμμένο αρχείο πολλαπλών προφίλ"
-
-#. i18n: ectx: property (text), widget (QPushButton, switchButton)
-#: app/settings/settingsdialog/settingsdialog.ui:177
-#, fuzzy, kde-format
-#| msgctxt "switch to layout"
-#| msgid "Switch"
-msgid "Switch"
-msgstr "Εναλλαγή"
-
-#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
-#: app/settings/settingsdialog/settingsdialog.ui:191
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
-msgid "Activities..."
-msgstr "Δραστηριότητες"
-
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: app/settings/settingsdialog/settingsdialog.ui:247
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "New"
-msgid "New"
-msgstr "Νέο"
-
-#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
-#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
-#: app/settings/settingsdialog/settingsdialog.ui:258
-#: app/settings/viewsdialog/viewsdialog.ui:148
-#, fuzzy, kde-format
-#| msgid "Latte Dock"
-msgid "Duplicate"
-msgstr "Πίνακας Latte"
-
-#. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: app/settings/settingsdialog/settingsdialog.ui:272
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Αφαίρεση"
-
-#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
-#: app/settings/settingsdialog/settingsdialog.ui:299
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Ενεργό"
-
-#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
-#: app/settings/settingsdialog/settingsdialog.ui:310
-#, kde-format
-msgid "Read Only"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
-#: app/settings/settingsdialog/settingsdialog.ui:356
-#, kde-format
-msgid "Details..."
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QPushButton, importButton)
-#: app/settings/settingsdialog/settingsdialog.ui:438
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "Import"
-msgid "Import..."
-msgstr "Εισαγωγή"
-
-#. i18n: ectx: property (text), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:452
-#, fuzzy, kde-format
-#| msgctxt "export layout"
-#| msgid "Export"
-msgid "Export..."
-msgstr "Εξαγωγή"
-
-#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:459
-#, kde-format
-msgid "Ctrl+S"
-msgstr ""
-
-#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
-#: app/settings/settingsdialog/settingsdialog.ui:499
-#, kde-format
-msgid "Preferences"
-msgstr "Προτιμήσεις"
-
-#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
-#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:561
-#: app/settings/settingsdialog/settingsdialog.ui:596
-#, kde-format
-msgid ""
-"Different hardware can have different delays during screen changes.\n"
-"This tracker is used in order to not lose any screen related update."
-msgstr ""
-"Διαφορετικό υλικό μπορεί να έχεις διαφορετικές καθυστερήσεις μεταξύ\n"
-"αλλαγών στις ρυθμίσεις οθονών. Αυτή η καθυστέρηση χρησιμοποιείται\n"
-"έτσι ώστε να μην χαθεί κάποια σχετική αλλαγή."
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
-#: app/settings/settingsdialog/settingsdialog.ui:570
-#, kde-format
-msgid " ms."
-msgstr "ms."
-
-#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:599
-#, fuzzy, kde-format
-#| msgid "Raise on desktop change"
-msgid "reaction delay for changes"
-msgstr "Ανύψωση σε κάθε αλλαγή επιφάνειας εργασίας"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:624
-#, kde-format
-msgid "Provide visual feedback when layouts are activated automatically"
-msgstr "Οπτικό μήνυμα όταν κάποια προφίλ ενεργοποιούνται αυτόματα"
-
-#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:627
-#, kde-format
-msgid "Show informative window for layouts automatic activation"
-msgstr "Εμφάνιση πληροφοριών για αυτόματη ενεργοποίηση προφίλ"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:666
-#, kde-format
-msgid ""
-"Activate support for borderless maximized windows between different layouts"
-msgstr ""
-"Ενεργοποίηση υπηρεσίας για μεγιστοποιημένα παράθυρα που έχουν ή δεν έχουν \n"
-"περιγράμματα για διαφορετικά προφίλ"
-
-#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:669
-#, kde-format
-msgid "Support borderless maximized windows in different layouts"
-msgstr "Υποστήριξη παραθύρων χωρίς περιγράμματα για διαφορετικά προφίλ"
-
-#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:691
-#, fuzzy, kde-format
-#| msgid "Actions"
-msgid "Actions:"
-msgstr "Ενέργειες"
-
-#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:703
-#, kde-format
-msgid "Use 3D style for notification and shortcut badges"
-msgstr "Χρήση τρισδιάσττου στιλ για σήματα ειδοποιήσεων και συντομεύσεων"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:729
-#, kde-format
-msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-msgstr ""
-"Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων για "
-"μικροεφαρμογές και εργασίες"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:732
-#, kde-format
-msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:776
-#, fuzzy, kde-format
-#| msgid "Parabolic Effect"
-msgid "Parabolic Effect:"
-msgstr "Παραβολικό Εφέ"
-
-#. i18n: ectx: property (text), widget (QLabel, screensLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:842
-#, fuzzy, kde-format
-#| msgid "Screen"
-msgid "Screens:"
-msgstr "Οθόνη"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:873
-#, kde-format
-msgid "Start the application automatically after each relogin"
-msgstr "Εκκίνηση της εφαρμογής αυτόματα σε κάθε επανασύνδεση"
-
-#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:876
-#, kde-format
-msgid "Enable autostart during startup"
-msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:903
-#, kde-format
-msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
-msgstr ""
-"Χαμηλή ευαισθησία στο παραβολικό εφέ (χαμηλή χρήση και επιβάρυνση "
-"επεξεργαστή)"
-
-#. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:906
-#, kde-format
-msgctxt "low sensitivity"
-msgid "Low"
-msgstr "Χαμηλή"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:934
-#, kde-format
-msgid ""
-"Medium sensitivity for parabolic effect (normal cpu usage and performance)"
-msgstr ""
-"Μέτρια ευαισθησία στο παραβολικό εφέ (κανονική χρήση και επιβάρυνση "
-"επεξεργαστή)"
-
-#. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:937
-#, kde-format
-msgctxt "medium sensitivity"
-msgid "Medium"
-msgstr "Μέτρια"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:965
-#, kde-format
-msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
-msgstr ""
-"Υψηλή ευαισθησία στο παραβολικό εφέ (υψηλή χρήση και επιβάρυνση επεξεργαστή)"
-
-#. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:968
-#, kde-format
-msgctxt "high sensitivity"
-msgid "High"
-msgstr "Υψηλή"
-
-#. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:978
-#, fuzzy, kde-format
-#| msgid "Mouse Sensitivity"
-msgid "mouse sensitivity"
-msgstr "Ευαισθησία ποντικιού"
-
-#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1034
-#, fuzzy, kde-format
-#| msgid "Appearance"
-msgid "Appearance:"
-msgstr "Εμφάνιση"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1046
-#, kde-format
-msgid ""
-"Forward ⌘ press from KWin to Latte in order to activate Application "
-"Launcher. It is suggested to disable that option if you remove Latte."
-msgstr ""
-"Να προωθείται η πίεση πλήκτρου από το KWin στο Latte για την ενεργοποίηση "
-"του εκτελεστή εφαρμογών. Προτείνεται να απενεργοποιήσετε αυτήν την επιλογή "
-"αν αφαιρέσετε το Latte."
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1049
-#, kde-format
-msgid "Press ⌘ to activate Application Launcher"
-msgstr "Πιέστε ⌘ για να ενεργοποιηθεί ο εκτελεστής εφαρμογών"
-
-#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1071
-#, kde-format
-msgid "Context Menu:"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:1100
-#, fuzzy, kde-format
-#| msgid "Actions"
-msgid "Actions..."
-msgstr "Ενέργειες"
-
-#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1122
-#, kde-format
-msgid "Inform Plasma desktop for available desktop space"
 msgstr ""
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
@@ -2248,12 +1751,6 @@ msgstr "Σκιές Συστατικών"
 msgid "Apply all dock, panels changes now"
 msgstr ""
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
-#: app/settings/viewsdialog/viewsdialog.ui:14
-#, kde-format
-msgid "Docks/Panels"
-msgstr "Docks/Πίνακες"
-
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2772,6 +2269,11 @@ msgstr "Πίνακας Latte"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr ""
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Αφαίρεση"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3905,6 +3407,11 @@ msgstr "Οριζόντια και κατακόρυφη κύλιση"
 msgid "Automatic"
 msgstr "Αυτόματα"
 
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Ενεργό"
+
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -4099,6 +3606,269 @@ msgstr ""
 #, kde-format
 msgid "No widgets available"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Extra Actions"
+#~ msgid "Context Menu Actions"
+#~ msgstr "Πρόσθετες Ενέργειες"
+
+#, fuzzy
+#~| msgid "Behavior"
+#~ msgid "Behavior:"
+#~ msgstr "Συμπεριφορά"
+
+#, fuzzy
+#~| msgid "Hide background shadow for maximized windows"
+#~ msgid "Hide window borders for maximized windows"
+#~ msgstr "Απόκρυψη σκίασης φόντου για μεγιστοποιημένα παράθυρα"
+
+#, fuzzy
+#~| msgid "Window actions in the context menu"
+#~ msgid "Show in layouts context menu when possible"
+#~ msgstr "Ενέργειες παραθύρου στο μενού επιλογών"
+
+#, fuzzy
+#~| msgid "Margins"
+#~ msgid "PopUp Margin:"
+#~ msgstr "Περιθώρια"
+
+#, fuzzy
+#~| msgid "Background"
+#~ msgid "Background..."
+#~ msgstr "Φόντο"
+
+#, fuzzy
+#~| msgid "Custom text color..."
+#~ msgid "Text Color..."
+#~ msgstr "Προσαρμοσμένο χρώμα κειμένου..."
+
+#, fuzzy
+#~| msgid "Layout"
+#~ msgid "Layout:"
+#~ msgstr "Προφίλ"
+
+#, fuzzy
+#~| msgid "Background"
+#~ msgid "Background:"
+#~ msgstr "Φόντο"
+
+#, fuzzy
+#~| msgid "Disabled"
+#~ msgid "disabled"
+#~ msgstr "Ανενεργό"
+
+#~ msgid " px."
+#~ msgstr " px."
+
+#, fuzzy
+#~| msgid "Colors"
+#~ msgid "Custom Colors:"
+#~ msgstr "Χρώματα"
+
+#, fuzzy
+#~| msgid "File"
+#~ msgid "File:"
+#~ msgstr "Αρχείο"
+
+#, fuzzy
+#~| msgid "Screen"
+#~ msgid "Screens"
+#~ msgstr "Οθόνη"
+
+#~ msgctxt "latte settings window"
+#~ msgid "Settings"
+#~ msgstr "Ρυθμίσεις"
+
+#~ msgid "Layouts Editor"
+#~ msgstr "Επεξεργαστής Προφίλ"
+
+#, fuzzy
+#~| msgid "Only one layout can be present in memory at all cases"
+#~ msgid "Only one layout is applied at all times for all activities"
+#~ msgstr ""
+#~ "Μόνο ένα προφίλ μπορεί να βρίσκεται στη μνήμη για όλες τις περιπτώσεις"
+
+#, fuzzy
+#~| msgctxt "import only the layouts"
+#~| msgid "Only Layouts"
+#~ msgctxt "single layout"
+#~ msgid "Single layout at all times"
+#~ msgstr "Μόνο Προφίλ"
+
+#, fuzzy
+#~| msgid ""
+#~| "Multiple layouts can be present and active in memory at the same time"
+#~ msgid ""
+#~ "Multiple layouts can be present and active in memory at the same time for "
+#~ "different activities"
+#~ msgstr "Πολλαπλά προφίλ μπορεί να είναι ταυτόχρονα ενεργά στη μνήμη"
+
+#, fuzzy
+#~| msgid "multiple layouts hidden file"
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple layouts based on activities"
+#~ msgstr "κρυμμένο αρχείο πολλαπλών προφίλ"
+
+#, fuzzy
+#~| msgctxt "switch to layout"
+#~| msgid "Switch"
+#~ msgid "Switch"
+#~ msgstr "Εναλλαγή"
+
+#, fuzzy
+#~| msgctxt "column for layout to show which activities is assigned to"
+#~| msgid "Activities"
+#~ msgid "Activities..."
+#~ msgstr "Δραστηριότητες"
+
+#, fuzzy
+#~| msgctxt "new layout"
+#~| msgid "New"
+#~ msgid "New"
+#~ msgstr "Νέο"
+
+#, fuzzy
+#~| msgid "Latte Dock"
+#~ msgid "Duplicate"
+#~ msgstr "Πίνακας Latte"
+
+#, fuzzy
+#~| msgctxt "import layout"
+#~| msgid "Import"
+#~ msgid "Import..."
+#~ msgstr "Εισαγωγή"
+
+#, fuzzy
+#~| msgctxt "export layout"
+#~| msgid "Export"
+#~ msgid "Export..."
+#~ msgstr "Εξαγωγή"
+
+#~ msgid "Preferences"
+#~ msgstr "Προτιμήσεις"
+
+#~ msgid ""
+#~ "Different hardware can have different delays during screen changes.\n"
+#~ "This tracker is used in order to not lose any screen related update."
+#~ msgstr ""
+#~ "Διαφορετικό υλικό μπορεί να έχεις διαφορετικές καθυστερήσεις μεταξύ\n"
+#~ "αλλαγών στις ρυθμίσεις οθονών. Αυτή η καθυστέρηση χρησιμοποιείται\n"
+#~ "έτσι ώστε να μην χαθεί κάποια σχετική αλλαγή."
+
+#~ msgid " ms."
+#~ msgstr "ms."
+
+#, fuzzy
+#~| msgid "Raise on desktop change"
+#~ msgid "reaction delay for changes"
+#~ msgstr "Ανύψωση σε κάθε αλλαγή επιφάνειας εργασίας"
+
+#~ msgid "Provide visual feedback when layouts are activated automatically"
+#~ msgstr "Οπτικό μήνυμα όταν κάποια προφίλ ενεργοποιούνται αυτόματα"
+
+#~ msgid "Show informative window for layouts automatic activation"
+#~ msgstr "Εμφάνιση πληροφοριών για αυτόματη ενεργοποίηση προφίλ"
+
+#~ msgid ""
+#~ "Activate support for borderless maximized windows between different "
+#~ "layouts"
+#~ msgstr ""
+#~ "Ενεργοποίηση υπηρεσίας για μεγιστοποιημένα παράθυρα που έχουν ή δεν "
+#~ "έχουν \n"
+#~ "περιγράμματα για διαφορετικά προφίλ"
+
+#~ msgid "Support borderless maximized windows in different layouts"
+#~ msgstr "Υποστήριξη παραθύρων χωρίς περιγράμματα για διαφορετικά προφίλ"
+
+#, fuzzy
+#~| msgid "Actions"
+#~ msgid "Actions:"
+#~ msgstr "Ενέργειες"
+
+#~ msgid "Use 3D style for notification and shortcut badges"
+#~ msgstr "Χρήση τρισδιάσττου στιλ για σήματα ειδοποιήσεων και συντομεύσεων"
+
+#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+#~ msgstr ""
+#~ "Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων για "
+#~ "μικροεφαρμογές και εργασίες"
+
+#~ msgid "Press and Hold ⌘ to show shortcuts badges"
+#~ msgstr "Πιέστε και κρατήστε το ⌘ για να εμφανίσετε σήματα συντομεύσεων"
+
+#, fuzzy
+#~| msgid "Parabolic Effect"
+#~ msgid "Parabolic Effect:"
+#~ msgstr "Παραβολικό Εφέ"
+
+#, fuzzy
+#~| msgid "Screen"
+#~ msgid "Screens:"
+#~ msgstr "Οθόνη"
+
+#~ msgid "Start the application automatically after each relogin"
+#~ msgstr "Εκκίνηση της εφαρμογής αυτόματα σε κάθε επανασύνδεση"
+
+#~ msgid "Enable autostart during startup"
+#~ msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
+
+#~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
+#~ msgstr ""
+#~ "Χαμηλή ευαισθησία στο παραβολικό εφέ (χαμηλή χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "low sensitivity"
+#~ msgid "Low"
+#~ msgstr "Χαμηλή"
+
+#~ msgid ""
+#~ "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
+#~ msgstr ""
+#~ "Μέτρια ευαισθησία στο παραβολικό εφέ (κανονική χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "medium sensitivity"
+#~ msgid "Medium"
+#~ msgstr "Μέτρια"
+
+#~ msgid ""
+#~ "High sensitivity for parabolic effect (high cpu usage and performance)"
+#~ msgstr ""
+#~ "Υψηλή ευαισθησία στο παραβολικό εφέ (υψηλή χρήση και επιβάρυνση "
+#~ "επεξεργαστή)"
+
+#~ msgctxt "high sensitivity"
+#~ msgid "High"
+#~ msgstr "Υψηλή"
+
+#, fuzzy
+#~| msgid "Mouse Sensitivity"
+#~ msgid "mouse sensitivity"
+#~ msgstr "Ευαισθησία ποντικιού"
+
+#, fuzzy
+#~| msgid "Appearance"
+#~ msgid "Appearance:"
+#~ msgstr "Εμφάνιση"
+
+#~ msgid ""
+#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
+#~ "Launcher. It is suggested to disable that option if you remove Latte."
+#~ msgstr ""
+#~ "Να προωθείται η πίεση πλήκτρου από το KWin στο Latte για την ενεργοποίηση "
+#~ "του εκτελεστή εφαρμογών. Προτείνεται να απενεργοποιήσετε αυτήν την "
+#~ "επιλογή αν αφαιρέσετε το Latte."
+
+#~ msgid "Press ⌘ to activate Application Launcher"
+#~ msgstr "Πιέστε ⌘ για να ενεργοποιηθεί ο εκτελεστής εφαρμογών"
+
+#, fuzzy
+#~| msgid "Actions"
+#~ msgid "Actions..."
+#~ msgstr "Ενέργειες"
+
+#~ msgid "Docks/Panels"
+#~ msgstr "Docks/Πίνακες"
 
 #~ msgid "Theme"
 #~ msgstr "θέμα"
