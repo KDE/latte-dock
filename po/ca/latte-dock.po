@@ -1,16 +1,16 @@
 # Translation of latte-dock.po to Catalan
-# Copyright (C) 2017-2021 This_file_is_part_of_KDE
+# Copyright (C) 2017-2025 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Josep M. Ferrer <txemaq@gmail.com>, 2017, 2018, 2019, 2020, 2021.
+# Josep M. Ferrer <txemaq@gmail.com>, 2017, 2018, 2019, 2020, 2021, 2025.
 # Antoni Bella Pérez <antonibella5@yahoo.com>, 2017, 2018, 2019, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-05 05:54+0000\n"
-"PO-Revision-Date: 2021-12-08 09:53+0100\n"
+"PO-Revision-Date: 2025-07-06 11:09+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.12.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 "X-Accelerator-Marker: &\n"
 
 #, kde-format
@@ -501,21 +501,21 @@ msgstr "Traduccions"
 #: app/settings/actionsdialog/actionsdialog.ui:14
 #, kde-format
 msgid "Context Menu Actions"
-msgstr ""
+msgstr "Accions del menú contextual"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
 #, kde-format
 msgctxt "actions shown only in edit mode"
 msgid "Accessible only in edit mode:"
-msgstr ""
+msgstr "Accessible només en mode d'edició:"
 
 #. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:27
 #, kde-format
 msgctxt "actions shown always"
 msgid "Accessible always:"
-msgstr ""
+msgstr "Accessible sempre:"
 
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
@@ -621,100 +621,83 @@ msgstr "Blat"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
-#, fuzzy, kde-format
-#| msgctxt "<layout name> Details"
-#| msgid "%1 Details"
+#, kde-format
 msgid "Details"
-msgstr "Detalls de %1"
+msgstr "Detalls"
 
 #. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:57
 #: app/settings/settingsdialog/settingsdialog.ui:809
-#, fuzzy, kde-format
-#| msgid "Behavior"
+#, kde-format
 msgid "Behavior:"
-msgstr "Comportament"
+msgstr "Comportament:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
 #: app/settings/detailsdialog/detailsdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Hide floating gap for maximized windows"
+#, kde-format
 msgid "Hide window borders for maximized windows"
-msgstr "Oculta la separació flotant per a les finestres maximitzades"
+msgstr "Oculta les vores de la finestra de les finestres maximitzades"
 
 #. i18n: ectx: property (text), widget (QLabel, iconLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:115
 #, kde-format
 msgid "Icon:"
-msgstr ""
+msgstr "Icona:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
-#, fuzzy, kde-format
-#| msgctxt "layout missing"
-#| msgid "This layout doesn't exist in the system."
+#, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "Aquesta disposició no existeix al sistema."
+msgstr "Mostra a les disposicions del menú contextual quan sigui possible"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
-#, fuzzy, kde-format
-#| msgid "Margins"
+#, kde-format
 msgid "PopUp Margin:"
-msgstr "Marges"
+msgstr "Marge de la finestra emergent:"
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background..."
-msgstr "Fons"
+msgstr "Fons..."
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
-#, fuzzy, kde-format
-#| msgctxt "theme shadow"
-#| msgid "Theme Color"
+#, kde-format
 msgid "Text Color..."
-msgstr "Color del tema"
+msgstr "Color del text..."
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
 #: app/settings/viewsdialog/viewsdialog.ui:47
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layout:"
-msgstr "Disposició"
+msgstr "Disposició:"
 
 #. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:418
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background:"
-msgstr "Fons"
+msgstr "Fons:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:507
-#, fuzzy, kde-format
-#| msgid "Disabled"
+#, kde-format
 msgid "disabled"
-msgstr "Desactivat"
+msgstr "desactivat"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:510
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%1 px."
+#, kde-format
 msgid " px."
-msgstr "%1 px."
+msgstr " px."
 
 #. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:678
-#, fuzzy, kde-format
-#| msgctxt "layout custom colors"
-#| msgid "Layout Custom Colors"
+#, kde-format
 msgid "Custom Colors:"
-msgstr "Colors personalitzats de disposició"
+msgstr "Colors personalitzats:"
 
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
@@ -778,29 +761,26 @@ msgstr "Torna a exportar"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr ""
+msgstr "Selecciona-ho tot"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
 #: app/settings/screensdialog/screensdialog.ui:58
 #, kde-format
 msgid "Deselect All"
-msgstr ""
+msgstr "Desselecciona-ho tot"
 
 #. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, fuzzy, kde-format
-#| msgid "File"
+#, kde-format
 msgid "File:"
-msgstr "Fitxer"
+msgstr "Fitxer:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, fuzzy, kde-format
-#| msgctxt "choose file"
-#| msgid "Choose"
+#, kde-format
 msgid "Choose..."
-msgstr "Trieu"
+msgstr "Trieu..."
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -810,6 +790,10 @@ msgid ""
 "extracted template. Make sure to not include any applets that contain "
 "personal data such as email credentials, calendar etc. "
 msgstr ""
+"<b>Només seleccioneu</b> miniaplicacions que us agradaria mantenir la seva "
+"configuració a la plantilla extreta. Assegureu-vos que no s'inclou cap "
+"miniaplicació que contingui dades personals com les credencials de correu, "
+"calendari, etc. "
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -948,9 +932,7 @@ msgstr "Elimina les referències de pantalla seleccionades"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
 #: app/settings/screensdialog/screensdialog.ui:14
-#, fuzzy, kde-format
-#| msgctxt "column for screens"
-#| msgid "Screens"
+#, kde-format
 msgid "Screens"
 msgstr "Pantalles"
 
@@ -962,6 +944,9 @@ msgid ""
 "their reference. Active screens or screens used in your layouts can not be "
 "removed."
 msgstr ""
+"<b>Només seleccioneu</b> les pantalles que siguin obsoletes i que voldríeu "
+"eliminar la seva referència. Les pantalles actives o les pantalles usades a "
+"les disposicions no es poden eliminar."
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1279,31 +1264,29 @@ msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
 #: app/settings/settingsdialog/settingsdialog.ui:26
-#, fuzzy, kde-format
-#| msgid "Apply Settings"
+#, kde-format
 msgctxt "latte settings window"
 msgid "Settings"
-msgstr "Aplica la configuració"
+msgstr "Arranjament"
 
 #. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
 #: app/settings/settingsdialog/settingsdialog.ui:36
-#, fuzzy, kde-format
-#| msgid "Layouts"
+#, kde-format
 msgid "Layouts Editor"
-msgstr "Disposicions"
+msgstr "Editor de disposicions"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
 #, kde-format
 msgid "Only one layout is applied at all times for all activities"
-msgstr ""
+msgstr "Només s'aplica una disposició en tot moment per a totes les activitats"
 
 #. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:70
 #, kde-format
 msgctxt "single layout"
 msgid "Single layout at all times"
-msgstr ""
+msgstr "Una sola disposició en tot moment"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:84
@@ -1312,48 +1295,41 @@ msgid ""
 "Multiple layouts can be present and active in memory at the same time for "
 "different activities"
 msgstr ""
+"Poden haver-hi presents a la memòria i actives múltiples disposicions al "
+"mateix temps per a activitats diferents"
 
 #. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:87
-#, fuzzy, kde-format
-#| msgid "multiple layouts hidden file"
+#, kde-format
 msgctxt "multiple layouts"
 msgid "Multiple layouts based on activities"
-msgstr "fitxer ocult amb múltiples disposicions"
+msgstr "Disposicions múltiples basades en activitats"
 
 #. i18n: ectx: property (text), widget (QPushButton, switchButton)
 #: app/settings/settingsdialog/settingsdialog.ui:177
-#, fuzzy, kde-format
-#| msgctxt "switch layout"
-#| msgid "Switch"
+#, kde-format
 msgid "Switch"
 msgstr "Canvia"
 
 #. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
 #: app/settings/settingsdialog/settingsdialog.ui:191
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "Activities..."
-msgstr "Activitats"
+msgstr "Activitats..."
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "&New"
+#, kde-format
 msgid "New"
-msgstr "&Nou"
+msgstr "Nou"
 
 #. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
 #. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
 #: app/settings/settingsdialog/settingsdialog.ui:258
 #: app/settings/viewsdialog/viewsdialog.ui:148
-#, fuzzy, kde-format
-#| msgctxt "duplicate layout"
-#| msgid "&Duplicate"
+#, kde-format
 msgid "Duplicate"
-msgstr "&Duplica"
+msgstr "Duplica"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
 #: app/settings/settingsdialog/settingsdialog.ui:272
@@ -1371,47 +1347,39 @@ msgstr "Activat"
 
 #. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
 #: app/settings/settingsdialog/settingsdialog.ui:310
-#, fuzzy, kde-format
-#| msgctxt "read only layout"
-#| msgid "&Read Only"
+#, kde-format
 msgid "Read Only"
-msgstr "Només &lectura"
+msgstr "Només lectura"
 
 #. i18n: ectx: property (text), widget (QPushButton, detailsButton)
 #: app/settings/settingsdialog/settingsdialog.ui:356
-#, fuzzy, kde-format
-#| msgctxt "layout details"
-#| msgid "De&tails..."
+#, kde-format
 msgid "Details..."
-msgstr "De&talls..."
+msgstr "Detalls..."
 
 #. i18n: ectx: property (text), widget (QPushButton, importButton)
 #: app/settings/settingsdialog/settingsdialog.ui:438
-#, fuzzy, kde-format
-#| msgctxt "import dock/panel"
-#| msgid "&Import..."
+#, kde-format
 msgid "Import..."
-msgstr "&Importa..."
+msgstr "Importa..."
 
 #. i18n: ectx: property (text), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:452
-#, fuzzy, kde-format
-#| msgctxt "export template"
-#| msgid "Export"
+#, kde-format
 msgid "Export..."
-msgstr "Exporta"
+msgstr "Exporta..."
 
 #. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:459
 #, kde-format
 msgid "Ctrl+S"
-msgstr ""
+msgstr "Ctrl+S"
 
 #. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
 #: app/settings/settingsdialog/settingsdialog.ui:499
 #, kde-format
 msgid "Preferences"
-msgstr ""
+msgstr "Preferències"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
 #. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
@@ -1422,32 +1390,38 @@ msgid ""
 "Different hardware can have different delays during screen changes.\n"
 "This tracker is used in order to not lose any screen related update."
 msgstr ""
+"Maquinari diferent pot tenir diferents retards durant els canvis de la "
+"pantalla.\n"
+"Aquest seguidor s'usa per a no perdre cap actualització relacionada amb la "
+"pantalla."
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
 #: app/settings/settingsdialog/settingsdialog.ui:570
 #, kde-format
 msgid " ms."
-msgstr ""
+msgstr " ms."
 
 # skip-rule: kct-dock
 #. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:599
-#, fuzzy, kde-format
-#| msgid "Raise on desktop change"
+#, kde-format
 msgid "reaction delay for changes"
-msgstr "Eleva en canviar d'escriptori"
+msgstr "retard de la reacció als canvis"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:624
 #, kde-format
 msgid "Provide visual feedback when layouts are activated automatically"
 msgstr ""
+"Proporciona comentaris visuals quan les disposicions s'activin automàticament"
 
 #. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:627
 #, kde-format
 msgid "Show informative window for layouts automatic activation"
 msgstr ""
+"Mostra una finestra informativa per a l'activació automàtica de les "
+"disposicions"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:666
@@ -1455,78 +1429,79 @@ msgstr ""
 msgid ""
 "Activate support for borderless maximized windows between different layouts"
 msgstr ""
+"Activa el suport per a finestres maximitzades sense vores entre diferents "
+"disposicions"
 
 #. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:669
 #, kde-format
 msgid "Support borderless maximized windows in different layouts"
-msgstr ""
+msgstr "Suport de finestres maximitzades sense vores en diferents disposicions"
 
 #. i18n: ectx: property (text), widget (QLabel, actionsLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:691
-#, fuzzy, kde-format
-#| msgid "Actions"
+#, kde-format
 msgid "Actions:"
-msgstr "Accions"
+msgstr "Accions:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:703
 #, kde-format
 msgid "Use 3D style for notification and shortcut badges"
-msgstr ""
+msgstr "Usa l'estil en 3D per als distintius de les notificacions i dreceres"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:729
 #, kde-format
 msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
 msgstr ""
+"Premeu i manteniu premuda ⌘ per a mostrar els distintius de les dreceres per "
+"a les miniaplicacions i tasques"
 
 #. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:732
 #, kde-format
 msgid "Press and Hold ⌘ to show shortcuts badges"
 msgstr ""
+"Premeu i manteniu premuda ⌘ per a mostrar els distintius de les dreceres"
 
 #. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:776
 #, kde-format
 msgid "Parabolic Effect:"
-msgstr ""
+msgstr "Efecte parabòlic:"
 
 #. i18n: ectx: property (text), widget (QLabel, screensLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:842
-#, fuzzy, kde-format
-#| msgctxt "column for screens"
-#| msgid "Screens"
+#, kde-format
 msgid "Screens:"
-msgstr "Pantalles"
+msgstr "Pantalles:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:873
 #, kde-format
 msgid "Start the application automatically after each relogin"
-msgstr ""
+msgstr "Inicia l'aplicació automàticament després de cada inici de sessió"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:876
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Enable autostart for this application"
+#, kde-format
 msgid "Enable autostart during startup"
-msgstr "Activa l'inici automàtic per a aquesta aplicació"
+msgstr "Activa l'inici automàtic durant l'inici"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:903
 #, kde-format
 msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
 msgstr ""
+"Sensibilitat baixa per a l'efecte parabòlic (ús baix de la CPU i rendiment)"
 
 #. i18n: ectx: property (text), widget (QToolButton, lowSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:906
 #, kde-format
 msgctxt "low sensitivity"
 msgid "Low"
-msgstr ""
+msgstr "Baixa"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, mediumSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:934
@@ -1534,39 +1509,41 @@ msgstr ""
 msgid ""
 "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
 msgstr ""
+"Sensibilitat mitjana per a l'efecte parabòlic (ús normal de la CPU i "
+"rendiment)"
 
 #. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:937
 #, kde-format
 msgctxt "medium sensitivity"
 msgid "Medium"
-msgstr ""
+msgstr "Mitjana"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, highSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:965
 #, kde-format
 msgid "High sensitivity for parabolic effect (high cpu usage and performance)"
 msgstr ""
+"Sensibilitat alta per a l'efecte parabòlic (ús alt de la CPU i rendiment)"
 
 #. i18n: ectx: property (text), widget (QToolButton, highSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:968
 #, kde-format
 msgctxt "high sensitivity"
 msgid "High"
-msgstr ""
+msgstr "Alta"
 
 #. i18n: ectx: property (text), widget (QLabel, mouseSensitivityLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:978
 #, kde-format
 msgid "mouse sensitivity"
-msgstr ""
+msgstr "sensibilitat del ratolí"
 
 #. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1034
-#, fuzzy, kde-format
-#| msgid "Appearance"
+#, kde-format
 msgid "Appearance:"
-msgstr "Aparença"
+msgstr "Aparença:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1046
@@ -1575,31 +1552,32 @@ msgid ""
 "Forward ⌘ press from KWin to Latte in order to activate Application "
 "Launcher. It is suggested to disable that option if you remove Latte."
 msgstr ""
+"Reenvia la tecla ⌘ des del KWin al Latte per tal d'activar el llançador "
+"d'aplicacions. Se suggereix desactivar aquesta opció si elimineu el Latte."
 
 #. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1049
 #, kde-format
 msgid "Press ⌘ to activate Application Launcher"
-msgstr ""
+msgstr "Premeu ⌘ per a activar el llançador d'aplicacions"
 
 #. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1071
 #, kde-format
 msgid "Context Menu:"
-msgstr ""
+msgstr "Menú contextual:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:1100
-#, fuzzy, kde-format
-#| msgid "Actions"
+#, kde-format
 msgid "Actions..."
-msgstr "Accions"
+msgstr "Accions..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1122
 #, kde-format
 msgid "Inform Plasma desktop for available desktop space"
-msgstr ""
+msgstr "Informa l'escriptori Plasma de l'espai disponible de l'escriptori"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
@@ -2162,11 +2140,9 @@ msgstr "Aplica tots els canvis a l'acoblador i als plafons"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
 #: app/settings/viewsdialog/viewsdialog.ui:14
-#, fuzzy, kde-format
-#| msgctxt "<layout name> Docks/Panels"
-#| msgid "%1 Docks/Panels"
+#, kde-format
 msgid "Docks/Panels"
-msgstr "Acobladors/Plafons de %1"
+msgstr "Acobladors/Plafons"
 
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
