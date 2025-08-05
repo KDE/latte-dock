@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-05 05:54+0000\n"
-"PO-Revision-Date: 2025-01-04 21:51+0400\n"
+"PO-Revision-Date: 2025-08-04 18:36+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -435,7 +435,7 @@ msgstr "نافذة منظور المعلومات"
 #: app/package/lattepackage.cpp:47
 #, kde-format
 msgid "default layout file"
-msgstr "ملفّ التّخطيط الافتراضيّ"
+msgstr "ملفّ التخطيط المبدئي"
 
 #: app/package/lattepackage.cpp:48
 #, kde-format
@@ -537,7 +537,7 @@ msgstr ""
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
-msgstr "التّخطيطات"
+msgstr "التخطيطات"
 
 #: app/settings/actionsdialog/actionshandler.cpp:68
 #, fuzzy, kde-format
@@ -699,7 +699,7 @@ msgstr "لون النّصّ..."
 #: app/settings/viewsdialog/viewsdialog.ui:47
 #, kde-format
 msgid "Layout:"
-msgstr "التّخطيط:"
+msgstr "التخطيط:"
 
 #. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:418
@@ -1343,7 +1343,7 @@ msgstr "إعدادات"
 #: app/settings/settingsdialog/settingsdialog.ui:36
 #, kde-format
 msgid "Layouts Editor"
-msgstr "محرّر التّخطيطات"
+msgstr "محرّر التخطيطات"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
@@ -1548,7 +1548,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:876
 #, kde-format
 msgid "Enable autostart during startup"
-msgstr "فعّل البدء الآليّ عند البدء"
+msgstr "مكّن البدء الآليّ عند البدء"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:903
@@ -1637,7 +1637,7 @@ msgstr ""
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
 msgid "Layout"
-msgstr "التّخطيط"
+msgstr "التخطيط"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:115
 #, kde-format
@@ -3430,7 +3430,7 @@ msgstr "ظلال البريمجات"
 #, kde-format
 msgctxt "default shadow"
 msgid "Default Color"
-msgstr "اللون الافتراضيّ"
+msgstr "اللون المبدئيّ"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
