@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-05 05:54+0000\n"
-"PO-Revision-Date: 2025-01-11 19:54+0100\n"
+"PO-Revision-Date: 2025-08-11 23:29+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.12.0\n"
+"X-Generator: Lokalize 25.04.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -35,19 +35,19 @@ msgstr "ander.elor@gmail.com,xalba@ni.eus"
 #: app/indicator/factory.cpp:267
 #, kde-format
 msgid "Failed to import indicator"
-msgstr "Huts egin du adierazlea inportatzea"
+msgstr "Adierazlea inportatzea huts egin du"
 
 #: app/indicator/factory.cpp:273
 #, kde-format
 msgctxt "indicator_name, imported updated"
 msgid "%1 indicator updated successfully"
-msgstr "%1 adierazlearen eguneratze arrakastatsua"
+msgstr "%1 adierazlea ondo eguneratu da"
 
 #: app/indicator/factory.cpp:274
 #, kde-format
 msgctxt "indicator_name, imported success"
 msgid "%1 indicator installed successfully"
-msgstr "%1 adierazlearen instalatze arrakastatsua"
+msgstr "%1 adierazlea ondo instalatu da"
 
 #: app/indicator/factory.cpp:354
 #, kde-format
@@ -63,36 +63,36 @@ msgstr "Zure sistematik <b>%1</b> adierazlea erabat kendu nahi duzu?"
 #, kde-format
 msgctxt "indicator_name, removed success"
 msgid "<b>%1</b> indicator removed successfully"
-msgstr "<b>%1</b> adierazle kentze arrakastatsua"
+msgstr "<b>%1</b> adierazlea ondo kendu da"
 
 #: app/lattecorona.cpp:1118 app/lattecorona.cpp:1141
 #, kde-format
 msgid "The layout cannot be imported from file :: "
-msgstr "Antolamendua ezin izan da fitxategitik inportatu :: "
+msgstr "Antolaera ezin da fitxategitik inportatu :: "
 
 #: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
 #: app/layouts/manager.cpp:73 app/layouts/manager.cpp:80
 #: app/layouts/manager.cpp:92
 #, kde-format
 msgid "My Layout"
-msgstr "Nire antolamendua"
+msgstr "Nire antolaera"
 
 #: app/layouts/importer.cpp:64
 #, kde-format
 msgid "Alternative"
-msgstr "Ordezkoa"
+msgstr "Alternatiboa"
 
 #: app/layouts/importer.cpp:324
 #, kde-format
 msgctxt "import/export config"
 msgid "The extracted file could not be copied!!!"
-msgstr "Ezin da kopiatu ateratako fitxategia!!!"
+msgstr "Ateratako fitxategia ezin izan da kopiatu!!!"
 
 #: app/layouts/importer.cpp:329
 #, kde-format
 msgctxt "import/export config"
 msgid "The file has a wrong format!!!"
-msgstr "Fitxategiak formatu okerra dauka!!!"
+msgstr "Fitxategiak formatu okerra du!!!"
 
 #: app/layouts/importer.cpp:335
 #, kde-format
@@ -134,7 +134,7 @@ msgstr "ID bereko aplikaziotxo ezberdinak"
 #: app/layouts/storage.cpp:49
 #, kde-format
 msgid "Orphaned Parent Applet Of Subcontainment"
-msgstr "Azpi-edukitzailearen Zurztutako guraso aplikaziotxoa"
+msgstr "Azpi-edukitzailearen zurztutako guraso aplikaziotxoa"
 
 #: app/layouts/storage.cpp:50
 #, kde-format
@@ -150,8 +150,8 @@ msgstr "Zurztutako azpi-edukitzailea"
 #, kde-format
 msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
-msgstr[0] "Antolaera aktibatzea: <b>%2</b> ..."
-msgstr[1] "Antolaera aktibatzea: <b>%2</b> ..."
+msgstr[0] "Antolaera aktibatzen: <b>%2</b> ..."
+msgstr[1] "Antolaerak aktibatzen: <b>%2</b> ..."
 
 #: app/main.cpp:97
 #, kde-format
@@ -176,55 +176,55 @@ msgstr ""
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
-msgstr "Aplikazio honetarako abio automatikoa gaitu"
+msgstr "Aplikazio honetarako gaitu abio automatikoa"
 
 #: app/main.cpp:101
 #, kde-format
 msgctxt "command line"
 msgid "Disable autostart for this application"
-msgstr "Aplikazio honetarako abio automatikoa ezgaitu"
+msgstr "Aplikazio honetarako ezgaitu abio automatikoa"
 
 #: app/main.cpp:102
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
-msgstr "Inportatu eta kargatu antolamendu lehenetsia abiaraztean."
+msgstr "Inportatu eta zamatu antolaera lehenetsia abiaraztean."
 
 #: app/main.cpp:103
 #, kde-format
 msgctxt "command line"
 msgid "Print available layouts"
-msgstr "Inprimatu antolamendu erabilgarriak"
+msgstr "Inprimatu antolaera erabilgarriak"
 
 #: app/main.cpp:104
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
-msgstr "Kai-txantiloi erabilgarriak inprimatu"
+msgstr "Inprimatu kai-txantiloi erabilgarriak"
 
 #: app/main.cpp:105
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr "Antolaera-txantiloi erabilgarriak inprimatu"
+msgstr "Inprimatu antolaera-txantiloi erabilgarriak"
 
 #: app/main.cpp:106
 #, kde-format
 msgctxt "command line"
 msgid "Load specific layout on startup."
-msgstr "Kargatu antolaera zehatza abiaraztean"
+msgstr "Zamatu antolaera espezifikoa abiaraztean."
 
 #: app/main.cpp:106
 #, kde-format
 msgctxt "command line: load"
 msgid "layout_name"
-msgstr "Antolaera_izena"
+msgstr "antolaera_izena"
 
 #: app/main.cpp:107
 #, kde-format
 msgctxt "command line"
 msgid "Import and load a layout."
-msgstr "Inportatu eta kargatu antolaera"
+msgstr "Inportatu eta zamatu antolaera bat."
 
 #: app/main.cpp:107
 #, kde-format
@@ -236,7 +236,7 @@ msgstr "fitxategibideizen_absolutua"
 #, kde-format
 msgctxt "command line"
 msgid "Suggested layout name when importing a layout file"
-msgstr "Antolaera fitxategi bat inportatzean iradokitako antolaera izena"
+msgstr "Antolaera fitxategi bat inportatzean iradokitako antolaera-izena"
 
 #: app/main.cpp:108
 #, kde-format
@@ -254,7 +254,7 @@ msgstr "Inportatu konfigurazio osoa."
 #, kde-format
 msgctxt "command line: import"
 msgid "file_name"
-msgstr "Fitxategi_izena"
+msgstr "fitxategi_izena"
 
 #: app/main.cpp:110
 #, kde-format
@@ -273,8 +273,8 @@ msgstr "txantiloi_izena"
 msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
-"Antolaera bakarreko memoria modua. Antolaera bakarra dago aktibo kasu "
-"guztietan."
+"Antolaera bakarreko memoria modua. Kasu guztietan antolaera bakarra "
+"aktibatuta dago."
 
 #: app/main.cpp:112
 #, kde-format
@@ -471,7 +471,7 @@ msgstr "hainbat antolaeren ezkutuko fitxategia"
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr "Gainerako batean aplikaziotxo bat erakusten duen QML osagaia"
+msgstr "Leiho gainerakor batean aplikaziotxo bat erakusten duen QML osagaia"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
 #, kde-format
@@ -647,17 +647,15 @@ msgstr "Ikonoa:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
-#, fuzzy, kde-format
-#| msgid "Window actions in the context menu"
+#, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "Leihoen ekintzak laster-menuan"
+msgstr "Erakutsi antolaeren testuinguru-menuan ahal den guztietan"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
-#, fuzzy, kde-format
-#| msgid "Margins"
+#, kde-format
 msgid "PopUp Margin:"
-msgstr "Marjinak"
+msgstr "Leiho gainerakorraren marjina:"
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
@@ -709,16 +707,13 @@ msgid "%1 Details"
 msgstr "%1 xehetasunak"
 
 #: app/settings/detailsdialog/detailshandler.cpp:453
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
 "changes or discard them?"
 msgstr ""
-"<b>%0</b> fitxaren ezarpenak aldatu dira. Aldaketak aplikatu nahi dituzu edo "
-"baztertu?"
+"<b>%1</b> antolaeraren ezarpenak aldatu egin dira.<br/>Aldaketak aplikatu "
+"edo baztertu nahi dituzu?"
 
 #: app/settings/detailsdialog/patternwidget.cpp:48
 #, kde-format
@@ -857,6 +852,8 @@ msgid ""
 "<i>%1</i> does not end with <i>.layout.latte</i> extension. Selected file "
 "<b>rejected</b>."
 msgstr ""
+"<i>%1</i> ez da <i>.layout.latte</i> luzapenarekin bukatzen. Hautatutako "
+"fitxategi <b>errefusatu</b> da."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:186
 #, kde-format
@@ -864,14 +861,14 @@ msgid ""
 "<i>%1</i> does not end with <i>.view.latte</i> extension. Selected file "
 "<b>rejected</b>."
 msgstr ""
+"<i>%1</i> ez da <i>.view.latte</i> luzapenarekin bukatzen. Hautatutako "
+"fitxategi <b>errefusatu</b> da."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:213
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export fail"
-#| msgid "Layout <b>%0</b> export <b>failed</b>..."
+#, kde-format
 msgctxt "settings:template export fail"
 msgid "Template <b>%1</b> export <b>failed</b>..."
-msgstr "<b>%0</b> antolamenduaren esportazioak <b>huts egin</b> du..."
+msgstr "<b>%1</b> txantiloiaren esportazioak <b>huts egin</b> du..."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:222
 #: app/settings/settingsdialog/settingsdialog.cpp:348
@@ -883,39 +880,33 @@ msgid "Open Location..."
 msgstr "Ireki kokalekua..."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export success"
-#| msgid "Layout <b>%0</b> export succeeded..."
+#, kde-format
 msgctxt "settings:template export success"
 msgid "Template <b>%1</b> export succeeded..."
-msgstr "<b>%0</b> antolamendua ondo inportatua..."
+msgstr "<b>%1</b> txantiloia ondo esportatu da..."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
 msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
-msgstr ""
+msgstr "Jada badago \"%1\" fitxategia. Gainidatzi nahi duzu?"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
 #, kde-format
 msgid "Overwrite File?"
-msgstr ""
+msgstr "Fitxategia gainidatzi?"
 
 #: app/settings/generic/genericdialog.cpp:69
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings have changed.<br/>Do you want to apply the changes or discard "
 "them?"
 msgstr ""
-"<b>%0</b> fitxaren ezarpenak aldatu dira. Aldaketak aplikatu nahi dituzu edo "
-"baztertu?"
+"Ezarpenak aldatu egin dira.<br/>Aldaketak aplikatu edo baztertu nahi dituzu?"
 
 #: app/settings/generic/genericdialog.cpp:73
 #, kde-format
 msgid "Apply Settings"
-msgstr "Ezarpenak ezarri"
+msgstr "Aplikatu ezarpenak"
 
 #: app/settings/generic/genericdialog.cpp:107
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:588
@@ -924,11 +915,10 @@ msgid "Hide"
 msgstr "Ezkutatu"
 
 #: app/settings/screensdialog/screensdialog.cpp:69
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgctxt "remove selected screens"
 msgid "Remove Now"
-msgstr "Kendu"
+msgstr "Kendu orain"
 
 #: app/settings/screensdialog/screensdialog.cpp:71
 #, fuzzy, kde-format
@@ -1255,16 +1245,13 @@ msgid "Full configuration export succeeded..."
 msgstr "Konfigurazio osoa ondo esportatu da..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:477
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
 msgstr ""
-"<b>%0</b> fitxaren ezarpenak aldatu dira. Aldaketak aplikatu nahi dituzu edo "
-"baztertu?"
+"<b>%1</b> fitxaren ezarpenak aldatu egin dira.<br/>Aldaketak aplikatu edo "
+"baztertu nahi dituzu?"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
 #: app/settings/settingsdialog/settingsdialog.ui:26
@@ -2287,16 +2274,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: app/settings/viewsdialog/viewshandler.cpp:537
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
 "changes <b>now</b> or discard them?"
 msgstr ""
-"<b>%0</b> fitxaren ezarpenak aldatu dira. Aldaketak aplikatu nahi dituzu edo "
-"baztertu?"
+"<b>%1</b> antolaeraren ezarpenak aldatu egin dira.<br/>Aldaketak <b>orain</"
+"b> aplikatu edo baztertu nahi dituzu?"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:190
 #, kde-format
@@ -2518,7 +2502,7 @@ msgstr "Panel hutsa"
 #, kde-format
 msgctxt "%1 is the name of the containment"
 msgid "%1 Options"
-msgstr "%1-(r)en aukerak"
+msgstr "%1(r)en aukerak"
 
 #: app/view/settings/indicatoruimanager.cpp:170
 #, kde-format
@@ -3256,15 +3240,16 @@ msgstr ""
 "ezgaitua dagoenean"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:776
-#, fuzzy, kde-format
-#| msgid "Activate through mouse wheel"
+#, kde-format
 msgid "Expand popup through mouse wheel"
-msgstr "Aktibatu saguaren gurpilaz"
+msgstr "Zabaldu gainerakorra saguaren gurpilaren bidez"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:777
 #, kde-format
 msgid "Show or Hide applet popup through mouse wheel action"
 msgstr ""
+"Erakutsi edo ezkutatu aplikaziotxoaren leiho gainerakorra saguaren "
+"gurpilaren ekintzen bidez"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:789
 #, fuzzy, kde-format
@@ -3578,10 +3563,9 @@ msgid "Window actions in the context menu"
 msgstr "Leihoen ekintzak laster-menuan"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:158
-#, fuzzy, kde-format
-#| msgid "Preview Windows"
+#, kde-format
 msgid "Preview window behaves as popup"
-msgstr "Aurreikusi leihoak"
+msgstr "Aurreikuspegi leihoa gainerakor gisa jokatzen du"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:171
 #, fuzzy, kde-format
