@@ -131,7 +131,7 @@ msgstr "أغلق النّافذة/المجموعة"
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
 msgid "New Instance"
-msgstr "سيرورة جديدة"
+msgstr "نسخة جديدة"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -298,7 +298,7 @@ msgstr "اكتم"
 #: package/contents/ui/ContextMenu.qml:343
 #, kde-format
 msgid "Start New Instance"
-msgstr "ابدأ سيرورة جديدة"
+msgstr "ابدأ نسخة جديدة"
 
 #: package/contents/ui/ContextMenu.qml:360
 #, kde-format

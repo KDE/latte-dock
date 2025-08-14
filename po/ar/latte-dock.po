@@ -344,7 +344,7 @@ msgstr ""
 #: app/main.cpp:324
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr "هناك سيرورة تعمل بالفعل! جربّ ‎--replace لإعادة تشغيل «لاتيه»k"
+msgstr "هناك نسخة تعمل بالفعل! جربّ ‎--replace لإعادة تشغيل «لاتيه»k"
 
 #: app/main.cpp:346
 #, kde-format
@@ -3828,7 +3828,7 @@ msgstr "أغلق النّافذة/المجموعة"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:708
 #, kde-format
 msgid "New Instance"
-msgstr "سيرورة جديدة"
+msgstr "نسخة جديدة"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:590
 #: shell/package/contents/configuration/pages/TasksConfig.qml:708
