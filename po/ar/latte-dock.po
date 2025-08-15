@@ -344,7 +344,7 @@ msgstr ""
 #: app/main.cpp:324
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
-msgstr "هناك نسخة تعمل بالفعل! جربّ ‎--replace لإعادة تشغيل «لاتيه»k"
+msgstr "هناك نسخة تعمل فعلًا! جربّ ‎--replace لإعادة تشغيل «لاتيه»k"
 
 #: app/main.cpp:346
 #, kde-format
@@ -927,7 +927,7 @@ msgstr "استوردتُ التّخطيط <b>%0</b> بنجاح\n"
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
 msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
-msgstr "الملفّ ”%1“ موجود بالفعل. أتريد الكتابة فوقه؟"
+msgstr "الملفّ ”%1“ موجود فعلًا. أتريد الكتابة فوقه؟"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
 #, kde-format
