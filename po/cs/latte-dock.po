@@ -476,10 +476,9 @@ msgstr "Překlady"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
 #: app/settings/actionsdialog/actionsdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Context Menu:"
+#, kde-format
 msgid "Context Menu Actions"
-msgstr "Místní nabídka:"
+msgstr ""
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
@@ -624,18 +623,15 @@ msgstr "Ikona:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
-#, fuzzy, kde-format
-#| msgctxt "layout missing"
-#| msgid "This layout doesn't exist in the system."
+#, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "Toto rozvržení v systému neexistuje."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
-#, fuzzy, kde-format
-#| msgid "Margins"
+#, kde-format
 msgid "PopUp Margin:"
-msgstr "Okraje"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
@@ -1421,11 +1417,9 @@ msgstr "Spustit aplikaci automaticky při každém přihlášení"
 
 #. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:876
-#, fuzzy, kde-format
-#| msgctxt "command line"
-#| msgid "Enable autostart for this application"
+#, kde-format
 msgid "Enable autostart during startup"
-msgstr "Povolit automatické spuštění této aplikace"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, lowSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:903
