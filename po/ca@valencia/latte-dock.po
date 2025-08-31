@@ -761,7 +761,7 @@ msgstr "Torna a exportar"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr "Selecciona-ho tot"
+msgstr "Tria-ho tot"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
@@ -780,7 +780,7 @@ msgstr "Fitxer:"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr "Seleccioneu…"
+msgstr "Trieu…"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
@@ -824,18 +824,18 @@ msgstr "Exporta una plantilla de %1"
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
 msgid "Choose Layout Template file"
-msgstr "Seleccioneu el fitxer de plantilla de disposició"
+msgstr "Trieu el fitxer de plantilla de disposició"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
 msgid "Choose View Template file"
-msgstr "Seleccioneu el fitxer de plantilla de vista"
+msgstr "Trieu el fitxer de plantilla de vista"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:151
 #, kde-format
 msgctxt "choose file"
 msgid "Choose"
-msgstr "Seleccioneu"
+msgstr "Trieu"
 
 # skip-rule: kct-dock
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
