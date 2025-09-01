@@ -749,7 +749,7 @@ msgstr "Torna a exportar"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr "Tria-ho tot"
+msgstr "Selecciona-ho tot"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
@@ -768,7 +768,7 @@ msgstr "Fitxer:"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
 #, kde-format
 msgid "Choose..."
-msgstr "Trieu…"
+msgstr "Tria…"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
