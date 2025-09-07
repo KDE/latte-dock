@@ -1,5 +1,5 @@
-About
-=====
+# <img src="logo.png" width="48"/> Latte Dock
+
 Latte is a dock based on plasma frameworks that provides an elegant and intuitive experience for your tasks and plasmoids. It animates its contents by using parabolic zoom effect and tries to be there only when it is needed.
 
 **"Art in Coffee"**
@@ -21,7 +21,7 @@ Development
 Installation
 ============
 
-## Requirements
+### Requirements
 
 We need to use at least:
 
@@ -71,38 +71,38 @@ Minimum requirements:
     libSM
 ```
 
-## From repositories
+### From repositories
 
-### Ubuntu/Debian
+#### Ubuntu/Debian
 
 - [Ubuntu](https://packages.ubuntu.com/bionic/latte-dock)
 
-### openSUSE
+#### OpenSUSE
 
 - [openSUSE](https://software.opensuse.org/package/latte-dock?search_term=latte+dock)
 - [psifidotos - OBS](https://software.opensuse.org//download.html?project=home%3Apsifidotos&package=latte-dock)
 
-### Fedora
+#### Fedora
 
 - [Fedora](https://koji.fedoraproject.org/koji/packageinfo?packageID=24229)
 
-### Arch Linux
+#### Arch Linux
 
 - [Arch Linux](https://aur.archlinux.org/packages/latte-dock)
 
-### Gentoo
+#### Gentoo
 
 - [Gentoo](https://packages.gentoo.org/packages/kde-misc/latte-dock)
 
-### Solus Project
+#### Solus Project
 
 - [Solus](https://packages.solus-project.com/shannon/l/latte-dock/)
 
-### Void Linux
+#### Void Linux
 
 - [Void Linux](https://github.com/void-linux/void-packages/tree/master/srcpkgs/latte-dock)
 
-### FreeBSD
+#### FreeBSD
 - [FreeBSD Port](https://www.freshports.org/deskutils/latte-dock/)
 
 See the [installation instructions](./INSTALLATION.md) for other Linux distributions or development builds
