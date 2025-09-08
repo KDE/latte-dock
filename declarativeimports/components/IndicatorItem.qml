@@ -101,7 +101,7 @@ Item {
     //! [since v0.9.2]
     //property int level.requested.iconOffsetY: 0
 
-    //! indicator requests different icon tranform origin
+    //! indicator requests different icon transform origin
     //! [since v0.10.4]
     //property int level.requested.iconTransformOrigin: Item.Center
 

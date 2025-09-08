@@ -176,8 +176,8 @@ Item {
     //! Applets OnTop MouseArea which is used for ParabolicEffect and ThinTooltips. For Latte panels things
     //! are pretty straight, the original plasma behavior is replicated so parabolic effect and thin tooltips are disabled.
     //! For Latte docks things are a bit more complicated. Applets that can not support parabolic effect inside docks
-    //! are presenting their original plasma behavior and also applets that even though can be zoomed user has
-    //! chosed to lock its parabolic effect.
+    //! are presenting their original plasma behavior and also applets that even though can be zoomed user has chose
+    //! to lock its parabolic effect.
     readonly property bool originalAppletBehavior: root.behaveAsPlasmaPanel
                                                    || !parabolicEffectIsSupported
                                                    || (root.behaveAsDockWithMask && !parabolicEffectIsSupported)

@@ -153,7 +153,7 @@
 * Provide KDE frameworks official way to set application's language
 * add hidden debug option for "--kwinedges"
 * paint properly the dock settings window external shadows
-* fix margins/padding for applets that must follow Fitt's Law at the thick screen edge and at the same time be consisten with all surrounding applets
+* fix margins/padding for applets that must follow Fitt's Law at the thick screen edge and at the same time be consistent with all surrounding applets
 * add new LastActiveWindow APIs for window properties Closable/Minimizable/Maximizable etc. and provide them to applets. Applet Window Buttons applet is already using it in order to identify buttons that should not be drawn for specific windows
 * add availableScreenRegion calculations for Left and Right screen edge docks/panels in order to be ready for new Plasma 5.18 API that will let us expose to plasma what are the free areas that are not occupied by Latte panels/docks
 * fix wayland crash when showing dock settings window
@@ -401,7 +401,7 @@ inform them when they are in a Latte panel/dock and when they dont want any chan
 #### Version 0.7.3
 
 * support RTL languages
-* fix crash occuring from badges
+* fix crash occurring from badges
 * improve shadow behavior and calculations for corner cases
 * support "nomad systray" and "kdeconnect sms" in Latte heuristics
 * expand applets when clicked at neutral areas
@@ -468,7 +468,7 @@ inform them when they are in a Latte panel/dock and when they dont want any chan
 * remember last active window in a tasks group and use the mouse wheel to cycle through a tasks group
 * restart Latte in case of a crash
 * overlay over plasma applets such as forlderview in order to provide correct parabolic effect (bug: showing problematic animations for icon sizes smaller of 64px)
-* provide our own build-in active applet indicator in case the user wants to have uniformity across its docks
+* provide our own built-in active applet indicator in case the user wants to have uniformity across its docks
 * move the lock button from the drag area into the tooltip
 * disable automatic icon size shrinking when a plasma taskmanager is used
 * improvements for parabolic effect and  various animations
@@ -607,7 +607,7 @@ inform them when they are in a Latte panel/dock and when they dont want any chan
 * #199, AbstractWindowInterface is now a shared resource
 * #199, QQuickWindowSystem replacement of WindowSystem
 
-* avoid overlaping
+* avoid overlapping
 * improvements to no compositing
 * added multi screen support
 * added a lot information into debug window

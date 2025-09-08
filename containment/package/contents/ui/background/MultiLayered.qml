@@ -258,7 +258,7 @@ BackgroundProperties{
                                                     && kirigamiLibraryIsFound
 
     //!current shadow state but do not change other values of normal mode, for example if a Dock hides its screen edge thickness
-    //!shouldnt change the fact that customShadowedRectangle is still used
+    //!shouldn't change the fact that customShadowedRectangle is still used
     readonly property bool customShadowIsEnabled: (customDefShadowIsEnabled || customUserShadowIsEnabled) && panelShadowsActive
     readonly property bool customDefShadowIsEnabled: customShadowIsSupported && !customUserShadowIsEnabled && customRadiusIsEnabled
     readonly property bool customUserShadowIsEnabled: customShadowIsSupported && plasmoid.configuration.backgroundShadowSize >= 0

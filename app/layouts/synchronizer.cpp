@@ -686,7 +686,7 @@ bool Synchronizer::initSingleMode(QString layoutName)
         //! Step1: corona is set for the layout
         //! Step2: containments from file are loaded into main corona
         //! Step3: layout connects to corona signals and slots
-        //! Step4: layout is added in manager and is accesible for others to find
+        //! Step4: layout is added in manager and is accessible for others to find
         //! Step5: layout is attaching its initial containmens and is now considered ACTIVE
         newLayout->setCorona(m_manager->corona()); //step1
         m_manager->loadLatteLayout(layoutpath);    //step2
@@ -989,7 +989,7 @@ void Synchronizer::syncMultipleLayoutsToActivities(QStringList preloadedLayouts)
                 //! Step1: corona is set for the layout
                 //! Step2: containments from the layout file are adjusted and are imported into main corona
                 //! Step3: layout connects to corona signals and slots
-                //! Step4: layout is added in manager and is accesible for others to find
+                //! Step4: layout is added in manager and is accessible for others to find
                 //! Step5: layout is attaching its initial containmens and is now considered ACTIVE
                 newLayout->setCorona(m_manager->corona()); //step1
                 if (!preloadedLayouts.contains(layoutname)) {

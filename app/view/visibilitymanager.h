@@ -224,8 +224,8 @@ private:
     //! This timer is very important because it blocks how fast struts are updated.
     //! By using this timer we help the window manager in order to correspond to new
     //! struts (for example changing windows maximized state or geometry) without
-    //! createing binding loops between the app and the window manager.
-    //! That was reproducable in a floating panel when we were dragging the active window.
+    //! creating binding loops between the app and the window manager.
+    //! That was reproducible in a floating panel when we were dragging the active window.
     QTimer m_timerBlockStrutsUpdate;
 
     bool m_isBelowLayer{false};

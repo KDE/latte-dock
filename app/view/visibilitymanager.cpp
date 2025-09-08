@@ -28,7 +28,7 @@
 #include <KWayland/Client/surface.h>
 
 //! Hide Timer can create cases that when it is low it does not allow the
-//! view to be show. For example !compositing+kwin_edges+hide inteval<50ms
+//! view to be show. For example !compositing+kwin_edges+hide interval<50ms
 //!   FIXED: As it appears because we dont hide any view anymore before its sliding in
 //!   animation has ended that probably allows to set the hide minimum interval to zero
 //!   without any further issues, such as to not show the view even though the

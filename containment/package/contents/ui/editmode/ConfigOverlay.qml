@@ -110,7 +110,7 @@ MouseArea {
 
             var mousesink = {x: mouse.x, y: mouse.y};
 
-            //! ignore thicknes moving at all cases
+            //! ignore thickness moving at all cases
             if (plasmoid.formFactor === PlasmaCore.Types.Horizontal) {
                 mousesink.y = configurationArea.height / 2;
             } else {

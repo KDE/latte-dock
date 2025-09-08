@@ -22,7 +22,7 @@ Item {
     id: tasksExtManager
 
     /// Launchers that are playing an ADD or REMOVAL animation
-    /// and their Starups/Windows should be aware of
+    /// and their Startups/Windows should be aware of
     property variant waitingLaunchers: []
 
     //! Launchers that must be shown IMMEDIATELY after a window removal

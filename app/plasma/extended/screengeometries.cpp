@@ -141,7 +141,7 @@ void ScreenGeometries::setPlasmaAvailableScreenRegion(const QString &screenName,
 
     QList<QRect> rects;
     if (!region.isNull()) {
-        //! transorm QRegion to QList<QRect> in order to be sent through dbus
+        //! transform QRegion to QList<QRect> in order to be sent through dbus
         foreach (const QRect &rect, region) {
             rects << rect;
         }

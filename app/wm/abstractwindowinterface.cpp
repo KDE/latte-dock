@@ -398,7 +398,7 @@ void AbstractWindowInterface::switchToPreviousActivity()
     activitiesController.setCurrentActivity(runningActivities.at(nextPos));
 }
 
-//! Delay window changed trigerring
+//! Delay window changed triggering
 void AbstractWindowInterface::considerWindowChanged(WindowId wid)
 {
     //! Consider if the windowChanged signal should be sent DIRECTLY or WAIT

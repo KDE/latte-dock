@@ -42,8 +42,8 @@ Loader {
 
         //! max size based on screen resolution
         //!    TODO: if we can access availableScreenGeometry.height this can be improved, currently
-        //!    we use 100px. or 50px. in order to give space for othe views to be shown and to have also
-        //!    some space around the settings window
+        //!    we use 100px. or 50px. in order to give space for other views to be shown and to also
+        //!    have some space around the settings window
         property int maxHeight: plasmoid.formFactor === PlasmaCore.Types.Horizontal ?
                                     viewConfig.availableScreenGeometry.height - canvasHeadThickness - units.largeSpacing :
                                     viewConfig.availableScreenGeometry.height - 2 * units.largeSpacing

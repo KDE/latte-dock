@@ -510,7 +510,7 @@ PlasmaComponents.Page {
                 }
             }
         }
-        //! END: Scolling
+        //! END: Scrolling
 
 
         //! BEGIN: Actions

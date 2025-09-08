@@ -77,7 +77,7 @@ private:
 private:
     bool m_metaShowedViews{false};
 
-    //! last action that was trigerred from the user
+    //! last action that was triggered from the user
     QAction *m_lastInvokedAction;
     //! it is used for code compatibility reasons in order to replicate a single Meta action
     QAction *m_singleMetaAction;

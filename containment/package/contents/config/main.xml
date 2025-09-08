@@ -192,7 +192,7 @@
     </entry>
     <entry name="maximizeWhenMaximized" type="Bool">
       <default>false</default>
-      <label>Maximize panel in presense of maximized windows</label>
+      <label>Maximize panel in presence of maximized windows</label>
     </entry>
     <entry name="dragActiveWindowEnabled" type="Bool">
       <default>false</default>

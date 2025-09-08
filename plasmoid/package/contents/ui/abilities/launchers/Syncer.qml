@@ -48,7 +48,7 @@ Item {
         }
     }
 
-    //! All following actions are triggerred from Main SyncedLaunchers handler
+    //! All following actions are triggered from Main SyncedLaunchers handler
     function addSyncedLauncher(group, launcher) {
         if (group === _launchers.group) {
             tasksModel.requestAddLauncher(launcher);

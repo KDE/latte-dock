@@ -221,7 +221,7 @@ void OriginalView::syncClonesToScreens()
     }
 
     if (m_screensGroup == Latte::Types::AllSecondaryScreensGroup) {
-        //! occuped screen from original view in "allsecondaryscreensgroup" must be ignored
+        //! occupied screen from original view in "allsecondaryscreensgroup" must be ignored
         secondaryscreens.removeAll(expectedScreenIdFromScreenGroup(m_screensGroup));
     }
 

@@ -84,7 +84,7 @@ void Menu::restore(const KConfigGroup &config)
     //! Print Message...
     m_actions[Latte::Data::ContextMenu::PRINTACTION] = new QAction(QIcon::fromTheme("edit"), "Print Message...", this);
     connect(m_actions[Latte::Data::ContextMenu::PRINTACTION], &QAction::triggered, [ = ]() {
-        qDebug() << "Action Trigerred !!!";
+        qDebug() << "Action Triggered !!!";
     });
 
     //! Add Widgets...

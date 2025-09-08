@@ -82,7 +82,7 @@ AbilityItem.BasicItem {
     property bool isLauncherAnimationRunning: isLauncherBuiltinAnimationRunning
                                               || (taskItem.abilities.indicators.info.providesTaskLauncherAnimation && isIndicatorTaskLauncherAnimationRunning)
 
-    //! after clicking to show/hide preview enter events are trigerred even though the should not
+    //! after clicking to show/hide preview enter events are triggered even though the should not
     property bool showPreviewsIsBlockedFromReleaseEvent: false
 
     property bool isAbleToShowPreview: true
@@ -607,7 +607,7 @@ AbilityItem.BasicItem {
             contextMenu = root.createContextMenu(taskItem, modelIndex(), args);
             contextMenu.show();
         } else {
-            //! make sure that context menu isnt deleted multiple times and creates a crash
+            //! make sure that context menu isn't deleted multiple times and creates a crash
             //! bug case: 397635
             var cMenu = root.contextMenu;
             root.contextMenu = null;

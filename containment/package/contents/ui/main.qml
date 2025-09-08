@@ -70,7 +70,7 @@ Item {
     }
 
     property int viewTypeInQuestion: {
-        //! viewType as chosen before considering other optios such as floating internal gap enforcement.
+        //! viewType as chosen before considering other options such as floating internal gap enforcement.
         //! It helps with binding loops
         if (!latteView || !latteView.visibility) {
             return LatteCore.Types.DockView;

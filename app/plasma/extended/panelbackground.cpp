@@ -283,7 +283,7 @@ void PanelBackground::updateRoundnessFromMask(Plasma::Svg *svg)
                     QRgb *line = (QRgb *)corner.scanLine(r);
                     QRgb fpoint = line[baseCol];
                     if (qAlpha(fpoint) == 0) {
-                        //! a line that is not part of the roundness because its first pixel is not trasparent
+                        //! a line that is not part of the roundness because its first pixel is not transparent
                         break;
                     }
 
@@ -380,7 +380,7 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                 QRgb *line = (QRgb *)corner.scanLine(r);
                 QRgb fpoint = line[baseCol];
                 if (qAlpha(fpoint) != 0) {
-                    //! a line that is not part of the roundness because its first pixel is not trasparent
+                    //! a line that is not part of the roundness because its first pixel is not transparent
                     break;
                 }
 
@@ -448,7 +448,7 @@ void PanelBackground::updateRoundnessFromShadows(Plasma::Svg *svg)
                 QRgb *line = (QRgb *)corner.scanLine(r);
                 QRgb fpoint = line[baseCol];
                 if (qAlpha(fpoint) != 0) {
-                    //! a line that is not part of the roundness because its first pixel is not trasparent
+                    //! a line that is not part of the roundness because its first pixel is not transparent
                     break;
                 }
 

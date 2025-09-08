@@ -225,7 +225,7 @@ QUrl windowUrlFromMetadata(const QString &appId, quint32 pid,
             }
 
             // Some apps, such as Wine, cannot use xWindowsWMClassName to map to launcher name - as Wine itself is not a GUI app
-            // So, Settings/ManualOnly lists window classes where the user will always have to manualy set the launcher ...
+            // So, Settings/ManualOnly lists window classes where the user will always have to manually set the launcher ...
             QStringList manualOnly = set.readEntry("ManualOnly", QStringList());
 
             if (!appId.isEmpty() && manualOnly.contains(appId)) {

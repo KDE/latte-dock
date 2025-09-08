@@ -791,7 +791,7 @@ const Latte::Data::Layout Layouts::addLayoutByText(QString rawLayoutText)
     QModelIndex tIndex = m_proxyModel->index(selectedRow, Model::Layouts::NAMECOLUMN);
     m_view->edit(tIndex);
     
-    /**Window has to be activated explicitely since the window where the drag
+    /**Window has to be activated explicitly since the window where the drag
      * started would otherwise be the active window. By activating the window
        the user can immediately change the name by simply typing.*/
     m_handler->dialog()->activateWindow();
@@ -850,7 +850,7 @@ bool Layouts::importLayoutsFromV1ConfigFile(QString file)
     KTar archive(file, QStringLiteral("application/x-tar"));
     archive.open(QIODevice::ReadOnly);
 
-    //! if the file isnt a tar archive
+    //! if the file isn't a tar archive
     if (archive.isOpen()) {
         QDir tempDir{uniqueTempDirectory()};
 
@@ -1099,7 +1099,7 @@ void Layouts::onNameDuplicatedFrom(const QString &provenId, const QString &trial
 
     QModelIndex tIndex = m_proxyModel->index(tRow, Model::Layouts::NAMECOLUMN);
 
-    //! avoid losing focuse
+    //! avoid losing focus
     QTimer::singleShot(0, [this, tIndex]() {
         m_view->edit(tIndex);
     });

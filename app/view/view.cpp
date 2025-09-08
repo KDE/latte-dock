@@ -161,7 +161,7 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
 
             //! Deprecated because with Plasma 5.19.3 the issue does not appear.
             //! The issue was that when FrameExtents where zero strange behaviors were
-            //! occuring from KWin, e.g. the panels were moving outside of screen and
+            //! occurring from KWin, e.g. the panels were moving outside of screen and
             //! panel external shadows were positioned out of place.
             /*connect(m_visibility, &ViewPart::VisibilityManager::frameExtentsCleared, this, [&]() {
                 if (behaveAsPlasmaPanel()) {
@@ -1269,7 +1269,7 @@ void View::setLayout(Layout::GenericLayout *layout)
         connectionsLayout << connect(m_positioner, &Latte::ViewPart::Positioner::edgeChanged, m_layout, &Layout::GenericLayout::viewEdgeChanged);
         connectionsLayout << connect(m_layout, &Layout::GenericLayout::popUpMarginChanged, m_effects, &Latte::ViewPart::Effects::popUpMarginChanged);
 
-        //! Sometimes the activity isnt completely ready, by adding a delay
+        //! Sometimes the activity isn't completely ready, by adding a delay
         //! we try to catch up
         m_initLayoutTimer.setInterval(100);
         m_initLayoutTimer.setSingleShot(true);

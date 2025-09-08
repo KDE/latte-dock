@@ -68,7 +68,7 @@ Loader{
             }
 
             if (root.windowColors === LatteContainment.Types.TouchingWindowColors && latteView.windowsTracker.currentScreen.touchingWindowScheme) {
-                //! we must track touching windows and when they are not ative
+                //! we must track touching windows and when they are not active
                 //! the active window scheme is used for convenience
                 if (latteView.windowsTracker.currentScreen.existsWindowTouching || latteView.windowsTracker.currentScreen.existsWindowTouchingEdge
                         && !(latteView.windowsTracker.currentScreen.activeWindowTouching || latteView.windowsTracker.currentScreen.activeWindowTouchingEdge)

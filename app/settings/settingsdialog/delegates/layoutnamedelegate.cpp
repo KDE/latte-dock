@@ -85,7 +85,7 @@ void LayoutName::paint(QPainter *painter, const QStyleOptionViewItem &option, co
     myOptions.state = (myOptions.state & ~QStyle::State_HasFocus);
     myOptions.displayAlignment = static_cast<Qt::Alignment>(index.model()->data(index, Qt::TextAlignmentRole).toInt());;
 
-    //! backround
+    //! background
     Latte::drawBackground(painter, option);
 
     painter->setRenderHint(QPainter::Antialiasing, true);

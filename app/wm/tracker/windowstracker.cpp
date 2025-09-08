@@ -1026,7 +1026,7 @@ void Windows::updateHints(Latte::View *view)
     //! HACK: KWin Effects such as ShowDesktop have no way to be identified and as such
     //! create issues with identifying properly touching and maximized windows. BUT when
     //! they are enabled then NO ACTIVE window is found. This is a way to identify these
-    //! effects trigerring and disable the touch flags.
+    //! effects triggering and disable the touch flags.
     //! BUG: 404483
     //! Disabled because it has fault identifications, e.g. when a window is maximized and
     //! Latte or Plasma are showing their View settings
@@ -1130,7 +1130,7 @@ void Windows::updateHints(Latte::Layout::GenericLayout *layout) {
     //! HACK: KWin Effects such as ShowDesktop have no way to be identified and as such
     //! create issues with identifying properly touching and maximized windows. BUT when
     //! they are enabled then NO ACTIVE window is found. This is a way to identify these
-    //! effects trigerring and disable the touch flags.
+    //! effects triggering and disable the touch flags.
     //! BUG: 404483
     //! Disabled because it has fault identifications, e.g. when a window is maximized and
     //! Latte or Plasma are showing their View settings

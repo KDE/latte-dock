@@ -1092,7 +1092,7 @@ void Corona::windowColorScheme(QString windowIdAndScheme)
     if (KWindowSystem::isPlatformWayland()) {
         QTimer::singleShot(200, [this, schemeStr]() {
             //! [Wayland Case] - give the time to be informed correctly for the active window id
-            //! otherwise the active window id may not be the same with the one trigerred
+            //! otherwise the active window id may not be the same with the one triggered
             //! the color scheme dbus signal
             QString windowIdStr = m_wm->activeWindow().toString();
             m_wm->schemesTracker()->setColorSchemeForWindow(windowIdStr.toUInt(), schemeStr);

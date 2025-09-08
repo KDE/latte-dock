@@ -1184,7 +1184,7 @@ QList<Plasma::Types::Location> GenericLayout::availableEdgesForView(QScreen *scr
     }
 
     for (const auto view : m_latteViews) {
-        //! make sure that availabe edges takes into account only views that should be excluded,
+        //! make sure that available edges takes into account only views that should be excluded,
         //! this is why the forView should not be excluded
         if (view && view != forView && view->positioner()->currentScreenName() == scr->name()) {
             edges.removeOne(view->location());
