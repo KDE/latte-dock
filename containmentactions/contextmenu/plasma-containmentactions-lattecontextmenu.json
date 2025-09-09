@@ -28,7 +28,6 @@
                 "Name[sv]": "Michail Vourlakos",
                 "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
-                "Name[x-test]": "xxMichail Vourlakosxx",
                 "Name[zh_CN]": "Michail Vourlakos",
                 "Name[zh_TW]": "Michail Vourlakos"
             }
@@ -58,7 +57,6 @@
         "Description[sv]": "Menyn i Latte som normalt visas vid högerklick",
         "Description[tr]": "Normalde sağ tıklama ile gösterilen Latte menüsü",
         "Description[uk]": "Меню Латте, яке буде показано у відповідь на клацання правою кнопкою миші",
-        "Description[x-test]": "xxThe latte menu that normally shows on right-clickxx",
         "Description[zh_CN]": "通常在右键点击时显示的 latte 菜单",
         "Description[zh_TW]": "通常在按下右鍵時顯示的 Latte 選單",
         "EnabledByDefault": true,
@@ -98,7 +96,6 @@
         "Name[sv]": "Latte standardmeny",
         "Name[tr]": "Standart Latte Menüsü",
         "Name[uk]": "Стандартне меню Латте",
-        "Name[x-test]": "xxStandard Latte Menuxx",
         "Name[zh_CN]": "标准 Latte 菜单",
         "Name[zh_TW]": "標準 Latte 選單",
         "ServiceTypes": [

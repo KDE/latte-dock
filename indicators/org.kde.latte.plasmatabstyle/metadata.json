@@ -28,7 +28,6 @@
                 "Name[sv]": "Michail Vourlakos",
                 "Name[tr]": "Michail Vourlakos",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos)",
-                "Name[x-test]": "xxMichail Vourlakosxx",
                 "Name[zh_CN]": "Michail Vourlakos",
                 "Name[zh_TW]": "Michail Vourlakos"
             }
@@ -58,7 +57,6 @@
         "Description[sv]": "Plasma flikstilsindikator för Latte",
         "Description[tr]": "Latte için Plasma sekme biçemi göstergesi",
         "Description[uk]": "Індикатор стилю вкладок Плазми для Латте",
-        "Description[x-test]": "xxPlasma Tab style indicator for Lattexx",
         "Description[zh_CN]": "Latte 的 Plasma 标签页风格指示器",
         "Description[zh_TW]": "適用於 Latte 的 Plasma 分頁樣式指示器",
         "EnabledByDefault": true,
@@ -93,7 +91,6 @@
         "Name[sv]": "Plasma flikstil",
         "Name[tr]": "Plasma Sekme Biçemi",
         "Name[uk]": "Стиль вкладок Плазми",
-        "Name[x-test]": "xxPlasma Tab Stylexx",
         "Name[zh_CN]": "Plasma 标签页风格",
         "Name[zh_TW]": "Plasma 分頁樣式",
         "ServiceTypes": [

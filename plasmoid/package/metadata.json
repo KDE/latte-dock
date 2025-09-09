@@ -28,7 +28,6 @@
                 "Name[sv]": "Michail Vourlakos, Smith Ar",
                 "Name[tr]": "Michail Vourlakos, Smith Ar",
                 "Name[uk]": "Михаїл Ворлакос (Michail Vourlakos), Сміт Ар (Smith Ar)",
-                "Name[x-test]": "xxMichail Vourlakos, Smith Arxx",
                 "Name[zh_CN]": "Michail Vourlakos, Smith Ar",
                 "Name[zh_TW]": "Michail Vourlakos, Smith Ar"
             }
@@ -58,7 +57,6 @@
         "Description[sv]": "Aktivitetsplasmoid för Latte dockningsfönster",
         "Description[tr]": "Latte Rıhtım'dan görevler Plasmoid'i",
         "Description[uk]": "Плазмоїд завдань з панелі Латте",
-        "Description[x-test]": "xxTasks plasmoid from Latte Dockxx",
         "Description[zh_CN]": "Latte 停靠栏的任务管理 Plasma 小程序",
         "Description[zh_TW]": "來自 Latte Dock 的工作 Plasmoid",
         "EnabledByDefault": true,
@@ -96,7 +94,6 @@
         "Name[sv]": "Latte aktiviteter",
         "Name[tr]": "Latte Görevler",
         "Name[uk]": "Завдання Латте",
-        "Name[x-test]": "xxLatte Tasksxx",
         "Name[zh_CN]": "Latte 任务管理器",
         "Name[zh_TW]": "Latte 工作",
         "ServiceTypes": [
