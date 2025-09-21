@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-05 05:54+0000\n"
-"PO-Revision-Date: 2025-06-09 02:51+0100\n"
+"PO-Revision-Date: 2025-09-20 20:29+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -2545,7 +2545,7 @@ msgstr ""
 #, kde-format
 msgctxt "maximum length tooltip, %1 is maximum length percentage"
 msgid "You can use mouse wheel to change maximum length of %1%"
-msgstr "Puede usar la rueda del ratón para cambiar la longitud máxima de %1%"
+msgstr "Puede usar la rueda del ratón para cambiar la longitud máxima de %1 %"
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
 #, kde-format
@@ -2557,7 +2557,7 @@ msgstr "Máxima longitud"
 msgctxt "opacity for background under edit mode, %1 is opacity percentage"
 msgid "You can use mouse wheel to change background opacity of %1%"
 msgstr ""
-"Puede usar la rueda del ratón para cambiar la opacidad del fondo de %1%"
+"Puede usar la rueda del ratón para cambiar la opacidad del fondo de %1 %"
 
 #: shell/package/contents/configuration/config.qml:13
 #, kde-format
@@ -2568,13 +2568,13 @@ msgstr "General"
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr "Anchura %1%"
+msgstr "Anchura %1 %"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr "Anchura %1% / Altura %2%"
+msgstr "Anchura %1 % / Altura %2 %"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
