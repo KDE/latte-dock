@@ -3,13 +3,13 @@
 #
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017, 2018.
 # pan93412 <pan93412@gmail.com>, 2018, 2019, 2020.
-# SPDX-FileCopyrightText: 2024 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-05 05:54+0000\n"
-"PO-Revision-Date: 2024-01-29 00:55+0900\n"
+"PO-Revision-Date: 2025-09-22 06:33+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.01.95\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -35,40 +35,32 @@ msgid "Failed to import indicator"
 msgstr "匯入指示器失敗"
 
 #: app/indicator/factory.cpp:273
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, imported updated"
-#| msgid "%0 indicator updated successfully"
+#, kde-format
 msgctxt "indicator_name, imported updated"
 msgid "%1 indicator updated successfully"
-msgstr "%0 指示器更新成功"
+msgstr "%1 指示器更新成功"
 
 #: app/indicator/factory.cpp:274
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, imported success"
-#| msgid "%0 indicator installed successfully"
+#, kde-format
 msgctxt "indicator_name, imported success"
 msgid "%1 indicator installed successfully"
-msgstr "%0 指示器安裝成功"
+msgstr "%1 指示器安裝成功"
 
 #: app/indicator/factory.cpp:354
-#, fuzzy, kde-format
-#| msgid "Remove Indicator"
+#, kde-format
 msgid "Remove Indicator Confirmation"
-msgstr "移除指示器"
+msgstr "確認移除指示器"
 
 #: app/indicator/factory.cpp:363
-#, fuzzy, kde-format
-#| msgid "Do you want to remove <b>%0</b> indicator from your system?"
+#, kde-format
 msgid "Do you want to remove completely <b>%1</b> indicator from your system?"
-msgstr "您想要從您的系統中移除 <b>%0</b> 指示器嗎？"
+msgstr "您想要從您的系統中完全移除 <b>%1</b> 指示器嗎？"
 
 #: app/indicator/factory.cpp:373
-#, fuzzy, kde-format
-#| msgctxt "indicator_name, removed success"
-#| msgid "<b>%0</b> indicator removed successfully"
+#, kde-format
 msgctxt "indicator_name, removed success"
 msgid "<b>%1</b> indicator removed successfully"
-msgstr "<b>%0</b> 指示器移除成功"
+msgstr "<b>%1</b> 指示器移除成功"
 
 #: app/lattecorona.cpp:1118 app/lattecorona.cpp:1141
 #, kde-format
@@ -106,10 +98,9 @@ msgid "The temp directory could not be created!!!"
 msgstr "無法建立暫時目錄！！！"
 
 #: app/layouts/manager.cpp:238
-#, fuzzy, kde-format
-#| msgid "Multiple Layouts Warning"
+#, kde-format
 msgid "Multiple Layouts Startup Warning"
-msgstr "多重佈局警告"
+msgstr "多重佈局啟動警告"
 
 #: app/layouts/manager.cpp:247
 #, fuzzy, kde-format
@@ -129,35 +120,30 @@ msgstr[0] ""
 "新！！！"
 
 #: app/layouts/storage.cpp:48
-#, fuzzy, kde-format
-#| msgid "Different applets with same id ::: "
+#, kde-format
 msgid "Different Applets With Same Id"
-msgstr "不同的小工具有相同的 ID ::: "
+msgstr "有相同 ID 的不同小程式"
 
 #: app/layouts/storage.cpp:49
-#, fuzzy, kde-format
-#| msgid "Orphan Systrays:"
+#, kde-format
 msgid "Orphaned Parent Applet Of Subcontainment"
-msgstr "孤兒系統匣："
+msgstr "下層容器的孤兒上層小程式"
 
 #: app/layouts/storage.cpp:50
-#, fuzzy, kde-format
-#| msgid "Different applets with same id ::: "
+#, kde-format
 msgid "Different Applet And Containment With Same Id"
-msgstr "不同的小工具有相同的 ID ::: "
+msgstr "有相同 ID 的不同小程式與容器"
 
 #: app/layouts/storage.cpp:51
-#, fuzzy, kde-format
-#| msgid "Orphan Systrays:"
+#, kde-format
 msgid "Orphaned Subcontainment"
-msgstr "孤兒系統匣："
+msgstr "孤兒下層容器"
 
 #: app/layouts/synchronizer.cpp:955
-#, fuzzy, kde-format
-#| msgid "Activating layout: <b>%0</b> ..."
+#, kde-format
 msgid "Activating layout: <b>%2</b> ..."
 msgid_plural "Activating layouts: <b>%2</b> ..."
-msgstr[0] "正在啟用佈局：<b>%0</b> ..."
+msgstr[0] "正在啟用佈局：<b>%2</b>…"
 
 #: app/main.cpp:97
 #, kde-format
@@ -262,19 +248,16 @@ msgid "file_name"
 msgstr "檔案名稱"
 
 #: app/main.cpp:110
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "command line"
 msgid "Add Dock/Panel"
-msgstr "Dock／面板"
+msgstr "新增 Dock／面板"
 
 #: app/main.cpp:110
-#, fuzzy, kde-format
-#| msgctxt "command line: load"
-#| msgid "layout_name"
+#, kde-format
 msgctxt "command line: add"
 msgid "template_name"
-msgstr "佈局名稱(&N)"
+msgstr "範本名稱"
 
 #: app/main.cpp:111
 #, kde-format
@@ -376,7 +359,7 @@ msgstr "Latte Dock 面板"
 #: app/package/lattepackage.cpp:36
 #, kde-format
 msgid "Widget Explorer"
-msgstr ""
+msgstr "元件瀏覽器"
 
 #: app/package/lattepackage.cpp:38
 #, kde-format
@@ -389,10 +372,9 @@ msgid "Dock secondary configuration UI"
 msgstr "Dock 次要設定使用者介面"
 
 #: app/package/lattepackage.cpp:40
-#, fuzzy, kde-format
-#| msgid "Dock configuration UI"
+#, kde-format
 msgid "Dock canvas configuration UI"
-msgstr "Dock 設定使用者介面"
+msgstr "Dock 畫布設定使用者介面"
 
 #: app/package/lattepackage.cpp:41
 #, kde-format
@@ -410,10 +392,9 @@ msgid "Latte Trademark"
 msgstr "Latte 商標"
 
 #: app/package/lattepackage.cpp:44
-#, fuzzy, kde-format
-#| msgid "Latte Trademark"
+#, kde-format
 msgid "Latte Trademark Icon"
-msgstr "Latte 商標"
+msgstr "Latte 商標圖示"
 
 #: app/package/lattepackage.cpp:45
 #, kde-format
@@ -443,7 +424,7 @@ msgstr "延伸佈局檔"
 #: app/package/lattepackage.cpp:52
 #, kde-format
 msgid "system templates directory"
-msgstr ""
+msgstr "系統範本目錄"
 
 #: app/package/lattepackage.cpp:54
 #, kde-format
@@ -473,7 +454,7 @@ msgstr "多重佈局隱藏檔"
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr ""
+msgstr "在彈出式視窗顯示小程式的 QML 組件"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:30
 #, kde-format
@@ -504,133 +485,123 @@ msgstr "翻譯"
 #: app/settings/actionsdialog/actionsdialog.ui:14
 #, kde-format
 msgid "Context Menu Actions"
-msgstr ""
+msgstr "情境選單動作"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
 #, kde-format
 msgctxt "actions shown only in edit mode"
 msgid "Accessible only in edit mode:"
-msgstr ""
+msgstr "僅可於編輯模式中存取："
 
 #. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:27
 #, kde-format
 msgctxt "actions shown always"
 msgid "Accessible always:"
-msgstr ""
+msgstr "總是可存取："
 
 #: app/settings/actionsdialog/actionshandler.cpp:61
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layouts"
 msgstr "佈局"
 
 #: app/settings/actionsdialog/actionshandler.cpp:68
-#, fuzzy, kde-format
-#| msgctxt "opens the layout manager window"
-#| msgid "Configure..."
+#, kde-format
 msgctxt "global settings window"
 msgid "Configure Latte..."
-msgstr "設定..."
+msgstr "設定 Latte…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:75
-#, fuzzy, kde-format
-#| msgid "&Quit Latte"
+#, kde-format
 msgctxt "quit application"
 msgid "Quit Latte"
-msgstr "離開 Latte(&Q)"
+msgstr "離開 Latte"
 
 #: app/settings/actionsdialog/actionshandler.cpp:82
 #, kde-format
 msgid " --- separator --- "
-msgstr ""
+msgstr " --- 分隔器 --- "
 
 #: app/settings/actionsdialog/actionshandler.cpp:89
-#, fuzzy, kde-format
-#| msgid "Get New Indicators..."
+#, kde-format
 msgid "Add Widgets..."
-msgstr "取得新指示器…"
+msgstr "新增元件…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:96
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgid "Add Dock/Panel"
-msgstr "Dock／面板"
+msgstr "新增 Dock／面板"
 
 #: app/settings/actionsdialog/actionshandler.cpp:103
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Move Dock/Panel To Layout"
-msgstr "匯出佈局"
+msgstr "移動 Dock／面板佈局"
 
 #: app/settings/actionsdialog/actionshandler.cpp:110
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel as Template..."
-msgstr "匯出佈局"
+msgstr "將 Dock／面板匯出為範本…"
 
 #: app/settings/actionsdialog/actionshandler.cpp:117
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgid "Remove Dock/Panel"
-msgstr "Dock／面板"
+msgstr "移除 Dock／面板"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:35
 #, kde-format
 msgid "Blue"
-msgstr ""
+msgstr "藍色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:36
 #, kde-format
 msgid "Brown"
-msgstr ""
+msgstr "棕色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:37
 #, kde-format
 msgid "Dark Grey"
-msgstr ""
+msgstr "深灰色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:38
 #, kde-format
 msgid "Gold"
-msgstr ""
+msgstr "金色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:39
-#, fuzzy, kde-format
-#| msgid "Screen"
+#, kde-format
 msgid "Green"
-msgstr "螢幕"
+msgstr "綠色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:40
 #, kde-format
 msgid "Light Sky Blue"
-msgstr ""
+msgstr "淡天藍色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:41
 #, kde-format
 msgid "Orange"
-msgstr ""
+msgstr "橘色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:42
 #, kde-format
 msgid "Pink"
-msgstr ""
+msgstr "粉紅色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:43
 #, kde-format
 msgid "Purple"
-msgstr ""
+msgstr "紫色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:44
 #, kde-format
 msgid "Red"
-msgstr ""
+msgstr "紅色"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:45
 #, kde-format
 msgid "Wheat"
-msgstr ""
+msgstr "小麥色"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
 #: app/settings/detailsdialog/detailsdialog.ui:14
@@ -659,39 +630,34 @@ msgstr "圖示："
 
 #. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
 #: app/settings/detailsdialog/detailsdialog.ui:157
-#, fuzzy, kde-format
-#| msgid "Show in layouts context menu"
+#, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "在佈局功能選單顯示"
+msgstr "如果可以的話，顯示在佈局情境選單中"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
-#, fuzzy, kde-format
-#| msgid "Margins"
+#, kde-format
 msgid "PopUp Margin:"
-msgstr "內邊距"
+msgstr "彈出邊距："
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
-#, fuzzy, kde-format
-#| msgid "Background"
+#, kde-format
 msgid "Background..."
-msgstr "背景"
+msgstr "背景…"
 
 #. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:214
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
+#, kde-format
 msgid "Text Color..."
-msgstr "自訂文字顏色……"
+msgstr "文字色彩…"
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
 #: app/settings/viewsdialog/viewsdialog.ui:47
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Layout:"
-msgstr "佈局"
+msgstr "佈局："
 
 #. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:418
@@ -701,8 +667,7 @@ msgstr "背景："
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
 #: app/settings/detailsdialog/detailsdialog.ui:507
-#, fuzzy, kde-format
-#| msgid "Disabled"
+#, kde-format
 msgid "disabled"
 msgstr "已停用"
 
@@ -714,27 +679,22 @@ msgstr " 像素"
 
 #. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:678
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgid "Custom Colors:"
-msgstr "顏色"
+msgstr "自訂色彩："
 
 #: app/settings/detailsdialog/detailshandler.cpp:446
-#, fuzzy, kde-format
-#| msgid "Details"
+#, kde-format
 msgctxt "<layout name> Details"
 msgid "%1 Details"
-msgstr "詳細資訊"
+msgstr "%1 詳細資訊"
 
 #: app/settings/detailsdialog/detailshandler.cpp:453
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
 "changes or discard them?"
-msgstr "<b>%0</b> 分頁的設定已修改過。您是否要套用，還是捨棄這些變更？"
+msgstr "<b>%1</b> 佈局的設定已修改過。<br/>您要套用還是捨棄這些變更？"
 
 #: app/settings/detailsdialog/patternwidget.cpp:48
 #, kde-format
@@ -742,70 +702,61 @@ msgid "Sample Text"
 msgstr "範例文字"
 
 #: app/settings/detailsdialog/schemesmodel.cpp:123
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
+#, kde-format
 msgid "System Colors"
-msgstr "自訂文字顏色……"
+msgstr "系統色彩"
 
 #: app/settings/exporttemplatedialog/appletsmodel.cpp:225
-#, fuzzy, kde-format
-#| msgid "Close Active Window"
+#, kde-format
 msgctxt "column for current applets"
 msgid "Current Applets"
-msgstr "關閉作用中視窗"
+msgstr "目前小程式"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
-#, fuzzy, kde-format
-#| msgid "Export selected layout at your system"
+#, kde-format
 msgid "Export your selected layout as template"
-msgstr "匯出您系統的選取佈局"
+msgstr "將您選定的佈局匯出為範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:48
-#, fuzzy, kde-format
-#| msgid "Export selected layout at your system"
+#, kde-format
 msgid "Export your selected dock or panel as template"
-msgstr "匯出您系統的選取佈局"
+msgstr "將您選定的 dock 或面板匯出為範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:62
 #, kde-format
 msgid "Export your selected view as template"
-msgstr ""
+msgstr "將您選定的檢視匯出為範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:104
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export template"
 msgid "Export"
 msgstr "匯出"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:129
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export template"
 msgid "Export Again"
-msgstr "匯出"
+msgstr "再次匯出"
 
 #. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
 #, kde-format
 msgid "Select All"
-msgstr ""
+msgstr "選取全部"
 
 #. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
 #: app/settings/screensdialog/screensdialog.ui:58
 #, kde-format
 msgid "Deselect All"
-msgstr ""
+msgstr "全部取消選取"
 
 #. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, fuzzy, kde-format
-#| msgid "File"
+#, kde-format
 msgid "File:"
-msgstr "檔案"
+msgstr "檔案："
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
 #: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
@@ -821,72 +772,62 @@ msgid ""
 "extracted template. Make sure to not include any applets that contain "
 "personal data such as email credentials, calendar etc. "
 msgstr ""
+"<b>僅選取</b>小程式讓您可以保留其設定於已擷取的範本中。請確保不包括任何包含個"
+"人資料（如電子郵件憑證、行事曆等）的小程式。"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Layout Template"
-msgstr "匯出佈局"
+msgstr "匯出佈局範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:63
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel Template"
-msgstr "匯出佈局"
+msgstr "匯出 Dock／面板範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
-#, fuzzy, kde-format
-#| msgctxt "dock type"
-#| msgid "Dock"
+#, kde-format
 msgid "Dock"
 msgstr "Dock"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
-#, fuzzy, kde-format
-#| msgctxt "panel type"
-#| msgid "Panel"
+#, kde-format
 msgid "Panel"
 msgstr "面板"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:78
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export %1 Template"
-msgstr "匯出佈局"
+msgstr "匯出 %1 範本"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Choose Layout Template file"
-msgstr "匯出佈局"
+msgstr "匯出佈局範本檔"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
 msgid "Choose View Template file"
-msgstr ""
+msgstr "選擇檢視範本檔"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:151
 #, kde-format
 msgctxt "choose file"
 msgid "Choose"
-msgstr ""
+msgstr "選擇"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:163
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "layout template"
 msgid "Latte Dock Layout Template file v0.2"
-msgstr "Latte Dock 佈局檔案 v0.2"
+msgstr "Latte Dock 佈局範本檔 v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "view template"
 msgid "Latte Dock View Template file v0.2"
-msgstr "Latte Dock 佈局檔案 v0.2"
+msgstr "Latte Dock 檢視範本檔 v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:176
 #, kde-format
@@ -894,6 +835,7 @@ msgid ""
 "<i>%1</i> does not end with <i>.layout.latte</i> extension. Selected file "
 "<b>rejected</b>."
 msgstr ""
+"<i>%1</i> 並未以 <i>.layout.latte</i> 副檔名結尾。<b>已拒絕</b>選定的檔案。"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:186
 #, kde-format
@@ -901,14 +843,13 @@ msgid ""
 "<i>%1</i> does not end with <i>.view.latte</i> extension. Selected file "
 "<b>rejected</b>."
 msgstr ""
+"<i>%1</i> 並未以 <i>.view.latte</i> 副檔名結尾。<b>已拒絕</b>選定的檔案。"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:213
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export fail"
-#| msgid "Layout <b>%0</b> export <b>failed</b>..."
+#, kde-format
 msgctxt "settings:template export fail"
 msgid "Template <b>%1</b> export <b>failed</b>..."
-msgstr "<b>%0</b> 佈局匯出<b>失敗</b>…"
+msgstr "範本 <b>%1</b> 匯出<b>失敗</b>…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:222
 #: app/settings/settingsdialog/settingsdialog.cpp:348
@@ -920,32 +861,27 @@ msgid "Open Location..."
 msgstr "開啟位置…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:236
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export success"
-#| msgid "Layout <b>%0</b> export succeeded..."
+#, kde-format
 msgctxt "settings:template export success"
 msgid "Template <b>%1</b> export succeeded..."
-msgstr "<b>%0</b> 佈局匯出成功…"
+msgstr "範本 <b>%1</b> 匯出成功…"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
 msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
-msgstr ""
+msgstr "檔案「%1」已存在。您想要覆寫它嗎？"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
 #, kde-format
 msgid "Overwrite File?"
-msgstr ""
+msgstr "覆寫檔案？"
 
 #: app/settings/generic/genericdialog.cpp:69
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings have changed.<br/>Do you want to apply the changes or discard "
 "them?"
-msgstr "<b>%0</b> 分頁的設定已修改過。您是否要套用，還是捨棄這些變更？"
+msgstr "設定已修改過。<br/>您要套用還是捨棄這些變更？"
 
 #: app/settings/generic/genericdialog.cpp:73
 #, kde-format
@@ -959,24 +895,21 @@ msgid "Hide"
 msgstr "隱藏"
 
 #: app/settings/screensdialog/screensdialog.cpp:69
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgctxt "remove selected screens"
 msgid "Remove Now"
-msgstr "移除"
+msgstr "立刻移除"
 
 #: app/settings/screensdialog/screensdialog.cpp:71
-#, fuzzy, kde-format
-#| msgid "Remove selected layout"
+#, kde-format
 msgid "Remove selected screen references"
-msgstr "移除選定的佈局"
+msgstr "移除選定的螢幕參照"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
 #: app/settings/screensdialog/screensdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Screens:"
+#, kde-format
 msgid "Screens"
-msgstr "螢幕："
+msgstr "螢幕"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/screensdialog/screensdialog.ui:67
@@ -986,6 +919,8 @@ msgid ""
 "their reference. Active screens or screens used in your layouts can not be "
 "removed."
 msgstr ""
+"<b>僅選取</b>螢幕已廢棄，您也許會想要移除它們的參照。作用中的螢幕或用於您佈局"
+"的螢幕無法移除。"
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -995,20 +930,19 @@ msgid ""
 msgid_plural ""
 "You are going to <b>remove %2</b> references completely.<br/>Would you like "
 "to continue?"
-msgstr[0] ""
+msgstr[0] "您將要完全<b>移除 %2</b>參照。<br/>您想要繼續嗎？"
 
 #: app/settings/screensdialog/screenshandler.cpp:137
 #: app/settings/viewsdialog/viewshandler.cpp:527
 #, kde-format
 msgid "Approve Removal"
-msgstr ""
+msgstr "批准移除"
 
 #: app/settings/screensdialog/screensmodel.cpp:238
-#, fuzzy, kde-format
-#| msgid "Screens:"
+#, kde-format
 msgctxt "column for screens"
 msgid "Screens"
-msgstr "螢幕："
+msgstr "螢幕"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:599
 #, kde-format
@@ -1016,7 +950,7 @@ msgctxt "settings:counted layout with errors"
 msgid "<b>Error:</b> There is <b>1 layout</b> that has reported errors."
 msgid_plural ""
 "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors."
-msgstr[0] ""
+msgstr[0] "<b>錯誤：</b><b>%1 佈局</b>回報了錯誤。"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:612
 #, kde-format
@@ -1024,7 +958,7 @@ msgctxt "settings:counted layout with warnings"
 msgid "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."
 msgid_plural ""
 "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings."
-msgstr[0] ""
+msgstr[0] "<b>警告：</b><b>%1 佈局</b>回報了警告。"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
@@ -1040,29 +974,28 @@ msgid ""
 msgid_plural ""
 "<b>Warning: %2</b> layout has reported <b>%1 warnings</b> that need your "
 "attention."
-msgstr[0] ""
+msgstr[0] "<b>警告：%2</b> 佈局回報了 <b>%1 警告</b>，需要您注意。"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:650
 #, kde-format
 msgctxt "settings:named layout with errors"
 msgid ""
 "<b>Error: %2</b> layout has reported <b>1 error</b> that you need to repair."
-msgstr ""
+msgstr "<b>錯誤：%2</b> 佈局回報了 <b>1 錯誤</b>，需要您修復。"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:660
 #, kde-format
 msgctxt "errors count"
 msgid "1 error"
 msgid_plural "%1 errors"
-msgstr[0] ""
+msgstr[0] "%1 錯誤"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:664
-#, fuzzy, kde-format
-#| msgid "Layout Warning"
+#, kde-format
 msgctxt "warnings count"
 msgid "1 warning"
 msgid_plural "%1 warnings"
-msgstr[0] "佈局警告"
+msgstr[0] "%1 警告"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:669
 #, kde-format
@@ -1070,12 +1003,12 @@ msgctxt "settings: named layout with %2 errors and %3 warnings"
 msgid ""
 "<b>Error: %1</b> layout has reported <b>%2</b> and <b>%3</b> that you need "
 "to repair."
-msgstr ""
+msgstr "<b>錯誤：%1</b>佈局已回報需要您修復的 <b>%2</b> 與 <b>%3</b>。"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:788
 #, kde-format
 msgid "Dropped Raw Layout"
-msgstr ""
+msgstr "已拖曳原始佈局"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:876
 #, kde-format
@@ -1084,19 +1017,16 @@ msgid "Alternative"
 msgstr "替代"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:884
-#, fuzzy, kde-format
-#| msgid "Layout <b>%0</b> imported successfully..."
+#, kde-format
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "<b>%0</b> 佈局匯入成功…"
+msgstr[0] "<b>%2</b> 佈局匯入成功…"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
-#, fuzzy, kde-format
-#| msgctxt "settings: layout name used"
-#| msgid "Layout <b>%0</b> is already used, please provide a different name..."
+#, kde-format
 msgctxt "settings: layout name used"
 msgid "Layout <b>%1</b> is already used, please provide a different name..."
-msgstr "已有使用 <b>%0</b> 名稱的佈局，請重取名稱…"
+msgstr "已有使用 <b>%1</b> 名稱的佈局，請使用其他名稱…"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:338
 #, kde-format
@@ -1123,23 +1053,19 @@ msgid "Activities"
 msgstr "活動"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:901
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "All Activities"
-msgstr "活動"
+msgstr "所有活動"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:908
-#, fuzzy, kde-format
-#| msgid "All Free Activities..."
+#, kde-format
 msgid "Free Activities"
-msgstr "所有閒置活動…"
+msgstr "閒置活動"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:915
-#, fuzzy, kde-format
-#| msgid "Close Active Window"
+#, kde-format
 msgid "Current Activity"
-msgstr "關閉作用中視窗"
+msgstr "目前活動"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:29
 #: app/settings/settingsdialog/layoutstableview.cpp:67
@@ -1148,15 +1074,14 @@ msgid "Drop layout files here..."
 msgstr "拖曳佈局檔案至此…"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:69
-#, fuzzy, kde-format
-#| msgid "Drop layout files here..."
+#, kde-format
 msgid "Drop raw layout text here..."
-msgstr "拖曳佈局檔案至此…"
+msgstr "拖曳原始佈局文字至此…"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:71
 #, kde-format
 msgid "Unsupported data!"
-msgstr ""
+msgstr "不支援的資料！"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:126
 #, kde-format
@@ -1184,15 +1109,14 @@ msgid "Export your full configuration to create backup"
 msgstr "匯出完整設定以建立備份"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:144
-#, fuzzy, kde-format
-#| msgid "Sc&reens..."
+#, kde-format
 msgid "&Screens..."
-msgstr "螢幕……(&R)"
+msgstr "螢幕…(&S)"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
 #, kde-format
 msgid "Examing your screens and remove deprecated references"
-msgstr ""
+msgstr "檢查您的螢幕並移除棄用的參照"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150
 #, kde-format
@@ -1280,14 +1204,11 @@ msgid "Full configuration export succeeded..."
 msgstr "成功匯出完整設定檔…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:477
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
-msgstr "<b>%0</b> 分頁的設定已修改過。您是否要套用，還是捨棄這些變更？"
+msgstr "<b>%1</b> 分頁的設定已修改過。您要套用還是捨棄這些變更？"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
 #: app/settings/settingsdialog/settingsdialog.ui:26
@@ -1298,66 +1219,53 @@ msgstr "設定"
 
 #. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
 #: app/settings/settingsdialog/settingsdialog.ui:36
-#, fuzzy, kde-format
-#| msgid "Layouts"
+#, kde-format
 msgid "Layouts Editor"
-msgstr "佈局"
+msgstr "佈局編輯器"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
-#, fuzzy, kde-format
-#| msgid "Only one layout can be present in memory at all cases"
+#, kde-format
 msgid "Only one layout is applied at all times for all activities"
-msgstr "在所有情況下只能有一種佈局在記憶中"
+msgstr "所有活動一次只套用一種佈局"
 
 #. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:70
-#, fuzzy, kde-format
-#| msgctxt "single layout"
-#| msgid "Single Layout"
+#, kde-format
 msgctxt "single layout"
 msgid "Single layout at all times"
-msgstr "單一佈局"
+msgstr "一次一種佈局"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:84
-#, fuzzy, kde-format
-#| msgid ""
-#| "Multiple layouts can be present and active in memory at the same time"
+#, kde-format
 msgid ""
 "Multiple layouts can be present and active in memory at the same time for "
 "different activities"
-msgstr "記憶中可以有多種佈局同時啟用"
+msgstr "不同活動中同時可在記憶中出現多個佈局並啟用"
 
 #. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:87
-#, fuzzy, kde-format
-#| msgid "multiple layouts hidden file"
+#, kde-format
 msgctxt "multiple layouts"
 msgid "Multiple layouts based on activities"
-msgstr "多重佈局隱藏檔"
+msgstr "以活動為基礎的多重佈局"
 
 #. i18n: ectx: property (text), widget (QPushButton, switchButton)
 #: app/settings/settingsdialog/settingsdialog.ui:177
-#, fuzzy, kde-format
-#| msgctxt "switch layout"
-#| msgid "Switch"
+#, kde-format
 msgid "Switch"
 msgstr "切換"
 
 #. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
 #: app/settings/settingsdialog/settingsdialog.ui:191
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "Activities..."
-msgstr "活動"
+msgstr "活動…"
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "New"
+#, kde-format
 msgid "New"
 msgstr "新的"
 
@@ -1365,10 +1273,9 @@ msgstr "新的"
 #. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
 #: app/settings/settingsdialog/settingsdialog.ui:258
 #: app/settings/viewsdialog/viewsdialog.ui:148
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate"
-msgstr "切換到選定的佈局"
+msgstr "再製"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
 #: app/settings/settingsdialog/settingsdialog.ui:272
@@ -1388,7 +1295,7 @@ msgstr "已啟用"
 #: app/settings/settingsdialog/settingsdialog.ui:310
 #, kde-format
 msgid "Read Only"
-msgstr ""
+msgstr "唯讀"
 
 #. i18n: ectx: property (text), widget (QPushButton, detailsButton)
 #: app/settings/settingsdialog/settingsdialog.ui:356
@@ -1398,19 +1305,15 @@ msgstr "詳細資訊…"
 
 #. i18n: ectx: property (text), widget (QPushButton, importButton)
 #: app/settings/settingsdialog/settingsdialog.ui:438
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "&Import..."
+#, kde-format
 msgid "Import..."
-msgstr "匯入(&I)…"
+msgstr "匯入…"
 
 #. i18n: ectx: property (text), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:452
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgid "Export..."
-msgstr "匯出"
+msgstr "匯出…"
 
 #. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:459
@@ -1593,20 +1496,19 @@ msgstr "將 ⌘ 鍵轉送以開啟應用程式啟動器"
 #: app/settings/settingsdialog/settingsdialog.ui:1071
 #, kde-format
 msgid "Context Menu:"
-msgstr ""
+msgstr "情境選單："
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:1100
-#, fuzzy, kde-format
-#| msgid "Actions"
+#, kde-format
 msgid "Actions..."
-msgstr "動作"
+msgstr "動作…"
 
 #. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1122
 #, kde-format
 msgid "Inform Plasma desktop for available desktop space"
-msgstr ""
+msgstr "通知 Plasma 桌面可用的桌面空間"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:111
 #, kde-format
@@ -1625,16 +1527,14 @@ msgid "Switch to selected layout"
 msgstr "切換到選定的佈局"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:122
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "&Activities"
 msgstr "活動"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:123
 #, kde-format
 msgid "Show Plasma Activities manager"
-msgstr ""
+msgstr "顯示 Plasma 活動管理程式"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:131
 #, kde-format
@@ -1651,13 +1551,12 @@ msgstr "新佈局"
 #, kde-format
 msgctxt "duplicate layout"
 msgid "&Duplicate"
-msgstr ""
+msgstr "再製(&D)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:145
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate selected layout"
-msgstr "切換到選定的佈局"
+msgstr "再製選定的佈局"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:151
 #: app/settings/viewsdialog/viewshandler.cpp:91
@@ -1672,40 +1571,36 @@ msgid "Remove selected layout"
 msgstr "移除選定的佈局"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:161
-#, fuzzy, kde-format
-#| msgid "Enabled"
+#, kde-format
 msgid "Ena&bled"
-msgstr "已啟用"
+msgstr "已啟用(&B)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:162
 #, kde-format
 msgid "Assign in activities in order to be activated through Plasma Activities"
-msgstr ""
+msgstr "分配活動以透過 Plasma 活動啟用"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:169
 #, kde-format
 msgctxt "read only layout"
 msgid "&Read Only"
-msgstr ""
+msgstr "唯讀(&R)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:170
-#, fuzzy, kde-format
-#| msgid "Show selected layout details"
+#, kde-format
 msgid "Make selected layout read-only"
-msgstr "顯示選取佈局的詳細資訊"
+msgstr "將選定佈局標記為唯獨"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:177
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "layout docks / panels"
 msgid "Docks, &Panels..."
-msgstr "Dock／面板"
+msgstr "Dock，面板…(&P)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:178
-#, fuzzy, kde-format
-#| msgid "Show selected layout details"
+#, kde-format
 msgid "Show selected layouts docks and panels"
-msgstr "顯示選取佈局的詳細資訊"
+msgstr "顯示選定佈局 Dock 與面板"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:184
 #, kde-format
@@ -1719,27 +1614,22 @@ msgid "Show selected layout details"
 msgstr "顯示選取佈局的詳細資訊"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:195
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "Import"
+#, kde-format
 msgctxt "import layout"
 msgid "&Import"
-msgstr "匯入"
+msgstr "匯入(&I)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:196
-#, fuzzy, kde-format
-#| msgid "Import layout file from your system"
+#, kde-format
 msgid "Import layout from various resources"
-msgstr "從系統匯入佈局檔案"
+msgstr "從許多來源匯入佈局"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:207
 #: app/settings/viewsdialog/viewshandler.cpp:108
-#, fuzzy, kde-format
-#| msgctxt "export layout"
-#| msgid "Export"
+#, kde-format
 msgctxt "export layout"
 msgid "&Export"
-msgstr "匯出"
+msgstr "匯出(&E)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:208
 #, kde-format
@@ -1760,20 +1650,17 @@ msgstr "從 KDE 線上商店匯入…(&D)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:248
 #: app/settings/viewsdialog/viewshandler.cpp:188
-#, fuzzy, kde-format
-#| msgctxt "export layout"
-#| msgid "&Export..."
+#, kde-format
 msgctxt "export for backup"
 msgid "&Export For Backup..."
-msgstr "匯出(&E)…"
+msgstr "匯出備份…(&E)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:253
 #: app/settings/viewsdialog/viewshandler.cpp:193
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgctxt "export as template"
 msgid "Export As &Template..."
-msgstr "匯出佈局"
+msgstr "匯出為佈局…(&T)"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:289
 #: app/settings/viewsdialog/viewshandler.cpp:169
@@ -1785,32 +1672,26 @@ msgstr "範本…"
 #: app/settings/viewsdialog/viewshandler.cpp:170
 #, kde-format
 msgid "Open templates directory"
-msgstr ""
+msgstr "開啟範本目錄"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:366
-#, fuzzy, kde-format
-#| msgctxt "settings:not permitted switching layout"
-#| msgid "You need to <b>apply</b> your changes first to switch layout..."
+#, kde-format
 msgctxt "settings:not permitted switching layout"
 msgid ""
 "You need to <b>apply</b> your changes first to switch layout afterwards..."
 msgstr "您需要先<b>套用</b>變更才能切換佈局…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:443
-#, fuzzy, kde-format
-#| msgctxt "settings:layout added successfully"
-#| msgid "Layout <b>%0</b> added successfully..."
+#, kde-format
 msgctxt "settings:layout added successfully"
 msgid "Layout <b>%1</b> added successfully..."
-msgstr "成功新增 <b>%0</b> 佈局…"
+msgstr "成功新增 <b>%1</b> 佈局…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:479
-#, fuzzy, kde-format
-#| msgctxt "settings:layout downloaded successfully"
-#| msgid "Layout <b>%0</b> downloaded successfully..."
+#, kde-format
 msgctxt "settings:layout downloaded successfully"
 msgid "Layout <b>%1</b> downloaded successfully..."
-msgstr "成功下載 <b>%0</b> 佈局…"
+msgstr "成功下載 <b>%1</b> 佈局…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:505
 #, kde-format
@@ -1850,11 +1731,10 @@ msgstr "Latte Dock 佈局檔案 v0.1"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:561
 #: app/settings/settingsdialog/tablayoutshandler.cpp:780
-#, fuzzy, kde-format
-#| msgid "Layout <b>%0</b> imported successfully..."
+#, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%1</b> imported successfully..."
-msgstr "<b>%0</b> 佈局匯入成功…"
+msgstr "<b>%1</b> 佈局匯入成功…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:565
 #, kde-format
@@ -1863,10 +1743,9 @@ msgid "Import layouts from deprecated version <b>failed</b>..."
 msgstr "從棄用版本匯入<b>失敗</b>…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:621
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Layout For Backup"
-msgstr "匯出佈局"
+msgstr "匯出佈局備份"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:623
 #, kde-format
@@ -1881,95 +1760,85 @@ msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock 佈局檔案 v0.2"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:639
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export fail"
-#| msgid "Layout <b>%0</b> export <b>failed</b>..."
+#, kde-format
 msgctxt "settings:layout export fail"
 msgid "Layout <b>%1</b> export <b>failed</b>..."
-msgstr "<b>%0</b> 佈局匯出<b>失敗</b>…"
+msgstr "<b>%1</b> 佈局匯出<b>失敗</b>…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:678
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export success"
-#| msgid "Layout <b>%0</b> export succeeded..."
+#, kde-format
 msgctxt "settings:layout export success"
 msgid "Layout <b>%1</b> export succeeded..."
-msgstr "<b>%0</b> 佈局匯出成功…"
+msgstr "<b>%1</b> 佈局匯出成功…"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:769
-#, fuzzy, kde-format
-#| msgid "Layout <b>%0</b> imported successfully..."
+#, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "<b>%0</b> 佈局匯入成功…"
+msgstr[0] "<b>%2</b> 佈局匯入成功…"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
-#, fuzzy, kde-format
-#| msgid "Options"
+#, kde-format
 msgid "optional"
-msgstr "選項"
+msgstr "選擇性"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:107
 #, kde-format
 msgid "Cut"
-msgstr ""
+msgstr "剪下"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:111
-#, fuzzy, kde-format
-#| msgctxt "copy layout"
-#| msgid "Copy"
+#, kde-format
 msgid "Copy"
 msgstr "複製"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:115
 #, kde-format
 msgid "Paste"
-msgstr ""
+msgstr "貼上"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:119
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate Here"
-msgstr "切換到選定的佈局"
+msgstr "於此再製"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:323
 #, kde-format
 msgid ""
 "Docks and panels from <b>Paste</b> action are already present in current "
 "layout"
-msgstr ""
+msgstr "來自<b>貼上</b>動作的 Dock 與面板已顯示在目前佈局中"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:578
 #, kde-format
 msgid ""
 "Really nice! You are good to go, your layout does not report any errors or "
 "warnings."
-msgstr ""
+msgstr "太棒了！一切順利，您的佈局沒有回報任何錯誤或警告。"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:597
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgid "Edit Layout"
-msgstr "佈局"
+msgstr "編輯佈局"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:630
 #, kde-format
 msgid "Validate"
-msgstr ""
+msgstr "驗證"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:649
 #, kde-format
 msgid ""
 "After you have made your layout file changes, please click <b>Validate</b> "
 "to confirm them."
-msgstr ""
+msgstr "在您變更了您的佈局檔案後，請點擊<b>驗證</b>來確認。"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:665
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/>"
-msgstr ""
+msgstr "<b>錯誤 #%1：%2</b> <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:667
 #, kde-format
@@ -1978,12 +1847,14 @@ msgid ""
 "can create crashes, abnormal behavior and data loss when you activate and "
 "use this layout.<br/>"
 msgstr ""
+"您的佈局中有兩個或多個有相同 id 的小程式。這種情況可能會在您啟用並使用此佈局"
+"時導致當機、異常行為與資料遺失。<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:670
 #: app/settings/viewsdialog/viewscontroller.cpp:761
 #, kde-format
 msgid "<b>Applets:</b><br/>"
-msgstr ""
+msgstr "<b>小程式：</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:678
 #, kde-format
@@ -1991,7 +1862,7 @@ msgctxt ""
 "applets with same id error, applet name, applet id, containment name, "
 "containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] 在  <b>%3</b> 中 [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:686
 #: app/settings/viewsdialog/viewscontroller.cpp:742
@@ -1999,35 +1870,35 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:836
 #, kde-format
 msgid "<b>Possible Solutions:</b><br/>"
-msgstr ""
+msgstr "<b>可能的解決方式：</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:687
 #, kde-format
 msgid "&nbsp;&nbsp;1. Activate this layout and restart Latte<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;1. 啟用此佈局並重新啟動 Latte<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:688
 #, kde-format
 msgid "&nbsp;&nbsp;2. Remove the mentioned applets from your layout<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;2. 從您的佈局移除提及的小程式<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:689
 #, kde-format
 msgid ""
 "&nbsp;&nbsp;3. Update manually the applets id when the layout is <b>not "
 "active</b><br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;3. 當佈局<b>非作用中</b>時手動更新小程式 id<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:690
 #, kde-format
 msgid "&nbsp;&nbsp;4. Remove this layout totally<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;4. 完全移除此佈局<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:702
 #, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>錯誤 #%1：%2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:703
 #, kde-format
@@ -2037,11 +1908,14 @@ msgid ""
 "connection with its child applets. Such situation can create crashes, "
 "abnormal behavior and data loss when you activate and use this layout.<br/>"
 msgstr ""
+"您的佈局中包含了連結到不存在的子容器的孤立偽小程式。例如系統匣失去了與其下層"
+"小程式的連結。這種情況可能會在您啟用並使用此佈局時導致當機、異常行為與資料遺"
+"失。<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:706
 #, kde-format
 msgid "<b>Pseudo Applets:</b><br/>"
-msgstr ""
+msgstr "<b>偽小程式：</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:718
 #, kde-format
@@ -2049,21 +1923,20 @@ msgctxt ""
 "orphaned pseudo applets, applet name, applet id, containment name, "
 "containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] 在  <b>%3</b> 中 [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:726
 #: app/settings/viewsdialog/viewscontroller.cpp:818
-#, fuzzy, kde-format
-#| msgid "Orphan Systrays:"
+#, kde-format
 msgid "<b>Orphaned Subcontainments:</b><br/>"
-msgstr "孤兒系統匣："
+msgstr "<b>孤兒子容器：</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:736
 #: app/settings/viewsdialog/viewscontroller.cpp:828
 #, kde-format
 msgctxt "orphaned subcontainments, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:743
 #, kde-format
@@ -2071,18 +1944,19 @@ msgid ""
 "&nbsp;&nbsp;1. Update manually the subcontainment id inside pseudo applet "
 "settings when the layout is <b>not active</b><br/>"
 msgstr ""
+"&nbsp;&nbsp;1. 在佈局<b>非作用中</b>時，於偽小程式中手動更新子容器 id<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:744
 #, kde-format
 msgid "&nbsp;&nbsp;2. Remove this layout totally<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;2. 完全移除此佈局<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:757
 #: app/settings/viewsdialog/viewscontroller.cpp:814
 #, kde-format
 msgctxt "warning id and title"
 msgid "<b>Warning #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>警告 #%1：%2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:758
 #, kde-format
@@ -2090,37 +1964,38 @@ msgid ""
 "In your layout there are applets and containments with the same id. Such "
 "situation is not dangerous but it should not occur.<br/>"
 msgstr ""
+"您的佈局中有小程式與容器有相同 id。此種情況並不危險，但仍不應出現。<br />"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:773
 #, kde-format
 msgctxt "applets, applet name, applet id, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] inside  <b>%3</b> [#%4]<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] 在  <b>%3</b> 中 [#%4]<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:781
 #, kde-format
 msgid "<b>Containments:</b><br/>"
-msgstr ""
+msgstr "<b>容器：</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:791
 #, kde-format
 msgctxt "containments, containment name, containment id"
 msgid "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;• <b>%1</b> [#%2] <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:798
 #, kde-format
 msgid ""
 "&nbsp;&nbsp;1. Update manually the containments or applets id when the "
 "layout is <b>not active</b><br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;1. 在佈局<b>非作用中</b>時手動更新容器或小城是的 id<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:799
 #, kde-format
 msgid ""
 "&nbsp;&nbsp;2. Remove any of the containments or applets that conflict with "
 "each other<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;2. 移除與彼此衝突的容器或小程式<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:815
 #, kde-format
@@ -2129,35 +2004,37 @@ msgid ""
 "dock or panel. Such situation is not dangerous but it is advised to remove "
 "them in order to reduce memory usage.<br/>"
 msgstr ""
+"您的佈局中有未被任何 dock 或面板使用的孤立子容器。此種情況並不危險，但為了降"
+"低記憶體用量，建議移除它們。<br />"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:837
 #, kde-format
 msgid ""
 "&nbsp;&nbsp;1. Click <b>Repair</b> button in order to remove orphaned "
 "subcontainments<br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;1. 點擊<b>修復</b>按鈕以移除孤立的子容器<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:838
 #, kde-format
 msgid ""
 "&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is "
 "<b>not active</b><br/>"
-msgstr ""
+msgstr "&nbsp;&nbsp;2. 在佈局<b>非作用中</b>時手動移除孤立的子容器<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:841
 #, kde-format
 msgid "Repair"
-msgstr ""
+msgstr "修復"
 
 #: app/settings/viewsdialog/viewsdialog.cpp:33
 #, kde-format
 msgid "Apply Now"
-msgstr ""
+msgstr "立刻套用"
 
 #: app/settings/viewsdialog/viewsdialog.cpp:34
 #, kde-format
 msgid "Apply all dock, panels changes now"
-msgstr ""
+msgstr "立刻套用所有 dock、面板變更"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
 #: app/settings/viewsdialog/viewsdialog.ui:14
@@ -2166,41 +2043,34 @@ msgid "Docks/Panels"
 msgstr "Dock／面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:69
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "&New"
+#, kde-format
 msgctxt "new view"
 msgid "&New"
 msgstr "新增(&N)"
 
 #: app/settings/viewsdialog/viewshandler.cpp:70
-#, fuzzy, kde-format
-#| msgid "Latte Dock panel"
+#, kde-format
 msgid "New dock or panel"
-msgstr "Latte Dock 面板"
+msgstr "新增 Dock 或面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:83
 #, kde-format
 msgctxt "duplicate dock or panel"
 msgid "&Duplicate"
-msgstr ""
+msgstr "再製(&D)"
 
 #: app/settings/viewsdialog/viewshandler.cpp:84
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate selected dock or panel"
-msgstr "切換到選定的佈局"
+msgstr "再製選定的 dock 或面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:92
-#, fuzzy, kde-format
-#| msgid "Remove selected layout"
+#, kde-format
 msgid "Remove selected view"
-msgstr "移除選定的佈局"
+msgstr "移除選定的檢視"
 
 #: app/settings/viewsdialog/viewshandler.cpp:100
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "&Import..."
+#, kde-format
 msgctxt "import dock/panel"
 msgid "&Import..."
 msgstr "匯入(&I)…"
@@ -2208,21 +2078,18 @@ msgstr "匯入(&I)…"
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
 msgid "Import dock or panel from local file"
-msgstr ""
+msgstr "從本機檔案匯入 dock 或面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:109
-#, fuzzy, kde-format
-#| msgid "Export selected layout at your system"
+#, kde-format
 msgid "Export selected dock or panel at your system"
-msgstr "匯出您系統的選取佈局"
+msgstr "匯出您系統的選定 dock 或面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:305
-#, fuzzy, kde-format
-#| msgctxt "settings:layout added successfully"
-#| msgid "<b>%0</b> was added successfully..."
+#, kde-format
 msgctxt "settings:dock/panel added successfully"
 msgid "<b>%1</b> added successfully..."
-msgstr "成功加入 <b>%0</b>…"
+msgstr "成功新增 <b>%1</b>…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:328
 #: app/settings/viewsdialog/viewshandler.cpp:407
@@ -2230,74 +2097,59 @@ msgstr "成功加入 <b>%0</b>…"
 msgid ""
 "<b>Export</b> functionality is supported only for one dock or panel each "
 "time."
-msgstr ""
+msgstr "<b>匯出</b>功能每次僅支援一個 dock 或面板。"
 
 #: app/settings/viewsdialog/viewshandler.cpp:342
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Dock/Panel For Backup"
-msgstr "匯出佈局"
+msgstr "匯出 Dock／面板以供備份"
 
 #: app/settings/viewsdialog/viewshandler.cpp:344
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgctxt "export view"
 msgid "Export"
 msgstr "匯出"
 
 #: app/settings/viewsdialog/viewshandler.cpp:350
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "export view"
 msgid "Latte Dock/Panel file v0.2"
-msgstr "Latte Dock 佈局檔案 v0.2"
+msgstr "Latte Dock／面板檔案 v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:360
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export fail"
-#| msgid "Layout <b>%0</b> export <b>failed</b>..."
+#, kde-format
 msgctxt "settings:view export fail"
 msgid "Export in file <b>%1</b> <b>failed</b>..."
-msgstr "<b>%0</b> 佈局匯出<b>失敗</b>…"
+msgstr "<b>%1</b> 檔案匯出<b>失敗</b>…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:389
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export success"
-#| msgid "Layout <b>%0</b> export succeeded..."
+#, kde-format
 msgctxt "settings:view export success"
 msgid "Export in file <b>%1</b> succeeded..."
-msgstr "<b>%0</b> 佈局匯出成功…"
+msgstr "<b>%1</b> 檔案匯出成功…"
 
 #: app/settings/viewsdialog/viewshandler.cpp:431
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "import dock/panel"
 msgid "Import Dock/Panel"
-msgstr "Dock／面板"
+msgstr "匯入 Dock／面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:434
-#, fuzzy, kde-format
-#| msgctxt "import full configuration"
-#| msgid "Import"
+#, kde-format
 msgid "Import"
 msgstr "匯入"
 
 #: app/settings/viewsdialog/viewshandler.cpp:440
-#, fuzzy, kde-format
-#| msgctxt "import latte layout"
-#| msgid "Latte Dock Layout file v0.2"
+#, kde-format
 msgctxt "import dock panel"
 msgid "Latte Dock or Panel file v0.2"
-msgstr "Latte Dock 佈局檔案 v0.2"
+msgstr "Latte Dock 或面板檔案 v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:512
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "<layout name> Docks/Panels"
 msgid "%1 Docks/Panels"
-msgstr "Dock／面板"
+msgstr "%1 Dock／面板"
 
 #: app/settings/viewsdialog/viewshandler.cpp:524
 #, kde-format
@@ -2307,17 +2159,15 @@ msgid ""
 msgid_plural ""
 "You are going to <b>remove %1</b> docks and panels completely from your "
 "layout.<br/>Would you like to continue?"
-msgstr[0] ""
+msgstr[0] "您將要從您的佈局中完全<b>移除 %1</b>。<br />您想要繼續嗎？"
 
 #: app/settings/viewsdialog/viewshandler.cpp:537
-#, fuzzy, kde-format
-#| msgid ""
-#| "The settings of <b>%0</b> tab have changed. Do you want to apply the "
-#| "changes or discard them?"
+#, kde-format
 msgid ""
 "The settings of <b>%1</b> layout have changed.<br/>Do you want to apply the "
 "changes <b>now</b> or discard them?"
-msgstr "<b>%0</b> 分頁的設定已修改過。您是否要套用，還是捨棄這些變更？"
+msgstr ""
+"<b>%1</b> 分頁的設定已修改過。<br />您要<b>立刻</b>套用還是捨棄這些變更？"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:190
 #, kde-format
@@ -2399,9 +2249,7 @@ msgid " - Follow Primary Screen - "
 msgstr "使用主螢幕設定"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:575
-#, fuzzy, kde-format
-#| msgctxt "column for layout name"
-#| msgid "Name"
+#, kde-format
 msgid "Name"
 msgstr "名稱"
 
@@ -2426,7 +2274,7 @@ msgstr "對齊"
 #: app/settings/viewsdialog/viewsmodel.cpp:604
 #, kde-format
 msgid "Includes"
-msgstr ""
+msgstr "包含"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:762
 #: app/settings/viewsdialog/viewsmodel.cpp:848
@@ -2471,18 +2319,16 @@ msgid "Right"
 msgstr "右"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:879
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown location"
 msgid "Unknown"
-msgstr "未知螢幕："
+msgstr "未知"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:910
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown alignment"
 msgid "Unknown"
-msgstr "未知螢幕："
+msgstr "未知"
 
 #: app/shortcuts/globalshortcuts.cpp:87
 #, kde-format
@@ -2510,18 +2356,16 @@ msgid "New Instance for Entry %1"
 msgstr "項目 %1 的新實體"
 
 #: app/templates/templatesmanager.cpp:337
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "default layout template name"
 msgid "Default"
 msgstr "預設"
 
 #: app/templates/templatesmanager.cpp:338
-#, fuzzy, kde-format
-#| msgid "Empty Area"
+#, kde-format
 msgctxt "empty layout template name"
 msgid "Empty"
-msgstr "清空區域"
+msgstr "清空"
 
 #: app/templates/templatesmanager.cpp:341
 #, kde-format
@@ -2530,11 +2374,10 @@ msgid "Default Dock"
 msgstr "預設 dock"
 
 #: app/templates/templatesmanager.cpp:342
-#, fuzzy, kde-format
-#| msgid "Default"
+#, kde-format
 msgctxt "view template name"
 msgid "Default Panel"
-msgstr "預設"
+msgstr "預設面板"
 
 #: app/templates/templatesmanager.cpp:343
 #, kde-format
@@ -2563,14 +2406,14 @@ msgstr "Latte 指示器"
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:67
 #, kde-format
 msgid "Stick On Top"
-msgstr ""
+msgstr "置於頂部"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:68
 #, kde-format
 msgid ""
 "Stick maximum available space at top screen edge and ignore any top docks or "
 "panels"
-msgstr ""
+msgstr "在螢幕頂部邊緣保留最大可用空間並忽略任何頂部 dock 或面板"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:108
 #, kde-format
@@ -2586,32 +2429,31 @@ msgstr "隨意移動您的元件，或用它們的工具提示進行設定"
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:126
 #, kde-format
 msgid "Stick On Bottom"
-msgstr ""
+msgstr "置於底部"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:127
 #, kde-format
 msgid ""
 "Stick maximum available space at bottom screen edge and ignore any bottom "
 "docks or panels"
-msgstr ""
+msgstr "在螢幕底部邊緣保留最大可用空間並忽略任何頂部 dock 或面板"
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:27
 #, kde-format
 msgctxt "maximum length tooltip, %1 is maximum length percentage"
 msgid "You can use mouse wheel to change maximum length of %1%"
-msgstr ""
+msgstr "您可以使用滑鼠滾輪變更 %1% 的最大長度"
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
-#, fuzzy, kde-format
-#| msgid "Maximum"
+#, kde-format
 msgid "Maximum Length"
-msgstr "最大"
+msgstr "最大長度"
 
 #: shell/package/contents/configuration/CanvasConfiguration.qml:94
 #, kde-format
 msgctxt "opacity for background under edit mode, %1 is opacity percentage"
 msgid "You can use mouse wheel to change background opacity of %1%"
-msgstr ""
+msgstr "您可以使用滑鼠滾輪變更 %1% 的背景不透明度"
 
 #: shell/package/contents/configuration/config.qml:13
 #, kde-format
@@ -2619,17 +2461,16 @@ msgid "General"
 msgstr "一般"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:140
-#, fuzzy, kde-format
-#| msgid "Width"
+#, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr "寬度"
+msgstr "寬度 %1%"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr ""
+msgstr "寬度 %1%／高度 %2%"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
@@ -2653,12 +2494,10 @@ msgid "Effects"
 msgstr "特效"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
-#, fuzzy, kde-format
-#| msgctxt "tasks header and index"
-#| msgid "Tasks <%0>"
+#, kde-format
 msgctxt "tasks header and index"
 msgid "Tasks <%1>"
-msgstr "工作 <%0>"
+msgstr "工作 <%1>"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:347
 #, kde-format
@@ -2673,17 +2512,17 @@ msgstr "新增…"
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:500
 #, kde-format
 msgid "Add new docks and panels from various templates"
-msgstr ""
+msgstr "從多種範本中加入新的 dock 與面板"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:603
 #, kde-format
 msgid "Duplicate Dock"
-msgstr ""
+msgstr "再製 Dock"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:603
 #, kde-format
 msgid "Duplicate Panel"
-msgstr ""
+msgstr "再製面板"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -2707,37 +2546,29 @@ msgid "Items"
 msgstr "物件"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:66
-#, fuzzy, kde-format
-#| msgctxt "absolute size"
-#| msgid "Absolute"
+#, kde-format
 msgctxt "absolute size"
 msgid "Absolute size"
-msgstr "絕對"
+msgstr "絕對大小"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:101
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 12 px."
 msgid "%1 px."
-msgstr "%0 像素"
+msgstr "%1 像素"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:115
-#, fuzzy, kde-format
-#| msgctxt "relative size"
-#| msgid "Relative"
+#, kde-format
 msgctxt "relative size"
 msgid "Relative size"
 msgstr "相對大小"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:159
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 64 px."
 msgid "%1 px."
-msgstr "%0 像素"
+msgstr "%1 像素"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:160
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:214
@@ -2754,7 +2585,7 @@ msgstr "%0 像素"
 #, kde-format
 msgctxt "number in percentage, e.g. 85 %"
 msgid "%1 %"
-msgstr ""
+msgstr "%1 %"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:161
 #, kde-format
@@ -2763,8 +2594,7 @@ msgid "--- %"
 msgstr "--- %"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:180
-#, fuzzy, kde-format
-#| msgid "Zoom On Hover"
+#, kde-format
 msgid "Zoom on hover"
 msgstr "滑鼠游標置於其上時縮放"
 
@@ -2796,12 +2626,10 @@ msgstr "內邊距"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:618
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:664
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 12 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 8 px."
 msgid "%1 px."
-msgstr "%0 像素"
+msgstr "%1 像素"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:640
 #, kde-format
@@ -2815,12 +2643,10 @@ msgid "Screen edge"
 msgstr "螢幕"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
-#, fuzzy, kde-format
-#| msgctxt "number in pixels, e.g. 85 px."
-#| msgid "%0 px."
+#, kde-format
 msgctxt "number in pixels, e.g. 85 px."
 msgid "%1 px."
-msgstr "%0 像素"
+msgstr "%1 像素"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:728
 #, kde-format
@@ -2830,34 +2656,31 @@ msgstr "顏色"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:745
 #, kde-format
 msgid "Palette"
-msgstr ""
+msgstr "調色盤"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:752
-#, fuzzy, kde-format
-#| msgid "Plasma Theme:"
+#, kde-format
 msgctxt "plasma theme colors"
 msgid "Plasma Theme Colors"
-msgstr "Plasma 主題："
+msgstr "Plasma 主題色彩"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:755
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgctxt "dark theme colors"
 msgid "Dark Colors"
-msgstr "顏色"
+msgstr "深色"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:758
-#, fuzzy, kde-format
-#| msgid "Colors"
+#, kde-format
 msgctxt "light theme colors"
 msgid "Light Colors"
-msgstr "顏色"
+msgstr "淺色"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:761
 #, kde-format
 msgctxt "layout custom colors"
 msgid "Layout Custom Colors"
-msgstr ""
+msgstr "佈局自訂色彩"
 
 #. i18nc("reverse plasma theme colors", "Reverse"),
 #. value: LatteContainment.Types.ReverseThemeColors
@@ -2866,7 +2689,7 @@ msgstr ""
 #, kde-format
 msgctxt "smart theme colors"
 msgid "Smart Colors Based On Desktop Background"
-msgstr ""
+msgstr "以桌面背景為基礎的智慧型色彩"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:795
 #, kde-format
@@ -2880,10 +2703,9 @@ msgid "Disabled"
 msgstr "已停用"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:806
-#, fuzzy, kde-format
-#| msgid "Close Active Window"
+#, kde-format
 msgid "Current Active Window"
-msgstr "關閉作用中視窗"
+msgstr "目前作用中視窗"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:809
 #, kde-format
@@ -2891,23 +2713,18 @@ msgid "Colors are going to be based on the active window"
 msgstr "色彩將會以作用中的視窗為基礎"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:810
-#, fuzzy, kde-format
-#| msgid ""
-#| "Colors are going to be based on the active window.\n"
-#| "Notice: For optimal experience you are advised to install Colors KWin "
-#| "Script from KDE Store"
+#, kde-format
 msgid ""
 "Colors are going to be based on the active window.\n"
 "Warning: You need to install Colors KWin Script from KDE Store"
 msgstr ""
 "色彩將會以作用中的視窗為基礎。\n"
-"注意：為了得到最佳體驗，建議從 KDE 商店中安裝 Colors KWin Script"
+"注意：您必須從 KDE 商店中安裝 Colors KWin Script"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:812
-#, fuzzy, kde-format
-#| msgid "Active Window"
+#, kde-format
 msgid "Any Touching Window"
-msgstr "作用中的視窗"
+msgstr "任何觸碰到的視窗"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:815
 #, kde-format
@@ -2915,17 +2732,13 @@ msgid "Colors are going to be based on windows that are touching the view"
 msgstr "色彩將會基於觸碰到檢視的視窗"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:816
-#, fuzzy, kde-format
-#| msgid ""
-#| "Colors are going to be based on windows that are touching the view.\n"
-#| "Notice: For optimal experience you are advised to install Colors KWin "
-#| "Script from KDE Store"
+#, kde-format
 msgid ""
 "Colors are going to be based on windows that are touching the view.\n"
 "Warning: You need to install Colors KWin Script from KDE Store"
 msgstr ""
-"色彩將會基於觸碰到檢視的視窗。\n"
-"注意：為了得到最佳體驗，建議從 KDE 商店中安裝 Colors KWin Script"
+"色彩將會基於觸碰到的檢視。\n"
+"注意：您必須從 KDE 商店中安裝 Colors KWin Script"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:848
 #, kde-format
@@ -2958,18 +2771,17 @@ msgstr "忙碌不透明度"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:966
 #, kde-format
 msgid "Radius"
-msgstr ""
+msgstr "半徑"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:995
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1038
 #, kde-format
 msgctxt "Default word abbreviation"
 msgid "Def."
-msgstr ""
+msgstr "定義"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1009
-#, fuzzy, kde-format
-#| msgid "Shadows"
+#, kde-format
 msgid "Shadow"
 msgstr "陰影"
 
@@ -3007,16 +2819,14 @@ msgid ""
 msgstr "背景會為其邊框繪製線條。您可以從 Latte 偏好設定中設定線的大小"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1109
-#, fuzzy, kde-format
-#| msgctxt "track from all screens"
-#| msgid "All Screens"
+#, kde-format
 msgid "All Corners"
-msgstr "所有螢幕"
+msgstr "所有角落"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1117
 #, kde-format
 msgid "Background draws all corners at all cases."
-msgstr ""
+msgstr "在所有情況下，背景都繪製所有角落。"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1127
 #, kde-format
@@ -3136,23 +2946,19 @@ msgstr "視窗永可覆蓋"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:497
 #, kde-format
 msgid "On Demand Sidebar"
-msgstr ""
+msgstr "需要時才出現的側邊欄"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:498
-#, fuzzy, kde-format
-#| msgid ""
-#| "SideBar can be shown only when the user has explicitly requested it. For "
-#| "example through an external applet, shortcut or script"
+#, kde-format
 msgid ""
 "Sidebar can be shown and become hidden only through an external applet, "
 "shortcut or script"
-msgstr "側邊欄只會在使用者明確請求時才會顯示。例如透過外部元件、捷徑及文稿"
+msgstr "側邊蘭可以顯示，並僅透過外部小程式、捷徑或指令稿變為隱藏"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:502
-#, fuzzy, kde-format
-#| msgid "Auto Hide"
+#, kde-format
 msgid "Auto Hide Sidebar"
-msgstr "自動隱藏"
+msgstr "自動隱藏側邊欄"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:503
 #, kde-format
@@ -3160,6 +2966,7 @@ msgid ""
 "Sidebar can be shown only through an external applet, shortcut or script but "
 "it can also autohide itself when it does not contain mouse"
 msgstr ""
+"側邊欄僅能透過外部小程式、捷徑或指令稿顯示，但也可以在不包含滑鼠時自動隱藏"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:525
 #, kde-format
@@ -3178,24 +2985,22 @@ msgid "Actions"
 msgstr "動作"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:634
-#, fuzzy, kde-format
-#| msgid "Track From"
+#, kde-format
 msgctxt "track active window"
 msgid "Track"
-msgstr "追蹤從"
+msgstr "追蹤"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:640
 #, kde-format
 msgctxt "track from current screen"
 msgid "Active Window From Current Screen"
-msgstr ""
+msgstr "目前螢幕的作用中視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:641
-#, fuzzy, kde-format
-#| msgid "Active Window"
+#, kde-format
 msgctxt "track from all screens"
 msgid "Active Window From All Screens"
-msgstr "作用中的視窗"
+msgstr "所有螢幕的作用中視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:666
 #, kde-format
@@ -3208,14 +3013,11 @@ msgid "Drag Active Window"
 msgstr "拖曳作用中視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:673
-#, fuzzy, kde-format
-#| msgid ""
-#| "The user can use left mouse button to drag and maximized/restore last "
-#| "active window"
+#, kde-format
 msgid ""
 "The user can use left mouse button to drag and maximized/restore last active "
 "window from empty areas"
-msgstr "使用者可使用滑鼠左鍵拖曳及最大化／復原上個作用中視窗"
+msgstr "使用者可使用滑鼠左鍵從空的區域拖曳及最大化／復原上個作用中視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:691
 #, kde-format
@@ -3228,12 +3030,11 @@ msgid "Close Active Window"
 msgstr "關閉作用中視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:698
-#, fuzzy, kde-format
-#| msgid "The user can use middle mouse button to close last active window"
+#, kde-format
 msgid ""
 "The user can use middle mouse button to close last active window from empty "
 "areas"
-msgstr "使用者可使用滑鼠中鍵來關閉上個作用中的視窗"
+msgstr "使用者可使用滑鼠中鍵從空的區域來關閉上個作用中的視窗"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:718
 #, kde-format
@@ -3241,9 +3042,7 @@ msgid "Mouse wheel"
 msgstr "滑鼠滾輪"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:724
-#, fuzzy, kde-format
-#| msgctxt "none scroll actions"
-#| msgid "None Action"
+#, kde-format
 msgctxt "none scroll actions"
 msgid "No Action"
 msgstr "無動作"
@@ -3274,21 +3073,17 @@ msgid "Cycle And Minimize Tasks"
 msgstr "循環並最小化工作"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:764
-#, fuzzy, kde-format
-#| msgid "Show title tooltips on hovering"
+#, kde-format
 msgid "Thin title tooltips on hovering"
-msgstr "在滑鼠游標置於其上時顯示標題工具提示"
+msgstr "在滑鼠游標置於其上時讓標題工具提示變細"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:765
-#, fuzzy, kde-format
-#| msgid ""
-#| "Show thinner tooltips produced by Latte for items.\n"
-#| "These tooltips are not drawn when applets zoom effect is disabled"
+#, kde-format
 msgid ""
 "Show narrow tooltips produced by Latte for items.\n"
 "These tooltips are not drawn when applets zoom effect is disabled"
 msgstr ""
-"顯示由 Latte 為項目生成的較細工具提示。\n"
+"顯示由 Latte 為項目生成的較窄工具提示。\n"
 "這些工具提示在小工具縮放特效被停用時不會被繪製"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:776
@@ -3314,10 +3109,9 @@ msgid ""
 msgstr "物件在超過最大長度時縮小，而在空間足夠放入時擴張。"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:802
-#, fuzzy, kde-format
-#| msgid "➊ Activate based on position global shortcuts"
+#, kde-format
 msgid "Activate based on position global shortcuts"
-msgstr "➊ 以位置全域快捷鍵為基礎啟用"
+msgstr "以位置全域快捷鍵為基礎啟用"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:803
 #, kde-format
@@ -3335,44 +3129,42 @@ msgstr "浮動"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:830
 #, kde-format
 msgid "Always use floating gap for user interaction"
-msgstr ""
+msgstr "一律使用浮動間隔進行使用者互動"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:831
 #, kde-format
 msgid "Floating gap is always used for applets and window interaction"
-msgstr ""
+msgstr "小程式與視窗互動一律使用浮動間隔"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:842
-#, fuzzy, kde-format
-#| msgid "Hide background shadow for maximized windows"
+#, kde-format
 msgid "Hide floating gap for maximized windows"
-msgstr "為最大化視窗隱藏背景陰影"
+msgstr "為最大化視窗隱藏浮動間隔"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:843
 #, kde-format
 msgid "Floating gap is disabled when there are maximized windows"
-msgstr ""
+msgstr "有最大化視窗時停用浮動間隔"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:854
 #, kde-format
 msgid "Delay floating gap hiding until mouse leaves"
-msgstr ""
+msgstr "延遲浮動間隔隱藏至滑鼠離開"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:855
 #, kde-format
 msgid "to avoid clicking on adjacent items accidentally in some cases"
-msgstr ""
+msgstr "避免在某些形況下意外點擊相鄰項目"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:866
-#, fuzzy, kde-format
-#| msgid "Hide background shadow for maximized windows"
+#, kde-format
 msgid "Mirror floating gap when it is shown"
-msgstr "為最大化視窗隱藏背景陰影"
+msgstr "浮動間隔顯示時鏡像間隔"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:867
 #, kde-format
 msgid "Floating gap is mirrored when it is shown in Always Visible mode"
-msgstr ""
+msgstr "當浮動間隔顯示為「總是可見」模式時鏡像浮動間隔"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:890
 #, kde-format
@@ -3424,12 +3216,10 @@ msgid "Enable/disable applet shadows"
 msgstr "啟用或停用元件陰影"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:178
-#, fuzzy, kde-format
-#| msgctxt "default shadow"
-#| msgid "Default"
+#, kde-format
 msgctxt "default shadow"
 msgid "Default Color"
-msgstr "預設"
+msgstr "預設色彩"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
@@ -3437,11 +3227,10 @@ msgid "Default shadow for applets"
 msgstr "小工具的預設陰影"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:197
-#, fuzzy, kde-format
-#| msgid "Custom text color..."
+#, kde-format
 msgctxt "theme shadow"
 msgid "Theme Color"
-msgstr "自訂文字顏色……"
+msgstr "佈景主題色彩"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:201
 #, kde-format
@@ -3571,20 +3360,16 @@ msgid "Interaction"
 msgstr "反應"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:133
-#, fuzzy, kde-format
-#| msgid ""
-#| "Launchers are added only in the taskmanager and not as plasma applets"
+#, kde-format
 msgid "Launchers are added only in current tasks applet"
-msgstr "啟動器僅會在工作管理員中新增，而不是做為 Plasma 小工具"
+msgstr "啟動器僅於目前的工作小程式新增"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:134
-#, fuzzy, kde-format
-#| msgid ""
-#| "Launchers are added only in the taskmanager and not as plasma applets"
+#, kde-format
 msgid ""
 "Launchers are added only in current tasks applet and not as regular applets "
 "or in any other applet"
-msgstr "啟動器僅會在工作管理員中新增，而不是做為 Plasma 小工具"
+msgstr "啟動器僅於目前的工作小程式新增，而非以一般小程式或在其他小程式中"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:145
 #, kde-format
@@ -3592,26 +3377,21 @@ msgid "Window actions in the context menu"
 msgstr "右鍵選單中的視窗動作"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:158
-#, fuzzy, kde-format
-#| msgid "Preview Windows"
+#, kde-format
 msgid "Preview window behaves as popup"
-msgstr "預覽視窗"
+msgstr "預覽視窗表現為彈出式視窗"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:171
-#, fuzzy, kde-format
-#| msgid "➊ Based on position shortcuts apply only for tasks"
+#, kde-format
 msgid "Based on position shortcuts apply only on current tasks"
-msgstr "➊ 以位置為基礎的快捷鍵僅套用於工作"
+msgstr "以位置為基礎的快捷鍵僅套用於工作"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:173
-#, fuzzy, kde-format
-#| msgid ""
-#| "Based on position global shortcuts are enabled only for tasks and not for "
-#| "applets"
+#, kde-format
 msgid ""
 "Based on position global shortcuts are enabled only for current tasks and "
 "not for other applets"
-msgstr "以位置為基礎的全域快捷鍵僅對工作啟用，並未對小工具啟用"
+msgstr "以位置為基礎的全域快捷鍵僅對目前工作啟用，且未對其他小程式啟用"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:192
 #, kde-format
@@ -3641,18 +3421,17 @@ msgstr "只顯示從啟動器開啟的工作"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:246
 #, kde-format
 msgid "Show only launchers and hide all tasks"
-msgstr ""
+msgstr "僅顯示啟動器並隱藏所有工作"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:247
 #, kde-format
 msgid "Tasks become hidden and only launchers are shown"
-msgstr ""
+msgstr "工作變為隱藏並僅顯示啟動器"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:258
-#, fuzzy, kde-format
-#| msgid "Group tasks of the same application"
+#, kde-format
 msgid "Show only grouped tasks for same application"
-msgstr "將同一個應用程式的視窗分為一個群組"
+msgstr "同一個應用程式僅顯示分組好的工作"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:259
 #, kde-format
@@ -3690,12 +3469,10 @@ msgid "Launchers"
 msgstr "啟動器"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:376
-#, fuzzy, kde-format
-#| msgctxt "unique launchers group"
-#| msgid "Unique"
+#, kde-format
 msgctxt "unique launchers group"
 msgid "Unique Group"
-msgstr "唯一"
+msgstr "唯一群組"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:380
 #, kde-format
@@ -3705,11 +3482,10 @@ msgid ""
 msgstr "為此與其他檢視不同的檢視使用唯一的啟動器群集"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:395
-#, fuzzy, kde-format
-#| msgid "Layout"
+#, kde-format
 msgctxt "layout launchers group"
 msgid "Layout Group"
-msgstr "佈局"
+msgstr "佈局群組"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:399
 #, kde-format
@@ -3722,12 +3498,10 @@ msgstr ""
 "模式間的啟動器<b>同步</b>"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:415
-#, fuzzy, kde-format
-#| msgctxt "global launchers group"
-#| msgid "Global"
+#, kde-format
 msgctxt "global launchers group"
 msgid "Global Group"
-msgstr "全域"
+msgstr "全域群組"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:419
 #, kde-format
@@ -3871,13 +3645,12 @@ msgstr "點擊滑鼠右鍵"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:18
 #, kde-format
 msgid "Install indicators from KDE Online Store or local files"
-msgstr ""
+msgstr "從 KDE 線上商店或本機檔案安裝指示器"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:19
-#, fuzzy, kde-format
-#| msgid "Use %0 style for your indicators"
+#, kde-format
 msgid "Use %1 style for your indicators"
-msgstr "為您的指示器使用 %0 樣式"
+msgstr "為您的指示器使用 %1 樣式"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
@@ -3924,7 +3697,7 @@ msgstr "變更行為與外觀為面板類型"
 #: shell/package/contents/views/AppletDelegate.qml:167
 #, kde-format
 msgid "Undo uninstall"
-msgstr ""
+msgstr "復原解除安裝"
 
 #: shell/package/contents/views/AppletDelegate.qml:168
 #, kde-format
@@ -3951,12 +3724,12 @@ msgstr "取得新指示器…"
 #: shell/package/contents/views/WidgetExplorer.qml:253
 #, kde-format
 msgid "Search..."
-msgstr ""
+msgstr "搜尋…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:264
 #, kde-format
 msgid "Categories"
-msgstr ""
+msgstr "分類"
 
 #: shell/package/contents/views/WidgetExplorer.qml:363
 #, kde-format
