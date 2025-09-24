@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2025-08-11 23:29+0200\n"
+"PO-Revision-Date: 2025-09-23 19:38+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -907,17 +907,15 @@ msgid "Remove Now"
 msgstr "Kendu orain"
 
 #: app/settings/screensdialog/screensdialog.cpp:71
-#, fuzzy, kde-format
-#| msgid "Remove selected layout"
+#, kde-format
 msgid "Remove selected screen references"
-msgstr "Kendu aukeratutako antolamendura"
+msgstr "Kendu aukeratutako pantaila-erreferentziak"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
 #: app/settings/screensdialog/screensdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Screens:"
+#, kde-format
 msgid "Screens"
-msgstr "Pantailak:"
+msgstr "Pantailak"
 
 #. i18n: ectx: property (text), widget (QLabel, noteLbl)
 #: app/settings/screensdialog/screensdialog.ui:67
@@ -946,11 +944,10 @@ msgid "Approve Removal"
 msgstr ""
 
 #: app/settings/screensdialog/screensmodel.cpp:238
-#, fuzzy, kde-format
-#| msgid "Screens:"
+#, kde-format
 msgctxt "column for screens"
 msgid "Screens"
-msgstr "Pantailak:"
+msgstr "Pantailak"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:599
 #, kde-format
@@ -958,8 +955,9 @@ msgctxt "settings:counted layout with errors"
 msgid "<b>Error:</b> There is <b>1 layout</b> that has reported errors."
 msgid_plural ""
 "<b>Error:</b> There are <b>%1 layouts</b> that have reported errors."
-msgstr[0] ""
+msgstr[0] "<b>Errorea:</b> Erroreen berri eman duen <b>antolaera 1</b> dago."
 msgstr[1] ""
+"<b>Errorea:</b> Erroreen berri eman duten <b>%1 antolaera</b> daude."
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:612
 #, kde-format
@@ -967,13 +965,13 @@ msgctxt "settings:counted layout with warnings"
 msgid "<b>Warning:</b> There is <b>1 layout</b> that has reported warnings."
 msgid_plural ""
 "<b>Warning:</b> There are <b>%1 layouts</b> that have reported warnings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>Abisua:</b> Abisuen berri eman duen <b>antolaera 1</b> dago."
+msgstr[1] "<b>Abisua:</b> Abisuen berri eman duten <b>%1 antolaera</b> daude."
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:622
 #, kde-format
 msgid "Examine..."
-msgstr ""
+msgstr "Aztertu..."
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:640
 #, kde-format
@@ -999,17 +997,16 @@ msgstr ""
 msgctxt "errors count"
 msgid "1 error"
 msgid_plural "%1 errors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "errore 1"
+msgstr[1] "%1 errore"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:664
-#, fuzzy, kde-format
-#| msgid "Layout Warning"
+#, kde-format
 msgctxt "warnings count"
 msgid "1 warning"
 msgid_plural "%1 warnings"
-msgstr[0] "Diseinu abisua"
-msgstr[1] "Diseinu abisua"
+msgstr[0] "abisu 1"
+msgstr[1] "%1 abisu"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:669
 #, kde-format
@@ -1071,11 +1068,9 @@ msgid "Activities"
 msgstr "Jarduerak"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:901
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "All Activities"
-msgstr "Jarduerak"
+msgstr "Jarduera guztiak"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:908
 #, fuzzy, kde-format
@@ -1084,10 +1079,9 @@ msgid "Free Activities"
 msgstr "Jarduerak libre guztiak"
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:915
-#, fuzzy, kde-format
-#| msgid "Close Active Window"
+#, kde-format
 msgid "Current Activity"
-msgstr "Itxi leiho aktiboa"
+msgstr "Uneko jarduera"
 
 #: app/settings/settingsdialog/layoutstableview.cpp:29
 #: app/settings/settingsdialog/layoutstableview.cpp:67
@@ -1132,10 +1126,9 @@ msgid "Export your full configuration to create backup"
 msgstr "Esportatu zure konfigurazio osoa babeskopia sortzeko"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:144
-#, fuzzy, kde-format
-#| msgid "Sc&reens..."
+#, kde-format
 msgid "&Screens..."
-msgstr "Pan&tailak..."
+msgstr "&Pantailak..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
 #, kde-format
@@ -1248,10 +1241,9 @@ msgstr "Ezarpenak"
 
 #. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
 #: app/settings/settingsdialog/settingsdialog.ui:36
-#, fuzzy, kde-format
-#| msgid "Layouts"
+#, kde-format
 msgid "Layouts Editor"
-msgstr "Antolamenduak"
+msgstr "Antolaera editorea"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
@@ -1262,12 +1254,10 @@ msgstr "Antolamendu bakarra egon daiteke aktibo eta memorian kasu guztietan"
 
 #. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:70
-#, fuzzy, kde-format
-#| msgctxt "single layout"
-#| msgid "Single Layout"
+#, kde-format
 msgctxt "single layout"
 msgid "Single layout at all times"
-msgstr "Antolamendu bakuna"
+msgstr "Antolaera bakarra une oro"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:84
@@ -1289,25 +1279,19 @@ msgstr "Hainbat antolamenduren ezkutuko fitxategia"
 
 #. i18n: ectx: property (text), widget (QPushButton, switchButton)
 #: app/settings/settingsdialog/settingsdialog.ui:177
-#, fuzzy, kde-format
-#| msgctxt "switch layout"
-#| msgid "Switch"
+#, kde-format
 msgid "Switch"
 msgstr "Aldatu"
 
 #. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
 #: app/settings/settingsdialog/settingsdialog.ui:191
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "Activities..."
-msgstr "Jarduerak"
+msgstr "Jarduerak..."
 
 #. i18n: ectx: property (text), widget (QPushButton, newButton)
 #: app/settings/settingsdialog/settingsdialog.ui:247
-#, fuzzy, kde-format
-#| msgctxt "new layout"
-#| msgid "New"
+#, kde-format
 msgid "New"
 msgstr "Berria"
 
@@ -1337,7 +1321,7 @@ msgstr "Gaituta"
 #: app/settings/settingsdialog/settingsdialog.ui:310
 #, kde-format
 msgid "Read Only"
-msgstr ""
+msgstr "Irakurtzeko soilik"
 
 #. i18n: ectx: property (text), widget (QPushButton, detailsButton)
 #: app/settings/settingsdialog/settingsdialog.ui:356
@@ -1347,25 +1331,21 @@ msgstr "Xehetasunak..."
 
 #. i18n: ectx: property (text), widget (QPushButton, importButton)
 #: app/settings/settingsdialog/settingsdialog.ui:438
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "&Import..."
+#, kde-format
 msgid "Import..."
-msgstr "&Inportatu..."
+msgstr "Inportatu..."
 
 #. i18n: ectx: property (text), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:452
-#, fuzzy, kde-format
-#| msgctxt "export full configuration"
-#| msgid "Export"
+#, kde-format
 msgid "Export..."
-msgstr "Esportatu"
+msgstr "Esportatu..."
 
 #. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
 #: app/settings/settingsdialog/settingsdialog.ui:459
 #, kde-format
 msgid "Ctrl+S"
-msgstr "Ctrl+S"
+msgstr "Ktrl+S"
 
 #. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
 #: app/settings/settingsdialog/settingsdialog.ui:499
@@ -1397,13 +1377,11 @@ msgstr "Efektu parabolikoa:"
 #, kde-format
 msgctxt "small spread"
 msgid "Small"
-msgstr ""
+msgstr "Txikia"
 
 #. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:631
-#, fuzzy, kde-format
-#| msgctxt "medium sensitivity"
-#| msgid "Medium"
+#, kde-format
 msgctxt "medium spread"
 msgid "Medium"
 msgstr "Ertaina"
@@ -1413,13 +1391,13 @@ msgstr "Ertaina"
 #, kde-format
 msgctxt "large spread"
 msgid "Large"
-msgstr ""
+msgstr "Handia"
 
 #. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:669
 #, kde-format
 msgid "spread"
-msgstr ""
+msgstr "Zabaldu"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:726
@@ -1463,7 +1441,7 @@ msgstr ""
 #: app/settings/settingsdialog/settingsdialog.ui:912
 #, kde-format
 msgid "Context Menu:"
-msgstr ""
+msgstr "Laster-menua:"
 
 #. i18n: ectx: property (text), widget (QLabel, actionsLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:936
@@ -1473,10 +1451,9 @@ msgstr "Ekintzak:"
 
 #. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:968
-#, fuzzy, kde-format
-#| msgid "Actions"
+#, kde-format
 msgid "Actions..."
-msgstr "Ekintzak"
+msgstr "Ekintzak..."
 
 #. i18n: ectx: property (text), widget (QLabel, screensLbl)
 #: app/settings/settingsdialog/settingsdialog.ui:1011
@@ -1564,16 +1541,14 @@ msgid "Switch to selected layout"
 msgstr "Aldatu aukeratutako antolamendura"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:123
-#, fuzzy, kde-format
-#| msgctxt "column for layout to show which activities is assigned to"
-#| msgid "Activities"
+#, kde-format
 msgid "&Activities"
-msgstr "Jarduerak"
+msgstr "J&arduerak"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:124
 #, kde-format
 msgid "Show Plasma Activities manager"
-msgstr ""
+msgstr "Erakutsi Plasma Jarduera kudeatzailea"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:132
 #, kde-format
@@ -1590,13 +1565,12 @@ msgstr "Antolamendu berria"
 #, kde-format
 msgctxt "duplicate layout"
 msgid "&Duplicate"
-msgstr ""
+msgstr "&Bikoiztu"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:146
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate selected layout"
-msgstr "Aldatu aukeratutako antolamendura"
+msgstr "Bikoiztu hautatutako antolaera"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:152
 #: app/settings/viewsdialog/viewshandler.cpp:91
@@ -1611,10 +1585,9 @@ msgid "Remove selected layout"
 msgstr "Kendu aukeratutako antolamendura"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:162
-#, fuzzy, kde-format
-#| msgid "Enabled"
+#, kde-format
 msgid "Ena&bled"
-msgstr "Gaituta"
+msgstr "&Gaituta"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:163
 #, kde-format
@@ -1625,7 +1598,7 @@ msgstr ""
 #, kde-format
 msgctxt "read only layout"
 msgid "&Read Only"
-msgstr ""
+msgstr "I&rakurtzeko soilik"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:171
 #, fuzzy, kde-format
@@ -1634,11 +1607,10 @@ msgid "Make selected layout read-only"
 msgstr "Erakutsi aukeratutako antolamenduaren xehetasunak"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:178
-#, fuzzy, kde-format
-#| msgid "Docks/Panels"
+#, kde-format
 msgctxt "layout docks / panels"
 msgid "Docks, &Panels..."
-msgstr "Kaiak/Panelak"
+msgstr "Kaiak, &Panelak..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:179
 #, fuzzy, kde-format
@@ -1658,12 +1630,10 @@ msgid "Show selected layout details"
 msgstr "Erakutsi aukeratutako antolamenduaren xehetasunak"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:196
-#, fuzzy, kde-format
-#| msgctxt "import layout"
-#| msgid "Import"
+#, kde-format
 msgctxt "import layout"
 msgid "&Import"
-msgstr "Inportatu"
+msgstr "&Inportatu"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:197
 #, fuzzy, kde-format
@@ -1673,12 +1643,10 @@ msgstr "Inportatu antolamendu fitxategia zure sistemarako"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:208
 #: app/settings/viewsdialog/viewshandler.cpp:108
-#, fuzzy, kde-format
-#| msgctxt "export layout"
-#| msgid "Export"
+#, kde-format
 msgctxt "export layout"
 msgid "&Export"
-msgstr "Esportatu"
+msgstr "&Esportatu"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:209
 #, kde-format
@@ -1689,42 +1657,39 @@ msgstr "Esportatu aukeratutako antolamendu zure sistemara"
 #, kde-format
 msgctxt "import layout"
 msgid "&Import From Local File..."
-msgstr ""
+msgstr "&Inportatu fitxategi lokaletik..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:234
 #, kde-format
 msgctxt "download layout"
 msgid "Import From K&DE Online Store..."
-msgstr ""
+msgstr "Inportatu K&DEren lerroko biltegitik..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:249
 #: app/settings/viewsdialog/viewshandler.cpp:188
-#, fuzzy, kde-format
-#| msgctxt "export layout"
-#| msgid "&Export..."
+#, kde-format
 msgctxt "export for backup"
 msgid "&Export For Backup..."
-msgstr "&Esportatu..."
+msgstr "&Esportatu babeskopiatik..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:254
 #: app/settings/viewsdialog/viewshandler.cpp:193
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgctxt "export as template"
 msgid "Export As &Template..."
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu &txantiloi gisa..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:169
 #, kde-format
 msgid "Templates..."
-msgstr ""
+msgstr "Txantiloiak..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:291
 #: app/settings/viewsdialog/viewshandler.cpp:170
 #, kde-format
 msgid "Open templates directory"
-msgstr ""
+msgstr "Ireki txantiloien direktorioa"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:367
 #, fuzzy, kde-format
@@ -1737,20 +1702,16 @@ msgstr ""
 "Aldaketak <b>aplikatu</b> behar dituzu aurrez antolamendua aldatzeko..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:444
-#, fuzzy, kde-format
-#| msgctxt "settings:layout added successfully"
-#| msgid "Layout <b>%0</b> added successfully..."
+#, kde-format
 msgctxt "settings:layout added successfully"
 msgid "Layout <b>%1</b> added successfully..."
-msgstr "<b>%0</b> antolamendua ondo gehitu da..."
+msgstr "<b>%1</b> antolaera ondo gehitu da..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:480
-#, fuzzy, kde-format
-#| msgctxt "settings:layout downloaded successfully"
-#| msgid "Layout <b>%0</b> downloaded successfully..."
+#, kde-format
 msgctxt "settings:layout downloaded successfully"
 msgid "Layout <b>%1</b> downloaded successfully..."
-msgstr "<b>%0</b> antolamendua ondo deskargatu da..."
+msgstr "<b>%1</b> antolaera ondo zama-jaitsi da..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:506
 #, kde-format
@@ -1790,11 +1751,10 @@ msgstr "Latte Dock antolamendu-fitxategia v0.1"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:562
 #: app/settings/settingsdialog/tablayoutshandler.cpp:784
-#, fuzzy, kde-format
-#| msgid "Layout <b>%0</b> imported successfully..."
+#, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%1</b> imported successfully..."
-msgstr "<b>%0</b> antolamendua ondo inportatua..."
+msgstr "<b>%1</b> antolaera ondo inportatu da..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:566
 #, kde-format
@@ -1804,10 +1764,9 @@ msgstr ""
 "Zaharkitutako bertsioko antolamendu inportazioak <b>huts egin</b> du..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:622
-#, fuzzy, kde-format
-#| msgid "Export Layout"
+#, kde-format
 msgid "Export Layout For Backup"
-msgstr "Esportatu antolamendua"
+msgstr "Esportatu antolaera babeskopiarako"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:624
 #, kde-format
@@ -1822,29 +1781,24 @@ msgid "Latte Dock Layout file v0.2"
 msgstr "Latte Dock antolamendu-fitxategia v0.2"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:640
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export fail"
-#| msgid "Layout <b>%0</b> export <b>failed</b>..."
+#, kde-format
 msgctxt "settings:layout export fail"
 msgid "Layout <b>%1</b> export <b>failed</b>..."
-msgstr "<b>%0</b> antolamenduaren esportazioak <b>huts egin</b> du..."
+msgstr "<b>%1</b> antolaera esportatzea <b>huts egin</b> du..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:682
-#, fuzzy, kde-format
-#| msgctxt "settings:layout export success"
-#| msgid "Layout <b>%0</b> export succeeded..."
+#, kde-format
 msgctxt "settings:layout export success"
 msgid "Layout <b>%1</b> export succeeded..."
-msgstr "<b>%0</b> antolamendua ondo inportatua..."
+msgstr "<b>%1</b> antolaera ondo esportatu da..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:773
-#, fuzzy, kde-format
-#| msgid "Layout <b>%0</b> imported successfully..."
+#, kde-format
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "<b>%0</b> antolamendua ondo inportatua..."
-msgstr[1] "<b>%0</b> antolamendua ondo inportatua..."
+msgstr[0] "Antolaera <b>%2</b> ondo inportatu da..."
+msgstr[1] "<b>%2</b> antolaera ondo inportatu dira..."
 
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
@@ -1852,36 +1806,32 @@ msgstr[1] "<b>%0</b> antolamendua ondo inportatua..."
 #, kde-format
 msgctxt "number in percentage, e.g. 85%"
 msgid "%1%"
-msgstr ""
+msgstr "%%1"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
-#, fuzzy, kde-format
-#| msgid "Options"
+#, kde-format
 msgid "optional"
-msgstr "Aukerak"
+msgstr "aukerakoa"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:103
 #, kde-format
 msgid "Cut"
-msgstr ""
+msgstr "Ebaki"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:107
-#, fuzzy, kde-format
-#| msgctxt "copy layout"
-#| msgid "Copy"
+#, kde-format
 msgid "Copy"
 msgstr "Kopiatu"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:111
 #, kde-format
 msgid "Paste"
-msgstr ""
+msgstr "Itsatsi"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:115
-#, fuzzy, kde-format
-#| msgid "Switch to selected layout"
+#, kde-format
 msgid "Duplicate Here"
-msgstr "Aldatu aukeratutako antolamendura"
+msgstr "Bikoiztu hemen"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:319
 #, kde-format
@@ -1905,7 +1855,7 @@ msgstr "Editatu antolaera"
 #: app/settings/viewsdialog/viewscontroller.cpp:622
 #, kde-format
 msgid "Validate"
-msgstr ""
+msgstr "Balioztatu"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:641
 #, kde-format
@@ -1915,10 +1865,10 @@ msgid ""
 msgstr ""
 
 #: app/settings/viewsdialog/viewscontroller.cpp:657
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/>"
-msgstr ""
+msgstr "<b>%1 errorea: %2</b> <br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:659
 #, kde-format
@@ -1932,7 +1882,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:753
 #, kde-format
 msgid "<b>Applets:</b><br/>"
-msgstr ""
+msgstr "<b>Aplikaziotxoak:</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:670
 #, kde-format
@@ -1948,7 +1898,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:828
 #, kde-format
 msgid "<b>Possible Solutions:</b><br/>"
-msgstr ""
+msgstr "<b>Konponbide posibleak:</b><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:679
 #, kde-format
@@ -1973,10 +1923,10 @@ msgid "&nbsp;&nbsp;4. Remove this layout totally<br/>"
 msgstr ""
 
 #: app/settings/viewsdialog/viewscontroller.cpp:694
-#, kde-format
+#, fuzzy, kde-format
 msgctxt "error id and title"
 msgid "<b>Error #%1: %2</b> <br/><br/>"
-msgstr ""
+msgstr "<b>Errorea #%1: %2</b> <br/><br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:695
 #, kde-format
