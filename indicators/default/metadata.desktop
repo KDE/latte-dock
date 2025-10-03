@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Latte
+Name[ar]=لاتيه
 Name[ast]=Latte
 Name[az]=Latte
 Name[ca]=Latte
@@ -34,6 +35,7 @@ Name[uk]=Латте
 Name[zh_CN]=Latte
 Name[zh_TW]=Latte
 Comment=Latte default indicator
+Comment[ar]=مؤشر لاتيه المبدئي
 Comment[az]=Latte standart indikatoru
 Comment[ca]=Indicador predeterminat del Latte
 Comment[ca@valencia]=Indicador predeterminat de Latte

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Plasma Tab Style
+Name[ar]=نمط ألسنة بلازما
 Name[az]=Plasma Vərəq Üslubu
 Name[ca]=Estil pestanya del Plasma
 Name[ca@valencia]=Estil pestanya de Plasma
@@ -29,6 +30,7 @@ Name[uk]=Стиль вкладок Плазми
 Name[zh_CN]=Plasma 标签页风格
 Name[zh_TW]=Plasma 分頁樣式
 Comment=Plasma Tab style indicator for Latte
+Comment[ar]=مؤشر نمط ألسنة بلازما للاتيه
 Comment[az]=Latte üçün Plasma Vərəq Üslubu indikatoru
 Comment[ca]=Indicador a l'estil pestanya del Plasma per al Latte
 Comment[ca@valencia]=Indicador a l'estil pestanya de Plasma per a Latte
