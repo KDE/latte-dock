@@ -1,0 +1,131 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# SPDX-FileCopyrightText: 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"PO-Revision-Date: 2025-10-06 16:56+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Lokalize 23.08.5\n"
+
+#: menu.cpp:91
+#, kde-format
+msgid "&Add Widgets..."
+msgstr "أ&ضف ودجات…"
+
+#: menu.cpp:92
+#, kde-format
+msgid "Show Widget Explorer"
+msgstr "أظهر مستكشف الودجات"
+
+#: menu.cpp:111
+#, kde-format
+msgctxt "quit application"
+msgid "Quit &Latte"
+msgstr "أنهِ &لاتيه"
+
+#: menu.cpp:118
+#, kde-format
+msgid "&Layouts"
+msgstr "ال&تخطيطات"
+
+#: menu.cpp:120
+#, kde-format
+msgid "Switch to another layout"
+msgstr "بدّل إلى تخطيط آخر"
+
+#: menu.cpp:129
+#, kde-format
+msgid "&Add Dock/Panel"
+msgstr "أ&ضف مرسى/لوحة"
+
+#: menu.cpp:131
+#, kde-format
+msgid "Add dock or panel based on specific template"
+msgstr "أضف مرسى أو لوحة بناءً على قالب معيّن"
+
+#: menu.cpp:142
+#, kde-format
+msgid "Move dock or panel to different layout"
+msgstr "انقل المرسى أو اللوحة إلى تخطيط مختلف"
+
+#: menu.cpp:149
+#, kde-format
+msgctxt "global settings window"
+msgid "&Configure Latte..."
+msgstr "ا&ضبط لاتيه..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Dock..."
+msgstr "&حرّر المرسى..."
+
+#: menu.cpp:239
+#, kde-format
+msgid "&Edit Panel..."
+msgstr "&حرّر اللوحة..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Dock..."
+msgstr "&حرّر المرسى الأصلي..."
+
+#: menu.cpp:241
+#, kde-format
+msgid "&Edit Original Panel..."
+msgstr "&حرّر اللوحة الأصلية..."
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Dock"
+msgstr "&ضاعف المرسى"
+
+#: menu.cpp:245
+#, kde-format
+msgid "&Duplicate Panel"
+msgstr "&ضاعف اللوحة"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Dock as Template"
+msgstr "ص&دّر المرسى كقالب"
+
+#: menu.cpp:248
+#, kde-format
+msgid "E&xport Panel as Template"
+msgstr "ص&دّر اللوحة كقالب"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Dock To Layout"
+msgstr "ا&نقل المرسى إلى التخطيط"
+
+#: menu.cpp:252
+#, kde-format
+msgid "&Move Panel To Layout"
+msgstr "ا&نقل اللوحة إلى التخطيط"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Dock"
+msgstr "أ&زل المرسى"
+
+#: menu.cpp:255
+#, kde-format
+msgid "&Remove Panel"
+msgstr "أ&زل اللوحة"
+
+#: menu.cpp:363
+#, kde-format
+msgid "Edit &Layouts..."
+msgstr "&حرّر التخطيطات..."

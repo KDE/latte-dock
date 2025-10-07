@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-11-05 12:36+0000\n"
-"PO-Revision-Date: 2025-08-03 23:16+0400\n"
+"PO-Revision-Date: 2025-10-06 16:49+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -35,10 +35,9 @@ msgid "Interaction"
 msgstr "التّفاعل"
 
 #: package/contents/ui/config/ConfigAppearance.qml:55
-#, fuzzy, kde-format
-#| msgid "Icon size: "
+#, kde-format
 msgid "Maximum icon size: "
-msgstr "قياس الأيقونة: "
+msgstr "القياس الأقصى للأيقونة: "
 
 #: package/contents/ui/config/ConfigAppearance.qml:139
 #, kde-format
@@ -121,7 +120,7 @@ msgstr "النّقر بالوسط"
 #, kde-format
 msgctxt "The click action"
 msgid "None"
-msgstr "بلا"
+msgstr "لا شيء"
 
 #: package/contents/ui/config/ConfigInteraction.qml:72
 #, kde-format
@@ -150,21 +149,19 @@ msgid "None"
 msgstr "بلا"
 
 #: package/contents/ui/config/ConfigInteraction.qml:84
-#, fuzzy, kde-format
-#| msgid "Preview windows on hovering"
+#, kde-format
 msgid "Preview Windows"
-msgstr "عاين النّوافذ عند مرور المؤشّر"
+msgstr "استعرض النّوافذ"
 
 #: package/contents/ui/config/ConfigInteraction.qml:85
-#, fuzzy, kde-format
-#| msgid "Highlight windows on hovering"
+#, kde-format
 msgid "Highlight Windows"
-msgstr "أبرِز النّوافذ عند مرور المؤشّر"
+msgstr "ميّز النّوافذ"
 
 #: package/contents/ui/config/ConfigInteraction.qml:86
 #, kde-format
 msgid "Preview and Highlight Windows"
-msgstr ""
+msgstr "استعرض وميّز النّوافذ"
 
 #: package/contents/ui/config/ConfigInteraction.qml:132
 #, kde-format
@@ -189,12 +186,12 @@ msgstr "أظهر المهمّات من النشاط الحاليّ فقط"
 #: package/contents/ui/config/ConfigPanel.qml:48
 #, kde-format
 msgid "Show bar line for tasks"
-msgstr ""
+msgstr "أظهر خطّ الشّريط للمهامّ"
 
 #: package/contents/ui/config/ConfigPanel.qml:55
 #, kde-format
 msgid "Use plasma theme panel"
-msgstr ""
+msgstr "استخدم لوحة سمة بلازما"
 
 #: package/contents/ui/config/ConfigPanel.qml:62
 #, kde-format
@@ -207,29 +204,26 @@ msgid "Size: "
 msgstr "القياس: "
 
 #: package/contents/ui/ContextMenu.qml:51
-#, fuzzy, kde-format
-#| msgid "Internal Separator"
+#, kde-format
 msgid "Top Separator"
-msgstr "فاصل داخليّ"
+msgstr "فاصل علوي"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Internal Separator"
+#, kde-format
 msgid "Left Separator"
-msgstr "فاصل داخليّ"
+msgstr "فاصل أيسر"
 
 #: package/contents/ui/ContextMenu.qml:52
 #: package/contents/ui/ContextMenu.qml:54
-#, fuzzy, kde-format
-#| msgid "Internal Separator"
+#, kde-format
 msgid "Right Separator"
-msgstr "فاصل داخليّ"
+msgstr "فاصل أيمن"
 
 #: package/contents/ui/ContextMenu.qml:53
 #, kde-format
 msgid "Bottom Separator"
-msgstr ""
+msgstr "فاصل سفلي"
 
 #: package/contents/ui/ContextMenu.qml:102
 #, kde-format
@@ -237,10 +231,9 @@ msgid "Places"
 msgstr "الأماكن"
 
 #: package/contents/ui/ContextMenu.qml:107
-#, fuzzy, kde-format
-#| msgid "Recent Documents"
+#, kde-format
 msgid "Recent Files"
-msgstr "المستندات الحديثة"
+msgstr "الملفات الحديثة"
 
 #: package/contents/ui/ContextMenu.qml:112
 #, kde-format
@@ -388,7 +381,7 @@ msgstr "اسمح لهذا البرنامج بأن يتجمّع"
 #: package/contents/ui/ContextMenu.qml:695
 #, kde-format
 msgid "&Pin Launcher"
-msgstr ""
+msgstr "ثبّت &المشغّل"
 
 #: package/contents/ui/ContextMenu.qml:748
 #, kde-format
@@ -403,7 +396,7 @@ msgstr "في النّشاط الحاليّ"
 #: package/contents/ui/ContextMenu.qml:776
 #, kde-format
 msgid "Unpin Launcher"
-msgstr ""
+msgstr "أزِل تثبيت المشغّل"
 
 #: package/contents/ui/ContextMenu.qml:791
 #, kde-format
@@ -431,7 +424,7 @@ msgstr "أ&غلق"
 #: package/contents/ui/main.qml:1066
 #, kde-format
 msgid "Tasks Area"
-msgstr ""
+msgstr "منطقة المهام"
 
 #: package/contents/ui/previews/ToolTipInstance.qml:477
 #, kde-format

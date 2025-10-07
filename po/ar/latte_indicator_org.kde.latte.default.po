@@ -1,0 +1,155 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+# SPDX-FileCopyrightText: 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"PO-Revision-Date: 2025-10-06 16:54+0400\n"
+"Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
+"Language-Team: ar\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Lokalize 23.08.5\n"
+
+#: default/package/config/config.qml:23
+#, kde-format
+msgctxt "indicator style"
+msgid "Style"
+msgstr "النّمط"
+
+#: default/package/config/config.qml:42
+#, kde-format
+msgctxt "line indicator"
+msgid "Line"
+msgstr "السّطر"
+
+#: default/package/config/config.qml:46
+#, kde-format
+msgid "Show a line indicator for active items"
+msgstr "أظهِر مؤشّر سطر للعناصر النّشطة"
+
+#: default/package/config/config.qml:60
+#, kde-format
+msgctxt "dots indicator"
+msgid "Dots"
+msgstr "نقاط"
+
+#: default/package/config/config.qml:64
+#, kde-format
+msgid "Show a dot indicator for active items"
+msgstr "أظهِر مؤشّر نقطة للعناصر النّشطة"
+
+#: default/package/config/config.qml:81
+#, kde-format
+msgid "Thickness"
+msgstr "السّمك"
+
+#: default/package/config/config.qml:103 default/package/config/config.qml:139
+#: default/package/config/config.qml:177 default/package/config/config.qml:213
+#: default/package/config/config.qml:332
+#, kde-format
+msgctxt "number in percentage, e.g. 85 %"
+msgid "%1 %"
+msgstr "٪%1"
+
+#: default/package/config/config.qml:117
+#, kde-format
+msgid "Position"
+msgstr "الموضع"
+
+#: default/package/config/config.qml:153
+#, kde-format
+msgid "Padding"
+msgstr "الحشو"
+
+#: default/package/config/config.qml:191
+#, kde-format
+msgid "Corner Margin"
+msgstr "الهامش الزّاويّ"
+
+#: default/package/config/config.qml:230
+#, kde-format
+msgid "Glow"
+msgstr "توهج"
+
+#: default/package/config/config.qml:231
+#, kde-format
+msgid "Enable/disable indicator glow"
+msgstr "فعّل/عطّل توهّج المؤشّر"
+
+#: default/package/config/config.qml:255
+#, kde-format
+msgctxt "glow only to active task/applet indicators"
+msgid "On Active"
+msgstr "في النّشط"
+
+#: default/package/config/config.qml:259
+#, kde-format
+msgid "Add glow only to active task/applet indicator"
+msgstr "أضِف توهّجًا لمؤشّر المُهمّة/التّطبيق المصغّر النّشط فقط"
+
+#: default/package/config/config.qml:273
+#, kde-format
+msgctxt "glow to all task/applet indicators"
+msgid "All"
+msgstr "الكلّ"
+
+#: default/package/config/config.qml:277
+#, kde-format
+msgid "Add glow to all task/applet indicators"
+msgstr "أضِف توهّجًا لجميع مؤشّرات المُهمّات/التّطبيقات المُصغّرة"
+
+#: default/package/config/config.qml:299
+#, kde-format
+msgid "Opacity"
+msgstr "الشّفافيّة"
+
+#: default/package/config/config.qml:345
+#, kde-format
+msgid "Tasks"
+msgstr "المهام"
+
+#: default/package/config/config.qml:351
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "لون مختلف للنّوافذ المصغّرة"
+
+#: default/package/config/config.qml:361
+#, kde-format
+msgid "Show an extra dot for grouped windows when active"
+msgstr "أظهِر نقطة إضافيّة للنّوافذ المجمّعة عند النّشاط"
+
+#: default/package/config/config.qml:362
+#, kde-format
+msgid ""
+"Grouped windows show both a line and a dot when one of them is active and "
+"the Line Active Indicator is enabled"
+msgstr ""
+"تُظهر النّوافذ المجمّعة سطرًا ونقطة عندما يكون أحدها نشطًا ومؤشّر السطر النّشط مفعّلاً"
+
+#: default/package/config/config.qml:375
+#, kde-format
+msgid "Options"
+msgstr "خيارات"
+
+#: default/package/config/config.qml:380
+#, kde-format
+msgid "Show indicators for applets"
+msgstr "أظهِر مؤشّرات للتّطبيقات المُصغّرة"
+
+#: default/package/config/config.qml:381
+#, kde-format
+msgid "Indicators are shown for applets"
+msgstr "تُظهر المؤشّرات للتّطبيقات المُصغّرة"
+
+#: default/package/config/config.qml:391
+#, kde-format
+msgid "Reverse indicator style"
+msgstr "اعكِس نمط المؤشّر"
