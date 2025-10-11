@@ -1,7 +1,6 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
-#
-# Burkhard Lück <lueck@hube-lueck.de>, 2019, 2021.
+# SPDX-FileCopyrightText: 2019, 2021 Burkhard Lück <lueck@hube-lueck.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte_indicator_org.kde.latte.default\n"

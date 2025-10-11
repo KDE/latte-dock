@@ -1,9 +1,8 @@
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
-# Jan Neumann <neum dot ja at gmail dot com>, 2017, 2018.
-# Burkhard Lück <lueck@hube-lueck.de>, 2018, 2021.
-# Frederik Schwarzer <schwarzer@kde.org>, 2018.
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the latte-dock package.
+# SPDX-FileCopyrightText: 2018, 2021 Burkhard Lück <lueck@hube-lueck.de>
+# SPDX-FileCopyrightText: 2018 Frederik Schwarzer <schwarzer@kde.org>
+# SPDX-FileCopyrightText: 2017, 2018 Jan Neumann <neum dot ja at gmail dot com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.latte.containment\n"
