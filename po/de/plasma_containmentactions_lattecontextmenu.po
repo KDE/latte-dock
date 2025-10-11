@@ -1,9 +1,8 @@
-# Copyright (C) YEAR This_file_is_part_of_KDE
-# This file is distributed under the same license as the PACKAGE package.
-# Frederik Schwarzer <schwarzer@kde.org>, 2018, 2022.
-# Burkhard Lück <lueck@hube-lueck.de>, 2019, 2020, 2021.
-#
-# Jan Neumann <neum dot ja at gmail dot com>, 2018.
+# Copyright (C) 2025 This_file_is_part_of_KDE
+# This file is distributed under the same license as the latte-dock package.
+# SPDX-FileCopyrightText: 2018, 2022 Frederik Schwarzer <schwarzer@kde.org>
+# SPDX-FileCopyrightText: 2019, 2020, 2021 Burkhard Lück <lueck@hube-lueck.de>
+# SPDX-FileCopyrightText: 2018 Jan Neumann <neum dot ja at gmail dot com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_containmentactions_lattecontextmenu\n"
