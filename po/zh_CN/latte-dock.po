@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2025-10-20 02:02+0000\n"
 "PO-Revision-Date: 2024-04-23 19:31\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -1100,8 +1100,9 @@ msgid "&Screens..."
 msgstr "屏幕(&S)..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, kde-format
-msgid "Examing your screens and remove deprecated references"
+#, fuzzy, kde-format
+#| msgid "Examing your screens and remove deprecated references"
+msgid "Examine your screens and remove deprecated references"
 msgstr "检查您的屏幕并删除失效的引用"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150

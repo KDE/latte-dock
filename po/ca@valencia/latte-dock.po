@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2025-10-20 02:02+0000\n"
 "PO-Revision-Date: 2025-03-13 12:32+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -1147,8 +1147,9 @@ msgid "&Screens..."
 msgstr "&Pantalles…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, kde-format
-msgid "Examing your screens and remove deprecated references"
+#, fuzzy, kde-format
+#| msgid "Examing your screens and remove deprecated references"
+msgid "Examine your screens and remove deprecated references"
 msgstr "Examineu les pantalles i elimineu les referències obsoletes"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150

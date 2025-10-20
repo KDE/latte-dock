@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"POT-Creation-Date: 2025-10-20 02:02+0000\n"
 "PO-Revision-Date: 2023-11-18 18:03+0400\n"
 "Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
@@ -1137,8 +1137,9 @@ msgid "&Screens..."
 msgstr "Ek&ranlar..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, kde-format
-msgid "Examing your screens and remove deprecated references"
+#, fuzzy, kde-format
+#| msgid "Examing your screens and remove deprecated references"
+msgid "Examine your screens and remove deprecated references"
 msgstr "Ekranınızı nəzərdən keçirin və köhnəlmiş istinadları silin"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150
