@@ -1100,10 +1100,9 @@ msgid "&Screens..."
 msgstr "屏幕(&S)..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, fuzzy, kde-format
-#| msgid "Examing your screens and remove deprecated references"
+#, kde-format
 msgid "Examine your screens and remove deprecated references"
-msgstr "检查您的屏幕并删除失效的引用"
+msgstr ""
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150
 #, kde-format

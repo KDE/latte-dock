@@ -1,7 +1,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024 Freek de Kruijf <freekdekruijf@kde.nl>
+# SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Freek de Kruijf <freekdekruijf@kde.nl>
 # pieter <pieterkristensen@gmail.com>, 2021.
 # Luc Castermans <luc.castermans@gmail.com>, 2021.
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-20 02:02+0000\n"
-"PO-Revision-Date: 2024-01-12 12:14+0100\n"
+"PO-Revision-Date: 2025-10-20 23:59+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr ""
-"Freek de Kruijf - 2017 t/m 2022, Luc Castermans - 2021, Pieter Kristensen - "
+"Freek de Kruijf - 2017 t/m 2025, Luc Castermans - 2021, Pieter Kristensen - "
 "2021"
 
 #, kde-format
@@ -1147,8 +1147,7 @@ msgid "&Screens..."
 msgstr "&Schermen..."
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, fuzzy, kde-format
-#| msgid "Examing your screens and remove deprecated references"
+#, kde-format
 msgid "Examine your screens and remove deprecated references"
 msgstr "Uw schermen onderzoeken en afgekeurde verwijzingen verwijderen"
 
