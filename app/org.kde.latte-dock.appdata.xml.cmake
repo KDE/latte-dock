@@ -19,6 +19,7 @@
   <name xml:lang="fi">Latte</name>
   <name xml:lang="fr">Latte</name>
   <name xml:lang="gl">Latte</name>
+  <name xml:lang="he">לאטה</name>
   <name xml:lang="ia">Latte</name>
   <name xml:lang="id">Latte</name>
   <name xml:lang="it">Latte</name>
@@ -55,6 +56,7 @@
   <summary xml:lang="fi">Telakka massoille</summary>
   <summary xml:lang="fr">Une barre des tâches pour tout le monde</summary>
   <summary xml:lang="gl">Doca para as masas</summary>
+  <summary xml:lang="he">מעגן להמונים</summary>
   <summary xml:lang="id">Dock untuk mengelompokkan</summary>
   <summary xml:lang="it">Area di aggancio per le masse</summary>
   <summary xml:lang="ko">다수의 프로그램을 위한 도구집</summary>
@@ -89,6 +91,7 @@
     <p xml:lang="fi">Latte on Plasma Frameworksiin perustuva telakka, joka tarjoaa tyylikkään ja intuitiivisen tehtävä- ja sovelmakäyttöliittymän. Se animoi sisältönsä parabolisella lähennystehosteella ja yrittää pysyä poissa, kunnes sitä tarvitaan.</p>
     <p xml:lang="fr">Latte est une barre des tâches conçue à partir de l'environnement de développement de Plasma. Il propose une expérience élégante et intuitive pour vos tâches et pour vos composants graphiques. Son contenu est animé grâce à l'utilisation d'un effet de zoom parabolique. Il n'essaie d'être là que lorsque cela est nécessaire.</p>
     <p xml:lang="gl">Latte é unha doca construída coas infraestruturas de Plasma que fornece unha experiencia elegante e intuitiva para as súas tarefas e trebellos. Anima o seu contido usando o efecto de ampliación parabólico e intenta estar aí só cando se necesita.</p>
+    <p xml:lang="he">לאטה הוא מעגן שמבוססת על תשתיות פלזמה ומספק חוויה אלגנטית ונוכחה למשימות ול־plasmoids שלך. הוא מנפיש את התוכן שלו באמצעות אפקט תקריב פרבולי ומנסה להגיח רק בעת הצורך.</p>
     <p xml:lang="id">Latte adalah dock berdasarkan kerangka kerja plasma yang memberikan pengalaman yang elegan dan intuitif untuk tugas dan plasmoid kamu. Ini menganimasikan konten dengan menggunakan efek zoom parabola dan mencoba untuk berada di sana hanya ketika diperlukan.</p>
     <p xml:lang="it">Latte è un'area di aggancio basata su plasma frameworks. Offre ai tuoi processi e ai tuoi plasmoidi un'esperienza elegante ed intuitiva, animando il loro contenuto con un effetto zoom parabolico e facendosi trovare solo quando necessario.</p>
     <p xml:lang="ko">Latte는 플라즈마 프레임워크를 기반으로 한 도구집으로 작업 및 plasmoids에 대한 우아하고 직관적인 경험을 제공합니다. 포물선 모양의 확대/축소 효과를 사용하여 내용을 애니메이션화하고 필요할 때만 도구집을 표시됩니다.</p>
@@ -123,6 +126,7 @@
     <p xml:lang="fi">”Taidetta kahvissa”</p>
     <p xml:lang="fr">« De l'art dans le café »</p>
     <p xml:lang="gl">«Arte en café».</p>
+    <p xml:lang="he">„אומנות בקפה”</p>
     <p xml:lang="id">"Art In Coffee"</p>
     <p xml:lang="it">«Art In Coffee»</p>
     <p xml:lang="ka">"ხელოვნება ყავაში"</p>
@@ -165,6 +169,7 @@
   <developer_name xml:lang="fi">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="fr">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="gl">Michail Vourlakos e Johan Smith Agudelo Rodriguez</developer_name>
+  <developer_name xml:lang="he">מיכאיל וורלאקוס, יוהאן סמית׳, אגודלו רודריגז</developer_name>
   <developer_name xml:lang="ia">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="id">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
   <developer_name xml:lang="it">Michail Vourlakos, Johan Smith Agudelo Rodriguez</developer_name>
