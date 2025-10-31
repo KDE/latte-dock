@@ -1,0 +1,457 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the latte-dock package.
+#
+# SPDX-FileCopyrightText: 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: latte-dock\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2023-11-05 12:36+0000\n"
+"PO-Revision-Date: 2025-10-30 08:57+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 25.08.2\n"
+
+#: package/contents/config/config.qml:13
+#, kde-format
+msgid "Appearance"
+msgstr "מראה"
+
+#: package/contents/config/config.qml:18
+#, kde-format
+msgid "Panel"
+msgstr "לוח"
+
+#: package/contents/config/config.qml:23
+#, kde-format
+msgid "Interaction"
+msgstr "תפעול"
+
+#: package/contents/ui/config/ConfigAppearance.qml:55
+#, kde-format
+msgid "Maximum icon size: "
+msgstr "גודל סמלים מרבי: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:139
+#, kde-format
+msgid "Enable shadows for icons"
+msgstr "הפעלת הצללות לסמלים"
+
+#: package/contents/ui/config/ConfigAppearance.qml:145
+#, kde-format
+msgid "Show glow around windows points"
+msgstr "הצגת הילה מסביב לנקודות חלונות"
+
+#: package/contents/ui/config/ConfigAppearance.qml:151
+#, kde-format
+msgid "Different color for minimized windows"
+msgstr "צבע שונה לחלונות ממוזערים"
+
+#: package/contents/ui/config/ConfigAppearance.qml:157
+#, kde-format
+msgid "Indicator for active window group"
+msgstr "מחוון לקבוצת חלונות פעילה"
+
+#: package/contents/ui/config/ConfigAppearance.qml:175
+#, kde-format
+msgid "Animations: "
+msgstr "הנפשות: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "duration"
+msgstr "משך"
+
+#: package/contents/ui/config/ConfigAppearance.qml:193
+#, kde-format
+msgid "disabled"
+msgstr "כבוי"
+
+#: package/contents/ui/config/ConfigAppearance.qml:205
+#, kde-format
+msgid "Zoom"
+msgstr "תקריב"
+
+#: package/contents/ui/config/ConfigAppearance.qml:219
+#, kde-format
+msgid "Level: "
+msgstr "רמה: "
+
+#: package/contents/ui/config/ConfigAppearance.qml:263
+#, kde-format
+msgid "Show a red line on the limit needed for animations"
+msgstr "הצגת קו אדום על הגבול שנחוץ להנפשות"
+
+#: package/contents/ui/config/ConfigAppearance.qml:294
+#: package/contents/ui/config/ConfigPanel.qml:144
+#, kde-format
+msgid ""
+"For the disabled settings you should use the Latte Dock Configuration Window"
+msgstr "להגדרות הכבויות יש להשתמש בחלון הגדרות מעגן לאטה"
+
+#: package/contents/ui/config/ConfigInteraction.qml:46
+#, kde-format
+msgid "Cycle through tasks with mouse wheel"
+msgstr "מעבר בין משימות באופן מחזורי עם גלגלת העכבר"
+
+#: package/contents/ui/config/ConfigInteraction.qml:53
+#, kde-format
+msgid "Show window actions in the context menu"
+msgstr "הצגת פעולות חלון בתפריט ההקשר"
+
+#: package/contents/ui/config/ConfigInteraction.qml:59
+#, kde-format
+msgid "Show progress information for tasks"
+msgstr "הצגת פרטי התקדמות של משימות"
+
+#: package/contents/ui/config/ConfigInteraction.qml:66
+#, kde-format
+msgid "Middle Click"
+msgstr "לחיצה אמצעית"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgctxt "The click action"
+msgid "None"
+msgstr "ללא"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Close Window or Group"
+msgstr "סגירת חלון או קבוצה"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "New Instance"
+msgstr "מופע חדש"
+
+#: package/contents/ui/config/ConfigInteraction.qml:72
+#, kde-format
+msgid "Minimize/Restore Window or Group"
+msgstr "מזעור/שחזור של חלון או קבוצה"
+
+#: package/contents/ui/config/ConfigInteraction.qml:76
+#, kde-format
+msgid "Hover"
+msgstr "ריחוף מעל"
+
+#: package/contents/ui/config/ConfigInteraction.qml:83
+#, kde-format
+msgctxt "none action"
+msgid "None"
+msgstr "ללא"
+
+#: package/contents/ui/config/ConfigInteraction.qml:84
+#, kde-format
+msgid "Preview Windows"
+msgstr "תצוגת חלונות מקדימה"
+
+#: package/contents/ui/config/ConfigInteraction.qml:85
+#, kde-format
+msgid "Highlight Windows"
+msgstr "הדגשת חלונות"
+
+#: package/contents/ui/config/ConfigInteraction.qml:86
+#, kde-format
+msgid "Preview and Highlight Windows"
+msgstr "תצוגה מקדימה והדגשת חלונות"
+
+#: package/contents/ui/config/ConfigInteraction.qml:132
+#, kde-format
+msgid "Filters"
+msgstr "מסננים"
+
+#: package/contents/ui/config/ConfigInteraction.qml:143
+#, kde-format
+msgid "Show only tasks from the current screen"
+msgstr "להציג משימות מהמסך הנוכחי בלבד"
+
+#: package/contents/ui/config/ConfigInteraction.qml:148
+#, kde-format
+msgid "Show only tasks from the current desktop"
+msgstr "להציג משימות משולחן העבודה הנוכחי בלבד"
+
+#: package/contents/ui/config/ConfigInteraction.qml:153
+#, kde-format
+msgid "Show only tasks from the current activity"
+msgstr "הצגת משימות מהפעילות הנוכחית בלבד"
+
+#: package/contents/ui/config/ConfigPanel.qml:48
+#, kde-format
+msgid "Show bar line for tasks"
+msgstr "הצגת קו עמודה למשימות"
+
+#: package/contents/ui/config/ConfigPanel.qml:55
+#, kde-format
+msgid "Use plasma theme panel"
+msgstr "להשתמש בלוח ערכת עיצוב של פלזמה"
+
+#: package/contents/ui/config/ConfigPanel.qml:62
+#, kde-format
+msgid "Use transparency in the panel"
+msgstr "להשתמש בשקיפות בלוח"
+
+#: package/contents/ui/config/ConfigPanel.qml:69
+#, kde-format
+msgid "Size: "
+msgstr "גודל: "
+
+#: package/contents/ui/ContextMenu.qml:51
+#, kde-format
+msgid "Top Separator"
+msgstr "מפריד עליון"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Left Separator"
+msgstr "מפריד שמאלי"
+
+#: package/contents/ui/ContextMenu.qml:52
+#: package/contents/ui/ContextMenu.qml:54
+#, kde-format
+msgid "Right Separator"
+msgstr "מפריד ימני"
+
+#: package/contents/ui/ContextMenu.qml:53
+#, kde-format
+msgid "Bottom Separator"
+msgstr "מפריד תחתון"
+
+#: package/contents/ui/ContextMenu.qml:102
+#, kde-format
+msgid "Places"
+msgstr "מקומות"
+
+#: package/contents/ui/ContextMenu.qml:107
+#, kde-format
+msgid "Recent Files"
+msgstr "קבצים אחרונים"
+
+#: package/contents/ui/ContextMenu.qml:112
+#, kde-format
+msgid "Actions"
+msgstr "פעולות"
+
+#: package/contents/ui/ContextMenu.qml:178
+#, kde-format
+msgctxt "Play previous track"
+msgid "Previous Track"
+msgstr "הרצועה הקודמת"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Pause playback"
+msgid "Pause"
+msgstr "השהיה"
+
+#: package/contents/ui/ContextMenu.qml:191
+#, kde-format
+msgctxt "Start playback"
+msgid "Play"
+msgstr "נגינה"
+
+#: package/contents/ui/ContextMenu.qml:205
+#, kde-format
+msgctxt "Play next track"
+msgid "Next Track"
+msgstr "הרצועה הבאה"
+
+#: package/contents/ui/ContextMenu.qml:216
+#, kde-format
+msgctxt "Stop playback"
+msgid "Stop"
+msgstr "עצירה"
+
+#: package/contents/ui/ContextMenu.qml:233
+#, kde-format
+msgctxt "Quit media player app"
+msgid "Quit"
+msgstr "יציאה"
+
+#: package/contents/ui/ContextMenu.qml:248
+#, kde-format
+msgctxt "Open or bring to the front window of media player app"
+msgid "Restore"
+msgstr "שחזור"
+
+#: package/contents/ui/ContextMenu.qml:274
+#, kde-format
+msgid "Mute"
+msgstr "השתקה"
+
+#: package/contents/ui/ContextMenu.qml:336
+#, kde-format
+msgid "Start New Instance"
+msgstr "התחלת מופע חדש"
+
+#: package/contents/ui/ContextMenu.qml:352
+#, kde-format
+msgid "Move To &Desktop"
+msgstr "העברה ל&שולחן עבודה"
+
+#: package/contents/ui/ContextMenu.qml:374
+#, kde-format
+msgid "Move &To Current Desktop"
+msgstr "העברה לשולחן העבודה ה&נוכחי"
+
+#: package/contents/ui/ContextMenu.qml:384
+#, kde-format
+msgid "&All Desktops"
+msgstr "&כל שולחנות העבודה"
+
+#: package/contents/ui/ContextMenu.qml:417
+#, kde-format
+msgid "&New Desktop"
+msgstr "שולחן עבודה &חדש"
+
+#: package/contents/ui/ContextMenu.qml:438
+#, kde-format
+msgid "Move To &Activity"
+msgstr "העברה ל&פעילות"
+
+#: package/contents/ui/ContextMenu.qml:459
+#, kde-format
+msgid "Add To Current Activity"
+msgstr "הוספת לפעילות הנוכחית"
+
+#: package/contents/ui/ContextMenu.qml:469
+#, kde-format
+msgid "All Activities"
+msgstr "כל הפעילויות"
+
+#: package/contents/ui/ContextMenu.qml:536
+#, kde-format
+msgid "More Actions"
+msgstr "פעולות נוספות"
+
+#: package/contents/ui/ContextMenu.qml:545
+#, kde-format
+msgid "&Move"
+msgstr "ה&עברה"
+
+#: package/contents/ui/ContextMenu.qml:554
+#, kde-format
+msgid "Re&size"
+msgstr "&שינוי גודל"
+
+#: package/contents/ui/ContextMenu.qml:572
+#, kde-format
+msgid "Ma&ximize"
+msgstr "הג&דלה"
+
+#: package/contents/ui/ContextMenu.qml:590
+#, kde-format
+msgid "Mi&nimize"
+msgstr "מ&זעור"
+
+#: package/contents/ui/ContextMenu.qml:600
+#, kde-format
+msgid "Keep &Above Others"
+msgstr "ריחוף &מעל כולם"
+
+#: package/contents/ui/ContextMenu.qml:610
+#, kde-format
+msgid "Keep &Below Others"
+msgstr "צלילה מ&תחת לכולם"
+
+#: package/contents/ui/ContextMenu.qml:622
+#, kde-format
+msgid "&Fullscreen"
+msgstr "מ&סך מלא"
+
+#: package/contents/ui/ContextMenu.qml:634
+#, kde-format
+msgid "&Shade"
+msgstr "ה&צללה"
+
+#: package/contents/ui/ContextMenu.qml:650
+#, kde-format
+msgid "Allow this program to be grouped"
+msgstr "לאפשר קיבוץ של יישום זה"
+
+#: package/contents/ui/ContextMenu.qml:680
+#: package/contents/ui/ContextMenu.qml:695
+#, kde-format
+msgid "&Pin Launcher"
+msgstr "&נעיצת משגר"
+
+#: package/contents/ui/ContextMenu.qml:748
+#, kde-format
+msgid "On All Activities"
+msgstr "בכל הפעילויות"
+
+#: package/contents/ui/ContextMenu.qml:754
+#, kde-format
+msgid "On The Current Activity"
+msgstr "בפעילות הנוכחית"
+
+#: package/contents/ui/ContextMenu.qml:776
+#, kde-format
+msgid "Unpin Launcher"
+msgstr "ביטול נעיצת משגר"
+
+#: package/contents/ui/ContextMenu.qml:791
+#, kde-format
+msgctxt "add separator"
+msgid "Add %1"
+msgstr "הוספת %1"
+
+#: package/contents/ui/ContextMenu.qml:809
+#: package/contents/ui/ContextMenu.qml:823
+#, kde-format
+msgctxt "remove separator"
+msgid "Remove %1"
+msgstr "הסרת %1"
+
+#: package/contents/ui/ContextMenu.qml:867
+#, kde-format
+msgid "Window"
+msgstr "חלון"
+
+#: package/contents/ui/ContextMenu.qml:879
+#, kde-format
+msgid "&Close"
+msgstr "&סגירה"
+
+#: package/contents/ui/main.qml:1066
+#, kde-format
+msgid "Tasks Area"
+msgstr "אזור משימות"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:477
+#, kde-format
+msgctxt "Comma-separated list of desktops"
+msgid "On %1"
+msgstr "ב־%1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:488
+#: package/contents/ui/task/TaskItem.qml:567
+#, kde-format
+msgctxt "Which virtual desktop a window is currently on"
+msgid "Available on all activities"
+msgstr "זמין בכל הפעילויות"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:510
+#: package/contents/ui/task/TaskItem.qml:586
+#, kde-format
+msgctxt "Activities a window is currently on (apart from the current one)"
+msgid "Also available on %1"
+msgstr "זמין גם ב־%1"
+
+#: package/contents/ui/previews/ToolTipInstance.qml:514
+#: package/contents/ui/task/TaskItem.qml:590
+#, kde-format
+msgctxt "Which activities a window is currently on"
+msgid "Available on %1"
+msgstr "זמין ב־%1"
+
+#: package/contents/ui/task/TaskItem.qml:558
+#, kde-format
+msgid "On %1"
+msgstr "ב־%1"

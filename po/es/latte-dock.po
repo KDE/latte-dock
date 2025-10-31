@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-20 02:02+0000\n"
-"PO-Revision-Date: 2025-09-20 20:29+0100\n"
+"PO-Revision-Date: 2025-10-30 12:02+0100\n"
 "Last-Translator: Víctor Rodrigo Córdoba <vrcordoba@gmail.com>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -1143,10 +1143,9 @@ msgid "&Screens..."
 msgstr "Pantalla&s…"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:147
-#, fuzzy, kde-format
-#| msgid "Examing your screens and remove deprecated references"
+#, kde-format
 msgid "Examine your screens and remove deprecated references"
-msgstr "Examinando sus pantallas y eliminando las referencias deprecadas"
+msgstr "Examina sus pantallas y elimina las referencias deprecadas"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:150
 #, kde-format
