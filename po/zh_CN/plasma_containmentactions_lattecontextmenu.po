@@ -21,12 +21,12 @@ msgstr ""
 #: menu.cpp:91
 #, kde-format
 msgid "&Add Widgets..."
-msgstr "添加挂件(&A)..."
+msgstr "添加小部件(&A)..."
 
 #: menu.cpp:92
 #, kde-format
 msgid "Show Widget Explorer"
-msgstr "显示挂件浏览器"
+msgstr "显示小部件浏览器"
 
 #: menu.cpp:111
 #, kde-format

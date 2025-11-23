@@ -347,7 +347,7 @@ msgstr "Latte 停靠栏面板"
 #: app/package/lattepackage.cpp:36
 #, kde-format
 msgid "Widget Explorer"
-msgstr "挂件浏览器"
+msgstr "小部件浏览器"
 
 #: app/package/lattepackage.cpp:38
 #, kde-format
@@ -514,7 +514,7 @@ msgstr " --- 分隔线 --- "
 #: app/settings/actionsdialog/actionshandler.cpp:89
 #, kde-format
 msgid "Add Widgets..."
-msgstr "添加挂件..."
+msgstr "添加小部件..."
 
 #: app/settings/actionsdialog/actionshandler.cpp:96
 #, kde-format
@@ -2411,13 +2411,13 @@ msgstr "在屏幕上边缘勾画最大可用空间，忽略任何顶部停靠栏
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:108
 #, kde-format
 msgid "Rearrange and configure your widgets"
-msgstr "重新排列和配置挂件"
+msgstr "重新排列和配置小部件"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:109
 #, kde-format
 msgid ""
 "Feel free to move around your widgets and configure them from their tooltips"
-msgstr "移动挂件来更改位置，或者在悬停信息中配置挂件"
+msgstr "移动小部件来更改位置，或者在悬停信息中配置小部件"
 
 #: shell/package/contents/configuration/canvas/HeaderSettings.qml:126
 #, kde-format
@@ -3726,23 +3726,23 @@ msgstr "撤销卸载"
 #: shell/package/contents/views/AppletDelegate.qml:169
 #, kde-format
 msgid "Uninstall widget"
-msgstr "卸载挂件"
+msgstr "卸载小部件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:147
 #: shell/package/contents/views/WidgetExplorer.qml:250
 #, kde-format
 msgid "All Widgets"
-msgstr "所有挂件"
+msgstr "所有小部件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:210
 #, kde-format
 msgid "Widgets"
-msgstr "挂件"
+msgstr "小部件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:218
 #, kde-format
 msgid "Get New Widgets…"
-msgstr "获取新挂件…"
+msgstr "获取新小部件…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:236
 #, kde-format
@@ -3757,9 +3757,9 @@ msgstr "分类"
 #: shell/package/contents/views/WidgetExplorer.qml:343
 #, kde-format
 msgid "No widgets matched the search terms"
-msgstr "没有匹配搜索条件的挂件"
+msgstr "没有匹配该搜索条件的小部件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:343
 #, kde-format
 msgid "No widgets available"
-msgstr "没有可用的挂件"
+msgstr "没有可用的小部件"
