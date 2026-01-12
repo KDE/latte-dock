@@ -34,7 +34,7 @@ msgstr "txemaq@gmail.com,antonibella5@yahoo.com"
 #: app/indicator/factory.cpp:267
 #, kde-format
 msgid "Failed to import indicator"
-msgstr "No s'ha pogut importar l'indicador"
+msgstr "Ha fallat mentre s'importava l'indicador"
 
 #: app/indicator/factory.cpp:273
 #, kde-format
