@@ -40,7 +40,7 @@ msgstr "Opcions de %1"
 #: app/indicator/factory.cpp:284
 #, kde-format
 msgid "Failed to import indicator"
-msgstr "No s'ha pogut importar l'indicador"
+msgstr "Ha fallat mentre s'importava l'indicador"
 
 #: app/indicator/factory.cpp:290
 #, kde-format
