@@ -3,13 +3,13 @@
 #
 # Jeff Huang <s8321414@gmail.com>, 2016, 2017, 2018.
 # pan93412 <pan93412@gmail.com>, 2018, 2019, 2020.
-# SPDX-FileCopyrightText: 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2024, 2025, 2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 16:18+0000\n"
-"PO-Revision-Date: 2025-09-22 06:33+0900\n"
+"PO-Revision-Date: 2026-01-15 01:20+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 26.03.70\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -103,10 +103,7 @@ msgid "Multiple Layouts Startup Warning"
 msgstr "多重佈局啟動警告"
 
 #: app/layouts/manager.cpp:247
-#, fuzzy, kde-format
-#| msgid ""
-#| "Latte did not close properly in the previous session. The following "
-#| "layout(s) <b>[%0]</b> were updated for consistency!!!"
+#, kde-format
 msgid ""
 "<b>Multiple Layouts based on Activities</b> mode did not close properly "
 "during the last session.<br/><br/>The following layout <b>[ %2 ]</b> had to "
@@ -116,8 +113,8 @@ msgid_plural ""
 "during the last session.<br/><br/>The following layouts <b>[ %2 ]</b> had to "
 "be updated for consistency!"
 msgstr[0] ""
-"Latte 在前一個工作階段並未正確關閉。下列的佈局<b>[%0]</b>已為了一致性而更"
-"新！！！"
+"<b>以活動為基礎的多重佈局</b>模式在前一個工作階段並未正確關閉。<br/><br/>下列"
+"的佈局<b>[%2]</b>已為了一致性而更新！"
 
 #: app/layouts/storage.cpp:48
 #, kde-format
@@ -2242,11 +2239,10 @@ msgid "Justify"
 msgstr "兩邊對齊"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:490
-#, fuzzy, kde-format
-#| msgid "Follow Primary Screen"
+#, kde-format
 msgctxt "primary screen"
 msgid " - Follow Primary Screen - "
-msgstr "使用主螢幕設定"
+msgstr " - 使用主螢幕設定 - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:575
 #, kde-format
@@ -2278,11 +2274,10 @@ msgstr "包含"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:762
 #: app/settings/viewsdialog/viewsmodel.cpp:848
-#, fuzzy, kde-format
-#| msgid "Unknown screens: "
+#, kde-format
 msgctxt "unknown screen"
 msgid "Unknown : [%1]"
-msgstr "未知螢幕："
+msgstr "未知：[%1]"
 
 #: app/settings/viewsdialog/viewsmodel.cpp:842
 #, kde-format
@@ -2637,10 +2632,9 @@ msgid "Thickness"
 msgstr "厚度"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:687
-#, fuzzy, kde-format
-#| msgid "Screen"
+#, kde-format
 msgid "Screen edge"
-msgstr "螢幕"
+msgstr "螢幕邊緣"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:709
 #, kde-format
@@ -3716,10 +3710,9 @@ msgid "Widgets"
 msgstr "元件"
 
 #: shell/package/contents/views/WidgetExplorer.qml:235
-#, fuzzy, kde-format
-#| msgid "Get New Indicators..."
+#, kde-format
 msgid "Get New Widgets..."
-msgstr "取得新指示器…"
+msgstr "取得新元件..."
 
 #: shell/package/contents/views/WidgetExplorer.qml:253
 #, kde-format
