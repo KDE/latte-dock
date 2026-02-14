@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
 #
-# SPDX-FileCopyrightText: 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2025, 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2025-12-30 17:31+0200\n"
+"PO-Revision-Date: 2026-02-09 21:30+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.0\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -3625,12 +3625,12 @@ msgstr ""
 #: shell/package/contents/configuration/pages/TasksConfig.qml:647
 #, kde-format
 msgid "Wheel"
-msgstr ""
+msgstr "גלגלת"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
 msgid "Right Click"
-msgstr ""
+msgstr "לחיצה ימנית"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:18
 #, kde-format
@@ -3645,28 +3645,28 @@ msgstr ""
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
 msgid "Install..."
-msgstr ""
+msgstr "התקנה…"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:143
 #, kde-format
 msgid "Remove indicator"
-msgstr ""
+msgstr "הסרת מחוון"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:197
 #, kde-format
 msgid "Add Indicator..."
-msgstr ""
+msgstr "הוספת מחוון…"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:207
 #, kde-format
 msgid "Get New Indicators..."
-msgstr ""
+msgstr "הורדת מחוונים חדשים…"
 
 #: shell/package/contents/controls/TypeSelection.qml:55
 #, kde-format
 msgctxt "dock type"
 msgid "Dock"
-msgstr ""
+msgstr "מעגן"
 
 #: shell/package/contents/controls/TypeSelection.qml:57
 #, kde-format
@@ -3677,7 +3677,7 @@ msgstr ""
 #, kde-format
 msgctxt "panel type"
 msgid "Panel"
-msgstr ""
+msgstr "לוח"
 
 #: shell/package/contents/controls/TypeSelection.qml:101
 #, kde-format
@@ -3713,12 +3713,12 @@ msgstr ""
 #: shell/package/contents/views/WidgetExplorer.qml:236
 #, kde-format
 msgid "Search…"
-msgstr ""
+msgstr "חיפוש…"
 
 #: shell/package/contents/views/WidgetExplorer.qml:258
 #, kde-format
 msgid "Categories"
-msgstr ""
+msgstr "קטגוריות"
 
 #: shell/package/contents/views/WidgetExplorer.qml:343
 #, kde-format
