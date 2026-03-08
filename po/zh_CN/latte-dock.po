@@ -638,7 +638,7 @@ msgstr "背景色..."
 #: app/settings/detailsdialog/detailsdialog.ui:214
 #, kde-format
 msgid "Text Color..."
-msgstr "文字颜色..."
+msgstr "文本颜色..."
 
 #. i18n: ectx: property (text), widget (QLabel, layoutLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:388
