@@ -111,7 +111,7 @@ msgstr "تطبيقات مصغّرة مختلفة ذات مُعرّف مماثل"
 #: app/layouts/storage.cpp:50
 #, kde-format
 msgid "Orphaned Parent Applet Of Subcontainment"
-msgstr "تطبيق مصغّر أبّ يتيم لوعاء فرعي"
+msgstr "تطبيق مصغّر أب يتيم لوعاء فرعي"
 
 #: app/layouts/storage.cpp:51
 #, kde-format
@@ -451,7 +451,7 @@ msgstr "ملف التخطيطات المتعددة المخفية"
 #: app/package/lattepackage.cpp:61
 #, kde-format
 msgid "QML component that shows an applet in a popup"
-msgstr "مكوّن QML الّذي يظهر بريمجًا في منبثقة"
+msgstr "مكوّن QML الذي يظهر بريمجًا في منبثقة"
 
 #: app/packageplugins/indicator/indicatorpackage.cpp:26
 #, kde-format
