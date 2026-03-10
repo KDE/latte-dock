@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the latte-dock package.
 #
 # Volkan Gezer <volkangezer@gmail.com>, 2021.
-# SPDX-FileCopyrightText: 2022, 2023, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2025, 2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 16:18+0000\n"
-"PO-Revision-Date: 2025-03-13 15:50+0300\n"
+"PO-Revision-Date: 2026-03-09 22:15+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 25.12.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -1688,7 +1688,7 @@ msgstr "Yerel Dosyadan &İçe Aktar..."
 #, kde-format
 msgctxt "download layout"
 msgid "Import From K&DE Online Store..."
-msgstr "K&DE Çevrimiçi Mağazasından İçe Aktar"
+msgstr "K&DE Çevrim İçi Mağazasından İçe Aktar"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:248
 #: app/settings/viewsdialog/viewshandler.cpp:188
@@ -3766,7 +3766,7 @@ msgstr "Sağ Tıklama"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:18
 #, kde-format
 msgid "Install indicators from KDE Online Store or local files"
-msgstr "KDE Çevrimiçi Mağazasından veya yerel dosyalardan göstergeler kur"
+msgstr "KDE çevrim içi mağazasından veya yerel dosyalardan göstergeler kur"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:19
 #, kde-format
