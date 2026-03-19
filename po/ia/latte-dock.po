@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the latte-dock package.
 #
-# giovanni <g.sora@tiscali.it>, 2020, 2021.
+# SPDX-FileCopyrightText: 2020, 2021, 2026 giovanni <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 16:18+0000\n"
-"PO-Revision-Date: 2021-09-18 23:42+0200\n"
+"PO-Revision-Date: 2026-03-18 11:07+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.08.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -473,10 +473,9 @@ msgstr "Traductiones"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
 #: app/settings/actionsdialog/actionsdialog.ui:14
-#, fuzzy, kde-format
-#| msgid "Context Menu:"
+#, kde-format
 msgid "Context Menu Actions"
-msgstr "Menu de contexto:"
+msgstr "Actiones de menu de contexto"
 
 #. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
 #: app/settings/actionsdialog/actionsdialog.ui:24
