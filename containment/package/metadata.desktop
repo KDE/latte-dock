@@ -56,6 +56,7 @@ Comment[pl]=Pojemnik dla doku Latte
 Comment[pt]=Contentor oferecido para a área acoplável do Latte
 Comment[pt_BR]=Contêiner fornecido pelo Latte Dock
 Comment[ru]=Контейнер Latte Dock
+Comment[sk]=Kontajner poskytovaný pre Latte Dock
 Comment[sl]=Zadrževalni prostor za Latte dok
 Comment[sv]=Omgivning tillhandahållen för Latte dockningsfönster
 Comment[uk]=Контейнер панелі Латте

@@ -62,6 +62,7 @@ Comment[pl]=Powłoka dla doku Latte
 Comment[pt]=Consola oferecida para a área acoplável do Latte
 Comment[pt_BR]=Shell fornecido pelo Latte Dock
 Comment[ru]=Оболочка для Latte Dock
+Comment[sk]=Shell poskytovaný pre Latte Dock
 Comment[sl]=Shell za dok Latte
 Comment[sv]=Skal tillhandahållet för Latte dockningsfönster
 Comment[uk]=Оболонка панелі Латте

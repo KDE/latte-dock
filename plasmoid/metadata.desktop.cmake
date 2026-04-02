@@ -58,6 +58,7 @@ Comment[pl]=Plazmoidy zadań dla doku Latte
 Comment[pt]=Plasmóide de tarefas da Área Acoplável do Latte
 Comment[pt_BR]=Plasmoide de tarefas do Latte Dock
 Comment[ru]=Виджет процессов из Latte Dock
+Comment[sk]=Plazmoid úloh z Latte Dock
 Comment[sl]=Plasmoidi nalog iz doka Latte
 Comment[sv]=Aktivitetsplasmoid för Latte dockningsfönster
 Comment[uk]=Плазмоїд завдань з панелі Латте
