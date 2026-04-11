@@ -79,7 +79,7 @@ target_link_libraries(latte-dock
     KF6::ConfigQml
     Wayland::Client
     Plasma::Activities
-    Plasma::KWaylandClient
+    LayerShellQt::Interface
     Plasma::Plasma
     Plasma::PlasmaQuick
 )
@@ -87,7 +87,6 @@ target_link_libraries(latte-dock
 
 if(HAVE_X11)
     target_link_libraries(latte-dock
-        Qt::GuiPrivate
         KF6::WindowSystem
         ${X11_LIBRARIES}
         ${XCB_LIBRARIES}

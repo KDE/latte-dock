@@ -78,10 +78,6 @@
 // QmlObjectSharedEngine seems to be replaced with...
 #include <PlasmaQuick/SharedQmlEngine>
 #include <KWindowSystem>
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/plasmawindowmanagement.h>
 
 namespace Latte {
 
@@ -313,53 +309,15 @@ void Corona::setupWaylandIntegration()
         return;
     }
 
-    using namespace KWayland::Client;
+    //! In Plasma 6, LayerShellQt handles panel surface positioning directly
+    //! per-window (via LayerShellQt::Window::get(window)), so no central
+    //! registry is needed. Window tracking uses KWindowSystem APIs.
 
-    auto connection = ConnectionThread::fromApplication(this);
-
-    if (!connection) {
-        return;
+    //! Initialize window management in the Wayland interface
+    WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
+    if (wI) {
+        wI->initWindowManagement();
     }
-
-    Registry *registry{new Registry(this)};
-    registry->create(connection);
-
-    connect(registry, &Registry::plasmaShellAnnounced, this
-            , [this, registry](quint32 name, quint32 version) {
-        m_waylandCorona = registry->createPlasmaShell(name, version, this);
-    });
-
-    QObject::connect(registry, &KWayland::Client::Registry::plasmaWindowManagementAnnounced,
-                     [this, registry](quint32 name, quint32 version) {
-        KWayland::Client::PlasmaWindowManagement *pwm = registry->createPlasmaWindowManagement(name, version, this);
-
-        WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
-
-        if (wI) {
-            wI->initWindowManagement(pwm);
-        }
-    });
-
-
-    QObject::connect(registry, &KWayland::Client::Registry::plasmaVirtualDesktopManagementAnnounced,
-                     [this, registry] (quint32 name, quint32 version) {
-        KWayland::Client::PlasmaVirtualDesktopManagement *vdm = registry->createPlasmaVirtualDesktopManagement(name, version, this);
-
-        WindowSystem::WaylandInterface *wI = qobject_cast<WindowSystem::WaylandInterface *>(m_wm);
-
-        if (wI) {
-            wI->initVirtualDesktopManagement(vdm);
-        }
-    });
-
-
-    registry->setup();
-    connection->roundtrip();
-}
-
-KWayland::Client::PlasmaShell *Corona::waylandCoronaInterface() const
-{
-    return m_waylandCorona;
 }
 
 void Corona::cleanConfig()

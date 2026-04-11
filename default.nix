@@ -17,6 +17,7 @@ stdenv.mkDerivation {
     plasma-workspace plasma-workspace.dev
     plasma-desktop plasma-desktop.dev
     libplasma ksvg ksvg.dev
+    layer-shell-qt
   ];
 
   nativeBuildInputs = with pkgs; with kdePackages; [

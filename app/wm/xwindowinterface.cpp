@@ -16,9 +16,7 @@
 // Qt
 #include <QDebug>
 #include <QTimer>
-#ifdef HAVE_X11
-#include <QtGui/private/qtx11extras_p.h>
-#endif
+#include <QGuiApplication>
 
 // KDE
 #include <KDesktopFile>
@@ -31,6 +29,28 @@
 #include <NETWM>
 #include <xcb/xcb.h>
 #include <xcb/shape.h>
+
+namespace {
+
+static xcb_connection_t *x11Connection()
+{
+    if (auto *x11App = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
+        return x11App->connection();
+    }
+    return nullptr;
+}
+
+static xcb_window_t x11RootWindow()
+{
+    if (auto *x11App = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()) {
+        if (auto *display = x11App->display()) {
+            return DefaultRootWindow(display);
+        }
+    }
+    return XCB_WINDOW_NONE;
+}
+
+} // anonymous namespace
 
 namespace Latte {
 namespace WindowSystem {
@@ -83,7 +103,7 @@ void XWindowInterface::setViewExtraFlags(QObject *view,bool isPanelWindow, Latte
         }
     }
 
-    NETWinInfo winfo(QX11Info::connection(),
+    NETWinInfo winfo(x11Connection(),
                      static_cast<xcb_window_t>(winId),
                      static_cast<xcb_window_t>(winId),
                      static_cast<NET::Property>(0),
@@ -271,7 +291,8 @@ void XWindowInterface::setActiveEdge(QWindow *view, bool active)
         return;
     }
 
-    xcb_connection_t *c = QX11Info::connection();
+    xcb_connection_t *c = x11Connection();
+    if (!c) return;
 
     const QByteArray effectName = QByteArrayLiteral("_KDE_NET_WM_SCREEN_EDGE_SHOW");
     xcb_intern_atom_cookie_t atomCookie = xcb_intern_atom_unchecked(c, false, effectName.length(), effectName.constData());
@@ -324,9 +345,9 @@ void XWindowInterface::setActiveEdge(QWindow *view, bool active)
 
 QRect XWindowInterface::visibleGeometry(const WindowId &wid, const QRect &frameGeometry) const
 {
-    NETWinInfo ni(QX11Info::connection(),
+    NETWinInfo ni(x11Connection(),
                   wid.toUInt(),
-                  QX11Info::appRootWindow(),
+                  x11RootWindow(),
                   static_cast<NET::Property>(0),
                   NET::WM2GTKFrameExtents);
     NETStrut struts = ni.gtkFrameExtents();
@@ -348,15 +369,16 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
         return;
     }
 
-    NETWinInfo ni(QX11Info::connection(),
+    NETWinInfo ni(x11Connection(),
                   view->winId(),
-                  QX11Info::appRootWindow(),
+                  x11RootWindow(),
                   static_cast<NET::Property>(0),
                   NET::WM2GTKFrameExtents);
 
     if (margins.isNull()) {
         //! delete property
-        xcb_connection_t *c = QX11Info::connection();
+        xcb_connection_t *c = x11Connection();
+        if (!c) return;
         const QByteArray atomName = QByteArrayLiteral("_GTK_FRAME_EXTENTS");
         xcb_intern_atom_cookie_t atomCookie = xcb_intern_atom_unchecked(c, false, atomName.length(), atomName.constData());
         QScopedPointer<xcb_intern_atom_reply_t, QScopedPointerPodDeleter> atom(xcb_intern_atom_reply(c, atomCookie, nullptr));
@@ -378,7 +400,7 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
         ni.setGtkFrameExtents(struts);
     }
 
-  /*NETWinInfo ni2(QX11Info::connection(), view->winId(), QX11Info::appRootWindow(), 0, NET::WM2GTKFrameExtents);
+  /*NETWinInfo ni2(x11Connection(), view->winId(), x11RootWindow(), 0, NET::WM2GTKFrameExtents);
     NETStrut applied = ni2.gtkFrameExtents();
     QMargins amargins(applied.left, applied.top, applied.right, applied.bottom);
     qDebug() << "     window gtk frame extents applied :: " << amargins;*/
@@ -388,7 +410,8 @@ void XWindowInterface::setFrameExtents(QWindow *view, const QMargins &margins)
 void XWindowInterface::checkShapeExtension()
 {
     if (!m_shapeExtensionChecked) {
-        xcb_connection_t *c = QX11Info::connection();
+        xcb_connection_t *c = x11Connection();
+        if (!c) return;
         xcb_prefetch_extension_data(c, &xcb_shape_id);
         const xcb_query_extension_reply_t *extension = xcb_get_extension_data(c, &xcb_shape_id);
         if (extension->present) {
@@ -409,7 +432,8 @@ void XWindowInterface::setInputMask(QWindow *window, const QRect &rect)
         return;
     }
 
-    xcb_connection_t *c = QX11Info::connection();
+    xcb_connection_t *c = x11Connection();
+    if (!c) return;
 
     if (!m_shapeExtensionChecked) {
         checkShapeExtension();
@@ -544,7 +568,7 @@ QUrl XWindowInterface::windowUrl(WindowId wid)
     }
 
     return windowUrlFromMetadata(info.windowClassClass(),
-                                 NETWinInfo(QX11Info::connection(), wid.value<WId>(), QX11Info::appRootWindow(), NET::WMPid, NET::Properties2()).pid(),
+                                 NETWinInfo(x11Connection(), wid.value<WId>(), x11RootWindow(), NET::WMPid, NET::Properties2()).pid(),
                                  rulesConfig, info.windowClassName());
 }
 
@@ -605,7 +629,7 @@ void XWindowInterface::requestClose(WindowId wid)
         return;
     }
 
-    NETRootInfo ri(QX11Info::connection(), NET::CloseWindow);
+    NETRootInfo ri(x11Connection(), NET::CloseWindow);
     ri.closeWindowRequest(wInfo.wid().toUInt());
 }
 
@@ -631,7 +655,7 @@ void XWindowInterface::requestMoveWindow(WindowId wid, QPoint from)
     int validX = qBound(minX, from.x(), maxX);
     int validY = qBound(minY, from.y(), maxY);
 
-    NETRootInfo ri(QX11Info::connection(), NET::WMMoveResize);
+    NETRootInfo ri(x11Connection(), NET::WMMoveResize);
     ri.moveResizeRequest(wInfo.wid().toUInt(), validX, validY, NET::Move);
 }
 
@@ -663,7 +687,7 @@ void XWindowInterface::requestToggleKeepAbove(WindowId wid)
         return;
     }
 
-    NETWinInfo ni(QX11Info::connection(), wid.toUInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+    NETWinInfo ni(x11Connection(), wid.toUInt(), x11RootWindow(), NET::WMState, NET::Properties2());
 
     if (wInfo.isKeepAbove()) {
         ni.setState(NET::States(), NET::KeepAbove);
@@ -736,7 +760,7 @@ void XWindowInterface::requestToggleMaximized(WindowId wid)
         KX11Extras::unminimizeWindow(wid.toUInt());
     }
 
-    NETWinInfo ni(QX11Info::connection(), wid.toInt(), QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
+    NETWinInfo ni(x11Connection(), wid.toInt(), x11RootWindow(), NET::WMState, NET::Properties2());
 
     if (restore) {
         ni.setState(NET::States(), NET::Max);

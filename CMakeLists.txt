@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22 FATAL_ERROR)
 project(lattedock)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -15,8 +15,8 @@ if(DEFINED ENV{GENERATE_COMPILE_COMMANDS})
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
-set(QT_MIN_VERSION "6.5.0")
-set(KF6_MIN_VERSION "6.0.0")
+set(QT_MIN_VERSION "6.7.0")
+set(KF6_MIN_VERSION "6.3.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.84.0")
 
 set(KF6_LOCALE_PREFIX "")
@@ -65,7 +65,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 find_package(Plasma ${KF6_MIN_VERSION} REQUIRED)
 find_package(PlasmaActivities ${KF6_MIN_VERSION} REQUIRED)
 find_package(PlasmaQuick ${KF6_MIN_VERSION} REQUIRED)
-find_package(KWayland ${KF6_MIN_VERSION} REQUIRED)
+find_package(LayerShellQt REQUIRED)
 
 find_package(LibTaskManager REQUIRED)
 add_definitions(-DPLASMA_WORKSPACE_VERSION="${LibTaskManager_VERSION}")
@@ -93,7 +93,7 @@ endif()
 
 
 find_package(QtWaylandScanner REQUIRED)
-find_package(Qt${QT_MAJOR_VERSION}WaylandClient)
+find_package(Qt6WaylandClient)
 find_package(PlasmaWaylandProtocols 1.6 REQUIRED)
 find_package(Wayland REQUIRED COMPONENTS Client)
 
@@ -105,9 +105,8 @@ message(STATUS "KF6 VERSION MINOR : ${KF6_VERSION_MINOR}")
 
 
 include(ECMFindQmlModule)
-ecm_find_qmlmodule(org.kde.kquickcontrolsaddons 2.0 REQUIRED)
-ecm_find_qmlmodule(org.kde.plasma.core 2.0 REQUIRED)
-ecm_find_qmlmodule(org.kde.plasma.components 2.0 REQUIRED)
+ecm_find_qmlmodule(org.kde.plasma.core REQUIRED)
+ecm_find_qmlmodule(org.kde.plasma.components REQUIRED)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/app/config-latte.h.cmake
                ${CMAKE_CURRENT_BINARY_DIR}/app/config-latte.h)

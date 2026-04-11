@@ -21,7 +21,6 @@
 #include <QLatin1String>
 #include <QQuickView>
 #include <QTimer>
-#include <private/qtx11extras_p.h>
 
 // KDE
 #include <KWindowSystem>

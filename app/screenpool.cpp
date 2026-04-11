@@ -22,7 +22,6 @@
 
 // X11
 #if HAVE_X11
-#include <private/qtx11extras_p.h>
 #include <xcb/randr.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_event.h>

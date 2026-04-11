@@ -48,10 +48,8 @@ class AppletQuickItem;
 }
 
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
+namespace LayerShellQt {
+class Window;
 }
 
 namespace Latte {
@@ -251,7 +249,7 @@ public:
     Layout::GenericLayout *layout() const;
     void setLayout(Layout::GenericLayout *layout);
 
-    KWayland::Client::PlasmaShellSurface *surface();
+    LayerShellQt::Window *layerWindow();
 
     //! release grab and restore mouse state
     void unblockMouse(int x, int y);
@@ -459,7 +457,7 @@ private:
     //! track transientWindows
     QList<QWindow *> m_transientWindows;
 
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+    LayerShellQt::Window *m_layerWindow{nullptr};
 };
 
 }

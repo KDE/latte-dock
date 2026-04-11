@@ -27,7 +27,7 @@
 #include <QDebug>
 #include <QMetaMethod>
 #include <QQuickItem>
-#include <private/qtx11extras_p.h>
+#include <QGuiApplication>
 
 // KDE
 #include <KActionCollection>
@@ -55,7 +55,7 @@ GlobalShortcuts::GlobalShortcuts(QObject *parent)
 
     m_hideViewsTimer.setSingleShot(true);
 
-    if (QX11Info::isPlatformX11()) {
+    if (QGuiApplication::platformName() == QLatin1String("xcb")) {
         //in X11 the timer is a poller that checks to see if the modifier keys
         //from user global shortcut have been released
         m_hideViewsTimer.setInterval(300);
@@ -548,7 +548,7 @@ void GlobalShortcuts::hideViewsTimerSlot()
 
     // qDebug() << "MEMORY ::: " << m_hideViews.count() << " _ " << m_viewItemsCalled.count() << " _ " << m_showShortcutBadgesMethods.count();
 
-    if (QX11Info::isPlatformX11()) {
+    if (QGuiApplication::platformName() == QLatin1String("xcb")) {
         if (!m_modifierTracker->sequenceModifierPressed(m_lastInvokedAction->shortcut())) {
             initParameters();
 

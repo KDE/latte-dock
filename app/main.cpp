@@ -64,9 +64,7 @@ int main(int argc, char **argv)
     //even if we don't use Qt scaling the compositor will try to scale us anyway so we have no choice
     if (!qEnvironmentVariableIsSet("PLASMA_USE_QT_SCALING")) {
         qunsetenv("QT_DEVICE_PIXEL_RATIO");
-        QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
-    } else {
-        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        // Note: AA_DisableHighDpiScaling and AA_UseHighDpiPixmaps are no-ops in Qt 6
     }
 
     QQuickWindow::setDefaultAlphaBuffer(true);
@@ -246,15 +244,8 @@ int main(int argc, char **argv)
         return 0;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    //! disable restore from session management
-    //! based on spectacle solution at:
-    //!   - https://bugs.kde.org/show_bug.cgi?id=430411
-    //!   - https://invent.kde.org/graphics/spectacle/-/commit/8db27170d63f8a4aaff09615e51e3cc0fb115c4d
-    // FIXME:
-    // Remove this later when I'm sure nothing is broken in Qt6.
-    QGuiApplication::setFallbackSessionManagementEnabled(false);
-#endif
+    //! setFallbackSessionManagementEnabled was removed in Qt 6
+    //! Session management is handled below via commitDataRequest/saveStateRequest
 
     auto disableSessionManagement = [](QSessionManager &sm) {
         sm.setRestartHint(QSessionManager::RestartNever);
