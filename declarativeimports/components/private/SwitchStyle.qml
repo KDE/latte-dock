@@ -6,8 +6,8 @@
 import QtQuick 2.2
 import QtQuick.Controls.Styles 1.2 as QtQuickControlStyle
 import QtQuick.Controls 1.2
-import org.kde.kirigami 2.20 as Kirigami
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 QtQuickControlStyle.SwitchStyle {
     id: styleRoot

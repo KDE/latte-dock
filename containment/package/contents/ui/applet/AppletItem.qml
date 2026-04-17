@@ -8,15 +8,15 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import Qt5Compat.GraphicalEffects
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.plasmoid
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
 
-import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.core as LatteCore
+import org.kde.latte.components as LatteComponents
 
-import org.kde.latte.abilities.items 0.1 as AbilityItem
+import org.kde.latte.abilities.items as AbilityItem
 
 import "colorizer" as Colorizer
 import "communicator" as Communicator

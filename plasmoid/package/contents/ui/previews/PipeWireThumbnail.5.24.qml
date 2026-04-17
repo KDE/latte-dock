@@ -5,7 +5,7 @@
 */
 
 import QtQuick.Window 2.6
-import org.kde.taskmanager 0.1 as TaskManager
+import org.kde.taskmanager as TaskManager
 
 TaskManager.PipeWireSourceItem {
     visible: waylandItem.nodeId > 0

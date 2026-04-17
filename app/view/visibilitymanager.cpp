@@ -25,8 +25,6 @@
 // KDE
 #include <KX11Extras>
 #include <KWindowSystem>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 
 //! Hide Timer can create cases that when it is low it does not allow the
 //! view to be show. For example !compositing+kwin_edges+hide inteval<50ms

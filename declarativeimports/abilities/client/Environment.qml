@@ -5,7 +5,7 @@
 
 import QtQuick 2.8
 
-import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
+import org.kde.latte.abilities.definition as AbilityDefinition
 
 AbilityDefinition.Environment {
     property Item bridge: null

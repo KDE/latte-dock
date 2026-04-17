@@ -7,9 +7,9 @@
 import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Templates 2.2 as T
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
-import org.kde.latte.components 1.0 as LatteComponents
+import org.kde.latte.components as LatteComponents
 
 import "private" as Private
 

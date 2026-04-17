@@ -26,12 +26,6 @@ class Containment;
 class Types;
 }
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
-
 namespace Latte {
 class Corona;
 class View;
@@ -87,4 +81,3 @@ private:
 }
 }
 #endif //WIDGETEXPLORERVIEW_H
-

@@ -19,15 +19,12 @@
 //KF
 #include <KSvg/FrameSvg>
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
-
 namespace Latte {
 class Corona;
 class View;
+namespace WindowSystem {
+class WaylandSurface;
+}
 }
 
 
@@ -55,7 +52,7 @@ public:
     virtual void showAfter(int msecs = 0);
 
     Latte::WindowSystem::WindowId trackedWindowId();
-    KWayland::Client::PlasmaShellSurface *surface();
+    Latte::WindowSystem::WaylandSurface *surface() const;
 
 public slots:
     virtual void syncGeometry() = 0;
@@ -87,7 +84,7 @@ protected:
     KSvg::FrameSvg::EnabledBorders m_enabledBorders{KSvg::FrameSvg::AllBorders};
 
     Latte::Corona *m_corona{nullptr};
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+    Latte::WindowSystem::WaylandSurface *m_shellSurface{nullptr};
 
 private slots:
     void updateWaylandId();
@@ -106,4 +103,3 @@ private:
 }
 }
 #endif //SUBCONFIGVIEW_H
-

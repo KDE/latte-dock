@@ -16,12 +16,6 @@
 #include <QQuickView>
 #include <QTimer>
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
-
 namespace Latte {
 class Corona;
 class View;

@@ -9,18 +9,18 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import Qt5Compat.GraphicalEffects
 
-import org.kde.kirigami 2.20 as Kirigami
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
-import org.kde.latte.abilities.host 0.1 as AbilityHost
+import org.kde.latte.abilities.host as AbilityHost
 
-import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.components 1.0 as LatteComponents
-import org.kde.latte.private.app 0.1 as LatteApp
-import org.kde.latte.private.containment 0.1 as LatteContainment
+import org.kde.latte.core as LatteCore
+import org.kde.latte.components as LatteComponents
+import org.kde.latte.private.app as LatteApp
+import org.kde.latte.private.containment as LatteContainment
 
 import "abilities" as Ability
 import "applet" as Applet

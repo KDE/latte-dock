@@ -10,9 +10,11 @@
 // local
 #include <config-latte.h>
 #include "wm/abstractwindowinterface.h"
+#include "wm/waylandsurface.h"
 #include "view/panelshadows_p.h"
 
 // Qt
+#include <QPlatformSurfaceEvent>
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -23,8 +25,6 @@
 #include <KLocalizedContext>
 #include <KPackage/Package>
 #include <KWindowSystem>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KX11Extras>
 
 namespace Latte {
@@ -36,6 +36,10 @@ InfoView::InfoView(Latte::Corona *corona, QString message, QScreen *screen, QWin
       m_screen(screen)
 {
     m_id = QString::number(QRandomGenerator::global()->generate() % 1000);
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_shellSurface = new WindowSystem::WaylandSurface(this, this);
+    }
 
     setTitle(validTitle());
 
@@ -63,13 +67,10 @@ InfoView::InfoView(Latte::Corona *corona, QString message, QScreen *screen, QWin
 InfoView::~InfoView()
 {
     PanelShadows::self()->removeWindow(this);
+    m_corona->wm()->unregisterIgnoredWindow(KWindowSystem::isPlatformX11() ? winId() : m_trackedWindowId);
 
     qDebug() << "InfoView deleting ...";
 
-    if (m_shellSurface) {
-        delete m_shellSurface;
-        m_shellSurface = nullptr;
-    }
 }
 
 void InfoView::init()
@@ -102,6 +103,11 @@ KSvg::FrameSvg::EnabledBorders InfoView::enabledBorders() const
 inline Qt::WindowFlags InfoView::wFlags() const
 {
     return (flags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint) & ~Qt::WindowDoesNotAcceptFocus;
+}
+
+WindowSystem::WaylandSurface *InfoView::waylandSurface() const
+{
+    return m_shellSurface;
 }
 
 void InfoView::syncGeometry()
@@ -155,28 +161,16 @@ void InfoView::updateWaylandId()
 
 void InfoView::setupWaylandIntegration()
 {
-    if (m_shellSurface) {
-        // already setup
+    if (!m_shellSurface) {
+        return;
+    }
+
+    if (!m_shellSurface->sync()) {
         return;
     }
 
     if (m_corona) {
-        using namespace KWayland::Client;
-        PlasmaShell *interface = m_corona->waylandCoronaInterface();
-
-        if (!interface) {
-            return;
-        }
-
-        Surface *s = Surface::fromWindow(this);
-
-        if (!s) {
-            return;
-        }
-
         qDebug() << "wayland dock window surface was created...";
-
-        m_shellSurface = interface->createSurface(s, this);
         m_corona->wm()->setViewExtraFlags(m_shellSurface);
     }
 }
@@ -188,7 +182,7 @@ bool InfoView::event(QEvent *e)
             switch (pe->surfaceEventType()) {
                 case QPlatformSurfaceEvent::SurfaceCreated:
 
-                    if (m_shellSurface) {
+                    if (m_shellSurface && m_shellSurface->isReady()) {
                         break;
                     }
 
@@ -197,8 +191,7 @@ bool InfoView::event(QEvent *e)
 
                 case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
                     if (m_shellSurface) {
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
+                        m_shellSurface->release();
                     }
 
                     PanelShadows::self()->removeWindow(this);

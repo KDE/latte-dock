@@ -15,14 +15,14 @@
 #include "../../shortcuts/globalshortcuts.h"
 #include "../../shortcuts/shortcutstracker.h"
 #include "../../wm/abstractwindowinterface.h"
+#include "../../wm/waylandsurface.h"
 
 // Qt
+#include <QPlatformSurfaceEvent>
 #include <QQmlEngine>
 
 // KDE
 #include <KLocalizedContext>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
 namespace Latte {
@@ -33,6 +33,10 @@ SubConfigView::SubConfigView(Latte::View *view, const QString &title, const bool
       m_isNormalWindow(isNormalWindow)
 {
     m_corona = qobject_cast<Latte::Corona *>(view->containment()->corona());
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_shellSurface = new WindowSystem::WaylandSurface(this, this);
+    }
 
     setupWaylandIntegration();
 
@@ -133,7 +137,7 @@ QString SubConfigView::validTitle() const
 
 Latte::WindowSystem::WindowId SubConfigView::trackedWindowId()
 {
-    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.toInt() <= 0) {
+    if (KWindowSystem::isPlatformWayland() && m_waylandWindowId.isNull()) {
         updateWaylandId();
     }
 
@@ -229,35 +233,24 @@ void SubConfigView::syncSlideEffect()
     m_corona->wm()->slideWindow(*this, slideLocation);
 }
 
-KWayland::Client::PlasmaShellSurface *SubConfigView::surface()
+WindowSystem::WaylandSurface *SubConfigView::surface() const
 {
     return m_shellSurface;
 }
 
 void SubConfigView::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
-        // already setup
+    if (!m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
+        return;
+    }
+
+    if (!m_shellSurface->sync()) {
+        // The underlying wl_surface is not available yet.
         return;
     }
 
     if (m_corona) {
-        using namespace KWayland::Client;
-        PlasmaShell *interface = m_corona->waylandCoronaInterface();
-
-        if (!interface) {
-            return;
-        }
-
-        Surface *s = Surface::fromWindow(this);
-
-        if (!s) {
-            return;
-        }
-
         qDebug() << "wayland " << title() <<  " surface was created...";
-
-        m_shellSurface = interface->createSurface(s, this);
 
         if (m_isNormalWindow) {
             m_corona->wm()->setViewExtraFlags(m_shellSurface, false);
@@ -296,8 +289,7 @@ bool SubConfigView::event(QEvent *e)
 
             case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
                 if (m_shellSurface) {
-                    delete m_shellSurface;
-                    m_shellSurface = nullptr;
+                    m_shellSurface->release();
                     qDebug() << "WAYLAND " << title() <<  " window surface was deleted...";
                 }
 

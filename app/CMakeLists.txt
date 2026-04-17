@@ -55,12 +55,14 @@ add_executable(latte-dock ${lattedock-app_SRCS})
 include(FakeTarget.cmake)
 
 qt6_generate_wayland_protocol_client_sources(latte-dock FILES
-    ${PLASMA_WAYLAND_PROTOCOLS_DIR}/kde-primary-output-v1.xml)
+    ${PLASMA_WAYLAND_PROTOCOLS_DIR}/kde-primary-output-v1.xml
+    ${PLASMA_WAYLAND_PROTOCOLS_DIR}/plasma-shell.xml)
 
 target_link_libraries(latte-dock
     Qt::DBus
     Qt::Quick
     Qt::Qml
+    Qt6::WaylandClientPrivate
     KF6::Archive
     KF6::CoreAddons
     KF6::Crash
@@ -80,6 +82,7 @@ target_link_libraries(latte-dock
     Wayland::Client
     Plasma::Activities
     LayerShellQt::Interface
+    PW::LibTaskManager
     Plasma::Plasma
     Plasma::PlasmaQuick
 )

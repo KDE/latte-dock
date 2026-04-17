@@ -5,8 +5,8 @@
 
 import QtQuick 2.0
 
-import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
+import org.kde.latte.core as LatteCore
+import org.kde.latte.abilities.definition as AbilityDefinition
 
 AbilityDefinition.UserRequests {
     id: containerUserRequests

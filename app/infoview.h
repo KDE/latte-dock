@@ -17,13 +17,10 @@
 #include <QQuickView>
 #include <QScreen>
 
-namespace KWayland {
-namespace Client {
-class PlasmaShellSurface;
-}
-}
-
 namespace Latte {
+namespace WindowSystem {
+class WaylandSurface;
+}
 
 class InfoView : public QQuickView
 {
@@ -41,6 +38,7 @@ public:
 
     void init();
     Qt::WindowFlags wFlags() const;
+    WindowSystem::WaylandSurface *waylandSurface() const;
 
     void setOnActivities(QStringList activities = {"0"});
 
@@ -68,7 +66,7 @@ private:
     KSvg::FrameSvg::EnabledBorders m_borders{KSvg::FrameSvg::TopBorder | KSvg::FrameSvg::BottomBorder};
 
     Latte::WindowSystem::WindowId m_trackedWindowId;
-    KWayland::Client::PlasmaShellSurface *m_shellSurface{nullptr};
+    WindowSystem::WaylandSurface *m_shellSurface{nullptr};
 
     Latte::Corona *m_corona{nullptr};
 };

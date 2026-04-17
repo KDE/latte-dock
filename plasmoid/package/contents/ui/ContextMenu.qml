@@ -6,15 +6,15 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 import org.kde.activities 0.1 as Activities
-import org.kde.taskmanager 0.1 as TaskManager
+import org.kde.taskmanager as TaskManager
 
-import org.kde.latte.core 0.2 as LatteCore
-import org.kde.latte.private.tasks 0.1 as LatteTasks
+import org.kde.latte.core as LatteCore
+import org.kde.latte.private.tasks as LatteTasks
 
 import "../code/activitiesTools.js" as ActivitiesTools
 
@@ -84,14 +84,14 @@ PlasmaComponents.ContextMenu {
 
     function newMenuItem(parent) {
         return Qt.createQmlObject(
-                    "import org.kde.plasma.components 3.0 as PlasmaComponents;" +
+                    "import org.kde.plasma.components as PlasmaComponents;" +
                     "PlasmaComponents.MenuItem {}",
                     parent);
     }
 
     function newSeparator(parent) {
         return Qt.createQmlObject(
-                    "import org.kde.plasma.components 3.0 as PlasmaComponents;" +
+                    "import org.kde.plasma.components as PlasmaComponents;" +
                     "PlasmaComponents.MenuItem { separator: true }",
                     parent);
     }

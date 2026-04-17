@@ -6,7 +6,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4 as Controls
 import QtQuick.Controls.Styles.Plasma 2.0 as Styles
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
 Controls.SpinBox {
     implicitWidth: theme.mSize(theme.defaultFont).width * 10

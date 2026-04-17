@@ -30,6 +30,7 @@
 #include "../settings/exporttemplatedialog/exporttemplatedialog.h"
 #include "../shortcuts/globalshortcuts.h"
 #include "../shortcuts/shortcutstracker.h"
+#include "../wm/waylandsurface.h"
 
 // Qt
 #include <QAction>
@@ -37,6 +38,7 @@
 #include <QDragMoveEvent>
 #include <QDropEvent>
 #include <QMouseEvent>
+#include <QPlatformSurfaceEvent>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlProperty>
@@ -46,10 +48,9 @@
 // KDE
 #include <KActionCollection>
 #include <KPackage/Package>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 #include <KX11Extras>
+#include <LayerShellQt/Window>
 
 // Plasma
 #include <PlasmaActivities/Consumer>
@@ -116,6 +117,10 @@ View::View(Plasma::Corona *corona, QScreen *targetScreen, bool byPassX11WM)
     } else {
         qDebug() << "org.kde.view :::: corona was found properly!!!";
         m_positioner->setScreenToFollow(m_corona->screenPool()->primaryScreen());
+    }
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_waylandSurface = new WindowSystem::WaylandSurface(this, this);
     }
 
     m_releaseGrabTimer.setInterval(400);
@@ -455,35 +460,76 @@ void View::availableScreenRectChangedFromSlot(View *origin)
 
 void View::setupWaylandIntegration()
 {
-    if (m_shellSurface)
+    if (!m_waylandSurface || !m_waylandSurface->sync())
         return;
 
-    if (Latte::Corona *c = qobject_cast<Latte::Corona *>(corona())) {
-        using namespace KWayland::Client;
-        PlasmaShell *interface {c->waylandCoronaInterface()};
+    m_layerWindow = m_waylandSurface->layerWindow();
 
-        if (!interface)
-            return;
+    if (m_layerWindow) {
+        LayerShellQt::Window::Anchors anchors;
+        LayerShellQt::Window::Anchor edge = LayerShellQt::Window::AnchorTop;
 
-        Surface *s{Surface::fromWindow(this)};
-
-        if (!s)
-            return;
-
-        m_shellSurface = interface->createSurface(s, this);
-        qDebug() << "WAYLAND dock window surface was created...";
-        if (m_visibility) {
-            m_visibility->initViewFlags();
+        switch (location()) {
+        case Plasma::Types::TopEdge:
+            anchors = LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft | LayerShellQt::Window::AnchorRight;
+            edge = LayerShellQt::Window::AnchorTop;
+            break;
+        case Plasma::Types::BottomEdge:
+            anchors = LayerShellQt::Window::AnchorBottom | LayerShellQt::Window::AnchorLeft | LayerShellQt::Window::AnchorRight;
+            edge = LayerShellQt::Window::AnchorBottom;
+            break;
+        case Plasma::Types::LeftEdge:
+            anchors = LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorBottom | LayerShellQt::Window::AnchorLeft;
+            edge = LayerShellQt::Window::AnchorLeft;
+            break;
+        case Plasma::Types::RightEdge:
+            anchors = LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorBottom | LayerShellQt::Window::AnchorRight;
+            edge = LayerShellQt::Window::AnchorRight;
+            break;
+        default:
+            anchors = LayerShellQt::Window::AnchorTop | LayerShellQt::Window::AnchorLeft | LayerShellQt::Window::AnchorRight;
+            edge = LayerShellQt::Window::AnchorTop;
+            break;
         }
-        if (m_positioner) {
-            m_positioner->updateWaylandId();
-        }
+
+        m_layerWindow->setScreen(screen());
+        m_layerWindow->setScope(QStringLiteral("latte-dock"));
+        m_layerWindow->setAnchors(anchors);
+        m_layerWindow->setExclusiveEdge(edge);
+        m_layerWindow->setLayer(LayerShellQt::Window::LayerTop);
+        m_layerWindow->setKeyboardInteractivity(flags().testFlag(Qt::WindowDoesNotAcceptFocus)
+                                                ? LayerShellQt::Window::KeyboardInteractivityNone
+                                                : LayerShellQt::Window::KeyboardInteractivityOnDemand);
+        m_layerWindow->setExclusiveZone(formFactor() == Plasma::Types::Horizontal ? height() : width());
+    }
+
+    m_waylandSurface->setRole(WindowSystem::WaylandSurface::Role::Panel);
+    m_waylandSurface->setPanelBehavior(WindowSystem::WaylandSurface::PanelBehavior::AlwaysVisible);
+    m_waylandSurface->setPanelTakesFocus(!flags().testFlag(Qt::WindowDoesNotAcceptFocus));
+
+    qDebug() << "WAYLAND dock window surface was created...";
+
+    if (m_visibility) {
+        m_visibility->initViewFlags();
+    }
+
+    if (m_positioner) {
+        m_positioner->updateWaylandId();
     }
 }
 
-KWayland::Client::PlasmaShellSurface *View::surface()
+WindowSystem::WaylandSurface *View::surface() const
 {
-    return m_shellSurface;
+    return m_waylandSurface;
+}
+
+LayerShellQt::Window *View::layerWindow()
+{
+    if (!m_layerWindow && m_waylandSurface) {
+        m_layerWindow = m_waylandSurface->layerWindow();
+    }
+
+    return m_layerWindow;
 }
 
 //! the main function which decides if this dock is at the
@@ -725,8 +771,8 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         m_visibility->addBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
-        if (m_shellSurface) {
-            m_shellSurface->setPanelTakesFocus(false);
+        if (m_waylandSurface) {
+            m_waylandSurface->setPanelTakesFocus(false);
         }
     } else if (status == Plasma::Types::AcceptingInputStatus) {
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
@@ -735,16 +781,16 @@ void View::statusChanged(Plasma::Types::ItemStatus status)
         if (KWindowSystem::isPlatformX11()) {
             KX11Extras::forceActiveWindow(winId());
         }
-        if (m_shellSurface) {
-            m_shellSurface->setPanelTakesFocus(true);
+        if (m_waylandSurface) {
+            m_waylandSurface->setPanelTakesFocus(true);
         }
     } else {
         updateTransientWindowsTracking();
         m_visibility->removeBlockHidingEvent(BLOCKHIDINGNEEDSATTENTIONTYPE);
         setFlags(flags() | Qt::WindowDoesNotAcceptFocus);
         m_visibility->initViewFlags();
-        if (m_shellSurface) {
-            m_shellSurface->setPanelTakesFocus(false);
+        if (m_waylandSurface) {
+            m_waylandSurface->setPanelTakesFocus(false);
         }
     }
 }
@@ -1568,7 +1614,7 @@ bool View::event(QEvent *e)
                 case QPlatformSurfaceEvent::SurfaceCreated:
                     setupWaylandIntegration();
 
-                    if (m_shellSurface) {
+                    if (m_waylandSurface) {
                         //! immediateSyncGeometry helps avoiding binding loops from containment qml side
                         m_positioner->immediateSyncGeometry();
                         m_effects->updateShadows();
@@ -1577,9 +1623,8 @@ bool View::event(QEvent *e)
                     break;
 
                 case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
-                    if (m_shellSurface) {
-                        delete m_shellSurface;
-                        m_shellSurface = nullptr;
+                    if (m_waylandSurface) {
+                        m_waylandSurface->release();
                         qDebug() << "WAYLAND dock window surface was deleted...";
                         m_effects->clearShadows();
                     }

@@ -11,10 +11,9 @@
 #include <QDebug>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QtWaylandClient/QWaylandClientExtension>
 
 #include "qwayland-kde-primary-output-v1.h"
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/registry.h>
 
 #include <config-latte.h>
 #if HAVE_X11
@@ -25,14 +24,15 @@
 #include <xcb/xcb_event.h>
 #endif
 
-class WaylandPrimaryOutput : public QObject, public QtWayland::kde_primary_output_v1
+class WaylandPrimaryOutput : public QWaylandClientExtensionTemplate<WaylandPrimaryOutput>, public QtWayland::kde_primary_output_v1
 {
     Q_OBJECT
 public:
-    WaylandPrimaryOutput(struct ::wl_registry *registry, int id, int version, QObject *parent)
-        : QObject(parent)
-        , QtWayland::kde_primary_output_v1(registry, id, version)
+    explicit WaylandPrimaryOutput(QObject *parent = nullptr)
+        : QWaylandClientExtensionTemplate<WaylandPrimaryOutput>(1)
     {
+        setParent(parent);
+        initialize();
     }
 
     void kde_primary_output_v1_primary_output(const QString &outputName) override
@@ -62,7 +62,7 @@ PrimaryOutputWatcher::PrimaryOutputWatcher(QObject *parent)
     }
 #endif
     if (KWindowSystem::isPlatformWayland()) {
-        setupRegistry();
+        setupWaylandIntegration();
     }
 }
 
@@ -75,27 +75,20 @@ void PrimaryOutputWatcher::setPrimaryOutputName(const QString &newOutputName)
     }
 }
 
-void PrimaryOutputWatcher::setupRegistry()
+void PrimaryOutputWatcher::setupWaylandIntegration()
 {
-    auto m_connection = KWayland::Client::ConnectionThread::fromApplication(this);
-    if (!m_connection) {
-        return;
-    }
-
     // Asking for primaryOutputName() before this happened, will return qGuiApp->primaryScreen()->name() anyways, so set it so the primaryOutputNameChange will
     // have parameters that are coherent
     m_primaryOutputName = qGuiApp->primaryScreen()->name();
-    m_registry = new KWayland::Client::Registry(this);
-    connect(m_registry, &KWayland::Client::Registry::interfaceAnnounced, this, [this](const QByteArray &interface, quint32 name, quint32 version) {
-        if (interface == WaylandPrimaryOutput::interface()->name) {
-            auto m_outputManagement = new WaylandPrimaryOutput(m_registry->registry(), name, version, this);
-            connect(m_outputManagement, &WaylandPrimaryOutput::primaryOutputChanged, this, [this](const QString &outputName) {
-                m_primaryOutputWayland = outputName;
-                // Only set the outputName when there's a QScreen attached to it
-                if (screenForName(outputName)) {
-                    setPrimaryOutputName(outputName);
-                }
-            });
+
+    auto *outputManagement = new WaylandPrimaryOutput(this);
+
+    connect(outputManagement, &WaylandPrimaryOutput::primaryOutputChanged, this, [this](const QString &outputName) {
+        m_primaryOutputWayland = outputName;
+
+        // Only set the outputName when there's a QScreen attached to it
+        if (screenForName(outputName)) {
+            setPrimaryOutputName(outputName);
         }
     });
 
@@ -106,8 +99,6 @@ void PrimaryOutputWatcher::setupRegistry()
         }
     });
 
-    m_registry->create(m_connection);
-    m_registry->setup();
 }
 
 bool PrimaryOutputWatcher::nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result)
@@ -157,4 +148,3 @@ QScreen *PrimaryOutputWatcher::primaryScreen() const
 }
 
 #include "primaryoutputwatcher.moc"
-

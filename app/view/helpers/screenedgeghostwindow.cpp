@@ -16,8 +16,6 @@
 #include <QTimer>
 
 // KDE
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 #include <KX11Extras>
 

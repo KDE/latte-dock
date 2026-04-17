@@ -6,9 +6,9 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.components as PlasmaComponents
 
-import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.core as LatteCore
 
 MouseArea {
     property var modelIndex

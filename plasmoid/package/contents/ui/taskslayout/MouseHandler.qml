@@ -7,10 +7,10 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.draganddrop 2.0
+import org.kde.plasma.plasmoid
+import org.kde.draganddrop
 
-import org.kde.taskmanager 0.1 as TaskManager
+import org.kde.taskmanager as TaskManager
 
 import "../../code/tools.js" as TaskTools
 

@@ -10,15 +10,6 @@
 #include <QAbstractNativeEventFilter>
 #include <QObject>
 
-namespace KWayland
-{
-namespace Client
-{
-class Registry;
-class ConnectionThread;
-}
-}
-
 class QScreen;
 
 class PrimaryOutputWatcher : public QObject, public QAbstractNativeEventFilter
@@ -37,14 +28,12 @@ protected:
     void setPrimaryOutputName(const QString &outputName);
 
 private:
-    void setupRegistry();
+    void setupWaylandIntegration();
     bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override;
 
     // All
     QString m_primaryOutputName;
 
-    // Wayland
-    KWayland::Client::Registry *m_registry = nullptr;
     QString m_primaryOutputWayland;
 
     // Xrandr

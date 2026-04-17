@@ -4,9 +4,9 @@
 */
 
 import QtQuick 2.7
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
-import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.core as LatteCore
 
 import "./layouter" as LayouterElements
 

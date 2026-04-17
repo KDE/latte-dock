@@ -56,6 +56,9 @@ namespace Latte {
 class Corona;
 class Interfaces;
 class GenericLayout;
+namespace WindowSystem {
+class WaylandSurface;
+}
 }
 
 namespace Latte {
@@ -250,6 +253,7 @@ public:
     void setLayout(Layout::GenericLayout *layout);
 
     LayerShellQt::Window *layerWindow();
+    WindowSystem::WaylandSurface *surface() const;
 
     //! release grab and restore mouse state
     void unblockMouse(int x, int y);
@@ -457,6 +461,7 @@ private:
     //! track transientWindows
     QList<QWindow *> m_transientWindows;
 
+    WindowSystem::WaylandSurface *m_waylandSurface{nullptr};
     LayerShellQt::Window *m_layerWindow{nullptr};
 };
 

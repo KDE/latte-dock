@@ -8,16 +8,16 @@
 // local
 #include "../view.h"
 #include "../visibilitymanager.h"
+#include "../../wm/waylandsurface.h"
 
 // Qt
 #include <QDebug>
+#include <QPlatformSurfaceEvent>
 #include <QSurfaceFormat>
 #include <QQuickView>
 #include <QTimer>
 
 // KDE
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowSystem>
 
 // X11
@@ -45,6 +45,10 @@ SubWindow::SubWindow(Latte::View *view, QString debugType) :
              | Qt::WindowStaysOnTopHint
              | Qt::NoDropShadowWindowHint
              | Qt::WindowDoesNotAcceptFocus);
+
+    if (KWindowSystem::isPlatformWayland()) {
+        m_shellSurface = new WindowSystem::WaylandSurface(this, this);
+    }
 
     m_fixGeometryTimer.setSingleShot(true);
     m_fixGeometryTimer.setInterval(500);
@@ -140,9 +144,6 @@ SubWindow::~SubWindow()
         disconnect(c);
     }
 
-    if (m_shellSurface) {
-        delete m_shellSurface;
-    }
 }
 
 int SubWindow::location()
@@ -172,14 +173,14 @@ Latte::View *SubWindow::parentView()
 
 Latte::WindowSystem::WindowId SubWindow::trackedWindowId()
 {
-    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.toInt() <= 0) {
+    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.isNull()) {
         updateWaylandId();
     }
 
     return m_trackedWindowId;
 }
 
-KWayland::Client::PlasmaShellSurface *SubWindow::surface()
+WindowSystem::WaylandSurface *SubWindow::surface() const
 {
     return m_shellSurface;
 }
@@ -221,37 +222,36 @@ void SubWindow::startGeometryTimer()
 
 void SubWindow::setupWaylandIntegration()
 {
-    if (m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
-        // already setup
+    if (!m_shellSurface || !KWindowSystem::isPlatformWayland() || !m_latteView || !m_latteView->containment()) {
         return;
     }
 
-    if (m_corona) {
-        using namespace KWayland::Client;
-
-        PlasmaShell *interface = m_corona->waylandCoronaInterface();
-
-        if (!interface) {
-            return;
-        }
-
-        Surface *s = Surface::fromWindow(this);
-
-        if (!s) {
-            return;
-        }
-
-        qDebug() << "wayland screen edge ghost window surface was created...";
-        m_shellSurface = interface->createSurface(s, this);
-        m_corona->wm()->setViewExtraFlags(m_shellSurface);
-
-        m_shellSurface->setPanelTakesFocus(false);
+    if (!m_shellSurface->sync()) {
+        // The underlying wl_surface is not available yet.
+        return;
     }
+
+    qDebug() << "wayland screen edge ghost window surface was created...";
+    m_corona->wm()->setViewExtraFlags(m_shellSurface);
+    m_shellSurface->setPanelTakesFocus(false);
 }
 
 bool SubWindow::event(QEvent *e)
 {
-    if (e->type() == QEvent::Show) {
+    if (e->type() == QEvent::PlatformSurface) {
+        if (auto pe = dynamic_cast<QPlatformSurfaceEvent *>(e)) {
+            switch (pe->surfaceEventType()) {
+            case QPlatformSurfaceEvent::SurfaceCreated:
+                setupWaylandIntegration();
+                break;
+            case QPlatformSurfaceEvent::SurfaceAboutToBeDestroyed:
+                if (m_shellSurface) {
+                    m_shellSurface->release();
+                }
+                break;
+            }
+        }
+    } else if (e->type() == QEvent::Show) {
         m_corona->wm()->setViewExtraFlags(this);
     }
 

@@ -1,6 +1,7 @@
 /*
     SPDX-FileCopyrightText: 2016 Smith AR <audoban@openmailbox.org>
     SPDX-FileCopyrightText: 2016 Michail Vourlakos <mvourlakos@gmail.com>
+    SPDX-FileCopyrightText: 2026 OpenAI
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
@@ -14,22 +15,18 @@
 
 // Qt
 #include <QHash>
-#include <QObject>
+#include <QPersistentModelIndex>
+#include <QPointer>
+#include <QSet>
 
-// KDE
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/plasmawindowmanagement.h>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
-#include <KWindowInfo>
-#include <KWindowEffects>
-
+namespace TaskManager {
+class VirtualDesktopInfo;
+class WindowTasksModel;
+}
 
 namespace Latte {
 class Corona;
 namespace Private {
-//! this class is used to create the struts inside wayland
 class GhostWindow;
 }
 }
@@ -45,9 +42,10 @@ public:
     explicit WaylandInterface(QObject *parent = nullptr);
     ~WaylandInterface() override;
 
+    void initWindowManagement();
+
     void setViewExtraFlags(QObject *view, bool isPanelWindow = true, Latte::Types::Visibility mode = Latte::Types::WindowsGoBelow) override;
-    void setViewStruts(QWindow &view, const QRect &rect
-                       , Plasma::Types::Location location) override;
+    void setViewStruts(QWindow &view, const QRect &rect, Plasma::Types::Location location) override;
     void setWindowOnActivities(const WindowId &wid, const QStringList &nextactivities) override;
 
     void removeViewStruts(QWindow &view) override;
@@ -79,7 +77,7 @@ public:
 
     AppData appDataFor(WindowId wid) override;
 
-    void setActiveEdge(QWindow *view, bool active)  override;
+    void setActiveEdge(QWindow *view, bool active) override;
 
     void switchToNextVirtualDesktop() override;
     void switchToPreviousVirtualDesktop() override;
@@ -90,46 +88,38 @@ public:
     void registerIgnoredWindow(WindowId wid) override;
     void unregisterIgnoredWindow(WindowId wid) override;
 
-    void initWindowManagement(KWayland::Client::PlasmaWindowManagement *windowManagement);
-
-    //! VirtualDesktopsSupport
-    void initVirtualDesktopManagement(KWayland::Client::PlasmaVirtualDesktopManagement *virtualDesktopManagement);
-
-
-private slots:
-    void updateWindow();
-    void windowUnmapped();
-
 private:
     void init();
-    bool isAcceptableWindow(const KWayland::Client::PlasmaWindow *w);
-    bool isValidWindow(const KWayland::Client::PlasmaWindow *w);
-    bool isFullScreenWindow(const KWayland::Client::PlasmaWindow *w) const;
-    bool isPlasmaPanel(const KWayland::Client::PlasmaWindow *w) const;
-    bool isSidepanel(const KWayland::Client::PlasmaWindow *w) const;
-    void windowCreatedProxy(KWayland::Client::PlasmaWindow *w);
-    void trackWindow(KWayland::Client::PlasmaWindow *w);
-    void untrackWindow(KWayland::Client::PlasmaWindow *w);
+    void rebuildWindowIndexCache();
+    void refreshModelState(const QSet<WindowId> &changedIds = {});
 
-    KWayland::Client::PlasmaWindow *windowFor(WindowId wid);
-    KWayland::Client::PlasmaShell *waylandCoronaInterface() const;
+    QModelIndex indexFor(WindowId wid) const;
+    WindowId windowIdForIndex(const QModelIndex &index) const;
+    WindowId activeWindowFromModel() const;
+    WindowInfoWrap requestInfo(const QModelIndex &index) const;
 
-    //! VirtualDesktopsSupport
-    void setCurrentDesktop(QString desktop);
-    void addDesktop(const QString &id, quint32 position);
+    bool isAcceptableWindow(const QModelIndex &index) const;
+    bool isValidWindow(const QModelIndex &index) const;
+    bool isFullScreenWindow(const QModelIndex &index) const;
+    bool isPlasmaPanel(const QModelIndex &index) const;
+    bool isSidepanel(const QModelIndex &index) const;
+    bool appIdMatches(const QModelIndex &index, const QString &expected) const;
 
+    void setCurrentDesktop(const QString &desktop);
+    void syncDesktops();
 
 private:
     friend class Private::GhostWindow;
     mutable QHash<WindowId, Private::GhostWindow *> m_ghostWindows;
 
-    KWayland::Client::PlasmaWindowManagement *m_windowManagement{nullptr};
+    QPointer<TaskManager::WindowTasksModel> m_windowTasksModel;
+    QPointer<TaskManager::VirtualDesktopInfo> m_virtualDesktopInfo;
 
-    //! VirtualDesktopsSupport
-    KWayland::Client::PlasmaVirtualDesktopManagement *m_virtualDesktopManagement{nullptr};
+    QHash<WindowId, QPersistentModelIndex> m_windowIndexes;
+    QSet<WindowId> m_trackedWindows;
+    WindowId m_activeWindowId;
+
     QStringList m_desktops;
-
-
     Latte::Corona *m_corona{nullptr};
 };
 
@@ -137,5 +127,3 @@ private:
 }
 
 #endif // WAYLANDINTERFACE_H
-
-

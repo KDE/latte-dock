@@ -36,6 +36,7 @@ include(WriteBasicConfigVersionFile)
 
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED NO_MODULE COMPONENTS DBus Gui Qml Quick)
+find_package(Qt6WaylandClientPrivate REQUIRED)
 
 #find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 #    Activities Archive CoreAddons GuiAddons Crash DBusAddons Declarative GlobalAccel Kirigami2

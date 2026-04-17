@@ -12,6 +12,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../wm/abstractwindowinterface.h"
+#include "../../wm/waylandsurface.h"
 
 // Qt
 #include <QQuickItem>
@@ -21,8 +22,6 @@
 
 // KDE
 #include <KLocalizedContext>
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
 #include <KWindowEffects>
 #include <KWindowSystem>
 #include <KX11Extras>
@@ -224,13 +223,13 @@ void SecondaryConfigView::updateEffects()
 {
     //! Don't apply any effect before the wayland surface is created under wayland
     //! https://bugs.kde.org/show_bug.cgi?id=392890
-    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
+    if (KWindowSystem::isPlatformWayland() && (!m_shellSurface || !m_shellSurface->isReady())) {
         return;
     }
 
     //! Don't apply any effect before the wayland surface is created under wayland
     //! https://bugs.kde.org/show_bug.cgi?id=392890
-    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
+    if (KWindowSystem::isPlatformWayland() && (!m_shellSurface || !m_shellSurface->isReady())) {
         return;
     }
 
@@ -305,4 +304,3 @@ void SecondaryConfigView::updateEnabledBorders()
 
 }
 }
-

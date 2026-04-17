@@ -18,13 +18,13 @@
 #include "../layouts/manager.h"
 #include "../settings/universalsettings.h"
 #include "../wm/abstractwindowinterface.h"
+#include "../wm/waylandsurface.h"
 
 // Qt
 #include <QDebug>
 
 // KDE
-#include <KWayland/Client/plasmashell.h>
-#include <KWayland/Client/surface.h>
+#include <LayerShellQt/Window>
 #include <KWindowSystem>
 
 #define RELOCATIONSHOWINGEVENT "viewInRelocationShowing"
@@ -285,7 +285,7 @@ int Positioner::currentScreenId() const
 
 Latte::WindowSystem::WindowId Positioner::trackedWindowId()
 {
-    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.toInt() <= 0) {
+    if (KWindowSystem::isPlatformWayland() && m_trackedWindowId.isNull()) {
         updateWaylandId();
     }
 
@@ -867,6 +867,20 @@ void Positioner::updatePosition(QRect availableScreenRect)
 
     if (m_view->surface()) {
         m_view->surface()->setPosition(position);
+    }
+
+    if (auto *layerWindow = m_view->layerWindow()) {
+        const bool canCover = m_view->visibility()
+                && (m_view->visibility()->mode() == Latte::Types::WindowsCanCover
+                    || m_view->visibility()->mode() == Latte::Types::WindowsAlwaysCover);
+
+        layerWindow->setScreen(m_view->screen());
+        layerWindow->setLayer(canCover ? LayerShellQt::Window::LayerBottom
+                                       : LayerShellQt::Window::LayerTop);
+        layerWindow->setExclusiveZone(canCover ? 0
+                                               : (m_view->formFactor() == Plasma::Types::Horizontal
+                                                  ? m_view->height()
+                                                  : m_view->width()));
     }
 }
 

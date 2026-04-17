@@ -11,6 +11,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../wm/abstractwindowinterface.h"
+#include "../../wm/waylandsurface.h"
 
 // Qt
 #include <QQuickItem>
@@ -18,7 +19,6 @@
 
 // KDE
 #include <KWindowSystem>
-#include <KWayland/Client/plasmashell.h>
 #include <KPackage/Package>
 
 namespace Latte {
@@ -224,4 +224,3 @@ void CanvasConfigView::updateEnabledBorders()
 
 }
 }
-

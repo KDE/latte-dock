@@ -5,10 +5,10 @@
 
 import QtQuick 2.7
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.draganddrop 2.0 as DragDrop
+import org.kde.plasma.core as PlasmaCore
+import org.kde.draganddrop as DragDrop
 
-import org.kde.latte.core 0.2 as LatteCore
+import org.kde.latte.core as LatteCore
 
 DragDrop.DropArea {
     id: dragArea

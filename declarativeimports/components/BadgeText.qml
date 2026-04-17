@@ -6,7 +6,7 @@
 import QtQuick 2.2
 import Qt5Compat.GraphicalEffects
 
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
 Rectangle {
     property double proportion: 0

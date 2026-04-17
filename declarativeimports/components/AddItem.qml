@@ -5,7 +5,7 @@
 
 import QtQuick 2.1
 
-import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.plasmoid
 
 import "code/ColorizerTools.js" as ColorizerTools
 

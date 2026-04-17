@@ -5,8 +5,8 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.plasmoid 2.0
-import org.kde.latte.abilities.definition 0.1 as AbilityDefinition
+import org.kde.plasma.plasmoid
+import org.kde.latte.abilities.definition as AbilityDefinition
 
 AbilityDefinition.MyView {
     id: _myView

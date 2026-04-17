@@ -6,8 +6,8 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.latte.core 0.2 as LatteCore
+import org.kde.plasma.core as PlasmaCore
+import org.kde.latte.core as LatteCore
 
 Item{
     id: hiddenSpacer

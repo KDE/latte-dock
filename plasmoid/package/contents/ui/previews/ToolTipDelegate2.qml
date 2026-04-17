@@ -12,13 +12,13 @@ import QtQuick.Layouts 1.1
 import Qt5Compat.GraphicalEffects
 import QtQml.Models 2.2
 
-import org.kde.draganddrop 2.0
+import org.kde.draganddrop
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
-import org.kde.taskmanager 0.1 as TaskManager
+import org.kde.taskmanager as TaskManager
 
 PlasmaComponents.ScrollView {
     id: mainToolTip

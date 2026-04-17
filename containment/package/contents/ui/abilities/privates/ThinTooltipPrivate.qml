@@ -5,7 +5,7 @@
 
 import QtQuick 2.7
 
-import org.kde.latte.abilities.host 0.1 as AbilityHost
+import org.kde.latte.abilities.host as AbilityHost
 
 AbilityHost.ThinTooltip {
     id: _tooltip

@@ -12,6 +12,7 @@
 #include "../view.h"
 #include "../../lattecorona.h"
 #include "../../wm/abstractwindowinterface.h"
+#include "../../wm/waylandsurface.h"
 
 // Qt
 #include <QQuickItem>
@@ -21,7 +22,6 @@
 #include <KSvg/Svg>
 #include <KWindowEffects>
 #include <KWindowSystem>
-#include <KWayland/Client/plasmashell.h>
 #include <KX11Extras>
 #include <KPackage/Package>
 
@@ -181,7 +181,7 @@ void WidgetExplorerView::updateEffects()
 {
     //! Don't apply any effect before the wayland surface is created under wayland
     //! https://bugs.kde.org/show_bug.cgi?id=392890
-    if (KWindowSystem::isPlatformWayland() && !m_shellSurface) {
+    if (KWindowSystem::isPlatformWayland() && (!m_shellSurface || !m_shellSurface->isReady())) {
         return;
     }
 
@@ -281,4 +281,3 @@ void WidgetExplorerView::updateEnabledBorders()
 
 }
 }
-
