@@ -71,7 +71,7 @@ msgstr "<b>%1</b> indicator odstrániťd successfully"
 #: app/lattecorona.cpp:1130 app/lattecorona.cpp:1153
 #, kde-format
 msgid "The layout cannot be imported from file :: "
-msgstr "Rozloženie nemohlo byť importované"
+msgstr "Rozloženie nemohlo byť importované zo súboru :: "
 
 #: app/layouts/importer.cpp:63 app/layouts/importer.cpp:81
 #: app/layouts/manager.cpp:78 app/layouts/manager.cpp:85
@@ -155,7 +155,7 @@ msgstr ""
 #, kde-format
 msgctxt "command line"
 msgid "Enable autostart for this application"
-msgstr "Povoliť automatické spustenie počas štartu systému"
+msgstr "Povoliť automatické spustenie pre túto aplikáciu"
 
 #: app/main.cpp:104
 #, kde-format
@@ -179,13 +179,13 @@ msgstr "Vypísať dostupné rozloženia"
 #, kde-format
 msgctxt "command line"
 msgid "Print available dock templates"
-msgstr "Vypísať dostupné rozloženia"
+msgstr "Vypísať dostupné šablóny dokov"
 
 #: app/main.cpp:108
 #, kde-format
 msgctxt "command line"
 msgid "Print available layout templates"
-msgstr "Vypísať dostupné rozloženia"
+msgstr "Vypísať dostupné šablóny rozložení"
 
 #: app/main.cpp:109
 #, kde-format
@@ -289,12 +289,12 @@ msgstr "Nie sú dostupné žiadne rozloženia, počas štartu sa použije Predvo
 #: app/main.cpp:222
 #, kde-format
 msgid "Available layout templates found in your system:"
-msgstr "Dostupné rozloženia, ktoré sa dajú použiť na spustenie Latte:"
+msgstr "Šablóny rozložení dostupné vo vašom systéme:"
 
 #: app/main.cpp:228
 #, kde-format
 msgid "There are no available layout templates in your system."
-msgstr "Nie sú dostupné žiadne rozloženia, počas štartu sa použije Predvolený."
+msgstr "V systéme nie sú dostupné žiadne šablóny rozložení."
 
 #: app/main.cpp:240
 #, kde-format
@@ -372,7 +372,7 @@ msgstr "UI pre konfiguráciu vedľajšieho doku"
 #: app/package/lattepackage.cpp:40
 #, kde-format
 msgid "Dock canvas configuration UI"
-msgstr "UI pre konfiguráciu Doku"
+msgstr "UI pre konfiguráciu plátna Doku"
 
 #: app/package/lattepackage.cpp:41
 #, kde-format
@@ -382,7 +382,7 @@ msgstr "Konfiguračný model"
 #: app/package/lattepackage.cpp:42
 #, kde-format
 msgid "Splitter"
-msgstr "Konfiguračný model"
+msgstr "Rozdeľovač"
 
 #: app/package/lattepackage.cpp:43
 #, kde-format
@@ -392,7 +392,7 @@ msgstr "Latte Ocranná známka"
 #: app/package/lattepackage.cpp:44
 #, kde-format
 msgid "Latte Trademark Icon"
-msgstr "Latte Ocranná známka"
+msgstr "Ikona ochrannej známky Latte"
 
 #: app/package/lattepackage.cpp:45
 #, kde-format
@@ -407,7 +407,7 @@ msgstr "súbor predvoleného rozloženia"
 #: app/package/lattepackage.cpp:48
 #, kde-format
 msgid "plasma layout file"
-msgstr "súbor predvoleného rozloženia"
+msgstr "súbor rozloženia plasma"
 
 #: app/package/lattepackage.cpp:49
 #, kde-format
@@ -534,17 +534,17 @@ msgstr "Pridať dok/panel"
 #: app/settings/actionsdialog/actionshandler.cpp:103
 #, kde-format
 msgid "Move Dock/Panel To Layout"
-msgstr "Exportovať rozloženie"
+msgstr "Presunúť Dok/Panel do rozloženia"
 
 #: app/settings/actionsdialog/actionshandler.cpp:110
 #, kde-format
 msgid "Export Dock/Panel as Template..."
-msgstr "Exportovať rozloženie"
+msgstr "Exportovať Dok/Panel ako šablónu..."
 
 #: app/settings/actionsdialog/actionshandler.cpp:117
 #, kde-format
 msgid "Remove Dock/Panel"
-msgstr "Doky/Panely"
+msgstr "Odstrániť Dok/Panel"
 
 #: app/settings/detailsdialog/colorsmodel.cpp:35
 #, kde-format
@@ -618,7 +618,7 @@ msgstr "Správanie:"
 #: app/settings/detailsdialog/detailsdialog.ui:66
 #, kde-format
 msgid "Hide window borders for maximized windows"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Skryť okraje okien pre maximalizované okná"
 
 #. i18n: ectx: property (text), widget (QLabel, iconLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:115
@@ -630,13 +630,13 @@ msgstr "Ikona:"
 #: app/settings/detailsdialog/detailsdialog.ui:157
 #, kde-format
 msgid "Show in layouts context menu when possible"
-msgstr "Zobraziť akcie okna v kontextovej ponuke"
+msgstr "Zobraziť v kontextovej ponuke rozložení, keď je to možné"
 
 #. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
 #: app/settings/detailsdialog/detailsdialog.ui:182
 #, kde-format
 msgid "PopUp Margin:"
-msgstr "Okraje"
+msgstr "Okraj kontextového okna:"
 
 #. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
 #: app/settings/detailsdialog/detailsdialog.ui:201
@@ -715,12 +715,12 @@ msgstr "Aktuálne applety"
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:35
 #, kde-format
 msgid "Export your selected layout as template"
-msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+msgstr "Exportovať vybraté rozloženie ako šablónu"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:48
 #, kde-format
 msgid "Export your selected dock or panel as template"
-msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+msgstr "Exportovať vybraný dok alebo panel ako šablónu"
 
 #: app/settings/exporttemplatedialog/exporttemplatedialog.cpp:62
 #, kde-format
@@ -779,12 +779,12 @@ msgstr ""
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
 msgid "Export Layout Template"
-msgstr "Exportovať rozloženie"
+msgstr "Šablóna rozloženia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:63
 #, kde-format
 msgid "Export Dock/Panel Template"
-msgstr "Exportovať rozloženie"
+msgstr "Šablóna Doku/Panelu"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:65
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:73
@@ -805,7 +805,7 @@ msgstr "Exportovať %1 šablónu"
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
 msgid "Choose Layout Template file"
-msgstr "Exportovať rozloženie"
+msgstr "Vybrať súbor šablóny rozloženia"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:147
 #, kde-format
@@ -822,13 +822,13 @@ msgstr "Vybrať"
 #, kde-format
 msgctxt "layout template"
 msgid "Latte Dock Layout Template file v0.2"
-msgstr "Latte Dock Layout súbor v0.2"
+msgstr "Latte Dock šablóna súboru rozloženia v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:165
 #, kde-format
 msgctxt "view template"
 msgid "Latte Dock View Template file v0.2"
-msgstr "Latte Dock Layout súbor v0.2"
+msgstr "Latte Dock šablóna súboru pohľadu v0.2"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:176
 #, kde-format
@@ -906,7 +906,7 @@ msgstr "Odstrániť teraz"
 #: app/settings/screensdialog/screensdialog.cpp:71
 #, kde-format
 msgid "Remove selected screen references"
-msgstr "Odstrániť vybraté rozloženie"
+msgstr "Odstrániť vybrané referencie obrazovky"
 
 #. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
 #: app/settings/screensdialog/screensdialog.ui:14
@@ -1104,12 +1104,12 @@ msgstr "Aktuálna aktivita"
 #: app/settings/settingsdialog/layoutstableview.cpp:67
 #, kde-format
 msgid "Drop layout files here..."
-msgstr "súbor predvoleného rozloženia"
+msgstr "Presuňte súbory rozložení sem..."
 
 #: app/settings/settingsdialog/layoutstableview.cpp:69
 #, kde-format
 msgid "Drop raw layout text here..."
-msgstr "súbor predvoleného rozloženia"
+msgstr "Presuňte surový text rozloženia sem..."
 
 #: app/settings/settingsdialog/layoutstableview.cpp:71
 #, kde-format
@@ -1139,7 +1139,7 @@ msgstr "Exportovať Rozloženie/Konfiguráciu"
 #: app/settings/settingsdialog/settingsdialog.cpp:139
 #, kde-format
 msgid "Export your full configuration to create backup"
-msgstr "Importovať rozloženie alebo kompletný konfiguračný súbor"
+msgstr "Exportovať celú konfiguráciu na vytvorenie zálohy"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:144
 #, kde-format
@@ -1160,7 +1160,7 @@ msgstr "Ukončiť Latte"
 #, kde-format
 msgctxt "import full configuration"
 msgid "Import Full Configuration"
-msgstr "Importovať kompletnú konfiguráciu."
+msgstr "Importovať kompletnú konfiguráciu"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:263
 #: app/settings/settingsdialog/settingsdialog.cpp:292
@@ -1173,12 +1173,12 @@ msgstr "Importovať"
 #, kde-format
 msgctxt "import full configuration"
 msgid "Latte Dock Full Configuration file"
-msgstr "Latte Dock súbor kompletnej konfigurácie v0.2"
+msgstr "Latte Dock súbor kompletnej konfigurácie"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:282
 #, kde-format
 msgid "Import: Full Configuration File"
-msgstr "Importovať kompletnú konfiguráciu."
+msgstr "Import: Súbor kompletnej konfigurácie"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:283
 #, kde-format
@@ -1200,7 +1200,7 @@ msgstr "Vytvoriť zálohu..."
 #: app/settings/settingsdialog/settingsdialog.cpp:289
 #, kde-format
 msgid "Export your full configuration in order to take backup"
-msgstr "Importovať rozloženie alebo kompletný konfiguračný súbor"
+msgstr "Exportovať celú konfiguráciu na zálohovanie"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:294
 #, kde-format
@@ -1259,7 +1259,7 @@ msgstr "Nastavenia"
 #: app/settings/settingsdialog/settingsdialog.ui:36
 #, kde-format
 msgid "Layouts Editor"
-msgstr "Rozloženia"
+msgstr "Editor rozložení"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:67
@@ -1289,7 +1289,7 @@ msgstr ""
 #, kde-format
 msgctxt "multiple layouts"
 msgid "Multiple layouts based on activities"
-msgstr "skrytý súbor viacerých rozložení"
+msgstr "Viacero rozložení podľa aktivít"
 
 #. i18n: ectx: property (text), widget (QPushButton, switchButton)
 #: app/settings/settingsdialog/settingsdialog.ui:177
@@ -1434,7 +1434,7 @@ msgstr "Globálne skratky sú použité z appletov a úloh"
 #: app/settings/settingsdialog/settingsdialog.ui:755
 #, kde-format
 msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Globálne skratky sú použité z appletov a úloh"
+msgstr "Stlačte a podržte ⌘ na zobrazenie odznakov skratiek"
 
 #. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:762
@@ -1495,7 +1495,7 @@ msgstr " ms."
 #: app/settings/settingsdialog/settingsdialog.ui:1082
 #, kde-format
 msgid "reaction delay for changes"
-msgstr "Zdvihnúť pre zmene plochy"
+msgstr "oneskorenie reakcie na zmeny"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:1107
@@ -1580,7 +1580,7 @@ msgstr "&Duplikovať"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:146
 #, kde-format
 msgid "Duplicate selected layout"
-msgstr "Prepnúť na vybraté rozloženie"
+msgstr "Duplikovať vybraté rozloženie"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:152
 #: app/settings/viewsdialog/viewshandler.cpp:91
@@ -1613,18 +1613,18 @@ msgstr "&Iba na čítanie"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:171
 #, kde-format
 msgid "Make selected layout read-only"
-msgstr "Prepnúť na vybraté rozloženie"
+msgstr "Nastaviť vybraté rozloženie ako len na čítanie"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:178
 #, kde-format
 msgctxt "layout docks / panels"
 msgid "Docks, &Panels..."
-msgstr "Doky/Panely"
+msgstr "Doky, &Panely..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:179
 #, kde-format
 msgid "Show selected layouts docks and panels"
-msgstr "Prepnúť na vybraté rozloženie"
+msgstr "Zobraziť doky a panely vybraných rozložení"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:185
 #, kde-format
@@ -1635,7 +1635,7 @@ msgstr "Podrobnosti..."
 #: app/settings/settingsdialog/tablayoutshandler.cpp:186
 #, kde-format
 msgid "Show selected layout details"
-msgstr "Prepnúť na vybraté rozloženie"
+msgstr "Zobraziť podrobnosti vybraného rozloženia"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:196
 #, kde-format
@@ -1658,7 +1658,7 @@ msgstr "&Exportovať"
 #: app/settings/settingsdialog/tablayoutshandler.cpp:209
 #, kde-format
 msgid "Export selected layout at your system"
-msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+msgstr "Exportovať vybraté rozloženie vo vašom systéme"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:229
 #, kde-format
@@ -1684,7 +1684,7 @@ msgstr "&Exportovať..."
 #, kde-format
 msgctxt "export as template"
 msgid "Export As &Template..."
-msgstr "Exportovať rozloženie"
+msgstr "Exportovať ako &šablónu..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:290
 #: app/settings/viewsdialog/viewshandler.cpp:169
@@ -1729,7 +1729,7 @@ msgstr "<b>Aktívne</b> rozloženia nie je možné odstrániť..."
 #, kde-format
 msgctxt "settings: locked layout remove"
 msgid "Locked layouts can not be removed..."
-msgstr "Rozloženie nemohlo byť importované"
+msgstr "Uzamknuté rozloženia nemožno odstrániť..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:541
 #, kde-format
@@ -1753,7 +1753,7 @@ msgstr "Latte Dock Layout súbor v0.2"
 #, kde-format
 msgctxt "import older latte layout"
 msgid "Latte Dock Layout file v0.1"
-msgstr "Latte Dock Layout súbor v0.2"
+msgstr "Latte Dock súbor rozloženia v0.1"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:562
 #: app/settings/settingsdialog/tablayoutshandler.cpp:784
@@ -1837,7 +1837,7 @@ msgstr "Vložiť"
 #: app/settings/viewsdialog/viewscontroller.cpp:115
 #, kde-format
 msgid "Duplicate Here"
-msgstr "&Duplikovať"
+msgstr "Duplikovať tu"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:319
 #, kde-format
@@ -1859,7 +1859,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewscontroller.cpp:593
 #, kde-format
 msgid "Edit Layout"
-msgstr "Rozloženie"
+msgstr "Upraviť rozloženie"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:622
 #, kde-format
@@ -2107,7 +2107,7 @@ msgstr "&Nové"
 #: app/settings/viewsdialog/viewshandler.cpp:70
 #, kde-format
 msgid "New dock or panel"
-msgstr "Latte Dock panel"
+msgstr "Nový dok alebo panel"
 
 #: app/settings/viewsdialog/viewshandler.cpp:83
 #, kde-format
@@ -2118,12 +2118,12 @@ msgstr "&Duplikovať"
 #: app/settings/viewsdialog/viewshandler.cpp:84
 #, kde-format
 msgid "Duplicate selected dock or panel"
-msgstr "Prepnúť na vybraté rozloženie"
+msgstr "Duplikovať vybraný dok alebo panel"
 
 #: app/settings/viewsdialog/viewshandler.cpp:92
 #, kde-format
 msgid "Remove selected view"
-msgstr "Odstrániť vybraté rozloženie"
+msgstr "Odstrániť vybraný pohľad"
 
 #: app/settings/viewsdialog/viewshandler.cpp:100
 #, kde-format
@@ -2139,7 +2139,7 @@ msgstr "Importovať dok alebo panel z lokálneho súboru"
 #: app/settings/viewsdialog/viewshandler.cpp:109
 #, kde-format
 msgid "Export selected dock or panel at your system"
-msgstr "Exportovať vybraté rozloženie alebo kompletnú konfiguráciu do súboru"
+msgstr "Exportovať vybraný dok alebo panel vo vašom systéme"
 
 #: app/settings/viewsdialog/viewshandler.cpp:305
 #, kde-format
@@ -2159,7 +2159,7 @@ msgstr ""
 #: app/settings/viewsdialog/viewshandler.cpp:342
 #, kde-format
 msgid "Export Dock/Panel For Backup"
-msgstr "Exportovať rozloženie"
+msgstr "Exportovať Dok/Panel na zálohovanie"
 
 #: app/settings/viewsdialog/viewshandler.cpp:344
 #, kde-format
@@ -2171,7 +2171,7 @@ msgstr "Exportovať"
 #, kde-format
 msgctxt "export view"
 msgid "Latte Dock/Panel file v0.2"
-msgstr "Latte Dock Layout súbor v0.2"
+msgstr "Latte Dock/Panel súbor v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:360
 #, kde-format
@@ -2189,7 +2189,7 @@ msgstr "Exportovať in file <b>%1</b> succeeded..."
 #, kde-format
 msgctxt "import dock/panel"
 msgid "Import Dock/Panel"
-msgstr "Doky/Panely"
+msgstr "Importovať Dok/Panel"
 
 #: app/settings/viewsdialog/viewshandler.cpp:434
 #, kde-format
@@ -2200,7 +2200,7 @@ msgstr "Importovať"
 #, kde-format
 msgctxt "import dock panel"
 msgid "Latte Dock or Panel file v0.2"
-msgstr "Latte Dock Layout súbor v0.2"
+msgstr "Latte Dock alebo Panel súbor v0.2"
 
 #: app/settings/viewsdialog/viewshandler.cpp:512
 #, kde-format
@@ -2310,17 +2310,17 @@ msgstr "Do bloku"
 #: app/settings/viewsdialog/viewsmodel.cpp:499
 #, kde-format
 msgid " - On Primary Screen - "
-msgstr "Nasledovať hlavnú obrazovku"
+msgstr " - Na hlavnej obrazovke - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:500
 #, kde-format
 msgid " - On All Screens - "
-msgstr "Všetky obrazovky"
+msgstr " - Na všetkých obrazovkách - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:501
 #, kde-format
 msgid " - On All Secondary Screens - "
-msgstr "Nasledovať hlavnú obrazovku"
+msgstr " - Na všetkých sekundárnych obrazovkách - "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:592
 #, kde-format
@@ -2454,7 +2454,7 @@ msgstr "Prázdne"
 #, kde-format
 msgctxt "view template name"
 msgid "Default Dock"
-msgstr "Predvolené"
+msgstr "Predvolený dok"
 
 #: app/templates/templatesmanager.cpp:342
 #, kde-format
@@ -2716,7 +2716,7 @@ msgstr "Dynamické úpravy dĺžky"
 #, kde-format
 msgctxt "@label"
 msgid "Maximize panel length in presence of maximized windows"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Maximalizovať dĺžku panelu pri prítomnosti maximalizovaných okien"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:578
 #, kde-format
@@ -2776,13 +2776,13 @@ msgstr "Téma Plasmy:"
 #, kde-format
 msgctxt "dark theme colors"
 msgid "Dark Colors"
-msgstr "Farby"
+msgstr "Tmavé farby"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:780
 #, kde-format
 msgctxt "light theme colors"
 msgid "Light Colors"
-msgstr "Farby"
+msgstr "Svetlé farby"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:783
 #, kde-format
@@ -2813,7 +2813,7 @@ msgstr "Zakázané"
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:828
 #, kde-format
 msgid "Current Active Window"
-msgstr "Aktívne okno"
+msgstr "Aktuálne aktívne okno"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:831
 #, kde-format
@@ -2832,7 +2832,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:834
 #, kde-format
 msgid "Any Touching Window"
-msgstr "Aktívne okno"
+msgstr "Akékoľvek dotýkajúce sa okno"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:837
 #, kde-format
@@ -2868,7 +2868,7 @@ msgstr "Nepriehľadnosť"
 #, kde-format
 msgctxt "opacity when desktop background is busy from contrast point of view"
 msgid "Busy Opacity"
-msgstr "Nepriehľadnosť"
+msgstr "Nepriehľadnosť pri zaneprázdnení"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:975
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1017
@@ -2937,7 +2937,7 @@ msgstr "Pozadie kreslí všetky rohy vo všetkých prípadoch."
 #, kde-format
 msgctxt "dynamic visibility for background"
 msgid "Dynamic Visibility"
-msgstr "Viditeľnosť"
+msgstr "Dynamická viditeľnosť"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1158
 #, kde-format
@@ -2954,7 +2954,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1172
 #, kde-format
 msgid "Hide background when not needed"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Skryť pozadie, keď nie je potrebné"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1173
 #, kde-format
@@ -2962,13 +2962,13 @@ msgid ""
 "Background becomes hidden except when a window is touching or the desktop "
 "background is busy"
 msgstr ""
-"Pozadie panelu sa stane priehľadným okrem toho ak \n"
-"je okno miximalizované alebo prichytené"
+"Pozadie sa skryje okrem prípadov, keď sa okno dotýka alebo je pozadie plochy "
+"zaneprázdnené"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1186
 #, kde-format
 msgid "Hide background shadow for maximized windows"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Skryť tieň pozadia pre maximalizované okná"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1187
 #, kde-format
@@ -2976,8 +2976,7 @@ msgid ""
 "Background shadows become hidden when an active maximized window is touching "
 "the view"
 msgstr ""
-"Pozadie panelu sa stane priehľadným okrem toho ak \n"
-"je okno miximalizované alebo prichytené"
+"Tiene pozadia sa skryjú, keď sa aktívne maximalizované okno dotýka pohľadu"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1200
 #, kde-format
@@ -3007,17 +3006,17 @@ msgstr "Umiestnenie"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:87
 #, kde-format
 msgid "On Primary Screen"
-msgstr "Nasledovať hlavnú obrazovku"
+msgstr "Na hlavnej obrazovke"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
 #, kde-format
 msgid "On All Screens"
-msgstr "Všetky obrazovky"
+msgstr "Na všetkých obrazovkách"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
 #, kde-format
 msgid "On All Secondary Screens"
-msgstr "Všetky obrazovky"
+msgstr "Na všetkých sekundárnych obrazovkách"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format
@@ -3124,7 +3123,7 @@ msgstr "Aktívne okno z aktuálnej obrazovky"
 #, kde-format
 msgctxt "track from all screens"
 msgid "Active Window From All Screens"
-msgstr "Aktívne okno"
+msgstr "Aktívne okno zo všetkých obrazoviek"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:680
 #, kde-format
@@ -3134,7 +3133,7 @@ msgstr "Ľavé tlačidlo"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:685
 #, kde-format
 msgid "Drag Active Window"
-msgstr "Aktívne okno"
+msgstr "Presunúť aktívne okno"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:687
 #, kde-format
@@ -3153,7 +3152,7 @@ msgstr "Stredné tlačidlo"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:710
 #, kde-format
 msgid "Close Active Window"
-msgstr "Aktívne okno"
+msgstr "Zatvoriť aktívne okno"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:712
 #, kde-format
@@ -3178,12 +3177,12 @@ msgstr "Žiadna akcia"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:739
 #, kde-format
 msgid "Cycle Through Desktops"
-msgstr "Prechádzať medzi úlohami"
+msgstr "Prechádzať medzi plochami"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:740
 #, kde-format
 msgid "Cycle Through Activities"
-msgstr "Prechádzať medzi úlohami"
+msgstr "Prechádzať medzi aktivitami"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:741
 #: shell/package/contents/configuration/pages/TasksConfig.qml:547
@@ -3271,7 +3270,7 @@ msgstr "Plávajúca medzera sa vždy používa pre interakciu apletov a okien"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:856
 #, kde-format
 msgid "Hide floating gap for maximized windows"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Skryť plávajúci medzeru pre maximalizované okná"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:857
 #, kde-format
@@ -3292,7 +3291,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:880
 #, kde-format
 msgid "Mirror floating gap when it is shown"
-msgstr "Skryť pozadie pre nie maximalizované okná"
+msgstr "Zrkadliť plávajúcu medzeru, keď je zobrazená"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:881
 #, kde-format
@@ -3348,7 +3347,7 @@ msgstr "Zdvihnúť pri zmene aktivity"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:51
 #, kde-format
 msgid "Enable/disable applet shadows"
-msgstr "Tiene appletu"
+msgstr "Zapnúť/vypnúť tiene appletu"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:66
 #, kde-format
@@ -3380,7 +3379,7 @@ msgstr "Tieň z farebnej palety témy"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:222
 #, kde-format
 msgid "Use set shadow color"
-msgstr "Prosím vyberte farbu tieňa"
+msgstr "Použiť nastavenú farbu tieňa"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:265
 #, kde-format
@@ -3396,7 +3395,7 @@ msgstr "Animácie"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:308
 #, kde-format
 msgid "Enable/disable all animations"
-msgstr "Tiene appletu"
+msgstr "Zapnúť/vypnúť všetky animácie"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:337
 #, kde-format
@@ -3421,7 +3420,7 @@ msgstr "Indikátory"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:397
 #, kde-format
 msgid "Enable/disable indicators"
-msgstr "Tiene appletu"
+msgstr "Zapnúť/vypnúť indikátory"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:426
 #, kde-format
@@ -3443,12 +3442,12 @@ msgstr "Odznaky"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:60
 #, kde-format
 msgid "Notifications from tasks"
-msgstr "Zobraziť informáciu o priebehu úloh"
+msgstr "Upozornenia z úloh"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:61
 #, kde-format
 msgid "Show unread messages or notifications from tasks"
-msgstr "Zobraziť informáciu o priebehu úloh"
+msgstr "Zobraziť neprečítané správy alebo upozornenia z úloh"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:71
 #, kde-format
@@ -3471,7 +3470,7 @@ msgstr "Prehrávanie zvuku z úloh"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:83
 #, kde-format
 msgid "Show audio playing from tasks"
-msgstr "Zobraziť informáciu o priebehu úloh"
+msgstr "Zobraziť prehrávanie zvuku z úloh"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:93
 #, kde-format
@@ -3507,7 +3506,7 @@ msgstr "Interakcia"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:133
 #, kde-format
 msgid "Launchers are added only in current tasks applet"
-msgstr "Spúšťače sú pridávané iba v správcovi úloh a nie ako plasma applety"
+msgstr "Spúšťače sú pridávané iba v aktuálnom applete úloh"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:134
 #, kde-format
@@ -3524,7 +3523,7 @@ msgstr "Zobraziť akcie okna v kontextovej ponuke"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:158
 #, kde-format
 msgid "Preview window behaves as popup"
-msgstr "Náhľad okien"
+msgstr "Náhľad okna sa správa ako kontextové okno"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:171
 #, kde-format
@@ -3603,12 +3602,12 @@ msgstr "Skryť tieň panelu pre maximalizované okná"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:321
 #, kde-format
 msgid "Grouped tasks bounce their new windows"
-msgstr "Skupinové úlohy pre rovnakú aplikáciu"
+msgstr "Zoskupené úlohy odsúvajú nové okná"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:332
 #, kde-format
 msgid "Grouped tasks slide out their closed windows"
-msgstr "Skupinové úlohy pre rovnakú aplikáciu"
+msgstr "Zoskupené úlohy vysúvajú zavreté okná"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:351
 #, kde-format
@@ -3633,7 +3632,7 @@ msgstr ""
 #, kde-format
 msgctxt "layout launchers group"
 msgid "Layout Group"
-msgstr "Rozloženie"
+msgstr "Skupina rozložení"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:399
 #, kde-format
