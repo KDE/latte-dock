@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2026-03-09 22:15+0300\n"
+"PO-Revision-Date: 2026-05-02 18:45+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -315,7 +315,7 @@ msgstr "Bu yerleşim sisteminizde yok."
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
-"Bir örnek halihazırda çalışıyor, Latte'yi yeniden başlatmak için --replace "
+"Bir örnek hâlihazırda çalışıyor, Latte'yi yeniden başlatmak için --replace "
 "kullanın"
 
 #: app/main.cpp:355
@@ -873,7 +873,7 @@ msgstr "<b>%1</b> şablonu dışa aktarımı başarılı..."
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:298
 #, kde-format
 msgid "The file \"%1\" already exists. Do you wish to overwrite it?"
-msgstr "\"%1\" dosyası halihazırda var. Üzerine yazmak istiyor musunuz?"
+msgstr "\"%1\" dosyası hâlihazırda var. Üzerine yazmak istiyor musunuz?"
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:299
 #, kde-format
@@ -1047,7 +1047,7 @@ msgstr[1] "Yerleşimler <b>%2</b>, başarıyla içe aktarıldı..."
 msgctxt "settings: layout name used"
 msgid "Layout <b>%1</b> is already used, please provide a different name..."
 msgstr ""
-"Yerleşim <b>%1</b>, halihazırda kullanılıyor, lütfen başka bir ad sağlayın..."
+"Yerleşim <b>%1</b>, hâlihazırda kullanılıyor, lütfen başka bir ad sağlayın..."
 
 #: app/settings/settingsdialog/layoutsmodel.cpp:338
 #, kde-format
@@ -1837,7 +1837,7 @@ msgid ""
 "layout"
 msgstr ""
 "<b>Yapıştır</b> eyleminden gelen rıhtımlar ve paneller, geçerli yerleşimde "
-"halihazırda var"
+"hâlihazırda var"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:574
 #, kde-format
