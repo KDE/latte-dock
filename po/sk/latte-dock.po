@@ -1064,9 +1064,9 @@ msgstr "Alternatívne"
 #, kde-format
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[1] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[2] "Rozloženie: <b>%2</b> úspešne importované<br>"
+msgstr[0] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[1] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[2] "Rozloženie: <b>%2</b> úspešne importované"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
 #, kde-format
@@ -1835,9 +1835,9 @@ msgstr "Layout <b>%1</b> export succeeded..."
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[1] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[2] "Rozloženie: <b>%2</b> úspešne importované<br>"
+msgstr[0] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[1] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[2] "Rozloženie: <b>%2</b> úspešne importované"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
 #, kde-format
@@ -3880,9 +3880,9 @@ msgstr "Žiadne miniaplikáciw nie sú dostupné"
 
 #~ msgid "Layout <b>%1</b> imported successfully..."
 #~ msgid_plural "Layouts <b>%2</b> imported successfully..."
-#~ msgstr[0] "Rozloženie: <b>%2</b> úspešne importované<br>"
-#~ msgstr[1] "Rozloženie: <b>%2</b> úspešne importované<br>"
-#~ msgstr[2] "Rozloženie: <b>%2</b> úspešne importované<br>"
+#~ msgstr[0] "Rozloženie: <b>%2</b> úspešne importované"
+#~ msgstr[1] "Rozloženie: <b>%2</b> úspešne importované"
+#~ msgstr[2] "Rozloženie: <b>%2</b> úspešne importované"
 
 #~ msgid "Download indicator styles from the internet"
 #~ msgstr "Prevziať štýly indikátorov z internetu"
@@ -3894,15 +3894,15 @@ msgstr "Žiadne miniaplikáciw nie sú dostupné"
 #~ msgstr "Aktivujem rozloženie <b>%2</b> ..."
 
 #~ msgid "Layouts <b>%0</b> imported successfully..."
-#~ msgstr "Rozloženie: <b>%2</b> úspešne importované<br>"
+#~ msgstr "Rozloženie: <b>%2</b> úspešne importované"
 
 #~ msgctxt "settings:layout imported successfully"
 #~ msgid "Layout <b>%0</b> imported successfully..."
-#~ msgstr "Rozloženie: <b>%2</b> úspešne importované<br>"
+#~ msgstr "Rozloženie: <b>%2</b> úspešne importované"
 
 #~ msgctxt "settings:layouts imported successfully"
 #~ msgid "Layouts <b>%0</b> imported successfully..."
-#~ msgstr "Rozloženie: <b>%2</b> úspešne importované<br>"
+#~ msgstr "Rozloženie: <b>%2</b> úspešne importované"
 
 #~ msgctxt "number in percentage, e.g. 85 %"
 #~ msgid "%0 %"
@@ -4132,7 +4132,7 @@ msgstr "Žiadne miniaplikáciw nie sú dostupné"
 
 #~ msgctxt "settings:layout imported successfully"
 #~ msgid "<b>%0</b> was imported successfully..."
-#~ msgstr "Rozloženie: <b>%2</b> úspešne importované<br>"
+#~ msgstr "Rozloženie: <b>%2</b> úspešne importované"
 
 #~ msgid "Import: Configuration file version v0.1"
 #~ msgstr "Import: Konfiguračný súbor verzie v0.1"
