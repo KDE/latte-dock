@@ -1051,9 +1051,9 @@ msgstr "Alternatívne"
 #, kde-format
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[1] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[2] "Rozloženie: <b>%2</b> úspešne importované<br>"
+msgstr[0] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[1] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[2] "Rozloženie: <b>%2</b> úspešne importované"
 
 #: app/settings/settingsdialog/layoutscontroller.cpp:1097
 #, kde-format
@@ -1802,9 +1802,9 @@ msgstr "Layout <b>%1</b> export succeeded..."
 msgctxt "settings:layout imported successfully"
 msgid "Layout <b>%2</b> imported successfully..."
 msgid_plural "Layouts <b>%2</b> imported successfully..."
-msgstr[0] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[1] "Rozloženie: <b>%2</b> úspešne importované<br>"
-msgstr[2] "Rozloženie: <b>%2</b> úspešne importované<br>"
+msgstr[0] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[1] "Rozloženie: <b>%2</b> úspešne importované"
+msgstr[2] "Rozloženie: <b>%2</b> úspešne importované"
 
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:49
 #: app/settings/settingsdialog/tabpreferenceshandler.cpp:50
