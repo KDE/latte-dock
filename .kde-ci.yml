@@ -27,3 +27,6 @@ Dependencies:
     'plasma/libplasma': '@latest'
     'plasma/plasma-workspace': '@stable'
     'plasma/plasma-activities': '@latest'
+
+Options:
+ require-passing-tests-on: ['@all']
