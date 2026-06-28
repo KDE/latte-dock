@@ -2359,7 +2359,7 @@ msgstr "Justificada"
 #, kde-format
 msgctxt "primary screen"
 msgid " - Follow Primary Screen - "
-msgstr " - Seguix la pantalla primària - "
+msgstr " – Seguix la pantalla primària – "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:575
 #, kde-format
@@ -3213,7 +3213,7 @@ msgstr "Circula i minimitza les tasques"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:764
 #, kde-format
 msgid "Thin title tooltips on hovering"
-msgstr "Títols fins dels consells en passar-hi per damunt"
+msgstr "Títols fins dels consells d'eina en passar-hi per damunt"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:765
 #, kde-format
