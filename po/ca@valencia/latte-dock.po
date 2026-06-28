@@ -2331,17 +2331,17 @@ msgstr "Justificada"
 #: app/settings/viewsdialog/viewsmodel.cpp:499
 #, kde-format
 msgid " - On Primary Screen - "
-msgstr " - En la pantalla primària - "
+msgstr " – En la pantalla primària – "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:500
 #, kde-format
 msgid " - On All Screens - "
-msgstr " - A totes les pantalles - "
+msgstr " – En totes les pantalles – "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:501
 #, kde-format
 msgid " - On All Secondary Screens - "
-msgstr " - A totes les pantalles secundàries - "
+msgstr " – En totes les pantalles secundàries – "
 
 #: app/settings/viewsdialog/viewsmodel.cpp:592
 #, kde-format
@@ -3041,12 +3041,12 @@ msgstr "En la pantalla primària"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:90
 #, kde-format
 msgid "On All Screens"
-msgstr "A totes les pantalles"
+msgstr "En totes les pantalles"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:93
 #, kde-format
 msgid "On All Secondary Screens"
-msgstr "A totes les pantalles secundàries"
+msgstr "En totes les pantalles secundàries"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:369
 #, kde-format
@@ -3233,7 +3233,7 @@ msgstr "Circula i minimitza les tasques"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:778
 #, kde-format
 msgid "Thin title tooltips on hovering"
-msgstr "Títols fins dels consells en passar-hi per damunt"
+msgstr "Títols fins dels consells d'eina en passar-hi per damunt"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:779
 #, kde-format
