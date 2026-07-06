@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 16:18+0000\n"
-"PO-Revision-Date: 2022-02-06 11:58+0100\n"
+"PO-Revision-Date: 2023-02-11 15:33+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
@@ -3353,7 +3353,7 @@ msgid ""
 "The user is able to mute/unmute with click or change the volume with mouse "
 "wheel"
 msgstr ""
-"Brukaren kan slå av/på lyden med klikk eller endra lydstyrken med musehjulet"
+"Brukaren kan slå på/av lyden med klikk eller endra lydstyrken med musehjulet"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:124
 #, kde-format
