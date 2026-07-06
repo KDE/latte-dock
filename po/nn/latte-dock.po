@@ -3384,7 +3384,7 @@ msgid ""
 "The user is able to mute/unmute with click or change the volume with mouse "
 "wheel"
 msgstr ""
-"Brukaren kan slå av/på lyden med klikk eller endra lydstyrken med musehjulet"
+"Brukaren kan slå på/av lyden med klikk eller endra lydstyrken med musehjulet"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:124
 #, kde-format
