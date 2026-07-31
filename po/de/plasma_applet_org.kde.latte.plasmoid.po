@@ -96,7 +96,7 @@ msgid ""
 "For the disabled settings you should use the Latte Dock Configuration Window"
 msgstr ""
 "Für die ausgeblendeten Einstellungen bitte das Konfigurationsfenster des "
-"Latte-Dock benutzen"
+"Latte-Dock verwenden"
 
 #: package/contents/ui/config/ConfigInteraction.qml:46
 #, kde-format

@@ -2543,7 +2543,7 @@ msgstr ""
 msgctxt "maximum length tooltip, %1 is maximum length percentage"
 msgid "You can use mouse wheel to change maximum length of %1%"
 msgstr ""
-"Sie können das Mausrad benutzen, um die maximale Länge von %1 % zu ändern"
+"Sie können das Mausrad verwenden, um die maximale Länge von %1 % zu ändern"
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
 #, kde-format
