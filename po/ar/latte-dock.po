@@ -1198,7 +1198,7 @@ msgid ""
 "first!<br>"
 msgstr ""
 "أنت تستورد ملف ضبط كامل. كن حذرًا، سوف <b>تضيع</b> كل <b>الإعدادات والتخطيطات "
-"الحالية</b>. يوصى <b>بأخذ نسخة احتياطية</b> أولاً!<br>"
+"الحالية</b>. يوصى <b>بأخذ نسخة احتياطية</b> أولًا!<br>"
 
 #: app/settings/settingsdialog/settingsdialog.cpp:287
 #, kde-format
@@ -1704,7 +1704,7 @@ msgstr "افتح دليل القوالب"
 msgctxt "settings:not permitted switching layout"
 msgid ""
 "You need to <b>apply</b> your changes first to switch layout afterwards..."
-msgstr "يجب أن <b>تطبّق</b> تغييراتك أولاً لتغيير التخطيط بعد ذلك..."
+msgstr "يجب أن <b>تطبّق</b> تغييراتك أولًا لتغيير التخطيط بعد ذلك..."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:444
 #, kde-format
@@ -1886,7 +1886,7 @@ msgid ""
 "use this layout.<br/>"
 msgstr ""
 "في تخطيطك، هناك تطبيقان مصغّران أو أكثر يحملان المُعرّف نفسه. يمكن أن يسبب هذا "
-"الموقف أعطالاً وسلوكًا غير طبيعي وفقدانًا للبيانات عندما تفعّل هذا التخطيط "
+"الموقف أعطالًا وسلوكًا غير طبيعي وفقدانًا للبيانات عندما تفعّل هذا التخطيط "
 "وتستخدمه.<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:662
@@ -1951,7 +1951,7 @@ msgid ""
 msgstr ""
 "في تخطيطك، هناك تطبيقات مصغّرة زائفة يتيمة ترتبط بأوعية فرعية غير موجودة. مثل "
 "هذا الموقف هو على سبيل المثال صينية نظام فقدت اتصالها بتطبيقاتها المصغّرة "
-"التابعة. يمكن أن يسبب هذا الموقف أعطالاً وسلوكًا غير طبيعي وفقدانًا للبيانات "
+"التابعة. يمكن أن يسبب هذا الموقف أعطالًا وسلوكًا غير طبيعي وفقدانًا للبيانات "
 "عندما تفعّل هذا التخطيط وتستخدمه.<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:698
@@ -2033,7 +2033,7 @@ msgid ""
 "&nbsp;&nbsp;1. Update manually the containments or applets id when the "
 "layout is <b>not active</b><br/>"
 msgstr ""
-"&nbsp;&nbsp;1. حدّث يدوياً معرّفات التضمينات أو التطبيقات المصغّرة عندما يكون "
+"&nbsp;&nbsp;1. حدّث يدويًا معرّفات التضمينات أو التطبيقات المصغّرة عندما يكون "
 "التصميم غير نشط<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:791
@@ -2053,7 +2053,7 @@ msgid ""
 "them in order to reduce memory usage.<br/>"
 msgstr ""
 "في تصميمك توجد تضمينات فرعية يتيمة لا يستخدمها أي رصيف أو لوحة. مثل هذا "
-"الوضع ليس خطيراً ولكن ينصح بإزالتها لتخفيض استخدام الذاكرة.<br/>"
+"الوضع ليس خطيرًا ولكن ينصح بإزالتها لتخفيض استخدام الذاكرة.<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:829
 #, kde-format
@@ -2069,7 +2069,7 @@ msgid ""
 "&nbsp;&nbsp;2. Remove manually orphaned subcontainments when the layout is "
 "<b>not active</b><br/>"
 msgstr ""
-"&nbsp;&nbsp;2. أزل يدوياً التضمينات الفرعية اليتيمة عندما يكون التصميم غير "
+"&nbsp;&nbsp;2. أزل يدويًا التضمينات الفرعية اليتيمة عندما يكون التصميم غير "
 "نشط<br/>"
 
 #: app/settings/viewsdialog/viewscontroller.cpp:833
@@ -2129,7 +2129,7 @@ msgstr "ا&ستورد..."
 #: app/settings/viewsdialog/viewshandler.cpp:101
 #, kde-format
 msgid "Import dock or panel from local file"
-msgstr "استورد رصيفاً أو لوحة من حاسوب محلي"
+msgstr "استورد رصيفًا أو لوحة من حاسوب محلي"
 
 #: app/settings/viewsdialog/viewshandler.cpp:109
 #, kde-format
@@ -2473,7 +2473,7 @@ msgstr "نسخة من %1"
 #, kde-format
 msgctxt "add indicator"
 msgid "Add Indicator"
-msgstr "أضف دليلاً"
+msgstr "أضف دليلًا"
 
 #: app/view/settings/indicatoruimanager.cpp:176
 #, kde-format
@@ -2912,7 +2912,7 @@ msgstr "محيط"
 msgid ""
 "Background draws a line for its borders. You can set the line size from "
 "Latte Preferences"
-msgstr "ترسم الخلفية خطاً لحدودها. اضبط حجم الخط من تفضيلات Latte"
+msgstr "ترسم الخلفية خطًا لحدودها. اضبط حجم الخط من تفضيلات Latte"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1131
 #, kde-format
@@ -3049,7 +3049,7 @@ msgstr "يمكن للنّوافذ تغطيتها"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:489
 #, kde-format
 msgid "Windows Always Cover"
-msgstr "غطّت النوافذ دائماً"
+msgstr "غطّت النوافذ دائمًا"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:511
 #, kde-format
@@ -3067,7 +3067,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:516
 #, kde-format
 msgid "Auto Hide Sidebar"
-msgstr "أخفِ الشريط الجانبي آلياً"
+msgstr "أخفِ الشريط الجانبي آليًا"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:517
 #, kde-format
@@ -3076,7 +3076,7 @@ msgid ""
 "it can also autohide itself when it does not contain mouse"
 msgstr ""
 "أظهر الشريط الجانبي فقط من خلال تطبيق مصغّر خارجي أو اختصار أو سكريبت ويمكنه "
-"أيضاً إخفاء نفسه آلياً عندما لا يحتوي على مؤشر الفأرة"
+"أيضًا إخفاء نفسه آليًا عندما لا يحتوي على مؤشر الفأرة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:539
 #, kde-format
@@ -3212,7 +3212,7 @@ msgstr "أظهر أو أخفِ التطبيق المصغّر المنبثق من
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:803
 #, kde-format
 msgid "Adjust size automatically when needed"
-msgstr "اضبط الحجم آلياً عند الحاجة"
+msgstr "اضبط الحجم آليًا عند الحاجة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:804
 #, kde-format
@@ -3244,12 +3244,12 @@ msgstr "عائم"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:844
 #, kde-format
 msgid "Always use floating gap for user interaction"
-msgstr "استخدم دائماً الفجوة العائمة لتفاعل المستخدم"
+msgstr "استخدم دائمًا الفجوة العائمة لتفاعل المستخدم"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:845
 #, kde-format
 msgid "Floating gap is always used for applets and window interaction"
-msgstr "تستخدم الفجوة العائمة دائماً للتطبيقات المصغّرة وتفاعل النافذة"
+msgstr "تستخدم الفجوة العائمة دائمًا للتطبيقات المصغّرة وتفاعل النافذة"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:856
 #, kde-format
@@ -3279,7 +3279,7 @@ msgstr "اعكس الفجوة العائمة عندما تظهر"
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:881
 #, kde-format
 msgid "Floating gap is mirrored when it is shown in Always Visible mode"
-msgstr "تعكس الفجوة العائمة عندما تظهر في وضع مرئي دائماً"
+msgstr "تعكس الفجوة العائمة عندما تظهر في وضع مرئي دائمًا"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:904
 #, kde-format
@@ -3298,7 +3298,7 @@ msgid ""
 "example an edge visual hint is shown whenever the mouse approaches the "
 "hidden view"
 msgstr ""
-"بعد أن يصبح العرض مخفياً، يخبَر KWin بتتبّع ملاحظات المستخدم. على سبيل المثال "
+"بعد أن يصبح العرض مخفيًا، يخبَر KWin بتتبّع ملاحظات المستخدم. على سبيل المثال "
 "تظهر تلميحة بصرية للحافة عندما تقترب الفأرة من العرض المخفي"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:928
@@ -3313,7 +3313,7 @@ msgid ""
 "windows even those set as 'Always On Top'"
 msgstr ""
 "يتجاوز علامة تلميحة مدير النوافذ للنافذة. سيتوضع العرض فوق كل النوافذ حتى "
-"تلك المضبوطة على 'دائماً في الأعلى'"
+"تلك المضبوطة على 'دائمًا في الأعلى'"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:939
 #, kde-format
@@ -3460,7 +3460,7 @@ msgstr "لون بارز لشارة الإشعار"
 #, kde-format
 msgid ""
 "Notification badge uses a more prominent background which is usually red"
-msgstr "تستخدم شارة الإشعار خلفية أكثر بروزاً هي حمراء عادة"
+msgstr "تستخدم شارة الإشعار خلفية أكثر بروزًا هي حمراء عادة"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:105
 #, kde-format
@@ -3561,7 +3561,7 @@ msgstr "أظهر المهام المجمّعة لنفس التطبيق فقط"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:259
 #, kde-format
 msgid "By default group tasks of the same application"
-msgstr "جمّع مهام نفس التطبيق مبدئياً"
+msgstr "جمّع مهام نفس التطبيق مبدئيًا"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:289
 #, kde-format
@@ -3571,7 +3571,7 @@ msgstr "قفز المشغّلات عند إطلاقها"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:300
 #, kde-format
 msgid "Bounce tasks that need attention"
-msgstr "قفز المهام التي تحتاج انتباهاً"
+msgstr "قفز المهام التي تحتاج انتباهًا"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:311
 #, kde-format
@@ -3790,7 +3790,7 @@ msgstr "أزل الدليل"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:197
 #, kde-format
 msgid "Add Indicator..."
-msgstr "أضف دليلاً..."
+msgstr "أضف دليلًا..."
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:207
 #, kde-format

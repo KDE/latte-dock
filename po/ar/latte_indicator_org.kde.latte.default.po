@@ -132,7 +132,7 @@ msgid ""
 "Grouped windows show both a line and a dot when one of them is active and "
 "the Line Active Indicator is enabled"
 msgstr ""
-"تُظهر النّوافذ المجمّعة سطرًا ونقطة عندما يكون أحدها نشطًا ومؤشّر السطر النّشط مفعّلاً"
+"تُظهر النّوافذ المجمّعة سطرًا ونقطة عندما يكون أحدها نشطًا ومؤشّر السطر النّشط مفعّلًا"
 
 #: default/package/config/config.qml:375
 #, kde-format
