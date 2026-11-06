@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 16:18+0000\n"
-"PO-Revision-Date: 2022-04-28 18:46+0300\n"
+"PO-Revision-Date: 2025-11-30 15:43+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -267,8 +267,7 @@ msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
 "Yksittäisen asettelun muistimalli. Vain yksi asettelu on aktiivinen joka "
-"tapauksessa.Yksittäisen asettelun muistimalli. Vain yksi asettelu on "
-"aktiivinen joka tapauksessa."
+"tapauksessa."
 
 #: app/main.cpp:112
 #, kde-format
@@ -278,9 +277,7 @@ msgid ""
 "based on Activities running."
 msgstr ""
 "Useamman asettelun muistimalli. Käytössä olevista aktiviteeteista riippuen "
-"useampi asettelu voi olla aktiivinen.Useamman asettelun muistimalli. "
-"Käytössä olevista aktiviteeteista riippuen useampi asettelu voi olla "
-"aktiivinen."
+"useampi asettelu voi olla aktiivinen."
 
 #: app/main.cpp:164
 #, kde-format
@@ -328,9 +325,7 @@ msgstr "Tätä asettelua ei järjestelmässä ole."
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
-"Instanssi on jo käynnissä: käynnistä latte uudelleen --replace-"
-"valitsimellaInstanssi on jo käynnissä: käynnistä latte uudelleen --replace-"
-"valitsimella"
+"Instanssi on jo käynnissä: käynnistä latte uudelleen --replace-valitsimella"
 
 #: app/main.cpp:346
 #, kde-format
@@ -1490,8 +1485,7 @@ msgid ""
 "Medium sensitivity for parabolic effect (normal cpu usage and performance)"
 msgstr ""
 "Parabolitehosteen keskinkertainen herkkyys (vaatii kohtalaisesti "
-"suorituskykyä)Parabolitehosteen keskinkertainen herkkyys (vaatii "
-"kohtalaisesti suorituskykyä)"
+"suorituskykyä)"
 
 #. i18n: ectx: property (text), widget (QToolButton, mediumSensitivityBtn)
 #: app/settings/settingsdialog/settingsdialog.ui:937
@@ -3283,10 +3277,8 @@ msgid ""
 "hidden view"
 msgstr ""
 "Kun näkymä on piilotettu, KWiniä kehotetaan seuraamaan käyttäjäpalautetta. "
-"Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri lähestyy piilotettu "
-"näkymääKun näkymä on piilotettu, KWiniä kehotetaan seuraamaan "
-"käyttäjäpalautetta. Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri "
-"lähestyy piilotettu näkymää"
+"Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri lähestyy piilotettua "
+"näkymää"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:914
 #, kde-format
