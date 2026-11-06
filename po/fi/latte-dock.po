@@ -249,8 +249,7 @@ msgctxt "command line"
 msgid "Single layout memory mode. Only one layout is active at any case."
 msgstr ""
 "Yksittäisen asettelun muistimalli. Vain yksi asettelu on aktiivinen joka "
-"tapauksessa.Yksittäisen asettelun muistimalli. Vain yksi asettelu on "
-"aktiivinen joka tapauksessa."
+"tapauksessa."
 
 #: app/main.cpp:115
 #, kde-format
@@ -260,9 +259,7 @@ msgid ""
 "based on Activities running."
 msgstr ""
 "Useamman asettelun muistimalli. Käytössä olevista aktiviteeteista riippuen "
-"useampi asettelu voi olla aktiivinen.Useamman asettelun muistimalli. "
-"Käytössä olevista aktiviteeteista riippuen useampi asettelu voi olla "
-"aktiivinen."
+"useampi asettelu voi olla aktiivinen."
 
 #: app/main.cpp:167
 #, kde-format
@@ -316,9 +313,7 @@ msgstr "Tätä asettelua ei järjestelmässä ole."
 #, kde-format
 msgid "An instance is already running!, use --replace to restart Latte"
 msgstr ""
-"Instanssi on jo käynnissä: käynnistä latte uudelleen --replace-"
-"valitsimellaInstanssi on jo käynnissä: käynnistä latte uudelleen --replace-"
-"valitsimella"
+"Instanssi on jo käynnissä: käynnistä latte uudelleen --replace-valitsimella"
 
 #: app/main.cpp:355
 #, kde-format
@@ -3303,10 +3298,8 @@ msgid ""
 "hidden view"
 msgstr ""
 "Kun näkymä on piilotettu, KWiniä kehotetaan seuraamaan käyttäjäpalautetta. "
-"Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri lähestyy piilotettu "
-"näkymääKun näkymä on piilotettu, KWiniä kehotetaan seuraamaan "
-"käyttäjäpalautetta. Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri "
-"lähestyy piilotettu näkymää"
+"Esimerkiksi näkyvä reunavihje näytetään aina, kun hiiri lähestyy piilotettua "
+"näkymää"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:928
 #, kde-format
