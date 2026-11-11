@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the latte-dock package.
 #
 # Volkan Gezer <volkangezer@gmail.com>, 2021.
-# SPDX-FileCopyrightText: 2022, 2023, 2025, 2026 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022-2023, 2025-2026 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2026-05-02 18:45+0300\n"
+"PO-Revision-Date: 2026-11-10 21:42+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -1430,7 +1430,7 @@ msgstr "Kısayol rozetlerini göstermek için ⌘ düğmesini basılı tutun"
 #: app/settings/settingsdialog/settingsdialog.ui:762
 #, kde-format
 msgid "Use 3D style for notification and shortcut badges"
-msgstr "Bildirim ve kısayol rozetleri için 3B biçemi kullanın"
+msgstr "Bildirim ve kısayol rozetleri için 3B stili kullanın"
 
 #. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
 #: app/settings/settingsdialog/settingsdialog.ui:841
@@ -2985,8 +2985,7 @@ msgstr ""
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:1208
 #, kde-format
 msgid "Background becomes opaque in plasma style when applets are expanded"
-msgstr ""
-"Uygulamalar genişletildiğinde arka plan plasma biçeminde mat hale gelir"
+msgstr "Uygulamalar genişletildiğinde arka plan plasma stilinde mat hale gelir"
 
 #: shell/package/contents/configuration/pages/BehaviorConfig.qml:47
 #, kde-format
@@ -3799,7 +3798,7 @@ msgstr "KDE çevrim içi mağazasından veya yerel dosyalardan göstergeler kur"
 #: shell/package/contents/controls/CustomIndicatorButton.qml:19
 #, kde-format
 msgid "Use %1 style for your indicators"
-msgstr "Göstergeleriniz için %1 biçemini kullan"
+msgstr "Göstergeleriniz için %1 stilini kullan"
 
 #: shell/package/contents/controls/CustomIndicatorButton.qml:114
 #, kde-format
