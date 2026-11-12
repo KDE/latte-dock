@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2026-02-13 13:27+0200\n"
-"Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
+"PO-Revision-Date: 2026-11-11 22:58+0200\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -1828,7 +1828,7 @@ msgstr[3] "Макет <b>%2</b> импортирован..."
 #, kde-format
 msgctxt "number in percentage, e.g. 85%"
 msgid "%1%"
-msgstr "%1 %"
+msgstr "%1 %"
 
 #: app/settings/viewsdialog/delegates/namedelegate.cpp:55
 #, kde-format
@@ -2548,7 +2548,7 @@ msgstr ""
 #, kde-format
 msgctxt "maximum length tooltip, %1 is maximum length percentage"
 msgid "You can use mouse wheel to change maximum length of %1%"
-msgstr "С помощью колеса мыши можно изменить максимальную длину %1%"
+msgstr "С помощью колеса мыши можно изменить максимальную длину %1 %"
 
 #: shell/package/contents/configuration/canvas/maxlength/Ruler.qml:246
 #, kde-format
@@ -2559,7 +2559,7 @@ msgstr "Максимальная длина"
 #, kde-format
 msgctxt "opacity for background under edit mode, %1 is opacity percentage"
 msgid "You can use mouse wheel to change background opacity of %1%"
-msgstr "С помощью колеса мыши можно изменить непрозрачность фона %1%"
+msgstr "С помощью колеса мыши можно изменить непрозрачность фона %1 %"
 
 #: shell/package/contents/configuration/config.qml:13
 #, kde-format
@@ -2570,13 +2570,13 @@ msgstr "Основные параметры"
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1%"
-msgstr "Ширина %1%"
+msgstr "Ширина %1 %"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:141
 #, kde-format
 msgctxt "view settings width scale"
 msgid "Width %1% / Height %2%"
-msgstr "Ширина %1% / высота %2%"
+msgstr "Ширина %1 % / высота %2 %"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:245
 #, kde-format
@@ -2691,7 +2691,7 @@ msgstr "%1 пикс."
 #, kde-format
 msgctxt "number in percentage, e.g. 85 %"
 msgid "%1 %"
-msgstr "%1 %"
+msgstr "%1 %"
 
 #: shell/package/contents/configuration/pages/AppearanceConfig.qml:161
 #, kde-format
