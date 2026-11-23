@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 09:01+0000\n"
-"PO-Revision-Date: 2026-11-18 18:15+0300\n"
+"PO-Revision-Date: 2026-11-22 19:51+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -164,7 +164,7 @@ msgstr "Bu uygulama için otomatik başlatmayı devre dışı bırak"
 #, kde-format
 msgctxt "command line"
 msgid "Import and load default layout on startup."
-msgstr "Öntanımlı yerleşimi başlangıçta içe aktar ve yükle."
+msgstr "Varsayılan yerleşimi başlangıçta içe aktar ve yükle."
 
 #: app/main.cpp:106
 #, kde-format
@@ -283,7 +283,7 @@ msgstr "Latte'yi başlatmak için kullanılabilecek yerleşimler:"
 #, kde-format
 msgid "There are no available layouts, during startup Default will be used."
 msgstr ""
-"Kullanılabilir yerleşim yok; başlangıçta Öntanımlı yerleşim kullanılacak."
+"Kullanılabilir yerleşim yok; başlangıçta Varsayılan yerleşim kullanılacak."
 
 #: app/main.cpp:222
 #, kde-format
@@ -348,7 +348,7 @@ msgstr ""
 #: app/package/lattepackage.cpp:34
 #, kde-format
 msgid "Latte Dock defaults"
-msgstr "Latte Rıhtım öntanımlıları"
+msgstr "Latte Rıhtım varsayılanları"
 
 #: app/package/lattepackage.cpp:35
 #, kde-format
@@ -403,7 +403,7 @@ msgstr "Bilgi Görünümü Penceresi"
 #: app/package/lattepackage.cpp:47
 #, kde-format
 msgid "default layout file"
-msgstr "öntanımlı yerleşim dosyası"
+msgstr "varsayılan yerleşim dosyası"
 
 #: app/package/lattepackage.cpp:48
 #, kde-format
@@ -428,7 +428,7 @@ msgstr "sistem şablonları dizini"
 #: app/package/lattepackage.cpp:54
 #, kde-format
 msgid "default preset file"
-msgstr "öntanımlı önayar dosyası"
+msgstr "varsayılan önayar dosyası"
 
 #: app/package/lattepackage.cpp:55
 #, kde-format
@@ -2433,7 +2433,7 @@ msgstr "%1 Girdisi için Yeni Örnek"
 #, kde-format
 msgctxt "default layout template name"
 msgid "Default"
-msgstr "Öntanımlı"
+msgstr "Varsayılan"
 
 #: app/templates/templatesmanager.cpp:338
 #, kde-format
@@ -2445,13 +2445,13 @@ msgstr "Boş"
 #, kde-format
 msgctxt "view template name"
 msgid "Default Dock"
-msgstr "Öntanımlı Rıhtım"
+msgstr "Varsayılan Rıhtım"
 
 #: app/templates/templatesmanager.cpp:342
 #, kde-format
 msgctxt "view template name"
 msgid "Default Panel"
-msgstr "Öntanımlı Panel"
+msgstr "Varsayılan Panel"
 
 #: app/templates/templatesmanager.cpp:343
 #, kde-format
@@ -3357,7 +3357,7 @@ msgstr "Varsayılan Renk"
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:182
 #, kde-format
 msgid "Default shadow for applets"
-msgstr "Uygulamacıklar için öntanımlı gölge"
+msgstr "Uygulamacıklar için varsayılan gölge"
 
 #: shell/package/contents/configuration/pages/EffectsConfig.qml:197
 #, kde-format
@@ -3578,7 +3578,7 @@ msgstr "Aynı uygulama için yalnızca gruplanmış görevleri göster"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:259
 #, kde-format
 msgid "By default group tasks of the same application"
-msgstr "Öntanımlı olarak, aynı uygulamadan olan görevleri grupla"
+msgstr "Varsayılan olarak, aynı uygulamadan olan görevleri grupla"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:289
 #, kde-format
