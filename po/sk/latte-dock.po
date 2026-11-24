@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latte-dock\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 09:01+0000\n"
+"POT-Creation-Date: 2026-11-24 03:11+0000\n"
 "PO-Revision-Date: 2026-04-10 12:00+0200\n"
 "Last-Translator: Dusan Kazik <prescott66@gmail.com>\n"
 "Language-Team: sk\n"
@@ -479,26 +479,6 @@ msgstr "Spustiteľné skripty"
 msgid "Translations"
 msgstr "Preklady"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
-#: app/settings/actionsdialog/actionsdialog.ui:14
-#, kde-format
-msgid "Context Menu Actions"
-msgstr "Ďalšie akcie"
-
-#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:24
-#, kde-format
-msgctxt "actions shown only in edit mode"
-msgid "Accessible only in edit mode:"
-msgstr "Prístupné iba v režime úprav:"
-
-#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:27
-#, kde-format
-msgctxt "actions shown always"
-msgid "Accessible always:"
-msgstr "Prístupné vždy:"
-
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -601,86 +581,6 @@ msgstr "Červený"
 msgid "Wheat"
 msgstr "Obilie3"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
-#: app/settings/detailsdialog/detailsdialog.ui:14
-#, kde-format
-msgid "Details"
-msgstr "Podrobnosti"
-
-#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:57
-#: app/settings/settingsdialog/settingsdialog.ui:869
-#, kde-format
-msgid "Behavior:"
-msgstr "Správanie:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
-#: app/settings/detailsdialog/detailsdialog.ui:66
-#, kde-format
-msgid "Hide window borders for maximized windows"
-msgstr "Skryť okraje okien pre maximalizované okná"
-
-#. i18n: ectx: property (text), widget (QLabel, iconLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:115
-#, kde-format
-msgid "Icon:"
-msgstr "Ikona:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
-#: app/settings/detailsdialog/detailsdialog.ui:157
-#, kde-format
-msgid "Show in layouts context menu when possible"
-msgstr "Zobraziť v kontextovej ponuke rozložení, keď je to možné"
-
-#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:182
-#, kde-format
-msgid "PopUp Margin:"
-msgstr "Okraj kontextového okna:"
-
-#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:201
-#, kde-format
-msgid "Background..."
-msgstr "Pozadie..."
-
-#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:214
-#, kde-format
-msgid "Text Color..."
-msgstr "Farba textu..."
-
-#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:388
-#: app/settings/viewsdialog/viewsdialog.ui:47
-#, kde-format
-msgid "Layout:"
-msgstr "Rozloženie:"
-
-#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:418
-#, kde-format
-msgid "Background:"
-msgstr "Pozadie"
-
-#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:507
-#, kde-format
-msgid "disabled"
-msgstr "nedostupné"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:510
-#, kde-format
-msgid " px."
-msgstr " px."
-
-#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:678
-#, kde-format
-msgid "Custom Colors:"
-msgstr "Vlastné farby:"
-
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -738,43 +638,6 @@ msgstr "Exportovať"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Exportovať znova"
-
-#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
-#, kde-format
-msgid "Select All"
-msgstr "Vybrať všetky"
-
-#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
-#: app/settings/screensdialog/screensdialog.ui:58
-#, kde-format
-msgid "Deselect All"
-msgstr "Zrušiť výber"
-
-#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, kde-format
-msgid "File:"
-msgstr "Súbor:"
-
-#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, kde-format
-msgid "Choose..."
-msgstr "Vybrať..."
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
-#, kde-format
-msgid ""
-"<b>Select only</b> applets that you would like to keep their settings in the "
-"extracted template. Make sure to not include any applets that contain "
-"personal data such as email credentials, calendar etc. "
-msgstr ""
-"<b>Vyberte iba</b> aplety, ktorých nastavenia chcete zachovať v extrahovanej "
-"šablóne. Uistite sa, že nezahrniete žiadne aplety obsahujúce osobné údaje, "
-"ako sú prihlasovacie údaje k e-mailu, kalendár atď."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -907,24 +770,6 @@ msgstr "Odstrániť teraz"
 #, kde-format
 msgid "Remove selected screen references"
 msgstr "Odstrániť vybrané referencie obrazovky"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
-#: app/settings/screensdialog/screensdialog.ui:14
-#, kde-format
-msgid "Screens"
-msgstr "Obrazovky"
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/screensdialog/screensdialog.ui:67
-#, kde-format
-msgid ""
-"<b>Select only</b> screens that are obsolete and you would like to remove "
-"their reference. Active screens or screens used in your layouts can not be "
-"removed."
-msgstr ""
-"<b>Vyberte iba</b> obrazovky, ktoré sú zastarané a chcete odstrániť ich "
-"referenciu. Aktívne obrazovky alebo obrazovky používané vo vašich "
-"rozloženiach nie je možné odstrániť."
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1247,292 +1092,6 @@ msgid ""
 msgstr ""
 "Nastavenia karty <b>%1</b> sa zmenili.<br/>Chcete použiť zmeny alebo ich "
 "zahodiť?"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
-#: app/settings/settingsdialog/settingsdialog.ui:26
-#, kde-format
-msgctxt "latte settings window"
-msgid "Settings"
-msgstr "Nastavenia"
-
-#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
-#: app/settings/settingsdialog/settingsdialog.ui:36
-#, kde-format
-msgid "Layouts Editor"
-msgstr "Editor rozložení"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:67
-#, kde-format
-msgid "Only one layout is applied at all times for all activities"
-msgstr "V každom prípade môže byť naraz prítomné v pamäti iba jedno rozloženie"
-
-#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:70
-#, kde-format
-msgctxt "single layout"
-msgid "Single layout at all times"
-msgstr "Jedno rozloženie"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:84
-#, kde-format
-msgid ""
-"Multiple layouts can be present and active in memory at the same time for "
-"different activities"
-msgstr ""
-"Viacero rozložení môže byť súčasne prítomných a aktívnych v pamäti pre rôzne "
-"aktivity"
-
-#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:87
-#, kde-format
-msgctxt "multiple layouts"
-msgid "Multiple layouts based on activities"
-msgstr "Viacero rozložení podľa aktivít"
-
-#. i18n: ectx: property (text), widget (QPushButton, switchButton)
-#: app/settings/settingsdialog/settingsdialog.ui:177
-#, kde-format
-msgid "Switch"
-msgstr "Prepnúť"
-
-#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
-#: app/settings/settingsdialog/settingsdialog.ui:191
-#, kde-format
-msgid "Activities..."
-msgstr "Aktivity..."
-
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: app/settings/settingsdialog/settingsdialog.ui:247
-#, kde-format
-msgid "New"
-msgstr "Nové"
-
-#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
-#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
-#: app/settings/settingsdialog/settingsdialog.ui:258
-#: app/settings/viewsdialog/viewsdialog.ui:148
-#, kde-format
-msgid "Duplicate"
-msgstr "Duplikovať"
-
-#. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: app/settings/settingsdialog/settingsdialog.ui:272
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Odstrániť"
-
-#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
-#: app/settings/settingsdialog/settingsdialog.ui:299
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Povolené"
-
-#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
-#: app/settings/settingsdialog/settingsdialog.ui:310
-#, kde-format
-msgid "Read Only"
-msgstr "Iba na čítanie"
-
-#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
-#: app/settings/settingsdialog/settingsdialog.ui:356
-#, kde-format
-msgid "Details..."
-msgstr "Podrobnosti..."
-
-#. i18n: ectx: property (text), widget (QPushButton, importButton)
-#: app/settings/settingsdialog/settingsdialog.ui:438
-#, kde-format
-msgid "Import..."
-msgstr "Importovať..."
-
-#. i18n: ectx: property (text), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:452
-#, kde-format
-msgid "Export..."
-msgstr "Exportovať..."
-
-#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:459
-#, kde-format
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
-#: app/settings/settingsdialog/settingsdialog.ui:499
-#, kde-format
-msgid "Preferences"
-msgstr "Nastavenia"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:540
-#, kde-format
-msgid "Provide visual feedback when layouts are activated automatically"
-msgstr "Poskytovať vizuálnu odozvu keď rozloženia sú aktivované automaticky"
-
-#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:543
-#, kde-format
-msgid "Show informative window for layouts automatic activation"
-msgstr "Zobrazovať informačné okno pre automatickú aktiváciu okien"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:571
-#, kde-format
-msgid "Parabolic Effect:"
-msgstr "Parabolický efekt:"
-
-#. i18n: ectx: property (text), widget (QToolButton, smallParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:603
-#, kde-format
-msgctxt "small spread"
-msgid "Small"
-msgstr "Malý"
-
-#. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:631
-#, kde-format
-msgctxt "medium spread"
-msgid "Medium"
-msgstr "Stredná"
-
-#. i18n: ectx: property (text), widget (QToolButton, largeParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:659
-#, kde-format
-msgctxt "large spread"
-msgid "Large"
-msgstr "Veľký"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:669
-#, kde-format
-msgid "spread"
-msgstr "rozptyl"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:726
-#, kde-format
-msgid "Start the application automatically after each relogin"
-msgstr "Spustiť aplikáciu automaticky po každo znovuprihlásení"
-
-#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:729
-#, kde-format
-msgid "Enable autostart during startup"
-msgstr "Povoliť automatické spustenie počas štartu systému"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:752
-#, kde-format
-msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-msgstr "Globálne skratky sú použité z appletov a úloh"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:755
-#, kde-format
-msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Stlačte a podržte ⌘ na zobrazenie odznakov skratiek"
-
-#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:762
-#, kde-format
-msgid "Use 3D style for notification and shortcut badges"
-msgstr "Použiť 3D štýl pre odznaky upozornení a skratiek"
-
-#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:841
-#, kde-format
-msgid "Inform Plasma desktop for available desktop space"
-msgstr "Informovať pracovnú plochu Plasma o dostupnom priestore"
-
-#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:912
-#, kde-format
-msgid "Context Menu:"
-msgstr "Kontextová ponuka:"
-
-#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:936
-#, kde-format
-msgid "Actions:"
-msgstr "Akcie:"
-
-#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:968
-#, kde-format
-msgid "Actions..."
-msgstr "Akcie"
-
-#. i18n: ectx: property (text), widget (QLabel, screensLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1011
-#, kde-format
-msgid "Screens:"
-msgstr "Obrazovky:"
-
-#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
-#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1044
-#: app/settings/settingsdialog/settingsdialog.ui:1079
-#, kde-format
-msgid ""
-"Different hardware can have different delays during screen changes.\n"
-"This tracker is used in order to not lose any screen related update."
-msgstr ""
-"Rôzny hardvér môže mať rôzne oneskorenia počas zmien obrazovky.\n"
-"Tento sledovač sa používa na zabezpečenie aby sa nestratila žiadna zmena "
-"obrazovky."
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1053
-#, kde-format
-msgid " ms."
-msgstr " ms."
-
-#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1082
-#, kde-format
-msgid "reaction delay for changes"
-msgstr "oneskorenie reakcie na zmeny"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1107
-#, kde-format
-msgid ""
-"Activate support for borderless maximized windows between different layouts"
-msgstr ""
-"Aktivovať podporu pre bezokrajové maximalizované okná medzi rôznymi "
-"rozloženiami"
-
-#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1110
-#, kde-format
-msgid "Support borderless maximized windows in different layouts"
-msgstr "Podporovať bezokrajové maximalizované okná v rôznych rozloženiach"
-
-#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1132
-#, kde-format
-msgid "Appearance:"
-msgstr "Vzhľad:"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1179
-#, kde-format
-msgid ""
-"Forward ⌘ press from KWin to Latte in order to activate Application "
-"Launcher. It is suggested to disable that option if you remove Latte."
-msgstr ""
-"Prepošle Meta klávesu z Kwin do Latte. Je odporúčané zakázať túto možnosť ak "
-"odstránite Latte."
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1182
-#, kde-format
-msgid "Press ⌘ to activate Application Launcher"
-msgstr "Preposlať Meta klávesu do spúšťača aplikácií"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:112
 #, kde-format
@@ -2092,12 +1651,6 @@ msgstr "Použiť teraz"
 msgid "Apply all dock, panels changes now"
 msgstr "Použiť teraz všetky zmeny dokov a panelov"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
-#: app/settings/viewsdialog/viewsdialog.ui:14
-#, kde-format
-msgid "Docks/Panels"
-msgstr "Doky/Panely"
-
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2610,6 +2163,11 @@ msgstr "Duplikovať dok"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr "Duplikovať panel"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Odstrániť"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3704,6 +3262,11 @@ msgstr "Horizontálne a vertikálne posúvanie"
 msgid "Automatic"
 msgstr "Automaticky"
 
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Povolené"
+
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3888,6 +3451,239 @@ msgstr "Žiadne miniaplikácie nevyhovujú hľadaným výrazom."
 #, kde-format
 msgid "No widgets available"
 msgstr "Žiadne miniaplikáciw nie sú dostupné"
+
+#~ msgid "Context Menu Actions"
+#~ msgstr "Ďalšie akcie"
+
+#~ msgctxt "actions shown only in edit mode"
+#~ msgid "Accessible only in edit mode:"
+#~ msgstr "Prístupné iba v režime úprav:"
+
+#~ msgctxt "actions shown always"
+#~ msgid "Accessible always:"
+#~ msgstr "Prístupné vždy:"
+
+#~ msgid "Details"
+#~ msgstr "Podrobnosti"
+
+#~ msgid "Behavior:"
+#~ msgstr "Správanie:"
+
+#~ msgid "Hide window borders for maximized windows"
+#~ msgstr "Skryť okraje okien pre maximalizované okná"
+
+#~ msgid "Icon:"
+#~ msgstr "Ikona:"
+
+#~ msgid "Show in layouts context menu when possible"
+#~ msgstr "Zobraziť v kontextovej ponuke rozložení, keď je to možné"
+
+#~ msgid "PopUp Margin:"
+#~ msgstr "Okraj kontextového okna:"
+
+#~ msgid "Background..."
+#~ msgstr "Pozadie..."
+
+#~ msgid "Text Color..."
+#~ msgstr "Farba textu..."
+
+#~ msgid "Layout:"
+#~ msgstr "Rozloženie:"
+
+#~ msgid "Background:"
+#~ msgstr "Pozadie"
+
+#~ msgid "disabled"
+#~ msgstr "nedostupné"
+
+#~ msgid " px."
+#~ msgstr " px."
+
+#~ msgid "Custom Colors:"
+#~ msgstr "Vlastné farby:"
+
+#~ msgid "Select All"
+#~ msgstr "Vybrať všetky"
+
+#~ msgid "Deselect All"
+#~ msgstr "Zrušiť výber"
+
+#~ msgid "File:"
+#~ msgstr "Súbor:"
+
+#~ msgid "Choose..."
+#~ msgstr "Vybrať..."
+
+#~ msgid ""
+#~ "<b>Select only</b> applets that you would like to keep their settings in "
+#~ "the extracted template. Make sure to not include any applets that contain "
+#~ "personal data such as email credentials, calendar etc. "
+#~ msgstr ""
+#~ "<b>Vyberte iba</b> aplety, ktorých nastavenia chcete zachovať v "
+#~ "extrahovanej šablóne. Uistite sa, že nezahrniete žiadne aplety obsahujúce "
+#~ "osobné údaje, ako sú prihlasovacie údaje k e-mailu, kalendár atď."
+
+#~ msgid "Screens"
+#~ msgstr "Obrazovky"
+
+#~ msgid ""
+#~ "<b>Select only</b> screens that are obsolete and you would like to remove "
+#~ "their reference. Active screens or screens used in your layouts can not "
+#~ "be removed."
+#~ msgstr ""
+#~ "<b>Vyberte iba</b> obrazovky, ktoré sú zastarané a chcete odstrániť ich "
+#~ "referenciu. Aktívne obrazovky alebo obrazovky používané vo vašich "
+#~ "rozloženiach nie je možné odstrániť."
+
+#~ msgctxt "latte settings window"
+#~ msgid "Settings"
+#~ msgstr "Nastavenia"
+
+#~ msgid "Layouts Editor"
+#~ msgstr "Editor rozložení"
+
+#~ msgid "Only one layout is applied at all times for all activities"
+#~ msgstr ""
+#~ "V každom prípade môže byť naraz prítomné v pamäti iba jedno rozloženie"
+
+#~ msgctxt "single layout"
+#~ msgid "Single layout at all times"
+#~ msgstr "Jedno rozloženie"
+
+#~ msgid ""
+#~ "Multiple layouts can be present and active in memory at the same time for "
+#~ "different activities"
+#~ msgstr ""
+#~ "Viacero rozložení môže byť súčasne prítomných a aktívnych v pamäti pre "
+#~ "rôzne aktivity"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple layouts based on activities"
+#~ msgstr "Viacero rozložení podľa aktivít"
+
+#~ msgid "Switch"
+#~ msgstr "Prepnúť"
+
+#~ msgid "Activities..."
+#~ msgstr "Aktivity..."
+
+#~ msgid "New"
+#~ msgstr "Nové"
+
+#~ msgid "Duplicate"
+#~ msgstr "Duplikovať"
+
+#~ msgid "Read Only"
+#~ msgstr "Iba na čítanie"
+
+#~ msgid "Details..."
+#~ msgstr "Podrobnosti..."
+
+#~ msgid "Import..."
+#~ msgstr "Importovať..."
+
+#~ msgid "Export..."
+#~ msgstr "Exportovať..."
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
+#~ msgid "Preferences"
+#~ msgstr "Nastavenia"
+
+#~ msgid "Provide visual feedback when layouts are activated automatically"
+#~ msgstr "Poskytovať vizuálnu odozvu keď rozloženia sú aktivované automaticky"
+
+#~ msgid "Show informative window for layouts automatic activation"
+#~ msgstr "Zobrazovať informačné okno pre automatickú aktiváciu okien"
+
+#~ msgid "Parabolic Effect:"
+#~ msgstr "Parabolický efekt:"
+
+#~ msgctxt "small spread"
+#~ msgid "Small"
+#~ msgstr "Malý"
+
+#~ msgctxt "medium spread"
+#~ msgid "Medium"
+#~ msgstr "Stredná"
+
+#~ msgctxt "large spread"
+#~ msgid "Large"
+#~ msgstr "Veľký"
+
+#~ msgid "spread"
+#~ msgstr "rozptyl"
+
+#~ msgid "Start the application automatically after each relogin"
+#~ msgstr "Spustiť aplikáciu automaticky po každo znovuprihlásení"
+
+#~ msgid "Enable autostart during startup"
+#~ msgstr "Povoliť automatické spustenie počas štartu systému"
+
+#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+#~ msgstr "Globálne skratky sú použité z appletov a úloh"
+
+#~ msgid "Press and Hold ⌘ to show shortcuts badges"
+#~ msgstr "Stlačte a podržte ⌘ na zobrazenie odznakov skratiek"
+
+#~ msgid "Use 3D style for notification and shortcut badges"
+#~ msgstr "Použiť 3D štýl pre odznaky upozornení a skratiek"
+
+#~ msgid "Inform Plasma desktop for available desktop space"
+#~ msgstr "Informovať pracovnú plochu Plasma o dostupnom priestore"
+
+#~ msgid "Context Menu:"
+#~ msgstr "Kontextová ponuka:"
+
+#~ msgid "Actions:"
+#~ msgstr "Akcie:"
+
+#~ msgid "Actions..."
+#~ msgstr "Akcie"
+
+#~ msgid "Screens:"
+#~ msgstr "Obrazovky:"
+
+#~ msgid ""
+#~ "Different hardware can have different delays during screen changes.\n"
+#~ "This tracker is used in order to not lose any screen related update."
+#~ msgstr ""
+#~ "Rôzny hardvér môže mať rôzne oneskorenia počas zmien obrazovky.\n"
+#~ "Tento sledovač sa používa na zabezpečenie aby sa nestratila žiadna zmena "
+#~ "obrazovky."
+
+#~ msgid " ms."
+#~ msgstr " ms."
+
+#~ msgid "reaction delay for changes"
+#~ msgstr "oneskorenie reakcie na zmeny"
+
+#~ msgid ""
+#~ "Activate support for borderless maximized windows between different "
+#~ "layouts"
+#~ msgstr ""
+#~ "Aktivovať podporu pre bezokrajové maximalizované okná medzi rôznymi "
+#~ "rozloženiami"
+
+#~ msgid "Support borderless maximized windows in different layouts"
+#~ msgstr "Podporovať bezokrajové maximalizované okná v rôznych rozloženiach"
+
+#~ msgid "Appearance:"
+#~ msgstr "Vzhľad:"
+
+#~ msgid ""
+#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
+#~ "Launcher. It is suggested to disable that option if you remove Latte."
+#~ msgstr ""
+#~ "Prepošle Meta klávesu z Kwin do Latte. Je odporúčané zakázať túto možnosť "
+#~ "ak odstránite Latte."
+
+#~ msgid "Press ⌘ to activate Application Launcher"
+#~ msgstr "Preposlať Meta klávesu do spúšťača aplikácií"
+
+#~ msgid "Docks/Panels"
+#~ msgstr "Doky/Panely"
 
 #~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
 #~ msgstr "Nízka citlivosť pre parabolický efekt (nízke využitie CPU a výkon)"

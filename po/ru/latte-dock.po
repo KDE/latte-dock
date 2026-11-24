@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 09:01+0000\n"
+"POT-Creation-Date: 2026-11-24 03:11+0000\n"
 "PO-Revision-Date: 2026-11-11 22:58+0200\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -483,26 +483,6 @@ msgstr "Исполняемые сценарии"
 msgid "Translations"
 msgstr "Переводы"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
-#: app/settings/actionsdialog/actionsdialog.ui:14
-#, kde-format
-msgid "Context Menu Actions"
-msgstr "Контекстное меню действий"
-
-#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:24
-#, kde-format
-msgctxt "actions shown only in edit mode"
-msgid "Accessible only in edit mode:"
-msgstr "Доступно только в режиме редактирования:"
-
-#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:27
-#, kde-format
-msgctxt "actions shown always"
-msgid "Accessible always:"
-msgstr "Доступно всегда:"
-
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -605,86 +585,6 @@ msgstr "Красный"
 msgid "Wheat"
 msgstr "Пшеничный"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
-#: app/settings/detailsdialog/detailsdialog.ui:14
-#, kde-format
-msgid "Details"
-msgstr "Подробности"
-
-#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:57
-#: app/settings/settingsdialog/settingsdialog.ui:869
-#, kde-format
-msgid "Behavior:"
-msgstr "Поведение:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
-#: app/settings/detailsdialog/detailsdialog.ui:66
-#, kde-format
-msgid "Hide window borders for maximized windows"
-msgstr "Скрывать рамки распахнутых окон"
-
-#. i18n: ectx: property (text), widget (QLabel, iconLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:115
-#, kde-format
-msgid "Icon:"
-msgstr "Значок:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
-#: app/settings/detailsdialog/detailsdialog.ui:157
-#, kde-format
-msgid "Show in layouts context menu when possible"
-msgstr "Показывать в контекстном меню макета, если возможно"
-
-#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:182
-#, kde-format
-msgid "PopUp Margin:"
-msgstr "Поле всплывающего окна:"
-
-#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:201
-#, kde-format
-msgid "Background..."
-msgstr "Фон..."
-
-#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:214
-#, kde-format
-msgid "Text Color..."
-msgstr "Цвет текста..."
-
-#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:388
-#: app/settings/viewsdialog/viewsdialog.ui:47
-#, kde-format
-msgid "Layout:"
-msgstr "Макет:"
-
-#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:418
-#, kde-format
-msgid "Background:"
-msgstr "Фон:"
-
-#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:507
-#, kde-format
-msgid "disabled"
-msgstr "отключено"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:510
-#, kde-format
-msgid " px."
-msgstr " пикс."
-
-#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:678
-#, kde-format
-msgid "Custom Colors:"
-msgstr "Пользовательские цвета:"
-
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -740,44 +640,6 @@ msgstr "Экспорт"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Повторный экспорт"
-
-#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
-#, kde-format
-msgid "Select All"
-msgstr "Выбрать все"
-
-#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
-#: app/settings/screensdialog/screensdialog.ui:58
-#, kde-format
-msgid "Deselect All"
-msgstr "Отменить выбор"
-
-#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, kde-format
-msgid "File:"
-msgstr "Файл:"
-
-#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, kde-format
-msgid "Choose..."
-msgstr "Выбрать..."
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
-#, kde-format
-msgid ""
-"<b>Select only</b> applets that you would like to keep their settings in the "
-"extracted template. Make sure to not include any applets that contain "
-"personal data such as email credentials, calendar etc. "
-msgstr ""
-"<b>Выберите только</b> виджеты, параметры которых следует сохранить в "
-"извлечённом шаблоне. Убедитесь, что среди них нет виджетов, хранящих личные "
-"данные, включая регистрационные данные электронной почты, календаря и так "
-"далее."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -910,23 +772,6 @@ msgstr "Удалить"
 #, kde-format
 msgid "Remove selected screen references"
 msgstr "Удалить выбранные ссылки на экраны"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
-#: app/settings/screensdialog/screensdialog.ui:14
-#, kde-format
-msgid "Screens"
-msgstr "Экраны"
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/screensdialog/screensdialog.ui:67
-#, kde-format
-msgid ""
-"<b>Select only</b> screens that are obsolete and you would like to remove "
-"their reference. Active screens or screens used in your layouts can not be "
-"removed."
-msgstr ""
-"<b>Выберите только</b> устаревшие экраны, ссылки на которые следует удалить. "
-"Активные экраны или экраны, используемые в макетах, удалить нельзя."
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1261,293 +1106,6 @@ msgid ""
 "The settings of <b>%1</b> tab have changed.<br/>Do you want to apply the "
 "changes or discard them?"
 msgstr "Имеются несохранённые изменения вкладки <b>%1</b>.<br/>Применить их?"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
-#: app/settings/settingsdialog/settingsdialog.ui:26
-#, kde-format
-msgctxt "latte settings window"
-msgid "Settings"
-msgstr "Параметры"
-
-#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
-#: app/settings/settingsdialog/settingsdialog.ui:36
-#, kde-format
-msgid "Layouts Editor"
-msgstr "Редактор макетов"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:67
-#, kde-format
-msgid "Only one layout is applied at all times for all activities"
-msgstr "Для всех комнат всегда применяется только один макет"
-
-#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:70
-#, kde-format
-msgctxt "single layout"
-msgid "Single layout at all times"
-msgstr "Всегда один макет"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:84
-#, kde-format
-msgid ""
-"Multiple layouts can be present and active in memory at the same time for "
-"different activities"
-msgstr ""
-"В памяти могут присутствовать и быть активными одновременно несколько "
-"макетов для разных комнат"
-
-#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:87
-#, kde-format
-msgctxt "multiple layouts"
-msgid "Multiple layouts based on activities"
-msgstr "Несколько макетов на основе комнат"
-
-#. i18n: ectx: property (text), widget (QPushButton, switchButton)
-#: app/settings/settingsdialog/settingsdialog.ui:177
-#, kde-format
-msgid "Switch"
-msgstr "Использовать"
-
-#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
-#: app/settings/settingsdialog/settingsdialog.ui:191
-#, kde-format
-msgid "Activities..."
-msgstr "Комнаты..."
-
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: app/settings/settingsdialog/settingsdialog.ui:247
-#, kde-format
-msgid "New"
-msgstr "Создать"
-
-#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
-#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
-#: app/settings/settingsdialog/settingsdialog.ui:258
-#: app/settings/viewsdialog/viewsdialog.ui:148
-#, kde-format
-msgid "Duplicate"
-msgstr "Дублировать"
-
-#. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: app/settings/settingsdialog/settingsdialog.ui:272
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Удалить"
-
-#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
-#: app/settings/settingsdialog/settingsdialog.ui:299
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Включено"
-
-#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
-#: app/settings/settingsdialog/settingsdialog.ui:310
-#, kde-format
-msgid "Read Only"
-msgstr "Только чтение"
-
-#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
-#: app/settings/settingsdialog/settingsdialog.ui:356
-#, kde-format
-msgid "Details..."
-msgstr "Подробности..."
-
-#. i18n: ectx: property (text), widget (QPushButton, importButton)
-#: app/settings/settingsdialog/settingsdialog.ui:438
-#, kde-format
-msgid "Import..."
-msgstr "Импорт..."
-
-#. i18n: ectx: property (text), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:452
-#, kde-format
-msgid "Export..."
-msgstr "Экспорт..."
-
-#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:459
-#, kde-format
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
-#: app/settings/settingsdialog/settingsdialog.ui:499
-#, kde-format
-msgid "Preferences"
-msgstr "Параметры"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:540
-#, kde-format
-msgid "Provide visual feedback when layouts are activated automatically"
-msgstr "Выводить уведомления при автоматическом открытии макетов"
-
-#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:543
-#, kde-format
-msgid "Show informative window for layouts automatic activation"
-msgstr "Выводить информационное окно при автоматическом открытии макетов"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:571
-#, kde-format
-msgid "Parabolic Effect:"
-msgstr "Параболический эффект:"
-
-#. i18n: ectx: property (text), widget (QToolButton, smallParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:603
-#, kde-format
-msgctxt "small spread"
-msgid "Small"
-msgstr "Маленькие"
-
-#. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:631
-#, kde-format
-msgctxt "medium spread"
-msgid "Medium"
-msgstr "Средний"
-
-#. i18n: ectx: property (text), widget (QToolButton, largeParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:659
-#, kde-format
-msgctxt "large spread"
-msgid "Large"
-msgstr "Большой"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:669
-#, kde-format
-msgid "spread"
-msgstr "размах"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:726
-#, kde-format
-msgid "Start the application automatically after each relogin"
-msgstr "Автоматически запускать приложение при начале сеанса работы"
-
-#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:729
-#, kde-format
-msgid "Enable autostart during startup"
-msgstr "Запускать при входе в систему"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:752
-#, kde-format
-msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-msgstr ""
-"Использовать удержание клавиши «Meta» для просмотра комбинаций клавиш вызова "
-"виджетов и приложений"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:755
-#, kde-format
-msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Показывать подсказки комбинаций клавиш при удержании клавиши «Meta»"
-
-#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:762
-#, kde-format
-msgid "Use 3D style for notification and shortcut badges"
-msgstr "Использовать объёмные уведомления и значки комбинаций клавиш"
-
-#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:841
-#, kde-format
-msgid "Inform Plasma desktop for available desktop space"
-msgstr "Информировать рабочий стол Plasma о доступном пространстве"
-
-#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:912
-#, kde-format
-msgid "Context Menu:"
-msgstr "Контекстное меню:"
-
-#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:936
-#, kde-format
-msgid "Actions:"
-msgstr "Действия:"
-
-#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:968
-#, kde-format
-msgid "Actions..."
-msgstr "Действия..."
-
-#. i18n: ectx: property (text), widget (QLabel, screensLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1011
-#, kde-format
-msgid "Screens:"
-msgstr "Экраны:"
-
-#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
-#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1044
-#: app/settings/settingsdialog/settingsdialog.ui:1079
-#, kde-format
-msgid ""
-"Different hardware can have different delays during screen changes.\n"
-"This tracker is used in order to not lose any screen related update."
-msgstr ""
-"Различным видеокартам требуется различное время для изменения параметров "
-"экрана.\n"
-"Это поле служит для настройки задержки, используемой в определении реакции "
-"на такие изменения."
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1053
-#, kde-format
-msgid " ms."
-msgstr " мс"
-
-#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1082
-#, kde-format
-msgid "reaction delay for changes"
-msgstr "задержка реакции на изменения"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1107
-#, kde-format
-msgid ""
-"Activate support for borderless maximized windows between different layouts"
-msgstr "Включить поддержку макетами распахнутых окон без рамок"
-
-#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1110
-#, kde-format
-msgid "Support borderless maximized windows in different layouts"
-msgstr "Включить поддержку макетами распахнутых окон без рамок"
-
-#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1132
-#, kde-format
-msgid "Appearance:"
-msgstr "Внешний вид:"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1179
-#, kde-format
-msgid ""
-"Forward ⌘ press from KWin to Latte in order to activate Application "
-"Launcher. It is suggested to disable that option if you remove Latte."
-msgstr ""
-"Передавать нажатие клавиши «Meta» из KWin в Latte для вызова меню запуска "
-"приложений. Перед удалением Latte рекомендуется отключить этот параметр."
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1182
-#, kde-format
-msgid "Press ⌘ to activate Application Launcher"
-msgstr "Использовать клавишу «Meta» для вызова меню запуска приложений"
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:112
 #, kde-format
@@ -2107,12 +1665,6 @@ msgstr "Применить"
 msgid "Apply all dock, panels changes now"
 msgstr "Немедленно применить все изменения к докам и панелям"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
-#: app/settings/viewsdialog/viewsdialog.ui:14
-#, kde-format
-msgid "Docks/Panels"
-msgstr "Доки и панели"
-
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2629,6 +2181,11 @@ msgstr "Создать копию дока"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr "Создать копию панели"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Удалить"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3742,6 +3299,11 @@ msgstr "Горизонтальная и вертикальная прокрут�
 msgid "Automatic"
 msgstr "Автоматически:"
 
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Включено"
+
 # BUGME: Please split label and menu item --ayavorsky 2020-01-15
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
@@ -3929,6 +3491,240 @@ msgstr "Нет виджетов, соответствующих условиям
 #, kde-format
 msgid "No widgets available"
 msgstr "Нет доступных виджетов"
+
+#~ msgid "Context Menu Actions"
+#~ msgstr "Контекстное меню действий"
+
+#~ msgctxt "actions shown only in edit mode"
+#~ msgid "Accessible only in edit mode:"
+#~ msgstr "Доступно только в режиме редактирования:"
+
+#~ msgctxt "actions shown always"
+#~ msgid "Accessible always:"
+#~ msgstr "Доступно всегда:"
+
+#~ msgid "Details"
+#~ msgstr "Подробности"
+
+#~ msgid "Behavior:"
+#~ msgstr "Поведение:"
+
+#~ msgid "Hide window borders for maximized windows"
+#~ msgstr "Скрывать рамки распахнутых окон"
+
+#~ msgid "Icon:"
+#~ msgstr "Значок:"
+
+#~ msgid "Show in layouts context menu when possible"
+#~ msgstr "Показывать в контекстном меню макета, если возможно"
+
+#~ msgid "PopUp Margin:"
+#~ msgstr "Поле всплывающего окна:"
+
+#~ msgid "Background..."
+#~ msgstr "Фон..."
+
+#~ msgid "Text Color..."
+#~ msgstr "Цвет текста..."
+
+#~ msgid "Layout:"
+#~ msgstr "Макет:"
+
+#~ msgid "Background:"
+#~ msgstr "Фон:"
+
+#~ msgid "disabled"
+#~ msgstr "отключено"
+
+#~ msgid " px."
+#~ msgstr " пикс."
+
+#~ msgid "Custom Colors:"
+#~ msgstr "Пользовательские цвета:"
+
+#~ msgid "Select All"
+#~ msgstr "Выбрать все"
+
+#~ msgid "Deselect All"
+#~ msgstr "Отменить выбор"
+
+#~ msgid "File:"
+#~ msgstr "Файл:"
+
+#~ msgid "Choose..."
+#~ msgstr "Выбрать..."
+
+#~ msgid ""
+#~ "<b>Select only</b> applets that you would like to keep their settings in "
+#~ "the extracted template. Make sure to not include any applets that contain "
+#~ "personal data such as email credentials, calendar etc. "
+#~ msgstr ""
+#~ "<b>Выберите только</b> виджеты, параметры которых следует сохранить в "
+#~ "извлечённом шаблоне. Убедитесь, что среди них нет виджетов, хранящих "
+#~ "личные данные, включая регистрационные данные электронной почты, "
+#~ "календаря и так далее."
+
+#~ msgid "Screens"
+#~ msgstr "Экраны"
+
+#~ msgid ""
+#~ "<b>Select only</b> screens that are obsolete and you would like to remove "
+#~ "their reference. Active screens or screens used in your layouts can not "
+#~ "be removed."
+#~ msgstr ""
+#~ "<b>Выберите только</b> устаревшие экраны, ссылки на которые следует "
+#~ "удалить. Активные экраны или экраны, используемые в макетах, удалить "
+#~ "нельзя."
+
+#~ msgctxt "latte settings window"
+#~ msgid "Settings"
+#~ msgstr "Параметры"
+
+#~ msgid "Layouts Editor"
+#~ msgstr "Редактор макетов"
+
+#~ msgid "Only one layout is applied at all times for all activities"
+#~ msgstr "Для всех комнат всегда применяется только один макет"
+
+#~ msgctxt "single layout"
+#~ msgid "Single layout at all times"
+#~ msgstr "Всегда один макет"
+
+#~ msgid ""
+#~ "Multiple layouts can be present and active in memory at the same time for "
+#~ "different activities"
+#~ msgstr ""
+#~ "В памяти могут присутствовать и быть активными одновременно несколько "
+#~ "макетов для разных комнат"
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple layouts based on activities"
+#~ msgstr "Несколько макетов на основе комнат"
+
+#~ msgid "Switch"
+#~ msgstr "Использовать"
+
+#~ msgid "Activities..."
+#~ msgstr "Комнаты..."
+
+#~ msgid "New"
+#~ msgstr "Создать"
+
+#~ msgid "Duplicate"
+#~ msgstr "Дублировать"
+
+#~ msgid "Read Only"
+#~ msgstr "Только чтение"
+
+#~ msgid "Details..."
+#~ msgstr "Подробности..."
+
+#~ msgid "Import..."
+#~ msgstr "Импорт..."
+
+#~ msgid "Export..."
+#~ msgstr "Экспорт..."
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
+#~ msgid "Preferences"
+#~ msgstr "Параметры"
+
+#~ msgid "Provide visual feedback when layouts are activated automatically"
+#~ msgstr "Выводить уведомления при автоматическом открытии макетов"
+
+#~ msgid "Show informative window for layouts automatic activation"
+#~ msgstr "Выводить информационное окно при автоматическом открытии макетов"
+
+#~ msgid "Parabolic Effect:"
+#~ msgstr "Параболический эффект:"
+
+#~ msgctxt "small spread"
+#~ msgid "Small"
+#~ msgstr "Маленькие"
+
+#~ msgctxt "medium spread"
+#~ msgid "Medium"
+#~ msgstr "Средний"
+
+#~ msgctxt "large spread"
+#~ msgid "Large"
+#~ msgstr "Большой"
+
+#~ msgid "spread"
+#~ msgstr "размах"
+
+#~ msgid "Start the application automatically after each relogin"
+#~ msgstr "Автоматически запускать приложение при начале сеанса работы"
+
+#~ msgid "Enable autostart during startup"
+#~ msgstr "Запускать при входе в систему"
+
+#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+#~ msgstr ""
+#~ "Использовать удержание клавиши «Meta» для просмотра комбинаций клавиш "
+#~ "вызова виджетов и приложений"
+
+#~ msgid "Press and Hold ⌘ to show shortcuts badges"
+#~ msgstr "Показывать подсказки комбинаций клавиш при удержании клавиши «Meta»"
+
+#~ msgid "Use 3D style for notification and shortcut badges"
+#~ msgstr "Использовать объёмные уведомления и значки комбинаций клавиш"
+
+#~ msgid "Inform Plasma desktop for available desktop space"
+#~ msgstr "Информировать рабочий стол Plasma о доступном пространстве"
+
+#~ msgid "Context Menu:"
+#~ msgstr "Контекстное меню:"
+
+#~ msgid "Actions:"
+#~ msgstr "Действия:"
+
+#~ msgid "Actions..."
+#~ msgstr "Действия..."
+
+#~ msgid "Screens:"
+#~ msgstr "Экраны:"
+
+#~ msgid ""
+#~ "Different hardware can have different delays during screen changes.\n"
+#~ "This tracker is used in order to not lose any screen related update."
+#~ msgstr ""
+#~ "Различным видеокартам требуется различное время для изменения параметров "
+#~ "экрана.\n"
+#~ "Это поле служит для настройки задержки, используемой в определении "
+#~ "реакции на такие изменения."
+
+#~ msgid " ms."
+#~ msgstr " мс"
+
+#~ msgid "reaction delay for changes"
+#~ msgstr "задержка реакции на изменения"
+
+#~ msgid ""
+#~ "Activate support for borderless maximized windows between different "
+#~ "layouts"
+#~ msgstr "Включить поддержку макетами распахнутых окон без рамок"
+
+#~ msgid "Support borderless maximized windows in different layouts"
+#~ msgstr "Включить поддержку макетами распахнутых окон без рамок"
+
+#~ msgid "Appearance:"
+#~ msgstr "Внешний вид:"
+
+#~ msgid ""
+#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
+#~ "Launcher. It is suggested to disable that option if you remove Latte."
+#~ msgstr ""
+#~ "Передавать нажатие клавиши «Meta» из KWin в Latte для вызова меню запуска "
+#~ "приложений. Перед удалением Latte рекомендуется отключить этот параметр."
+
+#~ msgid "Press ⌘ to activate Application Launcher"
+#~ msgstr "Использовать клавишу «Meta» для вызова меню запуска приложений"
+
+#~ msgid "Docks/Panels"
+#~ msgstr "Доки и панели"
 
 #~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
 #~ msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 09:01+0000\n"
+"POT-Creation-Date: 2026-11-24 03:11+0000\n"
 "PO-Revision-Date: 2025-10-20 23:59+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -483,26 +483,6 @@ msgstr "Uitvoerbare scripts"
 msgid "Translations"
 msgstr "Vertalingen"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ActionsDialog)
-#: app/settings/actionsdialog/actionsdialog.ui:14
-#, kde-format
-msgid "Context Menu Actions"
-msgstr "Acties in het contextmenu"
-
-#. i18n: ectx: property (availableLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:24
-#, kde-format
-msgctxt "actions shown only in edit mode"
-msgid "Accessible only in edit mode:"
-msgstr "Alleen toegankelijk in bewerkingsmodus:"
-
-#. i18n: ectx: property (selectedLabel), widget (KActionSelector, actionsSelector)
-#: app/settings/actionsdialog/actionsdialog.ui:27
-#, kde-format
-msgctxt "actions shown always"
-msgid "Accessible always:"
-msgstr "Altijd toegankelijk:"
-
 #: app/settings/actionsdialog/actionshandler.cpp:61
 #, kde-format
 msgid "Layouts"
@@ -605,86 +585,6 @@ msgstr "Rood"
 msgid "Wheat"
 msgstr "Tarwegeel"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, DetailsDialog)
-#: app/settings/detailsdialog/detailsdialog.ui:14
-#, kde-format
-msgid "Details"
-msgstr "Details"
-
-#. i18n: ectx: property (text), widget (QLabel, behaviorLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:57
-#: app/settings/settingsdialog/settingsdialog.ui:869
-#, kde-format
-msgid "Behavior:"
-msgstr "Gedrag:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, borderlessChk)
-#: app/settings/detailsdialog/detailsdialog.ui:66
-#, kde-format
-msgid "Hide window borders for maximized windows"
-msgstr "Vensterranden verbergen voor gemaximaliseerde vensters"
-
-#. i18n: ectx: property (text), widget (QLabel, iconLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:115
-#, kde-format
-msgid "Icon:"
-msgstr "Pictogram:"
-
-#. i18n: ectx: property (text), widget (QCheckBox, inMenuChk)
-#: app/settings/detailsdialog/detailsdialog.ui:157
-#, kde-format
-msgid "Show in layouts context menu when possible"
-msgstr "Indien mogelijk, in contextmenu voor indelingen tonen"
-
-#. i18n: ectx: property (text), widget (QLabel, popUpMarginLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:182
-#, kde-format
-msgid "PopUp Margin:"
-msgstr "Pop-up marge:"
-
-#. i18n: ectx: property (text), widget (QPushButton, backgroundBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:201
-#, kde-format
-msgid "Background..."
-msgstr "Achtergrond..."
-
-#. i18n: ectx: property (text), widget (QPushButton, textColorBtn)
-#: app/settings/detailsdialog/detailsdialog.ui:214
-#, kde-format
-msgid "Text Color..."
-msgstr "Tekstkleur..."
-
-#. i18n: ectx: property (text), widget (QLabel, layoutLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:388
-#: app/settings/viewsdialog/viewsdialog.ui:47
-#, kde-format
-msgid "Layout:"
-msgstr "Indeling:"
-
-#. i18n: ectx: property (text), widget (QLabel, backgroundLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:418
-#, kde-format
-msgid "Background:"
-msgstr "Achtergrond:"
-
-#. i18n: ectx: property (specialValueText), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:507
-#, kde-format
-msgid "disabled"
-msgstr "uitgeschakeld"
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, popUpMarginSpinBox)
-#: app/settings/detailsdialog/detailsdialog.ui:510
-#, kde-format
-msgid " px."
-msgstr " px."
-
-#. i18n: ectx: property (text), widget (QLabel, customSchemeLbl)
-#: app/settings/detailsdialog/detailsdialog.ui:678
-#, kde-format
-msgid "Custom Colors:"
-msgstr "Eigen kleuren:"
-
 #: app/settings/detailsdialog/detailshandler.cpp:446
 #, kde-format
 msgctxt "<layout name> Details"
@@ -742,43 +642,6 @@ msgstr "Exporteren"
 msgctxt "export template"
 msgid "Export Again"
 msgstr "Opnieuw exporteren"
-
-#. i18n: ectx: property (text), widget (QPushButton, selectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:58
-#, kde-format
-msgid "Select All"
-msgstr "Alles selecteren"
-
-#. i18n: ectx: property (text), widget (QPushButton, deselectAllBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:65
-#: app/settings/screensdialog/screensdialog.ui:58
-#, kde-format
-msgid "Deselect All"
-msgstr "Alles deselecteren"
-
-#. i18n: ectx: property (text), widget (QLabel, fileTabLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:82
-#, kde-format
-msgid "File:"
-msgstr "Bestand:"
-
-#. i18n: ectx: property (text), widget (QPushButton, chooseBtn)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:102
-#, kde-format
-msgid "Choose..."
-msgstr "Kiezen..."
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/exporttemplatedialog/exporttemplatedialog.ui:111
-#, kde-format
-msgid ""
-"<b>Select only</b> applets that you would like to keep their settings in the "
-"extracted template. Make sure to not include any applets that contain "
-"personal data such as email credentials, calendar etc. "
-msgstr ""
-"<b>Selecteer uitsluitend</b> widgets waarvan u de instellingen wilt behouden "
-"in het geëxporteerde sjabloon. Let op dat u geen widgets exporteert die "
-"persoonlijke gegevens zoals e-mail-wachtwoorden, agenda’s, etc. bevatten."
 
 #: app/settings/exporttemplatedialog/exporttemplatehandler.cpp:54
 #, kde-format
@@ -913,24 +776,6 @@ msgstr "Nu verwijderen"
 #, kde-format
 msgid "Remove selected screen references"
 msgstr "Geselecteerde verwijzingen naar schermen verwijderen"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, ScreensDialog)
-#: app/settings/screensdialog/screensdialog.ui:14
-#, kde-format
-msgid "Screens"
-msgstr "Schermen"
-
-#. i18n: ectx: property (text), widget (QLabel, noteLbl)
-#: app/settings/screensdialog/screensdialog.ui:67
-#, kde-format
-msgid ""
-"<b>Select only</b> screens that are obsolete and you would like to remove "
-"their reference. Active screens or screens used in your layouts can not be "
-"removed."
-msgstr ""
-"<b>Selecteer alleen</b> schermen die verouderd zijn en die niet meer genoemd "
-"hoeven worden. Actieve schermen of schermen gebruikt in uw indelingen kunnen "
-"niet verwijderd worden."
 
 #: app/settings/screensdialog/screenshandler.cpp:133
 #, kde-format
@@ -1247,300 +1092,6 @@ msgid ""
 msgstr ""
 "De instellingen van het tabblad <b>%1</b> zijn gewijzigd.<br/>Wilt u de "
 "wijzigingen toepassen of verwerpen?"
-
-#. i18n: ectx: property (windowTitle), widget (QDialog, SettingsDialog)
-#: app/settings/settingsdialog/settingsdialog.ui:26
-#, kde-format
-msgctxt "latte settings window"
-msgid "Settings"
-msgstr "Instellingen"
-
-#. i18n: ectx: attribute (title), widget (QWidget, layoutsTab)
-#: app/settings/settingsdialog/settingsdialog.ui:36
-#, kde-format
-msgid "Layouts Editor"
-msgstr "Indelingen beheren"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:67
-#, kde-format
-msgid "Only one layout is applied at all times for all activities"
-msgstr ""
-"Slechts één indeling wordt toegepast op alle tijden voor alle activiteiten"
-
-#. i18n: ectx: property (text), widget (QToolButton, singleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:70
-#, kde-format
-msgctxt "single layout"
-msgid "Single layout at all times"
-msgstr "Altijd enkele indeling"
-
-#. i18n: ectx: property (toolTip), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:84
-#, kde-format
-msgid ""
-"Multiple layouts can be present and active in memory at the same time for "
-"different activities"
-msgstr ""
-"Meerdere indelingen kunnen op hetzelfde moment en voor verschillende "
-"activiteiten aanwezig en actief zijn in het geheugen "
-
-#. i18n: ectx: property (text), widget (QToolButton, multipleToolBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:87
-#, kde-format
-msgctxt "multiple layouts"
-msgid "Multiple layouts based on activities"
-msgstr "Meerdere indelingen gebaseerd op activiteiten"
-
-#. i18n: ectx: property (text), widget (QPushButton, switchButton)
-#: app/settings/settingsdialog/settingsdialog.ui:177
-#, kde-format
-msgid "Switch"
-msgstr "Omschakelen"
-
-#. i18n: ectx: property (text), widget (QPushButton, activitiesButton)
-#: app/settings/settingsdialog/settingsdialog.ui:191
-#, kde-format
-msgid "Activities..."
-msgstr "Activiteiten..."
-
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: app/settings/settingsdialog/settingsdialog.ui:247
-#, kde-format
-msgid "New"
-msgstr "Nieuw"
-
-#. i18n: ectx: property (text), widget (QPushButton, duplicateBtn)
-#. i18n: ectx: property (text), widget (QPushButton, duplicateButton)
-#: app/settings/settingsdialog/settingsdialog.ui:258
-#: app/settings/viewsdialog/viewsdialog.ui:148
-#, kde-format
-msgid "Duplicate"
-msgstr "Dupliceren"
-
-#. i18n: ectx: property (text), widget (QPushButton, removeButton)
-#: app/settings/settingsdialog/settingsdialog.ui:272
-#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
-#, kde-format
-msgid "Remove"
-msgstr "Verwijderen"
-
-#. i18n: ectx: property (text), widget (QPushButton, enabledButton)
-#: app/settings/settingsdialog/settingsdialog.ui:299
-#: shell/package/contents/configuration/pages/TasksConfig.qml:498
-#, kde-format
-msgid "Enabled"
-msgstr "Ingeschakeld"
-
-#. i18n: ectx: property (text), widget (QPushButton, readOnlyButton)
-#: app/settings/settingsdialog/settingsdialog.ui:310
-#, kde-format
-msgid "Read Only"
-msgstr "Alleen-lezen"
-
-#. i18n: ectx: property (text), widget (QPushButton, detailsButton)
-#: app/settings/settingsdialog/settingsdialog.ui:356
-#, kde-format
-msgid "Details..."
-msgstr "Details..."
-
-#. i18n: ectx: property (text), widget (QPushButton, importButton)
-#: app/settings/settingsdialog/settingsdialog.ui:438
-#, kde-format
-msgid "Import..."
-msgstr "Importeren..."
-
-#. i18n: ectx: property (text), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:452
-#, kde-format
-msgid "Export..."
-msgstr "Exporteren..."
-
-#. i18n: ectx: property (shortcut), widget (QPushButton, exportButton)
-#: app/settings/settingsdialog/settingsdialog.ui:459
-#, kde-format
-msgid "Ctrl+S"
-msgstr "Ctrl+S"
-
-#. i18n: ectx: attribute (title), widget (QWidget, preferencesTab)
-#: app/settings/settingsdialog/settingsdialog.ui:499
-#, kde-format
-msgid "Preferences"
-msgstr "Voorkeuren"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:540
-#, kde-format
-msgid "Provide visual feedback when layouts are activated automatically"
-msgstr ""
-"Visuele terugkoppeling leveren wanneer indelingen automatisch worden "
-"geactiveerd"
-
-#. i18n: ectx: property (text), widget (QCheckBox, infoWindowChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:543
-#, kde-format
-msgid "Show informative window for layouts automatic activation"
-msgstr "Informatief venster tonen voor automatisch activeren van indelingen"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicEffectLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:571
-#, kde-format
-msgid "Parabolic Effect:"
-msgstr "Parabolisch effect:"
-
-#. i18n: ectx: property (text), widget (QToolButton, smallParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:603
-#, kde-format
-msgctxt "small spread"
-msgid "Small"
-msgstr "Klein"
-
-#. i18n: ectx: property (text), widget (QToolButton, mediumParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:631
-#, kde-format
-msgctxt "medium spread"
-msgid "Medium"
-msgstr "Middel"
-
-#. i18n: ectx: property (text), widget (QToolButton, largeParabolicBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:659
-#, kde-format
-msgctxt "large spread"
-msgid "Large"
-msgstr "Groot"
-
-#. i18n: ectx: property (text), widget (QLabel, parabolicSpreadLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:669
-#, kde-format
-msgid "spread"
-msgstr "spreiding"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:726
-#, kde-format
-msgid "Start the application automatically after each relogin"
-msgstr "De toepassing automatisch starten na elke keer opnieuw aanmelden"
-
-#. i18n: ectx: property (text), widget (QCheckBox, autostartChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:729
-#, kde-format
-msgid "Enable autostart during startup"
-msgstr "Automatisch starten tijdens opstarten inschakelen"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:752
-#, kde-format
-msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
-msgstr ""
-"Druk ⌘ in en houd vast om globale sneltoetsbadges voor widgets en taken te "
-"tonen"
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressHoldChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:755
-#, kde-format
-msgid "Press and Hold ⌘ to show shortcuts badges"
-msgstr "Druk ⌘ in en houd vast om snelkoppeling badges te tonen"
-
-#. i18n: ectx: property (text), widget (QCheckBox, badges3DStyleChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:762
-#, kde-format
-msgid "Use 3D style for notification and shortcut badges"
-msgstr "3D-stijl voor melding en sneltoetsaanduiding gebruiken"
-
-#. i18n: ectx: property (text), widget (QCheckBox, broadcastGeomChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:841
-#, kde-format
-msgid "Inform Plasma desktop for available desktop space"
-msgstr "Plasma bureaublad informeren over beschikbare bureaublad ruimte"
-
-#. i18n: ectx: property (text), widget (QLabel, contextMenuLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:912
-#, kde-format
-msgid "Context Menu:"
-msgstr "Contextmenu:"
-
-#. i18n: ectx: property (text), widget (QLabel, actionsLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:936
-#, kde-format
-msgid "Actions:"
-msgstr "Acties:"
-
-#. i18n: ectx: property (text), widget (QPushButton, contextMenuActionsBtn)
-#: app/settings/settingsdialog/settingsdialog.ui:968
-#, kde-format
-msgid "Actions..."
-msgstr "Acties..."
-
-#. i18n: ectx: property (text), widget (QLabel, screensLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1011
-#, kde-format
-msgid "Screens:"
-msgstr "Schermen:"
-
-#. i18n: ectx: property (toolTip), widget (QSpinBox, screenTrackerSpinBox)
-#. i18n: ectx: property (toolTip), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1044
-#: app/settings/settingsdialog/settingsdialog.ui:1079
-#, kde-format
-msgid ""
-"Different hardware can have different delays during screen changes.\n"
-"This tracker is used in order to not lose any screen related update."
-msgstr ""
-"Verschillende hardware kan verschillende vertraging hebben bij "
-"schermwijzigingen.\n"
-"Deze volger wordt gebruikt om geen verlies te hebben bij bijwerken van het "
-"scherm."
-
-#. i18n: ectx: property (suffix), widget (QSpinBox, screenTrackerSpinBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1053
-#, kde-format
-msgid " ms."
-msgstr " ms."
-
-#. i18n: ectx: property (text), widget (QLabel, trackScreensDelayLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1082
-#, kde-format
-msgid "reaction delay for changes"
-msgstr "reactievertraging bij wijzigingen"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1107
-#, kde-format
-msgid ""
-"Activate support for borderless maximized windows between different layouts"
-msgstr ""
-"Ondersteuning activeren voor gemaximeerde vensters zonder randen tussen "
-"verschillende indelingen"
-
-#. i18n: ectx: property (text), widget (QCheckBox, noBordersForMaximizedChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1110
-#, kde-format
-msgid "Support borderless maximized windows in different layouts"
-msgstr ""
-"Ondersteuning activeren voor gemaximeerde vensters in verschillende "
-"indelingen"
-
-#. i18n: ectx: property (text), widget (QLabel, appearanceLbl)
-#: app/settings/settingsdialog/settingsdialog.ui:1132
-#, kde-format
-msgid "Appearance:"
-msgstr "Uiterlijk:"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1179
-#, kde-format
-msgid ""
-"Forward ⌘ press from KWin to Latte in order to activate Application "
-"Launcher. It is suggested to disable that option if you remove Latte."
-msgstr ""
-"Het indrukken van ⌘ opent het toepassingen-menu in Latte, zoals ook in KWin. "
-"U wordt aangeraden deze optie uit te schakelen als u Latte verwijdert."
-
-#. i18n: ectx: property (text), widget (QCheckBox, metaPressChkBox)
-#: app/settings/settingsdialog/settingsdialog.ui:1182
-#, kde-format
-msgid "Press ⌘ to activate Application Launcher"
-msgstr "Druk ⌘ in om het toepassingen-menu te activeren."
 
 #: app/settings/settingsdialog/tablayoutshandler.cpp:112
 #, kde-format
@@ -2102,12 +1653,6 @@ msgstr "Nu toepassen"
 msgid "Apply all dock, panels changes now"
 msgstr "Pas alle wijzigingen aan Docks en Panelen nu toe"
 
-#. i18n: ectx: property (windowTitle), widget (QDialog, ViewsDialog)
-#: app/settings/viewsdialog/viewsdialog.ui:14
-#, kde-format
-msgid "Docks/Panels"
-msgstr "Docks/Panelen"
-
 #: app/settings/viewsdialog/viewshandler.cpp:69
 #, kde-format
 msgctxt "new view"
@@ -2621,6 +2166,11 @@ msgstr "Dock dupliceren"
 #, kde-format
 msgid "Duplicate Panel"
 msgstr "Paneel dupliceren"
+
+#: shell/package/contents/configuration/LatteDockConfiguration.qml:616
+#, kde-format
+msgid "Remove"
+msgstr "Verwijderen"
 
 #: shell/package/contents/configuration/LatteDockConfiguration.qml:619
 #, kde-format
@@ -3730,6 +3280,11 @@ msgstr "Horizontaal en verticaal schuiven"
 msgid "Automatic"
 msgstr "Automatisch"
 
+#: shell/package/contents/configuration/pages/TasksConfig.qml:498
+#, kde-format
+msgid "Enabled"
+msgstr "Ingeschakeld"
+
 #: shell/package/contents/configuration/pages/TasksConfig.qml:540
 #: shell/package/contents/configuration/pages/TasksConfig.qml:694
 #, kde-format
@@ -3914,6 +3469,248 @@ msgstr "Geen enkel widget kwam overeen met de zoektermen"
 #, kde-format
 msgid "No widgets available"
 msgstr "Geen widgets beschikbaar"
+
+#~ msgid "Context Menu Actions"
+#~ msgstr "Acties in het contextmenu"
+
+#~ msgctxt "actions shown only in edit mode"
+#~ msgid "Accessible only in edit mode:"
+#~ msgstr "Alleen toegankelijk in bewerkingsmodus:"
+
+#~ msgctxt "actions shown always"
+#~ msgid "Accessible always:"
+#~ msgstr "Altijd toegankelijk:"
+
+#~ msgid "Details"
+#~ msgstr "Details"
+
+#~ msgid "Behavior:"
+#~ msgstr "Gedrag:"
+
+#~ msgid "Hide window borders for maximized windows"
+#~ msgstr "Vensterranden verbergen voor gemaximaliseerde vensters"
+
+#~ msgid "Icon:"
+#~ msgstr "Pictogram:"
+
+#~ msgid "Show in layouts context menu when possible"
+#~ msgstr "Indien mogelijk, in contextmenu voor indelingen tonen"
+
+#~ msgid "PopUp Margin:"
+#~ msgstr "Pop-up marge:"
+
+#~ msgid "Background..."
+#~ msgstr "Achtergrond..."
+
+#~ msgid "Text Color..."
+#~ msgstr "Tekstkleur..."
+
+#~ msgid "Layout:"
+#~ msgstr "Indeling:"
+
+#~ msgid "Background:"
+#~ msgstr "Achtergrond:"
+
+#~ msgid "disabled"
+#~ msgstr "uitgeschakeld"
+
+#~ msgid " px."
+#~ msgstr " px."
+
+#~ msgid "Custom Colors:"
+#~ msgstr "Eigen kleuren:"
+
+#~ msgid "Select All"
+#~ msgstr "Alles selecteren"
+
+#~ msgid "Deselect All"
+#~ msgstr "Alles deselecteren"
+
+#~ msgid "File:"
+#~ msgstr "Bestand:"
+
+#~ msgid "Choose..."
+#~ msgstr "Kiezen..."
+
+#~ msgid ""
+#~ "<b>Select only</b> applets that you would like to keep their settings in "
+#~ "the extracted template. Make sure to not include any applets that contain "
+#~ "personal data such as email credentials, calendar etc. "
+#~ msgstr ""
+#~ "<b>Selecteer uitsluitend</b> widgets waarvan u de instellingen wilt "
+#~ "behouden in het geëxporteerde sjabloon. Let op dat u geen widgets "
+#~ "exporteert die persoonlijke gegevens zoals e-mail-wachtwoorden, agenda’s, "
+#~ "etc. bevatten."
+
+#~ msgid "Screens"
+#~ msgstr "Schermen"
+
+#~ msgid ""
+#~ "<b>Select only</b> screens that are obsolete and you would like to remove "
+#~ "their reference. Active screens or screens used in your layouts can not "
+#~ "be removed."
+#~ msgstr ""
+#~ "<b>Selecteer alleen</b> schermen die verouderd zijn en die niet meer "
+#~ "genoemd hoeven worden. Actieve schermen of schermen gebruikt in uw "
+#~ "indelingen kunnen niet verwijderd worden."
+
+#~ msgctxt "latte settings window"
+#~ msgid "Settings"
+#~ msgstr "Instellingen"
+
+#~ msgid "Layouts Editor"
+#~ msgstr "Indelingen beheren"
+
+#~ msgid "Only one layout is applied at all times for all activities"
+#~ msgstr ""
+#~ "Slechts één indeling wordt toegepast op alle tijden voor alle activiteiten"
+
+#~ msgctxt "single layout"
+#~ msgid "Single layout at all times"
+#~ msgstr "Altijd enkele indeling"
+
+#~ msgid ""
+#~ "Multiple layouts can be present and active in memory at the same time for "
+#~ "different activities"
+#~ msgstr ""
+#~ "Meerdere indelingen kunnen op hetzelfde moment en voor verschillende "
+#~ "activiteiten aanwezig en actief zijn in het geheugen "
+
+#~ msgctxt "multiple layouts"
+#~ msgid "Multiple layouts based on activities"
+#~ msgstr "Meerdere indelingen gebaseerd op activiteiten"
+
+#~ msgid "Switch"
+#~ msgstr "Omschakelen"
+
+#~ msgid "Activities..."
+#~ msgstr "Activiteiten..."
+
+#~ msgid "New"
+#~ msgstr "Nieuw"
+
+#~ msgid "Duplicate"
+#~ msgstr "Dupliceren"
+
+#~ msgid "Read Only"
+#~ msgstr "Alleen-lezen"
+
+#~ msgid "Details..."
+#~ msgstr "Details..."
+
+#~ msgid "Import..."
+#~ msgstr "Importeren..."
+
+#~ msgid "Export..."
+#~ msgstr "Exporteren..."
+
+#~ msgid "Ctrl+S"
+#~ msgstr "Ctrl+S"
+
+#~ msgid "Preferences"
+#~ msgstr "Voorkeuren"
+
+#~ msgid "Provide visual feedback when layouts are activated automatically"
+#~ msgstr ""
+#~ "Visuele terugkoppeling leveren wanneer indelingen automatisch worden "
+#~ "geactiveerd"
+
+#~ msgid "Show informative window for layouts automatic activation"
+#~ msgstr "Informatief venster tonen voor automatisch activeren van indelingen"
+
+#~ msgid "Parabolic Effect:"
+#~ msgstr "Parabolisch effect:"
+
+#~ msgctxt "small spread"
+#~ msgid "Small"
+#~ msgstr "Klein"
+
+#~ msgctxt "medium spread"
+#~ msgid "Medium"
+#~ msgstr "Middel"
+
+#~ msgctxt "large spread"
+#~ msgid "Large"
+#~ msgstr "Groot"
+
+#~ msgid "spread"
+#~ msgstr "spreiding"
+
+#~ msgid "Start the application automatically after each relogin"
+#~ msgstr "De toepassing automatisch starten na elke keer opnieuw aanmelden"
+
+#~ msgid "Enable autostart during startup"
+#~ msgstr "Automatisch starten tijdens opstarten inschakelen"
+
+#~ msgid "Press and hold ⌘ to show shortcuts badges for applets and tasks"
+#~ msgstr ""
+#~ "Druk ⌘ in en houd vast om globale sneltoetsbadges voor widgets en taken "
+#~ "te tonen"
+
+#~ msgid "Press and Hold ⌘ to show shortcuts badges"
+#~ msgstr "Druk ⌘ in en houd vast om snelkoppeling badges te tonen"
+
+#~ msgid "Use 3D style for notification and shortcut badges"
+#~ msgstr "3D-stijl voor melding en sneltoetsaanduiding gebruiken"
+
+#~ msgid "Inform Plasma desktop for available desktop space"
+#~ msgstr "Plasma bureaublad informeren over beschikbare bureaublad ruimte"
+
+#~ msgid "Context Menu:"
+#~ msgstr "Contextmenu:"
+
+#~ msgid "Actions:"
+#~ msgstr "Acties:"
+
+#~ msgid "Actions..."
+#~ msgstr "Acties..."
+
+#~ msgid "Screens:"
+#~ msgstr "Schermen:"
+
+#~ msgid ""
+#~ "Different hardware can have different delays during screen changes.\n"
+#~ "This tracker is used in order to not lose any screen related update."
+#~ msgstr ""
+#~ "Verschillende hardware kan verschillende vertraging hebben bij "
+#~ "schermwijzigingen.\n"
+#~ "Deze volger wordt gebruikt om geen verlies te hebben bij bijwerken van "
+#~ "het scherm."
+
+#~ msgid " ms."
+#~ msgstr " ms."
+
+#~ msgid "reaction delay for changes"
+#~ msgstr "reactievertraging bij wijzigingen"
+
+#~ msgid ""
+#~ "Activate support for borderless maximized windows between different "
+#~ "layouts"
+#~ msgstr ""
+#~ "Ondersteuning activeren voor gemaximeerde vensters zonder randen tussen "
+#~ "verschillende indelingen"
+
+#~ msgid "Support borderless maximized windows in different layouts"
+#~ msgstr ""
+#~ "Ondersteuning activeren voor gemaximeerde vensters in verschillende "
+#~ "indelingen"
+
+#~ msgid "Appearance:"
+#~ msgstr "Uiterlijk:"
+
+#~ msgid ""
+#~ "Forward ⌘ press from KWin to Latte in order to activate Application "
+#~ "Launcher. It is suggested to disable that option if you remove Latte."
+#~ msgstr ""
+#~ "Het indrukken van ⌘ opent het toepassingen-menu in Latte, zoals ook in "
+#~ "KWin. U wordt aangeraden deze optie uit te schakelen als u Latte "
+#~ "verwijdert."
+
+#~ msgid "Press ⌘ to activate Application Launcher"
+#~ msgstr "Druk ⌘ in om het toepassingen-menu te activeren."
+
+#~ msgid "Docks/Panels"
+#~ msgstr "Docks/Panelen"
 
 #~ msgid "Low sensitivity for parabolic effect (low cpu usage and performance)"
 #~ msgstr ""
