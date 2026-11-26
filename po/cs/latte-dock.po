@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-24 03:11+0000\n"
-"PO-Revision-Date: 2024-09-03 08:49+0200\n"
+"PO-Revision-Date: 2025-12-01 10:08+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -2877,7 +2877,7 @@ msgstr "Plasma"
 #: shell/package/contents/configuration/pages/TasksConfig.qml:51
 #, kde-format
 msgid "Badges"
-msgstr ""
+msgstr "Odznaky"
 
 #: shell/package/contents/configuration/pages/TasksConfig.qml:60
 #, kde-format
@@ -3405,18 +3405,29 @@ msgstr "Nejsou dostupné žádné widgety"
 #~ msgid "Parabolic Effect:"
 #~ msgstr "Parabolický efekt:"
 
+#, fuzzy
+#~| msgctxt "small spread"
+#~| msgid "Small"
 #~ msgctxt "small spread"
 #~ msgid "Small"
 #~ msgstr "Malý"
 
+#, fuzzy
+#~| msgctxt "medium spread"
+#~| msgid "Medium"
 #~ msgctxt "medium spread"
 #~ msgid "Medium"
 #~ msgstr "Střední"
 
+#, fuzzy
+#~| msgctxt "large spread"
+#~| msgid "Large"
 #~ msgctxt "large spread"
 #~ msgid "Large"
 #~ msgstr "Velký"
 
+#, fuzzy
+#~| msgid "spread"
 #~ msgid "spread"
 #~ msgstr "rozptyl"
 
